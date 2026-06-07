@@ -1,7 +1,7 @@
 /* Custom CSS Barterland - Organic Modernism Theme */
 
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+/* Import Google Fonts (Loaded asynchronously via link tag in head to prevent render blocking) */
+/* @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap'); */
 
 .material-symbols-outlined {
     font-family: 'Material Symbols Outlined' !important;

@@ -534,7 +534,8 @@ Check your Browserslist config to be sure that your targets are set up correctly
 </script>
     
     <!-- Font Awesome / Material Iconography -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet" media="print" onload="this.media='all'">
     
     <!-- Leaflet Map CSS -->
     <style>/* required styles */
@@ -1213,8 +1214,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
     <!-- Custom CSS -->
     <style>/* Custom CSS for Barterland - Organic Modernism Theme */
 
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+/* Import Google Fonts (Loaded asynchronously via link tag in head to prevent render blocking) */
 
 .material-symbols-outlined {
     font-family: 'Material Symbols Outlined' !important;
@@ -6784,8 +6784,7 @@ html.dark .location-icon-container {
 </style>
     <style>/* Custom CSS Barterland - Organic Modernism Theme */
 
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+/* Import Google Fonts (Loaded asynchronously via link tag in head to prevent render blocking) */
 
 .material-symbols-outlined {
     font-family: 'Material Symbols Outlined' !important;
@@ -8886,14 +8885,27 @@ body:not(:has(#view-landing.active)) footer,
                     </div>
                 </section>
 
-                <section id="view-create_account" class="screen-view flex-grow flex flex-col justify-start items-center pt-3 pb-4 px-10 overflow-y-auto relative">
-                    <button class="self-start p-2 hover:bg-forest-green/5 rounded-full mb-4" onclick="showView('welcome')">
-                        <span class="material-symbols-outlined text-forest-green">arrow_back</span>
-                    </button>
-                    <div class="w-full max-w-sm mx-auto flex flex-col mt-2 mb-1 onboarding-card">
-                        <!-- Progress indicator -->
-                        <div class="flex items-center justify-between mb-5 w-full text-[9px] font-extrabold tracking-widest text-forest-green/60 uppercase">
-                            <span>Step 1 of 4: Profile Details</span>
+                <section id="view-create_account" class="screen-view flex-grow flex flex-col justify-start items-center pt-3 pb-4 px-6 overflow-y-auto relative">
+                    <!-- Top Icon badge -->
+                    <div class="flex justify-center mb-2">
+                        <span class="material-symbols-outlined text-[42px] text-forest-green" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+                    </div>
+
+                    <!-- Bold Capitalized Title -->
+                    <h1 class="font-headline text-2xl font-extrabold text-forest-green tracking-tight leading-tight mb-2 uppercase text-center px-2">
+                        Begin Your Journey
+                    </h1>
+
+                    <!-- Description word sentence -->
+                    <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
+                        Step 1 of 4: Profile Details. Fill in your name, public name, and credentials to set up your account.
+                    </p>
+
+                    <!-- White Card Wrapper for Form -->
+                    <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
+                        <!-- Progress indicator inside the card -->
+                        <div class="flex items-center justify-between mb-4 text-[9px] font-extrabold tracking-widest text-forest-green/60 uppercase">
+                            <span>Step 1 of 4</span>
                             <div class="flex gap-1">
                                 <span class="w-4 h-1 rounded-full bg-forest-green"></span>
                                 <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
@@ -8901,50 +8913,47 @@ body:not(:has(#view-landing.active)) footer,
                                 <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
                             </div>
                         </div>
-                        <header class="mb-5 text-center">
-                            <p class="onboarding-step-indicator-text mb-1.5">CREATE YOUR NEIGHBOURHOOD ACCOUNT</p>
-                            <h1 class="font-headline text-xl font-bold">Begin Your Neighborhood Journey</h1>
-                        </header>
+
                         <form class="space-y-4" onsubmit="handleSignUpNext(event)">
                             <div class="grid grid-cols-2 gap-3">
                                 <div class="space-y-1">
-                                    <label class="text-xs font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-first-name">Legal First Name</label>
+                                    <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-first-name">Legal First Name</label>
                                     <div class="relative group">
                                         <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
-                                            <span class="material-symbols-outlined text-[20px]">person</span>
+                                            <span class="material-symbols-outlined text-[18px]">person</span>
                                         </span>
-                                        <input class="w-full h-12 pl-12 pr-4 bg-white border border-outline-variant rounded-xl focus:border-forest-green focus:ring-0 outline-none text-sm" id="su-first-name" placeholder="First" type="text" required/>
+                                        <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="su-first-name" placeholder="First" type="text" required/>
                                     </div>
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-xs font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-last-name">Legal Last Name</label>
+                                    <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-last-name">Legal Last Name</label>
                                     <div class="relative group">
                                         <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
-                                            <span class="material-symbols-outlined text-[20px]">person</span>
+                                            <span class="material-symbols-outlined text-[18px]">person</span>
                                         </span>
-                                        <input class="w-full h-12 pl-12 pr-4 bg-white border border-outline-variant rounded-xl focus:border-forest-green focus:ring-0 outline-none text-sm" id="su-last-name" placeholder="Last" type="text" required/>
+                                        <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="su-last-name" placeholder="Last" type="text" required/>
                                     </div>
                                 </div>
                             </div>
                             <div class="space-y-1">
-                                <label class="text-xs font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-display-name">Display Name (Public Name)</label>
+                                <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-display-name">Display Name (Public Name)</label>
                                 <div class="relative group">
                                     <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
-                                        <span class="material-symbols-outlined text-[20px]">badge</span>
+                                        <span class="material-symbols-outlined text-[18px]">badge</span>
                                     </span>
-                                    <input class="w-full h-12 pl-12 pr-4 bg-white border border-outline-variant rounded-xl focus:border-forest-green focus:ring-0 outline-none text-sm" id="su-display-name" placeholder="e.g. LilyK, GreenNeighbor" type="text" required/>
+                                    <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="su-display-name" placeholder="e.g. LilyK, GreenNeighbor" type="text" required/>
                                 </div>
                             </div>
                             <!-- Avatar Selection Section -->
-                            <div class="space-y-1.5">
-                                <label class="text-xs font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block">Select Profile Avatar</label>
-                                <div class="flex items-center gap-4 bg-white border border-outline-variant/30 p-3 rounded-xl">
-                                    <div class="profile-avatar-ring w-14 h-14 flex-shrink-0" id="su-avatar-preview-container">
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block">Select Profile Avatar</label>
+                                <div class="flex items-center gap-3 bg-warm-cream/30 border border-outline-variant/40 p-2.5 rounded-xl">
+                                    <div class="profile-avatar-ring w-11 h-11 flex-shrink-0" id="su-avatar-preview-container">
                                         <img id="su-avatar-preview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop" class="w-full h-full object-cover rounded-full">
                                     </div>
                                     <div class="flex-grow flex flex-col justify-center">
                                         <div class="text-left">
-                                            <label class="text-xs font-bold text-forest-green bg-forest-green/5 border border-forest-green/20 px-4 py-2.5 rounded-lg cursor-pointer hover:bg-forest-green/10 transition-all inline-block select-none">
+                                            <label class="text-[10px] font-bold text-forest-green bg-forest-green/5 border border-forest-green/20 px-3 py-2 rounded-lg cursor-pointer hover:bg-forest-green/10 transition-all inline-block select-none">
                                                 + Upload Photo
                                                 <input type="file" id="su-avatar-file" class="hidden" accept="image/*" onchange="handleCustomAvatarUpload(this, 'su-avatar-preview')">
                                             </label>
@@ -8953,43 +8962,56 @@ body:not(:has(#view-landing.active)) footer,
                                 </div>
                             </div>
                             <div class="space-y-1">
-                                <label class="text-xs font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-email">Email Address</label>
+                                <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-email">Email Address</label>
                                 <div class="relative group">
                                     <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
-                                        <span class="material-symbols-outlined text-[20px]">mail</span>
+                                        <span class="material-symbols-outlined text-[18px]">mail</span>
                                     </span>
-                                    <input class="w-full h-12 pl-12 pr-4 bg-white border border-outline-variant rounded-xl focus:border-forest-green focus:ring-0 outline-none text-sm" id="su-email" placeholder="your@email.com" type="email" required/>
+                                    <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="su-email" placeholder="your@email.com" type="email" required/>
                                 </div>
                             </div>
                             <div class="space-y-1">
-                                <label class="text-xs font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-password">Password</label>
+                                <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-password">Password</label>
                                 <div class="relative group">
                                     <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
-                                        <span class="material-symbols-outlined text-[20px]">lock</span>
+                                        <span class="material-symbols-outlined text-[18px]">lock</span>
                                     </span>
-                                    <input class="w-full h-12 pl-12 pr-4 bg-white border border-outline-variant rounded-xl focus:border-forest-green focus:ring-0 outline-none text-sm" id="su-password" placeholder="Min. 8 characters" type="password" required/>
+                                    <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="su-password" placeholder="Min. 8 characters" type="password" required/>
                                 </div>
                             </div>
                             
-                            <button class="w-full h-14 bg-forest-green text-warm-cream font-bold text-base rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center mt-5" type="submit">
+                            <button class="w-full h-12 bg-forest-green text-warm-cream font-bold text-sm rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center mt-4 shadow-sm" type="submit">
                                 Next Step
                             </button>
-                            <button id="btn-autofill-register" type="button" class="w-full h-14 bg-[#22C55E] text-white font-bold text-base rounded-xl mt-3 active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 shadow-sm" onclick="triggerRegistrationAutofill()">
-                                <span class="material-symbols-outlined text-lg">edit_note</span>
+                            <button id="btn-autofill-register" type="button" class="w-full h-12 bg-[#22C55E] text-white font-bold text-sm rounded-xl mt-2 active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 shadow-sm" onclick="triggerRegistrationAutofill()">
+                                <span class="material-symbols-outlined text-base">edit_note</span>
                                 Autofill Demo Account
                             </button>
                         </form>
                     </div>
                 </section>
 
-                <section id="view-create_account_social" class="screen-view flex-grow flex flex-col justify-start items-center pt-3 pb-4 px-10 overflow-y-auto relative hidden" style="display: none !important;">
-                    <button class="self-start p-2 hover:bg-forest-green/5 rounded-full mb-4" onclick="showView('create_account')">
-                        <span class="material-symbols-outlined text-forest-green">arrow_back</span>
-                    </button>
-                    <div class="w-full max-w-sm mx-auto flex flex-col mt-2 mb-1 onboarding-card">
-                        <!-- Progress indicator -->
-                        <div class="flex items-center justify-between mb-5 w-full text-[9px] font-extrabold tracking-widest text-forest-green/60 uppercase">
-                            <span>Step 2 of 4: Social Profiles</span>
+                <section id="view-create_account_social" class="screen-view flex-grow flex flex-col justify-start items-center pt-16 pb-6 px-6 overflow-y-auto relative hidden" style="display: none !important;">
+                    <!-- Top Icon badge -->
+                    <div class="flex justify-center mb-2">
+                        <span class="material-symbols-outlined text-[42px] text-forest-green" style="font-variation-settings: 'FILL' 1;">share</span>
+                    </div>
+
+                    <!-- Bold Capitalized Title -->
+                    <h1 class="font-headline text-2xl font-extrabold text-forest-green tracking-tight leading-tight mb-2 uppercase text-center px-2">
+                        Build Community Trust
+                    </h1>
+
+                    <!-- Description word sentence -->
+                    <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
+                        Step 2 of 4: Social Profiles. Link your accounts to verify your identity. This step is optional.
+                    </p>
+
+                    <!-- White Card Wrapper for Form -->
+                    <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
+                        <!-- Progress indicator inside the card -->
+                        <div class="flex items-center justify-between mb-4 text-[9px] font-extrabold tracking-widest text-forest-green/60 uppercase">
+                            <span>Step 2 of 4</span>
                             <div class="flex gap-1">
                                 <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
                                 <span class="w-4 h-1 rounded-full bg-forest-green"></span>
@@ -8997,61 +9019,56 @@ body:not(:has(#view-landing.active)) footer,
                                 <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
                             </div>
                         </div>
-                        <header class="mb-5 text-center">
-                            <p class="onboarding-step-indicator-text mb-1.5">CREATE YOUR NEIGHBOURHOOD ACCOUNT</p>
-                            <h1 class="font-headline text-xl font-bold">Build Community Trust</h1>
-                        </header>
-                        <form class="space-y-4" onsubmit="handleSignUp(event)">
-                            <div class="space-y-3 text-left bg-forest-green/5 dark:bg-forest-green/10 border border-forest-green/15 p-4 rounded-xl">
-                                <p class="text-xs text-on-surface-variant mb-4 text-center">Linking your profiles helps neighbors know you are a verified community member (Optional)</p>
 
+                        <form class="space-y-4" onsubmit="handleSignUp(event)">
+                            <div class="space-y-3">
                                 <!-- Instagram Input Container -->
                                 <div id="su-social-input-instagram-container" class="space-y-1">
-                                    <label class="text-xs font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-instagram">Instagram Handle</label>
+                                    <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-instagram">Instagram Handle</label>
                                     <div class="relative group">
                                         <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
-                                            <svg class="w-5 h-5 text-forest-green/75 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <svg class="w-4 h-4 text-forest-green/75 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                                                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                                                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                                             </svg>
                                         </span>
-                                        <input class="w-full h-12 pl-12 pr-4 bg-white border border-outline-variant rounded-xl focus:border-forest-green focus:ring-0 outline-none text-sm" id="su-instagram" placeholder="e.g. @username or profile link" type="text" />
+                                        <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="su-instagram" placeholder="e.g. @username" type="text" />
                                     </div>
                                 </div>
 
                                 <!-- Facebook Input Container -->
                                 <div id="su-social-input-facebook-container" class="space-y-1">
-                                    <label class="text-xs font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-facebook">Facebook Profile</label>
+                                    <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-facebook">Facebook Profile</label>
                                     <div class="relative group">
                                         <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
-                                            <svg class="w-5 h-5 text-forest-green/75 transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                                            <svg class="w-4 h-4 text-forest-green/75 transition-colors" viewBox="0 0 24 24" fill="currentColor">
                                                 <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/>
                                             </svg>
                                         </span>
-                                        <input class="w-full h-12 pl-12 pr-4 bg-white border border-outline-variant rounded-xl focus:border-forest-green focus:ring-0 outline-none text-sm" id="su-facebook" placeholder="e.g. username or profile link" type="text" />
+                                        <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="su-facebook" placeholder="e.g. username" type="text" />
                                     </div>
                                 </div>
 
                                 <!-- TikTok Input Container -->
                                 <div id="su-social-input-tiktok-container" class="space-y-1">
-                                    <label class="text-xs font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-tiktok">TikTok Handle</label>
+                                    <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-tiktok">TikTok Handle</label>
                                     <div class="relative group">
                                         <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
-                                            <svg class="w-5 h-5 text-forest-green/75 transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                                            <svg class="w-4 h-4 text-forest-green/75 transition-colors" viewBox="0 0 24 24" fill="currentColor">
                                                 <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.86-.74-3.95-1.72-.1.08-.21.17-.21.29v5.73c.02 2.12-.6 4.38-2.22 5.86-1.58 1.48-3.9 2.09-5.99 1.83-2.16-.24-4.23-1.63-5.18-3.62-.97-1.99-.92-4.49.19-6.39 1.1-1.9 3.24-3.15 5.46-3.15.15 0 .3 0 .45.02v4.03c-.63-.08-1.28-.05-1.88.17-1.09.39-1.95 1.39-2.09 2.56-.17 1.39.53 2.87 1.8 3.42 1.25.56 2.86.3 3.86-.59.78-.69 1.08-1.79 1.05-2.82V.02z"/>
                                             </svg>
                                         </span>
-                                        <input class="w-full h-12 pl-12 pr-4 bg-white border border-outline-variant rounded-xl focus:border-forest-green focus:ring-0 outline-none text-sm" id="su-tiktok" placeholder="e.g. @username or profile link" type="text" />
+                                        <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="su-tiktok" placeholder="e.g. @username" type="text" />
                                     </div>
                                 </div>
                             </div>
 
-                            <button class="w-full h-14 bg-forest-green text-warm-cream font-bold text-base rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center mt-5" type="submit">
+                            <button class="w-full h-12 bg-forest-green text-warm-cream font-bold text-sm rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center mt-5 shadow-sm" type="submit">
                                 Create Account
                             </button>
-                            <button id="btn-autofill-register-social" type="button" class="w-full h-14 bg-[#22C55E] text-white font-bold text-base rounded-xl mt-3 active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 shadow-sm" onclick="triggerRegistrationAutofill()">
-                                <span class="material-symbols-outlined text-lg">edit_note</span>
+                            <button id="btn-autofill-register-social" type="button" class="w-full h-12 bg-[#22C55E] text-white font-bold text-sm rounded-xl mt-2 active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 shadow-sm" onclick="triggerRegistrationAutofill()">
+                                <span class="material-symbols-outlined text-base">edit_note</span>
                                 Autofill Demo Account
                             </button>
                         </form>
@@ -9061,11 +9078,27 @@ body:not(:has(#view-landing.active)) footer,
                 <!-- ==================================================== -->
                 <!-- PROFILE STEP 0: CONSENT & TERMS -->
                 <!-- ==================================================== -->
-                <section id="view-profile_consent" class="screen-view flex-grow flex flex-col justify-start items-center py-6 px-6 overflow-y-auto">
-                    <div class="w-full max-w-sm mx-auto onboarding-card flex flex-col mt-2 mb-1">
-                        <!-- Progress indicator -->
-                        <div class="flex items-center justify-between mb-5 w-full text-[9px] font-extrabold tracking-widest text-forest-green/60 uppercase">
-                            <span>Step 3 of 4: Safety & Terms</span>
+                <section id="view-profile_consent" class="screen-view flex-grow flex flex-col justify-start items-center pt-16 pb-6 px-6 overflow-y-auto">
+                    <!-- Top Icon badge -->
+                    <div class="flex justify-center mb-2">
+                        <span class="material-symbols-outlined text-[42px] text-forest-green" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+                    </div>
+
+                    <!-- Bold Capitalized Title -->
+                    <h1 class="font-headline text-2xl font-extrabold text-forest-green tracking-tight leading-tight mb-2 uppercase text-center px-2">
+                        Our Safe Space Agreement
+                    </h1>
+
+                    <!-- Description word sentence -->
+                    <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
+                        Step 3 of 4: Safety & Terms. Please review our zero-tolerance guidelines to keep our neighborhood safe and welcoming.
+                    </p>
+
+                    <!-- White Card Wrapper for Form -->
+                    <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
+                        <!-- Progress indicator inside the card -->
+                        <div class="flex items-center justify-between mb-4 text-[9px] font-extrabold tracking-widest text-forest-green/60 uppercase">
+                            <span>Step 3 of 4</span>
                             <div class="flex gap-1">
                                 <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
                                 <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
@@ -9073,14 +9106,9 @@ body:not(:has(#view-landing.active)) footer,
                                 <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
                             </div>
                         </div>
-                        <div class="text-center mb-4">
-                            <span class="material-symbols-outlined text-4xl text-rose-500 mb-1.5" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
-                            <h2 class="font-headline text-xl font-bold">Our Safe Space Agreement</h2>
-                            <p class="text-on-surface-variant text-[11px] mt-1.5">To keep our neighborhood kind, safe, and welcoming, please review our zero-tolerance guidelines and community standards.</p>
-                        </div>
 
                         <!-- Policy scroll box with collapsible accordions -->
-                        <div class="eula-scroll-box border border-outline-variant/30 rounded-2xl p-4 space-y-3 max-h-[160px] mt-2 overflow-y-auto custom-scrollbar text-xs leading-relaxed text-on-surface-variant select-none">
+                        <div class="eula-scroll-box border border-outline-variant/30 rounded-2xl p-4 space-y-3 max-h-[250px] mt-2 overflow-y-auto custom-scrollbar text-xs leading-relaxed text-on-surface-variant select-none">
                             <!-- Section 1: Code of Conduct -->
                             <div class="border-b border-outline-variant/10 pb-3 EULA-accordion-item">
                                 <div class="flex items-center justify-between cursor-pointer py-1" onclick="toggleEulaAccordion(this)">
@@ -9118,7 +9146,7 @@ body:not(:has(#view-landing.active)) footer,
                             </div>
 
                             <!-- Section 3: Liability Disclaimer -->
-                            <div class="pt-3 EULA-accordion-item">
+                            <div class="border-b border-outline-variant/10 py-3 EULA-accordion-item">
                                 <div class="flex items-center justify-between cursor-pointer py-1" onclick="toggleEulaAccordion(this)">
                                     <div class="flex items-center gap-3 font-semibold text-slate-800 dark:text-slate-200">
                                         <div class="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center flex-shrink-0">
@@ -9134,17 +9162,9 @@ body:not(:has(#view-landing.active)) footer,
                                     </p>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Section Header for Additional Guidelines -->
-                        <div class="text-left mt-4 mb-1.5 ml-1">
-                            <h3 class="text-[10px] font-bold uppercase tracking-wider text-forest-green/80">Additional Policies</h3>
-                        </div>
-
-                        <!-- Policy scroll box 2 with collapsible accordions -->
-                        <div class="eula-scroll-box border border-outline-variant/30 rounded-2xl p-4 space-y-3 max-h-[100px] overflow-y-auto custom-scrollbar text-xs leading-relaxed text-on-surface-variant select-none">
                             <!-- Section 4: Privacy & Data Protection -->
-                            <div class="border-b border-outline-variant/10 pb-3 EULA-accordion-item">
+                            <div class="border-b border-outline-variant/10 py-3 EULA-accordion-item">
                                 <div class="flex items-center justify-between cursor-pointer py-1" onclick="toggleEulaAccordion(this)">
                                     <div class="flex items-center gap-3 font-semibold text-slate-800 dark:text-slate-200">
                                         <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
@@ -9181,7 +9201,7 @@ body:not(:has(#view-landing.active)) footer,
                         </div>
 
                         <!-- Checkbox agreement group container (stabilized card layout) -->
-                        <div class="bg-forest-green/5 border border-forest-green/10 p-3.5 rounded-xl space-y-3 mt-4 text-left">
+                        <div class="bg-forest-green/5 border border-forest-green/10 p-3 rounded-xl space-y-2.5 mt-3 text-left">
                             <label class="flex items-start gap-3 cursor-pointer select-none">
                                 <div class="checkbox-wrapper">
                                     <input type="checkbox" id="consent-check" onchange="toggleConsentButton()"/>
@@ -9189,7 +9209,7 @@ body:not(:has(#view-landing.active)) footer,
                                         <span class="material-symbols-outlined select-none pointer-events-none">check</span>
                                     </div>
                                 </div>
-                                <span class="text-xs text-on-surface-variant font-normal leading-normal">I agree to the Code of Conduct, Safety Guidelines, and release the platform of all liability.</span>
+                                <span class="text-[11px] text-on-surface-variant font-normal leading-tight">I agree to the Code of Conduct, Safety Guidelines, and release the platform of all liability.</span>
                             </label>
                             <label class="flex items-start gap-3 cursor-pointer select-none">
                                 <div class="checkbox-wrapper">
@@ -9198,11 +9218,11 @@ body:not(:has(#view-landing.active)) footer,
                                         <span class="material-symbols-outlined select-none pointer-events-none">check</span>
                                     </div>
                                 </div>
-                                <span class="text-xs text-on-surface-variant font-normal leading-normal">I confirm that I am 18 years of age or older.</span>
+                                <span class="text-[11px] text-on-surface-variant font-normal leading-tight">I confirm that I am 18 years of age or older.</span>
                             </label>
                         </div>
 
-                        <button class="w-full h-12 flex-shrink-0 bg-forest-green/45 text-white font-bold text-sm rounded-xl cursor-not-allowed transition-colors flex items-center justify-center mt-5" id="consent-continue-btn" onclick="handleProfileConsentSubmit()" disabled>
+                        <button class="w-full h-12 flex-shrink-0 bg-forest-green/45 text-white font-bold text-sm rounded-xl cursor-not-allowed transition-colors flex items-center justify-center mt-4 shadow-sm" id="consent-continue-btn" onclick="handleProfileConsentSubmit()" disabled>
                             Agree & Continue
                         </button>
                     </div>
@@ -9211,11 +9231,27 @@ body:not(:has(#view-landing.active)) footer,
                 <!-- ==================================================== -->
                 <!-- 4.5. ONBOARDING LOCATION PERMISSIONS CHOICE -->
                 <!-- ==================================================== -->
-                <section id="view-profile_location_permission" class="screen-view flex-grow flex flex-col justify-start items-center py-8 px-6">
-                    <div class="w-full max-w-sm mx-auto text-center flex flex-col items-center relative onboarding-card mt-2 mb-1">
-                        <!-- Progress indicator -->
-                        <div class="flex items-center justify-between mb-5 w-full text-[9px] font-extrabold tracking-widest text-forest-green/60 uppercase">
-                            <span>Step 4 of 4: Location Setup</span>
+                <section id="view-profile_location_permission" class="screen-view flex-grow flex flex-col justify-start items-center py-6 px-6">
+                    <!-- Top Icon badge -->
+                    <div class="flex justify-center mb-2">
+                        <span class="material-symbols-outlined text-[42px] text-forest-green" style="font-variation-settings: 'FILL' 1;">location_on</span>
+                    </div>
+
+                    <!-- Bold Capitalized Title -->
+                    <h1 class="font-headline text-2xl font-extrabold text-forest-green tracking-tight leading-tight mb-2 uppercase text-center px-2">
+                        Anchor Your Place
+                    </h1>
+
+                    <!-- Description word sentence -->
+                    <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
+                        Step 4 of 4: Location Setup. Corner Swaps uses your location to connect you with nearby neighbors.
+                    </p>
+
+                    <!-- White Card Wrapper for Form -->
+                    <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6 flex flex-col items-center">
+                        <!-- Progress indicator inside the card -->
+                        <div class="flex items-center justify-between mb-4 w-full text-[9px] font-extrabold tracking-widest text-forest-green/60 uppercase">
+                            <span>Step 4 of 4</span>
                             <div class="flex gap-1">
                                 <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
                                 <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
@@ -9223,17 +9259,10 @@ body:not(:has(#view-landing.active)) footer,
                                 <span class="w-4 h-1 rounded-full bg-forest-green"></span>
                             </div>
                         </div>
-                        <div class="location-icon-container">
-                            <span class="material-symbols-outlined text-3xl">location_on</span>
-                        </div>
-                        <h2 class="font-headline text-xl font-bold mb-3">Anchor Your Place on the Map</h2>
-                        <p class="text-on-surface-variant text-[11px] leading-relaxed mb-5">
-                            Corner Swaps uses your neighborhood location to show you swap opportunities close by. Your privacy always comes first.
-                        </p>
-                        
+
                         <!-- Coarse location safeguard card -->
-                        <div class="bg-forest-green/5 border border-forest-green/10 p-3.5 rounded-xl text-left text-xs mb-6 space-y-2 w-full">
-                            <p class="font-bold text-forest-green flex items-center gap-1.5 uppercase tracking-wide text-[9px]">
+                        <div class="bg-forest-green/5 border border-forest-green/10 p-3.5 rounded-xl text-left text-xs mb-4 w-full">
+                            <p class="font-bold text-forest-green flex items-center gap-1.5 uppercase tracking-wide text-[9px] mb-1">
                                 <span class="material-symbols-outlined text-xs">verified_user</span> Approximate Location Safeguard
                             </p>
                             <p class="text-[11px] text-on-surface-variant leading-relaxed">
@@ -9243,8 +9272,8 @@ body:not(:has(#view-landing.active)) footer,
                         
                         <!-- Interactive Choices -->
                         <div class="w-full">
-                            <button id="btn-onboarding-location-permission" class="w-full h-14 bg-forest-green text-white font-bold text-sm rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center gap-2 shadow-md" onclick="grantOnboardingLocationConsent()">
-                                <span id="icon-location-cloud" class="material-symbols-outlined text-lg">cloud</span>
+                            <button id="btn-onboarding-location-permission" class="w-full h-12 bg-forest-green text-white font-bold text-sm rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center gap-2 shadow-sm" onclick="grantOnboardingLocationConsent()">
+                                <span id="icon-location-cloud" class="material-symbols-outlined text-base">cloud</span>
                                 <span id="text-location-cloud">Enable Location Permission</span>
                             </button>
                         </div>
@@ -9255,39 +9284,51 @@ body:not(:has(#view-landing.active)) footer,
                 <!-- 5. PROFILE STEP 1: SAFE MEETING SPOT -->
                 <!-- ==================================================== -->
                 <section id="view-profile_step_1" class="screen-view flex-grow flex flex-col justify-start items-center py-6 px-6 overflow-y-auto">
-                    <div class="w-full max-w-sm mx-auto text-center flex flex-col relative onboarding-card mt-2 mb-1">
-                        <span class="material-symbols-outlined text-5xl text-forest-green mb-4">edit_location_alt</span>
-                        <h2 class="font-headline text-2xl font-bold mb-2">Where is your corner of the world?</h2>
-                        <p class="text-on-surface-variant text-xs mb-6">Choose your neighborhood below or write it in manually so we can connect you with nearby swaps.</p>
-                        
+                    <!-- Top Icon badge -->
+                    <div class="flex justify-center mb-2">
+                        <span class="material-symbols-outlined text-[42px] text-forest-green" style="font-variation-settings: 'FILL' 1;">edit_location_alt</span>
+                    </div>
+
+                    <!-- Bold Capitalized Title -->
+                    <h1 class="font-headline text-2xl font-extrabold text-forest-green tracking-tight leading-tight mb-2 uppercase text-center px-2">
+                        Choose Your Neighborhood
+                    </h1>
+
+                    <!-- Description word sentence -->
+                    <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
+                        Select your local area from the options below or enter your community name manually.
+                    </p>
+
+                    <!-- White Card Wrapper for Form -->
+                    <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
                         <form onsubmit="handleProfileStep1(event)" class="relative w-full">
                             <input type="hidden" id="step1-location" value="">
-                            <div class="grid grid-cols-2 gap-3 mb-5 max-h-[250px] overflow-y-auto p-1 custom-scrollbar text-xs font-semibold" id="step1-location-box">
-                                <button type="button" class="neighborhood-opt-btn p-3 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none" onclick="selectOnboardingNeighborhood('Downtown Vancouver', this)">Downtown Vancouver</button>
-                                <button type="button" class="neighborhood-opt-btn p-3 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none" onclick="selectOnboardingNeighborhood('Kitsilano', this)">Kitsilano</button>
-                                <button type="button" class="neighborhood-opt-btn p-3 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none" onclick="selectOnboardingNeighborhood('Commercial Drive', this)">Commercial Drive</button>
-                                <button type="button" class="neighborhood-opt-btn p-3 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none" onclick="selectOnboardingNeighborhood('Mount Pleasant', this)">Mount Pleasant</button>
-                                <button type="button" class="neighborhood-opt-btn p-3 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none" onclick="selectOnboardingNeighborhood('West End', this)">West End</button>
-                                <button type="button" class="neighborhood-opt-btn p-3 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none" onclick="selectOnboardingNeighborhood('Yaletown', this)">Yaletown</button>
-                                <button type="button" class="neighborhood-opt-btn p-3 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none" onclick="selectOnboardingNeighborhood('Gastown', this)">Gastown</button>
-                                <button type="button" class="neighborhood-opt-btn p-3 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none" onclick="selectOnboardingNeighborhood('Kerrisdale', this)">Kerrisdale</button>
-                                <button type="button" class="neighborhood-opt-btn p-3 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none" onclick="selectOnboardingNeighborhood('Fairview', this)">Fairview</button>
-                                <button type="button" class="neighborhood-opt-btn p-3 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none" onclick="selectOnboardingNeighborhood('East Vancouver', this)">East Vancouver</button>
+                            <div class="grid grid-cols-2 gap-2 mb-4 max-h-[180px] overflow-y-auto p-1 custom-scrollbar text-xs font-semibold" id="step1-location-box">
+                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('Downtown Vancouver', this)">Downtown Vancouver</button>
+                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('Kitsilano', this)">Kitsilano</button>
+                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('Commercial Drive', this)">Commercial Drive</button>
+                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('Mount Pleasant', this)">Mount Pleasant</button>
+                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('West End', this)">West End</button>
+                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('Yaletown', this)">Yaletown</button>
+                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('Gastown', this)">Gastown</button>
+                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('Kerrisdale', this)">Kerrisdale</button>
+                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('Fairview', this)">Fairview</button>
+                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('East Vancouver', this)">East Vancouver</button>
                             </div>
                             
                             <!-- Divider section -->
                             <div class="flex items-center my-3 text-outline">
                                 <div class="flex-grow border-t border-outline-variant/20"></div>
-                                <span class="px-3 text-[10px] font-bold uppercase tracking-widest">Or write your own</span>
+                                <span class="px-2 text-[9px] font-bold uppercase tracking-widest">Or write your own</span>
                                 <div class="flex-grow border-t border-outline-variant/20"></div>
                             </div>
                             
                             <!-- Custom neighborhood text input -->
-                            <div class="relative w-full mt-5 mb-4" id="step1-custom-location-container">
-                                <input class="w-full h-14 px-5 bg-white border border-outline-variant rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs text-left font-semibold text-forest-green placeholder:text-xs" id="step1-custom-location" placeholder="Type your neighbourhood name..." type="text" oninput="clearNeighborhoodSelectionButtons()"/>
+                            <div class="relative w-full mb-4" id="step1-custom-location-container">
+                                <input class="w-full h-11 px-4 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs text-left font-semibold text-forest-green placeholder:text-xs" id="step1-custom-location" placeholder="Type your neighbourhood name..." type="text" oninput="clearNeighborhoodSelectionButtons()"/>
                             </div>
                             
-                            <button class="w-full h-14 bg-forest-green text-white font-bold text-base rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center mt-4" type="submit">
+                            <button class="w-full h-12 bg-forest-green text-white font-bold text-base rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center shadow-sm" type="submit">
                                 Next Step
                             </button>
                         </form>
