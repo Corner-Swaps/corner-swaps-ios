@@ -19,11 +19,11 @@
 		C00000012C12345600000002 /* CornerSwapsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerSwapsApp.swift; sourceTree = "<group>"; };
 		C00000012C12345600000004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C00000012C12345600000006 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C00000012C1234560000000B /* Corner Swaps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Corner Swaps.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C00000022C12345600000001 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		C00000022C12345600000002 /* app.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = app.js; sourceTree = "<group>"; };
 		C00000022C12345600000003 /* styles.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = styles.css; sourceTree = "<group>"; };
 		C00000032C12345600000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C00000012C1234560000000B /* Corner Swaps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Corner Swaps.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +154,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KZ8W2GCVH8;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "Corner Swaps/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -178,6 +179,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KZ8W2GCVH8;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "Corner Swaps/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
