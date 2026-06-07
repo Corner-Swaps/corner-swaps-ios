@@ -1,0 +1,5564 @@
+/* Custom CSS for Barterland - Organic Modernism Theme */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined' !important;
+}
+
+:root {
+    --forest-green: #308A5E;
+    --warm-cream: #ffffff;
+    --white: #ffffff;
+    --green-overlay: rgba(48, 138, 94, 0.05);
+    --green-overlay-md: rgba(48, 138, 94, 0.1);
+    --border-color: rgba(48, 138, 94, 0.15);
+}
+
+/* Base resets */
+body {
+    background-color: #d8d6d0; /* Marginally darker warm-grey for high desktop contrast */
+    font-family: 'Outfit', sans-serif;
+    color: var(--forest-green);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, h6, .font-headline, .font-body {
+    font-family: 'Outfit', sans-serif !important;
+}
+
+/* ============================================================
+   SIMULATOR MODE LOCKDOWN
+   When body.show-simulator is active, EVERYTHING must live
+   inside the .phone-frame. No element may break out.
+   ============================================================ */
+
+/* 1. Permanently hide the landing/marketing page section — ALWAYS */
+#view-landing,
+#view-landing.active,
+#view-landing.screen-view,
+body.show-simulator #view-landing,
+body.show-simulator #view-landing.active {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    z-index: -9999 !important;
+    opacity: 0 !important;
+}
+
+/* 2. Force the landing page's fixed header/nav to be invisible */
+body.show-simulator .glass-nav,
+body.show-simulator header.glass-nav {
+    display: none !important;
+    position: static !important;
+}
+
+/* 3. Override landing.css body styles that break simulator layout */
+body.show-simulator {
+    background-color: #c8c5bd !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: 100vh !important;
+    overflow: hidden !important;
+    flex-direction: row !important;
+}
+
+/* 4. The phone simulator wrapper fills the viewport and centers the phone */
+body.show-simulator .phone-simulator {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100vh !important;
+    position: relative !important;
+    flex-shrink: 0 !important;
+}
+
+/* 5. The phone frame is fixed-size (iPhone 16) and clips everything inside */
+body.show-simulator .phone-frame {
+    width: 393px !important;
+    height: 852px !important;
+    border: 12px solid #0b0d10 !important;
+    border-radius: 48px !important;
+    outline: 1px solid #3a3b40 !important;
+    box-shadow: 0 30px 70px -15px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,0,0,0.2) !important;
+    overflow: hidden !important;
+    position: relative !important;
+    background-color: var(--warm-cream) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-shrink: 0 !important;
+}
+
+/* 6. App container fills the phone frame */
+body.show-simulator .app-container {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+/* 7. Active screen views must fill the remaining space inside the frame */
+body.show-simulator .screen-view.active {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* 8. Global navbar stays pinned to bottom of app-container (absolute within position:relative container) */
+body.show-simulator #global-navbar {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    flex-shrink: 0 !important;
+    z-index: 5000 !important;
+}
+
+/* 9. Anything with position:fixed must become position:absolute inside simulator */
+body.show-simulator .app-container [style*="position: fixed"],
+body.show-simulator .app-container .fixed {
+    position: absolute !important;
+}
+
+/* 10. Ensure organic blobs from landing page can't show */
+body.show-simulator .organic-blob {
+    display: none !important;
+}
+
+
+
+/* Smartphone Device Mockup Frame (Desktop Centered & Zoomed Out) */
+.phone-simulator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Scale the entire simulator wrapper (frame + hardware buttons) together */
+body.show-simulator .phone-simulator {
+    transform: scale(var(--simulator-scale, 0.78)); 
+    transform-origin: center center;
+    width: 100%;
+    height: 100vh;
+    overflow: visible;
+}
+
+body.show-simulator .phone-frame {
+    width: 393px;
+    height: 852px; /* True iPhone 16 viewport aspect ratio */
+    border: 12px solid #0b0d10; /* Bezel */
+    border-radius: 48px;
+    outline: 1px solid #3a3b40; /* Titanium outer frame outline highlight */
+    box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    background-color: var(--warm-cream);
+    display: flex;
+    flex-direction: column;
+    z-index: 10; /* Make sure it renders in front of tucked-under buttons */
+}
+
+/* iPhone 16 Pro Dynamic Island */
+body.show-simulator .phone-frame::before {
+    content: '';
+    position: absolute;
+    top: 11px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95px;
+    height: 25px;
+    background-color: #000000;
+    border-radius: 20px;
+    z-index: 10000;
+    box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+/* Camera lens dot reflection inside Dynamic Island */
+body.show-simulator .phone-frame::after {
+    content: '';
+    position: absolute;
+    top: 19px;
+    left: calc(50% + 22px);
+    width: 9px;
+    height: 9px;
+    background: radial-gradient(circle, #0e1b29 0%, #050a10 50%, #000000 100%);
+    border-radius: 50%;
+    z-index: 10001;
+    opacity: 0.85;
+    box-shadow: 0 0 1px rgba(255, 255, 255, 0.4);
+}
+
+/* Hardware Buttons for iPhone 16 */
+body.show-simulator .phone-button {
+    position: absolute;
+    background: linear-gradient(to bottom, #3a3d45, #1e1f24);
+    border-radius: 3px;
+    z-index: 1; /* Tucked under the phone frame bezel */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Left Side: Action Button, Volume Up, Volume Down */
+body.show-simulator .action-btn {
+    width: 6px;
+    height: 24px;
+    top: calc(50% - 220px);
+    left: calc(50% - 212px); /* 196.5px + 12px bezel + 3.5px offset = 212px */
+}
+body.show-simulator .vol-up-btn {
+    width: 6px;
+    height: 48px;
+    top: calc(50% - 170px);
+    left: calc(50% - 212px);
+}
+body.show-simulator .vol-down-btn {
+    width: 6px;
+    height: 48px;
+    top: calc(50% - 110px);
+    left: calc(50% - 212px);
+}
+
+/* Right Side: Power Button, Camera Control */
+body.show-simulator .power-btn {
+    width: 6px;
+    height: 64px;
+    top: calc(50% - 140px);
+    right: calc(50% - 212px);
+}
+/* iPhone 16 Camera Control Button - capacitive, slightly recessed matte sensor */
+body.show-simulator .camera-control-btn {
+    width: 4px;
+    height: 52px;
+    top: calc(50% + 80px);
+    right: calc(50% - 210.5px);
+    background: #121316 !important;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.8), 0 0.5px 1px rgba(255,255,255,0.15);
+}
+
+/* Stretch wrappers to full width/height on desktop when simulator is inactive */
+body:not(.show-simulator) .phone-simulator {
+    display: block !important;
+    width: 100% !important;
+    height: 100vh !important;
+    transform: none !important;
+}
+
+body:not(.show-simulator) .phone-frame {
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    position: relative !important;
+    overflow: hidden !important;
+    background-color: var(--warm-cream) !important;
+}
+
+body:not(.show-simulator) .app-container {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    position: relative !important;
+}
+
+/* Hide scale selector panel when simulator is inactive */
+body:not(.show-simulator) #simulator-scale-panel {
+    display: none !important;
+}
+
+/* Block display layout for body when simulator is inactive to allow normal flow */
+body:not(.show-simulator) {
+    display: block !important;
+    min-height: 100vh !important;
+}
+
+/* Scroll locking control: allow scrolling only when landing page is active */
+html:has(#view-landing.active),
+html:has(#view-landing.active) body {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    height: auto !important;
+}
+
+
+@media (max-width: 639px) {
+    .phone-frame {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+/* Main app container inside the frame */
+.app-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--warm-cream);
+    position: relative;
+}
+
+/* Custom Scrollbars */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--forest-green);
+    border-radius: 10px;
+}
+
+/* Screen Views */
+.screen-view {
+    display: none;
+    opacity: 0;
+    transform: translateY(10px);
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    overflow-y: auto;
+    background-color: var(--warm-cream);
+    -webkit-overflow-scrolling: touch;
+}
+
+.screen-view.active {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-grow: 1 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    position: relative !important;
+}
+
+.screen-view > div.overflow-y-auto {
+    min-height: 0 !important;
+}
+
+.screen-view.no-transition {
+    transition: none !important;
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+}
+
+#view-village {
+    transform: none !important;
+}
+#view-village.active {
+    transform: none !important;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pulse-slow {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+.animate-pulse-slow {
+    animation: pulse-slow 3s ease-in-out infinite;
+}
+
+@keyframes shuffleFade {
+    0% { opacity: 0; transform: scale(0.85) translateY(5px); }
+    15% { opacity: 1; transform: scale(1) translateY(0); }
+    85% { opacity: 1; transform: scale(1) translateY(0); }
+    100% { opacity: 0; transform: scale(1.1) translateY(-5px); }
+}
+
+#shuffle-icon {
+    opacity: 0;
+}
+
+.animate-shuffle {
+    animation: shuffleFade 0.2s ease-in-out forwards;
+}
+
+@keyframes finalReveal {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.animate-final-reveal {
+    animation: finalReveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes slowHazyFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+        backdrop-filter: blur(0px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        backdrop-filter: blur(8px);
+    }
+}
+.animate-slow-hazy-fade-in {
+    animation: slowHazyFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* Leaflet Map Grayscale Filter */
+.leaflet-tile-container img {
+    filter: saturate(1.08) contrast(0.98) !important;
+}
+
+.leaflet-container {
+    background: var(--warm-cream) !important;
+}
+
+/* Custom map markers */
+.pin-icon {
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background-color: var(--forest-green);
+    color: var(--warm-cream);
+    width: 36px;
+    height: 36px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--warm-cream);
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(48, 138, 94, 0.18);
+}
+
+.pin-icon:hover {
+    transform: scale(1.15);
+}
+
+.pin-icon:active {
+    transform: scale(0.9);
+}
+
+/* Leaflet Overrides */
+.leaflet-marker-pane .custom-div-icon {
+    background: transparent !important;
+    border: none !important;
+}
+
+.leaflet-marker-pane .user-location-marker {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 50% !important;
+    overflow: visible !important;
+    width: 54px !important;
+    height: 54px !important;
+    aspect-ratio: 1/1 !important;
+}
+
+/* Organic Blob Shapes */
+.organic-shape {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    animation: morph 8s ease-in-out infinite;
+    background-color: rgba(48, 138, 94, 0.03);
+}
+
+@keyframes morph {
+    0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+    50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+    100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+}
+
+/* Accordion Transitions */
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease-out;
+    opacity: 0;
+}
+
+.accordion-item.active .accordion-content {
+    max-height: 500px;
+    opacity: 1;
+    margin-top: 0.5rem;
+}
+
+.accordion-item.active .category-header {
+    background-color: #ffffff;
+    border-color: var(--forest-green);
+}
+
+/* Active Chips */
+.chip-active {
+    background-color: var(--forest-green) !important;
+    color: var(--warm-cream) !important;
+    border-color: var(--forest-green) !important;
+}
+
+/* Range Slider */
+.range-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 5px;
+    outline: none;
+}
+
+.range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background: var(--forest-green);
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Hero Section */
+.photo-hero {
+    height: 270px;
+    background: #ecebeb;
+}
+
+#offer-photo-hero,
+#map-detail-hero-container,
+#event-detail-hero-container,
+#group-photo-hero {
+    height: 360px !important;
+}
+
+.photo-hero.has-image {
+    background-size: cover;
+    background-position: center;
+}
+
+/* Float Animations */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+    animation: float 2.2s ease-in-out infinite;
+}
+
+/* Typing Indicator Animation */
+.typing-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    height: 12px;
+}
+
+.typing-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #9ca3af !important;
+    border-radius: 50%;
+    animation: typingBounce 1.4s infinite ease-in-out both;
+}
+
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typingBounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+}
+
+/* Dynamic Dark Mode CSS variables & style overrides */
+:root {
+    --forest-green-val: var(--forest-green, #308A5E);
+    --warm-cream-val: var(--warm-cream, #ffffff);
+}
+
+html.dark {
+    --forest-green-val: var(--forest-green, #308A5E);
+    --warm-cream-val: var(--warm-cream, #101612);
+    --forest-green: #308A5E;
+    --warm-cream: #101612;
+    --border-color: rgba(130, 185, 149, 0.2);
+}
+
+html.dark body {
+    background-color: #080c09 !important;
+}
+
+html.dark .phone-frame {
+    border-color: #2c2c2e !important;
+    background-color: #101612 !important;
+    box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+html.dark .app-container {
+    background-color: #101612 !important;
+}
+
+html.dark .screen-view {
+    background-color: #101612 !important;
+}
+
+html.dark .bg-white {
+    background-color: #18201a !important;
+    color: #FDFBF7 !important;
+    border-color: rgba(130, 185, 149, 0.15) !important;
+}
+
+html.dark .text-on-surface {
+    color: #FDFBF7 !important;
+}
+
+html.dark .bg-warm-cream {
+    background-color: #101612 !important;
+}
+
+html.dark .bg-\[\#FDFBF7\] {
+    background-color: #101612 !important;
+}
+
+html.dark .bg-surface-container-low {
+    background-color: #141c16 !important;
+    border-color: rgba(130, 185, 149, 0.15) !important;
+}
+
+html.dark .bg-surface-container {
+    background-color: #141c16 !important;
+}
+
+html.dark input, html.dark textarea, html.dark select {
+    background-color: #1b261f !important;
+    color: #FDFBF7 !important;
+    border-color: rgba(130, 185, 149, 0.25) !important;
+}
+
+html.dark .text-on-surface-variant {
+    color: rgba(253, 251, 247, 0.7) !important;
+}
+
+html.dark .text-outline {
+    color: rgba(253, 251, 247, 0.4) !important;
+}
+
+html.dark .border-outline-variant\/20, 
+html.dark .border-outline-variant\/30, 
+html.dark .border-outline-variant\/40 {
+    border-color: rgba(130, 185, 149, 0.12) !important;
+}
+
+html.dark .typing-dot {
+    background-color: #6b7280 !important;
+}
+
+html.dark #phone-header-bar {
+    background-color: #101612 !important;
+    color: #308A5E !important;
+}
+
+html.dark #global-navbar {
+    background-color: #141c16 !important;
+    border-top-color: rgba(130, 185, 149, 0.15) !important;
+}
+
+html.dark #global-navbar .text-forest-green {
+    color: #308A5E !important;
+}
+
+html.dark #global-navbar .text-\[\#424840\] {
+    color: rgba(253, 251, 247, 0.5) !important;
+}
+
+html.dark #phone-header-bar .material-symbols-outlined {
+    color: #308A5E !important;
+}
+
+/* Explicit Map container overrides */
+#village-map-container {
+    height: 100% !important;
+    width: 100% !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 0 !important;
+}
+
+#map {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 200px !important;
+}
+
+/* Chat details padding adjust */
+#chat-message-feed {
+    padding: 24px 16px 16px 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+}
+
+/* Slide-up Overlays and Drawers inside the Phone Frame */
+.category-tray, .category-list-overlay {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important; /* Align with wrapper bottom */
+    background-color: var(--warm-cream) !important;
+    border-top-left-radius: 2rem !important;
+    border-top-right-radius: 2rem !important;
+    z-index: 40 !important;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid var(--border-color) !important;
+    border-bottom: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.category-tray {
+    transform: translateY(100%) !important; /* Completely hidden offscreen by default */
+    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1) !important;
+    top: 0 !important;
+    height: 100% !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 24px !important;
+    overflow-y: auto !important;
+}
+
+.category-tray.expanded {
+    transform: translateY(0) !important;
+}
+
+.tray-handle-area {
+    height: 64px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+    border-bottom: 1px solid rgba(48, 138, 94, 0.05) !important;
+}
+
+.sheet-handle {
+    width: 36px !important;
+    height: 4px !important;
+    background-color: var(--border-color) !important;
+    border-radius: 2px !important;
+    margin-bottom: 4px !important;
+}
+
+/* Centered Details Sheet Overlay Modal */
+.detail-overlay {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important; /* Align with wrapper bottom */
+    height: 100% !important;
+    width: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    background-color: var(--warm-cream) !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border: none !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+    z-index: 100 !important;
+    transform: translateY(100%) !important;
+    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+}
+
+.detail-overlay.active {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+.detail-overlay .overflow-y-auto,
+.detail-overlay .custom-scrollbar {
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    -webkit-overflow-scrolling: touch !important; /* Enable momentum scrolling on iOS */
+    overflow-y: auto !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    flex-grow: 1 !important;
+    min-height: 0 !important;
+    overscroll-behavior: contain !important;
+    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom)) !important;
+}
+.detail-overlay .overflow-y-auto::-webkit-scrollbar,
+.detail-overlay .custom-scrollbar::-webkit-scrollbar {
+    display: none !important; /* Chrome, Safari and Opera */
+}
+
+/* Category Items list overlay */
+.category-list-overlay {
+    top: 0 !important; /* Cover entire phone screen down to the navbar */
+    height: 100% !important;
+    z-index: 50 !important;
+    transform: translateY(100%) !important;
+    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1) !important;
+}
+
+.category-list-overlay.active {
+    transform: translateY(0) !important;
+}
+
+/* ==================================================== */
+/* NATIVE APP MODE OVERRIDES (iOS App / WKWebView / Previews) */
+/* ==================================================== */
+.native-app-env body {
+    display: block !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: var(--warm-cream) !important;
+}
+
+.native-app-env .phone-simulator {
+    display: block !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.native-app-env .phone-frame {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    position: relative !important;
+    overflow: hidden !important;
+    background-color: var(--warm-cream) !important;
+}
+
+.native-app-env .phone-frame::before {
+    display: none !important; /* Hide notch decoration */
+}
+
+.native-app-env .app-container {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.native-app-env #phone-header-bar,
+.native-app-env #simulator-control-panel,
+.native-app-env .fixed.top-4.right-4.z-\[99999\] {
+    display: none !important;
+}
+
+.native-app-env #global-navbar {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: calc(3.8rem + env(safe-area-inset-bottom)) !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: env(safe-area-inset-bottom) !important;
+    z-index: 5000 !important;
+}
+
+.native-app-env .screen-view {
+    padding-top: calc(2rem + env(safe-area-inset-top)) !important;
+    padding-bottom: calc(6rem + env(safe-area-inset-bottom)) !important;
+}
+
+/* Custom Onboarding Screen Views Bottom Spacing Override (No Bottom Tab Bar) */
+.native-app-env #view-create_account,
+.native-app-env #view-create_account_social {
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)) !important;
+}
+
+.native-app-env #view-profile_consent,
+.native-app-env #view-profile_location_permission,
+.native-app-env #view-profile_step_1,
+.native-app-env #view-profile_step_2,
+.native-app-env #view-profile_step_3 {
+    padding-bottom: calc(3.5rem + env(safe-area-inset-bottom)) !important;
+}
+
+.native-app-env #view-chat_hub,
+.native-app-env #view-definitions,
+.native-app-env #view-settings_detail,
+.native-app-env #view-blocked_users,
+.native-app-env #view-profile_settings {
+    padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
+}
+
+.native-app-env #view-chat_hub,
+.native-app-env #view-definitions,
+.native-app-env #view-settings_detail,
+.native-app-env #view-blocked_users,
+.native-app-env #view-profile_settings {
+    padding-bottom: calc(3.8rem + env(safe-area-inset-bottom)) !important;
+}
+
+.native-app-env #view-village {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Fix chat detail view bottom padding to prevent squishing when keyboard or input bar is shown */
+.native-app-env #view-chat_detail {
+    padding-bottom: env(safe-area-inset-bottom) !important;
+}
+
+/* Hide scrollbar track for neighbor profile modal */
+#neighbor-profile-modal .custom-scrollbar {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+}
+#neighbor-profile-modal .custom-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+}
+
+/* Ensure map pin images load in correct circular aspect ratios */
+.pin-icon img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 9999px !important;
+    display: block !important;
+}
+
+#neighbor-profile-modal {
+    background-color: #ffffff !important;
+}
+html.dark #neighbor-profile-modal {
+    background-color: #101612 !important;
+}
+
+/* Safe area padding for the full-screen neighbor profile modal in iOS native view */
+.native-app-env #neighbor-profile-modal {
+    padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
+    padding-bottom: env(safe-area-inset-bottom) !important;
+}
+
+/* Safe area padding for category tray and list overlays in iOS native view */
+.native-app-env .category-tray,
+.native-app-env .category-list-overlay {
+    padding-top: env(safe-area-inset-top) !important;
+    padding-bottom: env(safe-area-inset-bottom) !important;
+}
+
+/* Glowing Dot Status System - Active scale-glowing pulses */
+@keyframes active-dot-pulse-green {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 102, 0.85); }
+    70% { transform: scale(1.12); box-shadow: 0 0 0 4px rgba(0, 255, 102, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 102, 0); }
+}
+@keyframes active-dot-pulse-amber {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.85); }
+    70% { transform: scale(1.12); box-shadow: 0 0 0 4px rgba(245, 158, 11, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+@keyframes active-dot-pulse-red {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.85); }
+    70% { transform: scale(1.12); box-shadow: 0 0 0 4px rgba(239, 68, 68, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+@keyframes solid-dot-flash {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 1; }
+}
+
+.glow-dot-green {
+    border: 1px solid var(--white) !important;
+    background-color: #00ff66 !important;
+    z-index: 10 !important;
+    position: relative !important;
+    animation: solid-dot-flash 1.4s infinite ease-in-out !important;
+}
+.glow-dot-amber {
+    border: 1px solid var(--white) !important;
+    background-color: #f59e0b !important;
+    z-index: 10 !important;
+    position: relative !important;
+    animation: solid-dot-flash 1.4s infinite ease-in-out !important;
+}
+.glow-dot-red {
+    border: 1px solid var(--white) !important;
+    background-color: #ef4444 !important;
+    z-index: 10 !important;
+    position: relative !important;
+    animation: solid-dot-flash 1.4s infinite ease-in-out !important;
+}
+
+.glow-step-node {
+    animation: step-node-pulse 1.5s infinite ease-in-out !important;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.8) !important;
+}
+@keyframes step-node-pulse {
+    0% { transform: scale(1); box-shadow: 0 0 6px rgba(34, 197, 94, 0.6); }
+    50% { transform: scale(1.12); box-shadow: 0 0 16px rgba(34, 197, 94, 0.95); }
+    100% { transform: scale(1); box-shadow: 0 0 6px rgba(34, 197, 94, 0.6); }
+}
+
+@keyframes opacity-pulse {
+    0% { opacity: 0.25; }
+    50% { opacity: 1.0; }
+    100% { opacity: 0.25; }
+}
+
+@keyframes glow-pulse-green {
+    0% {
+        box-shadow: 0 0 4px rgba(34, 197, 94, 0.5), 0 0 8px rgba(34, 197, 94, 0.2) !important;
+        opacity: 0.65;
+    }
+    50% {
+        box-shadow: 0 0 10px rgba(34, 197, 94, 0.95), 0 0 20px rgba(34, 197, 94, 0.5) !important;
+        opacity: 1;
+    }
+    100% {
+        box-shadow: 0 0 4px rgba(34, 197, 94, 0.5), 0 0 8px rgba(34, 197, 94, 0.2) !important;
+        opacity: 0.65;
+    }
+}
+
+@keyframes glow-pulse-amber {
+    0% {
+        box-shadow: 0 0 4px rgba(245, 158, 11, 0.5), 0 0 8px rgba(245, 158, 11, 0.2) !important;
+        opacity: 0.65;
+    }
+    50% {
+        box-shadow: 0 0 10px rgba(245, 158, 11, 0.95), 0 0 20px rgba(245, 158, 11, 0.5) !important;
+        opacity: 1;
+    }
+    100% {
+        box-shadow: 0 0 4px rgba(245, 158, 11, 0.5), 0 0 8px rgba(245, 158, 11, 0.2) !important;
+        opacity: 0.65;
+    }
+}
+
+@keyframes glow-pulse-red {
+    0% {
+        box-shadow: 0 0 4px rgba(239, 68, 68, 0.5), 0 0 8px rgba(239, 68, 68, 0.2) !important;
+        opacity: 0.65;
+    }
+    50% {
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.95), 0 0 20px rgba(239, 68, 68, 0.5) !important;
+        opacity: 1;
+    }
+    100% {
+        box-shadow: 0 0 4px rgba(239, 68, 68, 0.5), 0 0 8px rgba(239, 68, 68, 0.2) !important;
+        opacity: 0.65;
+    }
+}
+
+/* Active Category Filter Styling - Solid background, scale pulse, no glowing shadow */
+.bento-card {
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.bento-card:hover {
+    border-color: var(--forest-green) !important;
+    background-color: rgba(48, 138, 94, 0.04) !important;
+}
+html.dark .bento-card:hover {
+    background-color: rgba(130, 185, 149, 0.06) !important;
+}
+.bento-card.active-filter {
+    background-color: var(--forest-green) !important;
+    color: var(--warm-cream) !important;
+    border-color: var(--forest-green) !important;
+    animation: active-card-pulse 1.8s infinite ease-in-out !important;
+}
+.bento-card.active-filter .icon-box {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: var(--warm-cream) !important;
+}
+.bento-card.active-filter .category-title {
+    color: var(--warm-cream) !important;
+}
+.bento-card.active-filter .material-symbols-outlined {
+    color: var(--warm-cream) !important;
+}
+
+@keyframes active-card-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+    100% { transform: scale(1); }
+}
+
+/* Map Pin Pulse animation: no shadow glow, just smooth scale pulsing */
+@keyframes map-pin-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.18); }
+    100% { transform: scale(1); }
+}
+.pulse-pin {
+    animation: map-pin-pulse 1.8s infinite ease-in-out !important;
+}
+
+/* Status Legend Bar */
+#status-legend-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 16px;
+    background-color: var(--warm-cream);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+html.dark #status-legend-bar {
+    background-color: #101612;
+}
+
+/* Glowing dot styling */
+.glow-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
+/* Chat view scroll and height fixes */
+#view-chat_detail {
+    max-height: 100% !important;
+    min-height: 0 !important;
+    flex-grow: 1 !important;
+    overflow: hidden !important;
+    background-color: #ffffff !important; /* Force pure white in light mode instead of creamy white */
+}
+html.dark #view-chat_detail {
+    background-color: #101612 !important;
+}
+#chat-message-feed {
+    flex-grow: 1 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+/* Hide scrollbars for chat message feed and chat threads list */
+#chat-message-feed, #chat-threads-container {
+    scrollbar-width: none !important;
+}
+#chat-message-feed::-webkit-scrollbar, #chat-threads-container::-webkit-scrollbar {
+    display: none !important;
+}
+
+#chat-header-status-dots, #map-detail-status-dots {
+    cursor: pointer !important;
+}
+
+/* Active Filter Banner layout spacing */
+#active-filter-banner {
+    background-color: var(--warm-cream);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hide desktop navbar on mobile */
+#desktop-navbar {
+    display: none !important;
+}
+
+/* Strip browser-native select arrow styling globally to prevent duplicate arrows */
+select {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background-image: none !important;
+}
+select::-ms-expand {
+    display: none !important;
+}
+
+/* Full bleed headers for Offer and Event Details: absolute overlay header bar and color customization */
+.app-container:has(#view-offer.active) #phone-header-bar,
+.app-container:has(#view-event_detail.active) #phone-header-bar {
+    background: transparent !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 50;
+}
+.app-container:has(#view-offer.active) #phone-header-bar {
+    color: var(--forest-green) !important;
+}
+.app-container:has(#view-event_detail.active) #phone-header-bar {
+    color: white !important;
+}
+
+/* Override default native view top padding for full bleed views */
+.native-app-env #view-offer,
+.native-app-env #view-event_detail,
+.native-app-env #view-create_group {
+    padding-top: 0 !important;
+}
+
+.native-app-env #view-offer {
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom)) !important;
+}
+
+/* Reposition Close/Back buttons in native environment to clear safe areas */
+.native-app-env #offer-close-btn,
+.native-app-env #map-detail-close-btn,
+.native-app-env #map-event-detail-close-btn,
+.native-app-env #event-detail-back-btn,
+.native-app-env #create-group-close-btn {
+    top: calc(1.5rem + env(safe-area-inset-top)) !important;
+}
+
+/* ==================================================== */
+/* UNIFIED TYPOGRAPHY SYSTEM */
+/* ==================================================== */
+
+/* Size 1: Page Headings (28px, Bold, Outfit) - Title Font */
+.app-container h1,
+.app-container h2:not(#settings-profile-location):not(.text-on-surface-variant):not(#chat-header-name),
+.app-page-heading,
+.page-heading {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 28px !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.025em !important;
+    line-height: 1.15 !important;
+}
+
+/* Size 2: Section Headings (18px, Bold, Outfit) - Body Font */
+.app-container h3,
+.app-container h4,
+.app-container h5,
+.app-container .section-heading,
+.app-section-heading {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 18px !important;
+    font-weight: 750 !important;
+    text-transform: none !important;
+    letter-spacing: -0.015em !important;
+    line-height: 1.3 !important;
+}
+
+/* Size 3: All other text (15px, Outfit, unbolded) - Body Font */
+.app-container p,
+.app-container span:not(.material-symbols-outlined):not(#user-vouches-count):not(#user-karma-score):not(#user-trades-made):not(#badges-unlocked-count):not(#global-navbar *):not(#widget-swaps-counter *):not(#final-brand-text),
+.app-container label,
+.app-container button:not(.btn-increase-size):not(#add-new-btn):not(#add-need-btn):not(#global-navbar *):not(#widget-swaps-counter *),
+.app-container a,
+.app-container li,
+.app-container div.app-body-text {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 450 !important;
+    line-height: 1.4 !important;
+}
+
+/* Prevents iOS Safari auto-zoom on input focus by scaling to 15px */
+.app-container input,
+.app-container select,
+.app-container textarea {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 450 !important;
+}
+
+/* Specific buttons scaled up */
+#widget-my-offerings button,
+#widget-my-needs button {
+    font-size: 18px !important;
+    font-weight: 750 !important;
+}
+
+/* Specificity overrides to allow inline Tailwind text sizes to work correctly on elements inside .app-container */
+.app-container .text-3xl { font-size: 28px !important; font-weight: 850 !important; letter-spacing: -0.025em !important; }
+.app-container .text-2xl { font-size: 28px !important; font-weight: 850 !important; letter-spacing: -0.025em !important; }
+.app-container .text-xl { font-size: 22px !important; font-weight: 750 !important; letter-spacing: -0.015em !important; }
+.app-container .text-lg { font-size: 20px !important; font-weight: 750 !important; letter-spacing: -0.015em !important; }
+.app-container .text-base { font-size: 18px !important; font-weight: 750 !important; letter-spacing: -0.015em !important; }
+.app-container .text-sm { font-size: 16px !important; font-weight: 450 !important; }
+.app-container .text-xs { font-size: 14px !important; font-weight: 450 !important; }
+.app-container .text-\[15px\] { font-size: 17px !important; font-weight: 750 !important; }
+.app-container .text-\[13\.5px\] { font-size: 15.5px !important; font-weight: 450 !important; }
+.app-container .text-\[13px\] { font-size: 15px !important; font-weight: 450 !important; }
+.app-container .text-\[12\.5px\] { font-size: 14.5px !important; font-weight: 450 !important; }
+.app-container .text-\[12px\] { font-size: 14px !important; font-weight: 450 !important; }
+.app-container .text-\[11\.5px\] { font-size: 13.5px !important; font-weight: 450 !important; }
+.app-container .text-\[11px\] { font-size: 13px !important; font-weight: 450 !important; }
+.app-container .text-\[10\.5px\] { font-size: 12.5px !important; font-weight: 450 !important; }
+.app-container .text-\[10px\] { font-size: 12px !important; font-weight: 450 !important; }
+.app-container .text-\[9px\] { font-size: 11px !important; font-weight: 450 !important; }
+.app-container .text-\[8px\] { font-size: 10px !important; font-weight: 450 !important; }
+.app-container .text-\[7\.5px\] { font-size: 9.5px !important; font-weight: 450 !important; }
+
+/* Specificity overrides to allow inline Tailwind font family classes inside .app-container */
+.app-container .font-headline,
+.app-container .font-serif {
+    font-family: 'Outfit', sans-serif !important;
+}
+.app-container .font-body,
+.app-container .font-sans {
+    font-family: 'Outfit', sans-serif !important;
+}
+
+
+/* Premium Dashboard Panel & Badge Card Animations */
+
+/* Premium Dashboard Panel & Badge Card Animations */
+#widget-swaps-counter > div {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+}
+#widget-swaps-counter > div:hover {
+    transform: translateY(-2px);
+    opacity: 0.98;
+    box-shadow: 0 10px 20px -2px rgba(48, 138, 94, 0.25);
+}
+#widget-swaps-counter > div:active {
+    transform: translateY(0);
+}
+
+.badge-card {
+    transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.badge-card:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.12);
+}
+.badge-card:active {
+    transform: translateY(-2px) scale(1.01);
+}
+
+/* Color-themed glowing pulse animations for the speed dial selector buttons */
+@keyframes pulse-blue-light {
+    0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.45), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    70% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+}
+.pulse-blue-light {
+    animation: pulse-blue-light 2.2s infinite !important;
+    border-color: rgba(59, 130, 246, 0.45) !important;
+}
+
+@keyframes pulse-green-light {
+    0% { box-shadow: 0 0 0 0 rgba(45, 106, 79, 0.5), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    70% { box-shadow: 0 0 0 8px rgba(45, 106, 79, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    100% { box-shadow: 0 0 0 0 rgba(45, 106, 79, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+}
+.pulse-green-light {
+    animation: pulse-green-light 2.2s infinite !important;
+    border-color: rgba(45, 106, 79, 0.5) !important;
+}
+
+@keyframes pulse-violet-light {
+    0% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.45), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    70% { box-shadow: 0 0 0 8px rgba(124, 58, 237, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+}
+.pulse-violet-light {
+    animation: pulse-violet-light 2.2s infinite !important;
+    border-color: rgba(139, 92, 246, 0.45) !important;
+}
+
+@keyframes pulse-amber-light {
+    0% { box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.45), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    70% { box-shadow: 0 0 0 8px rgba(217, 119, 6, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    100% { box-shadow: 0 0 0 0 rgba(217, 119, 6, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+}
+.pulse-amber-light {
+    animation: pulse-amber-light 2.2s infinite !important;
+    border-color: rgba(245, 158, 11, 0.45) !important;
+}
+
+@keyframes pulse-rose-light {
+    0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.45), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    70% { box-shadow: 0 0 0 8px rgba(225, 29, 72, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+}
+.pulse-rose-light {
+    animation: pulse-rose-light 2.2s infinite !important;
+    border-color: rgba(244, 63, 94, 0.45) !important;
+}
+
+@keyframes pulse-teal-light {
+    0% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.45), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    70% { box-shadow: 0 0 0 8px rgba(13, 148, 136, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    100% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+}
+.pulse-teal-light {
+    animation: pulse-teal-light 2.2s infinite !important;
+    border-color: rgba(20, 184, 166, 0.45) !important;
+}
+
+@keyframes pulse-sky-light {
+    0% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.45), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    70% { box-shadow: 0 0 0 8px rgba(2, 132, 199, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    100% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+}
+.pulse-sky-light {
+    animation: pulse-sky-light 2.2s infinite !important;
+    border-color: rgba(56, 189, 248, 0.45) !important;
+}
+
+#btn-segment-trigger, #snap-to-neighborhood-btn {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    max-width: 48px !important;
+    max-height: 48px !important;
+    padding: 0 !important;
+    border-radius: 9999px !important;
+}
+
+/* Scrollbar hiding utilities */
+.no-scrollbar::-webkit-scrollbar,
+.hide-scrollbar::-webkit-scrollbar {
+    display: none !important;
+}
+.no-scrollbar,
+.hide-scrollbar {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+
+/* Circular Progress Ring Styling */
+.progress-ring-circle {
+    transition: stroke-dashoffset 0.4s ease-out;
+}
+
+/* Premium Leaflet Popup Styling Overrides */
+.leaflet-popup-content-wrapper {
+    background: var(--warm-cream) !important;
+    color: var(--forest-green) !important;
+    border-radius: 14px !important;
+    border: 1px solid rgba(48, 138, 94, 0.15) !important;
+    box-shadow: 0 10px 25px -5px rgba(48, 138, 94, 0.15) !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+.leaflet-popup-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+}
+
+.leaflet-popup-tip {
+    background: var(--warm-cream) !important;
+    border: 1px solid rgba(48, 138, 94, 0.15) !important;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.03) !important;
+}
+
+html.dark .leaflet-popup-content-wrapper {
+    background: #141c16 !important;
+    color: #FDFBF7 !important;
+    border-color: rgba(130, 185, 149, 0.25) !important;
+}
+
+html.dark .leaflet-popup-tip {
+    background: #141c16 !important;
+    border-color: rgba(130, 185, 149, 0.25) !important;
+}
+
+/* Premium Popup Inner Layout Overrides */
+.leaflet-popup-content h4 {
+    color: var(--forest-green, #308A5E) !important;
+}
+
+.leaflet-popup-content p {
+    color: var(--text-on-surface-variant, rgba(48, 138, 94, 0.7)) !important;
+}
+
+.leaflet-popup-content button {
+    background-color: var(--forest-green, #308A5E) !important;
+    color: var(--warm-cream, #ffffff) !important;
+    transition: transform 0.15s ease !important;
+}
+
+.leaflet-popup-content button:active {
+    transform: scale(0.96) !important;
+}
+
+/* Reimagined Chat Bubbles and Input Box Styles */
+#chat-header-name {
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 20px !important;
+    text-transform: none !important;
+    letter-spacing: normal;
+}
+
+.chat-bubble-me {
+    background: #555555 !important;
+    color: #ffffff !important;
+    border-radius: 20px !important;
+    border-bottom-right-radius: 4px !important; /* Premium tail offset */
+}
+.chat-bubble-me *, .chat-bubble-me p {
+    color: #ffffff !important;
+}
+.chat-bubble-other {
+    background-color: #ffffff !important;
+    color: #111111 !important;
+    border-radius: 20px !important;
+    border-bottom-left-radius: 4px !important; /* Premium tail offset */
+    border: 1px solid rgba(17, 17, 17, 0.08) !important;
+}
+html.dark .chat-bubble-other {
+    background-color: #1b261f !important;
+    color: #FDFBF7 !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Chat filter active indicator styling */
+.bento-card.active-chat-filter {
+    background-color: var(--forest-green) !important;
+    color: var(--warm-cream) !important;
+    border-color: var(--forest-green) !important;
+    animation: active-card-pulse 1.8s infinite ease-in-out !important;
+}
+.bento-card.active-chat-filter .icon-box {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: var(--warm-cream) !important;
+}
+.bento-card.active-chat-filter .category-title {
+    color: var(--warm-cream) !important;
+}
+
+/* Chat bubble hover animations */
+.chat-bubble-hover {
+    transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.chat-bubble-hover:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(48, 138, 94, 0.06);
+}
+
+/* Custom status dot pulse animation for thread lists and trade log */
+@keyframes status-dot-pulse-anim {
+    0% { transform: scale(1); opacity: 0.65; }
+    50% { transform: scale(1.3); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.65; }
+}
+.status-dot-pulse {
+    animation: status-dot-pulse-anim 1.8s infinite ease-in-out !important;
+    display: inline-block;
+}
+
+/* Green pulse animation for bottom navigation CHAT button icon */
+@keyframes green-icon-pulse-anim {
+    0% {
+        color: #22c55e !important;
+        transform: scale(1);
+    }
+    50% {
+        color: #10b981 !important;
+        transform: scale(1.15);
+    }
+    100% {
+        color: #22c55e !important;
+        transform: scale(1);
+    }
+}
+.green-pulse-icon {
+    animation: green-icon-pulse-anim 1.6s infinite ease-in-out !important;
+}
+
+/* Map Screen Controls Shifting & Peek Card Layout */
+
+/* Shift FABs up when peek card is active */
+#view-village:has(#map-peek-card.active) #map-zoom-controls {
+    bottom: 236px !important;
+}
+
+#map-peek-card {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.3s;
+    visibility: hidden;
+    transform: translateY(150%);
+}
+
+#map-peek-card.active {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    visibility: visible;
+}
+
+/* --- Village Full-Screen Map Safe Area Enhancements --- */
+
+/* Default positioning (Web environment) */
+#village-search-bar-overlay {
+    top: 1rem !important; /* 16px */
+}
+#active-filter-banner {
+    top: 4.5rem !important; /* 72px */
+}
+#village-segment-floating-buttons {
+    bottom: 88px !important;
+    right: 24px !important;
+    top: auto !important;
+}
+#view-village:has(#map-peek-card.active) #village-segment-floating-buttons {
+    bottom: 236px !important;
+}
+
+#meetup-map-footer {
+    bottom: 24px !important;
+    right: 24px !important;
+    top: auto !important;
+}
+#view-village:has(#map-peek-card.active) #meetup-map-footer {
+    bottom: 172px !important;
+}
+
+/* iOS Native App safe area positioning overrides */
+.native-app-env #village-search-bar-overlay {
+    top: calc(1rem + env(safe-area-inset-top)) !important;
+}
+.native-app-env #floating-map-controls {
+    top: calc(0.2rem + env(safe-area-inset-top)) !important;
+}
+.native-app-env #map-category-dropdown {
+    top: calc(48px + env(safe-area-inset-top)) !important;
+}
+.native-app-env #active-filter-banner {
+    top: calc(4.5rem + env(safe-area-inset-top)) !important;
+}
+.native-app-env #village-segment-floating-buttons {
+    bottom: calc(88px + env(safe-area-inset-bottom)) !important;
+    right: 24px !important;
+    top: auto !important;
+}
+.native-app-env #view-village:has(#map-peek-card.active) #village-segment-floating-buttons {
+    bottom: calc(236px + env(safe-area-inset-bottom)) !important;
+}
+
+.native-app-env #meetup-map-footer {
+    bottom: calc(24px + env(safe-area-inset-bottom)) !important;
+    right: 24px !important;
+    top: auto !important;
+}
+.native-app-env #view-village:has(#map-peek-card.active) #meetup-map-footer {
+    bottom: calc(172px + env(safe-area-inset-bottom)) !important;
+}
+
+/* List views safe area content shifting (ensures headers/search fields are visible below notch) and layout correction */
+#village-list-container,
+#village-needs-container,
+#village-events-container,
+#village-bulletins-container {
+    padding-top: 2rem !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    padding-bottom: 120px !important;
+}
+.native-app-env #village-list-container,
+.native-app-env #village-needs-container,
+.native-app-env #village-events-container,
+.native-app-env #village-bulletins-container {
+    padding-top: calc(2rem + env(safe-area-inset-top)) !important;
+    padding-bottom: calc(120px + env(safe-area-inset-bottom)) !important;
+}
+
+/* Floating Action Button (FAB) Speed Dial Menu Wrappers */
+#village-segment-floating-buttons .menu-sub-button-wrapper {
+    max-height: 0 !important;
+    height: 0 !important;
+    overflow: visible !important;
+    opacity: 0 !important;
+    transform: scale(0) translateY(10px) !important;
+    pointer-events: none !important;
+    transition: height 0.25s ease, max-height 0.25s ease, margin 0.25s ease, opacity 0.25s ease, transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 12px !important;
+    margin: 0 !important;
+    width: max-content !important;
+}
+
+#village-segment-floating-buttons.expanded .menu-sub-button-wrapper {
+    max-height: 48px !important;
+    height: 48px !important;
+    opacity: 1 !important;
+    transform: scale(1) translateY(0) !important;
+    pointer-events: auto !important;
+    margin-bottom: 10px !important;
+    overflow: visible !important;
+}
+
+/* Ensure individual sub-buttons maintain exact 48px sizes inside the wrappers */
+#village-segment-floating-buttons .menu-sub-button {
+    max-height: none !important;
+    height: 48px !important;
+    width: 48px !important;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    margin: 0 !important;
+    border-width: 1px !important;
+    overflow: visible !important;
+}
+
+/* Text Labels next to sub-buttons */
+.app-container .menu-sub-button-label,
+.app-container .category-label {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+    pointer-events: none !important;
+    white-space: nowrap !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+}
+
+#btn-segment-trigger {
+    /* Cleaned */
+}
+
+@keyframes trigger-glow-pulse {
+    0% {
+        box-shadow: 0 0 6px 1px var(--forest-green-val) !important;
+    }
+    50% {
+        box-shadow: 0 0 18px 4px var(--forest-green-val) !important;
+    }
+    100% {
+        box-shadow: 0 0 6px 1px var(--forest-green-val) !important;
+    }
+}
+
+#village-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(2) { transition-delay: 0.02s !important; }
+#village-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(3) { transition-delay: 0.04s !important; }
+#village-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(4) { transition-delay: 0.06s !important; }
+#village-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(5) { transition-delay: 0.08s !important; }
+#village-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(6) { transition-delay: 0.10s !important; }
+#village-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(7) { transition-delay: 0.12s !important; }
+#village-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(8) { transition-delay: 0.14s !important; }
+#village-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(9) { transition-delay: 0.16s !important; }
+
+/* Disable transition on collapse so they disappear instantly all at once */
+#village-segment-floating-buttons:not(.expanded) .menu-sub-button-wrapper { transition: none !important; }
+
+/* Stats Counter Scrollable container styling to prevent drop shadow clipping and add horizontal scroll fade mask */
+#widget-swaps-counter {
+    padding-top: 8px !important;
+    padding-bottom: 16px !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+}
+
+/* Repositioned Chat Search Container & In-Flow Search Bar */
+#chat-search-container {
+    padding-top: 1rem !important;
+}
+.native-app-env #chat-search-container {
+    padding-top: calc(1rem + env(safe-area-inset-top)) !important;
+}
+
+#chat-search-bar-overlay {
+    top: auto !important;
+}
+.native-app-env #chat-search-bar-overlay {
+    top: auto !important;
+}
+
+#active-chat-filter-banner {
+    top: auto !important;
+}
+.native-app-env #active-chat-filter-banner {
+    top: auto !important;
+}
+
+/* Chat Threads padding - reset top padding since search bar is in-flow */
+#chat-threads-container {
+    padding-top: 0.5rem !important;
+}
+.native-app-env #chat-threads-container {
+    padding-top: 0.5rem !important;
+}
+
+/* Chat Segment Floating Buttons Stack */
+#chat-segment-floating-buttons {
+    bottom: 88px !important;
+    right: 24px !important;
+    top: auto !important;
+}
+.native-app-env #chat-segment-floating-buttons {
+    bottom: calc(88px + env(safe-area-inset-bottom)) !important;
+    right: 24px !important;
+    top: auto !important;
+}
+
+#chat-segment-floating-buttons .menu-sub-button-wrapper {
+    max-height: 0 !important;
+    height: 0 !important;
+    overflow: visible !important;
+    opacity: 0 !important;
+    transform: scale(0) translateY(10px) !important;
+    pointer-events: none !important;
+    transition: height 0.25s ease, max-height 0.25s ease, margin 0.25s ease, opacity 0.25s ease, transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 12px !important;
+    margin: 0 !important;
+    width: max-content !important;
+}
+
+#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper {
+    max-height: 48px !important;
+    height: 48px !important;
+    opacity: 1 !important;
+    transform: scale(1) translateY(0) !important;
+    pointer-events: auto !important;
+    margin-bottom: 10px !important;
+    overflow: visible !important;
+}
+
+#chat-segment-floating-buttons .menu-sub-button {
+    max-height: none !important;
+    height: 48px !important;
+    width: 48px !important;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    margin: 0 !important;
+    border-width: 1px !important;
+    overflow: visible !important;
+}
+
+#btn-chat-segment-trigger {
+    /* Cleaned */
+}
+
+/* Staggered entry transitions */
+#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(2) { transition-delay: 0.02s !important; }
+#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(3) { transition-delay: 0.04s !important; }
+#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(4) { transition-delay: 0.06s !important; }
+#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(5) { transition-delay: 0.08s !important; }
+#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(6) { transition-delay: 0.10s !important; }
+#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(7) { transition-delay: 0.12s !important; }
+#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(8) { transition-delay: 0.14s !important; }
+#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(9) { transition-delay: 0.16s !important; }
+
+/* Disable transition on collapse so they disappear instantly all at once */
+#chat-segment-floating-buttons:not(.expanded) .menu-sub-button-wrapper { transition: none !important; }/* Animated X Drawing lines */
+/* Animated X Drawing lines using SVG */
+.x-draw-svg {
+    width: 24px !important;
+    height: 24px !important;
+    display: block !important;
+}
+
+.x-draw-svg .x-draw-line-1 {
+    stroke-dasharray: 20 !important;
+    stroke-dashoffset: 20 !important;
+    animation: draw-svg-line-1 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+}
+
+.x-draw-svg .x-draw-line-2 {
+    stroke-dasharray: 20 !important;
+    stroke-dashoffset: 20 !important;
+    animation: draw-svg-line-2 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards !important;
+}
+
+@keyframes draw-svg-line-1 {
+    from {
+        stroke-dashoffset: 20;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes draw-svg-line-2 {
+    from {
+        stroke-dashoffset: 20;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Layering floats above modal backdrop overlays */
+#village-segment-floating-buttons {
+    z-index: 2100 !important;
+}
+#chat-segment-floating-buttons {
+    z-index: 2100 !important;
+}
+
+/* Precise location avatar pulse animation */
+.animate-precise-pulse-ring {
+    position: absolute;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    border: 2.5px solid #3b82f6; /* Matching the blue avatar border */
+    animation: precise-pulse-up 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes precise-pulse-up {
+    0% {
+        transform: scale(0.92);
+        opacity: 0.95;
+    }
+    100% {
+        transform: scale(1.12);
+        opacity: 0;
+    }
+}
+
+/* Premium Gradient Border Ring for Profile Avatars */
+.profile-avatar-ring {
+    background: linear-gradient(135deg, #10B981 0%, #8B5CF6 50%, #FF6B6B 100%) !important;
+    padding: 2.5px !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08) !important;
+    overflow: visible !important;
+}
+
+/* Ensure inner image or container creates the white/dark gap */
+.profile-avatar-ring img,
+.profile-avatar-ring div {
+    border: 2px solid var(--warm-cream) !important;
+    border-radius: 50% !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+html.dark .profile-avatar-ring img,
+html.dark .profile-avatar-ring div {
+    border-color: #101612 !important;
+}
+
+.profile-avatar-no-ring {
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: none !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    overflow: hidden !important;
+}
+.profile-avatar-no-ring img {
+    border: none !important;
+    border-radius: 50% !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+html.dark .profile-avatar-no-ring {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* General/approximate location pulse marker and ring animation (soft, light, rising upwards) */
+.general-location-pulse-marker {
+    background: transparent !important;
+    border: none !important;
+    pointer-events: none !important;
+}
+
+.general-pulse-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.4);
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background-color: rgba(74, 138, 96, 0.08); /* Very soft green fill */
+    border: 1.5px solid rgba(74, 138, 96, 0.25);
+    animation: general-pulse-up-anim 3s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+    pointer-events: none;
+    transform-origin: center center;
+}
+
+@keyframes general-pulse-up-anim {
+    0% {
+        transform: translate(-50%, -50%) scale(0.4);
+        opacity: 0.9;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* Karma Points Tracker Floating Score Boost */
+.karma-boost-bubble {
+    position: absolute;
+    color: #D99036;
+    font-weight: 800;
+    font-size: 14px;
+    pointer-events: none;
+    z-index: 50;
+    animation: float-up-fade 1.2s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+    white-space: nowrap;
+    background: #308A5E;
+    border: 1px solid rgba(217, 144, 54, 0.3);
+    padding: 4px 8px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes float-up-fade {
+    0% {
+        transform: translate(-50%, -50%) translateY(0) scale(0.8);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) translateY(-10px) scale(1.1);
+    }
+    100% {
+        transform: translate(-50%, -50%) translateY(-60px) scale(1);
+        opacity: 0;
+    }
+}
+
+#view-definitions,
+#view-adjust_homepage {
+    overflow-y: auto !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+@keyframes slide-up-animation {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-up {
+    animation: slide-up-animation 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.bento-card.active-filter .category-subtext {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+
+
+/* Fix chat detail view bottom padding to prevent squishing when keyboard or input bar is shown */
+.native-app-env #view-chat_detail {
+    padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
+    padding-bottom: env(safe-area-inset-bottom) !important;
+}
+
+/* Custom Category Circle Dropdown Filter for Map View */
+@keyframes slideDownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-down-fade {
+    animation: slideDownFade 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+#btn-segment-filter {
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease !important;
+    overflow: visible !important;
+}
+
+#floating-map-controls {
+    overflow: visible !important;
+}
+
+#btn-segment-filter.active-filter-circle {
+    background-color: #4F46E5 !important;
+    color: #ffffff !important;
+    border-color: #4F46E5 !important;
+    border-radius: 50% !important;
+    z-index: 1002 !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15) !important;
+    transform: scale(1.05) !important;
+}
+
+.dark #btn-segment-filter.active-filter-circle {
+    background-color: #6366F1 !important;
+    color: #ffffff !important;
+    border-color: #6366F1 !important;
+    border-radius: 50% !important;
+}
+
+#map-filter-icon {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.floating-buttons-hidden {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: scale(0.9) translateY(20px) !important;
+}
+
+/* Staggered category dropdown animation */
+.map-category-item {
+    max-height: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    transform: scale(0.4) translateY(-12px) !important;
+    pointer-events: none !important;
+    transition: height 0.25s ease, max-height 0.25s ease, margin-bottom 0.25s ease, opacity 0.25s ease, transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    margin-bottom: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+}
+
+#map-category-dropdown.expanded .map-category-item {
+    max-height: 40px !important;
+    height: 40px !important;
+    opacity: 1 !important;
+    transform: scale(1) translateY(0) !important;
+    pointer-events: auto !important;
+    margin-bottom: 10px !important;
+    overflow: visible !important;
+}
+
+#btn-segment-filter.has-active-filter {
+    background-color: #4F46E5 !important;
+    color: #ffffff !important;
+    border-color: #4F46E5 !important;
+    box-shadow: 0 0 0 2px var(--warm-cream), 0 0 0 4px #4F46E5, 0 10px 15px -3px rgba(0, 0, 0, 0.3) !important;
+}
+html.dark #btn-segment-filter.has-active-filter {
+    background-color: #6366F1 !important;
+    color: #ffffff !important;
+    border-color: #6366F1 !important;
+    box-shadow: 0 0 0 2px #101612, 0 0 0 4px #6366F1, 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Disable all pulsing/flashing animations on buttons, pins, and status nodes */
+.animate-precise-pulse-ring,
+.pulse-pin,
+.pulse-blue-light,
+.pulse-green-light,
+.pulse-violet-light,
+.pulse-amber-light,
+.pulse-rose-light,
+.pulse-teal-light,
+.pulse-sky-light,
+.pulse-icon,
+.green-pulse-icon,
+.glow-step-node,
+.status-dot-pulse,
+.general-pulse-ring {
+    animation: none !important;
+}
+.general-pulse-ring {
+    display: none !important;
+}
+
+/* Pop-up Filter overlay transitions */
+#map-filter-overlay {
+    display: none !important;
+    pointer-events: none !important;
+    transition: opacity 0.3s ease-in-out;
+}
+.rotate-filter-active {
+    transform: rotate(180deg) !important;
+}
+.filter-active-glow {
+    background-color: #2e7d32 !important; /* Forest green theme active */
+    border-color: #4caf50 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.8), inset 0 0 4px rgba(255, 255, 255, 0.4) !important;
+}
+
+@-webkit-keyframes carouselItemIn {
+    from {
+        opacity: 0;
+        -webkit-transform: translateX(20px);
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+}
+
+@keyframes carouselItemIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@-webkit-keyframes cascadeIn {
+    from {
+        opacity: 0;
+        -webkit-transform: translateY(-10px);
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+@keyframes cascadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@-webkit-keyframes popInGridCircle {
+    from {
+        opacity: 0;
+        -webkit-transform: scale(0.6);
+        transform: scale(0.6);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+@keyframes popInGridCircle {
+    from {
+        opacity: 0;
+        transform: scale(0.6);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@-webkit-keyframes filter-circle-pulse {
+    0% {
+        -webkit-box-shadow: 0 0 0 0 rgba(var(--pulse-rgb), 0.6), 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 0 0 0 rgba(var(--pulse-rgb), 0.6), 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1);
+    }
+    70% {
+        -webkit-box-shadow: 0 0 14px 8px rgba(var(--pulse-rgb), 0), 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 0 14px 8px rgba(var(--pulse-rgb), 0), 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1);
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(var(--pulse-rgb), 0), 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 0 0 0 rgba(var(--pulse-rgb), 0), 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1);
+    }
+}
+
+@keyframes filter-circle-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(var(--pulse-rgb), 0.6), 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+        transform: scale(1.1);
+    }
+    70% {
+        box-shadow: 0 0 14px 8px rgba(var(--pulse-rgb), 0), 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+        transform: scale(1.1);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(var(--pulse-rgb), 0), 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+        transform: scale(1.1);
+    }
+}
+
+@-webkit-keyframes cascadeOut {
+    from {
+        opacity: 1;
+        -webkit-transform: translateY(0) scale(1);
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        -webkit-transform: translateY(-10px) scale(0.8);
+        transform: translateY(-10px) scale(0.8);
+    }
+}
+
+@keyframes cascadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.8);
+    }
+}
+
+/* QR Code Handshake Viewfinder Scanner Styles */
+@keyframes scan-line-movement {
+    0% { top: 0%; }
+    50% { top: 100%; }
+    100% { top: 0%; }
+}
+.animate-scan-line {
+    position: absolute;
+    animation: scan-line-movement 3s infinite linear;
+}
+.blur-xs {
+    filter: blur(1.5px);
+}
+
+/* Public Reliability Avatar Rings on Map */
+@keyframes gold-ring-glow-anim {
+    0% { box-shadow: 0 0 4px #FFD700, inset 0 0 2px #FFD700; }
+    50% { box-shadow: 0 0 12px #FFD700, inset 0 0 6px #FFD700; }
+    100% { box-shadow: 0 0 4px #FFD700, inset 0 0 2px #FFD700; }
+}
+
+.gold-ring-glow {
+    border-color: #FFD700 !important;
+    border-width: 3px !important;
+    animation: gold-ring-glow-anim 2s infinite ease-in-out !important;
+}
+
+@keyframes flake-ring-warning-anim {
+    0% { border-color: #ef4444 !important; }
+    50% { border-color: #fca5a5 !important; }
+    100% { border-color: #ef4444 !important; }
+}
+
+.flake-ring-warning {
+    border-color: #ef4444 !important;
+    border-width: 3px !important;
+    border-style: dashed !important;
+    animation: flake-ring-warning-anim 1.5s infinite ease-in-out !important;
+}
+
+/* Fuzzy Disabled style for locking chat entry action center */
+.fuzzy-disabled {
+    filter: blur(4px) !important;
+    pointer-events: none !important;
+    opacity: 0.55 !important;
+    user-select: none !important;
+}
+
+/* Replace Newsreader serif font with Work Sans for event/item description, time, and location headers and texts */
+#map-detail-overlay h4,
+#map-event-detail-overlay h4,
+#view-event_detail h4,
+#map-detail-location,
+#map-detail-desc,
+#map-event-detail-location-text,
+#map-event-detail-datetime-text,
+#map-event-detail-desc,
+#event-detail-location-text,
+#event-detail-datetime-text,
+#event-detail-desc-text {
+    font-family: 'Outfit', sans-serif !important;
+}
+
+/* Chat lock animation keyframes and helper */
+@keyframes lockBounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+.animate-lock-bounce {
+    animation: lockBounce 0.4s ease-out;
+}
+
+/* Hide scrollbars utility */
+.scrollbar-none::-webkit-scrollbar {
+    display: none !important;
+}
+.scrollbar-none {
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;  /* Firefox */
+}
+
+/* ==================================================== */
+/* DESKTOP SPLIT PANEL & DASHBOARD LAYOUT OVERHAULS     */
+/* ==================================================== */
+@media (min-width: 1024px) {
+    /* Sticky desktop navbar adjustments */
+    body:not(.show-simulator):not(.native-app) #global-navbar {
+        display: none !important;
+    }
+
+    body:not(.show-simulator):not(.native-app) #view-village,
+    body:not(.show-simulator):not(.native-app) #view-offer,
+    body:not(.show-simulator):not(.native-app) #view-profile_settings,
+    body:not(.show-simulator):not(.native-app) #view-events_hub,
+    body:not(.show-simulator):not(.native-app) #view-event_detail,
+    body:not(.show-simulator):not(.native-app) #view-settings_detail,
+    body:not(.show-simulator):not(.native-app) #view-adjust_homepage,
+    body:not(.show-simulator):not(.native-app) #view-admin_panel,
+    body:not(.show-simulator):not(.native-app) #view-definitions,
+    body:not(.show-simulator):not(.native-app) #view-create_bulletin,
+    body:not(.show-simulator):not(.native-app) #view-create_group {
+        padding-top: 80px !important;
+        height: 100vh !important;
+        box-sizing: border-box !important;
+        background-color: var(--warm-cream) !important;
+    }
+
+    /* Light/Dark mode backgrounds for container-constrained views */
+    body:not(.show-simulator):not(.native-app) #view-offer,
+    body:not(.show-simulator):not(.native-app) #view-profile_settings,
+    body:not(.show-simulator):not(.native-app) #view-settings_detail,
+    body:not(.show-simulator):not(.native-app) #view-events_hub,
+    body:not(.show-simulator):not(.native-app) #view-event_detail,
+    body:not(.show-simulator):not(.native-app) #view-adjust_homepage,
+    body:not(.show-simulator):not(.native-app) #view-admin_panel,
+    body:not(.show-simulator):not(.native-app) #view-definitions,
+    body:not(.show-simulator):not(.native-app) #view-create_bulletin,
+    body:not(.show-simulator):not(.native-app) #view-create_group {
+        max-width: 800px !important;
+        margin: 0 auto !important;
+        border-left: 1px solid rgba(48, 138, 94, 0.08) !important;
+        border-right: 1px solid rgba(48, 138, 94, 0.08) !important;
+        background-color: #ffffff !important;
+        position: relative !important;
+    }
+    
+    html.dark body:not(.show-simulator):not(.native-app) #view-offer,
+    html.dark body:not(.show-simulator):not(.native-app) #view-profile_settings,
+    html.dark body:not(.show-simulator):not(.native-app) #view-settings_detail,
+    html.dark body:not(.show-simulator):not(.native-app) #view-events_hub,
+    html.dark body:not(.show-simulator):not(.native-app) #view-event_detail,
+    html.dark body:not(.show-simulator):not(.native-app) #view-adjust_homepage,
+    html.dark body:not(.show-simulator):not(.native-app) #view-admin_panel,
+    html.dark body:not(.show-simulator):not(.native-app) #view-definitions,
+    html.dark body:not(.show-simulator):not(.native-app) #view-create_bulletin,
+    html.dark body:not(.show-simulator):not(.native-app) #view-create_group {
+        background-color: #101612 !important;
+        border-left-color: rgba(255, 255, 255, 0.08) !important;
+        border-right-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    body:not(.show-simulator):not(.native-app) #view-offer,
+    body:not(.show-simulator):not(.native-app) #view-create_group {
+        max-width: 600px !important;
+        padding-bottom: 2rem !important;
+    }
+
+    /* VILLAGE SPLIT SCREEN: LISTS LEFT, MAP RIGHT */
+    body:not(.show-simulator):not(.native-app) #view-village {
+        max-width: none !important;
+        border: none !important;
+        padding-top: 80px !important;
+        padding-bottom: 0 !important;
+        background-color: var(--warm-cream) !important;
+    }
+
+    body:not(.show-simulator):not(.native-app) #village-subviews-wrapper {
+        display: grid !important;
+        grid-template-columns: 420px 1fr !important;
+        height: 100% !important;
+        width: 100% !important;
+    }
+
+    body:not(.show-simulator):not(.native-app) #village-map-container {
+        display: block !important;
+        grid-column: 2 !important;
+        position: relative !important;
+        width: 100% !important;
+        height: 100% !important;
+        inset: 0 !important;
+        z-index: 10 !important;
+    }
+
+    body:not(.show-simulator):not(.native-app) #village-list-container,
+    body:not(.show-simulator):not(.native-app) #village-needs-container,
+    body:not(.show-simulator):not(.native-app) #village-events-container,
+    body:not(.show-simulator):not(.native-app) #village-bulletins-container {
+        grid-column: 1 !important;
+        position: relative !important;
+        width: 100% !important;
+        height: 100% !important;
+        inset: 0 !important;
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+        padding-top: 20px !important;
+        padding-bottom: 40px !important;
+        background-color: var(--warm-cream) !important;
+        z-index: 20 !important;
+    }
+
+    /* Keep listings list visible as fallback when map segment is active */
+    body:not(.show-simulator):not(.native-app) #village-list-container {
+        display: flex !important;
+    }
+    body:not(.show-simulator):not(.native-app):has(#village-needs-container:not(.hidden)) #village-list-container {
+        display: none !important;
+    }
+    body:not(.show-simulator):not(.native-app):has(#village-events-container:not(.hidden)) #village-list-container {
+        display: none !important;
+    }
+    body:not(.show-simulator):not(.native-app):has(#village-bulletins-container:not(.hidden)) #village-list-container {
+        display: none !important;
+    }
+
+    /* MESSENGER SPLIT SCREEN: INBOX LEFT, ACTIVE CHAT RIGHT */
+    body:not(.show-simulator):not(.native-app) #view-chat_hub {
+        max-width: none !important;
+        border: none !important;
+    }
+    
+    body:not(.show-simulator):not(.native-app) #view-chat_hub, 
+    body:not(.show-simulator):not(.native-app) #view-chat_detail {
+        display: flex !important;
+        position: absolute !important;
+        top: 80px !important;
+        bottom: 0 !important;
+        height: calc(100vh - 80px) !important;
+    }
+ 
+    body:not(.show-simulator):not(.native-app) #view-chat_hub {
+        left: 0 !important;
+        width: 350px !important;
+        border-right: 1px solid rgba(48, 138, 94, 0.1) !important;
+        z-index: 10 !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+    html.dark body:not(.show-simulator):not(.native-app) #view-chat_hub {
+        border-right-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    body:not(.show-simulator):not(.native-app) #view-chat_detail {
+        left: 350px !important;
+        right: 0 !important;
+        width: auto !important;
+        z-index: 10 !important;
+        max-width: none !important;
+        border: none !important;
+    }
+
+    body:not(.show-simulator):not(.native-app) #view-chat_hub.hidden {
+        display: flex !important;
+    }
+
+    /* Placeholder when no chat thread is selected on desktop */
+    body:not(.show-simulator):not(.native-app) #view-chat_hub:not(.hidden) ~ #view-chat_detail.hidden {
+        display: flex !important;
+        pointer-events: none !important;
+    }
+
+    body:not(.show-simulator):not(.native-app) #view-chat_hub:not(.hidden) ~ #view-chat_detail.hidden > * {
+        display: none !important;
+    }
+
+    body:not(.show-simulator):not(.native-app) #view-chat_hub:not(.hidden) ~ #view-chat_detail.hidden::after {
+        content: "Select a conversation to start swapping!";
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        font-family: 'Outfit', sans-serif !important;
+        font-size: 20px !important;
+        color: rgba(48, 138, 94, 0.4);
+        background-color: var(--warm-cream);
+    }
+    
+    html.dark body:not(.show-simulator):not(.native-app) #view-chat_hub:not(.hidden) ~ #view-chat_detail.hidden::after {
+        background-color: #101612;
+        color: rgba(255, 255, 255, 0.4);
+    }
+}
+
+/* Guest Mode Lock Button */
+.guest-lock-btn {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 9999px !important;
+    background-color: transparent !important;
+    color: #308A5E !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: none !important;
+    cursor: pointer !important;
+    box-shadow: none !important;
+    transition: transform 0.1s ease !important;
+    padding: 0 !important;
+}
+.guest-lock-btn:active {
+    transform: scale(0.95) !important;
+}
+.guest-lock-btn span {
+    color: #308A5E !important;
+}
+html.dark .guest-lock-btn {
+    background-color: transparent !important;
+    color: #ffffff !important;
+}
+html.dark .guest-lock-btn span {
+    color: #ffffff !important;
+}
+
+/* Force identical font and size for all settings panel box headers */
+#view-settings_detail div.bg-white > div.font-bold,
+#view-settings_detail div.bg-white > div.font-bold * {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+}
+
+/* Horizontal scrolling badges styling */
+.scrollbar-none::-webkit-scrollbar {
+    display: none !important;
+}
+.scrollbar-none {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+
+.badge-item-locked {
+    filter: grayscale(100%);
+    opacity: 0.45;
+}
+
+.badge-item-unlocked {
+    filter: grayscale(0%);
+    opacity: 1;
+    cursor: pointer;
+}
+
+/* Premium Badge Revamp */
+/* Premium Badge Revamp */
+.premium-badge-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-shrink: 0 !important;
+    width: 106px !important;
+    min-width: 106px !important;
+    padding: 12px 6px !important;
+    border-radius: 20px !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    position: relative !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    min-height: 124px !important;
+    overflow: hidden !important;
+    border-width: 1.5px !important;
+    border-style: solid !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Glass shine sweep overlay on the card box */
+.premium-badge-item::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 200% !important;
+    height: 100% !important;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent) !important;
+    transform: translateX(-100%) rotate(45deg) !important;
+    transition: all 0.5s ease !important;
+    z-index: 2 !important;
+    pointer-events: none !important;
+}
+
+.premium-badge-item:hover::after {
+    animation: premium-badge-shine 0.8s ease-in-out forwards !important;
+}
+
+@keyframes premium-badge-shine {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+}
+
+/* Hover dynamic transformations */
+.premium-badge-item:hover {
+    transform: translateY(-5px) scale(1.04) !important;
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+.premium-badge-item:hover .premium-badge-emblem {
+    transform: scale(1.1) translateY(-2px) !important;
+}
+
+.premium-badge-item:hover .premium-badge-emblem span {
+    transform: scale(1.1) rotate(5deg) !important;
+}
+
+/* Unlocked & Locked States */
+.premium-badge-unlocked {
+    border-color: rgba(48, 138, 94, 0.15) !important;
+}
+
+.premium-badge-locked {
+    border-style: dashed !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    background: rgba(243, 244, 246, 0.5) !important;
+    opacity: 0.65 !important;
+}
+.dark .premium-badge-locked {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    background: rgba(24, 32, 26, 0.5) !important;
+}
+
+.premium-badge-locked:hover {
+    opacity: 0.85 !important;
+}
+
+.premium-badge-locked .premium-badge-emblem {
+    background: #e5e7eb !important;
+    border-color: #cbd5e1 !important;
+    color: #94a3b8 !important;
+    filter: grayscale(1) !important;
+}
+.dark .premium-badge-locked .premium-badge-emblem {
+    background: #334155 !important;
+    border-color: #475569 !important;
+    color: #64748b !important;
+}
+
+/* Emblem / Icon Wrapper */
+.premium-badge-emblem {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 50% !important;
+    margin-bottom: 6px !important;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    border-width: 2px !important;
+    border-style: solid !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Badge Icon sizes */
+.premium-badge-emblem span {
+    font-size: 24px !important;
+    z-index: 1 !important;
+    transition: transform 0.3s ease !important;
+}
+
+/* Glow ring decoration inside the emblem */
+.premium-badge-glow-ring {
+    position: absolute !important;
+    inset: -1.5px !important;
+    border-radius: 50% !important;
+    opacity: 0.4 !important;
+    transition: opacity 0.3s ease !important;
+    animation: pulse-glow-ring 2.5s infinite ease-in-out !important;
+    display: none !important; /* Hide the glow ring */
+}
+
+/* Blue Badge Theme (Early Adopter) */
+.badge-theme-blue.premium-badge-unlocked {
+    background: #ffffff !important;
+    border-color: rgba(48, 138, 94, 0.25) !important;
+}
+.dark .badge-theme-blue.premium-badge-unlocked {
+    background: #18201a !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+.badge-theme-blue.premium-badge-unlocked .premium-badge-emblem {
+    background: #3b82f6 !important;
+    border-color: #2563eb !important;
+    color: #ffffff !important;
+}
+.badge-theme-blue.premium-badge-unlocked .premium-badge-emblem span {
+    color: #ffffff !important;
+}
+.badge-theme-blue.premium-badge-unlocked .premium-badge-glow-ring {
+    display: none !important;
+}
+
+/* Red Badge Theme (GoFundMe Backer) */
+.badge-theme-red.premium-badge-unlocked {
+    background: #ffffff !important;
+    border-color: rgba(48, 138, 94, 0.25) !important;
+}
+.dark .badge-theme-red.premium-badge-unlocked {
+    background: #18201a !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+.badge-theme-red.premium-badge-unlocked .premium-badge-emblem {
+    background: #f43f5e !important;
+    border-color: #e11d48 !important;
+    color: #ffffff !important;
+}
+.badge-theme-red.premium-badge-unlocked .premium-badge-emblem span {
+    color: #ffffff !important;
+}
+.badge-theme-red.premium-badge-unlocked .premium-badge-glow-ring {
+    display: none !important;
+}
+
+/* Green Badge Theme (Super Trader) */
+.badge-theme-green.premium-badge-unlocked {
+    background: #ffffff !important;
+    border-color: rgba(48, 138, 94, 0.25) !important;
+}
+.dark .badge-theme-green.premium-badge-unlocked {
+    background: #18201a !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+.badge-theme-green.premium-badge-unlocked .premium-badge-emblem {
+    background: #10b981 !important;
+    border-color: #059669 !important;
+    color: #ffffff !important;
+}
+.badge-theme-green.premium-badge-unlocked .premium-badge-emblem span {
+    color: #ffffff !important;
+}
+.badge-theme-green.premium-badge-unlocked .premium-badge-glow-ring {
+    display: none !important;
+}
+
+/* Premium Badge Element Sub-styling */
+.premium-badge-title-text {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    margin-top: 4px !important;
+    margin-bottom: 2px !important;
+    transition: color 0.3s ease !important;
+}
+.premium-badge-locked .premium-badge-title-text {
+    color: #64748b !important;
+}
+.dark .premium-badge-locked .premium-badge-title-text {
+    color: #94a3b8 !important;
+}
+
+.premium-badge-status-pill {
+    font-size: 9px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    padding: 2.5px 8px !important;
+    border-radius: 9999px !important;
+    margin-top: 4px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 2px !important;
+}
+.premium-badge-status-pill.unlocked {
+    background: rgba(48, 138, 94, 0.1) !important;
+    color: #308a5e !important;
+}
+.dark .premium-badge-status-pill.unlocked {
+    background: rgba(48, 138, 94, 0.2) !important;
+    color: #a7f3d0 !important;
+}
+.premium-badge-status-pill.locked {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: #64748b !important;
+}
+.dark .premium-badge-status-pill.locked {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #94a3b8 !important;
+}
+
+/* Disable hover and click scale/zoom effect on peer badges */
+#neighbor-badges-container .premium-badge-item:hover,
+#neighbor-badges-container .premium-badge-item:active,
+#neighbor-badges-container .premium-badge-item:focus {
+    transform: none !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+}
+#neighbor-badges-container .premium-badge-item:hover .premium-badge-emblem,
+#neighbor-badges-container .premium-badge-item:active .premium-badge-emblem,
+#neighbor-badges-container .premium-badge-item:focus .premium-badge-emblem {
+    transform: none !important;
+}
+#neighbor-badges-container .premium-badge-item:hover .premium-badge-emblem span,
+#neighbor-badges-container .premium-badge-item:active .premium-badge-emblem span,
+#neighbor-badges-container .premium-badge-item:focus .premium-badge-emblem span {
+    transform: none !important;
+}
+
+/* Section title header "Badges" override to match requested color (black in light mode) */
+#widget-badges-section h3,
+#neighbor-widget-badges-section h3 {
+    color: #000000 !important;
+}
+.dark #widget-badges-section h3,
+.dark #neighbor-widget-badges-section h3 {
+    color: #ffffff !important;
+}
+
+#self-profile-badge-icon,
+#neighbor-profile-badge-icon {
+    color: #3b82f6 !important;
+}
+
+/* Unified 3-Style Typography System for Profile Settings (from Badges downwards) */
+
+/* Style 1: Section titles/headers (14px, bold, uppercase, tracked) */
+#widget-badges-section h3,
+#widget-my-offerings h3,
+#widget-my-needs h3,
+#widget-friends-list h3,
+#widget-swaps-history h3,
+#widget-saved-listings h3,
+#widget-upcoming-events h3,
+#widget-saved-events h3,
+#widget-home-tips h3,
+#widget-suggestion-box h3,
+#widget-account-actions h3,
+#neighbor-profile-modal section h3,
+#view-settings_detail h3,
+#view-definitions h3 {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+}
+
+/* Style 2: Titles within boxes/cards/collapsible button headers (16px, bold, normal-case) */
+#user-badges-container h4,
+#neighbor-badges-container .badge-card div.font-extrabold,
+#widget-badges-section .badge-card div.font-extrabold,
+#widget-home-tips button span:not(.material-symbols-outlined),
+#widget-account-actions button span:not(.material-symbols-outlined),
+#widget-account-actions button .font-bold,
+#widget-friends-list button,
+#profile-trade-log-container button,
+#widget-suggestion-box button,
+#widget-my-needs button:not(.rounded-full) {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+}
+
+/* Style 2.5: Fairview font style (14px, font-semibold, 0.7 opacity forest green) for listings and names */
+#my-offerings-container h4,
+#neighbor-profile-offerings h4,
+#my-needs-container h4,
+#neighbor-profile-needs h4,
+#my-friends-container span:not(.material-symbols-outlined),
+#profile-trade-log-container h4,
+#profile-saved-listings-container h4,
+#profile-upcoming-events-container h4,
+#neighbor-profile-upcoming-events-container h4,
+#profile-saved-events-container h4,
+#neighbor-profile-reviews h4,
+#village-events-list h4,
+#events-list-container h4 {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: var(--forest-green-val) !important;
+    opacity: 0.7 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+}
+
+/* Style 3: Body text, descriptions, details, tags, status labels (14px, regular/medium, normal-case) */
+#user-badges-container p,
+#user-badges-container span:not(.material-symbols-outlined),
+#badges-unlocked-count,
+#my-offerings-container p,
+#my-offerings-container p span:not(.material-symbols-outlined),
+#neighbor-profile-offerings p,
+#neighbor-profile-offerings p span:not(.material-symbols-outlined),
+#my-needs-container p,
+#my-needs-container p span:not(.material-symbols-outlined),
+#neighbor-profile-needs p,
+#neighbor-profile-needs p span:not(.material-symbols-outlined),
+#widget-friends-list p,
+#my-friends-container p,
+#profile-trade-log-container p,
+#profile-trade-log-container p span:not(.material-symbols-outlined),
+#profile-trade-log-container .text-center.py-4,
+#profile-saved-listings-container p,
+#profile-saved-listings-container p span:not(.material-symbols-outlined),
+#profile-upcoming-events-container p,
+#profile-upcoming-events-container p span:not(.material-symbols-outlined),
+#neighbor-profile-upcoming-events-container p,
+#neighbor-profile-upcoming-events-container p span:not(.material-symbols-outlined),
+#profile-saved-events-container p,
+#profile-saved-events-container p span:not(.material-symbols-outlined),
+#neighbor-profile-reviews p,
+#neighbor-profile-reviews p span:not(.material-symbols-outlined),
+#village-events-list p,
+#events-list-container p,
+#village-events-list p span:not(.material-symbols-outlined),
+#events-list-container p span:not(.material-symbols-outlined),
+#neighbor-badges-container p,
+#neighbor-badges-container span:not(.material-symbols-outlined),
+#widget-home-tips div[id$="-body"],
+#widget-home-tips div[id$="-body"] *,
+#view-settings_detail p,
+#view-settings_detail label,
+#view-settings_detail span:not(.material-symbols-outlined),
+#view-definitions p,
+#view-definitions span:not(.material-symbols-outlined),
+#widget-suggestion-box p {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    line-height: 1.6 !important;
+}
+
+/* Semi-bold/medium weights for Style 3 status and tags */
+#user-badges-container span:not(.material-symbols-outlined),
+#neighbor-badges-container span:not(.material-symbols-outlined),
+#badges-unlocked-count,
+#my-offerings-container p span:not(.material-symbols-outlined),
+#neighbor-profile-offerings p span:not(.material-symbols-outlined),
+#my-needs-container p span:not(.material-symbols-outlined),
+#neighbor-profile-needs p span:not(.material-symbols-outlined),
+#profile-trade-log-container p span:not(.material-symbols-outlined),
+#profile-saved-listings-container p span:not(.material-symbols-outlined),
+#profile-upcoming-events-container p span:not(.material-symbols-outlined),
+#neighbor-profile-upcoming-events-container p span:not(.material-symbols-outlined),
+#profile-saved-events-container p span:not(.material-symbols-outlined),
+#neighbor-profile-reviews p span:not(.material-symbols-outlined),
+#village-events-list p span:not(.material-symbols-outlined),
+#events-list-container p span:not(.material-symbols-outlined) {
+    font-weight: 600 !important;
+}
+
+/* Unified page title typography style */
+.app-container .app-screen-header-title {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 19px !important;
+    line-height: 22px !important;
+    font-weight: 900 !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
+    display: inline-block !important;
+    transform: translateY(1.5px) !important;
+}
+
+/* Force all detail sheet action buttons to follow consistent lowercase theme */
+#map-detail-overlay button,
+#map-event-detail-overlay button,
+#view-event_detail button {
+    text-transform: lowercase !important;
+    letter-spacing: normal !important;
+}
+
+/* Profile section: Black text for headings, lists, and placeholders underneath badges (Light Mode Only) */
+html:not(.dark) #widget-upcoming-events *:not(.material-symbols-outlined),
+html:not(.dark) #widget-my-offerings *:not(.material-symbols-outlined),
+html:not(.dark) #widget-my-needs *:not(.material-symbols-outlined),
+html:not(.dark) #widget-saved-listings *:not(.material-symbols-outlined),
+html:not(.dark) #widget-saved-events *:not(.material-symbols-outlined),
+html:not(.dark) #widget-friends-list *:not(.material-symbols-outlined),
+html:not(.dark) #widget-swaps-history *:not(.material-symbols-outlined),
+html:not(.dark) #widget-home-tips *:not(.material-symbols-outlined),
+html:not(.dark) #widget-suggestion-box *:not(.material-symbols-outlined),
+html:not(.dark) #widget-account-actions *:not(.material-symbols-outlined),
+html:not(.dark) #neighbor-profile-modal section *:not(.material-symbols-outlined):not(.bg-forest-green):not(.bg-forest-green *),
+html:not(.dark) #neighbor-profile-modal .pt-4.border-t *:not(.material-symbols-outlined):not(button):not(button *) {
+    color: #000000 !important;
+}
+
+/* Red trash/delete button must remain red */
+html:not(.dark) #view-profile_settings .text-error,
+html:not(.dark) #view-profile_settings .text-error *,
+html:not(.dark) #view-profile_settings button .text-error,
+html:not(.dark) #neighbor-profile-modal .text-error,
+html:not(.dark) #neighbor-profile-modal .text-error *,
+html:not(.dark) #neighbor-profile-modal button .text-error {
+    color: #ef4444 !important;
+}
+
+/* Green buttons keep white text and icons */
+html:not(.dark) #view-profile_settings button.bg-forest-green,
+html:not(.dark) #view-profile_settings button.bg-forest-green *,
+html:not(.dark) #neighbor-profile-modal button.bg-forest-green,
+html:not(.dark) #neighbor-profile-modal button.bg-forest-green * {
+    color: #ffffff !important;
+}
+
+.truncate-2-lines {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Swap Offer Widget Animations */
+@keyframes scaleUp {
+    from {
+        transform: scale(0.92);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes spinSlow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-scale-up {
+    animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-spin-slow {
+    animation: spinSlow 8s linear infinite;
+}
+
+/* ==================================================== */
+/* COMPREHENSIVE CARD/BOX THEME STYLE OVERRIDES          */
+/* ==================================================== */
+
+/* 1. Global Box Backgrounds & Green Outlines */
+.badge-item-unlocked,
+.badge-item-locked,
+#my-offerings-container > div,
+#my-needs-container > div,
+#profile-saved-listings-container > div,
+#profile-upcoming-events-container > div,
+#profile-saved-events-container > div,
+#village-list-items > div,
+#needs-board-list > div,
+#events-list-container > div,
+#village-events-list > div,
+#village-bulletins-list > div,
+#karma-unified-card,
+.offer-category-btn:not(.bg-forest-green),
+#view-definitions div.border-outline-variant\/30,
+#view-blocked_users div.border-outline-variant\/30,
+#chat-threads-active > div,
+#chat-threads-requests > div,
+#chat-threads-groups > div,
+#chat-threads-archived > div,
+#offer-photo-hero .relative,
+#offer-form-wrapper button[onclick="openMeetupLocationPicker()"],
+#meetup-map-status,
+#neighbor-profile-offerings > div,
+#neighbor-profile-needs > div,
+#neighbor-profile-reviews > div,
+#neighbor-profile-modal div.bg-white\/80,
+#subcategory-modal button.sub-opt-btn:not(.bg-forest-green),
+#subcategory-modal button.dyn-opt-btn:not(.bg-forest-green),
+#subcategory-modal button.clothes-opt-btn:not(.bg-forest-green),
+#subcategory-modal button.shoes-opt-btn:not(.bg-forest-green),
+#subcategory-modal button.shoes-size-btn:not(.bg-forest-green),
+#subcategory-modal button.lang-opt-btn:not(.bg-forest-green),
+#offer-preset-buttons-container button.preset-opt-btn:not(.bg-forest-green) {
+    background-color: #f3f4f6 !important;
+    border-color: rgba(48, 138, 94, 0.25) !important; /* Green outline */
+    border-width: 1px !important;
+    border-style: solid !important;
+}
+
+/* Hover/Active states for interactive boxes */
+#profile-saved-listings-container > div:hover,
+#profile-upcoming-events-container > div:hover,
+#profile-saved-events-container > div:hover,
+#village-list-items > div:hover,
+#needs-board-list > div:hover,
+#events-list-container > div:hover,
+#village-events-list > div:hover,
+#village-bulletins-list > div:hover,
+#chat-threads-active > div:hover,
+#chat-threads-requests > div:hover,
+#chat-threads-groups > div:hover,
+#chat-threads-archived > div:hover,
+.offer-category-btn:not(.bg-forest-green):hover,
+#subcategory-modal button.sub-opt-btn:not(.bg-forest-green):hover,
+#subcategory-modal button.dyn-opt-btn:not(.bg-forest-green):hover,
+#offer-preset-buttons-container button.preset-opt-btn:not(.bg-forest-green):hover {
+    background-color: #e5e7eb !important; /* Slightly darker gray on hover */
+}
+
+/* Dark Mode Backgrounds & Outlines */
+.dark .badge-item-unlocked,
+.dark .badge-item-locked,
+.dark #my-offerings-container > div,
+.dark #my-needs-container > div,
+.dark #profile-saved-listings-container > div,
+.dark #profile-upcoming-events-container > div,
+.dark #profile-saved-events-container > div,
+.dark #village-list-items > div,
+.dark #needs-board-list > div,
+.dark #events-list-container > div,
+.dark #village-events-list > div,
+.dark #village-bulletins-list > div,
+.dark #karma-unified-card,
+.dark .offer-category-btn:not(.bg-forest-green),
+.dark #view-definitions div.border-outline-variant\/30,
+.dark #view-blocked_users div.border-outline-variant\/30,
+.dark #chat-threads-active > div,
+.dark #chat-threads-requests > div,
+.dark #chat-threads-groups > div,
+.dark #chat-threads-archived > div,
+.dark #offer-photo-hero .relative,
+.dark #offer-form-wrapper button[onclick="openMeetupLocationPicker()"],
+.dark #meetup-map-status,
+.dark #neighbor-profile-offerings > div,
+.dark #neighbor-profile-needs > div,
+.dark #neighbor-profile-reviews > div,
+.dark #neighbor-profile-modal div.bg-white\/80,
+.dark #subcategory-modal button.sub-opt-btn:not(.bg-forest-green),
+.dark #subcategory-modal button.dyn-opt-btn:not(.bg-forest-green),
+.dark #subcategory-modal button.clothes-opt-btn:not(.bg-forest-green),
+.dark #subcategory-modal button.shoes-opt-btn:not(.bg-forest-green),
+.dark #subcategory-modal button.shoes-size-btn:not(.bg-forest-green),
+.dark #subcategory-modal button.lang-opt-btn:not(.bg-forest-green),
+.dark #offer-preset-buttons-container button.preset-opt-btn:not(.bg-forest-green) {
+    background-color: #202522 !important;
+    border-color: rgba(16, 185, 129, 0.25) !important; /* Green outline */
+}
+
+
+/* Account Settings Social Media Input Bars Override: Make them white in light mode, dark green/black in dark mode */
+#view-settings_detail div.space-y-2.bg-forest-green\/5 div.flex.items-center {
+    background-color: #ffffff !important;
+}
+.dark #view-settings_detail div.space-y-2.bg-forest-green\/5 div.flex.items-center {
+    background-color: #1b261f !important;
+}
+
+/* Account Settings sections styled as black/white outline boxes */
+#view-settings_detail div.bg-white {
+    background-color: #ffffff !important;
+    border-color: #000000 !important;
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-radius: 12px !important;
+}
+.dark #view-settings_detail div.bg-white {
+    background-color: #18201a !important;
+    border-color: #ffffff !important;
+}
+
+/* Chat notification badges in red circles */
+.chat-badge-circle,
+#chat-notification-badge {
+    background-color: #dc2626 !important;
+    border: 1.5px solid #ffffff !important;
+    color: #ffffff !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    border-radius: 9999px !important;
+    min-width: 20px !important;
+    height: 20px !important;
+    padding: 0 5px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15) !important;
+    user-select: none !important;
+    z-index: 10000 !important;
+    line-height: 1 !important;
+    box-sizing: border-box !important;
+}
+
+/* Chat bubble paragraphs alignment (Style 3 profile offerings matching) */
+.chat-bubble-me p, .chat-bubble-other p {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+}
+
+.admin-message-bubble {
+    border-radius: 20px !important;
+    border-bottom-left-radius: 4px !important;
+}
+
+.admin-message-bubble, .admin-message-bubble p {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+}
+
+
+/* Chat input typography and color alignment with chat bubbles */
+#chat-text-input {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    color: #000000 !important;
+}
+
+html.dark #chat-text-input {
+    color: #FDFBF7 !important;
+}
+
+#chat-text-input::placeholder {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    color: rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark #chat-text-input::placeholder {
+    color: rgba(253, 251, 247, 0.4) !important;
+}
+
+
+/* ==================================================== */
+/* VIEW OFFER SECTION STYLING OVERRIDES                 */
+/* ==================================================== */
+
+/* All text in the offer and create_group sections to be black, except active green buttons and icons */
+#view-offer :not(.material-symbols-outlined):not(#offer-type-selector-screen h2):not(.bg-forest-green):not(.bg-forest-green *):not(button.bg-forest-green *):not(#offer-categories-grid .bg-forest-green *):not(#offer-event-type-grid .bg-forest-green *),
+#view-create_group :not(.material-symbols-outlined):not(.bg-forest-green):not(.bg-forest-green *):not(button.bg-forest-green *) {
+    color: #000000 !important;
+}
+
+html.dark #view-offer :not(.material-symbols-outlined):not(#offer-type-selector-screen h2):not(.bg-forest-green):not(.bg-forest-green *):not(button.bg-forest-green *):not(#offer-categories-grid .bg-forest-green *):not(#offer-event-type-grid .bg-forest-green *),
+html.dark #view-create_group :not(.material-symbols-outlined):not(.bg-forest-green):not(.bg-forest-green *):not(button.bg-forest-green *) {
+    color: #ffffff !important;
+}
+
+/* Force icons inside #view-offer to be green, except inside green circles, active category buttons, categories grid, or selected details summary list */
+#view-offer .material-symbols-outlined:not(#offer-selected-details-list *):not(#offer-categories-grid *):not(#offer-event-type-grid *):not(.bg-forest-green *):not(.bg-\[\#308A5E\] *):not(button.bg-forest-green *):not(.rounded-full *) {
+    color: var(--forest-green, #308A5E) !important;
+}
+
+#offer-type-selector-screen .w-20.h-20.rounded-full .material-symbols-outlined {
+    color: var(--forest-green, #308A5E) !important;
+}
+
+#offer-type-selector-screen {
+    margin-top: 12vh !important;
+    margin-bottom: auto !important;
+}
+
+/* Swap listing box buttons */
+.swap-listing-box {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 10px 12px !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 12px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    text-align: left !important;
+    outline: none !important;
+}
+
+html.dark .swap-listing-box {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.swap-listing-box:hover {
+    background-color: rgba(48, 138, 94, 0.05) !important;
+}
+
+html.dark .swap-listing-box:hover {
+    background-color: rgba(16, 185, 129, 0.05) !important;
+}
+
+/* Selected state: turns green */
+.swap-listing-box.active-swap-box {
+    background-color: rgba(48, 138, 94, 0.08) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    box-shadow: none !important;
+}
+
+.swap-listing-box.active-swap-box span {
+    color: #308A5E !important;
+}
+
+html.dark .swap-listing-box.active-swap-box {
+    background-color: rgba(16, 185, 129, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
+}
+
+html.dark .swap-listing-box.active-swap-box span {
+    color: #10b981 !important;
+}
+
+#view-offer .bg-forest-green .material-symbols-outlined,
+#view-offer .bg-\[\#308A5E\] .material-symbols-outlined,
+#view-offer button.bg-forest-green .material-symbols-outlined,
+#view-offer #offer-categories-grid .bg-forest-green .material-symbols-outlined,
+#view-offer #offer-event-type-grid .bg-forest-green .material-symbols-outlined {
+    color: #ffffff !important;
+}
+
+/* Styling for the selector screen button cards (White background) */
+#offer-type-selector-screen button {
+    background-color: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+html.dark #offer-type-selector-screen button {
+    background-color: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+#offer-type-selector-screen button:hover {
+    background-color: #f9fafb !important;
+    border-color: #d1d5db !important;
+}
+
+html.dark #offer-type-selector-screen button:hover {
+    background-color: #f9fafb !important;
+    border-color: #d1d5db !important;
+}
+
+/* Ensure all text inside the buttons is black */
+#offer-type-selector-screen button span:not(.material-symbols-outlined),
+#offer-type-selector-screen button p,
+html.dark #offer-type-selector-screen button span:not(.material-symbols-outlined),
+html.dark #offer-type-selector-screen button p {
+    color: #000000 !important;
+}
+
+/* Selector button inner icon badge styling (green bg, no border, white icon) */
+#offer-type-selector-screen button .rounded-full {
+    background-color: var(--forest-green, #308A5E) !important;
+    border: none !important;
+}
+
+html.dark #offer-type-selector-screen button .rounded-full {
+    background-color: var(--forest-green, #308A5E) !important;
+    border: none !important;
+}
+
+#offer-type-selector-screen button .rounded-full .material-symbols-outlined,
+html.dark #offer-type-selector-screen button .rounded-full .material-symbols-outlined {
+    color: #ffffff !important;
+}
+
+
+/* Styling for all form inputs, textareas, category selection cards, uploader slots, and options card in #view-offer & #view-create_group */
+#view-offer #offer-title,
+#view-offer #offer-desc,
+#view-offer #offer-wishlist-input,
+#view-offer .offer-category-btn:not(.bg-forest-green),
+#view-offer #karma-unified-card:not(.border-\[\#308A5E\]),
+#view-offer #offer-photo-hero .relative,
+#view-offer button[onclick="openMeetupLocationPicker()"],
+#view-offer #meetup-map-status,
+#subcategory-modal button.sub-opt-btn:not(.bg-forest-green),
+#subcategory-modal button.dyn-opt-btn:not(.bg-forest-green),
+#subcategory-modal button.clothes-opt-btn:not(.bg-forest-green),
+#subcategory-modal button.shoes-opt-btn:not(.bg-forest-green),
+#subcategory-modal button.shoes-size-btn:not(.bg-forest-green),
+#subcategory-modal button.lang-opt-btn:not(.bg-forest-green),
+#subcategory-custom-text-input,
+#language-custom-input,
+#shoes-custom-type-input,
+#offer-preset-buttons-container button.preset-opt-btn:not(.bg-forest-green),
+#view-create_group #group-name-input,
+#view-create_group #group-desc-input,
+#view-create_group #group-friends-search,
+#view-create_group .friend-select-btn,
+#group-photo-hero .relative {
+    background-color: #f3f4f6 !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+}
+
+#view-offer input::placeholder,
+#view-offer textarea::placeholder {
+    color: #9ca3af !important;
+}
+
+/* Hover/Active states for category selector buttons and option cards inside the offer view */
+#view-offer .offer-category-btn:not(.bg-forest-green):hover,
+#subcategory-modal button.sub-opt-btn:not(.bg-forest-green):hover,
+#subcategory-modal button.dyn-opt-btn:not(.bg-forest-green):hover,
+#offer-preset-buttons-container button.preset-opt-btn:not(.bg-forest-green):hover {
+    background-color: #e5e7eb !important;
+    border-color: rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Dark mode equivalents for the listing wizard boxes and inputs */
+.dark #view-offer #offer-title,
+.dark #view-offer #offer-desc,
+.dark #view-offer #offer-wishlist-input,
+.dark #view-offer .offer-category-btn:not(.bg-forest-green),
+.dark #view-offer #karma-unified-card:not(.border-\[\#308A5E\]),
+.dark #view-offer #offer-photo-hero .relative,
+.dark #view-offer button[onclick="openMeetupLocationPicker()"],
+.dark #view-offer #meetup-map-status,
+.dark #subcategory-modal button.sub-opt-btn:not(.bg-forest-green),
+.dark #subcategory-modal button.dyn-opt-btn:not(.bg-forest-green),
+.dark #subcategory-modal button.clothes-opt-btn:not(.bg-forest-green),
+.dark #subcategory-modal button.shoes-opt-btn:not(.bg-forest-green),
+.dark #subcategory-modal button.shoes-size-btn:not(.bg-forest-green),
+.dark #subcategory-modal button.lang-opt-btn:not(.bg-forest-green),
+.dark #subcategory-custom-text-input,
+.dark #language-custom-input,
+.dark #shoes-custom-type-input,
+.dark #offer-preset-buttons-container button.preset-opt-btn:not(.bg-forest-green),
+.dark #view-create_group #group-name-input,
+.dark #view-create_group #group-desc-input,
+.dark #view-create_group #group-friends-search,
+.dark #view-create_group .friend-select-btn,
+.dark #group-photo-hero .relative {
+    background-color: #1b261f !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.dark #view-offer .offer-category-btn:not(.bg-forest-green):hover,
+.dark #subcategory-modal button.sub-opt-btn:not(.bg-forest-green):hover,
+.dark #subcategory-modal button.dyn-opt-btn:not(.bg-forest-green):hover,
+.dark #offer-preset-buttons-container button.preset-opt-btn:not(.bg-forest-green):hover {
+    background-color: #243029 !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Force camera icons in the uploader slots to be black in light mode, white in dark mode, and make them thinner */
+html:not(.dark) #offer-photo-hero .material-symbols-outlined,
+html:not(.dark) #group-photo-hero .material-symbols-outlined {
+    color: #000000 !important;
+    font-variation-settings: 'wght' 200, 'FILL' 0, 'grad' 0, 'opsz' 24 !important;
+}
+html.dark #offer-photo-hero .material-symbols-outlined,
+html.dark #group-photo-hero .material-symbols-outlined {
+    color: #ffffff !important;
+    font-variation-settings: 'wght' 200, 'FILL' 0, 'grad' 0, 'opsz' 24 !important;
+}
+
+/* Make photo hero labels (Primary/Optional) much smaller, matching reference text size */
+#offer-photo-hero .relative span:not(.material-symbols-outlined) {
+    font-size: 8.5px !important;
+    font-weight: 750 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+}
+
+/* Subcategory Modal Text Colors in Light Mode */
+html:not(.dark) #subcategory-modal h3,
+html:not(.dark) #subcategory-modal p,
+html:not(.dark) #subcategory-modal label,
+html:not(.dark) #subcategory-modal button:not(.bg-forest-green),
+html:not(.dark) #subcategory-modal button:not(.bg-forest-green) *:not(.material-symbols-outlined) {
+    color: #000000 !important;
+}
+
+html:not(.dark) #subcategory-modal button.bg-forest-green,
+html:not(.dark) #subcategory-modal button.bg-forest-green * {
+    color: #ffffff !important;
+}
+
+/* Subcategory Modal Text Colors in Dark Mode */
+html.dark #subcategory-modal h3,
+html.dark #subcategory-modal p,
+html.dark #subcategory-modal label,
+html.dark #subcategory-modal button:not(.bg-forest-green),
+html.dark #subcategory-modal button:not(.bg-forest-green) *:not(.material-symbols-outlined) {
+    color: #ffffff !important;
+}
+
+/* Ensure inputs and suggestions inside subcategory modal have black text in light mode */
+html:not(.dark) #subcategory-modal input,
+html:not(.dark) #subcategory-modal textarea {
+    color: #000000 !important;
+}
+html.dark #subcategory-modal input,
+html.dark #subcategory-modal textarea {
+    color: #ffffff !important;
+}
+
+/* Suggestion badges text color in light mode */
+html:not(.dark) #subcategory-custom-text-suggestions span,
+html:not(.dark) #language-custom-suggestions span,
+html:not(.dark) #shoes-custom-suggestions span {
+    color: #000000 !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    background-color: #e5e7eb !important;
+}
+html:not(.dark) #subcategory-custom-text-suggestions span:hover,
+html:not(.dark) #language-custom-suggestions span:hover,
+html:not(.dark) #shoes-custom-suggestions span:hover {
+    background-color: #d1d5db !important;
+}
+
+/* Suggestion badges text color in dark mode */
+html.dark #subcategory-custom-text-suggestions span,
+html.dark #language-custom-suggestions span,
+html.dark #shoes-custom-suggestions span {
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    background-color: #243029 !important;
+}
+html.dark #subcategory-custom-text-suggestions span:hover,
+html.dark #language-custom-suggestions span:hover,
+html.dark #shoes-custom-suggestions span:hover {
+    background-color: #2c3e35 !important;
+}
+
+/* Focus highlighting to use signature green instead of black */
+#subcategory-modal input:focus {
+    border-color: var(--forest-green, #308A5E) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(48, 138, 94, 0.15) !important;
+}
+.dark #subcategory-modal input:focus {
+    border-color: #10b981 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15) !important;
+}
+
+/* Stable height for the subcategory details box so it doesn't get bigger/smaller dynamically */
+#subcategory-modal .relative.bg-white,
+.dark #subcategory-modal .relative.bg-white,
+#subcategory-modal .relative.dark\:bg-\[\#101612\],
+.dark #subcategory-modal .relative.dark\:bg-\[\#101612\] {
+    height: 520px !important;
+    max-height: 85vh !important;
+}
+
+/* Make font weights thinner for selected category grid elements and subcategory modal */
+#view-offer .offer-category-btn {
+    font-weight: 500 !important;
+}
+#view-offer label,
+#view-create_group label {
+    font-weight: 600 !important;
+}
+#subcategory-modal h3 {
+    font-weight: 600 !important;
+}
+#subcategory-modal button.sub-opt-btn,
+#subcategory-modal button.dyn-opt-btn,
+#subcategory-modal button.clothes-opt-btn,
+#subcategory-modal button.shoes-opt-btn,
+#subcategory-modal button.shoes-size-btn,
+#subcategory-modal button.lang-opt-btn {
+    font-weight: 500 !important;
+}
+
+/* ==================================================== */
+/* VIEW-OFFER, CHAT HUB, & SAFETY GUIDE COLOR OVERRIDES */
+/* ==================================================== */
+
+/* Add Offering/Need page: black title header and choose category label */
+html:not(.dark) #view-offer label,
+html:not(.dark) #view-offer p:not(.text-error),
+html:not(.dark) #view-create_group label,
+html:not(.dark) #view-create_group p:not(.text-error) {
+    color: #000000 !important;
+}
+
+/* Category grid button texts and icons */
+html:not(.dark) #view-offer .offer-category-btn,
+html:not(.dark) #view-offer .offer-category-btn *:not(.material-symbols-outlined) {
+    color: #000000 !important;
+}
+
+/* Chat Hub view: page headers, names, and message previews */
+html:not(.dark) #chat-hub-title-text,
+html:not(.dark) .menu-sub-button-label,
+html:not(.dark) #chat-threads-container h3,
+html:not(.dark) #chat-threads-container h3 *,
+html:not(.dark) #chat-threads-container p,
+html:not(.dark) #chat-threads-container span.font-medium,
+html:not(.dark) #chat-threads-container button:not(.bg-\[\#308A5E\]):not(.bg-gray-500):not(.bg-amber-500):not(.bg-violet-600):not(.bg-red-600) {
+    color: #000000 !important;
+}
+
+/* Safety & Help Guide: modal header, tabs, and guide content list */
+html:not(.dark) #chat-guide-modal h3,
+html:not(.dark) #chat-guide-modal h4,
+html:not(.dark) #chat-guide-modal p,
+html:not(.dark) #chat-guide-tabs button {
+    color: #000000 !important;
+}
+
+/* EXCEPTION: Exclude countdown timer text elements ('48h left') to keep countdown colors */
+html:not(.dark) #chat-threads-container .text-\[\#10B981\],
+html:not(.dark) #chat-threads-container .text-\[\#10B981\] * {
+    color: #10B981 !important;
+}
+html:not(.dark) #chat-threads-container .text-\[\#D97706\],
+html:not(.dark) #chat-threads-container .text-\[\#D97706\] * {
+    color: #D97706 !important;
+}
+html:not(.dark) #chat-threads-container .text-\[\#EF4444\],
+html:not(.dark) #chat-threads-container .text-\[\#EF4444\] * {
+    color: #EF4444 !important;
+}
+
+/* Ensure neighbor and self profile social media icons and location icons are white */
+#neighbor-profile-socials-container a,
+#neighbor-profile-socials-container a *,
+#neighbor-profile-socials-container svg,
+#neighbor-profile-socials-container span,
+#self-profile-socials-container a,
+#self-profile-socials-container a *,
+#self-profile-socials-container svg,
+#self-profile-socials-container span {
+    color: #ffffff !important;
+}
+
+#self-profile-socials-container,
+#neighbor-profile-socials-container {
+    margin-bottom: 1.25rem !important;
+}
+
+/* Map and synced lists search inputs typing and suggestions text color overrides */
+html:not(.dark) #village-search-input,
+html:not(.dark) #village-list-search-input,
+html:not(.dark) #village-needs-search-input,
+html:not(.dark) #village-events-search-input,
+html:not(.dark) #village-bulletins-search-input {
+    color: #000000 !important;
+}
+html:not(.dark) #village-search-suggestions *:not(.material-symbols-outlined) {
+    color: #000000 !important;
+}
+
+/* ==================================================== */
+/* CHAT DETAIL TYPOGRAPHY & BOX THEME OVERRIDES         */
+/* ==================================================== */
+
+/* Chat back button arrow - remove white circular container and make it black/white */
+#chat-back-btn {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    width: auto !important;
+    height: auto !important;
+}
+html.dark #chat-back-btn {
+    color: #ffffff !important;
+}
+
+/* Chat header name text - force black in light mode, white in dark mode */
+#chat-header-name {
+    color: #000000 !important;
+}
+html.dark #chat-header-name {
+    color: #ffffff !important;
+}
+
+/* Message timestamps / dates and time under bubbles - force black/gray in light mode, white/gray in dark mode */
+#chat-message-feed span.select-none {
+    color: rgba(0, 0, 0, 0.6) !important;
+}
+html.dark #chat-message-feed span.select-none {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Quick suggestions chips ("Interested!", "When to meet?", "Still available?") - force black outline and black text */
+#chat-quick-templates button {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    color: #000000 !important;
+}
+#chat-quick-templates button:hover {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+}
+html.dark #chat-quick-templates button {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+html.dark #chat-quick-templates button:hover {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Chat Input field container border - force black/gray outline */
+#chat-action-center div.focus-within\:border-forest-green {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+}
+html.dark #chat-action-center div.focus-within\:border-forest-green {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+#chat-action-center div.focus-within\:border-forest-green:focus-within {
+    border-color: #000000 !important;
+    box-shadow: none !important;
+}
+html.dark #chat-action-center div.focus-within\:border-forest-green:focus-within {
+    border-color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+/* Outer Chat Action Center container box border - force black/gray outline */
+#chat-action-center {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+}
+html.dark #chat-action-center {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Swap Journey header bar card and hover states - force black outline and black text */
+#chat-info-bar-container > div {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+    color: #000000 !important;
+}
+#chat-info-bar-container > div:hover {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+}
+html.dark #chat-info-bar-container > div {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+html.dark #chat-info-bar-container > div:hover {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Expandable Swap Journey trade drawer container border - force black/gray outline */
+#chat-trade-drawer {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+}
+html.dark #chat-trade-drawer {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Map Popups & Bottom Sheets - Category, description, offered by text colors */
+#map-detail-badge,
+#map-event-detail-badge,
+#event-detail-badge {
+    color: #000000 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+html.dark #map-detail-badge,
+html.dark #map-event-detail-badge,
+html.dark #event-detail-badge {
+    color: #ffffff !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+#map-detail-desc,
+#map-event-detail-desc,
+#landing-map-detail-desc {
+    color: #000000 !important;
+}
+
+html.dark #map-detail-desc,
+html.dark #map-event-detail-desc,
+html.dark #landing-map-detail-desc {
+    color: #ffffff !important;
+}
+
+#map-detail-overlay [onclick="handleMapDetailAuthorClick()"],
+#map-detail-overlay [onclick="handleMapDetailAuthorClick()"] *,
+#map-event-detail-overlay [onclick="handleMapEventDetailHostClick()"],
+#map-event-detail-overlay [onclick="handleMapEventDetailHostClick()"] *,
+#landing-map-detail-overlay [onclick="handleLandingMapDetailAuthorClick()"] #landing-map-detail-author-name,
+#landing-map-detail-overlay [onclick="handleLandingMapDetailAuthorClick()"] #landing-map-detail-rating {
+    color: #000000 !important;
+}
+
+html.dark #map-detail-overlay [onclick="handleMapDetailAuthorClick()"],
+html.dark #map-detail-overlay [onclick="handleMapDetailAuthorClick()"] *,
+html.dark #map-event-detail-overlay [onclick="handleMapEventDetailHostClick()"],
+html.dark #map-event-detail-overlay [onclick="handleMapEventDetailHostClick()"] *,
+html.dark #landing-map-detail-overlay [onclick="handleLandingMapDetailAuthorClick()"] #landing-map-detail-author-name,
+html.dark #landing-map-detail-overlay [onclick="handleLandingMapDetailAuthorClick()"] #landing-map-detail-rating {
+    color: #ffffff !important;
+}
+
+/* ==================================================== */
+/* SETTINGS, BLOCKED USERS & DEFINITIONS PAGE STYLING   */
+/* ==================================================== */
+
+/* Make all text black in light mode / white in dark mode (excluding buttons & icons) */
+html:not(.dark) #view-settings_detail :not(button):not(button *):not(.material-symbols-outlined) {
+    color: #000000 !important;
+}
+html.dark #view-settings_detail :not(button):not(button *):not(.material-symbols-outlined) {
+    color: #ffffff !important;
+}
+
+html:not(.dark) #view-blocked_users :not(button):not(button *):not(.material-symbols-outlined) {
+    color: #000000 !important;
+}
+html.dark #view-blocked_users :not(button):not(button *):not(.material-symbols-outlined) {
+    color: #ffffff !important;
+}
+
+html:not(.dark) #view-definitions :not(button):not(button *):not(.material-symbols-outlined) {
+    color: #000000 !important;
+}
+html.dark #view-definitions :not(button):not(button *):not(.material-symbols-outlined) {
+    color: #ffffff !important;
+}
+
+#definitions-title {
+    color: var(--forest-green, #308A5E) !important;
+}
+
+/* Ensure placeholder texts in settings inputs remain a readable muted gray instead of solid black/white */
+#view-settings_detail input::placeholder,
+#view-settings_detail textarea::placeholder {
+    color: #9ca3af !important;
+}
+.dark #view-settings_detail input::placeholder,
+.dark #view-settings_detail textarea::placeholder {
+    color: #6b7280 !important;
+}
+
+/* Settings and Definitions Typography & Layout Unification */
+#view-settings_detail p,
+#view-definitions p {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    line-height: 1.5 !important;
+    opacity: 0.8 !important;
+}
+
+#view-settings_detail label {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    opacity: 0.8 !important;
+}
+
+#view-settings_detail .flex.items-center.justify-between p.font-semibold,
+#view-settings_detail .flex.items-center.justify-between p.font-bold {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+}
+
+#view-settings_detail .flex.items-center.justify-between p.text-\[10px\] {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+}
+
+/* Custom grid button standard size, nowrap text wrapping, and text ellipsis behavior */
+.offer-category-btn,
+.sub-opt-btn,
+.dyn-opt-btn,
+.clothes-opt-btn,
+.shoes-opt-btn,
+.shoes-size-btn,
+.lang-opt-btn,
+.wizard-skills-category-btn,
+.wizard-needs-category-btn {
+    height: 52px !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 4px 8px !important;
+    white-space: nowrap !important;
+    text-wrap: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    width: 100% !important;
+}
+
+/* Category & Subcategory buttons with icons should align items left */
+.offer-category-btn,
+.sub-opt-btn,
+.wizard-skills-category-btn,
+.wizard-needs-category-btn {
+    justify-content: flex-start !important;
+    text-align: left !important;
+}
+
+/* Centered buttons without icons */
+.dyn-opt-btn,
+.clothes-opt-btn,
+.shoes-opt-btn,
+.shoes-size-btn,
+.lang-opt-btn,
+.preset-opt-btn {
+    justify-content: center !important;
+    text-align: center !important;
+}
+
+/* Force buttons text inside to stay in one line sideways and truncate */
+.offer-category-btn span:not(.material-symbols-outlined),
+.sub-opt-btn span:not(.material-symbols-outlined),
+.dyn-opt-btn span:not(.material-symbols-outlined),
+.clothes-opt-btn span:not(.material-symbols-outlined),
+.shoes-opt-btn span:not(.material-symbols-outlined),
+.shoes-size-btn span:not(.material-symbols-outlined),
+.lang-opt-btn span:not(.material-symbols-outlined),
+.preset-opt-btn span:not(.material-symbols-outlined),
+.wizard-skills-category-btn span:not(.material-symbols-outlined),
+.wizard-needs-category-btn span:not(.material-symbols-outlined) {
+    white-space: nowrap !important;
+    text-wrap: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+    display: inline-block !important;
+}
+
+.offer-category-btn span:not(.material-symbols-outlined),
+.sub-opt-btn span:not(.material-symbols-outlined),
+.wizard-skills-category-btn span:not(.material-symbols-outlined),
+.wizard-needs-category-btn span:not(.material-symbols-outlined) {
+    text-align: left !important;
+}
+
+.dyn-opt-btn span:not(.material-symbols-outlined),
+.clothes-opt-btn span:not(.material-symbols-outlined),
+.shoes-opt-btn span:not(.material-symbols-outlined),
+.shoes-size-btn span:not(.material-symbols-outlined),
+.lang-opt-btn span:not(.material-symbols-outlined),
+.preset-opt-btn span:not(.material-symbols-outlined) {
+    text-align: center !important;
+}
+
+/* For buttons with icons, prevent icon from shrinking */
+.offer-category-btn span.material-symbols-outlined,
+.sub-opt-btn span.material-symbols-outlined,
+.wizard-skills-category-btn span.material-symbols-outlined,
+.wizard-needs-category-btn span.material-symbols-outlined {
+    flex-shrink: 0 !important;
+}
+
+/* Custom colorful styling for left-side icons in the profile settings sections */
+
+/* 1. Badges Header Icon (Gold/Amber) */
+#widget-badges-section h3 span.material-symbols-outlined,
+#neighbor-widget-badges-section h3 span.material-symbols-outlined {
+    color: #d97706 !important;
+}
+
+/* 2. Upcoming Events Header Icon (Vibrant Indigo-Blue) */
+#widget-upcoming-events h3 span.material-symbols-outlined,
+#neighbor-widget-upcoming-events h3 span.material-symbols-outlined {
+    color: #4f46e5 !important;
+}
+
+/* 3. Offerings Header Icon (Teal-Emerald) */
+#widget-my-offerings h3 span.material-symbols-outlined,
+#neighbor-widget-my-offerings h3 span.material-symbols-outlined {
+    color: #0d9488 !important;
+}
+
+/* 4. Needs Header Icon (Deep Coral Rose) */
+#widget-my-needs h3 span.material-symbols-outlined,
+#neighbor-widget-my-needs h3 span.material-symbols-outlined {
+    color: #e11d48 !important;
+}
+
+/* 5. Saved Listings Header Icon (Orchid Purple) */
+#widget-saved-listings h3 span.material-symbols-outlined {
+    color: #a855f7 !important;
+}
+
+/* 6. Saved Events Header Icon (Violet-Indigo) */
+#widget-saved-events h3 span.material-symbols-outlined {
+    color: #6366f1 !important;
+}
+
+/* 7. Invite Friends Header Icon (Bright Pink/Magenta) */
+#widget-friends-list h3 span.material-symbols-outlined {
+    color: #d946ef !important;
+}
+
+/* 8. Swaps History Header Icon (Rich Bronze Orange) */
+#widget-swaps-history h3 span.material-symbols-outlined {
+    color: #ea580c !important;
+}
+
+/* 9. Neighborhood Tips Header Icon (Warm Sun Yellow) */
+#widget-home-tips h3 span.material-symbols-outlined {
+    color: #eab308 !important;
+}
+
+/* 10. Help Us Improve / Suggestion Box Header Icon (Electric Cyan) */
+#widget-suggestion-box h3 span.material-symbols-outlined,
+#neighbor-widget-my-reviews h3 span.material-symbols-outlined {
+    color: #06b6d4 !important;
+}
+
+/* 11. Settings & Info Header Icon (Steel Grey) */
+#widget-account-actions h3 span.material-symbols-outlined {
+    color: #64748b !important;
+}
+
+/* --- Item level icon and checkmark styling inside widgets --- */
+
+/* Restore dynamic category colors for offering and need item icons in light mode */
+#my-offerings-container div[style*="color"] span.material-symbols-outlined,
+#neighbor-profile-offerings div[style*="color"] span.material-symbols-outlined,
+#my-needs-container div[style*="color"] span.material-symbols-outlined,
+#neighbor-profile-needs div[style*="color"] span.material-symbols-outlined,
+#profile-saved-listings-container div[style*="color"] span.material-symbols-outlined {
+    color: inherit !important;
+}
+
+/* Color event icons in lists as Indigo/Blue to match the Upcoming/Saved Events theme color, and style their background */
+#profile-upcoming-events-container div.w-8.h-8,
+#neighbor-profile-upcoming-events-container div.w-8.h-8,
+#profile-saved-events-container div.w-8.h-8 {
+    background-color: rgba(79, 70, 229, 0.08) !important;
+    color: #4f46e5 !important;
+}
+
+#profile-upcoming-events-container div.w-8.h-8 span.material-symbols-outlined,
+#neighbor-profile-upcoming-events-container div.w-8.h-8 span.material-symbols-outlined,
+#profile-saved-events-container div.w-8.h-8 span.material-symbols-outlined {
+    color: inherit !important;
+}
+
+/* Color icons inside collapsible Neighborhood Tips panel headers */
+#widget-lead-by-giving button span.material-symbols-outlined:first-of-type {
+    color: #ec4899 !important;
+}
+
+#widget-ideas-offer button span.material-symbols-outlined:first-of-type {
+    color: #eab308 !important;
+}
+
+#widget-gifts-info button span.material-symbols-outlined:first-of-type {
+    color: #8b5cf6 !important;
+}
+
+#widget-safety-tips button span.material-symbols-outlined:first-of-type {
+    color: #10b981 !important;
+}
+
+/* Color the specific icons inside Settings & Info buttons */
+#widget-account-actions button:nth-of-type(1) span.font-bold span.material-symbols-outlined {
+    color: #3b82f6 !important; /* Blue for Account Settings */
+}
+
+#widget-account-actions button:nth-of-type(2) span.font-bold span.material-symbols-outlined {
+    color: #10b981 !important; /* Green for Definitions */
+}
+
+/* Restore green/emerald colors for checkmarks and icons in Neighborhood Tips items */
+#widget-home-tips .text-forest-green,
+#widget-home-tips .text-green-500,
+#widget-home-tips .text-forest-green *,
+#widget-home-tips .text-green-500 * {
+    color: #308a5e !important;
+}
+.dark #widget-home-tips .text-forest-green,
+.dark #widget-home-tips .text-forest-green * {
+    color: #34d399 !important;
+}
+
+
+
+/* Account Settings header title and bar color styling */
+#account-settings-title {
+    color: #3b82f6 !important;
+}
+#account-settings-title-bar {
+    background-color: #3b82f6 !important;
+}
+
+/* Custom categories layout: 2 columns side-by-side with horizontal icon/text */
+#offer-categories-grid,
+#offer-event-type-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+}
+
+#offer-categories-grid button.offer-category-btn,
+#offer-event-type-grid button.offer-category-btn {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    padding: 8px 12px !important;
+    height: 44px !important;
+    gap: 8px !important;
+}
+
+#offer-categories-grid button.offer-category-btn .material-symbols-outlined,
+#offer-event-type-grid button.offer-category-btn .material-symbols-outlined {
+    font-size: 16px !important;
+    margin: 0 !important;
+}
+
+#offer-categories-grid button.offer-category-btn span:not(.material-symbols-outlined),
+#offer-event-type-grid button.offer-category-btn span:not(.material-symbols-outlined) {
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+}
+
+/* Custom subcategories layout: 2 columns side-by-side with horizontal icon/text */
+#subcategory-options-container,
+#clothes-type-select,
+#shoes-type-select,
+#shoes-size-select,
+#clothes-gender-select,
+#clothes-age-select,
+#language-presets,
+#dynamic-suboptions-presets {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+}
+
+#subcategory-options-container button.sub-opt-btn {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    padding: 8px 12px !important;
+    height: 44px !important;
+    gap: 8px !important;
+}
+
+#subcategory-options-container button.sub-opt-btn .material-symbols-outlined {
+    font-size: 16px !important;
+    margin: 0 !important;
+}
+
+#subcategory-options-container button.sub-opt-btn span:not(.material-symbols-outlined) {
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+    text-wrap: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+    display: inline-block !important;
+    text-transform: none !important;
+}
+
+.dyn-opt-btn,
+.clothes-opt-btn,
+.shoes-opt-btn,
+.shoes-size-btn,
+.lang-opt-btn {
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 8px 12px !important;
+    font-size: 11px !important;
+    box-sizing: border-box !important;
+}
+
+.dyn-opt-btn span,
+.clothes-opt-btn span,
+.shoes-opt-btn span,
+.shoes-size-btn span,
+.lang-opt-btn span {
+    white-space: nowrap !important;
+    text-wrap: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+    display: inline-block !important;
+    text-align: center !important;
+}
+
+
+/* Make custom subcategory write-in placeholder text black in light mode */
+html:not(.dark) #subcategory-custom-text-input::placeholder {
+    color: #000000 !important;
+    opacity: 1 !important;
+}
+html:not(.dark) #subcategory-custom-text-input::-webkit-input-placeholder {
+    color: #000000 !important;
+    opacity: 1 !important;
+}
+html:not(.dark) #subcategory-custom-text-input::-moz-placeholder {
+    color: #000000 !important;
+    opacity: 1 !important;
+}
+html:not(.dark) #subcategory-custom-text-input:-ms-input-placeholder {
+    color: #000000 !important;
+    opacity: 1 !important;
+}
+
+/* Offer Preset Modal Custom Styles */
+html:not(.dark) #offer-preset-modal h3,
+html:not(.dark) #offer-preset-modal p,
+html:not(.dark) #offer-preset-modal button:not(.bg-forest-green),
+html:not(.dark) #offer-preset-modal button:not(.bg-forest-green) *:not(.material-symbols-outlined) {
+    color: #000000 !important;
+}
+
+html.dark #offer-preset-modal h3,
+html.dark #offer-preset-modal p,
+html.dark #offer-preset-modal button:not(.bg-forest-green),
+html.dark #offer-preset-modal button:not(.bg-forest-green) *:not(.material-symbols-outlined) {
+    color: #ffffff !important;
+}
+
+#offer-preset-modal .relative.bg-white,
+html.dark #offer-preset-modal .relative.dark\:bg-\[\#101612\] {
+    border-color: rgba(48, 138, 94, 0.25) !important;
+    height: 520px !important;
+    max-height: 85vh !important;
+}
+
+
+/* Close button icon color */
+#offer-preset-modal button[onclick="closeOfferPresetModal()"] span.material-symbols-outlined {
+    color: #000000 !important;
+}
+
+#offer-preset-buttons-container button.preset-opt-btn {
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    padding: 10px 12px !important;
+    word-break: break-word !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #000000 !important;
+    background-color: #f3f4f6 !important;
+    border-color: rgba(48, 138, 94, 0.2) !important;
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-radius: 12px !important;
+    height: auto !important;
+    min-height: 52px !important;
+    max-height: none !important;
+    white-space: normal !important;
+    text-wrap: wrap !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+}
+
+#offer-preset-buttons-container button.preset-opt-btn:hover {
+    background-color: #e5e7eb !important;
+}
+
+/* Highlight selected preset button */
+#offer-preset-buttons-container button.preset-opt-btn.bg-forest-green {
+    background-color: rgba(48, 138, 94, 0.15) !important;
+    border-color: #308A5E !important;
+    border-width: 2px !important;
+    border-style: solid !important;
+    color: #000000 !important;
+}
+
+/* Dark Mode Overrides */
+html.dark #offer-preset-buttons-container button.preset-opt-btn:not(.bg-forest-green) {
+    background-color: #1b261f !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+}
+
+html.dark #offer-preset-buttons-container button.preset-opt-btn.bg-forest-green {
+    background-color: rgba(16, 185, 129, 0.15) !important;
+    border-color: #10b981 !important;
+    color: #ffffff !important;
+}
+
+/* Cancel Button */
+#offer-preset-modal button[onclick="closeOfferPresetModal()"]:not(.absolute),
+html.dark #offer-preset-modal button[onclick="closeOfferPresetModal()"]:not(.absolute) {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    color: #000000 !important;
+}
+
+#offer-preset-modal button[onclick="closeOfferPresetModal()"]:not(.absolute):hover {
+    background-color: #f3f4f6 !important;
+}
+
+/* Confirm Button - White Text */
+#offer-preset-modal button[onclick="submitOfferPresetSelection()"],
+#offer-preset-modal button[onclick="submitOfferPresetSelection()"] * {
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+#offer-preset-modal button[onclick="submitOfferPresetSelection()"]:hover {
+    background-color: #256f4a !important;
+}
+
+/* Unique colors for Category & Subcategory Icons */
+button[data-category="Food & Drink"]:not(.bg-forest-green) .material-symbols-outlined {
+    color: #f97316 !important;
+}
+button[data-category="Home and Living"]:not(.bg-forest-green) .material-symbols-outlined,
+button[data-category="Home, Living & Gear"]:not(.bg-forest-green) .material-symbols-outlined {
+    color: #3b82f6 !important;
+}
+button[data-category="Garden & Outdoors"]:not(.bg-forest-green) .material-symbols-outlined,
+button[data-category="Garden"]:not(.bg-forest-green) .material-symbols-outlined {
+    color: #10b981 !important;
+}
+button[data-category="Skills & Education"]:not(.bg-forest-green) .material-symbols-outlined {
+    color: #8b5cf6 !important;
+}
+button[data-category="Handyman & Services"]:not(.bg-forest-green) .material-symbols-outlined {
+    color: #f59e0b !important;
+}
+button[data-category="Creative & Art"]:not(.bg-forest-green) .material-symbols-outlined {
+    color: #ec4899 !important;
+}
+button[data-category="Health"]:not(.bg-forest-green) .material-symbols-outlined {
+    color: #14b8a6 !important;
+}
+button[data-category="Clothing & Apparel"]:not(.bg-forest-green) .material-symbols-outlined,
+button[data-category="Clothes"]:not(.bg-forest-green) .material-symbols-outlined {
+    color: #06b6d4 !important;
+}
+button[data-category="Books, Games, Entertainment"]:not(.bg-forest-green) .material-symbols-outlined {
+    color: #6366f1 !important;
+}
+button[data-category="Kids and Maternity"]:not(.bg-forest-green) .material-symbols-outlined,
+button[data-category="Kids"]:not(.bg-forest-green) .material-symbols-outlined,
+button[data-category="Maternity"]:not(.bg-forest-green) .material-symbols-outlined {
+    color: #a855f7 !important;
+}
+button[data-category="Event or Meetup"]:not(.bg-forest-green) .material-symbols-outlined {
+    color: #10b981 !important;
+}
+button[data-category="Language or Info Exchange"]:not(.bg-forest-green) .material-symbols-outlined {
+    color: #2563eb !important;
+}
+button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
+    color: #6b7280 !important;
+}
+
+/* Hide scrollbars inside subcategory modal and offer preset modal */
+#subcategory-modal *::-webkit-scrollbar,
+#offer-preset-modal *::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+#subcategory-modal *,
+#offer-preset-modal * {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+
+/* Unique colors for Subcategory Icons */
+#subcategory-options-container .sub-icon-eco { color: #10b981 !important; }
+#subcategory-options-container .sub-icon-bakery_dining { color: #b45309 !important; }
+#subcategory-options-container .sub-icon-cookie { color: #d97706 !important; }
+#subcategory-options-container .sub-icon-coffee { color: #78350f !important; }
+#subcategory-options-container .sub-icon-local_bar { color: #f43f5e !important; }
+#subcategory-options-container .sub-icon-hive { color: #eab308 !important; }
+#subcategory-options-container .sub-icon-kitchen { color: #0891b2 !important; }
+#subcategory-options-container .sub-icon-soup_kitchen { color: #c2410c !important; }
+#subcategory-options-container .sub-icon-construction { color: #f97316 !important; }
+#subcategory-options-container .sub-icon-electric_bolt { color: #eab308 !important; }
+#subcategory-options-container .sub-icon-hiking { color: #16a34a !important; }
+#subcategory-options-container .sub-icon-chair { color: #3b82f6 !important; }
+#subcategory-options-container .sub-icon-home { color: #2563eb !important; }
+#subcategory-options-container .sub-icon-child_friendly { color: #a855f7 !important; }
+#subcategory-options-container .sub-icon-potted_plant { color: #10b981 !important; }
+#subcategory-options-container .sub-icon-local_florist { color: #ec4899 !important; }
+#subcategory-options-container .sub-icon-grass { color: #22c55e !important; }
+#subcategory-options-container .sub-icon-handyman { color: #f59e0b !important; }
+#subcategory-options-container .sub-icon-delete_sweep { color: #ef4444 !important; }
+#subcategory-options-container .sub-icon-deck { color: #d97706 !important; }
+#subcategory-options-container .sub-icon-recycling { color: #16a34a !important; }
+#subcategory-options-container .sub-icon-translate { color: #3b82f6 !important; }
+#subcategory-options-container .sub-icon-music_note { color: #8b5cf6 !important; }
+#subcategory-options-container .sub-icon-code { color: #06b6d4 !important; }
+#subcategory-options-container .sub-icon-edit_note { color: #a855f7 !important; }
+#subcategory-options-container .sub-icon-restaurant { color: #f97316 !important; }
+#subcategory-options-container .sub-icon-palette { color: #ec4899 !important; }
+#subcategory-options-container .sub-icon-self_improvement { color: #14b8a6 !important; }
+#subcategory-options-container .sub-icon-shelves { color: #b45309 !important; }
+#subcategory-options-container .sub-icon-pedal_bike { color: #3b82f6 !important; }
+#subcategory-options-container .sub-icon-pets { color: #f97316 !important; }
+#subcategory-options-container .sub-icon-cleaning_services { color: #06b6d4 !important; }
+#subcategory-options-container .sub-icon-local_shipping { color: #10b981 !important; }
+#subcategory-options-container .sub-icon-router { color: #6b7280 !important; }
+#subcategory-options-container .sub-icon-local_car_wash { color: #3b82f6 !important; }
+#subcategory-options-container .sub-icon-local_activity { color: #8b5cf6 !important; }
+#subcategory-options-container .sub-icon-content_cut { color: #f43f5e !important; }
+#subcategory-options-container .sub-icon-photo_camera { color: #4b5563 !important; }
+#subcategory-options-container .sub-icon-brush { color: #f97316 !important; }
+#subcategory-options-container .sub-icon-carpenter { color: #a16207 !important; }
+#subcategory-options-container .sub-icon-diamond { color: #06b6d4 !important; }
+#subcategory-options-container .sub-icon-computer { color: #2563eb !important; }
+#subcategory-options-container .sub-icon-spa { color: #0d9488 !important; }
+#subcategory-options-container .sub-icon-fitness_center { color: #e11d48 !important; }
+#subcategory-options-container .sub-icon-health_and_safety { color: #ef4444 !important; }
+#subcategory-options-container .sub-icon-forum { color: #7c3aed !important; }
+#subcategory-options-container .sub-icon-child_care { color: #a855f7 !important; }
+#subcategory-options-container .sub-icon-pregnant_woman { color: #db2777 !important; }
+#subcategory-options-container .sub-icon-checkroom { color: #0891b2 !important; }
+#subcategory-options-container .sub-icon-shopping_bag { color: #b45309 !important; }
+#subcategory-options-container .sub-icon-menu_book { color: #3b82f6 !important; }
+#subcategory-options-container .sub-icon-casino { color: #dc2626 !important; }
+#subcategory-options-container .sub-icon-extension { color: #ea580c !important; }
+#subcategory-options-container .sub-icon-album { color: #374151 !important; }
+#subcategory-options-container .sub-icon-sports_esports { color: #4f46e5 !important; }
+#subcategory-options-container .sub-icon-smart_toy { color: #f43f5e !important; }
+#subcategory-options-container .sub-icon-baby_changing_station { color: #a855f7 !important; }
+#subcategory-options-container .sub-icon-favorite { color: #e11d48 !important; }
+#subcategory-options-container .sub-icon-inventory_2 { color: #d97706 !important; }
+#subcategory-options-container .sub-icon-explore { color: #2563eb !important; }
+#subcategory-options-container .sub-icon-handshake { color: #16a34a !important; }
+#subcategory-options-container .sub-icon-cached { color: #6b7280 !important; }
+#subcategory-options-container .sub-icon-groups { color: #10b981 !important; }
+#subcategory-options-container .sub-icon-school { color: #8b5cf6 !important; }
+#subcategory-options-container .sub-icon-celebration { color: #f97316 !important; }
+#subcategory-options-container .sub-icon-yard { color: #22c55e !important; }
+#subcategory-options-container .sub-icon-flight { color: #3b82f6 !important; }
+
+/* Meetup Radiating Blue Dot Animation */
+@keyframes radiating-blue-dot-pulse {
+    0% {
+        transform: scale(0.65);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(1.6);
+        opacity: 0;
+    }
+}
+.meetup-blue-pulse {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: rgba(59, 130, 246, 0.25);
+    border: 1.5px solid rgba(59, 130, 246, 0.5);
+    animation: radiating-blue-dot-pulse 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite !important;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Custom color rules for redesigned Trade Info metrics icons */
+#neighbor-profile-trade-vouches-icon,
+#neighbor-profile-trade-expires-icon {
+    color: #308a5e !important;
+}
+.dark #neighbor-profile-trade-vouches-icon,
+.dark #neighbor-profile-trade-expires-icon {
+    color: #34d399 !important;
+}
+
+/* Specificity override to keep neighbor and self socials icons white in all modes */
+#neighbor-profile-modal #neighbor-profile-socials-container a,
+#neighbor-profile-modal #neighbor-profile-socials-container a *,
+#neighbor-profile-modal #neighbor-profile-socials-container svg,
+#neighbor-profile-modal #neighbor-profile-socials-container span,
+#view-profile_settings #self-profile-socials-container a,
+#view-profile_settings #self-profile-socials-container a *,
+#view-profile_settings #self-profile-socials-container svg,
+#view-profile_settings #self-profile-socials-container span {
+    color: #ffffff !important;
+}
+
+/* Highly specific rules for selected buttons inside the subcategory modal and categories grid to override any tailwind/dark mode styles */
+#subcategory-modal button.bg-forest-green,
+#offer-preset-buttons-container button.bg-forest-green,
+#subcategory-options-container button.bg-forest-green,
+#clothes-type-select button.bg-forest-green,
+#shoes-type-select button.bg-forest-green,
+#shoes-size-select button.bg-forest-green,
+#clothes-gender-select button.bg-forest-green,
+#clothes-age-select button.bg-forest-green,
+#language-presets button.bg-forest-green,
+#dynamic-suboptions-presets button.bg-forest-green,
+#offer-categories-grid button.bg-forest-green,
+#offer-event-type-grid button.bg-forest-green {
+    background-color: var(--forest-green-val) !important;
+    color: var(--warm-cream-val) !important;
+    border-color: var(--forest-green-val) !important;
+}
+
+#subcategory-modal button.bg-forest-green *,
+#offer-preset-buttons-container button.bg-forest-green *,
+#subcategory-options-container button.bg-forest-green *,
+#clothes-type-select button.bg-forest-green *,
+#shoes-type-select button.bg-forest-green *,
+#shoes-size-select button.bg-forest-green *,
+#clothes-gender-select button.bg-forest-green *,
+#clothes-age-select button.bg-forest-green *,
+#language-presets button.bg-forest-green *,
+#dynamic-suboptions-presets button.bg-forest-green *,
+#offer-categories-grid button.bg-forest-green *,
+#offer-event-type-grid button.bg-forest-green * {
+    color: var(--warm-cream-val) !important;
+}
+
+/* Dark mode overrides for selected buttons to ensure they look vibrant and have readable high-contrast text */
+.dark #subcategory-modal button.bg-forest-green,
+.dark #offer-preset-buttons-container button.bg-forest-green,
+.dark #subcategory-options-container button.bg-forest-green,
+.dark #clothes-type-select button.bg-forest-green,
+.dark #shoes-type-select button.bg-forest-green,
+.dark #shoes-size-select button.bg-forest-green,
+.dark #clothes-gender-select button.bg-forest-green,
+.dark #clothes-age-select button.bg-forest-green,
+.dark #language-presets button.bg-forest-green,
+.dark #dynamic-suboptions-presets button.bg-forest-green,
+.dark #offer-categories-grid button.bg-forest-green,
+.dark #offer-event-type-grid button.bg-forest-green {
+    background-color: #308A5E !important;
+    color: #101612 !important;
+    border-color: #308A5E !important;
+}
+
+.dark #subcategory-modal button.bg-forest-green *,
+.dark #offer-preset-buttons-container button.bg-forest-green *,
+.dark #subcategory-options-container button.bg-forest-green *,
+.dark #clothes-type-select button.bg-forest-green *,
+.dark #shoes-type-select button.bg-forest-green *,
+.dark #shoes-size-select button.bg-forest-green *,
+.dark #clothes-gender-select button.bg-forest-green *,
+.dark #clothes-age-select button.bg-forest-green *,
+.dark #language-presets button.bg-forest-green *,
+.dark #dynamic-suboptions-presets button.bg-forest-green *,
+.dark #offer-categories-grid button.bg-forest-green *,
+.dark #offer-event-type-grid button.bg-forest-green * {
+    color: #101612 !important;
+}
+
+/* ==================================================== */
+/* ADMIN PORTAL & ONBOARDING STYLING UPDATES */
+/* ==================================================== */
+
+/* Force all text inside admin sub-sections to be black */
+[id^="admin-modal-"],
+[id^="admin-modal-"] *:not(button.bg-forest-green):not(button.bg-error):not(.bg-forest-green *):not(.bg-error *):not(.material-symbols-outlined) {
+    color: #000000 !important;
+}
+
+/* Force all text in onboarding wizard & login slides to be black */
+#view-sign_in,
+#view-profile_step_1,
+#view-lead_giving,
+#view-profile_step_2,
+#view-profile_step_3,
+#view-sign_in *:not(h1):not(h2):not(button.bg-forest-green):not(button.bg-error):not(button#btn-autofill-register):not(button#btn-autofill-register-social):not(.bg-forest-green *):not(.bg-error *):not(#btn-autofill-register *):not(#btn-autofill-register-social *):not(.material-symbols-outlined),
+#view-profile_step_1 *:not(h1):not(h2):not(button.bg-forest-green):not(button.bg-error):not(button#btn-autofill-register):not(button#btn-autofill-register-social):not(.bg-forest-green *):not(.bg-error *):not(#btn-autofill-register *):not(#btn-autofill-register-social *):not(.material-symbols-outlined),
+#view-lead_giving *:not(h1):not(h2):not(button.bg-forest-green):not(button.bg-error):not(button#btn-autofill-register):not(button#btn-autofill-register-social):not(.bg-forest-green *):not(.bg-error *):not(#btn-autofill-register *):not(#btn-autofill-register-social *):not(.material-symbols-outlined),
+#view-profile_step_2 *:not(h1):not(h2):not(button.bg-forest-green):not(button.bg-error):not(button#btn-autofill-register):not(button#btn-autofill-register-social):not(.bg-forest-green *):not(.bg-error *):not(#btn-autofill-register *):not(#btn-autofill-register-social *):not(.material-symbols-outlined),
+#view-profile_step_3 *:not(h1):not(h2):not(button.bg-forest-green):not(button.bg-error):not(button#btn-autofill-register):not(button#btn-autofill-register-social):not(.bg-forest-green *):not(.bg-error *):not(#btn-autofill-register *):not(#btn-autofill-register-social *):not(.material-symbols-outlined) {
+    color: #000000 !important;
+}
+
+/* Explicitly turn category grid buttons and option buttons black in onboarding */
+.wizard-skills-category-btn,
+.wizard-needs-category-btn,
+.neighborhood-opt-btn {
+    color: #000000 !important;
+    border-color: rgba(0, 0, 0, 0.25) !important;
+}
+.wizard-skills-category-btn .material-symbols-outlined,
+.wizard-needs-category-btn .material-symbols-outlined,
+.neighborhood-opt-btn .material-symbols-outlined {
+    color: #000000 !important;
+}
+
+/* Ensure selected states of options inside onboarding grid display high contrast white text */
+.wizard-skills-category-btn.active,
+.wizard-needs-category-btn.active,
+.neighborhood-opt-btn.active {
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    border-color: #308A5E !important;
+}
+.wizard-skills-category-btn.active .material-symbols-outlined,
+.wizard-needs-category-btn.active .material-symbols-outlined {
+    color: #ffffff !important;
+}
+
+/* Force placeholder texts to be high contrast black/grey for readability */
+#view-sign_in input::placeholder,
+#view-create_account input::placeholder,
+#view-create_account_social input::placeholder,
+#view-profile_step_1 input::placeholder,
+#view-profile_step_2 textarea::placeholder,
+#view-profile_step_3 textarea::placeholder {
+    color: rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Keep the titles green as requested */
+#view-sign_in h1,
+#view-create_account h1,
+#view-create_account_social h1,
+#view-profile_consent h2,
+#view-profile_location_permission h2,
+#view-profile_step_1 h2,
+#view-lead_giving h2,
+#view-profile_step_2 h2,
+#view-profile_step_3 h2 {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+    line-height: 1.25 !important;
+    color: #12281a !important;
+}
+html.dark #view-sign_in h1,
+html.dark #view-create_account h1,
+html.dark #view-create_account_social h1,
+html.dark #view-profile_consent h2,
+html.dark #view-profile_location_permission h2,
+html.dark #view-profile_step_1 h2,
+html.dark #view-lead_giving h2,
+html.dark #view-profile_step_2 h2,
+html.dark #view-profile_step_3 h2 {
+    color: #ffffff !important;
+}
+
+/* Ensure green submit/action buttons stay green and text/icons inside them stay white */
+#view-sign_in button[type="submit"],
+#view-create_account button[type="submit"],
+#view-create_account_social button[type="submit"],
+#btn-autofill-register,
+#btn-autofill-register-social,
+#view-profile_consent button,
+#btn-onboarding-location-permission,
+#view-profile_step_1 button[type="submit"],
+#view-lead_giving button,
+#view-profile_step_2 button,
+#view-profile_step_3 button {
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    border-color: #308A5E !important;
+}
+
+#view-sign_in button[type="submit"] *,
+#view-create_account button[type="submit"] *,
+#view-create_account_social button[type="submit"] *,
+#btn-autofill-register *,
+#btn-autofill-register-social *,
+#view-profile_consent button *,
+#btn-onboarding-location-permission *,
+#view-profile_step_1 button[type="submit"] *,
+#view-lead_giving button *,
+#view-profile_step_2 button *,
+#view-profile_step_3 button * {
+    color: #ffffff !important;
+}
+
+/* Position and align map category circles dropdown on the left to stack cleanly under top-left control buttons */
+#map-category-dropdown {
+    left: 22px !important;
+    right: auto !important;
+    align-items: flex-start !important;
+    padding-left: 6px !important;
+}
+
+#map-category-dropdown .map-category-item {
+    justify-content: flex-start !important;
+    flex-direction: row !important;
+}
+
+#map-category-dropdown .map-category-item span {
+    margin-left: 0.5rem !important;
+    margin-right: 0 !important;
+}
+
+
+/* ==================================================== */
+/* IPHONE 16 FORMAT SIMULATOR OVERLAYS */
+/* ==================================================== */
+
+/* Status bar styles */
+#iphone16-status-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 44px;
+    z-index: 99999;
+    display: none; /* hidden by default, shown in .iphone16-mode */
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 13.5px;
+    font-weight: 600;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #000000;
+    fill: #000000;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+#iphone16-status-bar svg {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Time and Location arrow */
+#iphone16-status-bar .status-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Dynamic Island notch in center */
+#iphone16-status-bar .dynamic-island {
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+    width: 110px;
+    height: 28px;
+    background-color: #000000;
+    border-radius: 999px;
+    z-index: 100000;
+    pointer-events: auto;
+}
+
+/* Right icons (cellular, wifi, battery) */
+#iphone16-status-bar .status-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Mock red battery shell with 79 percentage inside */
+#iphone16-status-bar .battery-container {
+    position: relative;
+    width: 25px;
+    height: 12.5px;
+    border: 1px solid rgba(0, 0, 0, 0.7);
+    border-radius: 3.5px;
+    padding: 1px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+#iphone16-status-bar .battery-level {
+    height: 100%;
+    width: 79%;
+    background-color: #ff3b30; /* Apple system red */
+    border-radius: 1.5px;
+}
+
+#iphone16-status-bar .battery-tip {
+    position: absolute;
+    right: -3px;
+    top: 3.5px;
+    width: 1.5px;
+    height: 4.5px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
+}
+
+#iphone16-status-bar .battery-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Adaptive text & icon colors on dark background / loading screen / dark mode */
+html.dark #iphone16-status-bar {
+    color: #ffffff;
+    fill: #ffffff;
+    background: rgba(16, 22, 18, 0.85);
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+html.dark #iphone16-status-bar .battery-container {
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
+html.dark #iphone16-status-bar .battery-tip {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* If the loading screen, welcome screen, or map is active, make the status bar fully transparent */
+body:has(#loading-screen:not(.hidden)) #iphone16-status-bar,
+body:has(#view-welcome.active) #iphone16-status-bar,
+body:has(#view-village.active) #iphone16-status-bar {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom: none !important;
+}
+
+/* Use white icons on the loading screen */
+body:has(#loading-screen:not(.hidden)) #iphone16-status-bar {
+    color: #ffffff;
+    fill: #ffffff;
+}
+body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-container {
+    border-color: rgba(255, 255, 255, 0.7);
+}
+body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Adjust map view when overlaying status bar */
+.iphone16-mode #view-village {
+    padding-top: 0 !important;
+}
+
+/* Active class for body inside the iPhone 16 preview mode */
+.iphone16-mode #iphone16-status-bar {
+    display: flex !important;
+    z-index: 101 !important;
+}
+
+.iphone16-mode .screen-view {
+    padding-top: 44px !important;
+}
+
+.iphone16-mode #floating-map-controls {
+    top: 38px !important;
+}
+
+.iphone16-mode #map-category-dropdown {
+    top: 82px !important;
+}
+
+/* Ensure onboarding screens are padded too */
+.iphone16-mode #view-profile_consent,
+.iphone16-mode #view-profile_location_permission,
+.iphone16-mode #view-profile_step_1,
+.iphone16-mode #view-profile_step_2,
+.iphone16-mode #view-profile_step_3 {
+    padding-top: 44px !important;
+}
+
+/* Custom premium checkboxes for EULA */
+.checkbox-wrapper {
+    position: relative;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 1.5px solid rgba(0, 0, 0, 0.23);
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    transition: all 0.2s ease;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+    margin: 0;
+}
+
+.checkbox-wrapper .custom-check-box {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    transition: all 0.2s ease;
+}
+
+.checkbox-wrapper .custom-check-box span {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 900;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46);
+}
+
+.checkbox-wrapper:has(input[type="checkbox"]:checked) {
+    border-color: #308A5E;
+}
+
+.checkbox-wrapper:has(input[type="checkbox"]:checked) .custom-check-box {
+    background-color: #308A5E;
+}
+
+.checkbox-wrapper:has(input[type="checkbox"]:checked) .custom-check-box span {
+    opacity: 1;
+    transform: scale(1);
+}
+
+html.dark .checkbox-wrapper {
+    border-color: rgba(255, 255, 255, 0.23);
+    background-color: #18201a;
+}
+html.dark .checkbox-wrapper:has(input[type="checkbox"]:checked) {
+    border-color: #308A5E;
+}
+
+/* Custom Meetup & User Popup Styling */
+.meetup-popup .leaflet-popup-content-wrapper {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+}
+.meetup-popup .leaflet-popup-tip {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    box-shadow: none !important;
+}
+.meetup-popup .leaflet-popup-content {
+    color: #1e293b !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+html.dark .meetup-popup .leaflet-popup-content-wrapper {
+    background: #141c16 !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+}
+html.dark .meetup-popup .leaflet-popup-tip {
+    background: #141c16 !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+html.dark .meetup-popup .leaflet-popup-content {
+    color: #e2e8f0 !important;
+}
+
+.user-popup .leaflet-popup-content-wrapper {
+    background: #f59e0b !important;
+    border: 2px solid #2563eb !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2) !important;
+}
+.user-popup .leaflet-popup-tip {
+    background: #f59e0b !important;
+    border: 2px solid #2563eb !important;
+    box-shadow: none !important;
+}
+.user-popup .leaflet-popup-content {
+    color: #1e3a8a !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+html.dark .user-popup .leaflet-popup-content-wrapper {
+    background: #d97706 !important;
+    border-color: #60a5fa !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+}
+html.dark .user-popup .leaflet-popup-tip {
+    background: #d97706 !important;
+    border-color: #60a5fa !important;
+}
+html.dark .user-popup .leaflet-popup-content {
+    color: #eff6ff !important;
+}
+
+/* Hide desktop navigation bar when running inside mobile device simulator */
+body.show-simulator #desktop-navbar,
+body.show-simulator #desktop-navbar:not(.hidden) {
+    display: none !important;
+}
+
+
+/* Ensure mobile map and bottom/top navigation bars are visible when running in simulator mode */
+body.show-simulator #global-navbar {
+    display: flex !important;
+}
+
+body.show-simulator #phone-header-bar {
+    display: flex !important;
+}
+
+body.show-simulator #view-village #village-map-container {
+    display: block !important;
+}
+
+body.show-simulator #view-village #village-map-container.hidden {
+    display: none !important;
+}
+
+body.show-simulator #category-tray {
+    display: flex !important;
+}
+
+body.show-simulator #category-tray.hidden {
+    display: none !important;
+}
+
+/* Event Stock Icon Thumbnails */
+.event-stock-thumbnail {
+    background-color: var(--bg-light) !important;
+    color: var(--color-light) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.dark .event-stock-thumbnail,
+html.dark .event-stock-thumbnail {
+    background-color: var(--bg-dark) !important;
+    color: var(--color-dark) !important;
+}
+
+/* Custom onboarding subtitle green text override */
+.onboarding-subtitle {
+    color: #308A5E !important;
+}
+
+/* Mobile-only registration horizontal padding override */
+@media (max-width: 767px) {
+    #view-welcome,
+    #view-create_account,
+    #view-create_account_social,
+    #view-profile_consent,
+    #view-profile_location_permission,
+    #view-profile_step_1 {
+        padding-left: 1.25rem !important;
+        padding-right: 1.25rem !important;
+    }
+}
+
+/* Premium Onboarding Card & Input Styling */
+.onboarding-card {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(48, 138, 94, 0.08) !important;
+    border-radius: 28px !important;
+    padding: 26px 24px !important;
+    box-shadow: 0 20px 48px -12px rgba(48, 138, 94, 0.05), 0 8px 16px -8px rgba(48, 138, 94, 0.03) !important;
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-sizing: border-box !important;
+}
+html.dark .onboarding-card {
+    background-color: #161e1a !important;
+    border-color: rgba(130, 185, 149, 0.08) !important;
+    box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Base text styling overrides for onboarding screens to make them feel organic and cohesive */
+#view-welcome,
+#view-create_account,
+#view-create_account_social,
+#view-profile_consent,
+#view-profile_location_permission,
+#view-profile_step_1,
+#view-lead_giving,
+#view-profile_step_2,
+#view-profile_step_3,
+#view-sign_in {
+    background: linear-gradient(180deg, #FDFCF8 0%, #F4F1E6 100%) !important;
+}
+html.dark #view-welcome,
+html.dark #view-create_account,
+html.dark #view-create_account_social,
+html.dark #view-profile_consent,
+html.dark #view-profile_location_permission,
+html.dark #view-profile_step_1,
+html.dark #view-lead_giving,
+html.dark #view-profile_step_2,
+html.dark #view-profile_step_3,
+html.dark #view-sign_in {
+    background: linear-gradient(180deg, #111713 0%, #0a0e0b 100%) !important;
+}
+
+#view-welcome p,
+#view-create_account p,
+#view-create_account_social p,
+#view-profile_consent p,
+#view-profile_location_permission p,
+#view-profile_step_1 p,
+#view-sign_in p {
+    color: #55665b !important;
+}
+html.dark #view-welcome p,
+html.dark #view-create_account p,
+html.dark #view-create_account_social p,
+html.dark #view-profile_consent p,
+html.dark #view-profile_location_permission p,
+html.dark #view-profile_step_1 p,
+html.dark #view-sign_in p {
+    color: #9ab0a1 !important;
+}
+
+/* Input Fields Overrides */
+.onboarding-card input,
+#view-sign_in input,
+#view-profile_step_1 input {
+    background-color: #faf9f6 !important;
+    border: 1.5px solid rgba(48, 138, 94, 0.12) !important;
+    border-radius: 16px !important;
+    color: #1c2d24 !important;
+    font-weight: 500 !important;
+    height: 52px !important;
+    transition: all 0.25s ease !important;
+}
+html.dark .onboarding-card input,
+html.dark #view-sign_in input,
+html.dark #view-profile_step_1 input {
+    background-color: #0d120f !important;
+    border-color: rgba(130, 185, 149, 0.12) !important;
+    color: #fcfbf7 !important;
+}
+
+.onboarding-card input:focus,
+#view-sign_in input:focus,
+#view-profile_step_1 input:focus {
+    border-color: var(--forest-green) !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 4px rgba(48, 138, 94, 0.1) !important;
+}
+html.dark .onboarding-card input:focus,
+html.dark #view-sign_in input:focus,
+html.dark #view-profile_step_1 input:focus {
+    border-color: #82b995 !important;
+    background-color: #111814 !important;
+    box-shadow: 0 0 0 4px rgba(130, 185, 149, 0.1) !important;
+}
+
+.onboarding-card input::placeholder,
+#view-sign_in input::placeholder,
+#view-profile_step_1 input::placeholder {
+    color: #8fa095 !important;
+    font-weight: 400 !important;
+}
+html.dark .onboarding-card input::placeholder,
+html.dark #view-sign_in input::placeholder,
+html.dark #view-profile_step_1 input::placeholder {
+    color: #5e6f65 !important;
+}
+
+/* Labels */
+.onboarding-card label,
+#view-sign_in label,
+#view-profile_step_1 label {
+    color: #44544b !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    margin-bottom: 6px !important;
+    display: block !important;
+}
+html.dark .onboarding-card label,
+html.dark #view-sign_in label,
+html.dark #view-profile_step_1 label {
+    color: #92a499 !important;
+}
+
+/* Primary Action Buttons */
+#welcome-next-btn,
+#view-sign_in button[type="submit"],
+#consent-continue-btn,
+#btn-onboarding-location-permission,
+#view-create_account button[type="submit"],
+#view-create_account_social button[type="submit"],
+#view-profile_step_1 button[type="submit"] {
+    background-color: var(--forest-green) !important;
+    color: var(--warm-cream) !important;
+    border-radius: 16px !important;
+    font-weight: 700 !important;
+    height: 56px !important;
+    box-shadow: 0 4px 12px rgba(48, 138, 94, 0.12) !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    border: none !important;
+}
+html.dark #welcome-next-btn,
+html.dark #view-sign_in button[type="submit"],
+html.dark #consent-continue-btn,
+html.dark #btn-onboarding-location-permission,
+html.dark #view-create_account button[type="submit"],
+html.dark #view-create_account_social button[type="submit"],
+html.dark #view-profile_step_1 button[type="submit"] {
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+#welcome-next-btn:active,
+#view-sign_in button[type="submit"]:active,
+#consent-continue-btn:active,
+#btn-onboarding-location-permission:active,
+#view-create_account button[type="submit"]:active,
+#view-create_account_social button[type="submit"]:active,
+#view-profile_step_1 button[type="submit"]:active {
+    transform: scale(0.97) !important;
+    background-color: #27704c !important;
+}
+
+/* Secondary Outline Buttons in Onboarding */
+#view-welcome button[onclick*="sign_in"],
+#view-sign_in button[onclick*="create_account"] {
+    background-color: transparent !important;
+    border: 2px solid rgba(48, 138, 94, 0.25) !important;
+    color: var(--forest-green) !important;
+    border-radius: 16px !important;
+    font-weight: 700 !important;
+    height: 54px !important;
+    box-shadow: none !important;
+    transition: all 0.25s ease !important;
+}
+html.dark #view-welcome button[onclick*="sign_in"],
+html.dark #view-sign_in button[onclick*="create_account"] {
+    border-color: rgba(130, 185, 149, 0.25) !important;
+    color: #82b995 !important;
+}
+
+#view-welcome button[onclick*="sign_in"]:active,
+#view-sign_in button[onclick*="create_account"]:active {
+    background-color: rgba(48, 138, 94, 0.05) !important;
+    border-color: var(--forest-green) !important;
+}
+html.dark #view-welcome button[onclick*="sign_in"]:active,
+html.dark #view-sign_in button[onclick*="create_account"]:active {
+    background-color: rgba(130, 185, 149, 0.05) !important;
+    border-color: #82b995 !important;
+}
+
+/* Dev Auto Login Button */
+#view-welcome button[onclick*="handleDevAutoLogin"] {
+    background-color: rgba(48, 138, 94, 0.06) !important;
+    border: 1px solid rgba(48, 138, 94, 0.12) !important;
+    color: var(--forest-green) !important;
+    border-radius: 16px !important;
+    font-weight: 700 !important;
+    height: 54px !important;
+    box-shadow: none !important;
+    transition: all 0.25s ease !important;
+}
+html.dark #view-welcome button[onclick*="handleDevAutoLogin"] {
+    background-color: rgba(130, 185, 149, 0.06) !important;
+    border-color: rgba(130, 185, 149, 0.12) !important;
+    color: #82b995 !important;
+}
+#view-welcome button[onclick*="handleDevAutoLogin"]:active {
+    background-color: rgba(48, 138, 94, 0.12) !important;
+}
+
+/* Secondary Autofill Buttons in Onboarding */
+#btn-autofill-register,
+#btn-autofill-register-social {
+    background-color: rgba(34, 197, 94, 0.06) !important;
+    border: 1px solid rgba(34, 197, 94, 0.18) !important;
+    color: #16a34a !important;
+    border-radius: 16px !important;
+    font-weight: 700 !important;
+    height: 54px !important;
+    box-shadow: none !important;
+    transition: all 0.25s ease !important;
+}
+html.dark #btn-autofill-register,
+html.dark #btn-autofill-register-social {
+    background-color: rgba(34, 197, 94, 0.08) !important;
+    border-color: rgba(34, 197, 94, 0.25) !important;
+    color: #4ade80 !important;
+}
+#btn-autofill-register:active,
+#btn-autofill-register-social:active {
+    background-color: rgba(34, 197, 94, 0.15) !important;
+}
+
+/* Back navigation button design */
+button[onclick*="showView("].self-start,
+button[onclick*="showView("].self-start * {
+    background-color: rgba(48, 138, 94, 0.06) !important;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: var(--forest-green) !important;
+    transition: all 0.25s ease !important;
+    border: none !important;
+    padding: 0 !important;
+}
+html.dark button[onclick*="showView("].self-start,
+html.dark button[onclick*="showView("].self-start * {
+    background-color: rgba(130, 185, 149, 0.08) !important;
+    color: #82b995 !important;
+}
+button[onclick*="showView("].self-start:active {
+    transform: scale(0.9) !important;
+    background-color: rgba(48, 138, 94, 0.12) !important;
+}
+
+/* Profile avatar upload preview elements */
+.profile-avatar-ring {
+    border: 2px solid var(--forest-green) !important;
+    padding: 2px !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(48, 138, 94, 0.08) !important;
+    border-radius: 50% !important;
+}
+html.dark .profile-avatar-ring {
+    border-color: #82b995 !important;
+    background-color: #151d18 !important;
+}
+
+/* EULA scrollboxes & accordion items */
+.eula-scroll-box {
+    background-color: #faf9f6 !important;
+    border: 1px solid rgba(48, 138, 94, 0.1) !important;
+    border-radius: 16px !important;
+}
+html.dark .eula-scroll-box {
+    background-color: #0d120f !important;
+    border-color: rgba(130, 185, 149, 0.1) !important;
+}
+
+.EULA-accordion-item {
+    border-color: rgba(48, 138, 94, 0.05) !important;
+}
+
+/* Welcome Slide Premium Text Styles */
+.welcome-slide h1 {
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    color: #12281a !important;
+    margin-top: 1rem !important;
+    margin-bottom: 0.75rem !important;
+}
+html.dark .welcome-slide h1 {
+    color: #ffffff !important;
+}
+
+.welcome-slide p {
+    color: #55665b !important;
+    font-size: 12px !important;
+    line-height: 1.6 !important;
+}
+html.dark .welcome-slide p {
+    color: #9ab0a1 !important;
+}
+
+/* Location setup custom animations */
+.location-icon-container {
+    width: 80px !important;
+    height: 80px !important;
+    border-radius: 50% !important;
+    background-color: rgba(59, 130, 246, 0.08) !important;
+    border: 1px solid rgba(59, 130, 246, 0.15) !important;
+    color: #3b82f6 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-bottom: 24px !important;
+    position: relative !important;
+}
+html.dark .location-icon-container {
+    background-color: rgba(96, 165, 250, 0.1) !important;
+    border-color: rgba(96, 165, 250, 0.2) !important;
+    color: #60a5fa !important;
+}
+.location-icon-container::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 1.5px dashed rgba(59, 130, 246, 0.3);
+    border-radius: 50%;
+    animation: rotateDashed 20s linear infinite;
+}
+@keyframes rotateDashed {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

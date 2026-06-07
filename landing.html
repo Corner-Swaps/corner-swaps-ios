@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Barterland - Community Barter App</title>
+    
+    <!-- Tailwind CSS & Plugins (Stitch CDN) -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Font Awesome / Material Iconography -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet Map CSS -->
+    <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" rel="stylesheet">
+    
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="landing.css">
+
+    <!-- Tailwind Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        'forest-green': 'var(--forest-green-val)',
+                        'warm-cream': 'var(--warm-cream-val)',
+                        'outline-variant': 'var(--outline-variant-val)',
+                        'outline': 'var(--outline-val)',
+                        'on-surface-variant': 'var(--on-surface-variant-val)',
+                        'on-surface': 'var(--forest-green-val)',
+                        'surface-container': '#f0eee9',
+                        'surface-container-low': '#f5f3ee',
+                        'surface-container-lowest': '#ffffff',
+                        'background': 'var(--warm-cream-val)',
+                        'surface': 'var(--warm-cream-val)',
+                        'error': '#ba1a1a',
+                        'primary': 'var(--forest-green-val)',
+                        'primary-container': 'var(--forest-green-val)',
+                        'on-primary': 'var(--warm-cream-val)'
+                    },
+                    borderRadius: {
+                        'xl': '12px',
+                        '2xl': '16px',
+                        'full': '9999px'
+                    },
+                    fontFamily: {
+                        headline: ["Newsreader", "serif"],
+                        body: ["Work Sans", "sans-serif"]
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+<body class="bg-[#eae8e3]">
+
+    <!-- MOCK SLIDING PUSH NOTIFICATION -->
+    <div id="mock-push-notification" class="fixed top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm bg-white/95 backdrop-blur-md border border-forest-green/20 rounded-2xl p-3 shadow-xl z-[9999] flex items-start gap-3 transform -translate-y-36 transition-transform duration-500 cursor-pointer select-none" onclick="handleNotificationClick()">
+        <div class="w-8 h-8 rounded-full bg-forest-green/10 flex items-center justify-center text-forest-green flex-shrink-0">
+            <span class="material-symbols-outlined text-base" id="notification-icon">notifications</span>
+        </div>
+        <div class="flex-grow min-w-0">
+            <div class="flex justify-between items-center">
+                <span class="text-[9px] font-bold text-forest-green uppercase tracking-wider">Barterland Alert</span>
+                <span class="text-[8px] text-outline">Just now</span>
+            </div>
+            <h4 class="font-bold text-xs text-on-surface truncate mt-0.5" id="notification-title">New Offer Received</h4>
+            <p class="text-[10px] text-on-surface-variant leading-tight mt-0.5" id="notification-body">Someone wants to trade with you!</p>
+        </div>
+        <button class="text-outline hover:text-on-surface flex-shrink-0" onclick="event.stopPropagation(); dismissNotification()">
+            <span class="material-symbols-outlined text-sm font-semibold">close</span>
+        </button>
+    </div>
+
+
+    <!-- DESKTOP SIMULATOR CONTROL PANEL (Hidden because simulator framing is removed) -->
+    <div id="simulator-control-panel" class="hidden">
+        <span class="material-symbols-outlined text-[16px] text-forest-green" style="font-variation-settings: 'FILL' 1;">zoom_in</span>
+        <span class="font-bold tracking-wide">Simulator Scale:</span>
+        <select id="simulator-scale-select" onchange="adjustSimulatorScale(this.value)" class="bg-transparent border-0 py-0 pl-1 pr-7 text-xs font-bold text-[#308A5E] focus:ring-0 cursor-pointer outline-none font-body">
+            <option value="0.5">50%</option>
+            <option value="0.6">60%</option>
+            <option value="0.7">70%</option>
+            <option value="0.75" selected>75%</option>
+            <option value="0.8">80%</option>
+            <option value="0.85">85%</option>
+            <option value="0.9">90%</option>
+            <option value="1.0">100%</option>
+        </select>
+    </div>
+
+    <!-- Main content area -->
+    <main id="app-content" class="flex-grow flex flex-col">
+        <!-- ==================================================== -->
+        <!-- 00. PUBLIC MARKETING LANDING PAGE (WEBSITE) -->
+        <!-- ==================================================== -->
+                <section id="view-landing" class="screen-view active flex-grow flex flex-col overflow-y-auto">
+
+    <!-- Background Organic Blobs -->
+    <div class="organic-blob w-[400px] h-[400px] top-[10%] -left-[100px] opacity-75"></div>
+    <div class="organic-blob w-[500px] h-[500px] top-[60%] -right-[150px] opacity-60"></div>
+    <div class="organic-blob w-[300px] h-[300px] bottom-[5%] left-[15%] opacity-50"></div>
+
+<header class="glass-nav fixed top-0 left-0 w-full z-[1000] h-20 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
+            
+            <!-- Brand Toggle and Text -->
+            <div class="flex items-center gap-3 select-none">
+                <a href="index.html" class="flex items-center justify-center w-10 h-10 rounded-xl hover:bg-forest-green/5 transition-all text-forest-green border border-forest-green/10" title="Switch to Application Mode">
+                    <span class="material-symbols-outlined text-[22px]">public</span>
+                </a>
+                <span class="font-headline text-2xl font-bold tracking-wide text-forest-green">Barterland</span>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-4">
+                <!-- Developer Auto-Login -->
+                <button onclick="handleDevAutoLogin()" class="w-10 h-10 hover:bg-forest-green/5 rounded-full border border-forest-green/10 text-forest-green transition-colors flex items-center justify-center" title="Developer Auto-Login" aria-label="Developer Auto-Login">
+                    <span class="material-symbols-outlined text-[20px]">developer_mode</span>
+                </button>
+                
+                <!-- Sign In Button -->
+                <button onclick="showView('sign_in')" class="border border-forest-green hover:bg-forest-green/5 text-forest-green dark:border-emerald-500 dark:text-emerald-500 dark:hover:bg-emerald-500/10 px-4 py-2 rounded-xl font-bold text-xs tracking-wider uppercase active:scale-95 transition-all">
+                    Sign In
+                </button>
+                <!-- Register Button -->
+                <button onclick="showView('create_account')" class="bg-forest-green text-warm-cream dark:bg-[#82b995] dark:text-[#101612] px-4 py-2 rounded-xl font-bold text-xs tracking-wider uppercase active:scale-95 transition-all shadow-sm hover:shadow-md">
+                    Register
+                </button>
+            </div>
+        </div>
+    </header>
+
+<!-- LIVE BULLETINS TICKER -->
+    <!-- ==================================================== -->
+    <div class="border-y border-forest-green/10 bg-soft-green/30 dark:bg-soft-green/5 mt-20 py-4 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-4 justify-between">
+            <div class="flex items-center gap-2 shrink-0">
+                <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-forest-green">Live Exchange Ticker:</span>
+            </div>
+            <!-- Dynamic vertical ticker container -->
+            <div id="live-feed-ticker-container" class="flex-grow max-w-2xl overflow-hidden h-[54px] flex flex-col gap-2 relative">
+                <!-- Injected dynamically via JS -->
+            </div>
+        </div>
+    </div>
+
+    
+
+<section class="relative pt-12 pb-20 px-6 max-w-7xl mx-auto overflow-hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Hero Left: Description Copy -->
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left reveal active">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-forest-green/5 border border-forest-green/15 text-forest-green font-bold text-[11px] uppercase tracking-widest shadow-sm select-none">
+                    <span class="material-symbols-outlined text-[13px]">published_with_changes</span> Local & 100% Cashless
+                </span>
+                
+                <h1 class="font-headline text-5xl md:text-6xl font-bold text-forest-green leading-tight">
+                    Trade Skills, Share Goods, <br class="hidden sm:inline">
+                    Build <span class="italic font-medium text-leaf-sage">Local Community</span>
+                </h1>
+                
+                <p class="text-sm md:text-base text-forest-green/70 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                    Step into a world where neighbors are friends and community is currency. Trade everything from fresh sourdough and garden tools to acoustic guitar lessons and tech support. No money, no interest—just mutual aid and resilient growth.
+                </p>
+
+                <!-- Action Button Trigger -->
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                    <button onclick="scrollToLandingSection('calculator')" class="w-full sm:w-auto bg-forest-green text-warm-cream dark:bg-[#82b995] dark:text-[#101612] px-8 py-4 rounded-xl font-bold text-sm text-center shadow-md hover:shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        Calculate Your Impact
+                        <span class="material-symbols-outlined text-sm">calculate</span>
+                    </button>
+                    <button onclick="scrollToLandingSection('village-map')" class="w-full sm:w-auto border border-forest-green text-forest-green hover:bg-forest-green/5 px-8 py-4 rounded-xl font-bold text-sm text-center active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        Explore Local Map
+                    </button>
+                </div>
+
+                <!-- Bento Stat Badges -->
+                <div class="grid grid-cols-3 gap-6 border-t border-forest-green/10 pt-8 mt-12 max-w-lg mx-auto lg:mx-0 select-none">
+                    <div>
+                        <h4 class="font-headline text-3xl font-bold text-forest-green">1.2k+</h4>
+                        <p class="text-[11px] font-bold text-forest-green/60 uppercase mt-1">Active Neighbors</p>
+                    </div>
+                    <div>
+                        <h4 class="font-headline text-3xl font-bold text-forest-green">4.8k+</h4>
+                        <p class="text-[11px] font-bold text-forest-green/60 uppercase mt-1">Swaps Completed</p>
+                    </div>
+                    <div>
+                        <h4 class="font-headline text-3xl font-bold text-forest-green">24kg</h4>
+                        <p class="text-[11px] font-bold text-forest-green/60 uppercase mt-1">Avg. CO₂ Saved / Trade</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Right: Premium Illustration Showcase -->
+            <div class="lg:col-span-5 flex justify-center items-center reveal active">
+                <div class="hero-image-container animate-float-slow p-3 bg-white/40 dark:bg-white/5 border border-forest-green/10 dark:border-white/10 rounded-[32px] shadow-xl max-w-md w-full overflow-hidden transition-all duration-500 hover:shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=800" class="w-full h-auto rounded-[24px] object-cover border border-forest-green/5" alt="Barterland Community Exchange">
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    
+
+<!-- KEY FEATURES BENTO GRID -->
+    <!-- ==================================================== -->
+    <section id="features" class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+            <h2 class="font-headline text-4xl md:text-5xl font-bold text-forest-green">How Barterland Strengthens Communities</h2>
+            <p class="text-sm text-forest-green/70 mt-4">By taking money out of the equation, we help neighbors build direct connections, practice sustainability, and share resources sustainably.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            
+            <!-- Card 1: Cashless Barter Marketplace (Large - 8 Columns) -->
+            <div class="glass-card md:col-span-8 p-8 rounded-3xl flex flex-col justify-between h-[260px] reveal">
+                <div class="flex justify-between items-start">
+                    <span class="material-symbols-outlined text-4xl text-forest-green">handshake</span>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-forest-green/50 bg-forest-green/5 px-2.5 py-1.5 rounded-lg border border-forest-green/10">Cashless Economy</span>
+                </div>
+                <div class="space-y-3 mt-4">
+                    <h3 class="font-headline text-2xl font-bold text-forest-green">Trade Talents and Goods Directly</h3>
+                    <p class="text-xs md:text-sm text-forest-green/75 leading-relaxed">
+                        List the skills you have—like acoustic guitar tutoring or garden weeding—and look for what you need—like fresh sourdough bread or tool loans. Negotiate and execute the trade in a secure environment with no credit cards, fees, or interest.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Card 2: Interactive Map (Medium - 4 Columns) -->
+            <div class="glass-card md:col-span-4 p-8 rounded-3xl flex flex-col justify-between h-[260px] reveal">
+                <div class="flex justify-between items-start">
+                    <span class="material-symbols-outlined text-4xl text-forest-green">map</span>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-forest-green/50 bg-forest-green/5 px-2.5 py-1.5 rounded-lg border border-forest-green/10">Local Map</span>
+                </div>
+                <div class="space-y-3 mt-4">
+                    <h3 class="font-headline text-2xl font-bold text-forest-green">Interactive Discovery</h3>
+                    <p class="text-xs md:text-sm text-forest-green/75 leading-relaxed">
+                        Locate trade pins pinned in your exact vicinity using our integrated Leaflet map. Coordinate safely and arrange swaps in well-lit public hubs.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Card 3: Green Impact (Medium - 4 Columns) -->
+            <div class="glass-card md:col-span-4 p-8 rounded-3xl flex flex-col justify-between h-[260px] reveal">
+                <div class="flex justify-between items-start">
+                    <span class="material-symbols-outlined text-4xl text-forest-green">eco</span>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-forest-green/50 bg-forest-green/5 px-2.5 py-1.5 rounded-lg border border-forest-green/10">CO₂ Reductions</span>
+                </div>
+                <div class="space-y-3 mt-4">
+                    <h3 class="font-headline text-2xl font-bold text-forest-green">Environmental Offset Tracker</h3>
+                    <p class="text-xs md:text-sm text-forest-green/75 leading-relaxed">
+                        Extend the lifecycle of household goods and share tools instead of buying new. Learn about the carbon offsets and plastic bottles you avoid with every swap.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Card 4: Karma & Vouches (Large - 8 Columns) -->
+            <div class="glass-card md:col-span-8 p-8 rounded-3xl flex flex-col justify-between h-[260px] reveal">
+                <div class="flex justify-between items-start">
+                    <span class="material-symbols-outlined text-4xl text-forest-green">military_tech</span>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-forest-green/50 bg-forest-green/5 px-2.5 py-1.5 rounded-lg border border-forest-green/10">Reputation Level</span>
+                </div>
+                <div class="space-y-3 mt-4">
+                    <h3 class="font-headline text-2xl font-bold text-forest-green">Karma Points & Reputation Levels</h3>
+                    <p class="text-xs md:text-sm text-forest-green/75 leading-relaxed">
+                        Earn reputation points (XP) for every verified swap you complete. Get vouched by other active neighbors and climb levels to unlock new achievements—moving from an "Active Neighbor" to a "Village Legend".
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    
+
+<!-- INTERACTIVE VILLAGE MAP SHOWCASE -->
+    <!-- ==================================================== -->
+    <section id="village-map" class="py-20 border-t border-forest-green/10 bg-soft-green/5 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left panel Map Copy -->
+                <div class="lg:col-span-5 space-y-6 reveal">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-forest-green/5 border border-forest-green/15 text-forest-green font-bold text-[11px] uppercase tracking-widest shadow-sm select-none">
+                        <span class="material-symbols-outlined text-[13px]">location_on</span> Safe Swap Zones
+                    </span>
+                    <h2 class="font-headline text-4xl font-bold text-forest-green leading-tight">Local Map</h2>
+                    <p class="text-sm text-forest-green/70 leading-relaxed">
+                        Click on the neighbor pins on this preview map to see recent local offerings. In the app, you can browse listings pinned in your precise vicinity and schedule exchanges safely in local spots, ensuring complete neighborhood transparency.
+                    </p>
+                    <div class="space-y-3 pt-2">
+                        <div class="flex items-start gap-2.5 text-xs text-forest-green/80">
+                            <span class="material-symbols-outlined text-base text-[#457A56] mt-0.5">location_on</span>
+                            <span><strong>No Exact Addresses:</strong> All map coordinates are offset slightly to preserve the exact privacy of your home.</span>
+                        </div>
+                        <div class="flex items-start gap-2.5 text-xs text-forest-green/80">
+                            <span class="material-symbols-outlined text-base text-[#457A56] mt-0.5">verified</span>
+                            <span><strong>Safe Exchange Zones:</strong> Highlighted local parks, cafes, and community centres for secure handoffs.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right panel Leaflet Map -->
+                <div class="lg:col-span-7 reveal relative">
+                    <!-- Map Wrapper to prevent drawer leaks -->
+                    <div class="relative overflow-hidden rounded-3xl border border-forest-green/15 shadow-md w-full h-[400px]">
+                        <div class="w-full h-full" id="landing-preview-map">
+                            <!-- Loaded dynamically via Leaflet -->
+                        </div>
+                        
+                        <!-- Landing page neighbor details overlay -->
+                        <div class="detail-overlay" id="landing-map-detail-overlay">
+                            <div class="relative h-44 w-full flex-shrink-0">
+                                <img alt="Service" class="w-full h-full object-cover" id="landing-map-detail-img" src="">
+                                <button class="absolute top-4 right-4 w-9 h-9 bg-black text-white rounded-full flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all z-30" onclick="closeLandingMapItemDetail()">
+                                    <span class="material-symbols-outlined font-bold text-lg">close</span>
+                                </button>
+                            </div>
+                            <div class="flex-grow overflow-y-auto p-5 flex flex-col justify-between custom-scrollbar text-left">
+                                <div>
+                                    <div class="flex justify-between items-start mb-1">
+                                        <h2 class="font-headline text-xl text-forest-green font-bold" id="landing-map-detail-title">Homegrown Produce</h2>
+                                        <div class="flex items-center gap-1.5 ml-2 flex-shrink-0" id="landing-map-detail-status-container">
+                                            <div class="flex items-center gap-1 bg-white dark:bg-[#18201a] border border-outline-variant/20 px-2 py-1 rounded-xl shadow-sm" id="landing-map-detail-status-dots" title="Swap Status">
+                                                <div class="w-2 h-2 rounded-full bg-[#22c55e]" id="landing-map-detail-dot-available" title="Available"></div>
+                                                <div class="w-2 h-2 rounded-full bg-[#f59e0b]" id="landing-map-detail-dot-negotiating" title="Negotiating"></div>
+                                                <div class="w-2 h-2 rounded-full bg-[#ef4444]" id="landing-map-detail-dot-traded" title="Traded"></div>
+                                            </div>
+                                            <span class="text-[9px] font-bold text-on-surface-variant" id="landing-map-detail-status-text">Available</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-1 text-on-surface-variant text-[11px] mb-3">
+                                        <span class="material-symbols-outlined text-sm">location_on</span>
+                                        <span id="landing-map-detail-location">Village · Yaletown</span>
+                                    </div>
+                                    <p class="text-on-surface-variant text-xs leading-relaxed mb-4" id="landing-map-detail-desc"></p>
+                                </div>
+                                
+                                <div class="space-y-3">
+                                    <div class="bg-white p-3 rounded-xl flex items-center gap-3 border border-outline-variant/30 cursor-pointer hover:bg-forest-green/5 transition-all" onclick="handleLandingMapDetailAuthorClick()">
+                                        <img alt="Profile" class="w-9 h-9 rounded-full object-cover" id="landing-map-detail-author-avatar" src="">
+                                        <div class="flex-grow min-w-0">
+                                            <p class="font-bold text-forest-green text-xs" id="landing-map-detail-author-name">Mia</p>
+                                            <p class="text-[10px] text-on-surface-variant truncate" id="landing-map-detail-rating">Village Trusted · 4.8 ★</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-lg text-[#D99036]" style="color: #D99036;">verified</span>
+                                    </div>
+                                    <button id="landing-map-detail-cta" class="w-full bg-forest-green text-warm-cream py-3.5 rounded-xl font-bold flex items-center justify-center gap-1.5 active:scale-[0.98] transition-transform text-xs shadow-md">
+                                        <span class="material-symbols-outlined text-sm">chat_bubble</span> Sign In to Barter & Chat
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    
+
+<!-- HOW IT WORKS TIMELINE -->
+    <!-- ==================================================== -->
+    <section id="how-it-works" class="py-20 px-6 border-t border-forest-green/10 bg-soft-green/10 dark:bg-soft-green/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+                <h2 class="font-headline text-4xl md:text-5xl font-bold text-forest-green">The Barter Journey</h2>
+                <p class="text-sm text-forest-green/70 mt-4">Trading with neighbors is simple, safe, and completely cashless. Here is how it works from sign-up to trade completion.</p>
+            </div>
+
+            <!-- Desktop Horizontal Timeline line and circles -->
+            <div class="relative mb-8 max-w-7xl mx-auto hidden md:block select-none">
+                <!-- Timeline Connecting Line -->
+                <div class="absolute top-1/2 left-[12.5%] right-[12.5%] h-0.5 bg-forest-green/20 -translate-y-1/2 z-0"></div>
+                <!-- Step Circles Grid -->
+                <div class="grid grid-cols-4 gap-6 relative z-10 text-center">
+                    <div>
+                        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-forest-green text-warm-cream font-bold text-sm shadow-md border-4 border-warm-cream dark:border-[#101612]">1</span>
+                    </div>
+                    <div>
+                        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-forest-green text-warm-cream font-bold text-sm shadow-md border-4 border-warm-cream dark:border-[#101612]">2</span>
+                    </div>
+                    <div>
+                        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-forest-green text-warm-cream font-bold text-sm shadow-md border-4 border-warm-cream dark:border-[#101612]">3</span>
+                    </div>
+                    <div>
+                        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-forest-green text-warm-cream font-bold text-sm shadow-md border-4 border-warm-cream dark:border-[#101612]">4</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Step 1 -->
+                <div class="bg-white/60 dark:bg-[#18201a]/60 backdrop-blur-md p-5 rounded-3xl border border-forest-green/10 flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden group text-left">
+                    <div class="h-32 w-full overflow-hidden rounded-2xl mb-4 relative">
+                        <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=400" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Define Offerings & Needs">
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-headline text-[13px] lg:text-sm font-bold text-forest-green flex items-center whitespace-nowrap">
+                            <span class="md:hidden inline-flex items-center justify-center w-6 h-6 rounded-full bg-forest-green text-warm-cream font-bold text-xs mr-2 flex-shrink-0">1</span>
+                            Define Offerings & Needs
+                        </h3>
+                        <p class="text-xs text-forest-green/75 leading-relaxed">
+                            Join the community, set up your safe general neighborhood, and tag items or skills you can share alongside things you need.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-white/60 dark:bg-[#18201a]/60 backdrop-blur-md p-5 rounded-3xl border border-forest-green/10 flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden group text-left">
+                    <div class="h-32 w-full overflow-hidden rounded-2xl mb-4 relative">
+                        <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=400" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Browse the Map & Chat">
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-headline text-[13px] lg:text-sm font-bold text-forest-green flex items-center whitespace-nowrap">
+                            <span class="md:hidden inline-flex items-center justify-center w-6 h-6 rounded-full bg-forest-green text-warm-cream font-bold text-xs mr-2 flex-shrink-0">2</span>
+                            Browse the Map & Chat
+                        </h3>
+                        <p class="text-xs text-forest-green/75 leading-relaxed">
+                            Search the interactive neighborhood map to discover local swap offerings. Launch real-time chat threads to organize logistics.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-white/60 dark:bg-[#18201a]/60 backdrop-blur-md p-5 rounded-3xl border border-forest-green/10 flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden group text-left">
+                    <div class="h-32 w-full overflow-hidden rounded-2xl mb-4 relative">
+                        <img src="barter_step3.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Propose & Agree on Swaps">
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-headline text-[13px] lg:text-sm font-bold text-forest-green flex items-center whitespace-nowrap">
+                            <span class="md:hidden inline-flex items-center justify-center w-6 h-6 rounded-full bg-forest-green text-warm-cream font-bold text-xs mr-2 flex-shrink-0">3</span>
+                            Propose & Agree on Swaps
+                        </h3>
+                        <p class="text-xs text-forest-green/75 leading-relaxed">
+                            Formulate a formal barter deal inside the chat. Specify exactly what you're exchanging, then accept to lock in the swap.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="bg-white/60 dark:bg-[#18201a]/60 backdrop-blur-md p-5 rounded-3xl border border-forest-green/10 flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden group text-left">
+                    <div class="h-32 w-full overflow-hidden rounded-2xl mb-4 relative">
+                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=400" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Meet Safely & Vouch">
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-headline text-[13px] lg:text-sm font-bold text-forest-green flex items-center whitespace-nowrap">
+                            <span class="md:hidden inline-flex items-center justify-center w-6 h-6 rounded-full bg-forest-green text-warm-cream font-bold text-xs mr-2 flex-shrink-0">4</span>
+                            Meet Safely & Vouch
+                        </h3>
+                        <p class="text-xs text-forest-green/75 leading-relaxed">
+                            Exchange items at safe public spots. Rate your experience, write a positive vouch, earn Karma points, and level up!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+<!-- INTERACTIVE CARBON FOOTPRINT CALCULATOR -->
+    <!-- ==================================================== -->
+    <section id="calculator" class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Left panel: Form sliders -->
+            <div class="lg:col-span-5 space-y-6 reveal">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-forest-green/5 border border-forest-green/15 text-forest-green font-bold text-[11px] uppercase tracking-widest shadow-sm select-none">
+                    <span class="material-symbols-outlined text-[13px]">eco</span> Environmental Impact
+                </span>
+                <h2 class="font-headline text-4xl font-bold text-forest-green leading-tight">Estimate Your Village Savings</h2>
+                <p class="text-sm text-forest-green/70 leading-relaxed">
+                    Every swap keeps resources in circulation, averts manufacturing emissions, and prevents plastic wastes. Slide below to see your potential footprint savings!
+                </p>
+
+                <!-- Calculator Form controls -->
+                <div class="bg-white border border-forest-green/10 dark:bg-[#18201a] p-6 rounded-3xl space-y-6 shadow-sm border border-outline mt-6">
+                    <div class="space-y-2">
+                        <label for="calc-category" class="text-xs font-bold uppercase tracking-wider text-forest-green/70 block">Select Trade Category</label>
+                        <div class="relative">
+                            <select id="calc-category" class="w-full h-13 pl-4 pr-10 bg-warm-cream border border-forest-green/10 dark:border-white/10 rounded-xl text-xs font-semibold focus:border-forest-green focus:ring-0 outline-none appearance-none cursor-pointer">
+                                <option value="sourdough" selected>🥖 Artisanal Sourdough Bread</option>
+                                <option value="tools">🛠️ Tool Loan (Drill / Saw / Mower)</option>
+                                <option value="garden">🌿 Balcony & Garden Maintenance</option>
+                                <option value="tech">💻 Technical & Digital Tutoring</option>
+                                <option value="clothing">👕 Clothing Swap Items</option>
+                                <option value="book">📚 Kids Books & Jigsaw Puzzles</option>
+                            </select>
+                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-forest-green pointer-events-none">expand_more</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-forest-green/70">
+                            <span>Amount of Swaps</span>
+                            <span id="calc-slider-val" class="text-sm text-forest-green font-bold">5</span>
+                        </div>
+                        <input id="calc-slider" type="range" min="1" max="30" value="5" class="custom-range">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right panel: Calculation stats -->
+            <div class="lg:col-span-7 bg-[#E8EFE5] dark:bg-soft-green p-8 md:p-12 rounded-3xl reveal flex flex-col justify-between">
+                <div>
+                    <span class="text-[10px] font-bold tracking-widest text-[#457A56] uppercase block mb-1">TOTAL OFFSET ESTIMATE</span>
+                    <h3 class="font-headline text-5xl md:text-6xl font-bold text-[#308A5E] dark:text-[#82b995] flex items-baseline gap-2">
+                        <span id="calc-co2-saved">6.0</span>
+                        <span class="text-lg font-body font-semibold text-[#308A5E]/70 dark:text-gray-300">kg CO₂ Saved</span>
+                    </h3>
+                    <p class="text-xs font-semibold text-[#457A56] mt-2">
+                        That is equal to <strong id="calc-unit-label">5 loaves</strong> traded in your neighborhood. An <span id="calc-detail-label">estimated carbon savings.</span>
+                    </p>
+                </div>
+
+                <!-- Equivalencies grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-[#308A5E]/15 dark:border-white/10 pt-8 mt-12">
+                    <div class="space-y-2">
+                        <span class="material-symbols-outlined text-3xl text-emerald-600 dark:text-[#82b995]">delete_outline</span>
+                        <h4 class="font-headline text-3xl font-bold text-[#308A5E] dark:text-[#82b995]" id="calc-bottles-saved">150</h4>
+                        <p class="text-[10px] font-bold text-gray-500 uppercase">Plastic Bottles Saved</p>
+                    </div>
+                    <div class="space-y-2">
+                        <span class="material-symbols-outlined text-3xl text-sky-600 dark:text-[#82b995]">bolt</span>
+                        <h4 class="font-headline text-3xl font-bold text-[#308A5E] dark:text-[#82b995]" id="calc-charges-saved">732</h4>
+                        <p class="text-[10px] font-bold text-gray-500 uppercase">Smartphone Charges</p>
+                    </div>
+                    <div class="space-y-2">
+                        <span class="material-symbols-outlined text-3xl text-orange-600 dark:text-[#82b995]">directions_car</span>
+                        <h4 class="font-headline text-3xl font-bold text-[#308A5E] dark:text-[#82b995]"><span id="calc-drive-saved">24.6</span> <span class="text-xs">km</span></h4>
+                        <p class="text-[10px] font-bold text-gray-500 uppercase">Car Distance Offset</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    
+
+<!-- CASHLESS SWAP MESSAGING SECTION -->
+    <!-- ==================================================== -->
+    <section id="cashless-swap-messaging" class="py-20 border-t border-forest-green/10 bg-warm-cream px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Left Column: Copy & Benefits -->
+                <div class="lg:col-span-6 space-y-6 reveal">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-forest-green/5 border border-forest-green/15 text-forest-green font-bold text-[11px] uppercase tracking-widest shadow-sm select-none">
+                        <span class="material-symbols-outlined text-[13px]">chat_bubble</span> Cashless Trust
+                    </span>
+                    <h2 class="font-headline text-4xl font-bold text-forest-green leading-tight">Cashless Swap Messaging</h2>
+                    <p class="text-sm text-forest-green/70 leading-relaxed">
+                        Every transaction on Barterland is coordinated via our cashless proposal system. Send messages, negotiate swaps, accept formal proposals, and lock in trades securely. The built-in escrow flow ensures mutual agreement before items change hands, fostering complete neighborhood transparency and trust.
+                    </p>
+                    <div class="space-y-3 pt-2">
+                        <div class="flex items-start gap-2.5 text-xs text-forest-green/80">
+                            <span class="material-symbols-outlined text-base text-[#457A56] mt-0.5">forum</span>
+                            <span><strong>Direct Messaging:</strong> Talk to your neighbors directly to coordinate and specify trade details.</span>
+                        </div>
+                        <div class="flex items-start gap-2.5 text-xs text-forest-green/80">
+                            <span class="material-symbols-outlined text-base text-[#457A56] mt-0.5">handshake</span>
+                            <span><strong>Formal Swap Proposals:</strong> Propose item-for-item or service-for-service swaps with locked parameters.</span>
+                        </div>
+                        <div class="flex items-start gap-2.5 text-xs text-forest-green/80">
+                            <span class="material-symbols-outlined text-base text-[#457A56] mt-0.5">thumb_up</span>
+                            <span><strong>Double Vouching:</strong> Both sides verify when the swap is completed, releasing local points or confirmation badge.</span>
+                        </div>
+                    </div>
+                    <div class="pt-4">
+                        <button onclick="showView('how_messaging_works')" class="bg-forest-green text-warm-cream px-8 py-3.5 rounded-xl text-xs font-bold hover:bg-forest-green/90 transition-all active:scale-[0.98] shadow-md flex items-center justify-center gap-2 cursor-pointer">
+                            <span class="material-symbols-outlined text-sm">explore</span> See How Messaging Works
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Column: Visual Mockup / Interface Cards -->
+                <div class="lg:col-span-6 reveal">
+                    <div class="bg-[#F6F5F2] dark:bg-[#151D18] rounded-3xl border border-forest-green/15 p-5 shadow-lg space-y-4 max-w-md mx-auto">
+                        <!-- Chat Header Card -->
+                        <div class="flex items-center gap-3 border-b border-outline-variant/30 pb-3 bg-white dark:bg-[#18201a] p-3 -mx-5 -mt-5 rounded-t-3xl">
+                            <img id="mock-chat-header-avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=150" class="w-9 h-9 rounded-full object-cover border border-outline-variant/30" alt="Mia">
+                            <div>
+                                <h4 id="mock-chat-header-name" class="text-xs font-bold text-forest-green dark:text-emerald-400">Mia (Neighbor)</h4>
+                                <p id="mock-chat-header-rating" class="text-[9px] text-on-surface-variant font-medium">Trust Score: 4.8 · Active 5m ago</p>
+                            </div>
+                        </div>
+
+                        <!-- Chat Messages Feed mockup -->
+                        <div class="space-y-3.5 flex flex-col">
+                            <!-- Left Bubble (Mia) -->
+                            <div class="flex gap-2 max-w-[85%] self-start items-end">
+                                <img id="mock-chat-bubble-avatar-left-1" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=150" class="w-7 h-7 rounded-full object-cover border border-outline-variant/20 flex-shrink-0 mb-1">
+                                <div class="bg-white dark:bg-[#18201a] text-forest-green dark:text-emerald-400 p-3 rounded-2xl rounded-tl-none border border-outline-variant/15 shadow-sm text-left text-xs leading-relaxed">
+                                    <span id="mock-chat-bubble-text-left-1">Hi! I'd love to swap some of my organic sourdough bread for your fresh tomato seedlings.</span>
+                                    <span class="block mt-1 text-[8px] opacity-60 text-right">10:14 AM</span>
+                                </div>
+                            </div>
+
+                            <!-- Right Bubble (Me) -->
+                            <div class="flex gap-2 max-w-[85%] self-end items-end ml-auto">
+                                <div class="bg-forest-green text-warm-cream p-3 rounded-2xl rounded-tr-none shadow-sm text-left text-xs leading-relaxed">
+                                    <span id="mock-chat-bubble-text-right-1">That sounds perfect! How many seedlings would you like?</span>
+                                    <span class="block mt-1 text-[8px] opacity-75 text-right font-semibold">10:16 AM</span>
+                                </div>
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150" class="w-7 h-7 rounded-full object-cover border border-outline-variant/20 flex-shrink-0 mb-1" alt="Sofia">
+                            </div>
+
+                            <!-- Left Bubble with Proposal (Mia) -->
+                            <div class="flex gap-2 max-w-[85%] self-start items-end w-full">
+                                <img id="mock-chat-bubble-avatar-left-2" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=150" class="w-7 h-7 rounded-full object-cover border border-outline-variant/20 flex-shrink-0 mb-1">
+                                <div class="flex-grow">
+                                    <div class="border-2 border-forest-green/50 bg-white dark:bg-[#18201a] p-4 rounded-xl shadow-md space-y-3 text-center">
+                                        <div class="flex justify-between items-center text-[10px] font-bold text-forest-green dark:text-emerald-400">
+                                            <span>SWAP PROPOSAL</span>
+                                            <span class="text-[8px] bg-emerald-600/10 text-emerald-600 px-2 py-0.5 rounded-full">Pending</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-2 text-[9px] text-on-surface-variant">
+                                            <div class="bg-white dark:bg-[#101612] p-2 rounded-lg border border-outline-variant/30">
+                                                <p class="font-bold text-forest-green dark:text-emerald-400">You Give</p>
+                                                <p id="mock-proposal-you-give" class="text-forest-green dark:text-emerald-300">6 Heirloom Seedlings</p>
+                                            </div>
+                                            <div class="bg-white dark:bg-[#101612] p-2 rounded-lg border border-outline-variant/30">
+                                                <p class="font-bold text-forest-green dark:text-emerald-400">You Get</p>
+                                                <p id="mock-proposal-you-get" class="text-forest-green dark:text-emerald-300">2 Fresh Sourdough Loaves</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-center gap-3 my-3">
+                                            <div class="w-12 h-12 rounded-xl overflow-hidden shadow-sm border border-forest-green/10 bg-white flex-shrink-0">
+                                                <img id="mock-proposal-img-give" src="https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?q=80&w=150" class="w-full h-full object-cover">
+                                            </div>
+                                            <div class="w-7 h-7 rounded-full bg-forest-green/5 border border-forest-green/10 flex items-center justify-center text-forest-green shrink-0">
+                                                <span class="material-symbols-outlined text-xs font-bold">swap_horiz</span>
+                                            </div>
+                                            <div class="w-12 h-12 rounded-xl overflow-hidden shadow-sm border border-forest-green/10 bg-white flex-shrink-0">
+                                                <img id="mock-proposal-img-get" src="https://images.unsplash.com/photo-1549931319-a545dcf3bc73?q=80&w=150" class="w-full h-full object-cover">
+                                            </div>
+                                        </div>
+                                        <button onclick="showView('how_messaging_works')" class="w-full bg-forest-green text-warm-cream py-2 rounded-xl text-[9px] font-bold shadow-sm cursor-pointer hover:bg-forest-green/90 active:scale-95 transition-all">
+                                            View Swap Proposal Flow
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+<!-- FAQ ACCORDION -->
+    <!-- ==================================================== -->
+    <section id="faq" class="py-20 px-6 border-t border-forest-green/10 bg-soft-green/10 dark:bg-soft-green/5">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+                <h2 class="font-headline text-4xl md:text-5xl font-bold text-forest-green">Frequently Asked Questions</h2>
+                <p class="text-sm text-forest-green/70 mt-4">Have questions about safety, rules, or how the platform operates? Here are details for active neighbors.</p>
+            </div>
+
+            <div class="space-y-4 reveal">
+                
+                <!-- FAQ Item 1 -->
+                <div class="faq-item bg-white dark:bg-[#18201a] border border-forest-green/10 rounded-2xl p-5 transition-all">
+                    <button class="faq-question-btn w-full flex justify-between items-center text-left text-xs font-bold uppercase tracking-wider text-forest-green/90 select-none">
+                        <span>Is Barterland really 100% free to use?</span>
+                        <span class="faq-icon material-symbols-outlined text-base transition-transform">expand_more</span>
+                    </button>
+                    <div class="faq-answer-panel accordion-content text-xs text-forest-green/70 leading-relaxed mt-2">
+                        Yes, Barterland is completely free. Our platform is built as a non-monetized local directory to stimulate neighborhood resilience, promote eco-friendly resource sharing, and build community relationships. No credit cards or transaction fees are ever requested.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="faq-item bg-white dark:bg-[#18201a] border border-forest-green/10 rounded-2xl p-5 transition-all">
+                    <button class="faq-question-btn w-full flex justify-between items-center text-left text-xs font-bold uppercase tracking-wider text-forest-green/90 select-none">
+                        <span>How do we stay safe during transactions?</span>
+                        <span class="faq-icon material-symbols-outlined text-base transition-transform">expand_more</span>
+                    </button>
+                    <div class="faq-answer-panel accordion-content text-xs text-forest-green/70 leading-relaxed mt-2">
+                        We ask all neighbors to commit to our Safety Pledge. You must meet only in safe, public, and well-lit local hubs (such as parks, coffee shops, or libraries) indicated on the village map. Never share your exact apartment number or home address, and never meet in private residential spaces.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="faq-item bg-white dark:bg-[#18201a] border border-forest-green/10 rounded-2xl p-5 transition-all">
+                    <button class="faq-question-btn w-full flex justify-between items-center text-left text-xs font-bold uppercase tracking-wider text-forest-green/90 select-none">
+                        <span>What can I trade or list on the app?</span>
+                        <span class="faq-icon material-symbols-outlined text-base transition-transform">expand_more</span>
+                    </button>
+                    <div class="faq-answer-panel accordion-content text-xs text-forest-green/70 leading-relaxed mt-2">
+                        You can list any clean, safe, and legal household items (power tools, puzzles, camping gear, books) or offer any friendly service or tutoring (gardening assistance, baking lessons, acoustic guitar coaching, basic coding help). Harassment, dangerous objects, commercial listings, or paid services are strictly banned.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="faq-item bg-white dark:bg-[#18201a] border border-forest-green/10 rounded-2xl p-5 transition-all">
+                    <button class="faq-question-btn w-full flex justify-between items-center text-left text-xs font-bold uppercase tracking-wider text-forest-green/90 select-none">
+                        <span>How does the trust and reputation system work?</span>
+                        <span class="faq-icon material-symbols-outlined text-base transition-transform">expand_more</span>
+                    </button>
+                    <div class="faq-answer-panel accordion-content text-xs text-forest-green/70 leading-relaxed mt-2">
+                        Every time you complete a trade inside the chat window, you earn reputation XP (Experience Points) and level up. After a swap, you can vouch for your neighbor. High vouches and positive swap stats display on your profile, letting neighbors trade with confidence.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    
+
+<!-- ==================================================== -->
+    <!-- NOW LIVING IN VANCOUVER? JOIN THE NEIGHBORHOOD WAITLIST -->
+    <!-- ==================================================== -->
+    <section id="join-village" class="py-24 text-center px-6 max-w-3xl mx-auto relative overflow-hidden reveal">
+        <div class="space-y-6 relative z-10">
+            <h2 class="font-headline text-4xl md:text-5xl font-bold text-forest-green">Now Living in Vancouver?<br>Join the Neighborhood Waitlist!</h2>
+            <p class="text-sm text-forest-green/70 max-w-xl mx-auto leading-relaxed">
+                We are currently running local pilots in Greater Vancouver (specifically in <strong>Downtown</strong>, <strong>Kitsilano</strong>, and <strong>Commercial Drive</strong>). We are planning to expand to <strong>Burnaby</strong>, <strong>Coquitlam</strong>, <strong>Mission</strong>, and other neighborhoods soon! Enter your email and neighborhood to secure your spot.
+            </p>
+            
+            <form id="join-form" class="max-w-md mx-auto pt-6 space-y-4" onsubmit="handleJoinSubmit(event)">
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="email" id="join-email" required placeholder="Enter your email" class="flex-grow h-13 px-4 rounded-xl bg-white border border-forest-green/15 dark:bg-[#18201a] dark:border-white/10 text-sm focus:border-forest-green focus:ring-0 outline-none text-forest-green dark:text-gray-100">
+                    <input type="text" id="join-postal" required placeholder="Neighborhood / City" class="w-full sm:w-44 h-13 px-4 rounded-xl bg-white border border-forest-green/15 dark:bg-[#18201a] dark:border-white/10 text-sm focus:border-forest-green focus:ring-0 outline-none text-forest-green dark:text-gray-100">
+                </div>
+                <button type="submit" class="w-full bg-forest-green text-warm-cream dark:bg-[#82b995] dark:text-[#101612] h-13 rounded-xl font-bold text-sm shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2">
+                    Join the Waitlist
+                    <span class="material-symbols-outlined text-sm">send</span>
+                </button>
+            </form>
+            <div id="join-success-msg" class="hidden max-w-md mx-auto p-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 rounded-xl text-xs font-semibold animate-fade-in">
+                Thank you! We've received your request and will notify you when your neighborhood goes live.
+            </div>
+        </div>
+    </section>
+
+
+<!-- SLEEK FOOTER -->
+    <!-- ==================================================== -->
+    <footer class="border-t border-forest-green/10 py-12 bg-white dark:bg-[#101612] px-6 text-center transition-colors">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                
+                <span class="font-headline text-lg font-bold text-forest-green">Barterland</span>
+            </div>
+            
+            <p class="text-xs text-forest-green/50 dark:text-gray-500 font-medium">
+                © 2026 Barterland Community Exchange. All rights reserved. Trade responsibly and stay safe.
+            </p>
+            
+            <div class="flex items-center gap-4 text-xs font-semibold text-forest-green/60">
+                <a href="javascript:void(0)" onclick="openModal('privacy-modal')" class="hover:text-forest-green">Privacy Policy</a>
+                <span>·</span>
+                <a href="javascript:void(0)" onclick="openModal('terms-modal')" class="hover:text-forest-green">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    
+
+<!-- INLINE MODALS -->
+    <!-- ==================================================== -->
+    
+    <!-- Privacy Policy Modal -->
+    <div id="privacy-modal" class="modal-overlay fixed inset-0 z-[10000] hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+        <div class="bg-[#FDFBF7] dark:bg-[#101612] border border-forest-green/10 dark:border-white/10 w-full max-w-xl rounded-3xl p-8 max-h-[80vh] overflow-y-auto shadow-2xl relative custom-scrollbar font-body text-forest-green dark:text-gray-200">
+            <button onclick="closeModal('privacy-modal')" class="absolute top-6 right-6 p-2 hover:bg-forest-green/5 dark:hover:bg-white/5 rounded-full text-forest-green/70 dark:text-gray-400">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <h3 class="font-headline text-3xl font-bold text-forest-green dark:text-emerald-500 mb-4">Privacy Policy</h3>
+            <div class="space-y-4 text-xs md:text-sm leading-relaxed text-forest-green/80 dark:text-gray-300">
+                <p><strong>1. Our Commitment to Privacy</strong><br>
+                At Barterland, we value the trust you place in us. We operate as a cashless community exchange, and we are committed to protecting your personal information. Unlike commercial platforms, we do not trade, sell, or rent your data to advertisers.</p>
+                <p><strong>2. Information We Collect</strong><br>
+                We only collect minimal data necessary to function, including your email address, an approximate neighborhood area, and optional user profile items (e.g. your name and level details). We deliberately offset map pins to keep your exact home address confidential.</p>
+                <p><strong>3. Use of Information</strong><br>
+                Your coordinates and item descriptions are displayed locally on the community map to enable safe neighbor trades. Real-time chat messages are stored locally in your browser storage whenever possible and are never monitored.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms of Service Modal -->
+    <div id="terms-modal" class="modal-overlay fixed inset-0 z-[10000] hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+        <div class="bg-[#FDFBF7] dark:bg-[#101612] border border-forest-green/10 dark:border-white/10 w-full max-w-xl rounded-3xl p-8 max-h-[80vh] overflow-y-auto shadow-2xl relative custom-scrollbar font-body text-forest-green dark:text-gray-200">
+            <button onclick="closeModal('terms-modal')" class="absolute top-6 right-6 p-2 hover:bg-forest-green/5 dark:hover:bg-white/5 rounded-full text-forest-green/70 dark:text-gray-400">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <h3 class="font-headline text-3xl font-bold text-forest-green dark:text-emerald-500 mb-4">Terms of Service</h3>
+            <div class="space-y-4 text-xs md:text-sm leading-relaxed text-forest-green/80 dark:text-gray-300">
+                <p><strong>1. Cashless Exchange Policy</strong><br>
+                Barterland is 100% cashless. The posting of cash listings, requests for credit card fees, interest-bearing loans, or commercial trading is strictly prohibited. Any neighbor attempting commercial transactions will be suspended.</p>
+                <p><strong>2. Safety & Code of Conduct</strong><br>
+                All exchanges must occur in public, well-lit safety zones. Neighbors must treat each other with respect, honor agreed-upon swaps, and ensure items are clean and safe for usage. Dangerous goods, illegal services, and harassment are entirely banned.</p>
+                <p><strong>3. Disclaimer of Liability</strong><br>
+                Barterland is a local directory tool. We do not inspect trade items or verify neighbor identities. Swaps are performed at your own risk. Neighbors are responsible for completing trades safely.</p>
+            </div>
+        </div>
+    </div>
+                
+
+
+    </section>
+
+    <!-- Leaflet Map JS Package -->
+    <script crossorigin="" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Landing page specific Javascript -->
+    <script src="landing.js"></script>
+</body>
+</html>
