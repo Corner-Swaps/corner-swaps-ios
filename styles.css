@@ -1671,9 +1671,13 @@ html.dark .chat-bubble-other {
 }
 .native-app-env #floating-map-controls {
     top: calc(0.2rem + env(safe-area-inset-top)) !important;
+    left: 28px !important;
+    right: auto !important;
 }
 .native-app-env #map-category-dropdown {
     top: calc(48px + env(safe-area-inset-top)) !important;
+    left: 22px !important;
+    right: auto !important;
 }
 .native-app-env #active-filter-banner {
     top: calc(4.5rem + env(safe-area-inset-top)) !important;
@@ -3124,11 +3128,15 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 }
 
 /* Force all detail sheet action buttons to follow consistent lowercase theme */
-#map-detail-overlay button,
+#map-detail-overlay button:not(#map-detail-chat-btn),
 #map-event-detail-overlay button,
 #view-event_detail button {
     text-transform: lowercase !important;
     letter-spacing: normal !important;
+}
+
+#map-detail-chat-btn {
+    text-transform: none !important;
 }
 
 /* Profile section: Black text for headings, lists, and placeholders underneath badges (Light Mode Only) */

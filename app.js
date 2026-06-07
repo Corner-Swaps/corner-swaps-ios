@@ -5254,7 +5254,7 @@ function renderEventsList() {
     const radiusVal = state.stats.radius || 5;
     const eventsSlider = document.getElementById('village-events-distance-slider');
     const eventsLabel = document.getElementById('village-events-distance-display');
-    if (eventsSlider) eventsSlider.value = radiusVal;
+    if (eventsSlider) eventsSlider.value = radiusKmToIndex(radiusVal);
     if (eventsLabel) eventsLabel.innerText = formatRadiusValue(radiusVal);
 
     const containers = [
@@ -5278,7 +5278,7 @@ function renderEventsList() {
             return;
         }
 
-        const maxRadius = eventsSlider ? parseFloat(eventsSlider.value) : radiusVal;
+        const maxRadius = eventsSlider ? radiusIndexToKm(eventsSlider.value) : radiusVal;
         let userLat = 49.2827;
         let userLng = -123.1207;
         if (state.currentUser && state.currentUser.lat && state.currentUser.lng) {
@@ -7437,26 +7437,21 @@ function openNeighborProfileModal(neighborName) {
 
     // Populate Offerings
     const offeringsContainer = document.getElementById('neighbor-profile-offerings');
-    const karmaBadgeHTML = neighbor.isKarma ? `<span class="bg-red-500/10 border border-red-500/20 p-1 rounded-full flex items-center justify-center shrink-0" title="Karma Swap"><span class="material-symbols-outlined text-[10px]" style="color: #EF4444 !important; font-variation-settings: 'FILL' 1 !important;">favorite</span></span>` : '';
-    
-    const catColor = getCategoryColor(neighbor.category);
-    const isSpecialIcon = (neighbor.icon === 'yard' || neighbor.icon === 'school');
-    const iconColor = isSpecialIcon ? '#000000' : catColor;
-
-    const shortDesc = neighbor.offerDesc ? (neighbor.offerDesc.split(' ').slice(0, 8).join(' ') + (neighbor.offerDesc.split(' ').length > 8 ? '...' : '')) : '';
+    const offerIcon = neighbor.icon || getCategoryIcon(neighbor.category) || 'local_offer';
+    const offerCatColor = getCategoryColor(neighbor.category);
 
     offeringsContainer.innerHTML = `
-        <div class="flex items-start p-3 bg-white dark:bg-[#18201a] rounded-xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm relative w-full mb-2.5 animate-fade-in">
-            <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden rounded-xl mr-3">
-                <img src="${neighbor.offerImg || PLACEHOLDER_IMAGE}" class="w-full h-full object-cover">
+        <div class="flex items-center p-3 bg-white dark:bg-[#18201a] rounded-xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm relative w-full mb-2.5 cursor-pointer hover:bg-forest-green/5 transition-all" onclick="handleProposeSwapForOfferDirect('${neighbor.name.replace(/'/g, "\\'")}', '${neighbor.offerTitle.replace(/'/g, "\\'")}')">
+            <div class="w-8 h-8 flex items-center justify-center mr-3 flex-shrink-0" style="color: ${offerCatColor} !important; background: transparent !important;">
+                <span class="material-symbols-outlined text-[24px]">${offerIcon}</span>
             </div>
             <div class="flex-grow min-w-0 pr-3 text-left">
-                <div class="flex items-center justify-between gap-2 mb-1.5 flex-wrap">
-                    <h4 class="text-forest-green dark:text-white truncate leading-tight font-medium">${neighbor.offerTitle}</h4>
-                    ${karmaBadgeHTML}
-                </div>
-                <p class="text-[10px] text-gray-600 dark:text-gray-300 leading-relaxed font-normal">${shortDesc}</p>
+                <h4 class="text-forest-green dark:text-white truncate leading-tight font-medium">${neighbor.offerTitle}</h4>
+                <p class="text-gray-500 truncate mt-0.5"><span class="text-gray-600">${neighbor.category || 'Other'}</span></p>
             </div>
+            <span class="text-[9.5px] text-forest-green font-semibold flex items-center gap-0.5 opacity-80 shrink-0">
+                Swap <span class="material-symbols-outlined text-xs">arrow_forward</span>
+            </span>
         </div>
     `;
 
@@ -13871,6 +13866,29 @@ function getDistanceFromUser(neighbor) {
     return getDistance(userLat, userLng, coords[0], coords[1]);
 }
 
+const radiusScale = [1, 5, 10, 20];
+function radiusIndexToKm(index) {
+    const idx = parseInt(index);
+    if (isNaN(idx) || idx < 0 || idx >= radiusScale.length) return 5;
+    return radiusScale[idx];
+}
+function radiusKmToIndex(km) {
+    const kmVal = parseFloat(km);
+    if (isNaN(kmVal)) return 1; // Default to index 1 (5 km)
+    let closestIdx = 1;
+    let minDiff = Infinity;
+    for (let i = 0; i < radiusScale.length; i++) {
+        const diff = Math.abs(radiusScale[i] - kmVal);
+        if (diff < minDiff) {
+            minDiff = diff;
+            closestIdx = i;
+        }
+    }
+    return closestIdx;
+}
+window.radiusIndexToKm = radiusIndexToKm;
+window.radiusKmToIndex = radiusKmToIndex;
+
 function formatRadiusValue(kmVal) {
     const val = parseFloat(kmVal);
     if (val <= 0.25) {
@@ -13936,7 +13954,7 @@ function renderVillageListView() {
     const radiusVal = state.stats.radius || 5;
     const listSlider = document.getElementById('village-list-distance-slider');
     const listLabel = document.getElementById('village-list-distance-display');
-    if (listSlider) listSlider.value = radiusVal;
+    if (listSlider) listSlider.value = radiusKmToIndex(radiusVal);
     if (listLabel) listLabel.innerText = formatRadiusValue(radiusVal);
 
     const listInner = document.getElementById('village-list-items');
@@ -13946,7 +13964,7 @@ function renderVillageListView() {
     const searchInput = document.getElementById('village-list-search-input'); // Synced text input
     const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
 
-    const maxRadius = listSlider ? parseFloat(listSlider.value) : (state.stats.radius || 5);
+    const maxRadius = listSlider ? radiusIndexToKm(listSlider.value) : (state.stats.radius || 5);
 
     // Pool neighbor listings and user listings together
     let listingsPool = [];
@@ -14095,13 +14113,13 @@ function renderNeedsBoardView() {
     const radiusVal = state.stats.radius || 5;
     const needsSlider = document.getElementById('village-needs-distance-slider');
     const needsLabel = document.getElementById('village-needs-distance-display');
-    if (needsSlider) needsSlider.value = radiusVal;
+    if (needsSlider) needsSlider.value = radiusKmToIndex(radiusVal);
     if (needsLabel) needsLabel.innerText = formatRadiusValue(radiusVal);
 
     const searchInput = document.getElementById('village-needs-search-input'); // Synced text input
     const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
 
-    const maxRadius = needsSlider ? parseFloat(needsSlider.value) : (state.stats.radius || 5);
+    const maxRadius = needsSlider ? radiusIndexToKm(needsSlider.value) : (state.stats.radius || 5);
 
     let needsPool = [];
 
@@ -18254,24 +18272,25 @@ function openAddNeedPage() {
 window.openAddNeedPage = openAddNeedPage;
 
 function updateVillageListDistanceFilter(val) {
-    const parsed = parseFloat(val);
+    const idx = parseInt(val);
+    const kmVal = radiusIndexToKm(idx);
     if (!state.stats) state.stats = {};
-    state.stats.radius = parsed;
+    state.stats.radius = kmVal;
     saveState();
     
     // Sync other sliders & displays
     const needsSlider = document.getElementById('village-needs-distance-slider');
-    if (needsSlider) needsSlider.value = parsed;
+    if (needsSlider) needsSlider.value = idx;
     const needsDisplay = document.getElementById('village-needs-distance-display');
-    if (needsDisplay) needsDisplay.innerText = formatRadiusValue(parsed);
+    if (needsDisplay) needsDisplay.innerText = formatRadiusValue(kmVal);
 
     const eventsSlider = document.getElementById('village-events-distance-slider');
-    if (eventsSlider) eventsSlider.value = parsed;
+    if (eventsSlider) eventsSlider.value = idx;
     const eventsDisplay = document.getElementById('village-events-distance-display');
-    if (eventsDisplay) eventsDisplay.innerText = formatRadiusValue(parsed);
+    if (eventsDisplay) eventsDisplay.innerText = formatRadiusValue(kmVal);
     
     const display = document.getElementById('village-list-distance-display');
-    if (display) display.innerText = formatRadiusValue(parsed);
+    if (display) display.innerText = formatRadiusValue(kmVal);
     
     renderVillageListView();
     renderNeedsBoardView();
@@ -18281,24 +18300,25 @@ function updateVillageListDistanceFilter(val) {
 window.updateVillageListDistanceFilter = updateVillageListDistanceFilter;
 
 function updateVillageNeedsDistanceFilter(val) {
-    const parsed = parseFloat(val);
+    const idx = parseInt(val);
+    const kmVal = radiusIndexToKm(idx);
     if (!state.stats) state.stats = {};
-    state.stats.radius = parsed;
+    state.stats.radius = kmVal;
     saveState();
     
     // Sync other sliders & displays
     const listSlider = document.getElementById('village-list-distance-slider');
-    if (listSlider) listSlider.value = parsed;
+    if (listSlider) listSlider.value = idx;
     const listDisplay = document.getElementById('village-list-distance-display');
-    if (listDisplay) listDisplay.innerText = formatRadiusValue(parsed);
+    if (listDisplay) listDisplay.innerText = formatRadiusValue(kmVal);
 
     const eventsSlider = document.getElementById('village-events-distance-slider');
-    if (eventsSlider) eventsSlider.value = parsed;
+    if (eventsSlider) eventsSlider.value = idx;
     const eventsDisplay = document.getElementById('village-events-distance-display');
-    if (eventsDisplay) eventsDisplay.innerText = formatRadiusValue(parsed);
+    if (eventsDisplay) eventsDisplay.innerText = formatRadiusValue(kmVal);
     
     const display = document.getElementById('village-needs-distance-display');
-    if (display) display.innerText = formatRadiusValue(parsed);
+    if (display) display.innerText = formatRadiusValue(kmVal);
     
     renderVillageListView();
     renderNeedsBoardView();
@@ -18308,24 +18328,25 @@ function updateVillageNeedsDistanceFilter(val) {
 window.updateVillageNeedsDistanceFilter = updateVillageNeedsDistanceFilter;
 
 function updateVillageEventsDistanceFilter(val) {
-    const parsed = parseFloat(val);
+    const idx = parseInt(val);
+    const kmVal = radiusIndexToKm(idx);
     if (!state.stats) state.stats = {};
-    state.stats.radius = parsed;
+    state.stats.radius = kmVal;
     saveState();
     
     // Sync other sliders & displays
     const listSlider = document.getElementById('village-list-distance-slider');
-    if (listSlider) listSlider.value = parsed;
+    if (listSlider) listSlider.value = idx;
     const listDisplay = document.getElementById('village-list-distance-display');
-    if (listDisplay) listDisplay.innerText = formatRadiusValue(parsed);
+    if (listDisplay) listDisplay.innerText = formatRadiusValue(kmVal);
 
     const needsSlider = document.getElementById('village-needs-distance-slider');
-    if (needsSlider) needsSlider.value = parsed;
+    if (needsSlider) needsSlider.value = idx;
     const needsDisplay = document.getElementById('village-needs-distance-display');
-    if (needsDisplay) needsDisplay.innerText = formatRadiusValue(parsed);
+    if (needsDisplay) needsDisplay.innerText = formatRadiusValue(kmVal);
     
     const display = document.getElementById('village-events-distance-display');
-    if (display) display.innerText = formatRadiusValue(parsed);
+    if (display) display.innerText = formatRadiusValue(kmVal);
     
     renderVillageListView();
     renderNeedsBoardView();
@@ -22207,6 +22228,52 @@ function handleOfferNeighborNeedDirect(neighborName, needTitle) {
         openSwapProposalPage();
     }, 450);
 }
+
+function handleProposeSwapForOfferDirect(neighborName, offerTitle) {
+    playSound('click');
+    closeNeighborProfileModal();
+
+    let conv = state.conversations.find(c => c.neighborName === neighborName);
+    const textMsg = `Hi ${neighborName}! I saw your offering: "${offerTitle}". I'm interested in swapping for this! Let's trade!`;
+    
+    if (!conv) {
+        conv = {
+            id: neighborName.toLowerCase().replace(/\s+/g, '-'),
+            neighborName: neighborName,
+            unread: false,
+            timeLeft: '48 hours left',
+            messages: [
+                { sender: 'me', text: textMsg, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
+            ],
+            negotiation: {
+                status: 'none',
+                offeredItem: null,
+                requestedItem: offerTitle
+            }
+        };
+        state.conversations.unshift(conv);
+    } else {
+        conv.messages.push({
+            sender: 'me',
+            text: textMsg,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        });
+        conv.negotiation.requestedItem = offerTitle;
+        state.conversations = [conv, ...state.conversations.filter(c => c.id !== conv.id)];
+    }
+
+    saveState();
+    state.currentConversationId = conv.id;
+    
+    renderChatDetail(conv);
+    showView('chat_detail');
+
+    setTimeout(() => {
+        openSwapProposalPage();
+    }, 450);
+}
+
+window.handleProposeSwapForOfferDirect = handleProposeSwapForOfferDirect;
 
 window.selectWizardCategory = selectWizardCategory;
 window.selectOfferCategory = selectOfferCategory;
