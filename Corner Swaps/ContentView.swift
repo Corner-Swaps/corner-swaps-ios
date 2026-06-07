@@ -130,6 +130,10 @@ struct WebView: UIViewRepresentable {
         configuration.userContentController.add(hapticHandler, name: "hapticHandler")
         
         let js = """
+        if (document.documentElement) {
+            document.documentElement.classList.add('native-app-env');
+        }
+        window.isNativeApp = true;
         window.onerror = function(message, source, lineno, colno, error) {
             window.webkit.messageHandlers.logHandler.postMessage("ERROR: " + message + " at " + source + ":" + lineno);
         };

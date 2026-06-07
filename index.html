@@ -120,6 +120,16 @@
         html.show-simulator, body.show-simulator {
             background-color: #c8c5bd !important;
         }
+        /* Prevent sub-pixel rounding white gaps/lines during green launch animation */
+        html:has(#loading-screen:not(.hidden)),
+        body:has(#loading-screen:not(.hidden)),
+        body:has(#loading-screen:not(.hidden)) .phone-simulator,
+        body:has(#loading-screen:not(.hidden)) .phone-frame,
+        body:has(#loading-screen:not(.hidden)) .app-container {
+            background-color: #457A56 !important;
+            background: #457A56 !important;
+            border-color: #457A56 !important;
+        }
         .phone-simulator {
             display: flex !important;
             align-items: center !important;
