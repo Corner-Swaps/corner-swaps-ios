@@ -4705,6 +4705,16 @@ html.dark .swap-listing-box:hover {
     box-shadow: none !important;
 }
 
+.swap-listing-box.error-swap-box {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.45) !important;
+}
+
+#offer-swap-custom-text.error-custom-text {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.45) !important;
+}
+
 .swap-listing-box.active-swap-box span {
     color: #308A5E !important;
 }
@@ -6316,7 +6326,50 @@ body:has(#loading-screen:not(.hidden):not(.fading-out)) #iphone16-status-bar .ba
     justify-content: center;
     background-color: #fff;
     transition: all 0.2s ease;
+    flex-shrink: 0;
 }
+
+/* Safe Space Agreement Screen (EULA) Text Color overrides */
+#view-profile_consent .EULA-accordion-item span:not(.material-symbols-outlined),
+#view-profile_consent .EULA-accordion-content p,
+#view-profile_consent #liability-scroll-box,
+#view-profile_consent #consent-checkboxes-container span {
+    font-family: 'Outfit', sans-serif !important;
+    color: var(--forest-green, #308A5E) !important;
+}
+
+html.dark #view-profile_consent .EULA-accordion-item span:not(.material-symbols-outlined),
+html.dark #view-profile_consent .EULA-accordion-content p,
+html.dark #view-profile_consent #liability-scroll-box,
+html.dark #view-profile_consent #consent-checkboxes-container span {
+    color: #a7f3d0 !important;
+}
+
+/* Custom Typography Alignment for Onboarding Subtexts and Inputs */
+#view-welcome div.text-\[11px\],
+#view-create_account input,
+#view-create_account_social input {
+    font-family: 'Outfit', sans-serif !important;
+    color: var(--forest-green, #308A5E) !important;
+}
+
+#view-create_account input::placeholder,
+#view-create_account_social input::placeholder {
+    font-family: 'Outfit', sans-serif !important;
+    color: rgba(48, 138, 94, 0.5) !important;
+}
+
+html.dark #view-welcome div.text-\[11px\],
+html.dark #view-create_account input,
+html.dark #view-create_account_social input {
+    color: #a7f3d0 !important;
+}
+
+html.dark #view-create_account input::placeholder,
+html.dark #view-create_account_social input::placeholder {
+    color: rgba(167, 243, 208, 0.5) !important;
+}
+
 
 .checkbox-wrapper input[type="checkbox"] {
     position: absolute;
@@ -8917,13 +8970,8 @@ body:not(:has(#view-landing.active)) footer,
 
                     <!-- Bold Capitalized Title -->
                     <h1 class="font-headline text-2xl font-extrabold text-forest-green tracking-tight leading-tight mb-2 uppercase px-2">
-                        Your Neighborhood, Reimagined
+                        Your Neighborhood Reimagined
                     </h1>
-
-                    <!-- Description word sentence -->
-                    <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-6">
-                        A cooperative space where neighbors share talents, tools, and time. Together, we are building a stronger, friendlier community.
-                    </p>
 
                     <!-- Vertically Stacked Card Buttons -->
                     <div class="flex flex-col gap-4 w-full max-w-sm mx-auto mb-8">
@@ -9263,63 +9311,63 @@ body:not(:has(#view-landing.active)) footer,
                                     <span class="material-symbols-outlined text-lg text-outline-variant transition-transform duration-200 chevron-icon">chevron_right</span>
                                 </div>
                                 <div class="EULA-accordion-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-                                    <p class="pt-2 text-[11px] text-on-surface-variant font-normal leading-relaxed">
-                                        Corner Swaps is a local directory facilitating peer-to-peer exchanges. All trades are conducted at your own risk. Corner Swaps does not verify the safety or quality of items/skills and is not liable for any losses, injuries, or disputes.
-                                    </p>
+                                    <div id="liability-scroll-box" class="pt-2 text-[11px] text-on-surface-variant font-normal leading-relaxed max-h-[90px] overflow-y-auto custom-scrollbar" onscroll="handleLiabilityDisclaimerScroll(this)">
+                                        Corner Swaps acts solely as a passive facilitator to connect community members. We do not inspect, verify, or guarantee the safety, legality, quality, or existence of any listings, items, or skills exchanged. By using this platform, you explicitly acknowledge and agree that all exchanges are conducted entirely at your own risk. You hereby release Corner Swaps, its founders, and affiliates from any and all liability, claims, disputes, damages, or losses arising from or in connection with user exchanges, transactions, or communications. Furthermore, you are solely responsible for reporting any taxable income or barter exchanges to tax authorities at their Fair Market Value (FMV) in compliance with provincial and federal tax laws. By scrolling and agreeing to this disclaimer, you accept full responsibility for all activities, taxation requirements, and risk associated with your user interactions.
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Section 4: Privacy & Data Protection -->
-                            <div class="border-b border-outline-variant/10 py-3 EULA-accordion-item">
+                            <!-- Section 4: Privacy Policy -->
+                            <div class="py-3 EULA-accordion-item">
                                 <div class="flex items-center justify-between cursor-pointer py-1" onclick="toggleEulaAccordion(this)">
                                     <div class="flex items-center gap-3 font-semibold text-slate-800 dark:text-slate-200">
                                         <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
                                             <span class="material-symbols-outlined text-base text-emerald-500 font-bold" style="font-variation-settings: 'FILL' 1;">security</span>
                                         </div>
-                                        <span>4. Privacy & Data Protection</span>
+                                        <span>4. Privacy Policy</span>
                                     </div>
                                     <span class="material-symbols-outlined text-lg text-outline-variant transition-transform duration-200 chevron-icon">chevron_right</span>
                                 </div>
                                 <div class="EULA-accordion-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
                                     <p class="pt-2 text-[11px] text-on-surface-variant font-normal leading-relaxed">
-                                        We protect your personal information and approximate location data using standard security practices. We never sell your data, and you can delete your account at any time.
-                                    </p>
-                                </div>
-                            </div>
-                            
-                            <!-- Section 5: Trust & Community Rules -->
-                            <div class="pt-3 EULA-accordion-item">
-                                <div class="flex items-center justify-between cursor-pointer py-1" onclick="toggleEulaAccordion(this)">
-                                    <div class="flex items-center gap-3 font-semibold text-slate-800 dark:text-slate-200">
-                                        <div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center flex-shrink-0">
-                                            <span class="material-symbols-outlined text-base text-purple-500 font-bold" style="font-variation-settings: 'FILL' 1;">groups</span>
-                                        </div>
-                                        <span>5. Trust & Community Rules</span>
-                                    </div>
-                                    <span class="material-symbols-outlined text-lg text-outline-variant transition-transform duration-200 chevron-icon">chevron_right</span>
-                                </div>
-                                <div class="EULA-accordion-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-                                    <p class="pt-2 text-[11px] text-on-surface-variant font-normal leading-relaxed">
-                                        Contribute positively by keeping commitments, offering items/skills in good faith, and rating your neighbors honestly to foster trust.
+                                        We protect your personal information and approximate location data using standard security practices in compliance with the British Columbia Personal Information Protection Act (BC PIPA) and federal privacy laws. We never sell your data, and you can delete your account at any time.
                                     </p>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Checkbox agreement group container (stabilized card layout) -->
-                        <div class="bg-forest-green/5 border border-forest-green/10 p-3 rounded-xl space-y-2.5 mt-3 text-left">
+                        <div id="consent-checkboxes-container" class="bg-forest-green/5 border border-forest-green/10 p-3 rounded-xl space-y-2.5 mt-3 text-left transition-opacity duration-300">
                             <label class="flex items-start gap-3 cursor-pointer select-none">
                                 <div class="checkbox-wrapper">
-                                    <input type="checkbox" id="consent-check" onchange="toggleConsentButton()"/>
+                                    <input type="checkbox" id="consent-check-1" onchange="toggleConsentButton()"/>
                                     <div class="custom-check-box">
                                         <span class="material-symbols-outlined select-none pointer-events-none">check</span>
                                     </div>
                                 </div>
-                                <span class="text-[11px] text-on-surface-variant font-normal leading-tight">I agree to the Code of Conduct, Safety Guidelines, and release the platform of all liability.</span>
+                                <span class="text-[11px] text-on-surface-variant font-normal leading-tight">I have read and agree to the Code of Conduct and Exchange Safety guidelines.</span>
                             </label>
                             <label class="flex items-start gap-3 cursor-pointer select-none">
                                 <div class="checkbox-wrapper">
-                                    <input type="checkbox" id="age-check" onchange="toggleConsentButton()"/>
+                                    <input type="checkbox" id="consent-check-2" onchange="toggleConsentButton()"/>
+                                    <div class="custom-check-box">
+                                        <span class="material-symbols-outlined select-none pointer-events-none">check</span>
+                                    </div>
+                                </div>
+                                <span class="text-[11px] text-on-surface-variant font-normal leading-tight">I agree to the Liability Disclaimer and release the platform from all liability arising from user exchanges.</span>
+                            </label>
+                            <label class="flex items-start gap-3 cursor-pointer select-none">
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="consent-check-3" onchange="toggleConsentButton()"/>
+                                    <div class="custom-check-box">
+                                        <span class="material-symbols-outlined select-none pointer-events-none">check</span>
+                                    </div>
+                                </div>
+                                <span class="text-[11px] text-on-surface-variant font-normal leading-tight">I have read and agree to the Privacy Policy.</span>
+                            </label>
+                            <label class="flex items-start gap-3 cursor-pointer select-none">
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="consent-check-4" onchange="toggleConsentButton()"/>
                                     <div class="custom-check-box">
                                         <span class="material-symbols-outlined select-none pointer-events-none">check</span>
                                     </div>
@@ -10933,7 +10981,6 @@ body:not(:has(#view-landing.active)) footer,
                                     <div class="relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="openIconSelectorModal()">
                                         <div id="offer-icon-placeholder" class="flex flex-col items-center justify-center p-2 text-center">
                                             <span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-2xl group-hover:scale-110 transition-transform">interests</span>
-                                            <span class="text-[8px] font-extrabold text-forest-green/60 dark:text-emerald-400/60 uppercase mt-0.5">Add Icon</span>
                                         </div>
                                         <div id="offer-icon-selected-display" class="w-full h-full flex items-center justify-center hidden bg-forest-green/5 dark:bg-emerald-400/5">
                                             <span id="offer-selected-icon-symbol" class="material-symbols-outlined text-[36px] text-forest-green dark:text-emerald-400" style="font-variation-settings: 'FILL' 1;">star</span>
@@ -11011,14 +11058,6 @@ body:not(:has(#view-landing.active)) footer,
                                     <option value="Repair Cafe">Tool & Repair Cafe</option>
                                     <option value="Clothing Swap">Clothing Exchange</option>
                                 </select>
-                            </div>
-                        </div>
-
-                        <!-- CUSTOM ICON SELECTOR (Only shown for events) -->
-                        <div id="event-custom-icon-selector-container" class="hidden text-left w-full mb-3">
-                            <label class="text-[9px] font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E] block mb-2 text-left">Customize Event Icon (Optional)</label>
-                            <div id="event-custom-icon-grid" class="grid grid-cols-6 gap-2 bg-[#f4f7f5] dark:bg-[#18201a] p-3 rounded-xl border border-outline-variant/30 max-h-[160px] overflow-y-auto">
-                                <!-- Rendered dynamically -->
                             </div>
                         </div>
 
@@ -11934,9 +11973,9 @@ body:not(:has(#view-landing.active)) footer,
                                 </div>
                             </div>
 
-                            <!-- Custom Swap option with text box (initially hidden) -->
-                            <div id="offer-swap-custom-text-wrapper" class="hidden transition-all duration-300">
-                                <label class="text-[9px] font-bold uppercase tracking-wider text-black dark:text-white block mb-1">Custom Swap Details</label>
+                            <!-- Custom Swap option with text box (always visible) -->
+                            <div id="offer-swap-custom-text-wrapper" class="transition-all duration-300">
+                                <label class="text-[9px] font-bold uppercase tracking-wider text-black dark:text-white block mb-1">Make a custom offer</label>
                                 <textarea id="offer-swap-custom-text" class="w-full bg-white dark:bg-[#101612] border border-black/20 dark:border-white/20 rounded-xl p-3 text-xs focus:border-black dark:focus:border-white focus:ring-0 outline-none placeholder:text-black/40 dark:placeholder:text-white/40 leading-relaxed text-black dark:text-white" placeholder="Describe a custom item/service you want to offer..." rows="3"></textarea>
                             </div>
 
@@ -15342,25 +15381,19 @@ body:not(:has(#view-landing.active)) footer,
                     <div class="absolute inset-0 bg-[#060b08]/40 dark:bg-black/60 backdrop-blur-md" onclick="closeIconSelectorModal()"></div>
                     <div class="relative bg-white dark:bg-[#18201a] border border-outline-variant/30 rounded-3xl p-6 shadow-2xl max-w-sm w-full text-center flex flex-col items-center animate-slide-up">
                         
-                        <!-- Header -->
-                        <div class="w-full flex items-center justify-between mb-4">
-                            <h3 class="font-headline text-base font-bold text-forest-green dark:text-[#308A5E] flex-grow text-center">Select Listing Icon</h3>
-                            <button type="button" class="w-8 h-8 rounded-full bg-forest-green/5 dark:bg-warm-cream/5 flex items-center justify-center text-forest-green dark:text-emerald-400 active:scale-90 transition-transform cursor-pointer border-0" onclick="closeIconSelectorModal()">
-                                <span class="material-symbols-outlined text-lg">close</span>
-                            </button>
+                        <!-- Header (No close button) -->
+                        <div class="w-full flex items-center justify-center mb-4">
+                            <h3 class="font-headline text-base font-bold text-forest-green dark:text-[#308A5E] text-center">Select Listing Icon</h3>
                         </div>
 
-                        <!-- Icons Grid -->
-                        <div class="w-full overflow-y-auto max-h-[300px] pr-1 custom-scrollbar">
-                            <div class="grid grid-cols-4 gap-3 p-1" id="icon-selector-grid">
+                        <!-- Icons Grid (grid-cols-3 instead of grid-cols-4, max-h-[360px]) -->
+                        <div class="w-full overflow-y-auto max-h-[360px] pr-1 custom-scrollbar">
+                            <div class="grid grid-cols-3 gap-3 p-1" id="icon-selector-grid">
                                 <!-- Populated dynamically by javascript -->
                             </div>
                         </div>
 
-                        <!-- Close/Cancel Button -->
-                        <div class="w-full mt-6">
-                            <button type="button" class="w-full h-11 bg-forest-green dark:bg-[#308A5E] text-warm-cream dark:text-[#101612] font-bold text-xs rounded-xl active:scale-[0.98] transition-transform shadow-md cursor-pointer border-none" onclick="closeIconSelectorModal()">Cancel</button>
-                        </div>
+                        <!-- No Cancel button at the bottom -->
                     </div>
                 </div>
 
@@ -17040,12 +17073,12 @@ const MOCK_CONVERSATIONS = [
             { sender: 'me', text: 'Thanks Sarah! I\'d love to teach you. I saw you have homegrown veggies?', time: '10:03 AM' },
             { sender: 'Sarah Chen', text: 'Yes, balcony tomatoes, kale, spinach, and some spicy peppers!', time: '10:05 AM' },
             { sender: 'me', text: 'That sounds amazing. I have a beginner-friendly session planned.', time: '10:06 AM' },
-            { sender: 'Sarah Chen', text: 'Perfect, I\'ve wanted to learn acoustic guitar for ages.', time: '10:08 AM' }
+            { sender: 'Sarah Chen', text: 'SWAP OFFER: I would like to swap my "Homegrown Produce" for your "Acoustic Guitar Tutoring".', time: '10:08 AM', isSwapOffer: true, offeredItemTitle: 'Homegrown Produce', offeredItemImage: 'https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?q=60&w=120&auto=format&fit=crop', requestedItemTitle: 'Acoustic Guitar Tutoring', requestedItemImage: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?q=60&w=120&auto=format&fit=crop' }
         ],
         negotiation: {
-            status: 'pending',
-            offeredItem: 'Acoustic Guitar Tutoring',
-            requestedItem: 'Homegrown Produce'
+            status: 'received',
+            offeredItem: 'Homegrown Produce',
+            requestedItem: 'Acoustic Guitar Tutoring'
         }
     },
     {
@@ -17060,12 +17093,12 @@ const MOCK_CONVERSATIONS = [
             { sender: 'me', text: 'Hi Chloe! I\'d love to swap. I\'ve been needing a nice tote bag for my books.', time: 'Yesterday' },
             { sender: 'Chloe', text: 'Awesome! I can customize it with any pattern or color you\'d like.', time: 'Yesterday' },
             { sender: 'me', text: 'A forest green pattern with a leaf design would be amazing!', time: 'Yesterday' },
-            { sender: 'Chloe', text: 'I can definitely do that. I\'ll start sewing it tonight.', time: 'Yesterday' }
+            { sender: 'Chloe', text: 'SWAP OFFER: I would like to swap my "Custom Canvas Tote" for your "Acoustic Guitar Tutoring".', time: 'Yesterday', isSwapOffer: true, offeredItemTitle: 'Custom Canvas Tote', offeredItemImage: 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=60&w=120&auto=format&fit=crop', requestedItemTitle: 'Acoustic Guitar Tutoring', requestedItemImage: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?q=60&w=120&auto=format&fit=crop' }
         ],
         negotiation: {
-            status: 'pending',
-            offeredItem: 'Acoustic Guitar Tutoring',
-            requestedItem: 'Custom Canvas Tote'
+            status: 'received',
+            offeredItem: 'Custom Canvas Tote',
+            requestedItem: 'Acoustic Guitar Tutoring'
         }
     },
     {
@@ -17079,7 +17112,7 @@ const MOCK_CONVERSATIONS = [
             { sender: 'me', text: 'Hi Liam, that sounds like a great trade. How many seedlings do you have?', time: '2 days ago' },
             { sender: 'Liam', text: 'I have about 6 healthy heirloom tomato seedlings ready for planting.', time: '2 days ago' },
             { sender: 'me', text: 'Perfect! I can help weed your garden beds this Thursday afternoon.', time: '2 days ago' },
-            { sender: 'Liam', text: 'Thursday works great. Let\'s meet at my front garden around 2 PM.', time: '2 days ago' }
+            { sender: 'me', text: 'SWAP OFFER: I would like to swap my "Garden Weeding & Help" for your "Heirloom Tomato Seedlings".', time: 'Yesterday', isSwapOffer: true, offeredItemTitle: 'Garden Weeding & Help', offeredItemImage: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?q=60&w=120&auto=format&fit=crop', requestedItemTitle: 'Heirloom Tomato Seedlings', requestedItemImage: 'https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?q=60&w=120&auto=format&fit=crop' }
         ],
         negotiation: {
             status: 'pending',
@@ -17098,12 +17131,12 @@ const MOCK_CONVERSATIONS = [
             { sender: 'me', text: 'Hi Noah! My Wi-Fi has actually been super spotty in the backyard.', time: '3 days ago' },
             { sender: 'Noah', text: 'I can definitely help with that. I can set up a range extender or mesh node.', time: '3 days ago' },
             { sender: 'me', text: 'That would be incredibly helpful! When are you free to do that?', time: '3 days ago' },
-            { sender: 'Noah', text: 'I\'m free this Saturday morning if that works for you.', time: '3 days ago' }
+            { sender: 'Noah', text: 'SWAP OFFER: I would like to swap my "Tech & Digital Help" for your "Acoustic Guitar Tutoring".', time: '3 days ago', isSwapOffer: true, offeredItemTitle: 'Tech & Digital Help', offeredItemImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=60&w=120&auto=format&fit=crop', requestedItemTitle: 'Acoustic Guitar Tutoring', requestedItemImage: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?q=60&w=120&auto=format&fit=crop' }
         ],
         negotiation: {
-            status: 'pending',
-            offeredItem: 'Acoustic Guitar Tutoring',
-            requestedItem: 'Tech & Digital Help'
+            status: 'received',
+            offeredItem: 'Tech & Digital Help',
+            requestedItem: 'Acoustic Guitar Tutoring'
         }
     },
     {
@@ -17118,12 +17151,13 @@ const MOCK_CONVERSATIONS = [
             { sender: 'Sophia', text: 'Let\'s set up a swap if you\'re interested!', time: '4 days ago' },
             { sender: 'me', text: 'Hi Sophia! I\'d love to swap some yoga sessions for your essential oils.', time: '4 days ago' },
             { sender: 'Sophia', text: 'That\'s wonderful! What kind of scents do you prefer for relaxation?', time: '4 days ago' },
-            { sender: 'me', text: 'I love lavender, cedarwood, and eucalyptus blends.', time: '4 days ago' }
+            { sender: 'Sophia', text: 'Hey! I\'m really interested in your "Yoga Sessions". I don\'t have anything to trade right now, but would you be open to a Karma Swap? You\'d receive +50 Karma Points for helping a neighbor, and it would mean the world to me! 💛✨', time: 'Yesterday', isKarmaSwapRequest: true, requestedItem: 'Yoga Sessions' }
         ],
         negotiation: {
-            status: 'pending',
-            offeredItem: 'Yoga Sessions',
-            requestedItem: 'Aromatherapy Oil Blending'
+            status: 'received',
+            offeredItem: 'Karma Points',
+            requestedItem: 'Yoga Sessions',
+            isKarmaSwap: true
         }
     },
 
@@ -19178,6 +19212,24 @@ function showView(viewId, mode) {
     if (activeView) {
         activeView.style.display = 'flex';
         
+        if (viewId === 'profile_consent') {
+            state.liabilityDisclaimerRead = true;
+            const scrollBox = document.getElementById('liability-scroll-box');
+            if (scrollBox) scrollBox.scrollTop = 0;
+            const container = document.getElementById('consent-checkboxes-container');
+            if (container) {
+                container.classList.remove('opacity-50', 'pointer-events-none');
+            }
+            for (let i = 1; i <= 4; i++) {
+                const cb = document.getElementById(`consent-check-${i}`);
+                if (cb) {
+                    cb.checked = false;
+                    cb.removeAttribute('disabled');
+                }
+            }
+            toggleConsentButton();
+        }
+        
         // Toggle profile settings close header visibility
         if (viewId === 'profile_settings') {
             const profileHeader = document.getElementById('profile-settings-header');
@@ -20102,31 +20154,65 @@ function renderOfferPhotosList() {
 window.renderOfferPhotosList = renderOfferPhotosList;
 
 const LISTING_ICON_DATABASE = [
-    { name: 'local_offer', label: 'Offer' },
-    { name: 'shopping_basket', label: 'Need' },
-    { name: 'groups', label: 'Community' },
-    { name: 'school', label: 'Education' },
-    { name: 'construction', label: 'Tools' },
-    { name: 'yard', label: 'Garden' },
-    { name: 'palette', label: 'Art' },
-    { name: 'local_pizza', label: 'Food' },
-    { name: 'checkroom', label: 'Clothing' },
-    { name: 'menu_book', label: 'Books' },
-    { name: 'sports_esports', label: 'Games' },
-    { name: 'child_care', label: 'Kids' },
-    { name: 'cleaning_services', label: 'Cleaning' },
-    { name: 'handyman', label: 'Repair' },
-    { name: 'spa', label: 'Health' },
-    { name: 'translate', label: 'Language' },
-    { name: 'festival', label: 'Festival' },
-    { name: 'star', label: 'Star' },
-    { name: 'eco', label: 'Eco' },
-    { name: 'volunteer_activism', label: 'Volunteer' },
-    { name: 'handshake', label: 'Trust' },
-    { name: 'favorite', label: 'Love' },
-    { name: 'home', label: 'Household' },
-    { name: 'info', label: 'Info' }
+    // Category Icons
+    { name: 'restaurant', label: 'Food & Drink', color: '#ef4444' },
+    { name: 'home', label: 'Home & Living', color: '#ea580c' },
+    { name: 'yard', label: 'Garden', color: '#84cc16' },
+    { name: 'school', label: 'Skills & Ed', color: '#6366f1' },
+    { name: 'handyman', label: 'Handyman', color: '#8b5cf6' },
+    { name: 'palette', label: 'Creative & Art', color: '#a855f7' },
+    { name: 'spa', label: 'Health', color: '#22c55e' },
+    { name: 'checkroom', label: 'Clothing', color: '#ec4899' },
+    { name: 'sports_esports', label: 'Books & Games', color: '#0ea5e9' },
+    { name: 'stroller', label: 'Kids & Mat', color: '#f43f5e' },
+    { name: 'groups', label: 'Event/Meetup', color: '#3b82f6' },
+    { name: 'translate', label: 'Language/Info', color: '#d946ef' },
+
+    // Unique Event Icons (Not present above)
+    { name: 'cleaning_services', label: 'Cleanup', color: '#10b981' },
+    { name: 'menu_book', label: 'Book Swap', color: '#f59e0b' },
+    { name: 'child_care', label: 'Playdate', color: '#ec4899' }
 ];
+
+const CATEGORY_TO_ICONS_MAP = {
+    // Offering / Need Categories
+    'Food & Drink': ['local_pizza', 'spa', 'yard', 'favorite', 'star', 'eco'],
+    'Home & Living': ['home', 'cleaning_services', 'handyman', 'construction', 'star', 'favorite'],
+    'Home and Living': ['home', 'cleaning_services', 'handyman', 'construction', 'star', 'favorite'],
+    'Garden & Outdoors': ['yard', 'eco', 'construction', 'star', 'home'],
+    'Skills & Education': ['school', 'translate', 'menu_book', 'info', 'star', 'groups'],
+    'Handyman & Services': ['handyman', 'construction', 'cleaning_services', 'star', 'home'],
+    'Creative & Art': ['palette', 'sports_esports', 'menu_book', 'star', 'festival'],
+    'Health': ['spa', 'favorite', 'volunteer_activism', 'star', 'child_care'],
+    'Clothing & Apparel': ['checkroom', 'palette', 'star', 'favorite'],
+    'Books, Games, Entertainment': ['menu_book', 'sports_esports', 'star', 'school'],
+    'Books & Games': ['menu_book', 'sports_esports', 'star', 'school'],
+    'Kids & Maternity': ['child_care', 'favorite', 'star', 'sports_esports'],
+    'Kids and Maternity': ['child_care', 'favorite', 'star', 'sports_esports'],
+    'Event or Meetup': ['groups', 'festival', 'volunteer_activism', 'handshake', 'star', 'favorite'],
+
+    // Event Types
+    'Workshop': ['school', 'menu_book', 'translate', 'handyman', 'construction', 'star'],
+    'Meetup': ['groups', 'handshake', 'favorite', 'star', 'festival'],
+    'Community Clean': ['cleaning_services', 'eco', 'yard', 'star', 'construction'],
+    'Book Swap': ['menu_book', 'sports_esports', 'star', 'school'],
+    'Playdate': ['child_care', 'favorite', 'star', 'sports_esports'],
+    'Garden Swap': ['yard', 'eco', 'star', 'home'],
+    'Repair Cafe': ['handyman', 'construction', 'star', 'cleaning_services'],
+    'Clothing Swap': ['checkroom', 'palette', 'star', 'favorite']
+};
+
+function getFilteredIcons() {
+    const mode = state.currentOfferMode || 'offering';
+    
+    if (mode === 'event') {
+        const eventIcons = ['school', 'groups', 'cleaning_services', 'menu_book', 'child_care', 'yard', 'handyman', 'checkroom'];
+        return LISTING_ICON_DATABASE.filter(icon => eventIcons.includes(icon.name));
+    } else {
+        const categoryIcons = ['restaurant', 'home', 'yard', 'school', 'handyman', 'palette', 'spa', 'checkroom', 'sports_esports', 'stroller', 'groups', 'translate'];
+        return LISTING_ICON_DATABASE.filter(icon => categoryIcons.includes(icon.name));
+    }
+}
 
 function openIconSelectorModal() {
     window.triggerHapticFeedback('light');
@@ -20149,13 +20235,19 @@ function renderIconSelectorGrid() {
     const grid = document.getElementById('icon-selector-grid');
     if (!grid) return;
     
-    grid.innerHTML = LISTING_ICON_DATABASE.map(icon => {
+    const filteredIcons = getFilteredIcons();
+    
+    grid.innerHTML = filteredIcons.map(icon => {
         const isSelected = state.selectedOfferIcon === icon.name;
         const selectedClass = isSelected ? 'bg-forest-green text-warm-cream border-forest-green' : 'bg-warm-cream/40 dark:bg-[#1b261f]/30 border-outline-variant/20 text-forest-green dark:text-emerald-400 hover:bg-forest-green/5';
+        
+        // Icon color when selected vs not selected
+        const iconStyle = isSelected ? '' : `style="color: ${icon.color} !important;"`;
+        
         return `
-            <button type="button" onclick="selectIcon('${icon.name}')" class="p-2 border rounded-2xl flex flex-col items-center justify-center text-center gap-1 active:scale-95 transition-all cursor-pointer ${selectedClass}">
-                <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' ${isSelected ? 1 : 0};">${icon.name}</span>
-                <span class="text-[8px] font-bold leading-tight ${isSelected ? 'text-warm-cream/90' : 'text-black dark:text-warm-cream'}">${icon.label}</span>
+            <button type="button" onclick="selectIcon('${icon.name}')" class="p-3 min-h-[74px] border rounded-2xl flex flex-col items-center justify-center text-center gap-1.5 active:scale-95 transition-all cursor-pointer ${selectedClass}">
+                <span class="material-symbols-outlined text-2xl" ${iconStyle} style="font-variation-settings: 'FILL' ${isSelected ? 1 : 0};">${icon.name}</span>
+                <span class="text-[10px] font-extrabold leading-tight w-full break-words ${isSelected ? 'text-warm-cream/90' : 'text-black dark:text-warm-cream'}">${icon.label}</span>
             </button>
         `;
     }).join('');
@@ -20641,11 +20733,13 @@ function handleLogout() {
     showView('welcome');
 }
 function toggleConsentButton() {
-    const consentChecked = document.getElementById('consent-check').checked;
-    const ageChecked = document.getElementById('age-check').checked;
+    const cb1 = document.getElementById('consent-check-1')?.checked;
+    const cb2 = document.getElementById('consent-check-2')?.checked;
+    const cb3 = document.getElementById('consent-check-3')?.checked;
+    const cb4 = document.getElementById('consent-check-4')?.checked;
     const btn = document.getElementById('consent-continue-btn');
     if (!btn) return;
-    if (consentChecked && ageChecked) {
+    if (cb1 && cb2 && cb3 && cb4) {
         btn.disabled = false;
         btn.classList.remove('bg-forest-green/45', 'cursor-not-allowed');
         btn.classList.add('bg-forest-green', 'cursor-pointer');
@@ -20653,6 +20747,26 @@ function toggleConsentButton() {
         btn.disabled = true;
         btn.classList.add('bg-forest-green/45', 'cursor-not-allowed');
         btn.classList.remove('bg-forest-green', 'cursor-pointer');
+    }
+}
+
+function handleLiabilityDisclaimerScroll(el) {
+    if (el.scrollHeight - el.scrollTop - el.clientHeight <= 2) {
+        state.liabilityDisclaimerRead = true;
+        enableConsentCheckboxesIfEligible();
+    }
+}
+
+function enableConsentCheckboxesIfEligible() {
+    if (state.liabilityDisclaimerRead) {
+        const container = document.getElementById('consent-checkboxes-container');
+        if (container) {
+            container.classList.remove('opacity-50', 'pointer-events-none');
+        }
+        for (let i = 1; i <= 4; i++) {
+            const cb = document.getElementById(`consent-check-${i}`);
+            if (cb) cb.removeAttribute('disabled');
+        }
     }
 }
 
@@ -20688,8 +20802,15 @@ window.toggleEulaAccordion = function(element) {
 
 function handleProfileConsentSubmit() {
     playSound('click');
+    const timestamp = new Date().toISOString();
     if (state.currentUser) {
         state.currentUser.eulaAgreed = true;
+        state.currentUser.consentTimestamps = {
+            codeOfConduct: timestamp,
+            exchangeSafety: timestamp,
+            liabilityDisclaimer: timestamp,
+            privacyPolicy: timestamp
+        };
     }
     state.eulaAgreed = true;
     saveState();
@@ -24910,7 +25031,6 @@ function selectOfferMode(mode) {
         if (eventLocSec) eventLocSec.classList.remove('hidden');
         if (eventCustomIconSec) {
             eventCustomIconSec.classList.remove('hidden');
-            renderCustomEventIconSelector();
         }
     } else {
         if (eventTypeSec) eventTypeSec.classList.add('hidden');
@@ -41842,6 +41962,19 @@ function getShortTitle(title) {
     return twoWords;
 }
 
+function removeOfferSwapHighlights() {
+    const customText = document.getElementById('offer-swap-custom-text');
+    if (customText) {
+        customText.classList.remove('error-custom-text');
+    }
+    const grid = document.getElementById('offer-swap-boxes-grid');
+    if (grid) {
+        grid.querySelectorAll('.swap-listing-box').forEach(btn => {
+            btn.classList.remove('error-swap-box');
+        });
+    }
+}
+
 function openSwapProposalPage() {
     if (state.isGuest) {
         openGuestPromptModal();
@@ -41850,12 +41983,20 @@ function openSwapProposalPage() {
     
     // Clear custom text
     const customText = document.getElementById('offer-swap-custom-text');
-    if (customText) customText.value = "";
-    
-    const customTextWrapper = document.getElementById('offer-swap-custom-text-wrapper');
-    if (customTextWrapper) customTextWrapper.classList.add('hidden');
+    if (customText) {
+        customText.value = "";
+        customText.oninput = () => {
+            state.selectedSwapListingId = null;
+            const grid = document.getElementById('offer-swap-boxes-grid');
+            if (grid) {
+                grid.querySelectorAll('.swap-listing-box').forEach(btn => btn.classList.remove('active-swap-box'));
+            }
+            removeOfferSwapHighlights();
+        };
+    }
     
     state.selectedSwapListingId = null;
+    removeOfferSwapHighlights();
     
     const grid = document.getElementById('offer-swap-boxes-grid');
     if (grid) {
@@ -41884,19 +42025,6 @@ function openSwapProposalPage() {
             emptyMsg.innerText = "No active listings on your profile.";
             grid.appendChild(emptyMsg);
         }
-        
-        // Add Custom Swap button
-        const customBtn = document.createElement('button');
-        customBtn.type = 'button';
-        customBtn.className = 'swap-listing-box w-full bg-white dark:bg-[#101612] text-black dark:text-white';
-        customBtn.setAttribute('data-id', 'custom');
-        
-        customBtn.innerHTML = `
-            <span class="material-symbols-outlined text-base flex-shrink-0" style="color: #f59e0b !important;">cached</span>
-            <span class="text-xs font-semibold truncate flex-grow text-left">Custom Swap</span>
-        `;
-        customBtn.onclick = () => selectSwapListingBox('custom');
-        grid.appendChild(customBtn);
     }
     
     const modal = document.getElementById('offer-swap-modal');
@@ -41925,18 +42053,11 @@ function selectSwapListingBox(id) {
         });
     }
     
-    const customTextWrapper = document.getElementById('offer-swap-custom-text-wrapper');
-    if (customTextWrapper) {
-        if (id === 'custom') {
-            customTextWrapper.classList.remove('hidden');
-            setTimeout(() => {
-                const textarea = document.getElementById('offer-swap-custom-text');
-                if (textarea) textarea.focus();
-            }, 100);
-        } else {
-            customTextWrapper.classList.add('hidden');
-        }
-    }
+    // Clear custom text box when selecting a listing
+    const customText = document.getElementById('offer-swap-custom-text');
+    if (customText) customText.value = "";
+    
+    removeOfferSwapHighlights();
 }
 window.selectSwapListingBox = selectSwapListingBox;
 
@@ -41968,18 +42089,27 @@ function submitOfferSwapProposal(isKarma) {
         const customText = document.getElementById('offer-swap-custom-text')?.value.trim() || "";
         const selectedListingId = state.selectedSwapListingId;
         
-        if (selectedListingId === 'custom') {
-            offeredText = customText;
-        } else if (selectedListingId) {
+        if (selectedListingId) {
             const off = state.userOfferings.find(o => o.id === selectedListingId);
             if (off) {
                 offeredText = off.title;
             }
+        } else if (customText) {
+            offeredText = customText;
         }
     }
     
     if (!offeredText) {
-        alert("Please select one of your listings or enter a custom swap detail.");
+        const grid = document.getElementById('offer-swap-boxes-grid');
+        const customText = document.getElementById('offer-swap-custom-text');
+        if (grid) {
+            grid.querySelectorAll('.swap-listing-box').forEach(btn => {
+                btn.classList.add('error-swap-box');
+            });
+        }
+        if (customText) {
+            customText.classList.add('error-custom-text');
+        }
         return;
     }
     

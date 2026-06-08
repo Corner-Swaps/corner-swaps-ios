@@ -3376,6 +3376,24 @@ function showView(viewId, mode) {
     if (activeView) {
         activeView.style.display = 'flex';
         
+        if (viewId === 'profile_consent') {
+            state.liabilityDisclaimerRead = true;
+            const scrollBox = document.getElementById('liability-scroll-box');
+            if (scrollBox) scrollBox.scrollTop = 0;
+            const container = document.getElementById('consent-checkboxes-container');
+            if (container) {
+                container.classList.remove('opacity-50', 'pointer-events-none');
+            }
+            for (let i = 1; i <= 4; i++) {
+                const cb = document.getElementById(`consent-check-${i}`);
+                if (cb) {
+                    cb.checked = false;
+                    cb.removeAttribute('disabled');
+                }
+            }
+            toggleConsentButton();
+        }
+        
         // Toggle profile settings close header visibility
         if (viewId === 'profile_settings') {
             const profileHeader = document.getElementById('profile-settings-header');
@@ -4707,11 +4725,13 @@ function handleLogout() {
     showView('welcome');
 }
 function toggleConsentButton() {
-    const consentChecked = document.getElementById('consent-check').checked;
-    const ageChecked = document.getElementById('age-check').checked;
+    const cb1 = document.getElementById('consent-check-1')?.checked;
+    const cb2 = document.getElementById('consent-check-2')?.checked;
+    const cb3 = document.getElementById('consent-check-3')?.checked;
+    const cb4 = document.getElementById('consent-check-4')?.checked;
     const btn = document.getElementById('consent-continue-btn');
     if (!btn) return;
-    if (consentChecked && ageChecked) {
+    if (cb1 && cb2 && cb3 && cb4) {
         btn.disabled = false;
         btn.classList.remove('bg-forest-green/45', 'cursor-not-allowed');
         btn.classList.add('bg-forest-green', 'cursor-pointer');
@@ -4719,6 +4739,26 @@ function toggleConsentButton() {
         btn.disabled = true;
         btn.classList.add('bg-forest-green/45', 'cursor-not-allowed');
         btn.classList.remove('bg-forest-green', 'cursor-pointer');
+    }
+}
+
+function handleLiabilityDisclaimerScroll(el) {
+    if (el.scrollHeight - el.scrollTop - el.clientHeight <= 2) {
+        state.liabilityDisclaimerRead = true;
+        enableConsentCheckboxesIfEligible();
+    }
+}
+
+function enableConsentCheckboxesIfEligible() {
+    if (state.liabilityDisclaimerRead) {
+        const container = document.getElementById('consent-checkboxes-container');
+        if (container) {
+            container.classList.remove('opacity-50', 'pointer-events-none');
+        }
+        for (let i = 1; i <= 4; i++) {
+            const cb = document.getElementById(`consent-check-${i}`);
+            if (cb) cb.removeAttribute('disabled');
+        }
     }
 }
 
@@ -4754,8 +4794,15 @@ window.toggleEulaAccordion = function(element) {
 
 function handleProfileConsentSubmit() {
     playSound('click');
+    const timestamp = new Date().toISOString();
     if (state.currentUser) {
         state.currentUser.eulaAgreed = true;
+        state.currentUser.consentTimestamps = {
+            codeOfConduct: timestamp,
+            exchangeSafety: timestamp,
+            liabilityDisclaimer: timestamp,
+            privacyPolicy: timestamp
+        };
     }
     state.eulaAgreed = true;
     saveState();
@@ -25633,6 +25680,19 @@ function getShortTitle(title) {
     return twoWords;
 }
 
+function removeOfferSwapHighlights() {
+    const customText = document.getElementById('offer-swap-custom-text');
+    if (customText) {
+        customText.classList.remove('error-custom-text');
+    }
+    const grid = document.getElementById('offer-swap-boxes-grid');
+    if (grid) {
+        grid.querySelectorAll('.swap-listing-box').forEach(btn => {
+            btn.classList.remove('error-swap-box');
+        });
+    }
+}
+
 function openSwapProposalPage() {
     if (state.isGuest) {
         openGuestPromptModal();
@@ -25641,12 +25701,20 @@ function openSwapProposalPage() {
     
     // Clear custom text
     const customText = document.getElementById('offer-swap-custom-text');
-    if (customText) customText.value = "";
-    
-    const customTextWrapper = document.getElementById('offer-swap-custom-text-wrapper');
-    if (customTextWrapper) customTextWrapper.classList.add('hidden');
+    if (customText) {
+        customText.value = "";
+        customText.oninput = () => {
+            state.selectedSwapListingId = null;
+            const grid = document.getElementById('offer-swap-boxes-grid');
+            if (grid) {
+                grid.querySelectorAll('.swap-listing-box').forEach(btn => btn.classList.remove('active-swap-box'));
+            }
+            removeOfferSwapHighlights();
+        };
+    }
     
     state.selectedSwapListingId = null;
+    removeOfferSwapHighlights();
     
     const grid = document.getElementById('offer-swap-boxes-grid');
     if (grid) {
@@ -25675,19 +25743,6 @@ function openSwapProposalPage() {
             emptyMsg.innerText = "No active listings on your profile.";
             grid.appendChild(emptyMsg);
         }
-        
-        // Add Custom Swap button
-        const customBtn = document.createElement('button');
-        customBtn.type = 'button';
-        customBtn.className = 'swap-listing-box w-full bg-white dark:bg-[#101612] text-black dark:text-white';
-        customBtn.setAttribute('data-id', 'custom');
-        
-        customBtn.innerHTML = `
-            <span class="material-symbols-outlined text-base flex-shrink-0" style="color: #f59e0b !important;">cached</span>
-            <span class="text-xs font-semibold truncate flex-grow text-left">Custom Swap</span>
-        `;
-        customBtn.onclick = () => selectSwapListingBox('custom');
-        grid.appendChild(customBtn);
     }
     
     const modal = document.getElementById('offer-swap-modal');
@@ -25716,18 +25771,11 @@ function selectSwapListingBox(id) {
         });
     }
     
-    const customTextWrapper = document.getElementById('offer-swap-custom-text-wrapper');
-    if (customTextWrapper) {
-        if (id === 'custom') {
-            customTextWrapper.classList.remove('hidden');
-            setTimeout(() => {
-                const textarea = document.getElementById('offer-swap-custom-text');
-                if (textarea) textarea.focus();
-            }, 100);
-        } else {
-            customTextWrapper.classList.add('hidden');
-        }
-    }
+    // Clear custom text box when selecting a listing
+    const customText = document.getElementById('offer-swap-custom-text');
+    if (customText) customText.value = "";
+    
+    removeOfferSwapHighlights();
 }
 window.selectSwapListingBox = selectSwapListingBox;
 
@@ -25759,18 +25807,27 @@ function submitOfferSwapProposal(isKarma) {
         const customText = document.getElementById('offer-swap-custom-text')?.value.trim() || "";
         const selectedListingId = state.selectedSwapListingId;
         
-        if (selectedListingId === 'custom') {
-            offeredText = customText;
-        } else if (selectedListingId) {
+        if (selectedListingId) {
             const off = state.userOfferings.find(o => o.id === selectedListingId);
             if (off) {
                 offeredText = off.title;
             }
+        } else if (customText) {
+            offeredText = customText;
         }
     }
     
     if (!offeredText) {
-        alert("Please select one of your listings or enter a custom swap detail.");
+        const grid = document.getElementById('offer-swap-boxes-grid');
+        const customText = document.getElementById('offer-swap-custom-text');
+        if (grid) {
+            grid.querySelectorAll('.swap-listing-box').forEach(btn => {
+                btn.classList.add('error-swap-box');
+            });
+        }
+        if (customText) {
+            customText.classList.add('error-custom-text');
+        }
         return;
     }
     
