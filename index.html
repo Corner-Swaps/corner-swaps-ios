@@ -2170,10 +2170,14 @@ html.dark #phone-header-bar .material-symbols-outlined {
 }
 
 .native-app-env #view-profile_consent,
-.native-app-env #view-profile_location_permission,
 .native-app-env #view-profile_step_1,
 .native-app-env #view-profile_step_2,
 .native-app-env #view-profile_step_3 {
+    padding-bottom: calc(3.5rem + env(safe-area-inset-bottom)) !important;
+}
+
+.native-app-env #view-profile_location_permission {
+    padding-top: calc(3.5rem + env(safe-area-inset-top)) !important;
     padding-bottom: calc(3.5rem + env(safe-area-inset-bottom)) !important;
 }
 
@@ -9298,7 +9302,7 @@ body:not(:has(#view-landing.active)) footer,
                 <!-- ==================================================== -->
                 <!-- 4.5. ONBOARDING LOCATION PERMISSIONS CHOICE -->
                 <!-- ==================================================== -->
-                <section id="view-profile_location_permission" class="screen-view flex-grow flex flex-col justify-start items-center py-6 px-6">
+                <section id="view-profile_location_permission" class="screen-view flex-grow flex flex-col justify-center items-center py-6 px-6">
                     <!-- Top Icon badge -->
                     <div class="flex justify-center mb-2">
                         <span class="material-symbols-outlined text-[42px] text-forest-green" style="font-variation-settings: 'FILL' 1;">location_on</span>
@@ -9399,10 +9403,6 @@ body:not(:has(#view-landing.active)) footer,
                                 <span>I Understand, Continue</span>
                                 <span class="material-symbols-outlined text-sm">arrow_forward</span>
                             </button>
-                            <button class="w-full h-10 bg-transparent text-forest-green/70 font-semibold text-xs rounded-xl hover:bg-forest-green/5 active:scale-[0.98] transition-all flex items-center justify-center gap-1" onclick="goBackToLocationSetup()">
-                                <span class="material-symbols-outlined text-sm">arrow_back</span>
-                                <span>Back to Location Setup</span>
-                            </button>
                         </div>
                     </div>
                 </section>
@@ -9430,17 +9430,17 @@ body:not(:has(#view-landing.active)) footer,
                     <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
                         <form onsubmit="handleProfileStep1(event)" class="relative w-full">
                             <input type="hidden" id="step1-location" value="">
-                            <div class="grid grid-cols-2 gap-2 mb-4 max-h-[180px] overflow-y-auto p-1 custom-scrollbar text-xs font-semibold" id="step1-location-box">
-                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('Downtown Vancouver', this)">Downtown Vancouver</button>
-                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('Kitsilano', this)">Kitsilano</button>
-                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('Commercial Drive', this)">Commercial Drive</button>
-                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('Mount Pleasant', this)">Mount Pleasant</button>
-                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('West End', this)">West End</button>
-                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('Yaletown', this)">Yaletown</button>
-                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('Gastown', this)">Gastown</button>
-                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('Kerrisdale', this)">Kerrisdale</button>
-                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('Fairview', this)">Fairview</button>
-                                <button type="button" class="neighborhood-opt-btn p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-[11px]" onclick="selectOnboardingNeighborhood('East Vancouver', this)">East Vancouver</button>
+                            <div class="grid grid-cols-2 gap-2 mb-4 max-h-[340px] overflow-y-auto p-1 custom-scrollbar text-xs font-semibold" id="step1-location-box">
+                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Downtown', this)">Downtown</button>
+                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Kitsilano', this)">Kitsilano</button>
+                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Commercial Drive', this)">Commercial Drive</button>
+                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Mount Pleasant', this)">Mount Pleasant</button>
+                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('West End', this)">West End</button>
+                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Yaletown', this)">Yaletown</button>
+                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Gastown', this)">Gastown</button>
+                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Kerrisdale', this)">Kerrisdale</button>
+                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Fairview', this)">Fairview</button>
+                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('East Vancouver', this)">East Vancouver</button>
                             </div>
                             
                             <!-- Divider section -->
@@ -16722,7 +16722,7 @@ const INITIAL_NEIGHBORS = {
 
 // Programmatically adjust neighbor coordinates to distribute them across all 10 neighborhoods
 const NEIGHBORHOOD_COORDS = {
-    'Downtown Vancouver': { lat: 49.2827, lng: -123.1207 },
+    'Downtown': { lat: 49.2827, lng: -123.1207 },
     'Kitsilano': { lat: 49.2684, lng: -123.1651 },
     'Commercial Drive': { lat: 49.2642, lng: -123.0697 },
     'Mount Pleasant': { lat: 49.2630, lng: -123.1020 },
@@ -16736,9 +16736,9 @@ const NEIGHBORHOOD_COORDS = {
 
 const neighborAdjustments = {
     'Sarah Chen': { location: 'Yaletown', lat: 49.2756, lng: -123.1215 },
-    'David Kim': { location: 'Downtown Vancouver', lat: 49.2827, lng: -123.1207 },
+    'David Kim': { location: 'Downtown', lat: 49.2827, lng: -123.1207 },
     'Zoe': { location: 'West End', lat: 49.2859, lng: -123.1341 },
-    'Ethan': { location: 'Downtown Vancouver', lat: 49.2840, lng: -123.1180 },
+    'Ethan': { location: 'Downtown', lat: 49.2840, lng: -123.1180 },
     'Noah': { location: 'Gastown', lat: 49.2827, lng: -123.1058 },
     'Ava': { location: 'Gastown', lat: 49.2815, lng: -123.1090 },
     'Elena': { location: 'Kitsilano', lat: 49.2684, lng: -123.1651 },
@@ -16748,15 +16748,15 @@ const neighborAdjustments = {
     'Marcus': { location: 'Commercial Drive', lat: 49.2610, lng: -123.0650 },
     'Nora Miller': { location: 'Kitsilano', lat: 49.2690, lng: -123.1700 },
     'Emily': { location: 'Yaletown', lat: 49.2770, lng: -123.1230 },
-    'Lucas': { location: 'Downtown Vancouver', lat: 49.2810, lng: -123.1250 },
+    'Lucas': { location: 'Downtown', lat: 49.2810, lng: -123.1250 },
     'Mia': { location: 'West End', lat: 49.2870, lng: -123.1310 },
     'Jacob': { location: 'Gastown', lat: 49.2840, lng: -123.1030 },
     'Oliver': { location: 'Gastown', lat: 49.2850, lng: -123.1070 },
     'Amelia': { location: 'Fairview', lat: 49.2635, lng: -123.1294 },
     'Daniel': { location: 'Yaletown', lat: 49.2740, lng: -123.1190 },
-    'Harper': { location: 'Downtown Vancouver', lat: 49.2860, lng: -123.1230 },
+    'Harper': { location: 'Downtown', lat: 49.2860, lng: -123.1230 },
     'Evelyn': { location: 'Kitsilano', lat: 49.2710, lng: -123.1550 },
-    'James': { location: 'Downtown Vancouver', lat: 49.2800, lng: -123.1170 },
+    'James': { location: 'Downtown', lat: 49.2800, lng: -123.1170 },
     'Charlotte': { location: 'West End', lat: 49.2830, lng: -123.1360 },
     'Benjamin': { location: 'Mount Pleasant', lat: 49.2650, lng: -123.1050 },
     'Isabella': { location: 'Kitsilano', lat: 49.2730, lng: -123.1620 },
@@ -16791,7 +16791,7 @@ const neighborAdjustments = {
     'Zoe Brooks': { location: 'Kerrisdale', lat: 49.2330, lng: -123.1570 },
     'Chef Pierre': { location: 'Kitsilano', lat: 49.2685, lng: -123.1532 },
     'Aunt Brenda': { location: 'Commercial Drive', lat: 49.2512, lng: -123.0721 },
-    'Oliver Twist': { location: 'Downtown Vancouver', lat: 49.2835, lng: -123.1167 },
+    'Oliver Twist': { location: 'Downtown', lat: 49.2835, lng: -123.1167 },
     'Bob Builder': { location: 'Mount Pleasant', lat: 49.2615, lng: -123.0987 },
     'Mac Tech': { location: 'Yaletown', lat: 49.2731, lng: -123.1292 },
     'Sparky Joe': { location: 'West End', lat: 49.2862, lng: -123.1354 },
@@ -29280,7 +29280,7 @@ function nextWelcomeSlide() {
 
 // Neighborhood Autocomplete Suggestions
 const NEIGHBORHOODS_LIST = [
-    "Downtown Vancouver", "Kitsilano", "Commercial Drive", "Mount Pleasant", "West End", 
+    "Downtown", "Kitsilano", "Commercial Drive", "Mount Pleasant", "West End", 
     "Yaletown", "Gastown", "Kerrisdale", "Fairview", "East Vancouver"
 ];
 
@@ -36435,8 +36435,34 @@ window.closeLocationPrivacyModal = function() {
 };
 
 window.grantOnboardingLocationConsent = function() {
-    state.onboardingLocationRequest = true;
-    window.openLocationPrivacyModal();
+    state.onboardingLocationRequest = false;
+    state.locationConsent = true;
+    if (!state.currentUser) state.currentUser = {};
+    state.currentUser.locationAccuracy = 'approximate';
+    state.currentUser.lat = 49.2608;
+    state.currentUser.lng = -123.1368;
+    saveState();
+
+    const cloudIcon = document.getElementById('icon-location-cloud');
+    const textCloud = document.getElementById('text-location-cloud');
+    const locationBtn = document.getElementById('btn-onboarding-location-permission');
+
+    if (cloudIcon) {
+        cloudIcon.innerText = 'cloud_done';
+        cloudIcon.classList.remove('animate-spin');
+        cloudIcon.classList.add('text-white');
+    }
+    if (locationBtn) {
+        locationBtn.classList.remove('bg-forest-green');
+        locationBtn.classList.add('bg-[#15803d]');
+    }
+    if (textCloud) {
+        textCloud.innerHTML = 'Location Permission Enabled <span style="margin-left: 8px; font-weight: bold;">✓</span>';
+    }
+
+    setTimeout(() => {
+        showView('create_account_safe_spots');
+    }, 1000);
 };
 
 window.selectLocationConsent = function(mode) {
@@ -36623,10 +36649,7 @@ window.confirmSafeSpotsOnboarding = function() {
     showView('profile_step_1');
 };
 
-window.goBackToLocationSetup = function() {
-    if (typeof playSound === 'function') playSound('click');
-    showView('profile_location_permission');
-};
+
 
 
 window.handleReportEventFromDetail = handleReportEventFromDetail;
