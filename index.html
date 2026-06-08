@@ -2172,7 +2172,8 @@ html.dark #phone-header-bar .material-symbols-outlined {
 .native-app-env #view-profile_consent,
 .native-app-env #view-profile_step_1,
 .native-app-env #view-profile_step_2,
-.native-app-env #view-profile_step_3 {
+.native-app-env #view-profile_step_3,
+.native-app-env #view-create_account_safe_spots {
     padding-bottom: calc(3.5rem + env(safe-area-inset-bottom)) !important;
 }
 
@@ -6275,6 +6276,7 @@ body:has(#loading-screen:not(.hidden):not(.fading-out)) #iphone16-status-bar .ba
 /* Ensure onboarding screens are padded too */
 .iphone16-mode #view-profile_consent,
 .iphone16-mode #view-profile_location_permission,
+.iphone16-mode #view-create_account_safe_spots,
 .iphone16-mode #view-profile_step_1,
 .iphone16-mode #view-profile_step_2,
 .iphone16-mode #view-profile_step_3 {
@@ -6516,6 +6518,7 @@ html.dark .onboarding-card {
 #view-create_account_social,
 #view-profile_consent,
 #view-profile_location_permission,
+#view-create_account_safe_spots,
 #view-profile_step_1,
 #view-lead_giving,
 #view-profile_step_2,
@@ -6528,6 +6531,7 @@ html.dark #view-create_account,
 html.dark #view-create_account_social,
 html.dark #view-profile_consent,
 html.dark #view-profile_location_permission,
+html.dark #view-create_account_safe_spots,
 html.dark #view-profile_step_1,
 html.dark #view-lead_giving,
 html.dark #view-profile_step_2,
@@ -6541,6 +6545,7 @@ html.dark #view-sign_in {
 #view-create_account_social p,
 #view-profile_consent p,
 #view-profile_location_permission p,
+#view-create_account_safe_spots p,
 #view-profile_step_1 p,
 #view-sign_in p {
     color: #55665b !important;
@@ -6550,6 +6555,7 @@ html.dark #view-create_account p,
 html.dark #view-create_account_social p,
 html.dark #view-profile_consent p,
 html.dark #view-profile_location_permission p,
+html.dark #view-create_account_safe_spots p,
 html.dark #view-profile_step_1 p,
 html.dark #view-sign_in p {
     color: #9ab0a1 !important;
@@ -7662,6 +7668,8 @@ html.dark .leaflet-popup-content-wrapper {
     body:has(#view-create_account.active) footer,
     body:has(#view-create_account_social.active) footer,
     body:has(#view-profile_consent.active) footer,
+    body:has(#view-profile_location_permission.active) footer,
+    body:has(#view-create_account_safe_spots.active) footer,
     body:has(#view-profile_step_1.active) footer,
     body:has(#view-profile_step_2.active) footer,
     body:has(#view-profile_step_3.active) footer,
@@ -7673,7 +7681,7 @@ html.dark .leaflet-popup-content-wrapper {
 
     /* Centered Standard Page Layouts */
     #view-home, #view-offer, #view-profile_settings, #view-events_hub, #view-create_event, #view-settings_detail, 
-    #view-welcome, #view-profile_consent, 
+    #view-welcome, #view-profile_consent, #view-profile_location_permission, #view-create_account_safe_spots,
     #view-profile_step_1, #view-profile_step_2, #view-profile_step_3, #view-profile_step_4 {
         padding: 40px 24px !important;
         align-items: center !important;
@@ -7688,7 +7696,7 @@ html.dark .leaflet-popup-content-wrapper {
     }
 
     /* Centered Card structures for Welcome, Onboarding */
-    #view-welcome > div, #view-profile_consent > div, 
+    #view-welcome > div, #view-profile_consent > div, #view-profile_location_permission > div, #view-create_account_safe_spots > div,
     #view-profile_step_1 > div, #view-profile_step_2 > div, #view-profile_step_3 > div, #view-profile_step_4 > div {
         max-width: 480px !important;
         width: 100% !important;
@@ -8578,6 +8586,66 @@ body:not(:has(#view-landing.active)) footer,
     display: none !important;
 }
 
+/* --- START: Map Filter Dropdown Responsive Sizing (Based on mobile device height) --- */
+
+/* Base default styling (Medium screens: iPhone 12/13/14/15/16 Pro, height 701px to 860px) */
+#map-category-dropdown {
+    gap: 8px !important;
+}
+#map-category-dropdown .filter-category-circle {
+    width: 36px !important;
+    height: 36px !important;
+}
+#map-category-dropdown .filter-category-circle span {
+    font-size: 18px !important;
+}
+#map-category-dropdown .category-label {
+    font-size: 12px !important;
+    padding: 4px 10px !important;
+}
+
+/* Small Screens (e.g. iPhone SE / screen height <= 700px) */
+@media (max-height: 700px) {
+    html:not(.show-simulator) #map-category-dropdown {
+        gap: 5px !important;
+        top: 52px !important;
+    }
+    html:not(.show-simulator) .native-app-env #map-category-dropdown {
+        top: calc(42px + env(safe-area-inset-top)) !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .filter-category-circle {
+        width: 30px !important;
+        height: 30px !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .filter-category-circle span {
+        font-size: 15px !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .category-label {
+        font-size: 10px !important;
+        padding: 2.5px 8px !important;
+    }
+}
+
+/* Large Screens (e.g. iPhone 16 Pro Max / screen height > 860px) */
+@media (min-height: 861px) {
+    html:not(.show-simulator) #map-category-dropdown {
+        gap: 11px !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .filter-category-circle {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .filter-category-circle span {
+        font-size: 20px !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .category-label {
+        font-size: 13.5px !important;
+        padding: 5px 12px !important;
+    }
+}
+
+/* --- END: Map Filter Dropdown Responsive Sizing --- */
+
 </style>
 
     <!-- Tailwind Configuration -->
@@ -8957,22 +9025,11 @@ body:not(:has(#view-landing.active)) footer,
 
                     <!-- Description word sentence -->
                     <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
-                        Step 1 of 5: Profile Details. Fill in your name, public name, and credentials to set up your account.
+                        Fill in your name, display name, and credentials to set up your profile.
                     </p>
 
                     <!-- White Card Wrapper for Form -->
                     <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
-                        <!-- Progress indicator inside the card -->
-                        <div class="flex items-center justify-between mb-4 text-[9px] font-extrabold tracking-widest text-forest-green/60 uppercase">
-                            <span>Step 1 of 5</span>
-                            <div class="flex gap-1">
-                                <span class="w-4 h-1 rounded-full bg-forest-green"></span>
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                            </div>
-                        </div>
 
                         <form class="space-y-4" onsubmit="handleSignUpNext(event)">
                             <div class="grid grid-cols-2 gap-3">
@@ -9073,22 +9130,11 @@ body:not(:has(#view-landing.active)) footer,
 
                     <!-- Description word sentence -->
                     <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
-                        Step 2 of 5: Social Profiles. Link your accounts to verify your identity. This step is optional.
+                        Link your accounts to verify your identity. This step is optional.
                     </p>
 
                     <!-- White Card Wrapper for Form -->
                     <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
-                        <!-- Progress indicator inside the card -->
-                        <div class="flex items-center justify-between mb-4 text-[9px] font-extrabold tracking-widest text-forest-green/60 uppercase">
-                            <span>Step 2 of 5</span>
-                            <div class="flex gap-1">
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                                <span class="w-4 h-1 rounded-full bg-forest-green"></span>
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                            </div>
-                        </div>
 
                         <form class="space-y-4" onsubmit="handleSignUp(event)">
                             <div class="space-y-3">
@@ -9161,22 +9207,11 @@ body:not(:has(#view-landing.active)) footer,
 
                     <!-- Description word sentence -->
                     <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
-                        Step 3 of 5: Safety & Terms. Please review our zero-tolerance guidelines to keep our neighborhood safe and welcoming.
+                        Please review our zero-tolerance guidelines to keep our neighborhood safe and welcoming.
                     </p>
 
                     <!-- White Card Wrapper for Form -->
                     <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
-                        <!-- Progress indicator inside the card -->
-                        <div class="flex items-center justify-between mb-4 text-[9px] font-extrabold tracking-widest text-forest-green/60 uppercase">
-                            <span>Step 3 of 5</span>
-                            <div class="flex gap-1">
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                                <span class="w-4 h-1 rounded-full bg-forest-green"></span>
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                            </div>
-                        </div>
 
                         <!-- Policy scroll box with collapsible accordions -->
                         <div class="eula-scroll-box border border-outline-variant/30 rounded-2xl p-4 space-y-3 max-h-[250px] mt-2 overflow-y-auto custom-scrollbar text-xs leading-relaxed text-on-surface-variant select-none">
@@ -9315,22 +9350,11 @@ body:not(:has(#view-landing.active)) footer,
 
                     <!-- Description word sentence -->
                     <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
-                        Step 4 of 5: Location Setup. Corner Swaps uses your location to connect you with nearby neighbors.
+                        Corner Swaps uses your location to connect you with nearby neighbors.
                     </p>
 
                     <!-- White Card Wrapper for Form -->
                     <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6 flex flex-col items-center">
-                        <!-- Progress indicator inside the card -->
-                        <div class="flex items-center justify-between mb-4 w-full text-[9px] font-extrabold tracking-widest text-forest-green/60 uppercase">
-                            <span>Step 4 of 5</span>
-                            <div class="flex gap-1">
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                                <span class="w-4 h-1 rounded-full bg-forest-green"></span>
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                            </div>
-                        </div>
 
                         <!-- Coarse location safeguard card -->
                         <div class="bg-forest-green/5 border border-forest-green/10 p-3.5 rounded-xl text-left text-xs mb-4 w-full">
@@ -9365,22 +9389,11 @@ body:not(:has(#view-landing.active)) footer,
 
                     <!-- Description word sentence -->
                     <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
-                        Step 5 of 5: Safe Swap Zones. Always prioritize your safety by meeting neighbors in busy, well-lit, public locations.
+                        Always prioritize your safety by meeting neighbors in busy, well-lit, public locations.
                     </p>
 
                     <!-- White Card Wrapper for Form -->
                     <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6 flex flex-col items-center">
-                        <!-- Progress indicator inside the card -->
-                        <div class="flex items-center justify-between mb-4 w-full text-[9px] font-extrabold tracking-widest text-forest-green/60 uppercase">
-                            <span>Step 5 of 5</span>
-                            <div class="flex gap-1">
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                                <span class="w-2 h-1 rounded-full bg-forest-green/20"></span>
-                                <span class="w-4 h-1 rounded-full bg-forest-green"></span>
-                            </div>
-                        </div>
 
                         <!-- Gorgeous generated image -->
                         <div class="w-full overflow-hidden rounded-xl mb-4 border border-outline-variant/30 shadow-sm relative">
@@ -9410,7 +9423,7 @@ body:not(:has(#view-landing.active)) footer,
                 <!-- ==================================================== -->
                 <!-- 5. PROFILE STEP 1: SAFE MEETING SPOT -->
                 <!-- ==================================================== -->
-                <section id="view-profile_step_1" class="screen-view flex-grow flex flex-col justify-start items-center py-6 px-6 overflow-y-auto">
+                <section id="view-profile_step_1" class="screen-view flex-grow flex flex-col justify-center items-center py-6 px-6 overflow-y-auto">
                     <!-- Top Icon badge -->
                     <div class="flex justify-center mb-2">
                         <span class="material-symbols-outlined text-[42px] text-forest-green" style="font-variation-settings: 'FILL' 1;">edit_location_alt</span>
@@ -10916,16 +10929,18 @@ body:not(:has(#view-landing.active)) footer,
                                         <input type="file" id="offer-photo-input-1" accept="image/*" class="hidden" onchange="handleOfferPhotoSlotUpload(this, 1)">
                                     </div>
 
-                                    <!-- Slot 2 (Optional) -->
-                                    <div class="relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(2)">
-                                        <div id="offer-photo-placeholder-2" class="flex items-center justify-center p-2">
-                                            <span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-2xl group-hover:scale-110 transition-transform">add_a_photo</span>
+                                    <!-- Slot 2 (Icon Selector) -->
+                                    <div class="relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="openIconSelectorModal()">
+                                        <div id="offer-icon-placeholder" class="flex flex-col items-center justify-center p-2 text-center">
+                                            <span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-2xl group-hover:scale-110 transition-transform">interests</span>
+                                            <span class="text-[8px] font-extrabold text-forest-green/60 dark:text-emerald-400/60 uppercase mt-0.5">Add Icon</span>
                                         </div>
-                                        <img id="offer-photo-preview-2" class="w-full h-full object-cover hidden">
-                                        <button id="offer-photo-remove-2" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferPhotoSlot(2)">
+                                        <div id="offer-icon-selected-display" class="w-full h-full flex items-center justify-center hidden bg-forest-green/5 dark:bg-emerald-400/5">
+                                            <span id="offer-selected-icon-symbol" class="material-symbols-outlined text-[36px] text-forest-green dark:text-emerald-400" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        </div>
+                                        <button id="offer-icon-remove" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferIcon()">
                                             <span class="material-symbols-outlined text-[10px] font-bold">close</span>
                                         </button>
-                                        <input type="file" id="offer-photo-input-2" accept="image/*" class="hidden" onchange="handleOfferPhotoSlotUpload(this, 2)">
                                     </div>
                                 </div>
                             </div>
@@ -10996,6 +11011,14 @@ body:not(:has(#view-landing.active)) footer,
                                     <option value="Repair Cafe">Tool & Repair Cafe</option>
                                     <option value="Clothing Swap">Clothing Exchange</option>
                                 </select>
+                            </div>
+                        </div>
+
+                        <!-- CUSTOM ICON SELECTOR (Only shown for events) -->
+                        <div id="event-custom-icon-selector-container" class="hidden text-left w-full mb-3">
+                            <label class="text-[9px] font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E] block mb-2 text-left">Customize Event Icon (Optional)</label>
+                            <div id="event-custom-icon-grid" class="grid grid-cols-6 gap-2 bg-[#f4f7f5] dark:bg-[#18201a] p-3 rounded-xl border border-outline-variant/30 max-h-[160px] overflow-y-auto">
+                                <!-- Rendered dynamically -->
                             </div>
                         </div>
 
@@ -11287,8 +11310,13 @@ body:not(:has(#view-landing.active)) footer,
 
                     <!-- Offerings section -->
                     <section id="widget-my-offerings" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
-                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
-                            <span class="material-symbols-outlined text-sm">handyman</span> Offerings
+                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center justify-between select-none w-full">
+                            <span class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-sm">handyman</span> Offerings
+                            </span>
+                            <button onclick="showView('offer', 'offering')" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Add Offering">
+                                <span class="material-symbols-outlined text-[15px] font-black">add</span>
+                            </button>
                         </h3>
                         <div class="space-y-3" id="my-offerings-container">
                             <!-- Dynamic user listings cards -->
@@ -11297,8 +11325,13 @@ body:not(:has(#view-landing.active)) footer,
 
                     <!-- Needs section -->
                     <section id="widget-my-needs" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
-                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
-                            <span class="material-symbols-outlined text-sm">shopping_basket</span> Needs
+                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center justify-between select-none w-full">
+                            <span class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-sm">shopping_basket</span> Needs
+                            </span>
+                            <button onclick="toggleAddNeedForm()" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Add Need">
+                                <span class="material-symbols-outlined text-[15px] font-black">add</span>
+                            </button>
                         </h3>
                         
                         <!-- Inline Add Need Form -->
@@ -11332,109 +11365,35 @@ body:not(:has(#view-landing.active)) footer,
                         </div>
                     </section>
 
-                    <!-- Neighborhood Tips Container -->
-                    <section id="widget-home-tips" class="relative bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0 mb-6">
-                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3.5 flex items-center gap-1.5 select-none">
-                            <span class="material-symbols-outlined text-sm">lightbulb</span> Neighborhood Tips
+                    <!-- My Listed Events section -->
+                    <section id="widget-my-events" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
+                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center justify-between select-none w-full">
+                            <span class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-sm">event</span> My Listed Events
+                            </span>
+                            <button onclick="showView('create_event')" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Add Event">
+                                <span class="material-symbols-outlined text-[15px] font-black">add</span>
+                            </button>
                         </h3>
-                        
-                        <div class="space-y-3">
-                            <!-- Lead by Giving Collapsible Button -->
-                            <div id="widget-lead-by-giving" class="relative border border-black/10 dark:border-white/10 rounded-xl overflow-hidden bg-black/[0.02] dark:bg-white/[0.02]">
-                                <button class="w-full bg-transparent text-black dark:text-white font-bold text-xs p-3.5 flex items-center justify-between hover:bg-black/5 dark:hover:bg-white/5 transition-colors border-0 cursor-pointer" onclick="toggleInfoPanel('widget-lead-by-giving-body')">
-                                    <span class="flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-base">favorite</span>
-                                        <span>Lead by Giving</span>
-                                    </span>
-                                    <span class="material-symbols-outlined text-sm transition-transform duration-300" id="widget-lead-by-giving-body-icon" style="transition: transform 0.2s;">chevron_right</span>
-                                </button>
-                                <div id="widget-lead-by-giving-body" class="hidden p-4 border-t border-black/10 dark:border-white/10 bg-white dark:bg-[#18201a] text-[10px] text-on-surface-variant dark:text-warm-cream/80 leading-relaxed text-left">
-                                    Every listing you share builds your public neighborhood trust rating and inspires others to trade. Start by putting out what you can share!
-                                </div>
-                            </div>
-
-                            <!-- Ideas on What to Offer Collapsible Button -->
-                            <div id="widget-ideas-offer" class="relative border border-black/10 dark:border-white/10 rounded-xl overflow-hidden bg-black/[0.02] dark:bg-white/[0.02]">
-                                <button class="w-full bg-transparent text-black dark:text-white font-bold text-xs p-3.5 flex items-center justify-between hover:bg-black/5 dark:hover:bg-white/5 transition-colors border-0 cursor-pointer" onclick="toggleInfoPanel('widget-ideas-offer-body')">
-                                    <span class="flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-base">lightbulb</span>
-                                        <span>Ideas on What to Offer</span>
-                                    </span>
-                                    <span class="material-symbols-outlined text-sm transition-transform duration-300" id="widget-ideas-offer-body-icon" style="transition: transform 0.2s;">chevron_right</span>
-                                </button>
-                                <div id="widget-ideas-offer-body" class="hidden p-4 border-t border-black/10 dark:border-white/10 bg-white dark:bg-[#18201a] text-[10px] text-on-surface-variant dark:text-warm-cream/80 leading-relaxed text-left">
-                                    You can share a wide range of offerings: lend tools and appliances to reduce waste, offer lessons or tutoring services, share professional advice, organize community playdates, or trade items you no longer need.
-                                </div>
-                            </div>
-
-                            <!-- Gifts Collapsible Button -->
-                            <div id="widget-gifts-info" class="relative border border-black/10 dark:border-white/10 rounded-xl overflow-hidden bg-black/[0.02] dark:bg-white/[0.02]">
-                                <button class="w-full bg-transparent text-black dark:text-white font-bold text-xs p-3.5 flex items-center justify-between hover:bg-black/5 dark:hover:bg-white/5 transition-colors border-0 cursor-pointer" onclick="toggleInfoPanel('widget-gifts-info-body')">
-                                    <span class="flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-base">card_giftcard</span>
-                                        <span>Gifts</span>
-                                    </span>
-                                    <span class="material-symbols-outlined text-sm transition-transform duration-300" id="widget-gifts-info-body-icon" style="transition: transform 0.2s;">chevron_right</span>
-                                </button>
-                                <div id="widget-gifts-info-body" class="hidden p-4 border-t border-black/10 dark:border-white/10 bg-white dark:bg-[#18201a] text-[10px] text-on-surface-variant dark:text-warm-cream/80 leading-relaxed text-left">
-                                    Gifts are items that are given away for free. Giving gifts to your neighbors is a great way to support the community and earns you extra Karma points!
-                                </div>
-                            </div>
-
-                            <!-- Safety Tips Collapsible Button -->
-                            <div id="widget-safety-tips" class="relative border border-black/10 dark:border-white/10 rounded-xl overflow-hidden bg-black/[0.02] dark:bg-white/[0.02]">
-                                <button class="w-full bg-transparent text-black dark:text-white font-bold text-xs p-3.5 flex items-center justify-between hover:bg-black/5 dark:hover:bg-white/5 transition-colors border-0 cursor-pointer" onclick="toggleInfoPanel('widget-safety-tips-body')">
-                                    <span class="flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-base">security</span>
-                                        <span>Tips for safe meet ups</span>
-                                    </span>
-                                    <span class="material-symbols-outlined text-sm transition-transform duration-300" id="widget-safety-tips-body-icon" style="transition: transform 0.2s;">chevron_right</span>
-                                </button>
-                                <div id="widget-safety-tips-body" class="hidden p-4 border-t border-black/10 dark:border-white/10 bg-white dark:bg-[#18201a] text-[10px] text-on-surface-variant dark:text-warm-cream/80 leading-relaxed text-left">
-                                    Always meet in well-lit public spaces, share nearby cross-streets instead of your exact home address, remember that swaps are entirely cashless, and immediately report any safety concerns in chat.
-                                </div>
-                            </div>
-
-                            <!-- Safety & Security Collapsible Button -->
-                            <div id="widget-safety-security-tips" class="relative border border-black/10 dark:border-white/10 rounded-xl overflow-hidden bg-black/[0.02] dark:bg-white/[0.02]">
-                                <button class="w-full bg-transparent text-black dark:text-white font-bold text-xs p-3.5 flex items-center justify-between hover:bg-black/5 dark:hover:bg-white/5 transition-colors border-0 cursor-pointer" onclick="toggleInfoPanel('widget-safety-security-tips-body')">
-                                    <span class="flex items-center gap-2">
-                                        <span class="text-base">🛡️</span>
-                                        <span>Safety and Security</span>
-                                    </span>
-                                    <span class="material-symbols-outlined text-sm transition-transform duration-300" id="widget-safety-security-tips-body-icon" style="transition: transform 0.2s;">chevron_right</span>
-                                </button>
-                                <div id="widget-safety-security-tips-body" class="hidden p-4 border-t border-black/10 dark:border-white/10 bg-white dark:bg-[#18201a] text-[10px] text-on-surface-variant dark:text-warm-cream/80 leading-relaxed text-left">
-                                    <ul class="list-disc pl-4 space-y-1.5">
-                                        <li><strong>Verify Profiles:</strong> Always trade with community members who have verified badges and higher vouch counts.</li>
-                                        <li><strong>Public Meetups:</strong> Conduct swaps during daylight hours in busy, well-lit public areas (e.g., local coffee shops or community centers).</li>
-                                        <li><strong>Secure Communication:</strong> Keep all discussions inside the Barterland secure chat; never share your phone number or email early on.</li>
-                                        <li><strong>Share Your Location:</strong> Let a friend or family member know where and when you are going to meet someone for a swap.</li>
-                                        <li><strong>Address Privacy:</strong> Meet at nearest major cross-streets rather than giving out your home address, especially for high-value swaps.</li>
-                                        <li><strong>Trust Your Instincts:</strong> If a deal feels suspicious or uncomfortable, cancel the meetup immediately and report the user in-app.</li>
-                                    </ul>
-                                </div>
-                            </div>
+                        <div class="space-y-3" id="my-events-container">
+                            <!-- Dynamic user events cards -->
                         </div>
                     </section>
 
-                    <!-- Saved Listings section -->
-                    <section id="widget-saved-listings" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
-                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
-                            <span class="material-symbols-outlined text-sm">bookmark</span> Saved Listings
-                        </h3>
-                        <div class="space-y-3" id="profile-saved-listings-container">
-                            <!-- Dynamic saved listings cards -->
+                    <!-- Consolidated Saved Section -->
+                    <section id="widget-saved" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
+                        <div class="flex items-center justify-between mb-3 w-full">
+                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
+                                <span class="material-symbols-outlined text-sm">bookmark</span> Saved
+                            </h3>
+                            <select id="saved-section-filter" onchange="handleSavedFilterChange(this.value)" class="h-8 px-2 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl text-xs focus:border-forest-green focus:ring-0 outline-none text-black dark:text-white font-bold cursor-pointer">
+                                <option value="needs">Saved Needs</option>
+                                <option value="offerings">Saved Offerings</option>
+                                <option value="events">Saved Events</option>
+                            </select>
                         </div>
-                    </section>
-
-                    <!-- Saved Events section -->
-                    <section id="widget-saved-events" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
-                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
-                            <span class="material-symbols-outlined text-sm">event</span> Saved Events
-                        </h3>
-                        <div class="space-y-3" id="profile-saved-events-container">
-                            <!-- Dynamic saved events cards -->
+                        <div class="space-y-3" id="profile-saved-items-container">
+                            <!-- Dynamic saved items cards -->
                         </div>
                     </section>
 
@@ -11497,6 +11456,12 @@ body:not(:has(#view-landing.active)) footer,
                         <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer" onclick="showView('definitions')">
                             <span class="flex items-center gap-2 text-black dark:text-white font-bold">
                                 <span class="material-symbols-outlined text-base text-violet-600 dark:text-violet-400">menu_book</span> Definitions
+                            </span>
+                            <span class="material-symbols-outlined text-outline dark:text-neutral-400">chevron_right</span>
+                        </button>
+                        <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer" onclick="showView('neighborhood_tips')">
+                            <span class="flex items-center gap-2 text-black dark:text-white font-bold">
+                                <span class="material-symbols-outlined text-base text-yellow-600 dark:text-yellow-400">lightbulb</span> Neighbourhood Tips
                             </span>
                             <span class="material-symbols-outlined text-outline dark:text-neutral-400">chevron_right</span>
                         </button>
@@ -12610,6 +12575,103 @@ body:not(:has(#view-landing.active)) footer,
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
                                 Everyone is good at something! Consider adding skills shares or expertise to your offerings. These are skills you can share lessons on, or areas you can provide knowledgeable guidance or tips.
                             </p>
+                        </div>
+                        <!-- Spacer to prevent bottom cutoff on iOS WebKit -->
+                        <div class="h-2 flex-shrink-0"></div>
+                    </div>
+                </section>
+
+                <!-- ==================================================== -->
+                <!-- NEIGHBOURHOOD TIPS SCREEN -->
+                <!-- ==================================================== -->
+                <section id="view-neighborhood_tips" class="screen-view flex-grow flex flex-col h-full overflow-hidden pb-8 relative" style="-webkit-overflow-scrolling: touch;">
+                    <!-- Sticky Header Bar -->
+                    <div class="flex items-center justify-between px-6 flex-shrink-0 bg-white dark:bg-[#18201a]" style="padding-top: 18px !important; padding-bottom: 18px !important;">
+                        <div class="flex items-center gap-3">
+                            <span class="w-[8px] h-[22px] rounded-full flex-shrink-0" style="background-color: #eab308 !important;"></span>
+                            <h1 id="neighborhood-tips-title" class="font-headline font-black uppercase tracking-wider app-screen-header-title" style="color: #eab308 !important;">Neighbourhood Tips</h1>
+                        </div>
+                        <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="showView('profile_settings')" title="Close">
+                            <span class="material-symbols-outlined text-lg">close</span>
+                        </button>
+                    </div>
+
+                    <div class="flex-grow overflow-y-auto custom-scrollbar px-6 py-6 space-y-4" id="widget-home-tips">
+                        <!-- Lead by Giving Collapsible Button -->
+                        <div id="widget-lead-by-giving" class="relative border border-black/10 dark:border-white/10 rounded-xl overflow-hidden bg-black/[0.02] dark:bg-white/[0.02]">
+                            <button class="w-full bg-transparent text-black dark:text-white font-bold text-xs p-3.5 flex items-center justify-between hover:bg-black/5 dark:hover:bg-white/5 transition-colors border-0 cursor-pointer" onclick="toggleInfoPanel('widget-lead-by-giving-body')">
+                                <span class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-base text-red-500">favorite</span>
+                                    <span>Lead by Giving</span>
+                                </span>
+                                <span class="material-symbols-outlined text-sm transition-transform duration-300" id="widget-lead-by-giving-body-icon" style="transition: transform 0.2s;">chevron_right</span>
+                            </button>
+                            <div id="widget-lead-by-giving-body" class="hidden p-4 border-t border-black/10 dark:border-white/10 bg-white dark:bg-[#18201a] text-[10px] text-on-surface-variant dark:text-warm-cream/80 leading-relaxed text-left">
+                                Every listing you share builds your public neighborhood trust rating and inspires others to trade. Start by putting out what you can share!
+                            </div>
+                        </div>
+
+                        <!-- Ideas on What to Offer Collapsible Button -->
+                        <div id="widget-ideas-offer" class="relative border border-black/10 dark:border-white/10 rounded-xl overflow-hidden bg-black/[0.02] dark:bg-white/[0.02]">
+                            <button class="w-full bg-transparent text-black dark:text-white font-bold text-xs p-3.5 flex items-center justify-between hover:bg-black/5 dark:hover:bg-white/5 transition-colors border-0 cursor-pointer" onclick="toggleInfoPanel('widget-ideas-offer-body')">
+                                <span class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-base text-yellow-500">lightbulb</span>
+                                    <span>Ideas on What to Offer</span>
+                                </span>
+                                <span class="material-symbols-outlined text-sm transition-transform duration-300" id="widget-ideas-offer-body-icon" style="transition: transform 0.2s;">chevron_right</span>
+                            </button>
+                            <div id="widget-ideas-offer-body" class="hidden p-4 border-t border-black/10 dark:border-white/10 bg-white dark:bg-[#18201a] text-[10px] text-on-surface-variant dark:text-warm-cream/80 leading-relaxed text-left">
+                                You can share a wide range of offerings: lend tools and appliances to reduce waste, offer lessons or tutoring services, share professional advice, organize community playdates, or trade items you no longer need.
+                            </div>
+                        </div>
+
+                        <!-- Gifts Collapsible Button -->
+                        <div id="widget-gifts-info" class="relative border border-black/10 dark:border-white/10 rounded-xl overflow-hidden bg-black/[0.02] dark:bg-white/[0.02]">
+                            <button class="w-full bg-transparent text-black dark:text-white font-bold text-xs p-3.5 flex items-center justify-between hover:bg-black/5 dark:hover:bg-white/5 transition-colors border-0 cursor-pointer" onclick="toggleInfoPanel('widget-gifts-info-body')">
+                                <span class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-base text-emerald-500">card_giftcard</span>
+                                    <span>Gifts</span>
+                                </span>
+                                <span class="material-symbols-outlined text-sm transition-transform duration-300" id="widget-gifts-info-body-icon" style="transition: transform 0.2s;">chevron_right</span>
+                            </button>
+                            <div id="widget-gifts-info-body" class="hidden p-4 border-t border-black/10 dark:border-white/10 bg-white dark:bg-[#18201a] text-[10px] text-on-surface-variant dark:text-warm-cream/80 leading-relaxed text-left">
+                                Gifts are items that are given away for free. Giving gifts to your neighbors is a great way to support the community and earns you extra Karma points!
+                            </div>
+                        </div>
+
+                        <!-- Safety Tips Collapsible Button -->
+                        <div id="widget-safety-tips" class="relative border border-black/10 dark:border-white/10 rounded-xl overflow-hidden bg-black/[0.02] dark:bg-white/[0.02]">
+                            <button class="w-full bg-transparent text-black dark:text-white font-bold text-xs p-3.5 flex items-center justify-between hover:bg-black/5 dark:hover:bg-white/5 transition-colors border-0 cursor-pointer" onclick="toggleInfoPanel('widget-safety-tips-body')">
+                                <span class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-base text-blue-500">security</span>
+                                    <span>Tips for safe meet ups</span>
+                                </span>
+                                <span class="material-symbols-outlined text-sm transition-transform duration-300" id="widget-safety-tips-body-icon" style="transition: transform 0.2s;">chevron_right</span>
+                            </button>
+                            <div id="widget-safety-tips-body" class="hidden p-4 border-t border-black/10 dark:border-white/10 bg-white dark:bg-[#18201a] text-[10px] text-on-surface-variant dark:text-warm-cream/80 leading-relaxed text-left">
+                                Always meet in well-lit public spaces, share nearby cross-streets instead of your exact home address, remember that swaps are entirely cashless, and immediately report any safety concerns in chat.
+                            </div>
+                        </div>
+
+                        <!-- Safety & Security Collapsible Button -->
+                        <div id="widget-safety-security-tips" class="relative border border-black/10 dark:border-white/10 rounded-xl overflow-hidden bg-black/[0.02] dark:bg-white/[0.02]">
+                            <button class="w-full bg-transparent text-black dark:text-white font-bold text-xs p-3.5 flex items-center justify-between hover:bg-black/5 dark:hover:bg-white/5 transition-colors border-0 cursor-pointer" onclick="toggleInfoPanel('widget-safety-security-tips-body')">
+                                <span class="flex items-center gap-2">
+                                    <span class="text-base">🛡️</span>
+                                    <span>Safety and Security</span>
+                                </span>
+                                <span class="material-symbols-outlined text-sm transition-transform duration-300" id="widget-safety-security-tips-body-icon" style="transition: transform 0.2s;">chevron_right</span>
+                            </button>
+                            <div id="widget-safety-security-tips-body" class="hidden p-4 border-t border-black/10 dark:border-white/10 bg-white dark:bg-[#18201a] text-[10px] text-on-surface-variant dark:text-warm-cream/80 leading-relaxed text-left">
+                                <ul class="list-disc pl-4 space-y-1.5">
+                                    <li><strong>Verify Profiles:</strong> Always trade with community members who have verified badges and higher vouch counts.</li>
+                                    <li><strong>Public Meetups:</strong> Conduct swaps during daylight hours in busy, well-lit public areas (e.g., local coffee shops or community centers).</li>
+                                    <li><strong>Secure Communication:</strong> Keep all discussions inside the Barterland secure chat; never share your phone number or email early on.</li>
+                                    <li><strong>Share Your Location:</strong> Let a friend or family member know where and when you are going to meet someone for a swap.</li>
+                                    <li><strong>Address Privacy:</strong> Meet at nearest major cross-streets rather than giving out your home address, especially for high-value swaps.</li>
+                                    <li><strong>Trust Your Instincts:</strong> If a deal feels suspicious or uncomfortable, cancel the meetup immediately and report the user in-app.</li>
+                                </ul>
+                            </div>
                         </div>
                         <!-- Spacer to prevent bottom cutoff on iOS WebKit -->
                         <div class="h-2 flex-shrink-0"></div>
@@ -15275,6 +15337,33 @@ body:not(:has(#view-landing.active)) footer,
                     </div>
                 </div>
 
+                <!-- ICON SELECTOR MODAL -->
+                <div id="icon-selector-modal" class="hidden fixed inset-0 z-[6000] flex items-center justify-center p-6 animate-fade-in">
+                    <div class="absolute inset-0 bg-[#060b08]/40 dark:bg-black/60 backdrop-blur-md" onclick="closeIconSelectorModal()"></div>
+                    <div class="relative bg-white dark:bg-[#18201a] border border-outline-variant/30 rounded-3xl p-6 shadow-2xl max-w-sm w-full text-center flex flex-col items-center animate-slide-up">
+                        
+                        <!-- Header -->
+                        <div class="w-full flex items-center justify-between mb-4">
+                            <h3 class="font-headline text-base font-bold text-forest-green dark:text-[#308A5E] flex-grow text-center">Select Listing Icon</h3>
+                            <button type="button" class="w-8 h-8 rounded-full bg-forest-green/5 dark:bg-warm-cream/5 flex items-center justify-center text-forest-green dark:text-emerald-400 active:scale-90 transition-transform cursor-pointer border-0" onclick="closeIconSelectorModal()">
+                                <span class="material-symbols-outlined text-lg">close</span>
+                            </button>
+                        </div>
+
+                        <!-- Icons Grid -->
+                        <div class="w-full overflow-y-auto max-h-[300px] pr-1 custom-scrollbar">
+                            <div class="grid grid-cols-4 gap-3 p-1" id="icon-selector-grid">
+                                <!-- Populated dynamically by javascript -->
+                            </div>
+                        </div>
+
+                        <!-- Close/Cancel Button -->
+                        <div class="w-full mt-6">
+                            <button type="button" class="w-full h-11 bg-forest-green dark:bg-[#308A5E] text-warm-cream dark:text-[#101612] font-bold text-xs rounded-xl active:scale-[0.98] transition-transform shadow-md cursor-pointer border-none" onclick="closeIconSelectorModal()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- REPORT SAFETY/CONTENT MODAL -->
                 <div id="report-modal" class="hidden fixed inset-0 z-[6500] flex items-center justify-center p-6 animate-fade-in select-none">
                     <div class="absolute inset-0 bg-[#060b08]/40 dark:bg-black/60 backdrop-blur-md" onclick="closeReportModal()"></div>
@@ -17392,6 +17481,7 @@ let state = {
     currentConversationId: null,
     mapInitialized: false,
     selectedOfferHeroImage: null,
+    selectedOfferIcon: "",
     selectedMeetupCoords: null,
     selectedMeetupRadius: 100,
     events: [
@@ -19004,7 +19094,7 @@ function showView(viewId, mode) {
     }
 
     // EULA Enforcement: Block access to app hubs unless EULA is agreed
-    const mainAppViews = ['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'settings_detail', 'adjust_homepage', 'admin_panel', 'definitions', 'create_bulletin', 'create_group', 'blocked_users'];
+    const mainAppViews = ['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'settings_detail', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'create_bulletin', 'create_group', 'blocked_users'];
     if (mainAppViews.includes(viewId) || viewId.startsWith('chat_detail')) {
         if (!state.currentUser && !state.isGuest) {
             viewId = 'welcome';
@@ -19164,7 +19254,7 @@ function showView(viewId, mode) {
     const headerBar = document.getElementById('phone-header-bar');
     const desktopNavBar = document.getElementById('desktop-navbar');
 
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId)) {
+    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId)) {
         if (navBar) {
             if (state.meetupMapMode) {
                 navBar.classList.add('hidden');
@@ -19177,7 +19267,7 @@ function showView(viewId, mode) {
         if (navBar) navBar.classList.add('hidden');
     }
 
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'events_hub', 'create_event', 'adjust_homepage', 'admin_panel', 'definitions', 'create_bulletin', 'create_group'].includes(viewId) || viewId.startsWith('chat_detail')) {
+    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'events_hub', 'create_event', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'create_bulletin', 'create_group'].includes(viewId) || viewId.startsWith('chat_detail')) {
         if (desktopNavBar) {
             desktopNavBar.classList.remove('hidden');
             if (window.syncUserNavbarInfo) window.syncUserNavbarInfo();
@@ -19194,7 +19284,7 @@ function showView(viewId, mode) {
     }
 
     // Play button click chime
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'adjust_homepage', 'event_detail', 'definitions'].includes(viewId)) {
+    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'adjust_homepage', 'event_detail', 'definitions', 'neighborhood_tips'].includes(viewId)) {
         playSound('click');
     }
 
@@ -19255,6 +19345,12 @@ function showView(viewId, mode) {
         setTimeout(checkAndInvalidate, 150);
         setTimeout(checkAndInvalidate, 350);
         setTimeout(checkAndInvalidate, 600);
+
+        if (state.needsMapCentering && leafletMap && state.currentUser && state.currentUser.lat && state.currentUser.lng) {
+            leafletMap.setView([state.currentUser.lat, state.currentUser.lng], 15, { animate: true });
+            state.needsMapCentering = false;
+            saveState();
+        }
     }
     if (viewId === 'chat_hub') {
         renderConversationsList();
@@ -19275,6 +19371,7 @@ function showView(viewId, mode) {
         
         // Reset selected photo to null so it starts blank!
         state.selectedOfferHeroImage = null;
+        state.selectedOfferIcon = "";
         state.selectedOfferImages = [null, null, null];
         state.selectedMeetupCoords = null;
         state.selectedMeetupRadius = 100;
@@ -19663,7 +19760,7 @@ function updateNavBarIcons(activeViewId) {
     let highlightViewId = activeViewId;
     if (['event_detail', 'events_hub', 'create_event', 'create_bulletin', 'create_group'].includes(activeViewId)) {
         highlightViewId = 'village';
-    } else if (['settings_detail', 'adjust_homepage', 'definitions'].includes(activeViewId)) {
+    } else if (['settings_detail', 'adjust_homepage', 'definitions', 'neighborhood_tips'].includes(activeViewId)) {
         highlightViewId = 'profile_settings';
     }
     document.querySelectorAll('[data-nav]').forEach(btn => {
@@ -19964,18 +20061,18 @@ function updateOfferPhotoCounter() {
     const counterText = document.getElementById('offer-photo-counter-text');
     if (counterText) {
         const count = state.selectedOfferPhotos ? state.selectedOfferPhotos.filter(Boolean).length : 0;
-        counterText.innerText = `${count} of 3 photos added`;
+        counterText.innerText = `${count} of 2 photos added`;
     }
 }
 
 function renderOfferPhotosList() {
     if (!state.selectedOfferPhotos) {
-        state.selectedOfferPhotos = ["", "", ""];
+        state.selectedOfferPhotos = ["", ""];
     }
-    while (state.selectedOfferPhotos.length < 3) {
+    while (state.selectedOfferPhotos.length < 2) {
         state.selectedOfferPhotos.push("");
     }
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
         const preview = document.getElementById(`offer-photo-preview-${i}`);
         const placeholder = document.getElementById(`offer-photo-placeholder-${i}`);
         const removeBtn = document.getElementById(`offer-photo-remove-${i}`);
@@ -20003,6 +20100,107 @@ function renderOfferPhotosList() {
     updateEventPhotoPlaceholder();
 }
 window.renderOfferPhotosList = renderOfferPhotosList;
+
+const LISTING_ICON_DATABASE = [
+    { name: 'local_offer', label: 'Offer' },
+    { name: 'shopping_basket', label: 'Need' },
+    { name: 'groups', label: 'Community' },
+    { name: 'school', label: 'Education' },
+    { name: 'construction', label: 'Tools' },
+    { name: 'yard', label: 'Garden' },
+    { name: 'palette', label: 'Art' },
+    { name: 'local_pizza', label: 'Food' },
+    { name: 'checkroom', label: 'Clothing' },
+    { name: 'menu_book', label: 'Books' },
+    { name: 'sports_esports', label: 'Games' },
+    { name: 'child_care', label: 'Kids' },
+    { name: 'cleaning_services', label: 'Cleaning' },
+    { name: 'handyman', label: 'Repair' },
+    { name: 'spa', label: 'Health' },
+    { name: 'translate', label: 'Language' },
+    { name: 'festival', label: 'Festival' },
+    { name: 'star', label: 'Star' },
+    { name: 'eco', label: 'Eco' },
+    { name: 'volunteer_activism', label: 'Volunteer' },
+    { name: 'handshake', label: 'Trust' },
+    { name: 'favorite', label: 'Love' },
+    { name: 'home', label: 'Household' },
+    { name: 'info', label: 'Info' }
+];
+
+function openIconSelectorModal() {
+    window.triggerHapticFeedback('light');
+    playSound('click');
+    const modal = document.getElementById('icon-selector-modal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        renderIconSelectorGrid();
+    }
+}
+window.openIconSelectorModal = openIconSelectorModal;
+
+function closeIconSelectorModal() {
+    const modal = document.getElementById('icon-selector-modal');
+    if (modal) modal.classList.add('hidden');
+}
+window.closeIconSelectorModal = closeIconSelectorModal;
+
+function renderIconSelectorGrid() {
+    const grid = document.getElementById('icon-selector-grid');
+    if (!grid) return;
+    
+    grid.innerHTML = LISTING_ICON_DATABASE.map(icon => {
+        const isSelected = state.selectedOfferIcon === icon.name;
+        const selectedClass = isSelected ? 'bg-forest-green text-warm-cream border-forest-green' : 'bg-warm-cream/40 dark:bg-[#1b261f]/30 border-outline-variant/20 text-forest-green dark:text-emerald-400 hover:bg-forest-green/5';
+        return `
+            <button type="button" onclick="selectIcon('${icon.name}')" class="p-2 border rounded-2xl flex flex-col items-center justify-center text-center gap-1 active:scale-95 transition-all cursor-pointer ${selectedClass}">
+                <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' ${isSelected ? 1 : 0};">${icon.name}</span>
+                <span class="text-[8px] font-bold leading-tight ${isSelected ? 'text-warm-cream/90' : 'text-black dark:text-warm-cream'}">${icon.label}</span>
+            </button>
+        `;
+    }).join('');
+}
+window.renderIconSelectorGrid = renderIconSelectorGrid;
+
+function selectIcon(iconName) {
+    window.triggerHapticFeedback('medium');
+    playSound('success');
+    state.selectedOfferIcon = iconName;
+    saveState();
+    renderOfferIconDisplay();
+    closeIconSelectorModal();
+}
+window.selectIcon = selectIcon;
+
+function removeOfferIcon() {
+    window.triggerHapticFeedback('light');
+    playSound('click');
+    state.selectedOfferIcon = "";
+    saveState();
+    renderOfferIconDisplay();
+}
+window.removeOfferIcon = removeOfferIcon;
+
+function renderOfferIconDisplay() {
+    const placeholder = document.getElementById('offer-icon-placeholder');
+    const selectedDisplay = document.getElementById('offer-icon-selected-display');
+    const removeBtn = document.getElementById('offer-icon-remove');
+    const symbolSpan = document.getElementById('offer-selected-icon-symbol');
+    
+    if (state.selectedOfferIcon) {
+        if (placeholder) placeholder.classList.add('hidden');
+        if (selectedDisplay) selectedDisplay.classList.remove('hidden');
+        if (removeBtn) removeBtn.classList.remove('hidden');
+        if (symbolSpan) {
+            symbolSpan.innerText = state.selectedOfferIcon;
+        }
+    } else {
+        if (placeholder) placeholder.classList.remove('hidden');
+        if (selectedDisplay) selectedDisplay.classList.add('hidden');
+        if (removeBtn) removeBtn.classList.add('hidden');
+    }
+}
+window.renderOfferIconDisplay = renderOfferIconDisplay;
 
 function getEventIconDetails(type) {
     const t = (type || '').toLowerCase();
@@ -20066,8 +20264,17 @@ window.getEventIconClasses = getEventIconClasses;
 
 function getEventCardThumbnailHTML(evt, extraClasses = "") {
     const firstImg = evt.image ? evt.image.split('|||').filter(Boolean)[0] : null;
-    const imgUrl = firstImg || getEventPresetImage(evt.type);
-    return `<img src="${imgUrl}" class="absolute inset-0 w-full h-full object-cover ${extraClasses}">`;
+    if (firstImg) {
+        return `<img src="${firstImg}" class="absolute inset-0 w-full h-full object-cover ${extraClasses}">`;
+    }
+    const details = getEventIconDetails(evt.type);
+    const classes = getEventIconClasses(evt.type);
+    const iconName = evt.icon || details.icon;
+    return `
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-2 text-center ${classes} ${extraClasses}">
+            <span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1, 'wght' 500;">${iconName}</span>
+        </div>
+    `;
 }
 window.getEventCardThumbnailHTML = getEventCardThumbnailHTML;
 
@@ -20103,7 +20310,7 @@ function updateEventPhotoPlaceholder() {
         parent.style.setProperty('--color-dark', details.darkColor);
         parent.style.borderColor = 'transparent';
         
-        placeholder.innerHTML = `<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">${details.icon}</span>`;
+        placeholder.innerHTML = `<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">${state.selectedOfferIcon || details.icon}</span>`;
         if (preview) preview.classList.add('hidden');
     } else {
         parent.className = "relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group";
@@ -20345,6 +20552,7 @@ function handleSignUp(e) {
     };
     state.locationConsent = false;
     state.isGuest = false;
+    state.needsMapCentering = true;
     saveState();
     playSound('click');
     showView('profile_consent');
@@ -20770,6 +20978,7 @@ function submitProfileStep1(location) {
         }
     }
     
+    state.needsMapCentering = true;
     saveState();
     playSound('click');
     showView('village');
@@ -20847,6 +21056,7 @@ function handleProfileStep3() {
         needs.push(tag.getAttribute('data-tag'));
     });
     state.currentUser.needs = needs;
+    state.needsMapCentering = true;
     saveState();
     playSound('click');
     showView('village');
@@ -20928,6 +21138,8 @@ function createEventAndSave(title, type, datetime, location, desc) {
         desc: desc,
         lat: lat,
         lng: lng,
+        image: state.selectedOfferHeroImage || "",
+        icon: state.selectedOfferIcon || getEventIcon(type),
         host: state.currentUser ? `${state.currentUser.firstName} ${state.currentUser.lastName}` : 'Lily Kaufmann'
     };
 
@@ -20941,7 +21153,7 @@ function createEventAndSave(title, type, datetime, location, desc) {
         const color = getCategoryColor('Event or Meetup');
         const imgUrl = getEventPresetImage(newEvent.type);
 
-        const iconName = getEventIcon(newEvent.type);
+        const iconName = newEvent.icon || getEventIcon(newEvent.type);
         const avatarUrl = (state.currentUser && state.currentUser.avatar) ? state.currentUser.avatar : DEFAULT_AVATAR;
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
@@ -22553,7 +22765,7 @@ function openMapEventDetail(eventId) {
             const classes = getEventIconClasses(event.type);
             carousel.innerHTML = `
                 <div class="w-full h-full flex-shrink-0 snap-start relative flex flex-col items-center justify-center p-6 text-center ${classes}" style="scroll-snap-align: start;">
-                    <span class="material-symbols-outlined text-[64px]" style="font-variation-settings: 'FILL' 1, 'wght' 500;">${details.icon}</span>
+                    <span class="material-symbols-outlined text-[64px]" style="font-variation-settings: 'FILL' 1, 'wght' 500;">${event.icon || details.icon}</span>
                     <span class="text-xs font-bold uppercase tracking-wider mt-2 opacity-90">${event.type || 'Event'}</span>
                 </div>
             `;
@@ -23169,7 +23381,7 @@ function openNeighborProfileModal(neighborName) {
     const offerCatColor = getCategoryColor(neighbor.category);
 
     offeringsContainer.innerHTML = `
-        <div class="flex items-center p-3 bg-white dark:bg-[#18201a] rounded-xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm relative w-full mb-2.5 cursor-pointer hover:bg-forest-green/5 transition-all" onclick="handleProposeSwapForOfferDirect('${neighbor.name.replace(/'/g, "\\'")}', '${neighbor.offerTitle.replace(/'/g, "\\'")}')">
+        <div id="neighbor-profile-offering-item" class="flex items-center p-3 bg-white dark:bg-[#18201a] rounded-xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm relative w-full mb-2.5 cursor-pointer hover:bg-forest-green/5 transition-all">
             <div class="w-8 h-8 flex items-center justify-center mr-3 flex-shrink-0" style="color: ${offerCatColor} !important; background: transparent !important;">
                 <span class="material-symbols-outlined text-[24px]">${offerIcon}</span>
             </div>
@@ -23178,20 +23390,27 @@ function openNeighborProfileModal(neighborName) {
                 <p class="text-gray-500 truncate mt-0.5"><span class="text-gray-600">${neighbor.category || 'Other'}</span></p>
             </div>
             <span class="text-[9.5px] text-forest-green font-semibold flex items-center gap-0.5 opacity-80 shrink-0">
-                Swap <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                View <span class="material-symbols-outlined text-xs">arrow_forward</span>
             </span>
         </div>
     `;
+    const offeringItem = document.getElementById('neighbor-profile-offering-item');
+    if (offeringItem) {
+        offeringItem.onclick = () => {
+            closeNeighborProfileModal();
+            openMapItemDetail(neighbor.name);
+        };
+    }
 
     // Populate Needs (Formatted exactly like Offerings)
     const needsContainer = document.getElementById('neighbor-profile-needs');
     const needs = getNeighborNeeds(neighbor.name);
-    needsContainer.innerHTML = needs.map(need => {
+    needsContainer.innerHTML = needs.map((need, index) => {
         const needInfo = getNeedCategoryAndIcon(need);
         const nCatColor = getCategoryColor(needInfo.category);
         
         return `
-            <div class="flex items-center p-3 bg-white dark:bg-[#18201a] rounded-xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm relative w-full mb-2.5 cursor-pointer hover:bg-forest-green/5 transition-all" onclick="handleOfferNeighborNeedDirect('${neighbor.name.replace(/'/g, "\\'")}', '${need.replace(/'/g, "\\'")}')">
+            <div id="neighbor-profile-need-item-${index}" class="flex items-center p-3 bg-white dark:bg-[#18201a] rounded-xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm relative w-full mb-2.5 cursor-pointer hover:bg-forest-green/5 transition-all">
                 <div class="w-8 h-8 flex items-center justify-center mr-3 flex-shrink-0" style="color: ${nCatColor} !important; background: transparent !important;">
                     <span class="material-symbols-outlined text-[24px]">${needInfo.icon}</span>
                 </div>
@@ -23200,11 +23419,44 @@ function openNeighborProfileModal(neighborName) {
                     <p class="text-gray-500 truncate mt-0.5"><span class="text-gray-600">${needInfo.category || 'Other'}</span></p>
                 </div>
                 <span class="text-[9.5px] text-forest-green font-semibold flex items-center gap-0.5 opacity-80 shrink-0">
-                    Offer <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                    View <span class="material-symbols-outlined text-xs">arrow_forward</span>
                 </span>
             </div>
         `;
     }).join('');
+
+    // Attach click listeners to needs, generating/matching temporary need board items
+    needs.forEach((need, index) => {
+        const needInfo = getNeedCategoryAndIcon(need);
+        const needObj = state.needsBoard ? state.needsBoard.find(n => n.neighborName === neighbor.name && n.needTitle.toLowerCase() === need.toLowerCase()) : null;
+        let targetNeedId;
+        if (needObj) {
+            targetNeedId = needObj.id;
+        } else {
+            targetNeedId = 'need-temp-' + Math.random().toString(36).substr(2, 9);
+            const newNeedObj = {
+                id: targetNeedId,
+                neighborName: neighbor.name,
+                needTitle: need,
+                needDesc: `Interested in finding "${need}". Please get in touch if you have this or can help!`,
+                avatar: neighbor.avatar || DEFAULT_AVATAR,
+                location: neighbor.location || 'Oakwood Village',
+                category: needInfo.category || 'Other',
+                time: 'Just now'
+            };
+            if (!state.needsBoard) state.needsBoard = [];
+            state.needsBoard.push(newNeedObj);
+            saveState();
+        }
+
+        const btn = document.getElementById(`neighbor-profile-need-item-${index}`);
+        if (btn) {
+            btn.onclick = () => {
+                closeNeighborProfileModal();
+                openMapItemDetail('need_' + targetNeedId);
+            };
+        }
+    });
 
     // Populate Reviews
     const reviewsContainer = document.getElementById('neighbor-profile-reviews');
@@ -24641,6 +24893,7 @@ function selectOfferMode(mode) {
     const eventTypeSec = document.getElementById('offer-event-type-section');
     const eventTimeSec = document.getElementById('offer-event-datetime-section');
     const eventLocSec = document.getElementById('offer-event-location-section');
+    const eventCustomIconSec = document.getElementById('event-custom-icon-selector-container');
 
     if (mode === 'event') {
         if (titleLabel) titleLabel.innerText = "Event Title";
@@ -24655,10 +24908,15 @@ function selectOfferMode(mode) {
         if (eventTypeSec) eventTypeSec.classList.remove('hidden');
         if (eventTimeSec) eventTimeSec.classList.remove('hidden');
         if (eventLocSec) eventLocSec.classList.remove('hidden');
+        if (eventCustomIconSec) {
+            eventCustomIconSec.classList.remove('hidden');
+            renderCustomEventIconSelector();
+        }
     } else {
         if (eventTypeSec) eventTypeSec.classList.add('hidden');
         if (eventTimeSec) eventTimeSec.classList.add('hidden');
         if (eventLocSec) eventLocSec.classList.add('hidden');
+        if (eventCustomIconSec) eventCustomIconSec.classList.add('hidden');
 
         if (categoryHeaderWrapper) categoryHeaderWrapper.classList.remove('hidden');
         if (categoriesGrid) categoriesGrid.classList.remove('hidden');
@@ -24700,14 +24958,16 @@ function selectOfferMode(mode) {
     }
 
     const slot1 = document.getElementById('offer-photo-placeholder-1')?.parentElement;
-    const slot2 = document.getElementById('offer-photo-placeholder-2')?.parentElement;
-    if (mode === 'event') {
-        if (slot1) slot1.classList.add('hidden');
-        if (slot2) slot2.classList.add('hidden');
-    } else {
-        if (slot1) slot1.classList.remove('hidden');
-        if (slot2) slot2.classList.remove('hidden');
-    }
+    const slot2 = document.getElementById('offer-icon-placeholder')?.parentElement;
+    if (slot1) slot1.classList.remove('hidden');
+    if (slot2) slot2.classList.remove('hidden');
+
+    // Reset photos and icon selections on entering
+    state.selectedOfferPhotos = ["", ""];
+    state.selectedOfferIcon = "";
+    saveState();
+    renderOfferPhotosList();
+    renderOfferIconDisplay();
 
     // Configure scroll behavior on view-offer
     const viewOffer = document.getElementById('view-offer');
@@ -24864,6 +25124,7 @@ function submitCreateEventFromOfferFlow(e) {
         lat: lat,
         lng: lng,
         image: state.selectedOfferHeroImage || "",
+        icon: state.selectedOfferIcon || getEventIcon(type),
         host: state.currentUser ? `${state.currentUser.firstName} ${state.currentUser.lastName}` : 'Lily Kaufmann'
     };
 
@@ -24875,7 +25136,7 @@ function submitCreateEventFromOfferFlow(e) {
     // Dynamically add marker on Leaflet map for the new event!
     if (leafletMap) {
         const color = getCategoryColor('Event or Meetup');
-        const iconName = getEventIcon(newEvent.type);
+        const iconName = newEvent.icon || getEventIcon(newEvent.type);
         const avatarUrl = (state.currentUser && state.currentUser.avatar) ? state.currentUser.avatar : DEFAULT_AVATAR;
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
@@ -24905,7 +25166,7 @@ function submitCreateEventFromOfferFlow(e) {
     if (descInput) descInput.value = "";
 
     // Reset multi-slot previews
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
         const preview = document.getElementById(`offer-photo-preview-${i}`);
         const placeholder = document.getElementById(`offer-photo-placeholder-${i}`);
         if (preview && placeholder) {
@@ -24914,8 +25175,10 @@ function submitCreateEventFromOfferFlow(e) {
             placeholder.classList.remove('hidden');
         }
     }
-    state.selectedOfferPhotos = ["", "", ""];
+    state.selectedOfferPhotos = ["", ""];
     state.selectedOfferHeroImage = "";
+    state.selectedOfferIcon = "";
+    renderOfferIconDisplay();
 
     resetOfferFormToSelector();
 
@@ -25064,7 +25327,7 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
     locationVal = escapeHTML(locationVal);
     wishlist = escapeHTML(wishlist);
     const subCategory = categoryTitle;
-    const icon = getCategoryIcon(categoryTitle);
+    const icon = state.selectedOfferIcon || getCategoryIcon(categoryTitle);
     const color = getCategoryColor(categoryTitle);
 
     const lat = state.selectedMeetupCoords ? state.selectedMeetupCoords.lat : (49.2827 + (Math.random() - 0.5) * 0.015);
@@ -25140,6 +25403,7 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
     if (durationSelect) durationSelect.value = "";
     if (locationPrefSelect) locationPrefSelect.value = "";
     state.selectedOfferHeroImage = null;
+    state.selectedOfferIcon = "";
     
     // Reset Gifting for Karma button state
     giftKarmaActive = false;
@@ -25158,7 +25422,7 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
     }
     
     // Reset multi-slot previews
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
         const preview = document.getElementById(`offer-photo-preview-${i}`);
         const placeholder = document.getElementById(`offer-photo-placeholder-${i}`);
         if (preview && placeholder) {
@@ -25167,7 +25431,9 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
             placeholder.classList.remove('hidden');
         }
     }
-    state.selectedOfferPhotos = ["", "", ""];
+    state.selectedOfferPhotos = ["", ""];
+    state.selectedOfferIcon = "";
+    renderOfferIconDisplay();
 
     saveState();
     playSound('success');
@@ -28499,11 +28765,11 @@ function renderProfileSettings() {
         container.innerHTML = "";
         
         let limit = 1;
-        let displayedOfferings = state.userOfferings;
+        let displayedOfferings = state.userOfferings || [];
         let isTruncated = false;
         
-        if (!state.showAllOfferings && state.userOfferings.length > limit) {
-            displayedOfferings = state.userOfferings.slice(0, limit);
+        if (!state.showAllOfferings && displayedOfferings.length > limit) {
+            displayedOfferings = displayedOfferings.slice(0, limit);
             isTruncated = true;
         }
 
@@ -28516,18 +28782,20 @@ function renderProfileSettings() {
                 statusBadge = ` · <span class="text-outline">Traded</span>`;
             }
 
+            const offIcon = off.icon || getCategoryIcon(off.category) || 'local_offer';
+            const catColor = getCategoryColor(off.category);
+            const catObj = MAP_FILTER_CATEGORIES.find(c => c.name === off.category || c.displayName === off.category);
+            const bgStyle = catObj ? `background-color: rgba(${catObj.rgb}, 0.15) !important; color: ${catColor} !important;` : '';
+
             const card = document.createElement('div');
-            card.className = "flex items-start p-3 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/10 dark:border-white/10 shadow-sm relative w-full mb-2.5";
+            card.className = "flex items-center p-3 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/10 dark:border-white/10 shadow-sm relative w-full mb-2.5";
             card.innerHTML = `
-                <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden rounded-xl mr-3">
-                    <img src="${off.image || getCategoryPresetImage(off.category) || PLACEHOLDER_IMAGE}" class="w-full h-full object-cover">
+                <div class="w-[38px] h-[38px] rounded-xl text-black dark:text-white flex items-center justify-center mr-3 flex-shrink-0" style="${bgStyle}">
+                    <span class="material-symbols-outlined text-[20px]">${offIcon}</span>
                 </div>
                 <div class="flex-grow min-w-0 pr-3 text-left">
                     <h4 class="text-forest-green dark:text-white truncate leading-tight font-medium text-sm">${off.title}</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">${off.desc}</p>
-                    <div class="mt-2 text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
-                        ${off.category}${statusBadge}
-                    </div>
+                    <p class="text-gray-500 truncate mt-0.5">${off.desc} · <span class="text-gray-600">${off.category || 'Other'}</span>${statusBadge}</p>
                 </div>
                 <button class="text-error hover:opacity-80 p-1 flex-shrink-0" onclick="handleDeleteOffering('${off.id}')">
                     <span class="material-symbols-outlined text-[16px]">delete</span>
@@ -28539,7 +28807,7 @@ function renderProfileSettings() {
         if (isTruncated) {
             const moreBtn = document.createElement('button');
             moreBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
-            moreBtn.innerText = "Show More Swaps";
+            moreBtn.innerText = "See More";
             moreBtn.onclick = function() {
                 state.showAllOfferings = true;
                 renderProfileSettings();
@@ -28548,7 +28816,7 @@ function renderProfileSettings() {
         } else if (state.showAllOfferings && state.userOfferings.length > limit) {
             const lessBtn = document.createElement('button');
             lessBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
-            lessBtn.innerText = "Show Less";
+            lessBtn.innerText = "See Less";
             lessBtn.onclick = function() {
                 state.showAllOfferings = false;
                 renderProfileSettings();
@@ -28565,7 +28833,16 @@ function renderProfileSettings() {
         if (needs.length === 0) {
             needsContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1">You haven't posted any needs yet.</p>`;
         } else {
-            needs.forEach(n => {
+            let needsLimit = 1;
+            let displayedNeeds = needs;
+            let needsTruncated = false;
+            
+            if (!state.showAllNeeds && needs.length > needsLimit) {
+                displayedNeeds = needs.slice(0, needsLimit);
+                needsTruncated = true;
+            }
+
+            displayedNeeds.forEach(n => {
                 const div = document.createElement('div');
                 div.className = "flex items-center p-3 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/10 dark:border-white/10 shadow-sm relative w-full mb-2.5";
                 const needIcon = n.icon || getCategoryIcon(n.category) || 'shopping_basket';
@@ -28577,7 +28854,7 @@ function renderProfileSettings() {
                         <span class="material-symbols-outlined text-[20px]">${needIcon}</span>
                     </div>
                     <div class="flex-grow min-w-0 pr-3 text-left">
-                        <h4 class="text-forest-green dark:text-white truncate leading-tight">${n.title}</h4>
+                        <h4 class="text-forest-green dark:text-white truncate leading-tight font-medium text-sm">${n.title}</h4>
                         <p class="text-gray-500 truncate mt-0.5">${n.desc} · <span class="text-gray-600">${n.category || 'Other'}</span></p>
                     </div>
                     <button class="text-error hover:opacity-80 p-1 flex-shrink-0" onclick="handleDeleteNeed('${n.id}')">
@@ -28586,6 +28863,26 @@ function renderProfileSettings() {
                 `;
                 needsContainer.appendChild(div);
             });
+
+            if (needsTruncated) {
+                const moreBtn = document.createElement('button');
+                moreBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
+                moreBtn.innerText = "See More";
+                moreBtn.onclick = function() {
+                    state.showAllNeeds = true;
+                    renderProfileSettings();
+                };
+                needsContainer.appendChild(moreBtn);
+            } else if (state.showAllNeeds && needs.length > needsLimit) {
+                const lessBtn = document.createElement('button');
+                lessBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
+                lessBtn.innerText = "See Less";
+                lessBtn.onclick = function() {
+                    state.showAllNeeds = false;
+                    renderProfileSettings();
+                };
+                needsContainer.appendChild(lessBtn);
+            }
         }
     }
 
@@ -28688,109 +28985,104 @@ function renderProfileSettings() {
         }
     }
 
-    // Render Saved Listings
-    const savedContainer = document.getElementById('profile-saved-listings-container');
+    // Render My Listed Events
+    const eventsContainer = document.getElementById('my-events-container');
+    if (eventsContainer) {
+        eventsContainer.innerHTML = "";
+        const myEvents = (state.events || []).filter(evt => evt.host === 'me' || evt.host === 'Lily Kaufmann');
+        if (myEvents.length === 0) {
+            eventsContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1">You haven't listed any events yet.</p>`;
+        } else {
+            let limit = 1;
+            let displayedEvents = myEvents;
+            let isTruncated = false;
+            if (!state.showAllMyEvents && myEvents.length > limit) {
+                displayedEvents = myEvents.slice(0, limit);
+                isTruncated = true;
+            }
+
+            displayedEvents.forEach(evt => {
+                const evtIcon = 'event';
+                const catColor = '#eab308';
+                const bgStyle = `background-color: rgba(234, 179, 8, 0.15) !important; color: ${catColor} !important;`;
+                
+                const card = document.createElement('div');
+                card.className = "flex items-center p-3 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/10 dark:border-white/10 shadow-sm relative w-full mb-2.5 cursor-pointer hover:bg-forest-green/5 transition-colors";
+                card.onclick = (e) => {
+                    if (e.target.closest('.delete-evt-btn')) return;
+                    openEventDetail(evt.id);
+                };
+                card.innerHTML = `
+                    <div class="w-[38px] h-[38px] rounded-xl text-black dark:text-white flex items-center justify-center mr-3 flex-shrink-0" style="${bgStyle}">
+                        <span class="material-symbols-outlined text-[20px]">${evtIcon}</span>
+                    </div>
+                    <div class="flex-grow min-w-0 pr-3 text-left">
+                        <h4 class="text-forest-green dark:text-white truncate leading-tight font-medium text-sm">${evt.title}</h4>
+                        <p class="text-gray-500 truncate mt-0.5">${evt.desc || 'No description'} · <span class="text-gray-600">${evt.type || 'Community'}</span></p>
+                    </div>
+                    <button class="text-error hover:opacity-80 p-1 flex-shrink-0 delete-evt-btn" onclick="handleDeleteEvent('${evt.id}')">
+                        <span class="material-symbols-outlined text-[16px]">delete</span>
+                    </button>
+                `;
+                eventsContainer.appendChild(card);
+            });
+
+            if (isTruncated) {
+                const moreBtn = document.createElement('button');
+                moreBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
+                moreBtn.innerText = "See More";
+                moreBtn.onclick = function() {
+                    state.showAllMyEvents = true;
+                    renderProfileSettings();
+                };
+                eventsContainer.appendChild(moreBtn);
+            } else if (state.showAllMyEvents && myEvents.length > limit) {
+                const lessBtn = document.createElement('button');
+                lessBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
+                lessBtn.innerText = "See Less";
+                lessBtn.onclick = function() {
+                    state.showAllMyEvents = false;
+                    renderProfileSettings();
+                };
+                eventsContainer.appendChild(lessBtn);
+            }
+        }
+    }
+
+    // Render Consolidated Saved Section
+    const savedContainer = document.getElementById('profile-saved-items-container');
+    const filterSelect = document.getElementById('saved-section-filter');
+    if (filterSelect) {
+        if (!state.profileSavedFilter) {
+            state.profileSavedFilter = 'needs';
+        }
+        filterSelect.value = state.profileSavedFilter;
+    }
+    
     if (savedContainer) {
         savedContainer.innerHTML = "";
-        if (!state.savedListings) {
-            state.savedListings = [];
-        }
-        const saved = state.savedListings;
+        const activeFilter = state.profileSavedFilter || 'needs';
         
-        // Filter out non-existent items automatically
-        const validSaved = [];
-        saved.forEach(id => {
-            let item = null;
-            let isNeed = id.startsWith('need_');
-            let isEvt = id.startsWith('evt_');
+        if (activeFilter === 'needs') {
+            const savedNeeds = (state.savedListings || []).filter(id => id.startsWith('need_'));
             
-            if (isEvt) {
-                const evtId = id.replace('evt_', '');
-                const evt = state.events ? state.events.find(e => e.id === evtId) : null;
-                if (evt) item = evt;
-            } else if (isNeed) {
+            // Filter out non-existent needs automatically
+            const validNeeds = [];
+            savedNeeds.forEach(id => {
                 const needId = id.replace('need_', '');
                 const need = state.needsBoard ? state.needsBoard.find(n => n.id === needId) : null;
-                if (need) item = need;
+                if (need) {
+                    validNeeds.push(id);
+                }
+            });
+            
+            if (validNeeds.length === 0) {
+                savedContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1">No saved needs yet.</p>`;
             } else {
-                const offer = state.userOfferings ? state.userOfferings.find(o => o.id === id) : null;
-                if (offer) {
-                    item = offer;
-                } else {
-                    const neighbor = state.neighbors[id];
-                    if (neighbor && neighbor.offerTitle) {
-                        item = neighbor;
-                    }
-                }
-            }
-            if (item) {
-                validSaved.push(id);
-            }
-        });
-
-        if (validSaved.length !== saved.length) {
-            state.savedListings = validSaved;
-            saveState();
-        }
-
-        if (state.savedListings.length === 0) {
-            savedContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1">No saved listings yet.</p>`;
-        } else {
-            state.savedListings.forEach(id => {
-                let item = null;
-                let isNeed = id.startsWith('need_');
-                let isEvt = id.startsWith('evt_');
-                let itemIcon = 'bookmark';
-                let itemTitle = '';
-                let itemDesc = '';
-                let itemCategory = '';
-                let itemAuthor = '';
-
-                if (isEvt) {
-                    const evtId = id.replace('evt_', '');
-                    const evt = state.events ? state.events.find(e => e.id === evtId) : null;
-                    if (evt) {
-                        item = evt;
-                        itemTitle = evt.title;
-                        itemDesc = evt.desc;
-                        itemCategory = evt.type;
-                        itemAuthor = evt.host || 'Community';
-                        itemIcon = 'event';
-                    }
-                } else if (isNeed) {
+                validNeeds.forEach(id => {
                     const needId = id.replace('need_', '');
-                    const need = state.needsBoard ? state.needsBoard.find(n => n.id === needId) : null;
-                    if (need) {
-                        item = need;
-                        itemTitle = need.needTitle;
-                        itemDesc = need.needDesc;
-                        itemCategory = need.category;
-                        itemAuthor = need.neighborName;
-                        itemIcon = getCategoryIcon(need.category) || 'shopping_basket';
-                    }
-                } else {
-                    const offer = state.userOfferings ? state.userOfferings.find(o => o.id === id) : null;
-                    if (offer) {
-                        item = offer;
-                        itemTitle = offer.title;
-                        itemDesc = offer.desc;
-                        itemCategory = offer.category;
-                        itemAuthor = state.currentUser ? (state.currentUser.displayName || 'Lily Kaufmann') : 'Lily Kaufmann';
-                        itemIcon = offer.icon || 'handyman';
-                    } else {
-                        const neighbor = state.neighbors[id];
-                        if (neighbor) {
-                            item = neighbor;
-                            itemTitle = neighbor.offerTitle;
-                            itemDesc = neighbor.offerDesc;
-                            itemCategory = neighbor.category;
-                            itemAuthor = neighbor.name;
-                            itemIcon = neighbor.icon || 'handyman';
-                        }
-                    }
-                }
-
-                if (item) {
+                    const need = state.needsBoard.find(n => n.id === needId);
+                    
                     const card = document.createElement('div');
                     card.className = "flex items-start p-3 bg-white dark:bg-[#18201a] rounded-xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm relative w-full mb-2.5 cursor-pointer hover:bg-forest-green/5 transition-colors";
                     card.onclick = (e) => {
@@ -28799,18 +29091,87 @@ function renderProfileSettings() {
                         openMapItemDetail(id);
                     };
 
-                    let finalImg = '';
-                    if (isEvt) {
-                        finalImg = (item.image ? item.image.split('|||')[0] : '') || getEventPresetImage(item.type) || PLACEHOLDER_IMAGE;
-                    } else if (isNeed) {
-                        finalImg = getCategoryPresetImage(item.category) || PLACEHOLDER_IMAGE;
-                    } else {
-                        finalImg = item.image || item.offerImg || getCategoryPresetImage(item.category) || PLACEHOLDER_IMAGE;
-                    }
+                    const finalImg = getCategoryPresetImage(need.category) || PLACEHOLDER_IMAGE;
 
                     card.innerHTML = `
                         <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden rounded-xl mr-3">
-                            ${isEvt ? getEventCardThumbnailHTML(item) : `<img src="${finalImg}" class="w-full h-full object-cover">`}
+                            <img src="${finalImg}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow min-w-0 pr-3 text-left">
+                            <h4 class="font-medium text-forest-green dark:text-white text-sm truncate leading-tight">${need.needTitle}</h4>
+                            <p class="text-xs text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">${need.needDesc}</p>
+                            <p class="text-[9px] text-gray-500 flex items-center flex-wrap gap-1 mt-2">
+                                By ${need.neighborName} · <span class="font-semibold uppercase text-[7.5px] text-gray-600 tracking-wider">${need.category}</span>
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-1 flex-shrink-0">
+                            <button class="text-error hover:opacity-80 p-1 unsave-btn cursor-pointer mr-1" onclick="handleUnsaveListing(event, '${id}')" title="Delete Saved Need">
+                                <span class="material-symbols-outlined text-error text-[16px]">delete</span>
+                            </button>
+                            <button class="text-black dark:text-white hover:opacity-80 p-1 unsave-btn cursor-pointer" onclick="handleUnsaveListing(event, '${id}')">
+                                <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+                            </button>
+                        </div>
+                    `;
+                    savedContainer.appendChild(card);
+                });
+            }
+            
+        } else if (activeFilter === 'offerings') {
+            const savedOfferings = (state.savedListings || []).filter(id => !id.startsWith('need_') && !id.startsWith('evt_'));
+            
+            // Filter out non-existent offerings automatically
+            const validOfferings = [];
+            savedOfferings.forEach(id => {
+                let item = state.userOfferings ? state.userOfferings.find(o => o.id === id) : null;
+                if (!item) {
+                    item = state.neighbors[id];
+                }
+                if (item) {
+                    validOfferings.push(id);
+                }
+            });
+            
+            if (validOfferings.length === 0) {
+                savedContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1">No saved offerings yet.</p>`;
+            } else {
+                validOfferings.forEach(id => {
+                    let item = state.userOfferings ? state.userOfferings.find(o => o.id === id) : null;
+                    let itemTitle = '';
+                    let itemDesc = '';
+                    let itemCategory = '';
+                    let itemAuthor = '';
+                    let finalImg = '';
+
+                    if (item) {
+                        itemTitle = item.title;
+                        itemDesc = item.desc;
+                        itemCategory = item.category;
+                        itemAuthor = state.currentUser ? (state.currentUser.displayName || 'Lily Kaufmann') : 'Lily Kaufmann';
+                        finalImg = item.image || getCategoryPresetImage(item.category) || PLACEHOLDER_IMAGE;
+                    } else {
+                        const neighbor = state.neighbors[id];
+                        if (neighbor) {
+                            item = neighbor;
+                            itemTitle = neighbor.offerTitle;
+                            itemDesc = neighbor.offerDesc;
+                            itemCategory = neighbor.category;
+                            itemAuthor = neighbor.name;
+                            finalImg = neighbor.offerImg || getCategoryPresetImage(neighbor.category) || PLACEHOLDER_IMAGE;
+                        }
+                    }
+
+                    const card = document.createElement('div');
+                    card.className = "flex items-start p-3 bg-white dark:bg-[#18201a] rounded-xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm relative w-full mb-2.5 cursor-pointer hover:bg-forest-green/5 transition-colors";
+                    card.onclick = (e) => {
+                        if (e.target.closest('.unsave-btn')) return;
+                        showView('village');
+                        openMapItemDetail(id);
+                    };
+
+                    card.innerHTML = `
+                        <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden rounded-xl mr-3">
+                            <img src="${finalImg}" class="w-full h-full object-cover">
                         </div>
                         <div class="flex-grow min-w-0 pr-3 text-left">
                             <h4 class="font-medium text-forest-green dark:text-white text-sm truncate leading-tight">${itemTitle}</h4>
@@ -28820,7 +29181,7 @@ function renderProfileSettings() {
                             </p>
                         </div>
                         <div class="flex items-center gap-1 flex-shrink-0">
-                            <button class="text-error hover:opacity-80 p-1 unsave-btn cursor-pointer mr-1" onclick="handleUnsaveListing(event, '${id}')" title="Delete Saved Listing">
+                            <button class="text-error hover:opacity-80 p-1 unsave-btn cursor-pointer mr-1" onclick="handleUnsaveListing(event, '${id}')" title="Delete Saved Offering">
                                 <span class="material-symbols-outlined text-error text-[16px]">delete</span>
                             </button>
                             <button class="text-black dark:text-white hover:opacity-80 p-1 unsave-btn cursor-pointer" onclick="handleUnsaveListing(event, '${id}')">
@@ -28829,69 +29190,65 @@ function renderProfileSettings() {
                         </div>
                     `;
                     savedContainer.appendChild(card);
+                });
+            }
+            
+        } else if (activeFilter === 'events') {
+            // Find all saved events
+            const savedEvtIds = [...(state.savedEvents || [])];
+            (state.savedListings || []).forEach(id => {
+                if (id.startsWith('evt_')) {
+                    const rawId = id.replace('evt_', '');
+                    if (!savedEvtIds.includes(rawId)) {
+                        savedEvtIds.push(rawId);
+                    }
                 }
             });
-        }
-    }
-
-    // Render Saved Events
-    const savedEventsContainer = document.getElementById('profile-saved-events-container');
-    if (savedEventsContainer) {
-        savedEventsContainer.innerHTML = "";
-        if (!state.savedEvents) {
-            state.savedEvents = [];
-        }
-        const savedEvts = state.savedEvents;
-        
-        // Filter out non-existent events automatically
-        const validSavedEvts = [];
-        savedEvts.forEach(id => {
-            const evt = state.events ? state.events.find(e => e.id === id) : null;
-            if (evt) {
-                validSavedEvts.push(id);
-            }
-        });
-        
-        if (validSavedEvts.length !== savedEvts.length) {
-            state.savedEvents = validSavedEvts;
-            saveState();
-        }
-        
-        if (state.savedEvents.length === 0) {
-            savedEventsContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1">No saved events yet.</p>`;
-        } else {
-            state.savedEvents.forEach(id => {
-                const evt = state.events.find(e => e.id === id);
+            
+            // Filter out non-existent events automatically
+            const validEvents = [];
+            savedEvtIds.forEach(id => {
+                const evt = state.events ? state.events.find(e => e.id === id) : null;
                 if (evt) {
+                    validEvents.push(evt);
+                }
+            });
+            
+            if (validEvents.length === 0) {
+                savedContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1">No saved events yet.</p>`;
+            } else {
+                validEvents.forEach(evt => {
                     const card = document.createElement('div');
-                    card.className = "flex items-center p-3 bg-white dark:bg-[#18201a] rounded-xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm relative w-full mb-2.5 cursor-pointer hover:bg-forest-green/5 transition-colors";
+                    card.className = "flex items-start p-3 bg-white dark:bg-[#18201a] rounded-xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm relative w-full mb-2.5 cursor-pointer hover:bg-forest-green/5 transition-colors";
                     card.onclick = (e) => {
                         if (e.target.closest('.unsave-btn')) return;
                         showView('village');
                         openMapEventDetail(evt);
                     };
+
                     card.innerHTML = `
-                        <div class="w-8 h-8 rounded-lg bg-forest-green/5 text-forest-green flex items-center justify-center mr-3 flex-shrink-0">
-                            <span class="material-symbols-outlined text-base">event</span>
+                        <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden rounded-xl mr-3">
+                            ${getEventCardThumbnailHTML(evt)}
                         </div>
                         <div class="flex-grow min-w-0 pr-3 text-left">
-                            <h4 class="font-medium text-forest-green dark:text-white text-[11px] truncate leading-tight">${evt.title}</h4>
-                            <p class="text-[9px] text-gray-500 truncate flex items-center flex-wrap gap-1 mt-0.5">
-                                By ${evt.host || 'Community'} · <span class="font-normal uppercase text-[7.5px] text-gray-600 tracking-wider">${evt.type}</span>
+                            <h4 class="font-medium text-forest-green dark:text-white text-sm truncate leading-tight">${evt.title}</h4>
+                            <p class="text-xs text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">${evt.desc || 'No description'}</p>
+                            <p class="text-[9px] text-gray-500 flex items-center flex-wrap gap-1 mt-2">
+                                By ${evt.host || 'Community'} · <span class="font-semibold uppercase text-[7.5px] text-gray-600 tracking-wider">${evt.type}</span>
                             </p>
                         </div>
                         <div class="flex items-center gap-1 flex-shrink-0">
-                            <button class="text-error hover:opacity-80 p-1 unsave-btn cursor-pointer mr-1" onclick="event.stopPropagation(); toggleSaveEvent('${id}')" title="Delete Saved Event">
+                            <button class="text-error hover:opacity-80 p-1 unsave-btn cursor-pointer mr-1" onclick="event.stopPropagation(); toggleSaveEvent('${evt.id}')" title="Delete Saved Event">
                                 <span class="material-symbols-outlined text-error text-[16px]">delete</span>
                             </button>
-                            <button class="text-black dark:text-white hover:opacity-80 p-1 unsave-btn cursor-pointer" onclick="event.stopPropagation(); toggleSaveEvent('${id}')">
+                            <button class="text-black dark:text-white hover:opacity-80 p-1 unsave-btn cursor-pointer" onclick="event.stopPropagation(); toggleSaveEvent('${evt.id}')">
                                 <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">bookmark</span>
                             </button>
                         </div>
                     `;
-                    savedEventsContainer.appendChild(card);
-                }
-            });
+                    savedContainer.appendChild(card);
+                });
+            }
         }
     }
 
@@ -29073,6 +29430,27 @@ function handleDeleteOffering(id) {
         playSound('click');
         renderProfileSettings();
     }
+}
+
+function handleDeleteEvent(id) {
+    if (confirm("Remove this event from your list?")) {
+        state.events = (state.events || []).filter(e => e.id !== id);
+        if (state.savedEvents) {
+            state.savedEvents = state.savedEvents.filter(savedId => savedId !== id);
+        }
+        saveState();
+        playSound('click');
+        renderProfileSettings();
+        if (typeof renderEventsList === 'function') {
+            renderEventsList();
+        }
+    }
+}
+
+function handleSavedFilterChange(filterValue) {
+    state.profileSavedFilter = filterValue;
+    saveState();
+    renderProfileSettings();
 }
 
 // ----------------------------------------------------
@@ -32510,7 +32888,7 @@ function plotMapMarkersOnly() {
                 if (hostNeighbor && hostNeighbor.suspended) return;
 
                 const color = getCategoryColor('Event or Meetup');
-                const iconName = getEventIcon(evt.type);
+                const iconName = evt.icon || getEventIcon(evt.type);
 
                 const pinImgUrl = getEventPresetImage(evt.type);
 
@@ -35181,6 +35559,8 @@ window.openDeclineFeedbackModal = openDeclineFeedbackModal;
 window.handleAcceptProposal = handleAcceptProposal;
 window.reopenBarterNegotiation = reopenBarterNegotiation;
 window.handleDeleteOffering = handleDeleteOffering;
+window.handleDeleteEvent = handleDeleteEvent;
+window.handleSavedFilterChange = handleSavedFilterChange;
 window.selectNeighborhoodSuggestion = selectNeighborhoodSuggestion;
 window.handleOfferToSwapNeed = handleOfferToSwapNeed;
 window.openIdentityVerificationModal = openIdentityVerificationModal;
@@ -35220,7 +35600,7 @@ function openEventDetail(eventId) {
             const classes = getEventIconClasses(event.type);
             carousel.innerHTML = `
                 <div class="w-full h-full flex-shrink-0 snap-start relative flex flex-col items-center justify-center p-6 text-center ${classes}" style="scroll-snap-align: start;">
-                    <span class="material-symbols-outlined text-[64px]" style="font-variation-settings: 'FILL' 1, 'wght' 500;">${details.icon}</span>
+                    <span class="material-symbols-outlined text-[64px]" style="font-variation-settings: 'FILL' 1, 'wght' 500;">${event.icon || details.icon}</span>
                     <span class="text-xs font-bold uppercase tracking-wider mt-2 opacity-90">${event.type || 'Event'}</span>
                 </div>
             `;

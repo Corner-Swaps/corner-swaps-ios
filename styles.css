@@ -5576,3 +5576,63 @@ html.dark .location-icon-container {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
+
+/* --- START: Map Filter Dropdown Responsive Sizing (Based on mobile device height) --- */
+
+/* Base default styling (Medium screens: iPhone 12/13/14/15/16 Pro, height 701px to 860px) */
+#map-category-dropdown {
+    gap: 8px !important;
+}
+#map-category-dropdown .filter-category-circle {
+    width: 36px !important;
+    height: 36px !important;
+}
+#map-category-dropdown .filter-category-circle span {
+    font-size: 18px !important;
+}
+#map-category-dropdown .category-label {
+    font-size: 12px !important;
+    padding: 4px 10px !important;
+}
+
+/* Small Screens (e.g. iPhone SE / screen height <= 700px) */
+@media (max-height: 700px) {
+    html:not(.show-simulator) #map-category-dropdown {
+        gap: 5px !important;
+        top: 52px !important;
+    }
+    html:not(.show-simulator) .native-app-env #map-category-dropdown {
+        top: calc(42px + env(safe-area-inset-top)) !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .filter-category-circle {
+        width: 30px !important;
+        height: 30px !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .filter-category-circle span {
+        font-size: 15px !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .category-label {
+        font-size: 10px !important;
+        padding: 2.5px 8px !important;
+    }
+}
+
+/* Large Screens (e.g. iPhone 16 Pro Max / screen height > 860px) */
+@media (min-height: 861px) {
+    html:not(.show-simulator) #map-category-dropdown {
+        gap: 11px !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .filter-category-circle {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .filter-category-circle span {
+        font-size: 20px !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .category-label {
+        font-size: 13.5px !important;
+        padding: 5px 12px !important;
+    }
+}
+
+/* --- END: Map Filter Dropdown Responsive Sizing --- */

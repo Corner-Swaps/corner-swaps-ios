@@ -1679,6 +1679,7 @@ let state = {
     currentConversationId: null,
     mapInitialized: false,
     selectedOfferHeroImage: null,
+    selectedOfferIcon: "",
     selectedMeetupCoords: null,
     selectedMeetupRadius: 100,
     events: [
@@ -3291,7 +3292,7 @@ function showView(viewId, mode) {
     }
 
     // EULA Enforcement: Block access to app hubs unless EULA is agreed
-    const mainAppViews = ['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'settings_detail', 'adjust_homepage', 'admin_panel', 'definitions', 'create_bulletin', 'create_group', 'blocked_users'];
+    const mainAppViews = ['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'settings_detail', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'create_bulletin', 'create_group', 'blocked_users'];
     if (mainAppViews.includes(viewId) || viewId.startsWith('chat_detail')) {
         if (!state.currentUser && !state.isGuest) {
             viewId = 'welcome';
@@ -3451,7 +3452,7 @@ function showView(viewId, mode) {
     const headerBar = document.getElementById('phone-header-bar');
     const desktopNavBar = document.getElementById('desktop-navbar');
 
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId)) {
+    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId)) {
         if (navBar) {
             if (state.meetupMapMode) {
                 navBar.classList.add('hidden');
@@ -3464,7 +3465,7 @@ function showView(viewId, mode) {
         if (navBar) navBar.classList.add('hidden');
     }
 
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'events_hub', 'create_event', 'adjust_homepage', 'admin_panel', 'definitions', 'create_bulletin', 'create_group'].includes(viewId) || viewId.startsWith('chat_detail')) {
+    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'events_hub', 'create_event', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'create_bulletin', 'create_group'].includes(viewId) || viewId.startsWith('chat_detail')) {
         if (desktopNavBar) {
             desktopNavBar.classList.remove('hidden');
             if (window.syncUserNavbarInfo) window.syncUserNavbarInfo();
@@ -3481,7 +3482,7 @@ function showView(viewId, mode) {
     }
 
     // Play button click chime
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'adjust_homepage', 'event_detail', 'definitions'].includes(viewId)) {
+    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'adjust_homepage', 'event_detail', 'definitions', 'neighborhood_tips'].includes(viewId)) {
         playSound('click');
     }
 
@@ -3562,6 +3563,7 @@ function showView(viewId, mode) {
         
         // Reset selected photo to null so it starts blank!
         state.selectedOfferHeroImage = null;
+        state.selectedOfferIcon = "";
         state.selectedOfferImages = [null, null, null];
         state.selectedMeetupCoords = null;
         state.selectedMeetupRadius = 100;
@@ -3950,7 +3952,7 @@ function updateNavBarIcons(activeViewId) {
     let highlightViewId = activeViewId;
     if (['event_detail', 'events_hub', 'create_event', 'create_bulletin', 'create_group'].includes(activeViewId)) {
         highlightViewId = 'village';
-    } else if (['settings_detail', 'adjust_homepage', 'definitions'].includes(activeViewId)) {
+    } else if (['settings_detail', 'adjust_homepage', 'definitions', 'neighborhood_tips'].includes(activeViewId)) {
         highlightViewId = 'profile_settings';
     }
     document.querySelectorAll('[data-nav]').forEach(btn => {
@@ -9136,6 +9138,7 @@ function submitCreateEventFromOfferFlow(e) {
         lat: lat,
         lng: lng,
         image: state.selectedOfferHeroImage || "",
+        icon: state.selectedOfferIcon || getEventIcon(type),
         host: state.currentUser ? `${state.currentUser.firstName} ${state.currentUser.lastName}` : 'Lily Kaufmann'
     };
 
@@ -9147,7 +9150,7 @@ function submitCreateEventFromOfferFlow(e) {
     // Dynamically add marker on Leaflet map for the new event!
     if (leafletMap) {
         const color = getCategoryColor('Event or Meetup');
-        const iconName = getEventIcon(newEvent.type);
+        const iconName = newEvent.icon || getEventIcon(newEvent.type);
         const avatarUrl = (state.currentUser && state.currentUser.avatar) ? state.currentUser.avatar : DEFAULT_AVATAR;
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
@@ -9177,7 +9180,7 @@ function submitCreateEventFromOfferFlow(e) {
     if (descInput) descInput.value = "";
 
     // Reset multi-slot previews
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
         const preview = document.getElementById(`offer-photo-preview-${i}`);
         const placeholder = document.getElementById(`offer-photo-placeholder-${i}`);
         if (preview && placeholder) {
@@ -9186,8 +9189,10 @@ function submitCreateEventFromOfferFlow(e) {
             placeholder.classList.remove('hidden');
         }
     }
-    state.selectedOfferPhotos = ["", "", ""];
+    state.selectedOfferPhotos = ["", ""];
     state.selectedOfferHeroImage = "";
+    state.selectedOfferIcon = "";
+    if (typeof renderOfferIconDisplay === 'function') renderOfferIconDisplay();
 
     resetOfferFormToSelector();
 
@@ -9336,7 +9341,7 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
     locationVal = escapeHTML(locationVal);
     wishlist = escapeHTML(wishlist);
     const subCategory = categoryTitle;
-    const icon = getCategoryIcon(categoryTitle);
+    const icon = state.selectedOfferIcon || getCategoryIcon(categoryTitle);
     const color = getCategoryColor(categoryTitle);
 
     const lat = state.selectedMeetupCoords ? state.selectedMeetupCoords.lat : (49.2827 + (Math.random() - 0.5) * 0.015);
@@ -9412,6 +9417,7 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
     if (durationSelect) durationSelect.value = "";
     if (locationPrefSelect) locationPrefSelect.value = "";
     state.selectedOfferHeroImage = null;
+    state.selectedOfferIcon = "";
     
     // Reset Gifting for Karma button state
     giftKarmaActive = false;
@@ -9430,7 +9436,7 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
     }
     
     // Reset multi-slot previews
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
         const preview = document.getElementById(`offer-photo-preview-${i}`);
         const placeholder = document.getElementById(`offer-photo-placeholder-${i}`);
         if (preview && placeholder) {
@@ -9439,7 +9445,9 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
             placeholder.classList.remove('hidden');
         }
     }
-    state.selectedOfferPhotos = ["", "", ""];
+    state.selectedOfferPhotos = ["", ""];
+    state.selectedOfferIcon = "";
+    if (typeof renderOfferIconDisplay === 'function') renderOfferIconDisplay();
 
     saveState();
     playSound('success');
@@ -12771,11 +12779,11 @@ function renderProfileSettings() {
         container.innerHTML = "";
         
         let limit = 1;
-        let displayedOfferings = state.userOfferings;
+        let displayedOfferings = state.userOfferings || [];
         let isTruncated = false;
         
-        if (!state.showAllOfferings && state.userOfferings.length > limit) {
-            displayedOfferings = state.userOfferings.slice(0, limit);
+        if (!state.showAllOfferings && displayedOfferings.length > limit) {
+            displayedOfferings = displayedOfferings.slice(0, limit);
             isTruncated = true;
         }
 
@@ -12788,18 +12796,20 @@ function renderProfileSettings() {
                 statusBadge = ` · <span class="text-outline">Traded</span>`;
             }
 
+            const offIcon = off.icon || getCategoryIcon(off.category) || 'local_offer';
+            const catColor = getCategoryColor(off.category);
+            const catObj = MAP_FILTER_CATEGORIES.find(c => c.name === off.category || c.displayName === off.category);
+            const bgStyle = catObj ? `background-color: rgba(${catObj.rgb}, 0.15) !important; color: ${catColor} !important;` : '';
+
             const card = document.createElement('div');
-            card.className = "flex items-start p-3 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/10 dark:border-white/10 shadow-sm relative w-full mb-2.5";
+            card.className = "flex items-center p-3 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/10 dark:border-white/10 shadow-sm relative w-full mb-2.5";
             card.innerHTML = `
-                <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden rounded-xl mr-3">
-                    <img src="${off.image || getCategoryPresetImage(off.category) || PLACEHOLDER_IMAGE}" class="w-full h-full object-cover">
+                <div class="w-[38px] h-[38px] rounded-xl text-black dark:text-white flex items-center justify-center mr-3 flex-shrink-0" style="${bgStyle}">
+                    <span class="material-symbols-outlined text-[20px]">${offIcon}</span>
                 </div>
                 <div class="flex-grow min-w-0 pr-3 text-left">
                     <h4 class="text-forest-green dark:text-white truncate leading-tight font-medium text-sm">${off.title}</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">${off.desc}</p>
-                    <div class="mt-2 text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
-                        ${off.category}${statusBadge}
-                    </div>
+                    <p class="text-gray-500 truncate mt-0.5">${off.desc} · <span class="text-gray-600">${off.category || 'Other'}</span>${statusBadge}</p>
                 </div>
                 <button class="text-error hover:opacity-80 p-1 flex-shrink-0" onclick="handleDeleteOffering('${off.id}')">
                     <span class="material-symbols-outlined text-[16px]">delete</span>
@@ -12811,7 +12821,7 @@ function renderProfileSettings() {
         if (isTruncated) {
             const moreBtn = document.createElement('button');
             moreBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
-            moreBtn.innerText = "Show More Swaps";
+            moreBtn.innerText = "See More";
             moreBtn.onclick = function() {
                 state.showAllOfferings = true;
                 renderProfileSettings();
@@ -12820,7 +12830,7 @@ function renderProfileSettings() {
         } else if (state.showAllOfferings && state.userOfferings.length > limit) {
             const lessBtn = document.createElement('button');
             lessBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
-            lessBtn.innerText = "Show Less";
+            lessBtn.innerText = "See Less";
             lessBtn.onclick = function() {
                 state.showAllOfferings = false;
                 renderProfileSettings();
@@ -12837,7 +12847,16 @@ function renderProfileSettings() {
         if (needs.length === 0) {
             needsContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1">You haven't posted any needs yet.</p>`;
         } else {
-            needs.forEach(n => {
+            let needsLimit = 1;
+            let displayedNeeds = needs;
+            let needsTruncated = false;
+            
+            if (!state.showAllNeeds && needs.length > needsLimit) {
+                displayedNeeds = needs.slice(0, needsLimit);
+                needsTruncated = true;
+            }
+
+            displayedNeeds.forEach(n => {
                 const div = document.createElement('div');
                 div.className = "flex items-center p-3 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/10 dark:border-white/10 shadow-sm relative w-full mb-2.5";
                 const needIcon = n.icon || getCategoryIcon(n.category) || 'shopping_basket';
@@ -12849,7 +12868,7 @@ function renderProfileSettings() {
                         <span class="material-symbols-outlined text-[20px]">${needIcon}</span>
                     </div>
                     <div class="flex-grow min-w-0 pr-3 text-left">
-                        <h4 class="text-forest-green dark:text-white truncate leading-tight">${n.title}</h4>
+                        <h4 class="text-forest-green dark:text-white truncate leading-tight font-medium text-sm">${n.title}</h4>
                         <p class="text-gray-500 truncate mt-0.5">${n.desc} · <span class="text-gray-600">${n.category || 'Other'}</span></p>
                     </div>
                     <button class="text-error hover:opacity-80 p-1 flex-shrink-0" onclick="handleDeleteNeed('${n.id}')">
@@ -12858,6 +12877,26 @@ function renderProfileSettings() {
                 `;
                 needsContainer.appendChild(div);
             });
+
+            if (needsTruncated) {
+                const moreBtn = document.createElement('button');
+                moreBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
+                moreBtn.innerText = "See More";
+                moreBtn.onclick = function() {
+                    state.showAllNeeds = true;
+                    renderProfileSettings();
+                };
+                needsContainer.appendChild(moreBtn);
+            } else if (state.showAllNeeds && needs.length > needsLimit) {
+                const lessBtn = document.createElement('button');
+                lessBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
+                lessBtn.innerText = "See Less";
+                lessBtn.onclick = function() {
+                    state.showAllNeeds = false;
+                    renderProfileSettings();
+                };
+                needsContainer.appendChild(lessBtn);
+            }
         }
     }
 
@@ -15175,6 +15214,7 @@ const initMapAndInputs = () => {
     setupScrollToTop('view-settings_detail');
     setupScrollToTop('view-adjust_homepage');
     setupScrollToTop('view-definitions');
+    setupScrollToTop('view-neighborhood_tips');
 
     // Stop touch/mouse/pointer/wheel events from bubbling from details overlays and profile modals to Leaflet or document level handlers
     const overlayContainers = [
@@ -16783,7 +16823,7 @@ function plotMapMarkersOnly() {
                 if (hostNeighbor && hostNeighbor.suspended) return;
 
                 const color = getCategoryColor('Event or Meetup');
-                const iconName = getEventIcon(evt.type);
+                const iconName = evt.icon || getEventIcon(evt.type);
 
                 const pinImgUrl = getEventPresetImage(evt.type);
 
@@ -19439,6 +19479,8 @@ window.openDeclineFeedbackModal = openDeclineFeedbackModal;
 window.handleAcceptProposal = handleAcceptProposal;
 window.reopenBarterNegotiation = reopenBarterNegotiation;
 window.handleDeleteOffering = handleDeleteOffering;
+window.handleDeleteEvent = handleDeleteEvent;
+window.handleSavedFilterChange = handleSavedFilterChange;
 window.selectNeighborhoodSuggestion = selectNeighborhoodSuggestion;
 window.handleOfferToSwapNeed = handleOfferToSwapNeed;
 window.openIdentityVerificationModal = openIdentityVerificationModal;
@@ -19478,7 +19520,7 @@ function openEventDetail(eventId) {
             const classes = getEventIconClasses(event.type);
             carousel.innerHTML = `
                 <div class="w-full h-full flex-shrink-0 snap-start relative flex flex-col items-center justify-center p-6 text-center ${classes}" style="scroll-snap-align: start;">
-                    <span class="material-symbols-outlined text-[64px]" style="font-variation-settings: 'FILL' 1, 'wght' 500;">${details.icon}</span>
+                    <span class="material-symbols-outlined text-[64px]" style="font-variation-settings: 'FILL' 1, 'wght' 500;">${event.icon || details.icon}</span>
                     <span class="text-xs font-bold uppercase tracking-wider mt-2 opacity-90">${event.type || 'Event'}</span>
                 </div>
             `;
@@ -23981,6 +24023,10 @@ function toggleVillageMenu() {
         return;
     }
     if (state.currentView === 'definitions') {
+        showView('profile_settings');
+        return;
+    }
+    if (state.currentView === 'neighborhood_tips') {
         showView('profile_settings');
         return;
     }
