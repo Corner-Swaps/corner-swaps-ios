@@ -891,12 +891,15 @@ html.dark #phone-header-bar .material-symbols-outlined {
 }
 
 .native-app-env .app-container {
-    display: flex !important;
-    flex-direction: column !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
     width: 100% !important;
     height: 100% !important;
-    position: relative !important;
     overflow: hidden !important;
+    display: block !important;
 }
 
 .native-app-env #phone-header-bar,
@@ -919,6 +922,11 @@ html.dark #phone-header-bar .material-symbols-outlined {
 .native-app-env .screen-view {
     padding-top: calc(2rem + env(safe-area-inset-top)) !important;
     padding-bottom: calc(6rem + env(safe-area-inset-bottom)) !important;
+}
+.native-app-env .screen-view.active {
+    height: 100% !important;
+    min-height: 0 !important;
+    flex: 1 !important;
 }
 
 /* Custom Onboarding Screen Views Bottom Spacing Override (No Bottom Tab Bar) */
@@ -2708,7 +2716,6 @@ html.dark .guest-lock-btn span {
 }
 
 /* Premium Badge Revamp */
-/* Premium Badge Revamp */
 .premium-badge-item {
     display: flex !important;
     flex-direction: column !important;
@@ -2728,6 +2735,8 @@ html.dark .guest-lock-btn span {
     border-width: 1.5px !important;
     border-style: solid !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+    backdrop-filter: blur(12px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(140%) !important;
 }
 
 /* Glass shine sweep overlay on the card box */
@@ -2770,21 +2779,23 @@ html.dark .guest-lock-btn span {
 
 /* Unlocked & Locked States */
 .premium-badge-unlocked {
-    border-color: rgba(0, 0, 0, 0.12) !important;
+    background: rgba(255, 255, 255, 0.65) !important;
+    border-color: rgba(48, 138, 94, 0.12) !important;
 }
 html.dark .premium-badge-unlocked {
+    background: rgba(24, 32, 26, 0.65) !important;
     border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 .premium-badge-locked {
     border-style: dashed !important;
     border-color: rgba(0, 0, 0, 0.1) !important;
-    background: rgba(243, 244, 246, 0.5) !important;
+    background: rgba(243, 244, 246, 0.4) !important;
     opacity: 0.65 !important;
 }
 .dark .premium-badge-locked {
     border-color: rgba(255, 255, 255, 0.1) !important;
-    background: rgba(24, 32, 26, 0.5) !important;
+    background: rgba(24, 32, 26, 0.4) !important;
 }
 
 .premium-badge-locked:hover {
@@ -2839,13 +2850,13 @@ html.dark .premium-badge-unlocked {
 
 /* Blue Badge Theme (Early Adopter) */
 .badge-theme-blue.premium-badge-unlocked {
-    background: #ffffff !important;
-    border-color: rgba(0, 0, 0, 0.12) !important;
+    background: rgba(239, 246, 255, 0.55) !important;
+    border-color: rgba(59, 130, 246, 0.25) !important;
 }
 .dark .badge-theme-blue.premium-badge-unlocked,
 html.dark .badge-theme-blue.premium-badge-unlocked {
-    background: #18201a !important;
-    border-color: rgba(255, 255, 255, 0.12) !important;
+    background: rgba(30, 41, 59, 0.5) !important;
+    border-color: rgba(59, 130, 246, 0.2) !important;
 }
 .badge-theme-blue.premium-badge-unlocked .premium-badge-emblem {
     background: #3b82f6 !important;
@@ -2861,13 +2872,13 @@ html.dark .badge-theme-blue.premium-badge-unlocked {
 
 /* Red Badge Theme (GoFundMe Backer) */
 .badge-theme-red.premium-badge-unlocked {
-    background: #ffffff !important;
-    border-color: rgba(0, 0, 0, 0.12) !important;
+    background: rgba(255, 241, 242, 0.55) !important;
+    border-color: rgba(244, 63, 94, 0.25) !important;
 }
 .dark .badge-theme-red.premium-badge-unlocked,
 html.dark .badge-theme-red.premium-badge-unlocked {
-    background: #18201a !important;
-    border-color: rgba(255, 255, 255, 0.12) !important;
+    background: rgba(67, 20, 30, 0.5) !important;
+    border-color: rgba(244, 63, 94, 0.2) !important;
 }
 .badge-theme-red.premium-badge-unlocked .premium-badge-emblem {
     background: #f43f5e !important;
@@ -2883,13 +2894,13 @@ html.dark .badge-theme-red.premium-badge-unlocked {
 
 /* Green Badge Theme (Super Trader) */
 .badge-theme-green.premium-badge-unlocked {
-    background: #ffffff !important;
-    border-color: rgba(0, 0, 0, 0.12) !important;
+    background: rgba(240, 253, 250, 0.55) !important;
+    border-color: rgba(16, 185, 129, 0.25) !important;
 }
 .dark .badge-theme-green.premium-badge-unlocked,
 html.dark .badge-theme-green.premium-badge-unlocked {
-    background: #18201a !important;
-    border-color: rgba(255, 255, 255, 0.12) !important;
+    background: rgba(20, 38, 28, 0.5) !important;
+    border-color: rgba(16, 185, 129, 0.2) !important;
 }
 .badge-theme-green.premium-badge-unlocked .premium-badge-emblem {
     background: #10b981 !important;
@@ -3433,10 +3444,10 @@ html.dark #view-create_group :not(.material-symbols-outlined):not(.bg-forest-gre
 .swap-listing-box {
     display: flex !important;
     align-items: center !important;
-    gap: 8px !important;
-    padding: 10px 12px !important;
+    gap: 14px !important;
+    padding: 12px !important;
     border: 1px solid rgba(0, 0, 0, 0.1) !important;
-    border-radius: 12px !important;
+    border-radius: 16px !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
     text-align: left !important;
@@ -3448,32 +3459,42 @@ html.dark .swap-listing-box {
 }
 
 .swap-listing-box:hover {
-    background-color: rgba(48, 138, 94, 0.05) !important;
+    background-color: rgba(48, 138, 94, 0.03) !important;
 }
 
 html.dark .swap-listing-box:hover {
-    background-color: rgba(16, 185, 129, 0.05) !important;
+    background-color: rgba(16, 185, 129, 0.03) !important;
 }
 
 /* Selected state: turns green */
 .swap-listing-box.active-swap-box {
-    background-color: rgba(48, 138, 94, 0.08) !important;
-    border-color: rgba(0, 0, 0, 0.1) !important;
+    background-color: rgba(48, 138, 94, 0.05) !important;
+    border-color: #308A5E !important;
     box-shadow: none !important;
-}
-
-.swap-listing-box.active-swap-box span {
-    color: #308A5E !important;
 }
 
 html.dark .swap-listing-box.active-swap-box {
-    background-color: rgba(16, 185, 129, 0.08) !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
+    background-color: rgba(16, 185, 129, 0.05) !important;
+    border-color: #10b981 !important;
     box-shadow: none !important;
 }
 
-html.dark .swap-listing-box.active-swap-box span {
-    color: #10b981 !important;
+.swap-listing-box .swap-listing-check-indicator {
+    transition: all 0.2s ease !important;
+}
+
+.swap-listing-box.active-swap-box .swap-listing-check-indicator {
+    background-color: #308A5E !important;
+    border-color: #308A5E !important;
+}
+
+html.dark .swap-listing-box.active-swap-box .swap-listing-check-indicator {
+    background-color: #10b981 !important;
+    border-color: #10b981 !important;
+}
+
+.swap-listing-box.active-swap-box .swap-listing-check-indicator span {
+    opacity: 1 !important;
 }
 
 #view-offer .bg-forest-green .material-symbols-outlined,
@@ -3864,27 +3885,54 @@ html.dark #chat-quick-templates button:hover {
 }
 
 /* Chat Input field container border - force black/gray outline */
+/* Chat Input field container - default subtle border, green on focus */
 #chat-action-center div.focus-within\:border-forest-green {
-    border-color: rgba(0, 0, 0, 0.2) !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+    -webkit-tap-highlight-color: transparent !important;
 }
 html.dark #chat-action-center div.focus-within\:border-forest-green {
-    border-color: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+    -webkit-tap-highlight-color: transparent !important;
 }
+/* Turn green IMMEDIATELY when focused - no gray flash */
 #chat-action-center div.focus-within\:border-forest-green:focus-within {
-    border-color: #000000 !important;
-    box-shadow: none !important;
+    border-color: #308A5E !important;
+    box-shadow: 0 0 0 2px rgba(48, 138, 94, 0.25) !important;
+    transition: none !important;
 }
 html.dark #chat-action-center div.focus-within\:border-forest-green:focus-within {
-    border-color: #ffffff !important;
-    box-shadow: none !important;
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
+    transition: none !important;
+}
+/* :has(input:focus) fallback for iOS WebKit */
+#chat-action-center div.focus-within\:border-forest-green:has(input:focus) {
+    border-color: #308A5E !important;
+    box-shadow: 0 0 0 2px rgba(48, 138, 94, 0.25) !important;
+}
+html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:focus) {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
 }
 
-/* Outer Chat Action Center container box border - force black/gray outline */
+/* Outer Chat Action Center container - glassmorphism, transparent, positioned low */
 #chat-action-center {
-    border-color: rgba(0, 0, 0, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    background: rgba(255, 255, 255, 0.45) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+    margin-bottom: 12px !important;
+    margin-top: auto !important;
 }
 html.dark #chat-action-center {
-    border-color: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.10) !important;
+    background: rgba(20, 28, 22, 0.45) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.20), 0 1px 4px rgba(0, 0, 0, 0.10) !important;
 }
 
 /* Swap Journey header bar card and hover states - force black outline and black text */
@@ -5636,3 +5684,60 @@ html.dark .location-icon-container {
 }
 
 /* --- END: Map Filter Dropdown Responsive Sizing --- */
+
+/* Native App explicit height and layout overrides */
+.native-app-env .screen-view.active {
+    display: flex !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    flex: 1 !important;
+}
+
+.native-app-env #view-village.active {
+    overflow: hidden !important;
+    z-index: 10 !important;
+}
+
+.native-app-env #global-navbar:not(.hidden) {
+    display: flex !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: calc(3.8rem + env(safe-area-inset-bottom)) !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: env(safe-area-inset-bottom) !important;
+    z-index: 5000 !important;
+    background-color: var(--white) !important;
+}
+
+/* Category Tray / List Overlay Glassmorphism */
+.category-tray, .category-list-overlay {
+    background: rgba(255, 255, 255, 0.25) !important;
+    backdrop-filter: blur(25px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+    border: 1px solid rgba(48, 138, 94, 0.15) !important;
+    border-bottom: none !important;
+}
+
+html.dark .category-tray, html.dark .category-list-overlay {
+    background: rgba(20, 28, 22, 0.25) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.category-tray {
+    justify-content: flex-end !important;
+    padding-bottom: 24px !important;
+}
+
+.native-app-env .category-tray {
+    padding-bottom: calc(24px + env(safe-area-inset-bottom)) !important;
+}
+
