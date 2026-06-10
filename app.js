@@ -3173,7 +3173,8 @@ function autoDismissAllModals() {
         { modalId: 'offer-swap-modal', containerId: 'offer-swap-container' },
         { modalId: 'did-you-swap-modal', containerId: 'did-you-swap-container' },
         { modalId: 'confirm-swap-modal', containerId: 'confirm-swap-container' },
-        { modalId: 'decline-modal', containerId: 'decline-container' }
+        { modalId: 'decline-modal', containerId: 'decline-container' },
+        { modalId: 'meeting-spot-modal', containerId: 'meeting-spot-container' }
     ];
     slidingModals.forEach(cfg => {
         const modal = document.getElementById(cfg.modalId);
@@ -3977,14 +3978,60 @@ function updateNavBarIcons(activeViewId) {
     } else if (['settings_detail', 'adjust_homepage', 'definitions', 'neighborhood_tips'].includes(activeViewId)) {
         highlightViewId = 'profile_settings';
     }
+
+    const NAV_COLORS = {
+        village: {
+            active: '#8B5CF6',         // purple
+            inactive: 'rgba(139, 92, 246, 0.55)',
+            glowLight: 'rgba(139, 92, 246, 0.15)',
+            glowDark: 'rgba(139, 92, 246, 0.3)'
+        },
+        profile_settings: {
+            active: '#2563eb',         // blue like the navigation button
+            inactive: 'rgba(37, 99, 235, 0.55)',
+            glowLight: 'rgba(37, 99, 235, 0.15)',
+            glowDark: 'rgba(37, 99, 235, 0.3)'
+        },
+        chat_hub: {
+            active: '#F97316',         // orange
+            inactive: 'rgba(249, 117, 22, 0.55)',
+            glowLight: 'rgba(249, 117, 22, 0.15)',
+            glowDark: 'rgba(249, 117, 22, 0.3)'
+        },
+        offer: {
+            active: '#D946EF',         // fuchsia
+            inactive: 'rgba(217, 70, 239, 0.55)',
+            glowLight: 'rgba(217, 70, 239, 0.15)',
+            glowDark: 'rgba(217, 70, 239, 0.3)'
+        },
+        home: {
+            active: '#308A5E',         // forest-green
+            inactive: 'rgba(48, 138, 94, 0.55)',
+            glowLight: 'rgba(48, 138, 94, 0.15)',
+            glowDark: 'rgba(48, 138, 94, 0.3)'
+        }
+    };
+
+    const isDarkMode = document.documentElement.classList.contains('dark');
+
     document.querySelectorAll('[data-nav]').forEach(btn => {
         const view = btn.getAttribute('data-nav');
+        const iconWrapper = btn.querySelector('.nav-icon-wrapper');
         const icon = btn.querySelector('.material-symbols-outlined');
         const label = btn.querySelector('span:last-child');
         
+        const config = NAV_COLORS[view] || NAV_COLORS.home;
+
+        // Strip default green classes to ensure custom styles take absolute priority
+        btn.classList.remove('text-forest-green', 'text-[#424840]');
+
         if (view === highlightViewId) {
-            btn.classList.add('text-forest-green');
-            btn.classList.remove('text-[#424840]');
+            btn.style.color = config.active;
+            if (iconWrapper) {
+                iconWrapper.classList.add('active-tab');
+                const glowBg = isDarkMode ? config.glowDark : config.glowLight;
+                iconWrapper.style.setProperty('background-color', glowBg, 'important');
+            }
             if (label) {
                 label.classList.add('font-bold');
                 label.classList.remove('font-medium');
@@ -3993,14 +4040,17 @@ function updateNavBarIcons(activeViewId) {
                 icon.style.fontVariationSettings = "'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24";
             }
         } else {
-            btn.classList.remove('text-forest-green');
-            btn.classList.add('text-[#424840]');
+            btn.style.color = config.inactive;
+            if (iconWrapper) {
+                iconWrapper.classList.remove('active-tab');
+                iconWrapper.style.setProperty('background-color', 'transparent', 'important');
+            }
             if (label) {
                 label.classList.remove('font-bold');
                 label.classList.add('font-medium');
             }
             if (icon) {
-                icon.style.fontVariationSettings = "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24";
+                icon.style.fontVariationSettings = "'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24";
             }
         }
     });
@@ -7819,12 +7869,12 @@ function renderMapCategoryCircles() {
             const circleClass = "w-9 h-9 rounded-full flex items-center justify-center transition-all select-none hover:scale-105 active:scale-95";
             
             item.innerHTML = `
-                <div class="${circleClass} category-circle-bubble flex-shrink-0">
-                    <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
-                </div>
                 <span class="text-[11px] font-bold text-forest-green dark:text-warm-cream bg-white/95 dark:bg-[#18201a]/95 px-2.5 py-1.5 rounded-xl shadow-md border border-outline-variant/20 dark:border-[#308A5E26] opacity-90 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                     ${cat.name === 'All' ? 'All Categories' : cat.name}
                 </span>
+                <div class="${circleClass} category-circle-bubble flex-shrink-0">
+                    <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
+                </div>
             `;
             dropdown.appendChild(item);
         });
@@ -8114,18 +8164,18 @@ function renderMapFilterCircles() {
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         const labelClass = showLabels ? '' : 'hidden';
         return `
-            <div class="flex items-center justify-start gap-2.5 select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="flex items-center justify-end gap-2.5 select-none cursor-pointer group active:scale-95 transition-transform" 
                  onclick="toggleMapFilterCategory('${cat.name}', this)" 
                  style="${animStyle}">
+                <!-- Label to the left -->
+                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none ${labelClass}">
+                    ${cat.displayName}
+                </span>
                 <!-- Circle element -->
                 <div class="w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 filter-category-circle flex-shrink-0" 
                      data-category="${cat.name}">
                     <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
                 </div>
-                <!-- Label to the right -->
-                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] bg-white/95 dark:bg-[#18201a] px-2.5 py-1 rounded-lg border border-outline-variant/20 dark:border-[#308A5E26] shadow-sm select-none leading-none ${labelClass}">
-                    ${cat.displayName}
-                </span>
             </div>
         `;
     }).join('');
@@ -8274,16 +8324,16 @@ function renderListFilterCircles() {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         return `
-            <div class="flex items-center justify-start gap-2.5 select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="flex items-center justify-end gap-2.5 select-none cursor-pointer group active:scale-95 transition-transform" 
                  onclick="selectListCategoryFilter('${cat.name}', this)" 
                  style="${animStyle}">
+                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none">
+                    ${cat.displayName}
+                </span>
                 <div class="w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 list-filter-category-circle flex-shrink-0" 
                      data-category="${cat.name}">
                     <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
                 </div>
-                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] bg-white/95 dark:bg-[#18201a] px-2.5 py-1 rounded-lg border border-outline-variant/20 dark:border-[#308A5E26] shadow-sm select-none leading-none">
-                    ${cat.displayName}
-                </span>
             </div>
         `;
     }).join('');
@@ -8309,16 +8359,16 @@ function renderNeedsFilterCircles() {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         return `
-            <div class="flex items-center justify-start gap-2.5 select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="flex items-center justify-end gap-2.5 select-none cursor-pointer group active:scale-95 transition-transform" 
                  onclick="selectNeedsCategoryFilter('${cat.name}', this)" 
                  style="${animStyle}">
+                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none">
+                    ${cat.displayName}
+                </span>
                 <div class="w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 needs-filter-category-circle flex-shrink-0" 
                      data-category="${cat.name}">
                     <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
                 </div>
-                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] bg-white/95 dark:bg-[#18201a] px-2.5 py-1 rounded-lg border border-outline-variant/20 dark:border-[#308A5E26] shadow-sm select-none leading-none">
-                    ${cat.displayName}
-                </span>
             </div>
         `;
     }).join('');
@@ -8484,26 +8534,26 @@ function openCategoryView(categoryName) {
         if (isCategoryMatch(neighbor.category, categoryName)) {
             hasResults = true;
             const card = document.createElement('div');
-            card.className = "bg-white p-4 rounded-xl mb-3 border border-outline-variant/20 shadow-sm flex gap-4 cursor-pointer active:scale-98 transition-transform";
+            card.className = "flex items-center gap-4 py-3 border-b border-outline-variant/10 dark:border-white/5 cursor-pointer active:opacity-75 transition-all";
             card.onclick = () => {
                 window.categoryOverlayReferrer = categoryName;
                 overlay.classList.remove('active');
                 openMapItemDetail(neighbor.name);
             };
             card.innerHTML = `
-                <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden rounded-xl">
-                    <img src="${neighbor.offerImg || PLACEHOLDER_IMAGE}" class="w-full h-full object-cover">
+                <div class="w-11 h-11 rounded-full overflow-hidden flex-shrink-0 bg-white dark:bg-[#202c22] border border-outline-variant/20 dark:border-white/10 flex items-center justify-center shadow-sm">
+                    <img src="${neighbor.offerImg || PLACEHOLDER_IMAGE}" class="w-full h-full object-cover rounded-full">
                 </div>
-                <div class="flex-grow min-w-0">
-                    <h4 class="font-bold text-forest-green truncate text-sm">${neighbor.offerTitle}</h4>
-                    <p class="text-xs text-on-surface-variant line-clamp-1 mb-1">${neighbor.offerDesc}</p>
-                    <div class="flex items-center gap-1 text-[9px] text-forest-green/60 font-bold uppercase tracking-wider">
-                        <span class="material-symbols-outlined text-[12px]">location_on</span>
-                        ${neighbor.location}
-                    </div>
+                <div class="flex-grow min-w-0 text-left">
+                    <h4 class="font-bold text-[#1c2d24] dark:text-[#f1f5f9] truncate text-[13.5px]">${neighbor.offerTitle}</h4>
+                    <p class="text-xs text-on-surface-variant/80 dark:text-warm-cream/60 truncate mt-0.5">${neighbor.name} · ${neighbor.category}</p>
                 </div>
-                <div class="flex items-center text-outline">
-                    <span class="material-symbols-outlined">chevron_right</span>
+                <div class="flex flex-col items-end flex-shrink-0 select-none text-right">
+                    <span class="text-[10px] font-bold text-forest-green dark:text-emerald-400 uppercase tracking-wider">${neighbor.location.split(' ')[0]}</span>
+                    <span class="text-[9px] text-on-surface-variant/50 dark:text-warm-cream/40 mt-0.5">${neighbor.vouches || 0} ❤️</span>
+                </div>
+                <div class="flex items-center text-outline/60 pl-1">
+                    <span class="material-symbols-outlined text-[18px]">chevron_right</span>
                 </div>
             `;
             container.appendChild(card);
@@ -8515,26 +8565,26 @@ function openCategoryView(categoryName) {
         if (isCategoryMatch(offer.category, categoryName)) {
             hasResults = true;
             const card = document.createElement('div');
-            card.className = "bg-white p-4 rounded-xl mb-3 border border-outline-variant/20 shadow-sm flex gap-4 cursor-pointer active:scale-98 transition-transform";
+            card.className = "flex items-center gap-4 py-3 border-b border-outline-variant/10 dark:border-white/5 cursor-pointer active:opacity-75 transition-all";
             card.onclick = () => {
                 window.categoryOverlayReferrer = categoryName;
                 overlay.classList.remove('active');
                 openMapItemDetail(offer.id);
             };
             card.innerHTML = `
-                <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden rounded-xl">
-                    <img src="${offer.image || PLACEHOLDER_IMAGE}" class="w-full h-full object-cover">
+                <div class="w-11 h-11 rounded-full overflow-hidden flex-shrink-0 bg-white dark:bg-[#202c22] border border-outline-variant/20 dark:border-white/10 flex items-center justify-center shadow-sm">
+                    <img src="${offer.image || PLACEHOLDER_IMAGE}" class="w-full h-full object-cover rounded-full">
                 </div>
-                <div class="flex-grow min-w-0">
-                    <h4 class="font-bold text-forest-green truncate text-sm">${offer.title} <span class="text-[9px] text-[#D99036] font-bold bg-[#D99036]/5 px-1.5 py-0.5 rounded ml-1 uppercase">You</span></h4>
-                    <p class="text-xs text-on-surface-variant line-clamp-1 mb-1">${offer.desc}</p>
-                    <div class="flex items-center gap-1 text-[9px] text-forest-green/60 font-bold uppercase tracking-wider">
-                        <span class="material-symbols-outlined text-[12px]">location_on</span>
-                        ${offer.location || (state.currentUser ? state.currentUser.location : 'Oakwood Village')}
-                    </div>
+                <div class="flex-grow min-w-0 text-left">
+                    <h4 class="font-bold text-[#1c2d24] dark:text-[#f1f5f9] truncate text-[13.5px]">${offer.title} <span class="text-[8px] text-[#D99036] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span></h4>
+                    <p class="text-xs text-on-surface-variant/80 dark:text-warm-cream/60 truncate mt-0.5">Lily K. · ${offer.category}</p>
                 </div>
-                <div class="flex items-center text-outline">
-                    <span class="material-symbols-outlined">chevron_right</span>
+                <div class="flex flex-col items-end flex-shrink-0 select-none text-right">
+                    <span class="text-[10px] font-bold text-forest-green dark:text-emerald-400 uppercase tracking-wider">${(offer.location || 'Oakwood').split(' ')[0]}</span>
+                    <span class="text-[9px] text-on-surface-variant/50 dark:text-warm-cream/40 mt-0.5">Active</span>
+                </div>
+                <div class="flex items-center text-outline/60 pl-1">
+                    <span class="material-symbols-outlined text-[18px]">chevron_right</span>
                 </div>
             `;
             container.appendChild(card);
@@ -9638,8 +9688,8 @@ function renderConversationsList() {
                 `;
             } else if (segment === 'active' || segment === 'requests') {
                 rightHtml = `
-                    <button onclick="showChatAutoDeleteInfo()" class="w-8 h-8 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-warm-cream flex items-center justify-center active:scale-90 transition-transform cursor-pointer border-0 flex-shrink-0" title="Auto-Delete Info">
-                        <span class="material-symbols-outlined text-lg">info</span>
+                    <button onclick="showChatAutoDeleteInfo()" class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" title="Auto-Delete Info">
+                        <span class="material-symbols-outlined text-[17px]">info</span>
                     </button>
                 `;
             }
@@ -15362,6 +15412,10 @@ function handleToggleDarkMode(checked) {
     }
     if (meetingSpotTileLayer) {
         meetingSpotTileLayer.setUrl(newTileUrl);
+    }
+
+    if (typeof updateNavBarIcons === 'function' && state && state.currentView) {
+        updateNavBarIcons(state.currentView);
     }
 }
 
@@ -23531,8 +23585,18 @@ window.previewCustomMeetingSpot = function() {
 function openSuggestMeetingSpotModal() {
     playSound('click');
     const modal = document.getElementById('meeting-spot-modal');
+    const container = document.getElementById('meeting-spot-container');
     if (!modal) return;
+    
     modal.classList.remove('hidden');
+    setTimeout(() => {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100');
+        if (container) {
+            container.classList.remove('translate-y-full');
+            container.classList.add('translate-y-0');
+        }
+    }, 10);
     
     const dtInput = document.getElementById('meeting-spot-datetime');
     if (dtInput) dtInput.value = "";
@@ -23586,7 +23650,20 @@ window.setMeetingTimeShortcut = function(shortcut) {
 function closeSuggestMeetingSpotModal() {
     playSound('click');
     const modal = document.getElementById('meeting-spot-modal');
-    if (modal) modal.classList.add('hidden');
+    const container = document.getElementById('meeting-spot-container');
+    if (modal && container) {
+        modal.classList.remove('opacity-100');
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        container.classList.remove('translate-y-0');
+        container.classList.add('translate-y-full');
+        setTimeout(() => {
+            if (modal.classList.contains('opacity-0')) {
+                modal.classList.add('hidden');
+            }
+        }, 300);
+    } else if (modal) {
+        modal.classList.add('hidden');
+    }
 }
 
 function initMeetingSpotMap() {
@@ -26793,8 +26870,8 @@ function renderReviewsList() {
         headerBarEl.className = 'w-[8px] h-[22px] rounded-full flex-shrink-0';
         headerBarEl.style.setProperty('background-color', activeColor, 'important');
         headerRightEl.innerHTML = `
-            <button onclick="showChatAutoDeleteInfo()" class="w-8 h-8 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-warm-cream flex items-center justify-center active:scale-90 transition-transform cursor-pointer border-0 flex-shrink-0" title="Auto-Delete Info">
-                <span class="material-symbols-outlined text-lg">info</span>
+            <button onclick="showChatAutoDeleteInfo()" class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" title="Auto-Delete Info">
+                <span class="material-symbols-outlined text-[17px]">info</span>
             </button>
         `;
     }

@@ -2213,7 +2213,7 @@ html.native-app-env body.native-app .app-container {
 
 /* Fix chat detail view bottom padding to prevent squishing when keyboard or input bar is shown */
 .native-app-env #view-chat_detail {
-    padding-bottom: env(safe-area-inset-bottom) !important;
+    padding-bottom: 0 !important;
 }
 
 /* Hide scrollbar track for neighbor profile modal */
@@ -2926,13 +2926,13 @@ html.dark .chat-bubble-other {
 }
 .native-app-env #floating-map-controls {
     top: calc(0.2rem + env(safe-area-inset-top)) !important;
-    left: 20px !important;
+    left: auto !important;
     right: 20px !important;
 }
 .native-app-env #map-category-dropdown {
     top: calc(50px + env(safe-area-inset-top)) !important;
-    left: 20px !important;
-    right: auto !important;
+    left: auto !important;
+    right: 20px !important;
 }
 .native-app-env #active-filter-banner {
     top: calc(4.5rem + env(safe-area-inset-top)) !important;
@@ -3367,7 +3367,7 @@ html.dark .profile-avatar-no-ring {
 /* Fix chat detail view bottom padding to prevent squishing when keyboard or input bar is shown */
 .native-app-env #view-chat_detail {
     padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
-    padding-bottom: env(safe-area-inset-bottom) !important;
+    padding-bottom: 0 !important;
 }
 
 /* Custom Category Circle Dropdown Filter for Map View */
@@ -3402,7 +3402,7 @@ html.dark .profile-avatar-no-ring {
     border-radius: 50% !important;
     z-index: 1002 !important;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15) !important;
-    transform: scale(0.88) !important;
+    transform: scale(1.0) !important;
 }
 
 .dark #btn-segment-filter.active-filter-circle {
@@ -3439,8 +3439,8 @@ html.dark .profile-avatar-no-ring {
 }
 
 #map-category-dropdown.expanded .map-category-item {
-    max-height: 40px !important;
-    height: 40px !important;
+    max-height: 34px !important;
+    height: 34px !important;
     opacity: 1 !important;
     transform: scale(1) translateY(0) !important;
     pointer-events: auto !important;
@@ -5187,7 +5187,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
     backdrop-filter: blur(20px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04) !important;
-    margin-bottom: 12px !important;
+    margin-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
     margin-top: auto !important;
 }
 html.dark #chat-action-center {
@@ -6156,6 +6156,23 @@ html.dark #view-profile_step_3 h2 {
     color: #ffffff !important;
 }
 
+/* Position and align map category circles dropdown on the right under the top-right control buttons */
+#map-category-dropdown {
+    right: 24px !important;
+    left: auto !important;
+    align-items: flex-end !important;
+}
+
+#map-category-dropdown .map-category-item {
+    justify-content: flex-end !important;
+    flex-direction: row !important;
+}
+
+#map-category-dropdown .map-category-item span {
+    margin-left: 0 !important;
+    margin-right: 0.5rem !important;
+}
+
 /* === Interactive Help Mode — Full Implementation === */
 
 /* Scrim overlay that dims the map */
@@ -6211,6 +6228,24 @@ html.dark #view-profile_step_3 h2 {
 .help-mode-active #village-segment-floating-buttons { z-index: 3000 !important; }
 .help-mode-active #map-category-dropdown      { z-index: 4000 !important; }
 .help-mode-active #interactive-help-tooltip   { z-index: 3500 !important; }
+.help-mode-active #category-tray              { z-index: 3000 !important; }
+.help-mode-active .bento-card                 { overflow: visible !important; }
+
+/* Help-mode full-screen interaction blocker scrim */
+#help-mode-scrim {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2500;
+    /* fully transparent — just blocks pointer events */
+    background: transparent;
+    pointer-events: all;
+    touch-action: none;
+    cursor: not-allowed;
+}
+.help-mode-active #help-mode-scrim {
+    display: block;
+}
 
 /* Help button active (green) state */
 #btn-map-guide-trigger.help-active {
@@ -8749,15 +8784,21 @@ body:not(:has(#view-landing.active)) footer,
 /* --- START: Map Filter Dropdown Responsive Sizing (Based on mobile device height) --- */
 
 /* Base default styling (Medium screens: iPhone 12/13/14/15/16 Pro, height 701px to 860px) */
-#map-category-dropdown {
-    gap: 4px !important;
+#map-category-dropdown,
+#list-category-dropdown,
+#needs-category-dropdown {
+    gap: 8px !important;
 }
-#map-category-dropdown .filter-category-circle {
-    width: 22px !important;
-    height: 22px !important;
+#map-category-dropdown .filter-category-circle,
+.list-filter-category-circle,
+.needs-filter-category-circle {
+    width: 32px !important;
+    height: 32px !important;
 }
-#map-category-dropdown .filter-category-circle span {
-    font-size: 12px !important;
+#map-category-dropdown .filter-category-circle span,
+.list-filter-category-circle span,
+.needs-filter-category-circle span {
+    font-size: 17px !important;
 }
 #map-category-dropdown .category-label {
     font-size: 13px !important;
@@ -8767,40 +8808,40 @@ body:not(:has(#view-landing.active)) footer,
 /* Small Screens (e.g. iPhone SE / screen height <= 700px) */
 @media (max-height: 700px) {
     html:not(.show-simulator) #map-category-dropdown {
-        gap: 3px !important;
-        top: 50px !important;
+        gap: 8px !important;
+        top: 60px !important;
     }
     html:not(.show-simulator) .native-app-env #map-category-dropdown {
-        top: calc(36px + env(safe-area-inset-top)) !important;
+        top: calc(44px + env(safe-area-inset-top)) !important;
     }
     html:not(.show-simulator) #map-category-dropdown .filter-category-circle {
-        width: 18px !important;
-        height: 18px !important;
+        width: 32px !important;
+        height: 32px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .filter-category-circle span {
-        font-size: 10px !important;
+        font-size: 17px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .category-label {
-        font-size: 11px !important;
-        padding: 2px 6px !important;
+        font-size: 13px !important;
+        padding: 3px 8px !important;
     }
 }
 
 /* Large Screens (e.g. iPhone 16 Pro Max / screen height > 860px) */
 @media (min-height: 861px) {
     html:not(.show-simulator) #map-category-dropdown {
-        gap: 5px !important;
+        gap: 8px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .filter-category-circle {
-        width: 24px !important;
-        height: 24px !important;
+        width: 32px !important;
+        height: 32px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .filter-category-circle span {
-        font-size: 13px !important;
+        font-size: 17px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .category-label {
-        font-size: 14px !important;
-        padding: 4px 10px !important;
+        font-size: 13px !important;
+        padding: 3px 8px !important;
     }
 }
 
@@ -8839,7 +8880,8 @@ html.native-app-env body.native-app #view-village.active {
 }
 
 /* --- Floating Glass Navigation Bar & Tab Backing Revamp --- */
-#global-navbar {
+/* Use :not(.hidden) so JS can hide the navbar by adding the hidden class */
+#global-navbar:not(.hidden) {
     position: fixed !important;
     bottom: calc(2px + env(safe-area-inset-bottom)) !important;
     left: 50% !important;
@@ -8865,8 +8907,13 @@ html.native-app-env body.native-app #view-village.active {
     transition: background 0.3s, border-color 0.3s, box-shadow 0.3s !important;
 }
 
+/* Ensure .hidden properly hides the navbar regardless of other rules */
+#global-navbar.hidden {
+    display: none !important;
+}
+
 /* Dark mode overrides for floating navbar */
-html.dark #global-navbar {
+html.dark #global-navbar:not(.hidden) {
     background: rgba(20, 28, 22, 0.45) !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.1) !important;
@@ -8916,14 +8963,14 @@ html.dark.native-app-env #global-navbar:not(.hidden) {
     background-color: transparent !important;
 }
 
-/* Light mode active tab highlight: subtle forest green */
+/* Light mode active tab highlight: neutral translucent dark */
 #global-navbar .nav-icon-wrapper.active-tab {
-    background-color: rgba(48, 138, 94, 0.12) !important;
+    background-color: rgba(0, 0, 0, 0.08) !important;
 }
 
-/* Dark mode active tab highlight: translucent green-gray or white/gray */
+/* Dark mode active tab highlight: neutral translucent white */
 html.dark #global-navbar .nav-icon-wrapper.active-tab {
-    background-color: rgba(48, 138, 94, 0.25) !important;
+    background-color: rgba(255, 255, 255, 0.16) !important;
 }
 
 /* Category Tray / List Overlay Glassmorphism */
@@ -9382,7 +9429,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
                                     <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
                                         <span class="material-symbols-outlined text-[18px]">mail</span>
                                     </span>
-                                    <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="su-email" placeholder="your@email.com" type="email" required/>
+                                    <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-sm" id="su-email" placeholder="your@email.com" type="email" required/>
                                 </div>
                             </div>
                             <div class="space-y-1">
@@ -9391,7 +9438,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
                                     <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
                                         <span class="material-symbols-outlined text-[18px]">phone</span>
                                     </span>
-                                    <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="su-phone" placeholder="e.g. +1 (555) 000-0000" type="tel"/>
+                                    <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-sm" id="su-phone" placeholder="e.g. +1 (555) 000-0000" type="tel"/>
                                 </div>
                             </div>
                             <div class="space-y-1">
@@ -9400,7 +9447,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
                                     <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
                                         <span class="material-symbols-outlined text-[18px]">lock</span>
                                     </span>
-                                    <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="su-password" placeholder="Min. 8 characters" type="password" required/>
+                                    <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-sm" id="su-password" placeholder="Min. 8 characters" type="password" required/>
                                 </div>
                             </div>
                             
@@ -10120,15 +10167,15 @@ html.dark .category-tray, html.dark .category-list-overlay {
                                  <div id="village-search-suggestions" class="hidden"></div>
                              </div>
 
-                             <!-- Floating Map Controls — filter LEFT, help ? RIGHT, full-width bar -->
-                             <div id="floating-map-controls" class="absolute top-[14px] left-5 right-5 z-[1000] flex items-center justify-between select-none pointer-events-none" style="overflow: visible !important;">
-                                 <!-- LEFT: Category Filter Button -->
-                                 <button id="btn-segment-filter" onclick="toggleCategoryTray()" class="pointer-events-auto w-9 h-9 rounded-full flex items-center justify-center bg-white dark:bg-[#18201a] border border-outline-variant/30 shadow-lg active:scale-95 transition-all cursor-pointer text-black dark:text-white relative" title="Category Filter" style="overflow: visible !important;">
-                                     <span class="material-symbols-outlined text-[18px]" id="map-filter-icon" style="overflow: visible !important;">tune</span>
+                             <!-- Floating Map Controls — positioned on the right side -->
+                             <div id="floating-map-controls" class="absolute top-[16px] right-6 z-[1000] flex items-center gap-2 select-none pointer-events-none" style="overflow: visible !important;">
+                                 <!-- LEFT: Interactive Help Button -->
+                                 <button id="btn-map-guide-trigger" onclick="toggleMapInteractiveHelp()" class="pointer-events-auto w-10 h-10 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm relative" title="Interactive Map Help" style="overflow: visible !important;">
+                                     <span class="material-symbols-outlined text-[20px]" id="map-help-icon">help</span>
                                  </button>
-                                 <!-- RIGHT: Interactive Help Button (? stays on right) -->
-                                 <button id="btn-map-guide-trigger" onclick="toggleMapInteractiveHelp()" class="pointer-events-auto w-9 h-9 rounded-full flex items-center justify-center bg-white dark:bg-[#18201a] border border-outline-variant/30 shadow-lg active:scale-95 transition-all cursor-pointer text-black dark:text-white relative" title="Interactive Map Help" style="overflow: visible !important;">
-                                     <span class="material-symbols-outlined text-[18px]" id="map-help-icon">help</span>
+                                 <!-- RIGHT: Category Filter Button -->
+                                 <button id="btn-segment-filter" onclick="toggleCategoryTray()" class="pointer-events-auto w-10 h-10 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm relative" title="Category Filter" style="overflow: visible !important;">
+                                     <span class="material-symbols-outlined text-[20px]" id="map-filter-icon">tune</span>
                                  </button>
                              </div>
 
@@ -10138,25 +10185,14 @@ html.dark .category-tray, html.dark .category-list-overlay {
                              <!-- Interactive Help Mode Scrim Overlay -->
                              <div id="map-interactive-help-overlay" class="hidden absolute inset-0 z-[2800] transition-all duration-300" style="opacity:0;" onclick="exitMapInteractiveHelp()"></div>
 
-                             <!-- Interactive Help Tooltip Card (slides up from bottom) -->
-                             <div id="interactive-help-tooltip" class="absolute bottom-24 left-4 right-4 z-[3500] bg-white dark:bg-[#18201a] border border-forest-green/25 rounded-2xl shadow-2xl p-4 select-none" style="transform:translateY(200%);opacity:0;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1),opacity 0.3s ease;pointer-events:none;">
-                                 <div class="flex items-start gap-3">
-                                     <div class="w-10 h-10 rounded-xl bg-forest-green/10 flex items-center justify-center flex-shrink-0">
-                                         <span class="material-symbols-outlined text-forest-green text-xl" id="help-tooltip-icon">help</span>
-                                     </div>
-                                     <div class="flex-grow min-w-0">
-                                         <h4 class="font-bold text-forest-green dark:text-warm-cream text-sm mb-0.5" id="help-tooltip-title">Map Control</h4>
-                                         <p class="text-[11px] text-on-surface-variant leading-relaxed" id="help-tooltip-desc">Tap any glowing badge to learn about that control.</p>
-                                     </div>
-                                     <button onclick="exitMapInteractiveHelp()" class="pointer-events-auto w-7 h-7 rounded-full bg-forest-green/10 flex items-center justify-center flex-shrink-0 active:scale-90 transition-transform border-0 cursor-pointer">
-                                         <span class="material-symbols-outlined text-forest-green text-sm">close</span>
-                                     </button>
-                                 </div>
-                                 <p class="text-[9px] text-on-surface-variant/60 text-center mt-2.5 uppercase tracking-wider font-semibold">Tap any glowing ? to learn what it does · Tap background to exit</p>
-                             </div>
+                             <!-- Interaction-blocking scrim — shown during help mode, sits below the ? badges -->
+                             <div id="help-mode-scrim"></div>
 
-                             <!-- Trailing vertical category circles (LEFT-aligned under filter button) -->
-                             <div id="map-category-dropdown" class="absolute top-[60px] left-[20px] z-[3000] flex flex-col items-start gap-2.5 max-h-[70vh] overflow-y-auto pl-[6px] pr-6 pt-2 pb-5 hidden custom-scrollbar select-none animate-slide-down-fade">
+                             <!-- Interactive Help Tooltip Card (legacy, hidden) -->
+                             <div id="interactive-help-tooltip" class="hidden" style="pointer-events:none;"></div>
+
+                             <!-- Trailing vertical category circles (RIGHT-aligned under filter button) -->
+                             <div id="map-category-dropdown" class="absolute top-[62px] right-[24px] z-[3000] flex flex-col items-end gap-2 max-h-[70vh] overflow-y-auto pl-6 pr-[0px] pt-2 pb-5 hidden custom-scrollbar select-none animate-slide-down-fade">
                                  <!-- Dynamically generated trailing list -->
                              </div>
 
@@ -10282,6 +10318,13 @@ html.dark .category-tray, html.dark .category-list-overlay {
                                         <span class="material-symbols-outlined text-xl">translate</span>
                                     </div>
                                     <span class="category-title text-[11.5px] font-bold text-black dark:text-warm-cream leading-tight mt-1.5 tracking-wide">Exchange</span>
+                                </div>
+                                <!-- Gifts category -->
+                                <div class="bento-card bg-white dark:bg-[#1b261f] p-2 py-3.5 rounded-2xl border border-outline-variant/10 flex flex-col items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition-all hover:bg-forest-green/5 dark:hover:bg-forest-green/10 shadow-sm relative overflow-hidden group text-center w-full" data-category="Gifts" onclick="openCategoryView('Gifts')">
+                                    <div class="icon-box w-11 h-11 rounded-full bg-pink-50 text-pink-600 dark:bg-pink-950/20 dark:text-pink-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+                                        <span class="material-symbols-outlined text-xl">card_giftcard</span>
+                                    </div>
+                                    <span class="category-title text-[11.5px] font-bold text-black dark:text-warm-cream leading-tight mt-1.5 tracking-wide">Gifts</span>
                                 </div>
                                 <div class="bento-card col-span-4 bg-forest-green dark:bg-[#308A5E] py-3.5 px-4 rounded-2xl border-0 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] transition-all shadow-md group hover:opacity-90 mt-2" data-category="All" onclick="openCategoryView('All')">
                                     <div class="icon-box w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-warm-cream group-hover:scale-105 transition-transform">
@@ -10680,14 +10723,16 @@ html.dark .category-tray, html.dark .category-list-overlay {
 
                 <!-- Category listings slide overlay -->
                 <div class="category-list-overlay" id="category-list-overlay">
-                        <div class="sticky top-0 bg-warm-cream/95 backdrop-blur-md px-6 py-4 flex items-center justify-between border-b border-outline-variant/10">
-                            <h2 class="font-headline text-xl text-forest-green font-bold" id="category-list-title">Skills</h2>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="closeCategoryView()">
-                                <span class="material-symbols-outlined text-lg">close</span>
-                            </button>
-                        </div>
-                        <div class="flex-1 overflow-y-auto px-6 py-6" id="category-items-container"></div>
+                    <!-- Drag Handle -->
+                    <div class="w-10 h-1 bg-outline-variant/40 dark:bg-white/20 rounded-full mx-auto my-3 shrink-0"></div>
+                    <div class="sticky top-0 bg-transparent px-6 py-2.5 flex items-center justify-between border-b border-outline-variant/10 dark:border-white/10 shrink-0">
+                        <h2 class="font-headline text-2xl text-[#1c2d24] dark:text-[#f1f5f9] font-black tracking-tight" id="category-list-title">Skills</h2>
+                        <button class="w-8 h-8 rounded-full flex items-center justify-center bg-[#0000000d] dark:bg-[#ffffff14] hover:bg-[#0000001a] dark:hover:bg-[#ffffff26] active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border-0 flex-shrink-0 shadow-sm" onclick="closeCategoryView()">
+                            <span class="material-symbols-outlined text-[18px]">close</span>
+                        </button>
                     </div>
+                    <div class="flex-1 overflow-y-auto px-6 py-4" id="category-items-container"></div>
+                </div>
             </section>
 
             <!-- Floating Segment Selector Circle Buttons Stack -->
@@ -10718,39 +10763,52 @@ html.dark .category-tray, html.dark .category-list-overlay {
                     </button>
                 </div>
                 
-                <!-- Switcher buttons under the menu with labels on the left -->
+                <!-- Switcher buttons under the menu with labels + ? help badges on the left -->
                 <div class="menu-sub-button-wrapper">
-                    <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] bg-white/95 dark:bg-[#18201a] px-2.5 py-1 rounded-lg border border-outline-variant/20 dark:border-[#308A5E26] shadow-sm select-none">Offerings Map</span>
+                    <div class="flex items-center gap-1.5">
+                        <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Offerings Map</span>
+                        <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-map" onclick="showVillageHelpPopup('btn-segment-map',event)">?</button>
+                    </div>
                     <button id="btn-segment-map" onclick="switchVillageSegment('map')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-blue-600 border-blue-600 text-white pulse-blue-light dark:bg-blue-500 dark:border-blue-500 dark:text-[#18201a] scale-110 z-20 active:scale-95 transition-all cursor-pointer" title="Offerings Map">
                         <span class="material-symbols-outlined text-[24px]">map</span>
                     </button>
                 </div>
                 
                 <div class="menu-sub-button-wrapper">
-                    <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] bg-white/95 dark:bg-[#18201a] px-2.5 py-1 rounded-lg border border-outline-variant/20 dark:border-[#308A5E26] shadow-sm select-none">Needs Map</span>
+                    <div class="flex items-center gap-1.5">
+                        <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Needs Map</span>
+                        <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-needs-map" onclick="showVillageHelpPopup('btn-segment-needs-map',event)">?</button>
+                    </div>
                     <button id="btn-segment-needs-map" onclick="switchVillageSegment('needs_map')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-orange-600 border-orange-600 text-white pulse-amber-light active:scale-95 transition-all cursor-pointer" title="Needs Map">
                         <span class="material-symbols-outlined text-[24px]">explore</span>
                     </button>
                 </div>
-                
 
-                
                 <div class="menu-sub-button-wrapper">
-                    <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] bg-white/95 dark:bg-[#18201a] px-2.5 py-1 rounded-lg border border-outline-variant/20 dark:border-[#308A5E26] shadow-sm select-none">Needs List</span>
+                    <div class="flex items-center gap-1.5">
+                        <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Needs List</span>
+                        <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-needs" onclick="showVillageHelpPopup('btn-segment-needs',event)">?</button>
+                    </div>
                     <button id="btn-segment-needs" onclick="switchVillageSegment('needs')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-sky-600 border-sky-600 text-white pulse-sky-light active:scale-95 transition-all cursor-pointer" title="Needs List">
                         <span class="material-symbols-outlined text-[24px]">shopping_basket</span>
                     </button>
                 </div>
- 
+
                 <div class="menu-sub-button-wrapper">
-                    <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] bg-white/95 dark:bg-[#18201a] px-2.5 py-1 rounded-lg border border-outline-variant/20 dark:border-[#308A5E26] shadow-sm select-none">Offerings List</span>
+                    <div class="flex items-center gap-1.5">
+                        <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Offerings List</span>
+                        <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-list" onclick="showVillageHelpPopup('btn-segment-list',event)">?</button>
+                    </div>
                     <button id="btn-segment-list" onclick="switchVillageSegment('list')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-violet-600 border-violet-600 text-white pulse-violet-light active:scale-95 transition-all cursor-pointer" title="Offerings List">
                         <span class="material-symbols-outlined text-[24px]">view_list</span>
                     </button>
                 </div>
                 
                 <div class="menu-sub-button-wrapper">
-                    <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] bg-white/95 dark:bg-[#18201a] px-2.5 py-1 rounded-lg border border-outline-variant/20 dark:border-[#308A5E26] shadow-sm select-none">Events List</span>
+                    <div class="flex items-center gap-1.5">
+                        <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Events List</span>
+                        <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-events" onclick="showVillageHelpPopup('btn-segment-events',event)">?</button>
+                    </div>
                     <button id="btn-segment-events" onclick="switchVillageSegment('events')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-teal-600 border-teal-600 text-white pulse-teal-light active:scale-95 transition-all cursor-pointer" title="Events List">
                         <span class="material-symbols-outlined text-[24px]">event</span>
                     </button>
@@ -10799,7 +10857,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
 
                         <!-- Switcher buttons under the menu with labels on the left -->
                         <div class="menu-sub-button-wrapper">
-                            <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] bg-white/95 dark:bg-[#18201a] px-2.5 py-1 rounded-lg border border-outline-variant/20 dark:border-[#308A5E26] shadow-sm select-none">Active Chats</span>
+                            <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Active Chats</span>
                             <button id="btn-chat-segment-active" onclick="switchChatSegment('active')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-violet-600 border-violet-600 text-white active:scale-90 transition-all cursor-pointer pulse-violet-light" title="Active Chats">
                                 <span class="material-symbols-outlined text-[24px]">chat</span>
                                 <span id="badge-chat-segment-active" class="absolute -top-1 -right-1 chat-badge-circle hidden"></span>
@@ -10807,7 +10865,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
                         </div>
 
                         <div class="menu-sub-button-wrapper">
-                            <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] bg-white/95 dark:bg-[#18201a] px-2.5 py-1 rounded-lg border border-outline-variant/20 dark:border-[#308A5E26] shadow-sm select-none">Swap Requests</span>
+                            <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Swap Requests</span>
                             <button id="btn-chat-segment-requests" onclick="switchChatSegment('requests')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-blue-600 border-blue-600 text-white active:scale-90 transition-all cursor-pointer pulse-blue-light" title="Swap Requests">
                                 <span class="material-symbols-outlined text-[24px]">question_answer</span>
                                 <span id="badge-chat-segment-requests" class="absolute -top-1 -right-1 chat-badge-circle hidden"></span>
@@ -10817,7 +10875,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
 
 
                         <div class="menu-sub-button-wrapper">
-                            <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] bg-white/95 dark:bg-[#18201a] px-2.5 py-1 rounded-lg border border-outline-variant/20 dark:border-[#308A5E26] shadow-sm select-none">Groups</span>
+                            <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Groups</span>
                             <button id="btn-chat-segment-groups" onclick="switchChatSegment('groups')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-emerald-600 border-emerald-600 text-white active:scale-90 transition-all cursor-pointer pulse-emerald-light" title="Group Chats">
                                 <span class="material-symbols-outlined text-[24px]">groups</span>
                                 <span id="badge-chat-segment-groups" class="absolute -top-1 -right-1 chat-badge-circle hidden"></span>
@@ -10825,7 +10883,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
                         </div>
 
                         <div class="menu-sub-button-wrapper">
-                            <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] bg-white/95 dark:bg-[#18201a] px-2.5 py-1 rounded-lg border border-outline-variant/20 dark:border-[#308A5E26] shadow-sm select-none">Reviews</span>
+                            <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Reviews</span>
                             <button id="btn-chat-segment-reviews" onclick="switchChatSegment('reviews')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-rose-600 border-rose-600 text-white active:scale-90 transition-all cursor-pointer pulse-rose-light" title="Reviews">
                                 <span class="material-symbols-outlined text-[24px]">rate_review</span>
                                 <span id="badge-chat-segment-reviews" class="absolute -top-1 -right-1 chat-badge-circle hidden"></span>
@@ -10843,9 +10901,9 @@ html.dark .category-tray, html.dark .category-list-overlay {
                 <!-- ==================================================== -->
                 <!-- 10. CHAT DETAIL ROOM VIEW -->
                 <!-- ==================================================== -->
-                <section id="view-chat_detail" class="screen-view flex-grow flex flex-col h-full overflow-hidden bg-white dark:bg-[#101612] pt-4">
+                <section id="view-chat_detail" class="screen-view flex-grow flex flex-col h-full overflow-hidden bg-white dark:bg-[#101612] pt-0">
                     <!-- Glassmorphic Chat Header (Clean & Redesigned) -->
-                    <div class="px-6 bg-white dark:bg-[#101612] border-b border-outline-variant/10 dark:border-outline-variant/5 flex items-center justify-between z-10 shrink-0 select-none bg-white dark:bg-[#101612]" style="height: 64px !important;">
+                    <div class="px-6 bg-white/75 dark:bg-[#101612]/75 backdrop-blur-md border-b border-outline-variant/10 dark:border-outline-variant/5 flex items-center justify-between z-10 shrink-0 select-none" style="height: 64px !important;">
                         <div class="flex items-center gap-3 flex-grow min-w-0">
                             <!-- Avatar Wrapper with Status Dot Overlay -->
                             <div class="relative flex-shrink-0 cursor-pointer active:scale-95 transition-transform" onclick="handleChatHeaderClick()">
@@ -10869,9 +10927,9 @@ html.dark .category-tray, html.dark .category-list-overlay {
                                 <span id="chat-header-expiry-val">24h left</span>
                             </div>
                             
-                            <!-- Close X Button -->
-                            <button id="chat-close-btn" onclick="handleChatBackButton()" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0">
-                                <span class="material-symbols-outlined text-lg">close</span>
+                            <!-- Close X Button in a Transparent Bubble -->
+                            <button id="chat-close-btn" onclick="handleChatBackButton()" class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                         </div>
                     </div>
@@ -10968,8 +11026,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                                     <span class="material-symbols-outlined font-bold">qr_code_2</span>
                                     <h3 class="font-headline font-bold text-sm uppercase tracking-wider">QR Code Handshake</h3>
                                 </div>
-                                <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="closeQRHandshake()">
-                                    <span class="material-symbols-outlined text-lg">close</span>
+                                <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeQRHandshake()">
+                                    <span class="material-symbols-outlined text-[17px]">close</span>
                                 </button>
                             </div>
 
@@ -11049,8 +11107,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                         <div id="chat-negotiation-control"></div>
                     </div>
 
-                    <!-- Floating Chat Action Center Container (Moved lower with mb-0.5) -->
-                    <div class="mx-4 mb-0.5 mt-1 bg-white dark:bg-[#18201a] border border-outline-variant/35 rounded-3xl p-3 flex flex-col gap-2.5 shadow-lg flex-shrink-0" id="chat-action-center">
+                    <!-- Floating Chat Action Center Container -->
+                    <div class="mx-4 mt-1 bg-white dark:bg-[#18201a] border border-outline-variant/35 rounded-3xl p-3 flex flex-col gap-2.5 shadow-lg flex-shrink-0" id="chat-action-center" style="margin-bottom: calc(4px + env(safe-area-inset-bottom, 0px));">
 
                         <!-- Quick templates horizontal-scroll bar -->
                         <div class="flex gap-2 overflow-x-auto hide-scrollbar select-none" id="chat-quick-templates">
@@ -11292,8 +11350,142 @@ html.dark .category-tray, html.dark .category-list-overlay {
                 <!-- 11. OFFER VIEW (ACCORDION & VICINITY & WISH LIST) -->
                 <!-- ==================================================== -->
                 <section id="view-offer" class="screen-view flex-grow pb-24 overflow-y-auto relative flex flex-col justify-start pt-6">
+                    <!-- Creative Dashboard Screen (similar to Profile section) -->
+                    <div id="creative-dashboard-screen" class="w-full flex flex-col px-6 pb-6 text-center select-none">
+                        <!-- Header Summary (Similar to Profile Page) -->
+                        <section class="flex flex-col items-center mb-6 mt-6 select-none">
+                            <!-- Round icon container with beautiful gradient and ring -->
+                            <div class="profile-avatar-ring w-28 h-28 flex-shrink-0 relative active:scale-[0.98] transition-transform duration-150 flex items-center justify-center bg-gray-50 dark:bg-[#18201a]">
+                                <span class="material-symbols-outlined text-4xl text-forest-green dark:text-emerald-400">palette</span>
+                            </div>
+                            
+                            <div class="mt-4 text-center">
+                                <h2 class="text-xl text-black dark:text-warm-cream font-headline font-bold">Creative Hub</h2>
+                                <p class="text-on-surface-variant dark:text-warm-cream/80 text-[11px] font-semibold mt-1">
+                                    Create and manage your village contributions
+                                </p>
+                                
+                                <!-- Stats Badges Row -->
+                                <div class="flex items-center justify-center gap-3 mt-3.5 flex-wrap">
+                                    <!-- Active Offerings Stats -->
+                                    <div class="flex items-center gap-1.5 text-xs text-forest-green dark:text-emerald-400 font-bold bg-forest-green/5 dark:bg-emerald-950/20 px-3 py-1 rounded-full border border-forest-green/10 cursor-pointer active:scale-95 transition-all select-none">
+                                        <span class="material-symbols-outlined text-sm">handyman</span>
+                                        <span id="creative-stat-offerings">0 Offerings</span>
+                                    </div>
+                                    <!-- Active Needs Stats -->
+                                    <div class="flex items-center gap-1.5 text-xs text-forest-green dark:text-emerald-400 font-bold bg-forest-green/5 dark:bg-emerald-950/20 px-3 py-1 rounded-full border border-forest-green/10 cursor-pointer active:scale-95 transition-all select-none">
+                                        <span class="material-symbols-outlined text-sm">shopping_basket</span>
+                                        <span id="creative-stat-needs">0 Needs</span>
+                                    </div>
+                                    <!-- Hosted Events Stats -->
+                                    <div class="flex items-center gap-1.5 text-xs text-forest-green dark:text-emerald-400 font-bold bg-forest-green/5 dark:bg-emerald-950/20 px-3 py-1 rounded-full border border-forest-green/10 cursor-pointer active:scale-95 transition-all select-none">
+                                        <span class="material-symbols-outlined text-sm">event</span>
+                                        <span id="creative-stat-events">0 Events</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <!-- Creation Tools Section (horizontal badges scrolling) -->
+                        <section class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
+                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none text-left">
+                                <span class="material-symbols-outlined text-sm">construction</span> Creation Tools
+                            </h3>
+                            
+                            <!-- Scrolling badges -->
+                            <div class="flex gap-3 justify-start py-2 overflow-x-auto scrollbar-none snap-x snap-mandatory scroll-smooth" style="-webkit-overflow-scrolling: touch;">
+                                <!-- Add Offering Badge -->
+                                <div onclick="selectOfferMode('offering')" class="flex-shrink-0 snap-center flex items-center gap-2 px-3 py-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#18201a] shadow-sm cursor-pointer hover:bg-forest-green/5 active:scale-95 transition-all select-none">
+                                    <div class="w-6 h-6 rounded-full bg-forest-green text-white flex items-center justify-center flex-shrink-0">
+                                        <span class="material-symbols-outlined text-xs">handyman</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-forest-green dark:text-emerald-400 whitespace-nowrap">Add Offering</span>
+                                </div>
+                                
+                                <!-- Add Need Badge -->
+                                <div onclick="selectOfferMode('need')" class="flex-shrink-0 snap-center flex items-center gap-2 px-3 py-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#18201a] shadow-sm cursor-pointer hover:bg-forest-green/5 active:scale-95 transition-all select-none">
+                                    <div class="w-6 h-6 rounded-full bg-forest-green text-white flex items-center justify-center flex-shrink-0">
+                                        <span class="material-symbols-outlined text-xs">shopping_basket</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-forest-green dark:text-emerald-400 whitespace-nowrap">Add Need</span>
+                                </div>
+                                
+                                <!-- Host Event Badge -->
+                                <div onclick="selectOfferMode('event')" class="flex-shrink-0 snap-center flex items-center gap-2 px-3 py-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#18201a] shadow-sm cursor-pointer hover:bg-forest-green/5 active:scale-95 transition-all select-none">
+                                    <div class="w-6 h-6 rounded-full bg-forest-green text-white flex items-center justify-center flex-shrink-0">
+                                        <span class="material-symbols-outlined text-xs">festival</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-forest-green dark:text-emerald-400 whitespace-nowrap">Host Event</span>
+                                </div>
+                                
+                                <!-- Create Group Badge -->
+                                <div onclick="showView('create_group')" class="flex-shrink-0 snap-center flex items-center gap-2 px-3 py-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#18201a] shadow-sm cursor-pointer hover:bg-forest-green/5 active:scale-95 transition-all select-none">
+                                    <div class="w-6 h-6 rounded-full bg-forest-green text-white flex items-center justify-center flex-shrink-0">
+                                        <span class="material-symbols-outlined text-xs">groups</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-forest-green dark:text-emerald-400 whitespace-nowrap">Create Group</span>
+                                </div>
+                                
+                                <!-- Post Bulletin Badge -->
+                                <div onclick="showView('create_bulletin')" class="flex-shrink-0 snap-center flex items-center gap-2 px-3 py-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#18201a] shadow-sm cursor-pointer hover:bg-forest-green/5 active:scale-95 transition-all select-none">
+                                    <div class="w-6 h-6 rounded-full bg-forest-green text-white flex items-center justify-center flex-shrink-0">
+                                        <span class="material-symbols-outlined text-xs">assignment</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-forest-green dark:text-emerald-400 whitespace-nowrap">Post Bulletin</span>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Listings Management Widgets -->
+                        
+                        <!-- Offerings Widget -->
+                        <section class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0 text-left">
+                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center justify-between select-none w-full">
+                                <span class="flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-sm">handyman</span> Offerings
+                                </span>
+                                <button onclick="selectOfferMode('offering')" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Add Offering">
+                                    <span class="material-symbols-outlined text-[15px] font-black">add</span>
+                                </button>
+                            </h3>
+                            <div class="space-y-3 animate-fade-in" id="creative-offerings-container">
+                                <!-- Dynamic offerings -->
+                            </div>
+                        </section>
+                        
+                        <!-- Needs Widget -->
+                        <section class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0 text-left">
+                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center justify-between select-none w-full">
+                                <span class="flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-sm">shopping_basket</span> Needs
+                                </span>
+                                <button onclick="selectOfferMode('need')" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Add Need">
+                                    <span class="material-symbols-outlined text-[15px] font-black">add</span>
+                                </button>
+                            </h3>
+                            <div class="space-y-3 animate-fade-in" id="creative-needs-container">
+                                <!-- Dynamic needs -->
+                            </div>
+                        </section>
+                        
+                        <!-- Hosted Events Widget -->
+                        <section class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0 text-left">
+                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center justify-between select-none w-full">
+                                <span class="flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-sm">event</span> My Hosted Events
+                                </span>
+                                <button onclick="selectOfferMode('event')" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Host Event">
+                                    <span class="material-symbols-outlined text-[15px] font-black">add</span>
+                                </button>
+                            </h3>
+                            <div class="space-y-3 animate-fade-in" id="creative-events-container">
+                                <!-- Dynamic events -->
+                            </div>
+                        </section>
+                    </div>
+
                     <!-- A. Listing Mode Selector Screen -->
-                    <div id="offer-type-selector-screen" class="px-6 flex flex-col items-center justify-start gap-3.5 max-w-sm mx-auto text-center w-full py-4">
+                    <div id="offer-type-selector-screen" class="hidden px-6 flex flex-col items-center justify-start gap-3.5 max-w-sm mx-auto text-center w-full py-4">
                         <div class="w-16 h-16 rounded-full bg-forest-green/10 dark:bg-emerald-500/10 flex items-center justify-center text-forest-green dark:text-emerald-400 mb-1">
                             <span class="material-symbols-outlined text-3xl text-forest-green dark:text-emerald-400">post_add</span>
                         </div>
@@ -11343,7 +11535,11 @@ html.dark .category-tray, html.dark .category-list-overlay {
 
                     <!-- B. Unified Form Wrapper (hidden initially) -->
                     <div id="offer-form-wrapper" class="hidden relative pb-0">
-                        <!-- Back button to selector screen removed -->
+                        <div class="absolute top-4 left-4 z-10">
+                            <button type="button" onclick="resetOfferFormToSelector()" class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" title="Back">
+                                <span class="material-symbols-outlined text-[17px]">arrow_back</span>
+                            </button>
+                        </div>
 
                         <!-- 1. Hero Image area with three photo uploader slots -->
                         <section class="photo-hero w-full relative overflow-hidden flex flex-col justify-center items-center border-b border-outline-variant/30 flex-shrink-0 bg-[#ecebeb] dark:bg-[#202020] px-4 pt-14 pb-5" id="offer-photo-hero">
@@ -11651,8 +11847,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                 <section id="view-profile_settings" class="screen-view flex-grow flex flex-col h-full overflow-hidden bg-white dark:bg-[#101612] pt-4">
                     <!-- Sticky Header Bar -->
                     <div id="profile-settings-header" class="hidden px-6 bg-white dark:bg-[#101612] flex items-center justify-end z-10 shrink-0 select-none" style="height: 64px !important;">
-                        <button id="profile-settings-close-btn" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="handleProfileCloseButton()" title="Close">
-                            <span class="material-symbols-outlined text-lg">close</span>
+                        <button id="profile-settings-close-btn" class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="handleProfileCloseButton()" title="Close">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
                     </div>
 
@@ -11990,11 +12186,11 @@ html.dark .category-tray, html.dark .category-list-overlay {
                 <div id="chat-camera-modal" class="hidden fixed inset-0 z-[4000] bg-black flex flex-col justify-between">
                     <!-- Top Navigation Bar -->
                     <div class="flex items-center justify-between px-6 py-4 text-white">
-                        <button class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center active:scale-95 transition-transform" onclick="closeChatCameraModal()">
-                            <span class="material-symbols-outlined text-lg">close</span>
+                        <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeChatCameraModal()">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
                         <span class="text-xs font-bold uppercase tracking-widest text-neutral-400">Live Camera</span>
-                        <div class="w-10 h-10"></div>
+                        <div class="w-8 h-8"></div>
                     </div>
 
                     <!-- Viewport (Simulated Live Frame) -->
@@ -12043,8 +12239,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                 <div id="chat-status-explanation-modal" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-6 select-none">
                     <div class="absolute inset-0 bg-forest-green/20 backdrop-blur-sm" onclick="closeStatusExplanation()"></div>
                     <div class="relative bg-warm-cream w-full max-w-[340px] rounded-2xl border border-outline-variant/15 shadow-2xl p-6 text-center">
-                        <button class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0 z-50" onclick="closeStatusExplanation()">
-                            <span class="material-symbols-outlined text-lg">close</span>
+                        <button class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm z-50" onclick="closeStatusExplanation()">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
                         <h3 class="font-headline text-lg font-bold text-forest-green mb-4">Swap Status Guide</h3>
                         <p class="text-xs text-on-surface-variant mb-6 leading-relaxed">
@@ -12144,8 +12340,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                         <div class="w-10 h-1 bg-outline-variant/50 rounded-full mx-auto mb-6"></div>
                         <div class="flex items-center justify-between mb-4">
                             <h2 class="font-headline text-xl text-forest-green font-semibold">Choose what to offer</h2>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="closeBarterProposalModal()">
-                                <span class="material-symbols-outlined text-lg">close</span>
+                            <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeBarterProposalModal()">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                         </div>
                         
@@ -12336,8 +12532,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                  <div id="cleanup-listings-modal" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-6 select-none animate-fade-in">
                      <div class="absolute inset-0 bg-forest-green/20 backdrop-blur-sm" onclick="closeCleanupListingsModal()"></div>
                      <div class="relative bg-warm-cream dark:bg-[#18201a] w-full max-w-[340px] rounded-2xl border border-outline-variant/15 shadow-2xl p-6 text-center flex flex-col">
-                          <button class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0 z-50" onclick="closeCleanupListingsModal()">
-                             <span class="material-symbols-outlined text-lg">close</span>
+                          <button class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm z-50" onclick="closeCleanupListingsModal()">
+                             <span class="material-symbols-outlined text-[17px]">close</span>
                          </button>
                          <h3 class="font-headline text-lg font-bold text-forest-green dark:text-emerald-400 mb-2">Clean Up Listings</h3>
                          <p class="text-xs text-on-surface-variant dark:text-warm-cream/70 mb-4 leading-relaxed">
@@ -12362,8 +12558,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                         <div class="w-10 h-1 bg-outline-variant/50 rounded-full mx-auto mb-6"></div>
                         <div class="flex items-center justify-between mb-4">
                             <h2 class="font-headline text-lg font-bold text-forest-green dark:text-warm-cream">Offer a Swap</h2>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="closeOfferSwapModal()">
-                                <span class="material-symbols-outlined text-lg">close</span>
+                            <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeOfferSwapModal()">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                         </div>
                         
@@ -12402,8 +12598,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                         <div class="w-10 h-1 bg-outline-variant/50 rounded-full mx-auto mb-6"></div>
                         <div class="flex items-center justify-between mb-4">
                             <h2 id="did-you-swap-title" class="font-headline text-lg font-bold text-forest-green dark:text-warm-cream">Did you swap?</h2>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="closeDidYouSwapModal()">
-                                <span class="material-symbols-outlined text-lg">close</span>
+                            <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeDidYouSwapModal()">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                         </div>
                         
@@ -12453,8 +12649,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                         <div class="w-10 h-1 bg-outline-variant/50 rounded-full mx-auto mb-6"></div>
                         <div class="flex items-center justify-between mb-4">
                             <h2 class="font-headline text-lg font-bold text-forest-green dark:text-warm-cream">Confirm Swap Status</h2>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="closeConfirmSwapModal()">
-                                <span class="material-symbols-outlined text-lg">close</span>
+                            <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeConfirmSwapModal()">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                         </div>
                         
@@ -12482,8 +12678,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                         <div class="w-10 h-1 bg-outline-variant/50 rounded-full mx-auto mb-6"></div>
                         <div class="flex items-center justify-between mb-4">
                             <h2 class="font-headline text-xl text-forest-green font-semibold">Decline Trade</h2>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="closeDeclineFeedbackModal()">
-                                <span class="material-symbols-outlined text-lg">close</span>
+                            <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeDeclineFeedbackModal()">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                         </div>
                         <div class="space-y-6">
@@ -12574,8 +12770,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                     <div id="share-impact-modal" class="hidden absolute inset-0 z-[110] bg-black/40 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in">
                         <div class="relative bg-warm-cream border border-outline-variant/50 w-full max-w-xs p-6 rounded-2xl shadow-2xl flex flex-col items-center">
                             <!-- Close Button -->
-                            <button class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="closeShareImpactModal()">
-                                <span class="material-symbols-outlined text-lg">close</span>
+                            <button class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeShareImpactModal()">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                             
                             <h3 class="font-headline text-base font-bold text-forest-green mb-1 mt-2 text-center">Share Your Impact!</h3>
@@ -12618,8 +12814,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                     <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" onclick="closeChangePasswordModal()"></div>
                     <div class="relative bg-warm-cream border border-outline-variant w-full max-w-xs p-6 rounded-xl shadow-2xl">
                         <!-- Close Button -->
-                        <button class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0 z-50" onclick="closeChangePasswordModal()">
-                            <span class="material-symbols-outlined text-lg">close</span>
+                        <button class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm z-50" onclick="closeChangePasswordModal()">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
                         <h3 class="font-headline text-lg font-bold text-black dark:text-white mb-4 mt-2">Change Password</h3>
                         <form class="space-y-3" onsubmit="handleSavePassword(event)">
@@ -12635,8 +12831,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                     <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" onclick="close2FAModal()"></div>
                     <div class="relative bg-warm-cream border border-outline-variant w-full max-w-xs p-6 rounded-xl shadow-2xl text-center">
                         <!-- Close Button -->
-                        <button class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0 z-50" onclick="close2FAModal()">
-                            <span class="material-symbols-outlined text-lg">close</span>
+                        <button class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm z-50" onclick="close2FAModal()">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
                         <h3 class="font-headline text-lg font-bold text-black dark:text-white mb-2 mt-2">Setup Two-Step Authentication</h3>
                         <p class="text-xs text-black/70 dark:text-white/70 mb-4">Scan this QR code with your authenticator app to enable.</p>
@@ -12678,8 +12874,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                                 <span class="material-symbols-outlined text-base text-black">verified_user</span>
                                 Verify Identity
                             </h3>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="closeIdentityVerificationModal()">
-                                <span class="material-symbols-outlined text-lg">close</span>
+                            <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeIdentityVerificationModal()">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                         </header>
                         
@@ -12774,8 +12970,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                 <!-- ==================================================== -->
                 <section id="view-adjust_homepage" class="screen-view flex-grow py-8 px-6 pb-32 overflow-y-auto hidden relative">
                     <!-- Exit/Close button -->
-                    <button id="adjust-homepage-close-btn" class="absolute top-8 right-6 z-[100] w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="showView('profile_settings')" title="Exit">
-                        <span class="material-symbols-outlined text-lg">close</span>
+                    <button id="adjust-homepage-close-btn" class="absolute top-8 right-6 z-[100] w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="showView('profile_settings')" title="Exit">
+                        <span class="material-symbols-outlined text-[17px]">close</span>
                     </button>
                     <header class="mb-6 flex items-center justify-between relative flex-shrink-0">
                         <div class="flex items-center gap-3">
@@ -12833,8 +13029,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                             <span class="w-[8px] h-[22px] rounded-full flex-shrink-0" style="background-color: #2563eb !important;"></span>
                             <h1 id="definitions-title" class="font-headline font-black uppercase tracking-wider app-screen-header-title" style="color: #2563eb !important;">Definitions & Guidance</h1>
                         </div>
-                        <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="showView('profile_settings')" title="Close">
-                            <span class="material-symbols-outlined text-lg">close</span>
+                        <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="showView('profile_settings')" title="Close">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
                     </div>
 
@@ -12933,8 +13129,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                             <span class="w-[8px] h-[22px] rounded-full flex-shrink-0" style="background-color: #dc2626 !important;"></span>
                             <h1 class="font-headline font-black uppercase tracking-wider app-screen-header-title" style="color: #dc2626 !important;">🤗 Safety Guidelines</h1>
                         </div>
-                        <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="showView('profile_settings')" title="Close">
-                            <span class="material-symbols-outlined text-lg">close</span>
+                        <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="showView('profile_settings')" title="Close">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
                     </div>
 
@@ -13033,8 +13229,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                             <span class="w-[8px] h-[22px] rounded-full flex-shrink-0" style="background-color: #eab308 !important;"></span>
                             <h1 id="neighborhood-tips-title" class="font-headline font-black uppercase tracking-wider app-screen-header-title" style="color: #eab308 !important;">Neighbourhood Tips</h1>
                         </div>
-                        <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="showView('profile_settings')" title="Close">
-                            <span class="material-symbols-outlined text-lg">close</span>
+                        <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="showView('profile_settings')" title="Close">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
                     </div>
 
@@ -13130,8 +13326,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                             <span class="w-[8px] h-[22px] rounded-full flex-shrink-0" style="background-color: #2563eb !important;"></span>
                             <h1 class="font-headline font-black uppercase tracking-wider app-screen-header-title" style="color: #2563eb !important;">Safety Tips</h1>
                         </div>
-                        <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="showView('profile_settings')" title="Back">
-                            <span class="material-symbols-outlined text-lg">close</span>
+                        <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="showView('profile_settings')" title="Back">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
                     </div>
 
@@ -13251,8 +13447,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                             <span class="w-[8px] h-[22px] bg-red-600 rounded-full flex-shrink-0"></span>
                             <h1 class="font-headline font-black text-black dark:text-white uppercase tracking-wider app-screen-header-title">Blocked Users</h1>
                         </div>
-                        <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="showView('profile_settings')" title="Close">
-                            <span class="material-symbols-outlined text-lg">close</span>
+                        <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="showView('profile_settings')" title="Close">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
                     </div>
 
@@ -13279,8 +13475,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                             <span id="account-settings-title-bar" class="w-[8px] h-[22px] rounded-full flex-shrink-0" style="background-color: #2563eb !important;"></span>
                             <h1 id="account-settings-title" class="font-headline font-black uppercase tracking-wider app-screen-header-title" style="color: #2563eb !important;">Account Settings</h1>
                         </div>
-                        <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="showView('profile_settings')" title="Back">
-                            <span class="material-symbols-outlined text-lg">close</span>
+                        <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="showView('profile_settings')" title="Back">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
                     </div>
 
@@ -13778,8 +13974,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                                 <span class="w-[8px] h-[22px] rounded-full flex-shrink-0" style="background-color: #7c3aed !important;"></span>
                                 <h1 class="font-headline font-black uppercase tracking-wider app-screen-header-title" style="color: #7c3aed !important;">Admin Moderation</h1>
                             </div>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="showView('settings_detail')" title="Exit">
-                                <span class="material-symbols-outlined text-lg">close</span>
+                            <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="showView('settings_detail')" title="Exit">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                         </header>
 
@@ -14510,8 +14706,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                                 <span class="w-[8px] h-[22px] rounded-full flex-shrink-0" style="background-color: #7c3aed !important;"></span>
                                 <h1 id="admin-widget-page-title" class="font-headline font-black uppercase tracking-wider app-screen-header-title" style="color: #7c3aed !important;">Section</h1>
                             </div>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="closeAdminWidgetPage()" title="Exit">
-                                <span class="material-symbols-outlined text-lg">close</span>
+                            <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeAdminWidgetPage()" title="Exit">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                         </header>
                         
@@ -14526,8 +14722,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                     <div id="admin-modal-warn-user" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-6 select-none">
                         <div class="absolute inset-0 bg-forest-green/20 backdrop-blur-sm" onclick="closeAdminModal('warn-user')"></div>
                         <div class="relative bg-warm-cream dark:bg-[#18201a] border border-outline-variant w-full max-w-sm p-6 rounded-xl shadow-2xl flex flex-col text-left text-black dark:text-white">
-                            <button onclick="closeAdminModal('warn-user')" class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" title="Close">
-                                <span class="material-symbols-outlined text-lg">close</span>
+                            <button onclick="closeAdminModal('warn-user')" class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" title="Close">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                             <h2 class="font-headline text-sm font-bold text-error uppercase tracking-wide mb-4">
                                 Issue Safety Warning
@@ -14565,8 +14761,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                     <div id="admin-inspection-modal" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-6 select-none">
                         <div class="absolute inset-0 bg-forest-green/20 backdrop-blur-sm" onclick="closeAdminInspectionModal()"></div>
                         <div class="relative bg-warm-cream dark:bg-[#18201a] border border-outline-variant w-full max-w-sm p-6 rounded-xl shadow-2xl flex flex-col text-left text-black dark:text-white">
-                            <button onclick="closeAdminInspectionModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" title="Close">
-                                <span class="material-symbols-outlined text-lg">close</span>
+                            <button onclick="closeAdminInspectionModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" title="Close">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                             <h2 class="font-headline text-sm font-bold text-black dark:text-white flex items-center gap-1.5 uppercase tracking-wide mb-4">
                                 <span class="material-symbols-outlined text-base">find_in_page</span> Inspect Content
@@ -14582,8 +14778,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                 <div id="bulletin-detail-modal" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-6 select-none">
                     <div class="absolute inset-0 bg-forest-green/20 backdrop-blur-sm" onclick="closeBulletinDetailModal()"></div>
                     <div class="relative bg-warm-cream border border-outline-variant w-full max-w-sm p-6 rounded-xl shadow-2xl flex flex-col text-left">
-                        <button class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="closeBulletinDetailModal()">
-                            <span class="material-symbols-outlined text-lg">close</span>
+                        <button class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeBulletinDetailModal()">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
                         
                         <div class="flex items-center gap-2 mb-3 mt-1">
@@ -14852,8 +15048,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                     <div class="relative bg-warm-cream border border-outline-variant w-full max-w-sm p-6 rounded-2xl shadow-2xl flex flex-col">
                         <div class="flex justify-between items-center pb-3 border-b border-outline-variant/10 mb-4">
                             <h3 class="font-headline text-lg font-bold text-forest-green">Verify Account</h3>
-                            <button onclick="closeVerificationModal()" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0">
-                                <span class="material-symbols-outlined text-lg">close</span>
+                            <button onclick="closeVerificationModal()" class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                         </div>
                         
@@ -14906,8 +15102,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                     <div class="absolute inset-0 bg-[#060b08]/40 dark:bg-black/60 backdrop-blur-md" onclick="closeLiabilityTermsModal()"></div>
                     <div class="relative bg-warm-cream dark:bg-[#101612] w-full max-w-[328px] rounded-3xl border border-outline-variant/30 shadow-2xl p-5 flex flex-col max-h-[85vh] overflow-hidden text-left animate-slide-up">
                         <!-- Close Button -->
-                        <button onclick="closeLiabilityTermsModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0">
-                            <span class="material-symbols-outlined text-lg">close</span>
+                        <button onclick="closeLiabilityTermsModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
                         
                         <h3 class="font-headline text-lg font-bold text-on-surface dark:text-warm-cream flex items-center gap-2 mb-1.5 pr-8">
@@ -14943,8 +15139,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                         <!-- Sticky Header Area -->
                         <div class="relative shrink-0 mb-5 border-b border-outline-variant/15 pb-3.5 pr-8">
                             <!-- Close Button -->
-                            <button onclick="closeSubcategoryModal()" class="absolute top-0 right-0 w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0">
-                                <span class="material-symbols-outlined text-lg">close</span>
+                            <button onclick="closeSubcategoryModal()" class="absolute top-0 right-0 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                             
                             <h3 id="subcategory-modal-title" class="font-headline text-lg font-bold text-on-surface dark:text-warm-cream mb-0.5">Select Details</h3>
@@ -15085,29 +15281,49 @@ html.dark .category-tray, html.dark .category-list-overlay {
 
 
 
-                <!-- SUGGEST MEETING SPOT MODAL -->
-                <div id="meeting-spot-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[2000] flex items-center justify-center p-6" onclick="if(event.target === this) closeSuggestMeetingSpotModal()">
-                    <div class="bg-warm-cream dark:bg-[#18201a] rounded-3xl w-full max-w-md p-6 border border-outline-variant/30 flex flex-col max-h-[85vh] shadow-2xl relative animate-fade-in" onclick="event.stopPropagation()">
+                <!-- SUGGEST MEETING SPOT BOTTOM SHEET -->
+                <div id="meeting-spot-modal" class="fixed inset-0 z-[2000] flex items-end justify-center transition-all duration-300 opacity-0 pointer-events-none">
+                    <!-- Backdrop -->
+                    <div class="absolute inset-0 bg-forest-green/20 backdrop-blur-sm pointer-events-auto" onclick="closeSuggestMeetingSpotModal()"></div>
+                    
+                    <!-- Bottom Sheet Container -->
+                    <div id="meeting-spot-container" class="relative bg-white dark:bg-[#18201a] w-full max-w-[600px] rounded-t-3xl shadow-2xl px-6 pt-6 pb-10 transform transition-transform duration-300 translate-y-full flex flex-col max-h-[90vh] z-[2010] pointer-events-auto" onclick="event.stopPropagation()">
+                        <div class="w-10 h-1 bg-outline-variant/50 rounded-full mx-auto mb-6"></div>
                         
-                        <!-- Scrollable Body Content -->
-                        <div class="flex-grow overflow-y-auto space-y-4 pr-1 scrollbar-thin max-h-[70vh] mb-4">
-                            <!-- Safety Guidelines Box -->
-                            <div class="bg-forest-green dark:bg-[#308A5E] border border-forest-green/20 dark:border-[#308A5E]/20 rounded-2xl p-4 flex gap-3 items-start text-warm-cream dark:text-[#101612]">
-                                <span class="material-symbols-outlined text-warm-cream dark:text-[#101612] text-xl font-bold shrink-0 mt-0.5">security</span>
-                                <div class="flex flex-col gap-1">
-                                    <h4 class="text-[13px] font-bold text-white dark:text-[#101612]">Exchange Safety Guidelines</h4>
-                                    <p class="text-[12px] text-warm-cream/90 dark:text-[#101612]/90 leading-relaxed">Tap or click anywhere on the map to drop a pin and select your meetup location. Prefer public, well-lit spaces.</p>
-                                </div>
+                        <!-- Header -->
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-left">
+                                <h3 class="font-headline text-lg font-bold text-forest-green dark:text-warm-cream">Exchange Safety Guidelines</h3>
+                                <p class="text-[11px] text-on-surface-variant/80 dark:text-warm-cream/70">Community guidelines for arranging a meetup!</p>
                             </div>
-
+                            <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeSuggestMeetingSpotModal()">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
+                            </button>
+                        </div>
+                        
+                        <!-- Scrollable Content -->
+                        <div class="flex-grow overflow-y-auto space-y-4 pr-1 scrollbar-thin mb-4">
                             <!-- Map area (Enlarged) -->
-                            <div class="w-full h-[280px] rounded-2xl border border-outline-variant/30 overflow-hidden relative mb-2 shrink-0">
+                            <div class="w-full h-[260px] rounded-2xl border border-outline-variant/30 overflow-hidden relative shrink-0">
                                 <div id="meeting-spot-map" class="w-full h-full"></div>
+                                <!-- Geolocation Locate Button -->
+                                <button id="map-locate-btn" class="absolute top-3 right-3 z-[1000] w-9 h-9 bg-white dark:bg-[#18201a] text-forest-green dark:text-warm-cream rounded-full shadow-lg border border-outline-variant/30 flex items-center justify-center hover:bg-warm-cream dark:hover:bg-[#202c22] active:scale-95 transition-transform" onclick="centerMapOnCurrentLocation(event)">
+                                    <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">near_me</span>
+                                </button>
                                 <!-- Tap hint animation -->
                                 <div id="map-tap-indicator" class="hidden pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[1000] flex flex-col items-center justify-center">
                                     <!-- Hand click icon -->
-                                    <span class="material-symbols-outlined text-[#3182ce] text-4xl font-bold" style="margin-left: 20px; margin-top: 20px; font-variation-settings: 'FILL' 1;">ads_click</span>
+                                    <span class="material-symbols-outlined text-[#3182ce] text-4xl font-bold animate-pulse" style="margin-left: 20px; margin-top: 20px; font-variation-settings: 'FILL' 1;">ads_click</span>
                                 </div>
+                            </div>
+
+                            <!-- Selected Location Details Box (if selected) -->
+                            <div id="selected-spot-info" class="hidden p-3.5 bg-white/70 dark:bg-white/5 border border-outline-variant/20 rounded-2xl flex flex-col gap-1 shrink-0">
+                                <div class="flex items-center justify-between">
+                                    <h5 id="selected-spot-name" class="text-xs font-bold text-forest-green dark:text-warm-cream">Selected Location</h5>
+                                    <div id="selected-spot-safety"></div>
+                                </div>
+                                <p id="selected-spot-address" class="text-[10px] text-on-surface-variant/85 dark:text-warm-cream/80 leading-relaxed"></p>
                             </div>
 
                             <!-- Date & Time Selector -->
@@ -15117,10 +15333,20 @@ html.dark .category-tray, html.dark .category-list-overlay {
                             </div>
                         </div>
 
-                        <!-- Sticky footer suggest button -->
-                        <button id="btn-confirm-meeting-spot" class="w-full h-12 bg-forest-green text-warm-cream font-bold text-xs rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 shadow disabled:opacity-50 disabled:pointer-events-none shrink-0 cursor-pointer" onclick="confirmMeetingSpotSuggestion()" disabled>
-                            <span class="material-symbols-outlined text-sm">check_circle</span> Confirm Meeting Location
-                        </button>
+                        <!-- Policy/Safety description below map -->
+                        <p class="text-[10px] text-on-surface-variant/70 dark:text-warm-cream/60 text-center leading-relaxed shrink-0 mb-4">
+                            View safety policies, set meetup location, and safely execute your exchange.
+                        </p>
+
+                        <!-- Confirm Meeting Location Button (Forest Green) -->
+                        <div class="flex flex-col gap-2 pt-2 shrink-0">
+                            <button id="btn-confirm-meeting-spot" class="w-full h-12 bg-forest-green text-warm-cream font-bold text-xs rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 shadow disabled:opacity-50 disabled:pointer-events-none cursor-pointer border-0" onclick="confirmMeetingSpotSuggestion()" disabled>
+                                <span class="material-symbols-outlined text-sm">check_circle</span> Confirm Meeting Location
+                            </button>
+                            <button class="w-full h-12 bg-black/5 dark:bg-white/5 border border-outline-variant/20 dark:border-white/10 text-on-surface dark:text-warm-cream font-bold text-xs rounded-xl active:scale-95 transition-transform cursor-pointer" onclick="closeSuggestMeetingSpotModal()">
+                                Cancel
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -15185,8 +15411,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                             <h2 class="font-headline text-lg font-bold text-forest-green flex items-center gap-1.5">
                                 <span class="material-symbols-outlined text-xl">handshake</span> Swaps
                             </h2>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="closeSwapsPopupModal()">
-                                <span class="material-symbols-outlined text-lg">close</span>
+                            <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeSwapsPopupModal()">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                         </div>
                     </div>
@@ -15203,8 +15429,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                 <div id="neighbor-profile-modal" class="hidden absolute inset-0 z-[6000] flex flex-col bg-white dark:bg-[#101612] select-none animate-fade-in pt-4">
                     <!-- Sticky Header (Clean & Matches Chat Header) -->
                     <div class="px-6 bg-white dark:bg-[#101612] flex items-center justify-end z-10 shrink-0 select-none" style="height: 64px !important;">
-                        <button id="neighbor-profile-close-btn" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="closeNeighborProfileModal()" title="Close">
-                            <span class="material-symbols-outlined text-lg">close</span>
+                        <button id="neighbor-profile-close-btn" class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeNeighborProfileModal()" title="Close">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
                     </div>
 
@@ -15385,8 +15611,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                 <!-- ==================================================== -->
                 <section id="view-create_group" class="screen-view flex-grow pb-24 overflow-y-auto relative hidden">
                     <!-- Exit/Close button -->
-                    <button id="create-group-close-btn" class="absolute top-8 right-6 z-[100] w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="closeCreateGroupModal()" title="Close and Exit">
-                        <span class="material-symbols-outlined text-lg">close</span>
+                    <button id="create-group-close-btn" class="absolute top-8 right-6 z-[100] w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeCreateGroupModal()" title="Close and Exit">
+                        <span class="material-symbols-outlined text-[17px]">close</span>
                     </button>
 
                     <!-- Photo Hero uploader slots style matching the Event page -->
@@ -15608,13 +15834,27 @@ html.dark .category-tray, html.dark .category-list-overlay {
                     </div>
                 </div>
 
+                <!-- Village Help Popup — tap OUTSIDE to dismiss, stays in help mode -->
+                <div id="village-help-popup" class="hidden fixed inset-0 z-[7000] flex items-center justify-center p-6 select-none" style="opacity:0;transition:opacity 0.22s ease;" onclick="if(event.target===this)closeVillageHelpPopup()">
+                    <!-- Scrim: tap it to dismiss popup only, not exit help mode -->
+                    <div class="absolute inset-0" style="background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);" onclick="closeVillageHelpPopup()"></div>
+                    <!-- Card -->
+                    <div id="village-help-popup-card" class="relative bg-white dark:bg-[#18201a] border border-outline-variant/30 rounded-3xl p-6 shadow-2xl max-w-xs w-full text-center flex flex-col items-center animate-slide-up" style="transform:translateY(30px);transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);">
+                        <div id="village-help-popup-icon-wrap" class="w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                            <span id="village-help-popup-icon" class="material-symbols-outlined text-3xl">help</span>
+                        </div>
+                        <h3 id="village-help-popup-title" class="font-headline text-lg font-bold text-forest-green dark:text-[#308A5E] mb-2 leading-tight">Title</h3>
+                        <p id="village-help-popup-desc" class="text-[13.5px] text-black dark:text-warm-cream/90 leading-relaxed mb-4"></p>
+                        <p class="text-[9px] text-on-surface-variant/45 uppercase tracking-wider font-semibold">Tap outside to go back</p>
+                    </div>
+                </div>
 
                 <!-- Map Explanation Modal Overlay (Interactive Help) -->
                 <div id="map-explanation-modal" class="hidden fixed inset-0 bg-[#060b08]/50 dark:bg-black/65 backdrop-blur-sm z-[6000] flex items-center justify-center p-6 select-none" onclick="if(event.target===this)closeMapExplanationModal()">
                     <div class="relative bg-white dark:bg-[#18201a] border border-outline-variant/30 w-full max-w-[310px] rounded-3xl shadow-2xl overflow-hidden flex flex-col animate-slide-up">
                         <!-- Close button -->
-                        <button class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full border border-outline-variant/20 dark:border-outline-variant/10 flex items-center justify-center text-on-surface-variant hover:bg-forest-green/5 active:scale-95 transition-transform cursor-pointer z-10" onclick="closeMapExplanationModal()">
-                            <span class="material-symbols-outlined text-base">close</span>
+                        <button class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm z-10" onclick="closeMapExplanationModal()">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
 
                         <!-- INTRO state -->
@@ -15672,8 +15912,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                 <!-- Status Explanation Modal Overlay -->
                 <div id="status-explanation-modal" class="hidden fixed inset-0 bg-[#060b08]/40 dark:bg-black/60 backdrop-blur-md z-[2000] flex items-center justify-center p-6" onclick="if(event.target === this) toggleStatusExplanationModal()">
                     <div class="relative bg-white dark:bg-[#18201a] border border-outline-variant/30 w-full max-w-[320px] rounded-3xl shadow-2xl p-6 overflow-hidden flex flex-col animate-slide-up animate-fade-in">
-                        <button class="absolute top-4 right-4 w-8 h-8 rounded-full border border-outline-variant/20 flex items-center justify-center text-on-surface-variant hover:bg-forest-green/5 active:scale-95 transition-transform cursor-pointer hidden" onclick="toggleStatusExplanationModal()">
-                            <span class="material-symbols-outlined text-base">close</span>
+                        <button class="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm hidden" onclick="toggleStatusExplanationModal()">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
                         <h3 class="font-headline text-lg font-bold text-forest-green dark:text-[#308A5E] mb-4 leading-tight">Swap Status Meanings</h3>
                         <div class="space-y-3.5 text-[13.5px] text-black dark:text-warm-cream/90 leading-relaxed">
@@ -15996,8 +16236,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                             <h2 id="group-settings-title" class="font-headline text-lg font-bold text-forest-green dark:text-warm-cream flex items-center gap-1.5">
                                 <span class="material-symbols-outlined text-xl">groups</span> Group Details
                             </h2>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="closeGroupSettingsModal()">
-                                <span class="material-symbols-outlined text-lg">close</span>
+                            <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeGroupSettingsModal()">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                         </div>
                     </div>
@@ -16208,24 +16448,24 @@ html.dark .category-tray, html.dark .category-list-overlay {
                 <!-- GLOBAL BOTTOM NAVIGATION BAR -->
                 <!-- ==================================================== -->
                 <nav id="global-navbar" class="hidden absolute bottom-0 left-0 w-full z-[5000] flex flex-row justify-center items-center gap-3 bg-white border-t border-outline-variant/20 h-16 shadow-[0_-4px_20px_rgba(48,138,94,0.02)]">
-                    <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="village" onclick="handleNavbarTap('village')" style="color: rgba(48,138,94,0.45)">
+                    <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="village" onclick="handleNavbarTap('village')">
                         <div class="nav-icon-wrapper flex items-center justify-center w-12 h-9 rounded-full transition-all duration-300">
                             <span class="material-symbols-outlined text-[28px]">map</span>
                         </div>
                     </div>
-                    <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="profile_settings" onclick="handleNavbarTap('profile_settings')" style="color: rgba(48,138,94,0.45)">
+                    <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="profile_settings" onclick="handleNavbarTap('profile_settings')">
                         <div class="nav-icon-wrapper flex items-center justify-center w-12 h-9 rounded-full transition-all duration-300">
                             <span class="material-symbols-outlined text-[28px]">person</span>
                         </div>
                     </div>
-                    <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="chat_hub" onclick="handleNavbarTap('chat_hub')" style="color: rgba(48,138,94,0.45)">
+                    <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="chat_hub" onclick="handleNavbarTap('chat_hub')">
                         <div class="nav-icon-wrapper relative flex items-center justify-center w-12 h-9 rounded-full transition-all duration-300">
                             <span id="chat-icon-symbol" class="material-symbols-outlined text-[28px] transition-all duration-300">chat_bubble</span>
                             <!-- pulsing red dot unread indicator is replaced by whole chat box pulsing (kept for reference compat but hidden) -->
                             <span id="chat-notification-badge" class="absolute top-0.5 right-1.5 chat-badge-circle hidden"></span>
                         </div>
                     </div>
-                    <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="offer" onclick="handleNavbarTap('offer')" style="color: rgba(48,138,94,0.45)">
+                    <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="offer" onclick="handleNavbarTap('offer')">
                         <div class="nav-icon-wrapper flex items-center justify-center w-12 h-9 rounded-full transition-all duration-300">
                             <span class="material-symbols-outlined text-[28px]">add</span>
                         </div>
@@ -16243,8 +16483,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
 
     <!-- Modern Full-screen Photo Viewer Modal -->
     <div id="photo-viewer-modal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-md z-[6000] flex flex-col items-center justify-center p-0" onclick="if(event.target === this) closePhotoViewerModal()">
-        <button id="photo-viewer-close-btn" class="absolute top-8 right-6 w-8 h-8 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 text-white active:scale-90 transition-transform cursor-pointer border-0 z-10" onclick="closePhotoViewerModal()">
-            <span class="material-symbols-outlined text-lg">close</span>
+        <button id="photo-viewer-close-btn" class="absolute top-8 right-6 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm z-10" onclick="closePhotoViewerModal()">
+            <span class="material-symbols-outlined text-[17px]">close</span>
         </button>
         <img id="photo-viewer-img" src="" class="max-w-[95%] max-h-[85vh] object-contain rounded-lg shadow-2xl transition-all duration-300 active:scale-[1.02]" onclick="event.stopPropagation()">
     </div>
@@ -16259,8 +16499,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
         <!-- Modal Card -->
         <div class="relative bg-warm-cream dark:bg-[#101612] w-full max-w-[340px] md:max-w-md rounded-3xl border border-outline-variant/30 shadow-2xl p-5 flex flex-col max-h-[85vh] overflow-hidden text-left animate-slide-up">
             <!-- Close Button -->
-            <button onclick="closeMeetupLocationPicker(false)" class="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0 z-20">
-                <span class="material-symbols-outlined text-lg">close</span>
+            <button onclick="closeMeetupLocationPicker(false)" class="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm z-20">
+                <span class="material-symbols-outlined text-[17px]">close</span>
             </button>
             
             <h3 class="font-headline text-lg font-bold text-black dark:text-white flex items-center gap-2 mb-1.5 pr-8">
@@ -19484,7 +19724,6 @@ function autoDismissAllModals() {
         'friend-confirm-modal',
         'invite-modal',
         'subcategory-modal',
-        'suggest-meeting-spot-modal',
         'confirm-no-show-modal',
         'profile-stat-explanation-modal',
         'achievement-unlocked-modal',
@@ -19502,7 +19741,8 @@ function autoDismissAllModals() {
         { modalId: 'offer-swap-modal', containerId: 'offer-swap-container' },
         { modalId: 'did-you-swap-modal', containerId: 'did-you-swap-container' },
         { modalId: 'confirm-swap-modal', containerId: 'confirm-swap-container' },
-        { modalId: 'decline-modal', containerId: 'decline-container' }
+        { modalId: 'decline-modal', containerId: 'decline-container' },
+        { modalId: 'meeting-spot-modal', containerId: 'meeting-spot-container' }
     ];
     slidingModals.forEach(cfg => {
         const modal = document.getElementById(cfg.modalId);
@@ -19675,14 +19915,9 @@ function showView(viewId, mode) {
     const chatFloatingContainer = document.getElementById('chat-segment-floating-buttons');
     const chatTriggerIcon = document.getElementById('chat-segment-trigger-icon');
     if (chatFloatingContainer) {
-        if (viewId === 'chat_hub' || viewId.startsWith('chat_detail')) {
+        if (viewId === 'chat_hub') {
             chatFloatingContainer.style.display = 'flex';
-            if (viewId.startsWith('chat_detail')) {
-                collapseChatMenu();
-                if (chatTriggerIcon) updateTriggerIconState(chatTriggerIcon, true);
-            } else {
-                if (chatTriggerIcon) updateTriggerIconState(chatTriggerIcon, false);
-            }
+            if (chatTriggerIcon) updateTriggerIconState(chatTriggerIcon, false);
         } else {
             chatFloatingContainer.style.display = 'none';
             collapseChatMenu();
@@ -19985,6 +20220,7 @@ function showView(viewId, mode) {
     if (viewId === 'profile_settings') {
         renderProfileSettings();
         renderHomeDashboard();
+        updateCreativeDashboard();
     }
     if (viewId === 'settings_detail') {
         renderSettingsDetail();
@@ -20351,39 +20587,50 @@ function updateNavBarIcons(activeViewId) {
     } else if (['settings_detail', 'adjust_homepage', 'definitions', 'neighborhood_tips'].includes(activeViewId)) {
         highlightViewId = 'profile_settings';
     }
+
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    
+    // Monochrome active/inactive style matching visionOS/Instagram tab bar (outlined vs filled black/white)
+    const activeColor = isDarkMode ? '#ffffff' : '#000000';
+    const inactiveColor = isDarkMode ? 'rgba(255, 255, 255, 0.45)' : 'rgba(0, 0, 0, 0.55)';
+    const glowBg = isDarkMode ? 'rgba(255, 255, 255, 0.16)' : 'rgba(0, 0, 0, 0.08)';
+
     document.querySelectorAll('[data-nav]').forEach(btn => {
         const view = btn.getAttribute('data-nav');
         const iconWrapper = btn.querySelector('.nav-icon-wrapper');
         const icon = btn.querySelector('.material-symbols-outlined');
         const label = btn.querySelector('span:last-child');
-        
+
+        // Strip default green classes to ensure custom styles take absolute priority
+        btn.classList.remove('text-forest-green', 'text-[#424840]');
+
         if (view === highlightViewId) {
-            btn.classList.add('text-forest-green');
-            btn.classList.remove('text-[#424840]');
-            btn.style.color = '';
+            btn.style.setProperty('color', activeColor, 'important');
             if (iconWrapper) {
                 iconWrapper.classList.add('active-tab');
+                iconWrapper.style.setProperty('background-color', glowBg, 'important');
             }
             if (label) {
                 label.classList.add('font-bold');
                 label.classList.remove('font-medium');
             }
             if (icon) {
-                icon.style.fontVariationSettings = "'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24";
+                icon.style.setProperty('font-variation-settings', "'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24", 'important');
+                icon.style.setProperty('color', activeColor, 'important');
             }
         } else {
-            btn.classList.remove('text-forest-green');
-            btn.classList.remove('text-[#424840]');
-            btn.style.color = 'rgba(48,138,94,0.45)';
+            btn.style.setProperty('color', inactiveColor, 'important');
             if (iconWrapper) {
                 iconWrapper.classList.remove('active-tab');
+                iconWrapper.style.setProperty('background-color', 'transparent', 'important');
             }
             if (label) {
                 label.classList.remove('font-bold');
                 label.classList.add('font-medium');
             }
             if (icon) {
-                icon.style.fontVariationSettings = "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24";
+                icon.style.setProperty('font-variation-settings', "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24", 'important');
+                icon.style.setProperty('color', inactiveColor, 'important');
             }
         }
     });
@@ -24422,15 +24669,15 @@ function renderMapCategoryCircles() {
                 selectMapCategory(cat.name);
             };
             
-            const circleClass = "w-9 h-9 rounded-full flex items-center justify-center transition-all select-none hover:scale-105 active:scale-95";
+            const circleClass = "w-8 h-8 rounded-full flex items-center justify-center transition-all select-none hover:scale-105 active:scale-95";
             
             item.innerHTML = `
-                <div class="${circleClass} category-circle-bubble flex-shrink-0">
-                    <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
-                </div>
                 <span class="text-[11px] font-bold text-forest-green dark:text-warm-cream bg-white/95 dark:bg-[#18201a]/95 px-2.5 py-1.5 rounded-xl shadow-md border border-outline-variant/20 dark:border-[#308A5E26] opacity-90 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                     ${cat.name === 'All' ? 'All Categories' : cat.name}
                 </span>
+                <div class="${circleClass} category-circle-bubble flex-shrink-0">
+                    <span class="material-symbols-outlined text-[17px]">${cat.icon}</span>
+                </div>
             `;
             dropdown.appendChild(item);
         });
@@ -24634,7 +24881,7 @@ function toggleCategoryTray() {
 }
 
 const MAP_FILTER_CATEGORIES = [
-    { name: "Karma Swap", displayName: "Gifts (nothing expected in return)", icon: "favorite", color: "#f59e0b", rgb: "245,158,11" },
+    { name: "Karma Swap", displayName: "Gifts", icon: "favorite", color: "#f59e0b", rgb: "245,158,11" },
     { name: "Food & Drink", displayName: "Food", icon: "restaurant", color: "#EF5350", rgb: "239,83,80" },
     { name: "Home and Living", displayName: "Home", icon: "home", color: "#AB47BC", rgb: "171,71,188" },
     { name: "Garden & Outdoors", displayName: "Garden", icon: "yard", color: "#66BB6A", rgb: "102,187,106" },
@@ -24664,7 +24911,7 @@ function updateCategoryCircleStyle(circle, cat, isActive) {
             color: #FFFFFF !important;
             border: 1.5px solid ${cat.color} !important;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important;
-            transform: scale(1.1) !important;
+            transform: scale(1.0) !important;
             opacity: 1 !important;
             animation: none !important;
         `;
@@ -24720,18 +24967,18 @@ function renderMapFilterCircles() {
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         const labelClass = showLabels ? '' : 'hidden';
         return `
-            <div class="flex items-center justify-start gap-2.5 select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="flex items-center justify-end gap-2.5 select-none cursor-pointer group active:scale-95 transition-transform" 
                  onclick="toggleMapFilterCategory('${cat.name}', this)" 
                  style="${animStyle}">
-                <!-- Circle element -->
-                <div class="w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 filter-category-circle flex-shrink-0" 
-                     data-category="${cat.name}">
-                    <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
-                </div>
-                <!-- Label to the right -->
-                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] bg-white/95 dark:bg-[#18201a] px-2.5 py-1 rounded-lg border border-outline-variant/20 dark:border-[#308A5E26] shadow-sm select-none leading-none ${labelClass}">
+                <!-- Label to the left -->
+                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none ${labelClass}">
                     ${cat.displayName}
                 </span>
+                <!-- Circle element on the right -->
+                <div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all duration-200 filter-category-circle flex-shrink-0" 
+                     data-category="${cat.name}">
+                    <span class="material-symbols-outlined text-[17px]">${cat.icon}</span>
+                </div>
             </div>
         `;
     }).join('');
@@ -24880,16 +25127,16 @@ function renderListFilterCircles() {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         return `
-            <div class="flex items-center justify-start gap-2.5 select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="flex items-center justify-end gap-2.5 select-none cursor-pointer group active:scale-95 transition-transform" 
                  onclick="selectListCategoryFilter('${cat.name}', this)" 
                  style="${animStyle}">
-                <div class="w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 list-filter-category-circle flex-shrink-0" 
-                     data-category="${cat.name}">
-                    <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
-                </div>
-                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] bg-white/95 dark:bg-[#18201a] px-2.5 py-1 rounded-lg border border-outline-variant/20 dark:border-[#308A5E26] shadow-sm select-none leading-none">
+                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none">
                     ${cat.displayName}
                 </span>
+                <div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all duration-200 list-filter-category-circle flex-shrink-0" 
+                     data-category="${cat.name}">
+                    <span class="material-symbols-outlined text-[17px]">${cat.icon}</span>
+                </div>
             </div>
         `;
     }).join('');
@@ -24915,16 +25162,16 @@ function renderNeedsFilterCircles() {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         return `
-            <div class="flex items-center justify-start gap-2.5 select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="flex items-center justify-end gap-2.5 select-none cursor-pointer group active:scale-95 transition-transform" 
                  onclick="selectNeedsCategoryFilter('${cat.name}', this)" 
                  style="${animStyle}">
-                <div class="w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 needs-filter-category-circle flex-shrink-0" 
-                     data-category="${cat.name}">
-                    <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
-                </div>
-                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] bg-white/95 dark:bg-[#18201a] px-2.5 py-1 rounded-lg border border-outline-variant/20 dark:border-[#308A5E26] shadow-sm select-none leading-none">
+                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none">
                     ${cat.displayName}
                 </span>
+                <div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all duration-200 needs-filter-category-circle flex-shrink-0" 
+                     data-category="${cat.name}">
+                    <span class="material-symbols-outlined text-[17px]">${cat.icon}</span>
+                </div>
             </div>
         `;
     }).join('');
@@ -25090,26 +25337,26 @@ function openCategoryView(categoryName) {
         if (isCategoryMatch(neighbor.category, categoryName)) {
             hasResults = true;
             const card = document.createElement('div');
-            card.className = "bg-white p-4 rounded-xl mb-3 border border-outline-variant/20 shadow-sm flex gap-4 cursor-pointer active:scale-98 transition-transform";
+            card.className = "flex items-center gap-4 py-3 border-b border-outline-variant/10 dark:border-white/5 cursor-pointer active:opacity-75 transition-all";
             card.onclick = () => {
                 window.categoryOverlayReferrer = categoryName;
                 overlay.classList.remove('active');
                 openMapItemDetail(neighbor.name);
             };
             card.innerHTML = `
-                <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden rounded-xl">
-                    <img src="${neighbor.offerImg || PLACEHOLDER_IMAGE}" class="w-full h-full object-cover">
+                <div class="w-11 h-11 rounded-full overflow-hidden flex-shrink-0 bg-white dark:bg-[#202c22] border border-outline-variant/20 dark:border-white/10 flex items-center justify-center shadow-sm">
+                    <img src="${neighbor.offerImg || PLACEHOLDER_IMAGE}" class="w-full h-full object-cover rounded-full">
                 </div>
-                <div class="flex-grow min-w-0">
-                    <h4 class="font-bold text-forest-green truncate text-sm">${neighbor.offerTitle}</h4>
-                    <p class="text-xs text-on-surface-variant line-clamp-1 mb-1">${neighbor.offerDesc}</p>
-                    <div class="flex items-center gap-1 text-[9px] text-forest-green/60 font-bold uppercase tracking-wider">
-                        <span class="material-symbols-outlined text-[12px]">location_on</span>
-                        ${neighbor.location}
-                    </div>
+                <div class="flex-grow min-w-0 text-left">
+                    <h4 class="font-bold text-[#1c2d24] dark:text-[#f1f5f9] truncate text-[13.5px]">${neighbor.offerTitle}</h4>
+                    <p class="text-xs text-on-surface-variant/80 dark:text-warm-cream/60 truncate mt-0.5">${neighbor.name} · ${neighbor.category}</p>
                 </div>
-                <div class="flex items-center text-outline">
-                    <span class="material-symbols-outlined">chevron_right</span>
+                <div class="flex flex-col items-end flex-shrink-0 select-none text-right">
+                    <span class="text-[10px] font-bold text-forest-green dark:text-emerald-400 uppercase tracking-wider">${neighbor.location.split(' ')[0]}</span>
+                    <span class="text-[9px] text-on-surface-variant/50 dark:text-warm-cream/40 mt-0.5">${neighbor.vouches || 0} ❤️</span>
+                </div>
+                <div class="flex items-center text-outline/60 pl-1">
+                    <span class="material-symbols-outlined text-[18px]">chevron_right</span>
                 </div>
             `;
             container.appendChild(card);
@@ -25121,26 +25368,26 @@ function openCategoryView(categoryName) {
         if (isCategoryMatch(offer.category, categoryName)) {
             hasResults = true;
             const card = document.createElement('div');
-            card.className = "bg-white p-4 rounded-xl mb-3 border border-outline-variant/20 shadow-sm flex gap-4 cursor-pointer active:scale-98 transition-transform";
+            card.className = "flex items-center gap-4 py-3 border-b border-outline-variant/10 dark:border-white/5 cursor-pointer active:opacity-75 transition-all";
             card.onclick = () => {
                 window.categoryOverlayReferrer = categoryName;
                 overlay.classList.remove('active');
                 openMapItemDetail(offer.id);
             };
             card.innerHTML = `
-                <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden rounded-xl">
-                    <img src="${offer.image || PLACEHOLDER_IMAGE}" class="w-full h-full object-cover">
+                <div class="w-11 h-11 rounded-full overflow-hidden flex-shrink-0 bg-white dark:bg-[#202c22] border border-outline-variant/20 dark:border-white/10 flex items-center justify-center shadow-sm">
+                    <img src="${offer.image || PLACEHOLDER_IMAGE}" class="w-full h-full object-cover rounded-full">
                 </div>
-                <div class="flex-grow min-w-0">
-                    <h4 class="font-bold text-forest-green truncate text-sm">${offer.title} <span class="text-[9px] text-[#D99036] font-bold bg-[#D99036]/5 px-1.5 py-0.5 rounded ml-1 uppercase">You</span></h4>
-                    <p class="text-xs text-on-surface-variant line-clamp-1 mb-1">${offer.desc}</p>
-                    <div class="flex items-center gap-1 text-[9px] text-forest-green/60 font-bold uppercase tracking-wider">
-                        <span class="material-symbols-outlined text-[12px]">location_on</span>
-                        ${offer.location || (state.currentUser ? state.currentUser.location : 'Oakwood Village')}
-                    </div>
+                <div class="flex-grow min-w-0 text-left">
+                    <h4 class="font-bold text-[#1c2d24] dark:text-[#f1f5f9] truncate text-[13.5px]">${offer.title} <span class="text-[8px] text-[#D99036] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span></h4>
+                    <p class="text-xs text-on-surface-variant/80 dark:text-warm-cream/60 truncate mt-0.5">Lily K. · ${offer.category}</p>
                 </div>
-                <div class="flex items-center text-outline">
-                    <span class="material-symbols-outlined">chevron_right</span>
+                <div class="flex flex-col items-end flex-shrink-0 select-none text-right">
+                    <span class="text-[10px] font-bold text-forest-green dark:text-emerald-400 uppercase tracking-wider">${(offer.location || 'Oakwood').split(' ')[0]}</span>
+                    <span class="text-[9px] text-on-surface-variant/50 dark:text-warm-cream/40 mt-0.5">Active</span>
+                </div>
+                <div class="flex items-center text-outline/60 pl-1">
+                    <span class="material-symbols-outlined text-[18px]">chevron_right</span>
                 </div>
             `;
             container.appendChild(card);
@@ -26251,8 +26498,8 @@ function renderConversationsList() {
                 `;
             } else if (segment === 'active' || segment === 'requests') {
                 rightHtml = `
-                    <button onclick="showChatAutoDeleteInfo()" class="w-8 h-8 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-warm-cream flex items-center justify-center active:scale-90 transition-transform cursor-pointer border-0 flex-shrink-0" title="Auto-Delete Info">
-                        <span class="material-symbols-outlined text-lg">info</span>
+                    <button onclick="showChatAutoDeleteInfo()" class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" title="Auto-Delete Info">
+                        <span class="material-symbols-outlined text-[17px]">info</span>
                     </button>
                 `;
             }
@@ -27059,11 +27306,11 @@ function renderChatDetail(conv) {
             }
             msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full animate-fade-in my-1.5 self-start justify-start`;
             msgDiv.innerHTML = `
-                <div class="w-7 h-7 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 select-none shadow-sm border border-amber-500/25">
-                    <span class="material-symbols-outlined text-[15px]">settings</span>
+                <div class="w-7 h-7 rounded-full bg-blue-500/15 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0 select-none shadow-sm border border-blue-500/25">
+                    <span class="material-symbols-outlined text-[15px]">location_on</span>
                 </div>
                 <div class="flex flex-col items-start max-w-[78%]">
-                    <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm cursor-pointer hover:bg-amber-500/20 transition-all font-bold admin-message-bubble" onclick="openSuggestMeetingSpotModal()">
+                    <div class="py-2.5 px-4 bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/25 text-blue-800 dark:text-blue-300 shadow-sm cursor-pointer hover:bg-blue-500/20 transition-all font-bold admin-message-bubble animate-pulse" onclick="openSuggestMeetingSpotModal()">
                         <p class="text-xs leading-relaxed">${escapeHTML(adminText)}</p>
                     </div>
                     <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${formatMessageTime(msg.time)}</span>
@@ -27118,11 +27365,11 @@ function renderChatDetail(conv) {
                     // Turn it into the green admin meetup click trigger as fallback
                     msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full animate-fade-in my-1.5 self-start justify-start`;
                     msgDiv.innerHTML = `
-                        <div class="w-7 h-7 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 select-none shadow-sm border border-amber-500/25">
-                            <span class="material-symbols-outlined text-[15px]">settings</span>
+                        <div class="w-7 h-7 rounded-full bg-blue-500/15 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0 select-none shadow-sm border border-blue-500/25">
+                            <span class="material-symbols-outlined text-[15px]">location_on</span>
                         </div>
                         <div class="flex flex-col items-start max-w-[78%]">
-                            <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm cursor-pointer hover:bg-amber-500/20 transition-all font-bold admin-message-bubble" onclick="openSuggestMeetingSpotModal()">
+                            <div class="py-2.5 px-4 bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/25 text-blue-800 dark:text-blue-300 shadow-sm cursor-pointer hover:bg-blue-500/20 transition-all font-bold admin-message-bubble animate-pulse" onclick="openSuggestMeetingSpotModal()">
                                 <p class="text-xs leading-relaxed">Click this message to set up a meeting location</p>
                             </div>
                             <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${formatMessageTime(msg.time)}</span>
@@ -31973,6 +32220,10 @@ function handleToggleDarkMode(checked) {
     }
     if (meetingSpotTileLayer) {
         meetingSpotTileLayer.setUrl(newTileUrl);
+    }
+
+    if (typeof updateNavBarIcons === 'function' && state && state.currentView) {
+        updateNavBarIcons(state.currentView);
     }
 }
 
@@ -40235,8 +40486,18 @@ window.previewCustomMeetingSpot = function() {
 function openSuggestMeetingSpotModal() {
     playSound('click');
     const modal = document.getElementById('meeting-spot-modal');
+    const container = document.getElementById('meeting-spot-container');
     if (!modal) return;
+    
     modal.classList.remove('hidden');
+    setTimeout(() => {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100');
+        if (container) {
+            container.classList.remove('translate-y-full');
+            container.classList.add('translate-y-0');
+        }
+    }, 10);
     
     const dtInput = document.getElementById('meeting-spot-datetime');
     if (dtInput) dtInput.value = "";
@@ -40254,7 +40515,7 @@ function openSuggestMeetingSpotModal() {
     
     setTimeout(() => {
         initMeetingSpotMap();
-    }, 200);
+    }, 300);
 }
 
 window.setMeetingTimeShortcut = function(shortcut) {
@@ -40290,7 +40551,20 @@ window.setMeetingTimeShortcut = function(shortcut) {
 function closeSuggestMeetingSpotModal() {
     playSound('click');
     const modal = document.getElementById('meeting-spot-modal');
-    if (modal) modal.classList.add('hidden');
+    const container = document.getElementById('meeting-spot-container');
+    if (modal && container) {
+        modal.classList.remove('opacity-100');
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        container.classList.remove('translate-y-0');
+        container.classList.add('translate-y-full');
+        setTimeout(() => {
+            if (modal.classList.contains('opacity-0')) {
+                modal.classList.add('hidden');
+            }
+        }, 300);
+    } else if (modal) {
+        modal.classList.add('hidden');
+    }
 }
 
 function initMeetingSpotMap() {
@@ -43442,9 +43716,6 @@ function showMapHelpDetail(helpKey, EXPLANATIONS) {
     if (iconEl)  iconEl.textContent  = info.icon;
     if (titleEl) titleEl.textContent = info.title;
     if (descEl)  descEl.textContent  = info.desc;
-    // Make sure modal is visible
-    const modal = document.getElementById('map-explanation-modal');
-    if (modal) modal.classList.remove('hidden');
 }
 
 window.openProfileStatExplanation = openProfileStatExplanation;
@@ -43472,7 +43743,7 @@ window.closeLevelUpOverlay = closeLevelUpOverlay;
         'btn-map-guide-trigger': {
             icon: 'help',
             title: 'Help Mode (Active)',
-            desc: 'You\'re in Help Mode right now! Every interactive control has a bouncing green ?, tap any one to learn what it does. Tap the background, the × close button, or Done to exit.'
+            desc: 'You\'re in Help Mode right now! Every interactive control has a bouncing green ?, tap any one to learn what it does. Tap it again to close Help Mode.'
         },
         'snap-to-neighborhood-btn': {
             icon: 'my_location',
@@ -43487,7 +43758,7 @@ window.closeLevelUpOverlay = closeLevelUpOverlay;
         'btn-segment-map': {
             icon: 'map',
             title: 'Offerings Map',
-            desc: 'Shows all neighbour offerings as pins on the interactive map. Tap a pin to peek at the item, then tap \"View Details\" to see the full listing and start a swap chat.'
+            desc: 'Shows all neighbour offerings as pins on the interactive map. Tap a pin to peek at the item, then tap "View Details" to see the full listing and start a swap chat.'
         },
         'btn-segment-needs-map': {
             icon: 'explore',
@@ -43512,7 +43783,7 @@ window.closeLevelUpOverlay = closeLevelUpOverlay;
         'map-category-item': {
             icon: 'category',
             title: 'Category Circle',
-            desc: 'Tap to filter the map to only items in this category. A glowing green ring means it\'s active. Tap \"All\" to clear the filter and see everything again.'
+            desc: 'Tap to filter the map to only items in this category. A glowing green ring means it\'s active. Tap "All" to clear the filter and see everything again.'
         },
     };
 
@@ -43524,26 +43795,21 @@ window.closeLevelUpOverlay = closeLevelUpOverlay;
         const village = document.getElementById('view-village');
         if (village) village.classList.add('help-mode-active');
 
-        // Style the help button green
+        // Style the ? button as active (shows X to exit)
         const btn  = document.getElementById('btn-map-guide-trigger');
         const icon = document.getElementById('map-help-icon');
         if (btn)  btn.classList.add('help-active');
         if (icon) icon.textContent = 'close';
 
-        // Open the center help modal in intro state
-        if (typeof showMapHelpIntro === 'function') showMapHelpIntro();
-        const modal = document.getElementById('map-explanation-modal');
-        if (modal) modal.classList.remove('hidden');
-
-        // Expand the category filter dropdown (if not already open)
-        const catDropdown = document.getElementById('map-category-dropdown');
-        if (catDropdown && catDropdown.classList.contains('hidden')) {
-            // Populate it first then show
-            if (typeof populateCategoryDropdown === 'function') populateCategoryDropdown();
-            catDropdown.classList.remove('hidden');
+        // Open the category filter tray
+        if (typeof toggleCategoryTray === 'function') {
+            const overlay = document.getElementById('map-filter-overlay');
+            if (overlay && overlay.classList.contains('hidden')) {
+                toggleCategoryTray();
+            }
         }
 
-        // Expand the village segment menu (green launcher)
+        // Expand the green segment launcher so all section buttons are visible with ? badges
         const segContainer = document.getElementById('village-segment-floating-buttons');
         if (segContainer && !segContainer.classList.contains('expanded')) {
             const segIcon = document.getElementById('segment-trigger-icon');
@@ -43551,10 +43817,7 @@ window.closeLevelUpOverlay = closeLevelUpOverlay;
             if (typeof updateTriggerIconState === 'function' && segIcon) updateTriggerIconState(segIcon, true);
         }
 
-        // Hide the old floating tooltip
-        hideTooltip();
-
-        // Attach ? badges after a tiny delay so expanded elements are in the DOM
+        // Attach ? badges after a short delay so expanded elements are rendered
         setTimeout(() => { renderBadges(); }, 80);
     }
 
@@ -43565,23 +43828,26 @@ window.closeLevelUpOverlay = closeLevelUpOverlay;
         const village = document.getElementById('view-village');
         if (village) village.classList.remove('help-mode-active');
 
-        const overlay = document.getElementById('map-interactive-help-overlay');
-        if (overlay) {
-            overlay.style.opacity = '0';
-            setTimeout(() => overlay.classList.add('hidden'), 320);
-        }
-
         const btn  = document.getElementById('btn-map-guide-trigger');
         const icon = document.getElementById('map-help-icon');
         if (btn)  btn.classList.remove('help-active');
         if (icon) icon.textContent = 'help';
 
-        hideTooltip();
         removeBadges();
 
-        // Collapse the category dropdown
-        const catDropdown = document.getElementById('map-category-dropdown');
-        if (catDropdown) catDropdown.classList.add('hidden');
+        // Force-close the help popup instantly and restore all faded controls
+        const popupEl = document.getElementById('village-help-popup');
+        if (popupEl) { popupEl.style.opacity = '0'; popupEl.classList.add('hidden'); }
+        document.querySelectorAll(
+            '#map-category-dropdown, #village-segment-floating-buttons .menu-sub-button-wrapper, #floating-map-controls'
+        ).forEach(el => { el.style.opacity = ''; el.style.transition = ''; });
+
+        // Collapse the category tray properly (restores icon, overlay, animation)
+        const overlay = document.getElementById('map-filter-overlay');
+        const isTrayOpen = overlay && !overlay.classList.contains('hidden');
+        if (isTrayOpen && typeof toggleCategoryTray === 'function') {
+            toggleCategoryTray();
+        }
 
         // Collapse the village segment menu
         if (typeof collapseVillageMenu === 'function') collapseVillageMenu();
@@ -43597,11 +43863,98 @@ window.closeLevelUpOverlay = closeLevelUpOverlay;
         _helpActive ? exit() : enter();
     }
 
+    // ─── karma-style help popup ───────────────────────────────
+    function showVillageHelpPopupImpl(helpKey, e) {
+        const info = EXPLANATIONS[helpKey];
+        if (!info) return;
+
+        const popup    = document.getElementById('village-help-popup');
+        const card     = document.getElementById('village-help-popup-card');
+        const iconEl   = document.getElementById('village-help-popup-icon');
+        const iconWrap = document.getElementById('village-help-popup-icon-wrap');
+        const titleEl  = document.getElementById('village-help-popup-title');
+        const descEl   = document.getElementById('village-help-popup-desc');
+        if (!popup) return;
+
+        let icon = info.icon || 'help';
+        let color = '#308A5E'; // default green
+
+        if (helpKey === 'map-category-item' && e) {
+            const targetEl = e.currentTarget || (e.target && e.target.closest('.map-category-item'));
+            if (targetEl) {
+                const categoryName = targetEl.getAttribute('data-category-name');
+                const cat = mapCategories.find(c => c.name === categoryName);
+                if (cat) {
+                    icon = cat.icon;
+                    color = cat.color;
+                }
+            }
+        } else {
+            const staticColors = {
+                'btn-segment-filter': '#4F46E5',
+                'snap-to-neighborhood-btn': '#308A5E',
+                'btn-segment-trigger': '#308A5E',
+                'btn-segment-map': '#2563EB',
+                'btn-segment-needs-map': '#EA580C',
+                'btn-segment-needs': '#0EA5E9',
+                'btn-segment-list': '#8B5CF6',
+                'btn-segment-events': '#0D9488'
+            };
+            if (staticColors[helpKey]) {
+                color = staticColors[helpKey];
+            }
+        }
+
+        // Populate content
+        if (iconEl) {
+            iconEl.textContent = icon;
+            iconEl.style.color = color;
+        }
+        if (titleEl)  titleEl.textContent = info.title || helpKey;
+        if (descEl)   descEl.textContent  = info.desc  || '';
+        if (iconWrap) {
+            iconWrap.style.backgroundColor = color + '1F'; // ~12% opacity
+        }
+
+        // Reset card position before animating
+        if (card) card.style.transform = 'translateY(30px)';
+
+        // Show popup then animate in
+        popup.classList.remove('hidden');
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                popup.style.opacity = '1';
+                if (card) card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Fade everything behind the scrim to near-invisible
+        document.querySelectorAll(
+            '#map-category-dropdown, #village-segment-floating-buttons .menu-sub-button-wrapper, #floating-map-controls'
+        ).forEach(el => { el.style.transition = 'opacity 0.22s ease'; el.style.opacity = '0.12'; });
+    }
+
+    function closeVillageHelpPopupImpl() {
+        const popup = document.getElementById('village-help-popup');
+        const card  = document.getElementById('village-help-popup-card');
+        if (!popup) return;
+
+        // Animate out
+        popup.style.opacity = '0';
+        if (card) card.style.transform = 'translateY(30px)';
+        setTimeout(() => { popup.classList.add('hidden'); }, 240);
+
+        // Restore full opacity on all controls — stay in help mode
+        document.querySelectorAll(
+            '#map-category-dropdown, #village-segment-floating-buttons .menu-sub-button-wrapper, #floating-map-controls'
+        ).forEach(el => { el.style.opacity = '1'; });
+    }
+
     // ─── badges ──────────────────────────────────────────────
     function renderBadges() {
+        // Note: btn-map-guide-trigger is intentionally excluded — the X already exits help mode
         const staticIds = [
             'btn-segment-filter',
-            'btn-map-guide-trigger',
             'snap-to-neighborhood-btn',
             'btn-segment-trigger',
             'btn-segment-map',
@@ -43612,7 +43965,7 @@ window.closeLevelUpOverlay = closeLevelUpOverlay;
         ];
         staticIds.forEach(id => attachBadge(document.getElementById(id), id));
 
-        // Category circles in the dropdown
+        // Category filter circles in the dropdown
         document.querySelectorAll('.map-category-item').forEach(el => {
             attachBadge(el, 'map-category-item');
         });
@@ -43633,7 +43986,7 @@ window.closeLevelUpOverlay = closeLevelUpOverlay;
             if (!_helpActive) return;
             e.stopPropagation();
             e.preventDefault();
-            if (typeof showMapHelpDetail === 'function') showMapHelpDetail(helpKey, EXPLANATIONS);
+            showVillageHelpPopupImpl(helpKey, e);
         };
         el.__helpCapture = captureHandler;
         el.addEventListener('click', captureHandler, true);
@@ -43641,7 +43994,7 @@ window.closeLevelUpOverlay = closeLevelUpOverlay;
         badge.addEventListener('click', (e) => {
             e.stopPropagation();
             e.preventDefault();
-            if (typeof showMapHelpDetail === 'function') showMapHelpDetail(helpKey, EXPLANATIONS);
+            showVillageHelpPopupImpl(helpKey, e);
         });
 
         el.appendChild(badge);
@@ -43658,22 +44011,12 @@ window.closeLevelUpOverlay = closeLevelUpOverlay;
         });
     }
 
-    // ─── old tooltip (kept for compat but hidden) ─────────────
-    function showTooltip(helpKey) {}  // now handled by center modal
-    function hideTooltip() {
-        const tip = document.getElementById('interactive-help-tooltip');
-        if (!tip) return;
-        tip.style.transform   = 'translateY(200%)';
-        tip.style.opacity     = '0';
-        setTimeout(() => { tip.style.pointerEvents = 'none'; }, 350);
-    }
-
     // ─── expose globally ─────────────────────────────────────
     window.toggleMapInteractiveHelp = toggle;
     window.enterMapInteractiveHelp  = enter;
     window.exitMapInteractiveHelp   = exit;
-    window.showHelpTooltip          = showTooltip;
-    window.hideHelpTooltip          = hideTooltip;
+    window.showVillageHelpPopup     = showVillageHelpPopupImpl;
+    window.closeVillageHelpPopup    = closeVillageHelpPopupImpl;
 })();
 
 window.openItemDetailsByTitle = function(title, neighborName) {
@@ -43755,8 +44098,8 @@ function renderReviewsList() {
         headerBarEl.className = 'w-[8px] h-[22px] rounded-full flex-shrink-0';
         headerBarEl.style.setProperty('background-color', activeColor, 'important');
         headerRightEl.innerHTML = `
-            <button onclick="showChatAutoDeleteInfo()" class="w-8 h-8 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-warm-cream flex items-center justify-center active:scale-90 transition-transform cursor-pointer border-0 flex-shrink-0" title="Auto-Delete Info">
-                <span class="material-symbols-outlined text-lg">info</span>
+            <button onclick="showChatAutoDeleteInfo()" class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" title="Auto-Delete Info">
+                <span class="material-symbols-outlined text-[17px]">info</span>
             </button>
         `;
     }

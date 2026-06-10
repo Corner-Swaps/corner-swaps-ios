@@ -839,11 +839,15 @@ html.dark #phone-header-bar .material-symbols-outlined {
 
 /* Category Items list overlay */
 .category-list-overlay {
-    top: 0 !important; /* Cover entire phone screen down to the navbar */
-    height: 100% !important;
-    z-index: 50 !important;
+    top: auto !important;
+    bottom: 0 !important;
+    height: 65vh !important;
+    max-height: 70vh !important;
+    border-radius: 32px 32px 0 0 !important;
+    z-index: 2500 !important;
     transform: translateY(100%) !important;
     transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1) !important;
+    padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important;
 }
 
 .category-list-overlay.active {
@@ -966,7 +970,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
 
 /* Fix chat detail view bottom padding to prevent squishing when keyboard or input bar is shown */
 .native-app-env #view-chat_detail {
-    padding-bottom: env(safe-area-inset-bottom) !important;
+    padding-bottom: 0 !important;
 }
 
 /* Hide scrollbar track for neighbor profile modal */
@@ -1001,10 +1005,14 @@ html.dark #neighbor-profile-modal {
 }
 
 /* Safe area padding for category tray and list overlays in iOS native view */
-.native-app-env .category-tray,
-.native-app-env .category-list-overlay {
+.native-app-env .category-tray {
     padding-top: env(safe-area-inset-top) !important;
     padding-bottom: env(safe-area-inset-bottom) !important;
+}
+
+.native-app-env .category-list-overlay {
+    padding-top: 0 !important;
+    padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important;
 }
 
 /* Glowing Dot Status System - Active scale-glowing pulses */
@@ -1679,9 +1687,13 @@ html.dark .chat-bubble-other {
 }
 .native-app-env #floating-map-controls {
     top: calc(0.2rem + env(safe-area-inset-top)) !important;
+    left: 28px !important;
+    right: auto !important;
 }
 .native-app-env #map-category-dropdown {
     top: calc(48px + env(safe-area-inset-top)) !important;
+    left: 22px !important;
+    right: auto !important;
 }
 .native-app-env #active-filter-banner {
     top: calc(4.5rem + env(safe-area-inset-top)) !important;
@@ -1765,7 +1777,7 @@ html.dark .chat-bubble-other {
 /* Text Labels next to sub-buttons */
 .app-container .menu-sub-button-label,
 .app-container .category-label {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+    box-shadow: none !important;
     pointer-events: none !important;
     white-space: nowrap !important;
     font-size: 13px !important;
@@ -2116,7 +2128,7 @@ html.dark .profile-avatar-no-ring {
 /* Fix chat detail view bottom padding to prevent squishing when keyboard or input bar is shown */
 .native-app-env #view-chat_detail {
     padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
-    padding-bottom: env(safe-area-inset-bottom) !important;
+    padding-bottom: 0 !important;
 }
 
 /* Custom Category Circle Dropdown Filter for Map View */
@@ -2151,7 +2163,7 @@ html.dark .profile-avatar-no-ring {
     border-radius: 50% !important;
     z-index: 1002 !important;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15) !important;
-    transform: scale(1.05) !important;
+    transform: scale(1.0) !important;
 }
 
 .dark #btn-segment-filter.active-filter-circle {
@@ -3135,11 +3147,15 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 }
 
 /* Force all detail sheet action buttons to follow consistent lowercase theme */
-#map-detail-overlay button,
+#map-detail-overlay button:not(#map-detail-chat-btn),
 #map-event-detail-overlay button,
 #view-event_detail button {
     text-transform: lowercase !important;
     letter-spacing: normal !important;
+}
+
+#map-detail-chat-btn {
+    text-transform: none !important;
 }
 
 /* Profile section: Black text for headings, lists, and placeholders underneath badges (Light Mode Only) */
@@ -3877,7 +3893,7 @@ html.dark #chat-quick-templates button:hover {
 }
 
 /* Chat Input field container border - force black/gray outline */
-/* Chat Input field container - default gray border, green on focus */
+/* Chat Input field container - default subtle border, green on focus */
 #chat-action-center div.focus-within\:border-forest-green {
     border-color: rgba(0, 0, 0, 0.15) !important;
     transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
@@ -3899,7 +3915,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:focus-within
     box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
     transition: none !important;
 }
-/* Also catch :has(:focus) for iOS WebKit which sometimes ignores :focus-within */
+/* :has(input:focus) fallback for iOS WebKit */
 #chat-action-center div.focus-within\:border-forest-green:has(input:focus) {
     border-color: #308A5E !important;
     box-shadow: 0 0 0 2px rgba(48, 138, 94, 0.25) !important;
@@ -3916,7 +3932,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
     backdrop-filter: blur(20px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04) !important;
-    margin-bottom: 12px !important;
+    margin-bottom: 4px !important;
     margin-top: auto !important;
 }
 html.dark #chat-action-center {
@@ -4897,8 +4913,8 @@ html.dark #view-profile_step_3 h2 {
 }
 
 #map-category-dropdown .map-category-item span {
-    margin-left: 0.5rem !important;
-    margin-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0.5rem !important;
 }
 
 
@@ -5632,7 +5648,7 @@ html.dark .location-icon-container {
 }
 #map-category-dropdown .category-label {
     font-size: 12px !important;
-    padding: 4px 10px !important;
+    padding: 0 !important;
 }
 
 /* Small Screens (e.g. iPhone SE / screen height <= 700px) */
@@ -5653,7 +5669,7 @@ html.dark .location-icon-container {
     }
     html:not(.show-simulator) #map-category-dropdown .category-label {
         font-size: 10px !important;
-        padding: 2.5px 8px !important;
+        padding: 0 !important;
     }
 }
 
@@ -5671,7 +5687,7 @@ html.dark .location-icon-container {
     }
     html:not(.show-simulator) #map-category-dropdown .category-label {
         font-size: 13.5px !important;
-        padding: 5px 12px !important;
+        padding: 0 !important;
     }
 }
 
@@ -5697,17 +5713,28 @@ html.dark .location-icon-container {
 }
 
 .native-app-env #global-navbar:not(.hidden) {
-    display: flex !important;
     position: absolute !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    height: calc(3.8rem + env(safe-area-inset-bottom)) !important;
-    padding-top: 0.75rem !important;
-    padding-bottom: env(safe-area-inset-bottom) !important;
+    bottom: calc(2px + env(safe-area-inset-bottom)) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 32px) !important;
+    max-width: 420px !important;
+    height: 64px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    border-radius: 9999px !important;
+    background: rgba(255, 255, 255, 0.45) !important;
+    backdrop-filter: blur(24px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
     z-index: 5000 !important;
-    background-color: var(--white) !important;
+    display: flex !important;
+}
+
+html.dark.native-app-env #global-navbar:not(.hidden) {
+    background: rgba(20, 28, 22, 0.45) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
 /* Category Tray / List Overlay Glassmorphism */
@@ -5732,4 +5759,58 @@ html.dark .category-tray, html.dark .category-list-overlay {
 .native-app-env .category-tray {
     padding-bottom: calc(24px + env(safe-area-inset-bottom)) !important;
 }
+
+/* ==================================================== */
+/* CHAT SCREEN GLASSMORPHISM & CLOSE BUTTON UPDATES */
+/* ==================================================== */
+
+/* Absolute Glassmorphic Chat Header */
+#view-chat_detail {
+    position: relative !important;
+}
+
+#view-chat_detail > div:first-of-type {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 20 !important;
+}
+
+/* Padding top on message feed to clear absolute header while allowing scroll-under backdrop blur */
+#chat-message-feed {
+    padding-top: 72px !important;
+}
+
+/* Custom Chat Section Font & Size Consistency */
+#view-chat_detail input,
+#view-chat_detail textarea,
+.chat-bubble-me p,
+.chat-bubble-other p,
+.admin-message-bubble p {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+}
+
+/* Onboarding & Settings Input Fields Styling to Match Chat Size and Font */
+input,
+textarea,
+select,
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+input[type="datetime-local"] {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important; /* Force all inputs, including phone fields, to match chat font-size */
+}
+
+/* Ensure placeholder texts also match the Outfit font and size */
+input::placeholder,
+textarea::placeholder {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+}
+
 
