@@ -349,6 +349,7 @@ html:has(#view-landing.active) body {
     height: 100%;
     flex-direction: column;
     overflow-y: auto;
+    overflow-x: hidden !important;
     background-color: var(--warm-cream);
     -webkit-overflow-scrolling: touch;
 }
@@ -759,10 +760,12 @@ html.dark #phone-header-bar .material-symbols-outlined {
     align-items: center !important;
     padding: 24px !important;
     overflow-y: auto !important;
+    pointer-events: none !important; /* Don't block map touches when off-screen */
 }
 
 .category-tray.expanded {
     transform: translateY(0) !important;
+    pointer-events: auto !important;
 }
 
 .tray-handle-area {
@@ -830,7 +833,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
     flex-grow: 1 !important;
     min-height: 0 !important;
     overscroll-behavior: contain !important;
-    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(66px + env(safe-area-inset-bottom) + 12px) !important;
 }
 .detail-overlay .overflow-y-auto::-webkit-scrollbar,
 .detail-overlay .custom-scrollbar::-webkit-scrollbar {
@@ -848,10 +851,12 @@ html.dark #phone-header-bar .material-symbols-outlined {
     transform: translateY(100%) !important;
     transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1) !important;
     padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important;
+    pointer-events: none !important; /* Don't block map touches when off-screen */
 }
 
 .category-list-overlay.active {
     transform: translateY(0) !important;
+    pointer-events: auto !important;
 }
 
 /* ==================================================== */
@@ -958,9 +963,15 @@ html.dark #phone-header-bar .material-symbols-outlined {
 .native-app-env #view-chat_hub,
 .native-app-env #view-definitions,
 .native-app-env #view-settings_detail,
-.native-app-env #view-blocked_users,
-.native-app-env #view-profile_settings {
+.native-app-env #view-blocked_users {
     padding-bottom: calc(3.8rem + env(safe-area-inset-bottom)) !important;
+}
+
+.native-app-env #view-profile_settings {
+    padding-bottom: 0 !important;
+}
+.native-app-env #profile-settings-scroll-container {
+    padding-bottom: calc(84px + env(safe-area-inset-bottom)) !important;
 }
 
 .native-app-env #view-village {
@@ -1324,12 +1335,12 @@ select::-ms-expand {
     line-height: 1.4 !important;
 }
 
-/* Prevents iOS Safari auto-zoom on input focus by scaling to 15px */
+/* Prevents iOS Safari auto-zoom on input focus by scaling to 16px */
 .app-container input,
 .app-container select,
 .app-container textarea {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 15px !important;
+    font-size: 16px !important;
     font-weight: 450 !important;
 }
 
@@ -1341,23 +1352,23 @@ select::-ms-expand {
 }
 
 /* Specificity overrides to allow inline Tailwind text sizes to work correctly on elements inside .app-container */
-.app-container .text-3xl { font-size: 28px !important; font-weight: 850 !important; letter-spacing: -0.025em !important; }
-.app-container .text-2xl { font-size: 28px !important; font-weight: 850 !important; letter-spacing: -0.025em !important; }
-.app-container .text-xl { font-size: 22px !important; font-weight: 750 !important; letter-spacing: -0.015em !important; }
-.app-container .text-lg { font-size: 20px !important; font-weight: 750 !important; letter-spacing: -0.015em !important; }
-.app-container .text-base { font-size: 18px !important; font-weight: 750 !important; letter-spacing: -0.015em !important; }
-.app-container .text-sm { font-size: 16px !important; font-weight: 450 !important; }
-.app-container .text-xs { font-size: 14px !important; font-weight: 450 !important; }
-.app-container .text-\[15px\] { font-size: 17px !important; font-weight: 750 !important; }
-.app-container .text-\[13\.5px\] { font-size: 15.5px !important; font-weight: 450 !important; }
-.app-container .text-\[13px\] { font-size: 15px !important; font-weight: 450 !important; }
-.app-container .text-\[12\.5px\] { font-size: 14.5px !important; font-weight: 450 !important; }
-.app-container .text-\[12px\] { font-size: 14px !important; font-weight: 450 !important; }
-.app-container .text-\[11\.5px\] { font-size: 13.5px !important; font-weight: 450 !important; }
-.app-container .text-\[11px\] { font-size: 13px !important; font-weight: 450 !important; }
-.app-container .text-\[10\.5px\] { font-size: 12.5px !important; font-weight: 450 !important; }
-.app-container .text-\[10px\] { font-size: 12px !important; font-weight: 450 !important; }
-.app-container .text-\[9px\] { font-size: 11px !important; font-weight: 450 !important; }
+.app-container .text-3xl { font-size: 30px !important; font-weight: 850 !important; letter-spacing: -0.025em !important; }
+.app-container .text-2xl { font-size: 24px !important; font-weight: 850 !important; letter-spacing: -0.025em !important; }
+.app-container .text-xl { font-size: 20px !important; font-weight: 750 !important; letter-spacing: -0.015em !important; }
+.app-container .text-lg { font-size: 18px !important; font-weight: 750 !important; letter-spacing: -0.015em !important; }
+.app-container .text-base { font-size: 16px !important; font-weight: 750 !important; letter-spacing: -0.015em !important; }
+.app-container .text-sm { font-size: 14px !important; font-weight: 450 !important; }
+.app-container .text-xs { font-size: 12px !important; font-weight: 450 !important; }
+.app-container .text-\[15px\] { font-size: 15px !important; font-weight: 750 !important; }
+.app-container .text-\[13\.5px\] { font-size: 13.5px !important; font-weight: 450 !important; }
+.app-container .text-\[13px\] { font-size: 13px !important; font-weight: 450 !important; }
+.app-container .text-\[12\.5px\] { font-size: 12.5px !important; font-weight: 450 !important; }
+.app-container .text-\[12px\] { font-size: 12px !important; font-weight: 450 !important; }
+.app-container .text-\[11\.5px\] { font-size: 11.5px !important; font-weight: 450 !important; }
+.app-container .text-\[11px\] { font-size: 11px !important; font-weight: 450 !important; }
+.app-container .text-\[10\.5px\] { font-size: 10.5px !important; font-weight: 450 !important; }
+.app-container .text-\[10px\] { font-size: 10px !important; font-weight: 450 !important; }
+.app-container .text-\[9px\] { font-size: 9px !important; font-weight: 450 !important; }
 .app-container .text-\[8px\] { font-size: 10px !important; font-weight: 450 !important; }
 .app-container .text-\[7\.5px\] { font-size: 9.5px !important; font-weight: 450 !important; }
 
@@ -1668,7 +1679,7 @@ html.dark .chat-bubble-other {
     right: 24px !important;
     top: auto !important;
 }
-#view-village:has(#map-peek-card.active) #village-segment-floating-buttons {
+#view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
     bottom: 236px !important;
 }
 
@@ -1687,13 +1698,13 @@ html.dark .chat-bubble-other {
 }
 .native-app-env #floating-map-controls {
     top: calc(0.2rem + env(safe-area-inset-top)) !important;
-    left: 28px !important;
-    right: auto !important;
+    left: auto !important;
+    right: 20px !important;
 }
 .native-app-env #map-category-dropdown {
-    top: calc(48px + env(safe-area-inset-top)) !important;
-    left: 22px !important;
-    right: auto !important;
+    top: calc(50px + env(safe-area-inset-top)) !important;
+    left: auto !important;
+    right: 20px !important;
 }
 .native-app-env #active-filter-banner {
     top: calc(4.5rem + env(safe-area-inset-top)) !important;
@@ -1703,7 +1714,7 @@ html.dark .chat-bubble-other {
     right: 24px !important;
     top: auto !important;
 }
-.native-app-env #view-village:has(#map-peek-card.active) #village-segment-floating-buttons {
+.native-app-env #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
     bottom: calc(236px + env(safe-area-inset-bottom)) !important;
 }
 
@@ -1775,13 +1786,141 @@ html.dark .chat-bubble-other {
 }
 
 /* Text Labels next to sub-buttons */
-.app-container .menu-sub-button-label,
+.app-container .menu-sub-button-label {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+    pointer-events: none !important;
+    white-space: nowrap !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 11px !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 12px !important;
+    padding: 6px 10px !important;
+    color: #1b4d3e !important; /* forest green */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.dark .app-container .menu-sub-button-label {
+    background-color: rgba(24, 32, 26, 0.95) !important;
+    border-color: rgba(48, 138, 94, 0.15) !important;
+    color: #f5f2eb !important; /* warm cream */
+}
+
+@media (max-height: 700px) {
+    html:not(.show-simulator) .app-container .menu-sub-button-label {
+        font-size: 9px !important;
+    }
+}
+
+@media (min-height: 861px) {
+    html:not(.show-simulator) .app-container .menu-sub-button-label {
+        font-size: 12px !important;
+    }
+}
+
 .app-container .category-label {
-    box-shadow: none !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
     pointer-events: none !important;
     white-space: nowrap !important;
     font-size: 13px !important;
     font-weight: 700 !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 12px !important;
+    padding: 6px 10px !important;
+    color: #1b4d3e !important; /* forest green */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.dark .app-container .category-label {
+    background-color: rgba(24, 32, 26, 0.95) !important;
+    border-color: rgba(48, 138, 94, 0.15) !important;
+    color: #f5f2eb !important; /* warm cream */
+}
+
+/* White background sub-buttons with themed icon/border colors */
+.app-container .menu-sub-button {
+    border-width: 1.5px !important;
+    border-style: solid !important;
+}
+
+#btn-segment-map {
+    background-color: #2563eb !important;
+    background: #2563eb !important;
+    color: #ffffff !important;
+    border-color: #2563eb !important;
+}
+#btn-segment-needs-map {
+    background-color: #ea580c !important;
+    background: #ea580c !important;
+    color: #ffffff !important;
+    border-color: #ea580c !important;
+}
+#btn-segment-needs {
+    background-color: #0ea5e9 !important;
+    background: #0ea5e9 !important;
+    color: #ffffff !important;
+    border-color: #0ea5e9 !important;
+}
+#btn-segment-list {
+    background-color: #8b5cf6 !important;
+    background: #8b5cf6 !important;
+    color: #ffffff !important;
+    border-color: #8b5cf6 !important;
+}
+#btn-segment-events {
+    background-color: #0d9488 !important;
+    background: #0d9488 !important;
+    color: #ffffff !important;
+    border-color: #0d9488 !important;
+}
+#btn-segment-bulletins {
+    background-color: #ea580c !important;
+    background: #ea580c !important;
+    color: #ffffff !important;
+    border-color: #ea580c !important;
+}
+#btn-segment-gifts {
+    background-color: #e11d48 !important;
+    background: #e11d48 !important;
+    color: #ffffff !important;
+    border-color: #e11d48 !important;
+}
+
+#btn-chat-segment-active {
+    background-color: #8b5cf6 !important;
+    background: #8b5cf6 !important;
+    color: #ffffff !important;
+    border-color: #8b5cf6 !important;
+}
+#btn-chat-segment-requests {
+    background-color: #2563eb !important;
+    background: #2563eb !important;
+    color: #ffffff !important;
+    border-color: #2563eb !important;
+}
+#btn-chat-segment-groups {
+    background-color: #10b981 !important;
+    background: #10b981 !important;
+    color: #ffffff !important;
+    border-color: #10b981 !important;
+}
+#btn-chat-segment-swaps {
+    background-color: #ea580c !important;
+    background: #ea580c !important;
+    color: #ffffff !important;
+    border-color: #ea580c !important;
+}
+#btn-chat-segment-reviews {
+    background-color: #f43f5e !important;
+    background: #f43f5e !important;
+    color: #ffffff !important;
+    border-color: #f43f5e !important;
 }
 
 #btn-segment-trigger {
@@ -1800,14 +1939,7 @@ html.dark .chat-bubble-other {
     }
 }
 
-#village-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(2) { transition-delay: 0.02s !important; }
-#village-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(3) { transition-delay: 0.04s !important; }
-#village-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(4) { transition-delay: 0.06s !important; }
-#village-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(5) { transition-delay: 0.08s !important; }
-#village-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(6) { transition-delay: 0.10s !important; }
-#village-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(7) { transition-delay: 0.12s !important; }
-#village-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(8) { transition-delay: 0.14s !important; }
-#village-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(9) { transition-delay: 0.16s !important; }
+
 
 /* Disable transition on collapse so they disappear instantly all at once */
 #village-segment-floating-buttons:not(.expanded) .menu-sub-button-wrapper { transition: none !important; }
@@ -1905,14 +2037,7 @@ html.dark .chat-bubble-other {
 }
 
 /* Staggered entry transitions */
-#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(2) { transition-delay: 0.02s !important; }
-#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(3) { transition-delay: 0.04s !important; }
-#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(4) { transition-delay: 0.06s !important; }
-#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(5) { transition-delay: 0.08s !important; }
-#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(6) { transition-delay: 0.10s !important; }
-#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(7) { transition-delay: 0.12s !important; }
-#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(8) { transition-delay: 0.14s !important; }
-#chat-segment-floating-buttons.expanded .menu-sub-button-wrapper:nth-child(9) { transition-delay: 0.16s !important; }
+
 
 /* Disable transition on collapse so they disappear instantly all at once */
 #chat-segment-floating-buttons:not(.expanded) .menu-sub-button-wrapper { transition: none !important; }/* Animated X Drawing lines */
@@ -2190,6 +2315,24 @@ html.dark .profile-avatar-no-ring {
     height: 0 !important;
     overflow: hidden !important;
     opacity: 0 !important;
+    transform: scale(0.8) translateY(-8px) !important;
+    pointer-events: none !important;
+    transition: height 0.22s ease-out, max-height 0.22s ease-out, margin-bottom 0.22s ease-out, opacity 0.22s ease-out, transform 0.22s cubic-bezier(0.25, 1.1, 0.5, 1) !important;
+    margin-bottom: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* Info item (first row) — matches same animation pattern */
+.map-category-info-item {
+    max-height: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
     transform: scale(0.4) translateY(-12px) !important;
     pointer-events: none !important;
     transition: height 0.25s ease, max-height 0.25s ease, margin-bottom 0.25s ease, opacity 0.25s ease, transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
@@ -2200,12 +2343,22 @@ html.dark .profile-avatar-no-ring {
 }
 
 #map-category-dropdown.expanded .map-category-item {
-    max-height: 40px !important;
-    height: 40px !important;
+    max-height: 34px !important;
+    height: 34px !important;
     opacity: 1 !important;
     transform: scale(1) translateY(0) !important;
     pointer-events: auto !important;
-    margin-bottom: 10px !important;
+    margin-bottom: 8px !important;
+    overflow: visible !important;
+}
+
+#map-category-dropdown.expanded .map-category-info-item {
+    max-height: 34px !important;
+    height: 34px !important;
+    opacity: 1 !important;
+    transform: scale(1) translateY(0) !important;
+    pointer-events: auto !important;
+    margin-bottom: 12px !important;
     overflow: visible !important;
 }
 
@@ -3030,6 +3183,15 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 #neighbor-badges-container .badge-card div.font-extrabold,
 #widget-badges-section .badge-card div.font-extrabold,
 #widget-home-tips button span:not(.material-symbols-outlined),
+#widget-badges-section button span:not(.material-symbols-outlined),
+#widget-upcoming-events button span:not(.material-symbols-outlined),
+#widget-my-offerings button span:not(.material-symbols-outlined),
+#widget-my-needs button span:not(.material-symbols-outlined),
+#widget-my-events button span:not(.material-symbols-outlined),
+#widget-saved button span:not(.material-symbols-outlined),
+#widget-friends-list button span:not(.material-symbols-outlined),
+#widget-swaps-history button span:not(.material-symbols-outlined),
+#widget-suggestion-box button span:not(.material-symbols-outlined),
 #widget-account-actions button span:not(.material-symbols-outlined),
 #widget-account-actions button .font-bold,
 #widget-friends-list button,
@@ -4912,7 +5074,7 @@ html.dark #view-profile_step_3 h2 {
     flex-direction: row !important;
 }
 
-#map-category-dropdown .map-category-item span {
+#map-category-dropdown .map-category-item .category-label {
     margin-left: 0 !important;
     margin-right: 0.5rem !important;
 }
@@ -5636,59 +5798,111 @@ html.dark .location-icon-container {
 /* --- START: Map Filter Dropdown Responsive Sizing (Based on mobile device height) --- */
 
 /* Base default styling (Medium screens: iPhone 12/13/14/15/16 Pro, height 701px to 860px) */
-#map-category-dropdown {
-    gap: 8px !important;
+#map-category-dropdown,
+#list-category-dropdown,
+#needs-category-dropdown {
+    gap: 5px !important;
 }
-#map-category-dropdown .filter-category-circle {
-    width: 36px !important;
-    height: 36px !important;
+#map-category-dropdown .filter-category-circle,
+#map-category-dropdown .filter-category-info-circle,
+.list-filter-category-circle,
+.needs-filter-category-circle,
+#btn-segment-filter,
+#btn-map-guide-trigger {
+    width: 28px !important;
+    height: 28px !important;
 }
-#map-category-dropdown .filter-category-circle span {
-    font-size: 18px !important;
+#map-category-dropdown .filter-category-circle span,
+#map-category-dropdown .filter-category-info-circle span,
+.list-filter-category-circle span,
+.needs-filter-category-circle span,
+#btn-segment-filter span,
+#btn-map-guide-trigger span {
+    font-size: 14px !important;
 }
 #map-category-dropdown .category-label {
-    font-size: 12px !important;
-    padding: 0 !important;
+    font-size: 9.5px !important;
+    padding: 3px 8px !important;
 }
 
 /* Small Screens (e.g. iPhone SE / screen height <= 700px) */
 @media (max-height: 700px) {
     html:not(.show-simulator) #map-category-dropdown {
-        gap: 5px !important;
+        gap: 3px !important;
         top: 52px !important;
     }
     html:not(.show-simulator) .native-app-env #map-category-dropdown {
         top: calc(42px + env(safe-area-inset-top)) !important;
     }
-    html:not(.show-simulator) #map-category-dropdown .filter-category-circle {
-        width: 30px !important;
-        height: 30px !important;
+    html:not(.show-simulator) #map-category-dropdown .filter-category-circle,
+    html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle,
+    html:not(.show-simulator) #btn-segment-filter,
+    html:not(.show-simulator) #btn-map-guide-trigger {
+        width: 22px !important;
+        height: 22px !important;
     }
-    html:not(.show-simulator) #map-category-dropdown .filter-category-circle span {
-        font-size: 15px !important;
+    html:not(.show-simulator) #map-category-dropdown .filter-category-circle span,
+    html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle span,
+    html:not(.show-simulator) #btn-segment-filter span,
+    html:not(.show-simulator) #btn-map-guide-trigger span {
+        font-size: 11px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .category-label {
-        font-size: 10px !important;
-        padding: 0 !important;
+        font-size: 8px !important;
+        padding: 2px 6px !important;
     }
 }
 
 /* Large Screens (e.g. iPhone 16 Pro Max / screen height > 860px) */
 @media (min-height: 861px) {
     html:not(.show-simulator) #map-category-dropdown {
-        gap: 11px !important;
+        gap: 7px !important;
     }
-    html:not(.show-simulator) #map-category-dropdown .filter-category-circle {
-        width: 40px !important;
-        height: 40px !important;
+    html:not(.show-simulator) #map-category-dropdown .filter-category-circle,
+    html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle,
+    html:not(.show-simulator) #btn-segment-filter,
+    html:not(.show-simulator) #btn-map-guide-trigger {
+        width: 32px !important;
+        height: 32px !important;
     }
-    html:not(.show-simulator) #map-category-dropdown .filter-category-circle span {
-        font-size: 20px !important;
+    html:not(.show-simulator) #map-category-dropdown .filter-category-circle span,
+    html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle span,
+    html:not(.show-simulator) #btn-segment-filter span,
+    html:not(.show-simulator) #btn-map-guide-trigger span {
+        font-size: 16px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .category-label {
-        font-size: 13.5px !important;
-        padding: 0 !important;
+        font-size: 10.5px !important;
+        padding: 3px 8px !important;
     }
+}
+
+/* Category Information Mode Highlight Badge */
+.category-info-highlighted {
+    position: relative !important;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4) !important;
+}
+.category-info-highlighted::after {
+    content: '?' !important;
+    position: absolute !important;
+    top: -5px !important;
+    right: -5px !important;
+    width: 15px !important;
+    height: 15px !important;
+    border-radius: 50% !important;
+    background-color: #EF4444 !important; /* Premium red badge */
+    color: white !important;
+    font-size: 10px !important;
+    font-weight: 950 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
+    border: 1px solid white !important;
+    z-index: 100 !important;
+}
+html.dark .category-info-highlighted::after {
+    border-color: #101612 !important;
 }
 
 /* --- END: Map Filter Dropdown Responsive Sizing --- */
@@ -5737,18 +5951,20 @@ html.dark.native-app-env #global-navbar:not(.hidden) {
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
-/* Category Tray / List Overlay Glassmorphism */
+/* Category Tray / List Overlay - Opaque background to prevent disorientation */
 .category-tray, .category-list-overlay {
-    background: rgba(255, 255, 255, 0.25) !important;
-    backdrop-filter: blur(25px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+    background: var(--warm-cream) !important;
     border: 1px solid rgba(48, 138, 94, 0.15) !important;
     border-bottom: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 
 html.dark .category-tray, html.dark .category-list-overlay {
-    background: rgba(20, 28, 22, 0.25) !important;
+    background: #101612 !important;
     border-color: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 
 .category-tray {
@@ -5784,7 +6000,11 @@ html.dark .category-tray, html.dark .category-list-overlay {
 
 /* Custom Chat Section Font & Size Consistency */
 #view-chat_detail input,
-#view-chat_detail textarea,
+#view-chat_detail textarea {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 16px !important;
+}
+
 .chat-bubble-me p,
 .chat-bubble-other p,
 .admin-message-bubble p {
@@ -5803,14 +6023,35 @@ input[type="password"],
 input[type="url"],
 input[type="datetime-local"] {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 14px !important; /* Force all inputs, including phone fields, to match chat font-size */
+    font-size: 16px !important; /* Force 16px to prevent iOS Safari auto-zoom on focus */
 }
 
 /* Ensure placeholder texts also match the Outfit font and size */
 input::placeholder,
 textarea::placeholder {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 14px !important;
+    font-size: 16px !important;
 }
 
+/* Hide Leaflet popup close buttons */
+.leaflet-container a.leaflet-popup-close-button {
+    display: none !important;
+}
 
+/* Smoothly transition the navbar when it is hidden behind card */
+#global-navbar {
+    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease !important;
+}
+
+#global-navbar.navbar-behind {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+body.show-simulator #global-navbar.navbar-behind {
+    transform: translateY(24px) !important;
+}
+
+.native-app-env #global-navbar.navbar-behind {
+    transform: translateX(-50%) translateY(24px) !important;
+}

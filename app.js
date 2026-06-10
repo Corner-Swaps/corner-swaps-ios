@@ -3316,6 +3316,7 @@ function showView(viewId, mode) {
     const floatingContainer = document.getElementById('village-segment-floating-buttons');
     const blueBtn = document.getElementById('snap-to-neighborhood-btn');
     const triggerIcon = document.getElementById('segment-trigger-icon');
+    const mapControls = document.getElementById('floating-map-controls');
 
     if (floatingContainer) {
         if (viewId === 'village') {
@@ -3324,22 +3325,28 @@ function showView(viewId, mode) {
             const isDetailActive = (overlay && overlay.classList.contains('active')) || (eventOverlay && eventOverlay.classList.contains('active'));
             
             if (isDetailActive) {
-                floatingContainer.style.display = 'flex';
+                floatingContainer.style.display = 'none';
                 if (blueBtn) blueBtn.style.display = 'none';
-                if (triggerIcon) updateTriggerIconState(triggerIcon, true);
+                if (mapControls) mapControls.style.display = 'none';
                 floatingContainer.classList.add('detail-active-trigger');
             } else {
-                floatingContainer.style.display = 'flex';
-                if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
-                    if (blueBtn) blueBtn.style.display = 'none';
-                } else {
+                const isMapSegment = currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map';
+                if (isMapSegment) {
+                    floatingContainer.style.display = 'flex';
                     if (blueBtn) blueBtn.style.display = 'flex';
+                    if (mapControls) mapControls.style.display = 'flex';
+                } else {
+                    floatingContainer.style.display = 'none';
+                    if (blueBtn) blueBtn.style.display = 'none';
+                    if (mapControls) mapControls.style.display = 'none';
                 }
-                if (triggerIcon) updateTriggerIconState(triggerIcon, currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map');
+                if (triggerIcon) updateTriggerIconState(triggerIcon, !isMapSegment);
                 floatingContainer.classList.remove('detail-active-trigger');
             }
         } else {
             floatingContainer.style.display = 'none';
+            if (blueBtn) blueBtn.style.display = 'none';
+            if (mapControls) mapControls.style.display = 'none';
             floatingContainer.classList.remove('detail-active-trigger');
         }
     }
@@ -4040,7 +4047,8 @@ function updateNavBarIcons(activeViewId) {
                 icon.style.fontVariationSettings = "'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24";
             }
         } else {
-            btn.style.color = config.inactive;
+            const inactiveColor = isDarkMode ? 'rgba(253, 251, 247, 0.6)' : '#424840';
+            btn.style.color = inactiveColor;
             if (iconWrapper) {
                 iconWrapper.classList.remove('active-tab');
                 iconWrapper.style.setProperty('background-color', 'transparent', 'important');
@@ -4094,7 +4102,7 @@ function startAppInitialization() {
         initMapAndInputs();
         initMoodAndCategories();
         preloadNeighborAvatars();
-    }, isTestMode ? 5 : 100);
+    }, isTestMode ? 5 : 1000);
     
     // Extend the delay to 2100ms so the logo animation completes before page transition
     setTimeout(() => {
@@ -4114,24 +4122,43 @@ function startAppInitialization() {
                     if (state.currentUser) {
                         showView('village');
                     } else {
-                        showView('welcome');
+                        state.isGuest = true;
+                        showView('village');
                     }
                 }
             } catch (e) {
                 console.error("Error during app startup sequence:", e);
                 try {
                     state = JSON.parse(INITIAL_STATE_STRING);
-                    showView('welcome');
+                    state.isGuest = true;
+                    showView('village');
                 } catch (err) {
                     console.error("Fallback failed:", err);
                 }
             } finally {
-                loadingScreen.style.transition = 'opacity 0.5s ease-in-out';
-                loadingScreen.style.opacity = '0';
+                loadingScreen.classList.add('fading-out');
+                const brandLogo = document.getElementById('final-logo');
+                if (brandLogo) {
+                    brandLogo.style.animation = 'none';
+                    brandLogo.style.transition = 'opacity 0.25s ease-out, transform 0.25s ease-out';
+                    brandLogo.style.opacity = '0';
+                    brandLogo.style.transform = 'scale(0.95)';
+                }
                 setTimeout(() => {
-                    loadingScreen.classList.add('hidden');
-                    window.isAppStartup = false;
-                }, isTestMode ? 10 : 500);
+                    loadingScreen.style.transition = 'opacity 0.4s ease-in-out';
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingScreen.classList.add('hidden');
+                        loadingScreen.classList.remove('fading-out');
+                        window.isAppStartup = false;
+                        if (leafletMap) {
+                            leafletMap.invalidateSize();
+                            setTimeout(() => { if (leafletMap) leafletMap.invalidateSize(); }, 50);
+                            setTimeout(() => { if (leafletMap) leafletMap.invalidateSize(); }, 150);
+                            setTimeout(() => { if (leafletMap) leafletMap.invalidateSize(); }, 400);
+                        }
+                    }, 400);
+                }, isTestMode ? 5 : 250);
             }
         }
     }, isTestMode ? 50 : 2100);
@@ -6139,7 +6166,7 @@ function initLeafletMap() {
         maxBounds: vancouverBounds,
         maxBoundsViscosity: 1.0,
         minZoom: 10,
-        tap: !L.Browser.mobile,
+        tap: false,
         bounceAtZoomLimits: false,
         wheelDebounceTime: 150,
         preferCanvas: true,
@@ -6687,7 +6714,6 @@ function openMapItemDetail(idOrName) {
                 toggleSaveListing(idOrName);
             };
             saveBtn.onclick = handleSaveClick;
-            saveBtn.ontouchend = handleSaveClick;
         }
     }
 
@@ -6706,7 +6732,6 @@ function openMapItemDetail(idOrName) {
                 showView('profile_settings');
             };
             profileBtn.onclick = handleProfileClick;
-            profileBtn.ontouchend = handleProfileClick;
         }
         if (reportBtn) reportBtn.classList.add('hidden');
     } else {
@@ -6725,7 +6750,6 @@ function openMapItemDetail(idOrName) {
                     handleOfferToSwapNeed(needId);
                 };
                 chatBtn.onclick = handleChatClick;
-                chatBtn.ontouchend = handleChatClick;
             } else {
                 const neighbor = state.neighbors[idOrName];
                 if (neighbor && neighbor.isKarma) {
@@ -6743,7 +6767,6 @@ function openMapItemDetail(idOrName) {
                     startChatConversation(authorName);
                 };
                 chatBtn.onclick = handleChatClick;
-                chatBtn.ontouchend = handleChatClick;
             }
         }
         if (profileBtn) {
@@ -6758,7 +6781,6 @@ function openMapItemDetail(idOrName) {
                 handleMapDetailAuthorClick();
             };
             profileBtn.onclick = handleProfileClick;
-            profileBtn.ontouchend = handleProfileClick;
         }
         if (reportBtn) {
             reportBtn.classList.remove('hidden');
@@ -6771,7 +6793,6 @@ function openMapItemDetail(idOrName) {
                 handleReportUserFromDetail();
             };
             reportBtn.onclick = handleReportClick;
-            reportBtn.ontouchend = handleReportClick;
         }
     }
 
@@ -6786,6 +6807,15 @@ function openMapItemDetail(idOrName) {
     }
     document.getElementById('map-detail-overlay').classList.add('active');
     
+    // Keep the tab bar visible but initially hidden behind
+    const navbar = document.getElementById('global-navbar');
+    if (navbar) {
+        navbar.classList.add('navbar-behind');
+    }
+    setTimeout(() => {
+        if (typeof updateDetailNavbarState === 'function') updateDetailNavbarState();
+    }, 50);
+    
     // Hide event detail overlay to avoid overlapping layouts
     const eventOverlay = document.getElementById('map-event-detail-overlay');
     if (eventOverlay) eventOverlay.classList.remove('active');
@@ -6793,14 +6823,11 @@ function openMapItemDetail(idOrName) {
     // Temporarily disable Leaflet map gestures to prevent scroll-drag leaks to Leaflet
     disableMapGestures();
     
-    // Collapse speed dial and change floating trigger button to X
+    // Collapse speed dial and hide floating segment trigger button
     collapseVillageMenu();
-    const triggerIcon = document.getElementById('segment-trigger-icon');
-    if (triggerIcon) updateTriggerIconState(triggerIcon, true);
     const floatingContainer = document.getElementById('village-segment-floating-buttons');
     if (floatingContainer) {
-        floatingContainer.classList.add('detail-active-trigger');
-        floatingContainer.style.display = 'flex';
+        floatingContainer.style.display = 'none';
     }
 
     // Make blue button disappear
@@ -6824,6 +6851,13 @@ function closeMapItemDetail() {
     const eventOverlay = document.getElementById('map-event-detail-overlay');
     if (eventOverlay) eventOverlay.classList.remove('active');
     
+    // Restore the tab bar now that the detail card is gone
+    const navbar = document.getElementById('global-navbar');
+    if (navbar) {
+        navbar.classList.remove('hidden');
+        navbar.classList.remove('navbar-behind');
+    }
+    
     // Restore floating trigger button to apps
     const triggerIcon = document.getElementById('segment-trigger-icon');
     const floatingContainer = document.getElementById('village-segment-floating-buttons');
@@ -6834,7 +6868,11 @@ function closeMapItemDetail() {
         if (floatingContainer) {
             floatingContainer.classList.remove('detail-active-trigger');
             if (state.currentView === 'village' && !state.meetupMapMode) {
-                floatingContainer.style.display = 'flex';
+                if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
+                    floatingContainer.style.display = 'none';
+                } else {
+                    floatingContainer.style.display = 'flex';
+                }
             }
         }
     }
@@ -7027,7 +7065,6 @@ function openMapEventDetail(eventId) {
             toggleSaveEvent(event.id);
         };
         saveBtn.onclick = handleSaveClick;
-        saveBtn.ontouchend = handleSaveClick;
     }
 
     const rsvpBtn = document.getElementById('map-event-detail-rsvp-btn');
@@ -7040,7 +7077,6 @@ function openMapEventDetail(eventId) {
             handleMapEventRSVPToggle();
         };
         rsvpBtn.onclick = handleRsvpClick;
-        rsvpBtn.ontouchend = handleRsvpClick;
     }
 
     const hostProfileBtn = document.getElementById('map-event-detail-host-profile-btn');
@@ -7053,7 +7089,6 @@ function openMapEventDetail(eventId) {
             handleMapEventDetailHostClick();
         };
         hostProfileBtn.onclick = handleHostProfileClick;
-        hostProfileBtn.ontouchend = handleHostProfileClick;
     }
 
     const reportBtn = document.getElementById('map-event-detail-report-btn');
@@ -7074,7 +7109,6 @@ function openMapEventDetail(eventId) {
                 handleReportMapEventFromDetail();
             };
             reportBtn.onclick = handleReportClick;
-            reportBtn.ontouchend = handleReportClick;
         }
     }
     
@@ -7091,6 +7125,15 @@ function openMapEventDetail(eventId) {
     }
     document.getElementById('map-event-detail-overlay').classList.add('active');
     
+    // Keep the tab bar visible but initially hidden behind
+    const navbar = document.getElementById('global-navbar');
+    if (navbar) {
+        navbar.classList.add('navbar-behind');
+    }
+    setTimeout(() => {
+        if (typeof updateDetailNavbarState === 'function') updateDetailNavbarState();
+    }, 50);
+    
     // Hide standard item detail overlay to avoid overlapping layouts
     const overlay = document.getElementById('map-detail-overlay');
     if (overlay) overlay.classList.remove('active');
@@ -7098,14 +7141,11 @@ function openMapEventDetail(eventId) {
     // Temporarily disable Leaflet map gestures to prevent scroll-drag leaks to Leaflet
     disableMapGestures();
     
-    // Collapse speed dial and change floating trigger button to X
+    // Collapse speed dial and hide floating segment trigger button
     collapseVillageMenu();
-    const triggerIcon = document.getElementById('segment-trigger-icon');
-    if (triggerIcon) updateTriggerIconState(triggerIcon, true);
     const floatingContainer = document.getElementById('village-segment-floating-buttons');
     if (floatingContainer) {
-        floatingContainer.classList.add('detail-active-trigger');
-        floatingContainer.style.display = 'flex';
+        floatingContainer.style.display = 'none';
     }
 
     // Make blue button disappear
@@ -7565,7 +7605,7 @@ function openNeighborProfileModal(neighborName) {
                 <p class="text-gray-500 truncate mt-0.5"><span class="text-gray-600">${neighbor.category || 'Other'}</span></p>
             </div>
             <span class="text-[9.5px] text-forest-green font-semibold flex items-center gap-0.5 opacity-80 shrink-0">
-                Swap <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                Swap
             </span>
         </div>
     `;
@@ -7587,7 +7627,7 @@ function openNeighborProfileModal(neighborName) {
                     <p class="text-gray-500 truncate mt-0.5"><span class="text-gray-600">${needInfo.category || 'Other'}</span></p>
                 </div>
                 <span class="text-[9.5px] text-forest-green font-semibold flex items-center gap-0.5 opacity-80 shrink-0">
-                    Offer <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                    Offer
                 </span>
             </div>
         `;
@@ -7776,11 +7816,14 @@ function closeNeighborProfileModal() {
         const isDetailActive = (overlay && overlay.classList.contains('active')) || (eventOverlay && eventOverlay.classList.contains('active'));
         
         if (state.currentView === 'village' && !state.meetupMapMode) {
-            floatingContainer.style.display = 'flex';
+            if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
+                floatingContainer.style.display = 'none';
+            } else {
+                floatingContainer.style.display = 'flex';
+            }
             if (isDetailActive) {
+                floatingContainer.style.display = 'none';
                 floatingContainer.classList.add('detail-active-trigger');
-                const triggerIcon = document.getElementById('segment-trigger-icon');
-                if (triggerIcon) updateTriggerIconState(triggerIcon, true);
                 const blueBtn = document.getElementById('snap-to-neighborhood-btn');
                 if (blueBtn) blueBtn.style.display = 'none';
             } else {
@@ -7852,37 +7895,7 @@ window.closeRSVPSuccessModal = function() {
 };
 
 function renderMapCategoryCircles() {
-    try {
-        const dropdown = document.getElementById('map-category-dropdown');
-        if (!dropdown) return;
-        dropdown.innerHTML = "";
-        
-        mapCategories.forEach((cat, index) => {
-            const item = document.createElement('div');
-            item.className = "map-category-item cursor-pointer group active:scale-95 select-none pr-1";
-            item.setAttribute('data-category-name', cat.name);
-            item.onclick = (e) => {
-                e.stopPropagation();
-                selectMapCategory(cat.name);
-            };
-            
-            const circleClass = "w-9 h-9 rounded-full flex items-center justify-center transition-all select-none hover:scale-105 active:scale-95";
-            
-            item.innerHTML = `
-                <span class="text-[11px] font-bold text-forest-green dark:text-warm-cream bg-white/95 dark:bg-[#18201a]/95 px-2.5 py-1.5 rounded-xl shadow-md border border-outline-variant/20 dark:border-[#308A5E26] opacity-90 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                    ${cat.name === 'All' ? 'All Categories' : cat.name}
-                </span>
-                <div class="${circleClass} category-circle-bubble flex-shrink-0">
-                    <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
-                </div>
-            `;
-            dropdown.appendChild(item);
-        });
-        
-        updateMapCategoryCirclesSelection();
-    } catch (err) {
-        alert("Error in renderMapCategoryCircles: " + err.message + "\n" + err.stack);
-    }
+    renderMapFilterCircles();
 }
 window.renderMapCategoryCircles = renderMapCategoryCircles;
 
@@ -7893,18 +7906,18 @@ function updateMapCategoryCirclesSelection() {
         
         let items = dropdown.querySelectorAll('.map-category-item');
         if (items.length === 0) {
-            renderMapCategoryCircles();
+            renderMapFilterCircles();
             items = dropdown.querySelectorAll('.map-category-item');
         }
         items.forEach((item) => {
-            const catName = item.getAttribute('data-category-name');
-            const cat = mapCategories.find(c => c.name === catName);
+            const catName = item.getAttribute('data-category-name') || item.getAttribute('data-category');
+            const cat = MAP_FILTER_CATEGORIES.find(c => c.name === catName);
             if (!cat) return;
             
-            const bubble = item.querySelector('.category-circle-bubble');
+            const bubble = item.querySelector('.category-circle-bubble') || item.querySelector('.filter-category-circle');
             if (!bubble) return;
             
-            const isActive = (activeCategoryFilter === cat.name) || (cat.name === 'All' && !activeCategoryFilter);
+            const isActive = (activeCategoryFilter === cat.name) || (cat.name === 'All' && !activeCategoryFilter) || (state.activeMapFilters && state.activeMapFilters.includes(cat.name));
             const isDark = document.documentElement.classList.contains('dark');
             const gapColor = isDark ? '#141c16' : '#ffffff';
             
@@ -7913,6 +7926,7 @@ function updateMapCategoryCirclesSelection() {
             
             bubble.style.cssText = `background-color: ${cat.color} !important; color: #FFFFFF !important; ${isActive ? activeShadow : inactiveShadow}`;
         });
+        
     } catch (err) {
         alert("Error in updateMapCategoryCirclesSelection: " + err.message + "\n" + err.stack);
     }
@@ -7990,6 +8004,9 @@ function closeMapCategoryDropdown() {
     const floatingContainer = document.getElementById('village-segment-floating-buttons');
     const filterBtn = document.getElementById('btn-segment-filter');
     
+    // Reset info mode on close
+    mapInfoModeActive = false;
+    
     if (overlay && !overlay.classList.contains('hidden')) {
         overlay.classList.remove('opacity-100');
         overlay.classList.add('opacity-0');
@@ -8001,7 +8018,10 @@ function closeMapCategoryDropdown() {
             filterBtn.classList.remove('active-filter-circle');
         }
         overlay.classList.add('hidden');
-        if (dropdown) dropdown.classList.add('hidden');
+        if (dropdown) {
+            dropdown.classList.add('hidden');
+            dropdown.classList.remove('expanded');
+        }
         if (floatingContainer) {
             floatingContainer.classList.remove('floating-buttons-hidden');
         }
@@ -8033,9 +8053,13 @@ function toggleCategoryTray() {
         const isOpening = overlay.classList.contains('hidden');
         
         if (isOpening) {
+            // Reset info mode on open
+            mapInfoModeActive = false;
+            
             renderMapFilterCircles();
             overlay.classList.remove('hidden');
             dropdown.classList.remove('hidden');
+            dropdown.classList.add('expanded');
             
             // Force layout recalculation
             overlay.offsetHeight;
@@ -8056,6 +8080,9 @@ function toggleCategoryTray() {
                 floatingContainer.classList.add('floating-buttons-hidden');
             }
         } else {
+            // Reset info mode on close
+            mapInfoModeActive = false;
+            
             overlay.classList.remove('opacity-100');
             overlay.classList.add('opacity-0');
             
@@ -8070,6 +8097,7 @@ function toggleCategoryTray() {
             
             overlay.classList.add('hidden');
             dropdown.classList.add('hidden');
+            dropdown.classList.remove('expanded');
             if (floatingContainer) {
                 floatingContainer.classList.remove('floating-buttons-hidden');
             }
@@ -8094,12 +8122,90 @@ const MAP_FILTER_CATEGORIES = [
     { name: "Clear Filter", displayName: "Clear", icon: "filter_alt_off", color: "#546E7A", rgb: "84,110,122" }
 ];
 
+let mapInfoModeActive = false;
+
+const MAP_CATEGORY_DESCRIPTIONS = {
+    "Karma Swap": "Gifts are free items or services offered out of neighborly kindness. Swap for good karma, clear out clutter, or lend a hand without expecting anything in return!",
+    "Event or Meetup": "Community gatherings, street parties, volunteer cleanups, or casual meetups. Connect with neighbors in person and build local relationships.",
+    "Food & Drink": "Share homegrown veggies, surplus bakes, or invite neighbors for a home-cooked meal or coffee swap.",
+    "Home and Living": "Household items, furniture, tools to borrow, or home organization advice shared within the neighborhood.",
+    "Garden & Outdoors": "Plants, seeds, gardening tools, soil sharing, or outdoor yard assistance to keep the neighborhood green and beautiful.",
+    "Skills & Education": "Offer or request tutoring, language practice, music lessons, cooking tips, or professional skill-sharing.",
+    "Handyman & Services": "Local help for repairs, assembly, heavy lifting, moving, or technical troubleshooting.",
+    "Creative & Art": "Crafts, artwork, sewing, craft supplies sharing, or creative collaboration opportunities.",
+    "Health": "Wellness tips, workout partnerships, meditation groups, or support for health and well-being.",
+    "Clothing & Apparel": "Gently used clothes, shoes, accessories, or sewing/mending swaps.",
+    "Books, Games, Entertainment": "Share or borrow books, board games, video games, musical instruments, and media.",
+    "Kids and Maternity": "Baby gear, toys, children's clothes, parenting advice, or local playdate coordination.",
+    "Language or Info Exchange": "Language learning, local tips, neighborhood recommendations, and informational chats.",
+    "Clear Filter": "Reset all active category filters to see all nearby pins on the map."
+};
+
+function toggleMapInfoMode() {
+    playSound('click');
+    mapInfoModeActive = !mapInfoModeActive;
+    renderMapFilterCircles();
+}
+window.toggleMapInfoMode = toggleMapInfoMode;
+
+function showMapCategoryInfo(categoryName) {
+    const cat = MAP_FILTER_CATEGORIES.find(c => c.name === categoryName);
+    if (!cat) return;
+    
+    const desc = MAP_CATEGORY_DESCRIPTIONS[categoryName] || "No description available for this category.";
+    
+    const modal = document.getElementById('map-category-info-popup-modal');
+    const titleEl = document.getElementById('map-cat-info-popup-title');
+    const descEl = document.getElementById('map-cat-info-popup-desc');
+    const iconEl = document.getElementById('map-cat-info-popup-icon');
+    const iconContainer = document.getElementById('map-cat-info-popup-icon-container');
+    
+    if (modal && titleEl && descEl && iconEl && iconContainer) {
+        titleEl.innerText = cat.displayName;
+        descEl.innerText = desc;
+        iconEl.innerText = cat.icon;
+        iconContainer.style.backgroundColor = cat.color;
+        
+        modal.classList.remove('hidden');
+        playSound('pop');
+    }
+}
+window.showMapCategoryInfo = showMapCategoryInfo;
+
+function closeMapCategoryInfoPopup() {
+    playSound('click');
+    const modal = document.getElementById('map-category-info-popup-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
+}
+window.closeMapCategoryInfoPopup = closeMapCategoryInfoPopup;
+
 function updateCategoryCircleStyle(circle, cat, isActive) {
     if (!circle || !cat) return;
     
     // Find the corresponding category-label element in the same row
     const parentRow = circle.closest('.flex');
     const label = parentRow ? parentRow.querySelector('.category-label') : null;
+    
+    if (mapInfoModeActive && cat.name !== 'Clear Filter') {
+        const borderCol = cat.color;
+        circle.style.cssText = `
+            background-color: ${cat.color} !important;
+            color: #FFFFFF !important;
+            border: 1.5px solid #FFFFFF !important;
+            box-shadow: 0 0 0 1.5px ${borderCol}, 0 0 10px ${borderCol} !important;
+            transform: scale(1.1) !important;
+            opacity: 1 !important;
+        `;
+        if (label) {
+            label.style.cssText = `
+                color: ${cat.color} !important;
+                font-weight: 800 !important;
+            `;
+        }
+        return;
+    }
     
     if (isActive) {
         // Circle styling: NO glow, solid background, scale 1.1, clean shadow, NO animation
@@ -8159,28 +8265,63 @@ function renderMapFilterCircles() {
     
     const showLabels = true;
 
+    // Render the Info row at the very top of the list
+    const isDark = document.documentElement.classList.contains('dark');
+    const gapColor = isDark ? '#141c16' : '#ffffff';
+    const infoCircleBg = mapInfoModeActive ? '#308A5E' : '#4b5563';
+    const infoCircleActiveShadow = mapInfoModeActive ? `box-shadow: 0 0 0 2px ${gapColor}, 0 0 0 4px #308A5E, 0 8px 16px rgba(0,0,0,0.35) !important;` : 'box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15) !important;';
+    
+    const infoAnimStyle = `transition-delay: 0s !important; -webkit-transition-delay: 0s !important;`;
+    
+    const infoRowHtml = `
+        <div class="map-category-item flex items-center justify-end gap-1 select-none cursor-pointer group active:scale-95 transition-transform" 
+             data-category-name="Info" 
+             onclick="toggleMapInfoMode()" 
+             style="${infoAnimStyle}">
+            <!-- Label to the left -->
+            <span class="category-label text-[10px] font-bold text-black dark:text-[#308A5E] select-none leading-none">
+                Info
+            </span>
+            <!-- Circle element -->
+            <div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all duration-200 flex-shrink-0 relative filter-category-info-circle"
+                 style="background-color: ${infoCircleBg} !important; color: #FFFFFF !important; ${infoCircleActiveShadow} transform: ${mapInfoModeActive ? 'scale(1.1)' : 'scale(1.0)'} !important; opacity: ${mapInfoModeActive ? '1' : '0.65'} !important;">
+                <span class="material-symbols-outlined text-[13px]">help</span>
+            </div>
+        </div>
+    `;
+
     const categoriesHtml = MAP_FILTER_CATEGORIES.map((cat, idx) => {
-        const delay = idx * 0.02;
-        const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
+        const delay = (idx + 1) * 0.025; // 25ms stagger per item
+        const animStyle = `transition-delay: ${delay}s !important; -webkit-transition-delay: ${delay}s !important;`;
         const labelClass = showLabels ? '' : 'hidden';
+        
+        // If info mode is active, display a pulsating ? badge overlay on each category circle (except Clear Filter)
+        const infoBadgeHtml = (mapInfoModeActive && cat.name !== "Clear Filter") ? `
+            <div class="absolute -top-1 -right-1 w-4 h-4 bg-amber-500 text-white rounded-full flex items-center justify-center border border-white dark:border-[#141c16] shadow-sm animate-pulse z-10">
+                <span class="text-[9px] font-extrabold font-mono">?</span>
+            </div>
+        ` : '';
+
         return `
-            <div class="flex items-center justify-end gap-2.5 select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="map-category-item flex items-center justify-end gap-1 select-none cursor-pointer group active:scale-95 transition-transform" 
+                 data-category-name="${cat.name}" 
                  onclick="toggleMapFilterCategory('${cat.name}', this)" 
                  style="${animStyle}">
                 <!-- Label to the left -->
-                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none ${labelClass}">
+                <span class="category-label text-[10px] font-bold text-black dark:text-[#308A5E] select-none leading-none ${labelClass}">
                     ${cat.displayName}
                 </span>
                 <!-- Circle element -->
-                <div class="w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 filter-category-circle flex-shrink-0" 
+                <div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all duration-200 filter-category-circle flex-shrink-0 relative" 
                      data-category="${cat.name}">
-                    <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
+                    <span class="material-symbols-outlined text-[13px]">${cat.icon}</span>
+                    ${infoBadgeHtml}
                 </div>
             </div>
         `;
     }).join('');
 
-    dropdown.innerHTML = categoriesHtml;
+    dropdown.innerHTML = infoRowHtml + categoriesHtml;
 
     // Apply styles to circles after rendering
     dropdown.querySelectorAll('.filter-category-circle').forEach(circle => {
@@ -8196,6 +8337,12 @@ window.renderMapFilterCircles = renderMapFilterCircles;
 
 function toggleMapFilterCategory(categoryName, element) {
     if (typeof playSound === 'function') playSound('click');
+    
+    // If info mode is active, display info popup and skip filtering logic
+    if (mapInfoModeActive) {
+        showMapCategoryInfo(categoryName);
+        return;
+    }
     
     if (!state.activeMapFilters) {
         state.activeMapFilters = [];
@@ -8324,7 +8471,7 @@ function renderListFilterCircles() {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         return `
-            <div class="flex items-center justify-end gap-2.5 select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="flex items-center justify-end gap-1 select-none cursor-pointer group active:scale-95 transition-transform" 
                  onclick="selectListCategoryFilter('${cat.name}', this)" 
                  style="${animStyle}">
                 <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none">
@@ -8359,7 +8506,7 @@ function renderNeedsFilterCircles() {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         return `
-            <div class="flex items-center justify-end gap-2.5 select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="flex items-center justify-end gap-1 select-none cursor-pointer group active:scale-95 transition-transform" 
                  onclick="selectNeedsCategoryFilter('${cat.name}', this)" 
                  style="${animStyle}">
                 <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none">
@@ -8552,9 +8699,6 @@ function openCategoryView(categoryName) {
                     <span class="text-[10px] font-bold text-forest-green dark:text-emerald-400 uppercase tracking-wider">${neighbor.location.split(' ')[0]}</span>
                     <span class="text-[9px] text-on-surface-variant/50 dark:text-warm-cream/40 mt-0.5">${neighbor.vouches || 0} ❤️</span>
                 </div>
-                <div class="flex items-center text-outline/60 pl-1">
-                    <span class="material-symbols-outlined text-[18px]">chevron_right</span>
-                </div>
             `;
             container.appendChild(card);
         }
@@ -8582,9 +8726,6 @@ function openCategoryView(categoryName) {
                 <div class="flex flex-col items-end flex-shrink-0 select-none text-right">
                     <span class="text-[10px] font-bold text-forest-green dark:text-emerald-400 uppercase tracking-wider">${(offer.location || 'Oakwood').split(' ')[0]}</span>
                     <span class="text-[9px] text-on-surface-variant/50 dark:text-warm-cream/40 mt-0.5">Active</span>
-                </div>
-                <div class="flex items-center text-outline/60 pl-1">
-                    <span class="material-symbols-outlined text-[18px]">chevron_right</span>
                 </div>
             `;
             container.appendChild(card);
@@ -8626,6 +8767,15 @@ function openCategoryView(categoryName) {
 function closeCategoryView() {
     playSound('click');
     document.getElementById('category-list-overlay').classList.remove('active');
+    // Restore floating buttons after category overlay is dismissed
+    const floatingContainer = document.getElementById('village-segment-floating-buttons');
+    if (floatingContainer && state.currentView === 'village') {
+        if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
+            floatingContainer.style.display = 'none';
+        } else {
+            floatingContainer.style.display = 'flex';
+        }
+    }
 }
 
 // ----------------------------------------------------
@@ -9011,8 +9161,10 @@ function selectOfferMode(mode) {
     if (typeof playSound === 'function') playSound('click');
     const selectorScreen = document.getElementById('offer-type-selector-screen');
     const formWrapper = document.getElementById('offer-form-wrapper');
+    const dashboard = document.getElementById('creative-dashboard-screen');
     if (selectorScreen) selectorScreen.classList.add('hidden');
     if (formWrapper) formWrapper.classList.remove('hidden');
+    if (dashboard) dashboard.classList.add('hidden');
 
     state.currentOfferMode = mode;
 
@@ -9028,6 +9180,7 @@ function selectOfferMode(mode) {
     const eventTypeSec = document.getElementById('offer-event-type-section');
     const eventTimeSec = document.getElementById('offer-event-datetime-section');
     const eventLocSec = document.getElementById('offer-event-location-section');
+    const eventCustomIconSec = document.getElementById('event-custom-icon-selector-container');
 
     const descInputEl = document.getElementById('offer-desc');
     if (mode === 'event') {
@@ -9044,10 +9197,14 @@ function selectOfferMode(mode) {
         if (eventTypeSec) eventTypeSec.classList.remove('hidden');
         if (eventTimeSec) eventTimeSec.classList.remove('hidden');
         if (eventLocSec) eventLocSec.classList.remove('hidden');
+        if (eventCustomIconSec) {
+            eventCustomIconSec.classList.remove('hidden');
+        }
     } else {
         if (eventTypeSec) eventTypeSec.classList.add('hidden');
         if (eventTimeSec) eventTimeSec.classList.add('hidden');
         if (eventLocSec) eventLocSec.classList.add('hidden');
+        if (eventCustomIconSec) eventCustomIconSec.classList.add('hidden');
 
         if (categoryHeaderWrapper) categoryHeaderWrapper.classList.remove('hidden');
         if (categoriesGrid) categoriesGrid.classList.remove('hidden');
@@ -9091,14 +9248,16 @@ function selectOfferMode(mode) {
     }
 
     const slot1 = document.getElementById('offer-photo-placeholder-1')?.parentElement;
-    const slot2 = document.getElementById('offer-photo-placeholder-2')?.parentElement;
-    if (mode === 'event') {
-        if (slot1) slot1.classList.add('hidden');
-        if (slot2) slot2.classList.add('hidden');
-    } else {
-        if (slot1) slot1.classList.remove('hidden');
-        if (slot2) slot2.classList.remove('hidden');
-    }
+    const slot2 = document.getElementById('offer-icon-placeholder')?.parentElement;
+    if (slot1) slot1.classList.remove('hidden');
+    if (slot2) slot2.classList.remove('hidden');
+
+    // Reset photos and icon selections on entering
+    state.selectedOfferPhotos = ["", ""];
+    state.selectedOfferIcon = "";
+    saveState();
+    renderOfferPhotosList();
+    if (typeof renderOfferIconDisplay === 'function') renderOfferIconDisplay();
 
     // Configure scroll behavior on view-offer
     const viewOffer = document.getElementById('view-offer');
@@ -9116,8 +9275,12 @@ function resetOfferFormToSelector() {
     if (typeof playSound === 'function') playSound('click');
     const selectorScreen = document.getElementById('offer-type-selector-screen');
     const formWrapper = document.getElementById('offer-form-wrapper');
+    const dashboard = document.getElementById('creative-dashboard-screen');
     if (selectorScreen) selectorScreen.classList.remove('hidden');
     if (formWrapper) formWrapper.classList.add('hidden');
+    if (dashboard) dashboard.classList.add('hidden');
+
+    updateCreativeDashboard();
     
     // Clear inputs inside the form
     const titleInput = document.getElementById('offer-title');
@@ -9171,6 +9334,126 @@ function resetOfferFormToSelector() {
     updateEventPhotoPlaceholder();
 }
 window.resetOfferFormToSelector = resetOfferFormToSelector;
+
+function updateCreativeDashboard() {
+    try {
+        const offerings = state.userOfferings || [];
+        const needs = state.userNeeds || [];
+        const events = (state.events || []).filter(evt => evt.host === 'me' || evt.host === 'Lily Kaufmann');
+
+        // Update counts
+        const offeringsCountEl = document.getElementById('creative-stat-offerings');
+        if (offeringsCountEl) {
+            offeringsCountEl.innerText = `${offerings.length} Offering${offerings.length === 1 ? '' : 's'}`;
+        }
+        const needsCountEl = document.getElementById('creative-stat-needs');
+        if (needsCountEl) {
+            needsCountEl.innerText = `${needs.length} Need${needs.length === 1 ? '' : 's'}`;
+        }
+        const eventsCountEl = document.getElementById('creative-stat-events');
+        if (eventsCountEl) {
+            eventsCountEl.innerText = `${events.length} Event${events.length === 1 ? '' : 's'}`;
+        }
+
+        // Render Offerings
+        const offeringsContainer = document.getElementById('creative-offerings-container');
+        if (offeringsContainer) {
+            offeringsContainer.innerHTML = "";
+            if (offerings.length === 0) {
+                offeringsContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1 text-on-surface-variant/70 dark:text-warm-cream/50">You haven't posted any offerings yet.</p>`;
+            } else {
+                offerings.forEach(off => {
+                    const offColor = getCategoryColor(off.category);
+                    const offIcon = getCategoryIcon(off.category);
+                    const catObj = MAP_FILTER_CATEGORIES.find(c => c.name === off.category || c.displayName === off.category);
+                    const bgStyle = catObj ? `background-color: rgba(${catObj.rgb}, 0.15) !important; color: ${offColor} !important;` : '';
+
+                    const card = document.createElement('div');
+                    card.className = "flex items-center p-3 bg-white dark:bg-[#101612] rounded-xl border border-black/10 dark:border-white/10 shadow-sm relative w-full mb-2";
+                    card.innerHTML = `
+                        <div class="w-[38px] h-[38px] rounded-xl flex items-center justify-center mr-3 flex-shrink-0" style="${bgStyle}">
+                            <span class="material-symbols-outlined text-[20px]">${offIcon}</span>
+                        </div>
+                        <div class="flex-grow min-w-0 pr-3 text-left">
+                            <h4 class="text-forest-green dark:text-white truncate leading-tight font-medium text-sm">${off.title}</h4>
+                            <p class="text-xs text-gray-500 dark:text-warm-cream/60 truncate mt-0.5">${off.desc} · <span class="text-gray-600 dark:text-warm-cream/40">${off.category || 'Other'}</span></p>
+                        </div>
+                        <button class="text-error hover:opacity-80 p-1 flex-shrink-0 bg-transparent border-0 cursor-pointer" onclick="handleDeleteOffering('${off.id}'); updateCreativeDashboard();">
+                            <span class="material-symbols-outlined text-[16px]">delete</span>
+                        </button>
+                    `;
+                    offeringsContainer.appendChild(card);
+                });
+            }
+        }
+
+        // Render Needs
+        const needsContainer = document.getElementById('creative-needs-container');
+        if (needsContainer) {
+            needsContainer.innerHTML = "";
+            if (needs.length === 0) {
+                needsContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1 text-on-surface-variant/70 dark:text-warm-cream/50">You haven't posted any needs yet.</p>`;
+            } else {
+                needs.forEach(n => {
+                    const nColor = getCategoryColor(n.category);
+                    const nIcon = getCategoryIcon(n.category);
+                    const catObj = MAP_FILTER_CATEGORIES.find(c => c.name === n.category || c.displayName === n.category);
+                    const bgStyle = catObj ? `background-color: rgba(${catObj.rgb}, 0.15) !important; color: ${nColor} !important;` : '';
+
+                    const card = document.createElement('div');
+                    card.className = "flex items-center p-3 bg-white dark:bg-[#101612] rounded-xl border border-black/10 dark:border-white/10 shadow-sm relative w-full mb-2";
+                    card.innerHTML = `
+                        <div class="w-[38px] h-[38px] rounded-xl flex items-center justify-center mr-3 flex-shrink-0" style="${bgStyle}">
+                            <span class="material-symbols-outlined text-[20px]">${nIcon}</span>
+                        </div>
+                        <div class="flex-grow min-w-0 pr-3 text-left">
+                            <h4 class="text-forest-green dark:text-white truncate leading-tight font-medium text-sm">${n.title}</h4>
+                            <p class="text-xs text-gray-500 dark:text-warm-cream/60 truncate mt-0.5">${n.desc} · <span class="text-gray-600 dark:text-warm-cream/40">${n.category || 'Other'}</span></p>
+                        </div>
+                        <button class="text-error hover:opacity-80 p-1 flex-shrink-0 bg-transparent border-0 cursor-pointer" onclick="handleDeleteNeed('${n.id}'); updateCreativeDashboard();">
+                            <span class="material-symbols-outlined text-[16px]">delete</span>
+                        </button>
+                    `;
+                    needsContainer.appendChild(card);
+                });
+            }
+        }
+
+        // Render Hosted Events
+        const eventsContainer = document.getElementById('creative-events-container');
+        if (eventsContainer) {
+            eventsContainer.innerHTML = "";
+            if (events.length === 0) {
+                eventsContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1 text-on-surface-variant/70 dark:text-warm-cream/50">You aren't hosting any events yet.</p>`;
+            } else {
+                events.forEach(evt => {
+                    const evtColor = "#e11d48"; // Rose for events
+                    const bgStyle = `background-color: rgba(225, 29, 72, 0.15) !important; color: ${evtColor} !important;`;
+                    const evtIcon = evt.icon || 'festival';
+
+                    const card = document.createElement('div');
+                    card.className = "flex items-center p-3 bg-white dark:bg-[#101612] rounded-xl border border-black/10 dark:border-white/10 shadow-sm relative w-full mb-2";
+                    card.innerHTML = `
+                        <div class="w-[38px] h-[38px] rounded-xl flex items-center justify-center mr-3 flex-shrink-0" style="${bgStyle}">
+                            <span class="material-symbols-outlined text-[20px]">${evtIcon}</span>
+                        </div>
+                        <div class="flex-grow min-w-0 pr-3 text-left">
+                            <h4 class="text-forest-green dark:text-white truncate leading-tight font-medium text-sm">${evt.title}</h4>
+                            <p class="text-xs text-gray-500 dark:text-warm-cream/60 truncate mt-0.5">${evt.desc} · <span class="text-gray-600 dark:text-warm-cream/40">${evt.datetime || 'Flexible'}</span></p>
+                        </div>
+                        <button class="text-error hover:opacity-80 p-1 flex-shrink-0 bg-transparent border-0 cursor-pointer" onclick="handleDeleteEvent('${evt.id}'); updateCreativeDashboard();">
+                            <span class="material-symbols-outlined text-[16px]">delete</span>
+                        </button>
+                    `;
+                    eventsContainer.appendChild(card);
+                });
+            }
+        }
+    } catch (err) {
+        console.error("Error in updateCreativeDashboard:", err);
+    }
+}
+window.updateCreativeDashboard = updateCreativeDashboard;
 
 function submitCreateEventFromOfferFlow(e) {
     if (e) e.preventDefault();
@@ -9645,15 +9928,15 @@ function renderConversationsList() {
     const headerBarEl = document.getElementById('chat-hub-title-bar');
     const headerRightEl = document.getElementById('chat-hub-header-right');
     if (headerTitleEl && headerBarEl && headerRightEl) {
-        let activeColor = '#7c3aed'; // default Active Chats (violet-600)
-        let displayTitle = 'Active Chats';
+        let activeColor = '#7c3aed'; // default Read (violet-600)
+        let displayTitle = 'Read';
         let rightHtml = '';
         if (segment === 'requests') {
             activeColor = '#2563eb'; // blue-600
-            displayTitle = 'Swap Requests';
+            displayTitle = 'Unread';
         } else if (segment === 'active') {
             activeColor = '#7c3aed'; // violet-600
-            displayTitle = 'Active Chats';
+            displayTitle = 'Read';
         } else if (segment === 'groups') {
             activeColor = '#059669'; // emerald-600
             displayTitle = 'Group Chats';
@@ -9921,10 +10204,10 @@ function renderConversationsList() {
     }
 
     if (segment === 'requests') {
-        renderGroupSection("Swap Requests", activeMessages, "question_answer", "text-blue-600");
+        renderGroupSection("Unread", activeMessages, "question_answer", "text-blue-600");
         if (activeMessages.length === 0) renderEmptyState();
     } else if (segment === 'active') {
-        renderGroupSection("Active Chats", activeMessages, "chat", "text-violet-600");
+        renderGroupSection("Read", activeMessages, "chat", "text-violet-600");
         if (activeMessages.length === 0) renderEmptyState();
     } else if (segment === 'groups') {
         renderGroupSection("Group Chats", activeMessages, "groups", "text-emerald-600");
@@ -13963,10 +14246,19 @@ function switchVillageSegment(type) {
     } else {
         if (searchBar) searchBar.classList.remove('hidden');
         if (meetupFooter) meetupFooter.classList.add('hidden');
-        if (mapControls) mapControls.classList.remove('hidden');
+        
+        const isMapSegment = type === 'map' || type === 'needs_map' || type === 'gifts_map';
+        if (mapControls) {
+            if (isMapSegment) {
+                mapControls.style.display = 'flex';
+                mapControls.classList.remove('hidden');
+            } else {
+                mapControls.style.display = 'none';
+            }
+        }
 
         if (triggerIcon) {
-            updateTriggerIconState(triggerIcon, type !== 'map' && type !== 'needs_map' && type !== 'gifts_map');
+            updateTriggerIconState(triggerIcon, !isMapSegment);
             if (floatingContainer) {
                 floatingContainer.classList.remove('detail-active-trigger');
                 const overlay = document.getElementById('map-detail-overlay');
@@ -13974,15 +14266,18 @@ function switchVillageSegment(type) {
                 const isDetailActive = (overlay && overlay.classList.contains('active')) || (eventOverlay && eventOverlay.classList.contains('active'));
                 
                 if (isDetailActive) {
-                    floatingContainer.style.display = 'flex';
+                    floatingContainer.style.display = 'none';
                     floatingContainer.classList.add('detail-active-trigger');
-                    updateTriggerIconState(triggerIcon, true);
                 } else {
-                    floatingContainer.style.display = 'flex';
+                    if (!isMapSegment) {
+                        floatingContainer.style.display = 'none';
+                    } else {
+                        floatingContainer.style.display = 'flex';
+                    }
                 }
             }
             if (blueBtn) {
-                if (type !== 'map' && type !== 'needs_map' && type !== 'gifts_map') {
+                if (!isMapSegment) {
                     blueBtn.style.display = 'none';
                 } else {
                     blueBtn.style.display = 'flex';
@@ -15530,6 +15825,71 @@ const initMapAndInputs = () => {
     if (typeof setupCarouselScrollListeners === 'function') {
         setupCarouselScrollListeners();
     }
+    
+    // Setup dynamic scroll listener for bottom navbar reveal
+    window.updateDetailNavbarState = function() {
+        const overlay = document.getElementById('map-detail-overlay');
+        const eventOverlay = document.getElementById('map-event-detail-overlay');
+        const isItemActive = overlay && overlay.classList.contains('active');
+        const isEventActive = eventOverlay && eventOverlay.classList.contains('active');
+
+        const navbar = document.getElementById('global-navbar');
+        if (!navbar) return;
+
+        let scrolledPast = false;
+        if (isItemActive) {
+            const container = document.getElementById('map-detail-scroll-container');
+            const reportBtn = document.getElementById('map-detail-report-btn');
+            if (container) {
+                const isShort = container.scrollHeight <= container.clientHeight + 10;
+                const isBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 20;
+                let isBtnPast = false;
+                if (reportBtn && reportBtn.style.display !== 'none' && !reportBtn.classList.contains('hidden')) {
+                    const containerRect = container.getBoundingClientRect();
+                    const btnRect = reportBtn.getBoundingClientRect();
+                    isBtnPast = (btnRect.bottom <= containerRect.bottom + 10);
+                } else {
+                    isBtnPast = isBottom || isShort;
+                }
+                scrolledPast = isShort || isBottom || isBtnPast;
+            }
+        } else if (isEventActive) {
+            const container = document.getElementById('map-event-detail-scroll-container');
+            const reportBtn = document.getElementById('map-event-detail-report-btn');
+            if (container) {
+                const isShort = container.scrollHeight <= container.clientHeight + 10;
+                const isBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 20;
+                let isBtnPast = false;
+                if (reportBtn && reportBtn.style.display !== 'none' && !reportBtn.classList.contains('hidden')) {
+                    const containerRect = container.getBoundingClientRect();
+                    const btnRect = reportBtn.getBoundingClientRect();
+                    isBtnPast = (btnRect.bottom <= containerRect.bottom + 10);
+                } else {
+                    isBtnPast = isBottom || isShort;
+                }
+                scrolledPast = isShort || isBottom || isBtnPast;
+            }
+        } else {
+            navbar.classList.remove('navbar-behind');
+            return;
+        }
+
+        if (scrolledPast) {
+            navbar.classList.remove('navbar-behind');
+        } else {
+            navbar.classList.add('navbar-behind');
+        }
+    };
+
+    const container1 = document.getElementById('map-detail-scroll-container');
+    if (container1) {
+        container1.addEventListener('scroll', window.updateDetailNavbarState);
+    }
+
+    const container2 = document.getElementById('map-event-detail-scroll-container');
+    if (container2) {
+        container2.addEventListener('scroll', window.updateDetailNavbarState);
+    }
 };
 
 
@@ -15831,8 +16191,8 @@ const initMoodAndCategories = () => {
     }
     
     // Initial rendering of category filter circles
-    if (typeof renderMapCategoryCircles === 'function') {
-        renderMapCategoryCircles();
+    if (typeof renderMapFilterCircles === 'function') {
+        renderMapFilterCircles();
     }
 };
 
@@ -19276,7 +19636,6 @@ function openMatchingAccountsModal(matches) {
                     ${escapeHTML(location)} · <span class="font-medium text-forest-green dark:text-emerald-400">"${escapeHTML(itemTitle)}"</span>
                 </p>
             </div>
-            <span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-sm font-semibold shrink-0">chevron_right</span>
         `;
         listEl.appendChild(row);
     });
@@ -23681,7 +24040,7 @@ function initMeetingSpotMap() {
     meetingSpotMap = L.map('meeting-spot-map', {
         zoomControl: false,
         attributionControl: false,
-        tap: !L.Browser.mobile,
+        tap: false,
         bounceAtZoomLimits: false,
         wheelDebounceTime: 150,
         preferCanvas: true,
@@ -24350,7 +24709,32 @@ function openMapItemPeek(idOrName) {
     }
 
     const peekRating = document.getElementById('peek-user-rating');
-    if (peekRating) peekRating.innerText = rating;
+    const peekVerifiedIcon = document.getElementById('peek-verified-icon');
+    if (peekRating) {
+        peekRating.innerText = rating;
+    }
+    if (peekVerifiedIcon) {
+        if (isEvent || rating.includes('❤️')) {
+            peekVerifiedIcon.style.display = 'none';
+        } else {
+            peekVerifiedIcon.style.display = 'inline-block';
+        }
+    }
+
+    // Conditionally show/hide verified icon
+    let isVerified = false;
+    if (idOrName.startsWith('evt_')) {
+        isVerified = false;
+    } else if (idOrName.startsWith('off_') || idOrName === '1' || idOrName === '2') {
+        isVerified = state.currentUser ? !!state.currentUser.verified : false;
+    } else {
+        const neighbor = state.neighbors[idOrName];
+        isVerified = neighbor ? (neighbor.verified === true) : false;
+    }
+    const verifiedIcon = document.getElementById('peek-verified-icon');
+    if (verifiedIcon) {
+        verifiedIcon.style.display = isVerified ? 'inline-flex' : 'none';
+    }
 
     // Set up chat button actions
     const chatBtn = document.getElementById('peek-chat-btn');
@@ -25179,7 +25563,7 @@ function openMeetupLocationPicker() {
         meetupPickerMap = L.map('meetup-picker-map', {
             zoomControl: false,
             attributionControl: false,
-            tap: !L.Browser.mobile,
+            tap: false,
             bounceAtZoomLimits: false,
             wheelDebounceTime: 150,
             preferCanvas: true,
@@ -25872,7 +26256,7 @@ function preloadNeighborAvatars() {
 function triggerAppStartupCoordination() {
     window.appJSLoaded = true;
     const isTestMode = window.location.search.includes('test=true');
-    const minShuffleCount = isTestMode ? 1 : 7;
+    const minShuffleCount = isTestMode ? 1 : 8;
     // If the inline script already reached the minShuffleCount, trigger startAppInitialization immediately.
     // Otherwise, the inline script will trigger it when it hits minShuffleCount.
     if (window.appIconShuffleIndex >= minShuffleCount && !window.finalLogoRevealTriggered) {
@@ -25882,11 +26266,8 @@ function triggerAppStartupCoordination() {
     }
 }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', triggerAppStartupCoordination);
-} else {
-    triggerAppStartupCoordination();
-}
+// Execute immediately to prevent timing issues in native app wrappers
+triggerAppStartupCoordination();
 
 // ----------------------------------------------------
 // Custom Badges and Needs Rendering Helpers
