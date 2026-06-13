@@ -2562,6 +2562,16 @@ select::-ms-expand {
 }
 
 /* Color-themed glowing pulse animations for the speed dial selector buttons */
+@keyframes pulse-gray-light {
+    0% { box-shadow: 0 0 0 0 rgba(107, 114, 128, 0.45), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    70% { box-shadow: 0 0 0 8px rgba(107, 114, 128, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    100% { box-shadow: 0 0 0 0 rgba(107, 114, 128, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+}
+.pulse-gray-light {
+    animation: pulse-gray-light 2.2s infinite !important;
+    border-color: rgba(107, 114, 128, 0.45) !important;
+}
+
 @keyframes pulse-blue-light {
     0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.45), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
     70% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
@@ -2632,7 +2642,7 @@ select::-ms-expand {
     border-color: rgba(56, 189, 248, 0.45) !important;
 }
 
-#btn-segment-trigger, #snap-to-neighborhood-btn, #btn-segment-filter {
+#btn-segment-trigger, #snap-to-neighborhood-btn {
     width: 48px !important;
     height: 48px !important;
     min-width: 48px !important;
@@ -2642,8 +2652,21 @@ select::-ms-expand {
     padding: 0 !important;
     border-radius: 9999px !important;
 }
-#btn-segment-trigger span, #snap-to-neighborhood-btn span, #btn-segment-filter span {
+#btn-segment-trigger span, #snap-to-neighborhood-btn span {
     font-size: 24px !important;
+}
+#btn-segment-filter {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    max-width: 34px !important;
+    max-height: 34px !important;
+    padding: 0 !important;
+    border-radius: 9999px !important;
+}
+#btn-segment-filter span {
+    font-size: 16px !important;
 }
 
 /* Scrollbar hiding utilities */
@@ -2830,12 +2853,14 @@ html.dark .chat-bubble-other {
     top: 4.5rem !important; /* 72px */
 }
 #village-segment-floating-buttons {
-    top: 180px !important;
+    bottom: 188px !important;
     right: 24px !important;
-    bottom: auto !important;
+    top: auto !important;
+    transition: bottom 0.3s ease !important;
 }
 #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    top: 180px !important;
+    bottom: 342px !important;
+    top: auto !important;
 }
 
 #meetup-map-footer {
@@ -2852,25 +2877,43 @@ html.dark .chat-bubble-other {
     top: calc(1rem + env(safe-area-inset-top)) !important;
 }
 .native-app-env #floating-map-controls {
-    top: calc(0.2rem + env(safe-area-inset-top)) !important;
-    left: auto !important;
+    bottom: calc(82px + env(safe-area-inset-bottom)) !important;
     right: 20px !important;
+    top: auto !important;
+    transition: bottom 0.3s ease !important;
+}
+.native-app-env #view-village:has(#map-peek-card.active) #floating-map-controls {
+    bottom: calc(236px + env(safe-area-inset-bottom)) !important;
+}
+#floating-map-controls {
+    bottom: 82px !important;
+    right: 24px !important;
+    top: auto !important;
+    transition: bottom 0.3s ease !important;
+}
+#view-village:has(#map-peek-card.active) #floating-map-controls {
+    bottom: 236px !important;
+}
+.native-app-env #btn-segment-filter {
+    top: calc(10px + env(safe-area-inset-top)) !important;
 }
 .native-app-env #map-category-dropdown {
     top: calc(50px + env(safe-area-inset-top)) !important;
-    left: auto !important;
-    right: 20px !important;
+    right: auto !important;
+    left: 20px !important;
 }
 .native-app-env #active-filter-banner {
     top: calc(4.5rem + env(safe-area-inset-top)) !important;
 }
 .native-app-env #village-segment-floating-buttons {
-    top: calc(180px + env(safe-area-inset-top)) !important;
+    bottom: calc(188px + env(safe-area-inset-bottom)) !important;
     right: 24px !important;
-    bottom: auto !important;
+    top: auto !important;
+    transition: bottom 0.3s ease !important;
 }
 .native-app-env #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: calc(236px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(342px + env(safe-area-inset-bottom)) !important;
+    top: auto !important;
 }
 
 .native-app-env #meetup-map-footer {
@@ -3502,12 +3545,12 @@ html.dark .profile-avatar-no-ring {
 }
 
 #map-category-dropdown.expanded .map-category-item {
-    max-height: 42px !important;
-    height: 42px !important;
+    max-height: 30px !important;
+    height: 30px !important;
     opacity: 1 !important;
     transform: scale(1) translateY(0) !important;
     pointer-events: auto !important;
-    margin-bottom: 10px !important;
+    margin-bottom: 6px !important;
     overflow: visible !important;
 }
 
@@ -6239,21 +6282,35 @@ html.dark #view-profile_step_3 h2 {
     color: #ffffff !important;
 }
 
-/* Position and align map category circles dropdown on the right under the top-right control buttons */
+/* Position and align map category circles dropdown on the left under the category filter button */
 #map-category-dropdown {
-    right: 24px !important;
-    left: auto !important;
-    align-items: flex-end !important;
+    left: 24px !important;
+    right: auto !important;
+    top: 50px !important;
+    align-items: flex-start !important;
 }
 
 #map-category-dropdown .map-category-item {
-    justify-content: flex-end !important;
-    flex-direction: row !important;
+    justify-content: flex-start !important;
+    flex-direction: row-reverse !important; /* Circle on left, label on right */
 }
 
 #map-category-dropdown .map-category-item .category-label {
-    margin-left: 0 !important;
-    margin-right: 0.5rem !important;
+    margin-right: 0 !important;
+    margin-left: 0.5rem !important;
+    font-size: 9px !important;
+}
+
+#map-category-dropdown .map-category-item .filter-category-circle,
+#map-category-dropdown .map-category-item .filter-category-info-circle {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+}
+
+#map-category-dropdown .map-category-item span.material-symbols-outlined {
+    font-size: 16px !important;
 }
 
 /* === Interactive Help Mode — Full Implementation === */
@@ -8024,27 +8081,7 @@ html.dark .leaflet-popup-content-wrapper {
         background-color: #101612 !important;
     }
 
-    /* Split-Pane Map View Layout inside the container (Map segment only) */
-    #view-village.segment-map #category-tray {
-        transform: none !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 420px !important;
-        bottom: 0 !important;
-        height: 100% !important;
-        border-right: 1px solid var(--border-color) !important;
-        border-top: none !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        display: flex !important;
-        z-index: 20 !important;
-        padding-top: 240px !important; /* Clears Segment Selector */
-    }
-    
-    #view-village.segment-map #category-tray #tray-handle {
-        display: none !important;
-    }
+
 
     #view-village.segment-map .sticky.top-0 {
         width: 420px !important;
@@ -8871,26 +8908,22 @@ body:not(:has(#view-landing.active)) footer,
 #map-category-dropdown,
 #list-category-dropdown,
 #needs-category-dropdown {
-    gap: 5px !important;
+    gap: 4px !important;
 }
-#map-category-dropdown .filter-category-circle,
-#map-category-dropdown .filter-category-info-circle,
 .list-filter-category-circle,
 .needs-filter-category-circle,
 #btn-map-guide-trigger {
-    width: 28px !important;
-    height: 28px !important;
+    width: 24px !important;
+    height: 24px !important;
 }
-#map-category-dropdown .filter-category-circle span,
-#map-category-dropdown .filter-category-info-circle span,
 .list-filter-category-circle span,
 .needs-filter-category-circle span,
 #btn-map-guide-trigger span {
-    font-size: 14px !important;
+    font-size: 11px !important;
 }
 #map-category-dropdown .category-label {
-    font-size: 9.5px !important;
-    padding: 3px 8px !important;
+    font-size: 8.5px !important;
+    padding: 2px 6px !important;
 }
 
 /* Small Screens (e.g. iPhone SE / screen height <= 700px) */
@@ -8902,42 +8935,34 @@ body:not(:has(#view-landing.active)) footer,
     html:not(.show-simulator) .native-app-env #map-category-dropdown {
         top: calc(42px + env(safe-area-inset-top)) !important;
     }
-    html:not(.show-simulator) #map-category-dropdown .filter-category-circle,
-    html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle,
     html:not(.show-simulator) #btn-map-guide-trigger {
-        width: 22px !important;
-        height: 22px !important;
+        width: 20px !important;
+        height: 20px !important;
     }
-    html:not(.show-simulator) #map-category-dropdown .filter-category-circle span,
-    html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle span,
     html:not(.show-simulator) #btn-map-guide-trigger span {
-        font-size: 11px !important;
+        font-size: 10px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .category-label {
-        font-size: 8px !important;
-        padding: 2px 6px !important;
+        font-size: 7.5px !important;
+        padding: 2px 5px !important;
     }
 }
 
 /* Large Screens (e.g. iPhone 16 Pro Max / screen height > 860px) */
 @media (min-height: 861px) {
     html:not(.show-simulator) #map-category-dropdown {
-        gap: 7px !important;
+        gap: 5px !important;
     }
-    html:not(.show-simulator) #map-category-dropdown .filter-category-circle,
-    html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle,
     html:not(.show-simulator) #btn-map-guide-trigger {
-        width: 32px !important;
-        height: 32px !important;
+        width: 26px !important;
+        height: 26px !important;
     }
-    html:not(.show-simulator) #map-category-dropdown .filter-category-circle span,
-    html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle span,
     html:not(.show-simulator) #btn-map-guide-trigger span {
-        font-size: 16px !important;
+        font-size: 12px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .category-label {
-        font-size: 10.5px !important;
-        padding: 3px 8px !important;
+        font-size: 9px !important;
+        padding: 2px 6px !important;
     }
 }
 
@@ -8983,7 +9008,7 @@ html.native-app-env body.native-app #view-village.active {
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 32px) !important;
-    max-width: 420px !important;
+    max-width: 320px !important;
     height: 64px !important;
     border-radius: 9999px !important;
     z-index: 5000 !important;
@@ -8998,7 +9023,8 @@ html.native-app-env body.native-app #view-village.active {
     padding-top: 0 !important;
     display: flex !important;
     flex-direction: row !important;
-    justify-content: space-around !important;
+    justify-content: center !important;
+    gap: 12px !important;
     align-items: center !important;
     transition: background 0.3s, border-color 0.3s, box-shadow 0.3s !important;
 }
@@ -9030,7 +9056,7 @@ body.show-simulator #global-navbar {
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 32px) !important;
-    max-width: 420px !important;
+    max-width: 320px !important;
     height: 64px !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
@@ -9040,6 +9066,11 @@ body.show-simulator #global-navbar {
     -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
     border: 1px solid rgba(255, 255, 255, 0.35) !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    align-items: center !important;
 }
 
 html.dark.native-app-env #global-navbar:not(.hidden) {
@@ -9262,11 +9293,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
                         </div>
                         <!-- Final reveling logo (Vertical Premium Layout) -->
                         <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none" id="final-logo">
-                            <svg viewBox="0 0 100 100" class="text-white w-[80px] h-[80px] mb-4" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="46" y="22" width="8" height="70" rx="2" fill="currentColor" />
-                                <rect x="48" y="28" width="34" height="12" rx="2" fill="currentColor" transform="rotate(-8 48 34)" />
-                                <rect x="18" y="44" width="34" height="12" rx="2" fill="currentColor" transform="rotate(-8 52 50)" />
-                            </svg>
+                            <img src="data:image/png;base64,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" class="w-[80px] h-[80px] mb-4 object-contain" />
                             <span id="final-brand-text">CORNER SWAPS</span>
                         </div>
                     </div>
@@ -10247,20 +10274,20 @@ html.dark .category-tray, html.dark .category-list-overlay {
                                  <button id="btn-clear-village-search" onclick="clearVillageSearch()"></button>
                                  <div id="village-search-suggestions" class="hidden"></div>
                              </div>
-
+                             
+                             <!-- Category Filter Button — positioned on the left side -->
+                             <button id="btn-segment-filter" onclick="toggleCategoryTray()" class="pointer-events-auto rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm absolute top-[10px] left-6 z-[2000]" title="Category Filter">
+                                 <span class="material-symbols-outlined" id="map-filter-icon">tune</span>
+                             </button>
+                             
                              <!-- Floating Map Controls — positioned on the right side -->
-                             <div id="floating-map-controls" class="absolute top-[16px] right-6 z-[2000] flex flex-col items-center gap-2.5 select-none pointer-events-none" style="overflow: visible !important;">
-                                 <!-- Category Filter Button -->
-                                 <button id="btn-segment-filter" onclick="toggleCategoryTray()" class="pointer-events-auto rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm relative" title="Category Filter">
-                                     <span class="material-symbols-outlined" id="map-filter-icon">tune</span>
-                                 </button>
-                                 
-                                 <!-- Location Button -->
-                                 <button id="snap-to-neighborhood-btn" class="pointer-events-auto w-12 h-12 bg-forest-green border-forest-green dark:bg-[#308A5E] dark:border-[#308A5E] hover:opacity-90 rounded-full flex items-center justify-center text-white dark:text-[#18201a] active:scale-90 transition-all shadow-lg pulse-green-light" onclick="snapToUserNeighborhood()" title="Snap back to neighborhood">
+                             <div id="floating-map-controls" class="absolute bottom-24 right-6 z-[2000] flex flex-col-reverse items-center gap-2.5 select-none pointer-events-none" style="overflow: visible !important;">
+                                 <!-- Location Button (at bottom) -->
+                                 <button id="snap-to-neighborhood-btn" class="pointer-events-auto w-12 h-12 bg-blue-600 border-blue-600 hover:opacity-90 rounded-full flex items-center justify-center text-white active:scale-90 transition-all shadow-lg pulse-blue-light" onclick="snapToUserNeighborhood()" title="Snap back to neighborhood">
                                      <span class="material-symbols-outlined text-2xl font-bold">my_location</span>
                                  </button>
 
-                                 <!-- Menu Trigger Button Container -->
+                                 <!-- Menu Trigger Button Container (above location button) -->
                                  <button id="btn-segment-trigger" onclick="toggleVillageMenu()" class="pointer-events-auto w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-forest-green border border-outline-variant/30 active:scale-90 transition-all cursor-pointer text-white pulse-green-light" title="Menu">
                                      <span id="segment-trigger-icon" class="flex items-center justify-center w-[24px] h-[24px]">
                                          <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="display: block; margin: auto;">
@@ -10290,8 +10317,8 @@ html.dark .category-tray, html.dark .category-list-overlay {
                              <!-- Interactive Help Tooltip Card (legacy, hidden) -->
                              <div id="interactive-help-tooltip" class="hidden" style="pointer-events:none;"></div>
 
-                             <!-- Trailing vertical category circles (RIGHT-aligned under filter button) -->
-                             <div id="map-category-dropdown" class="absolute top-[72px] right-[24px] z-[3000] flex flex-col items-end gap-2 max-h-[70vh] overflow-y-auto pl-6 pr-[0px] pt-2 pb-5 hidden custom-scrollbar select-none animate-slide-down-fade">
+                             <!-- Trailing vertical category circles (LEFT-aligned under filter button) -->
+                             <div id="map-category-dropdown" class="absolute top-[72px] left-[24px] z-[3000] flex flex-col items-start gap-2 max-h-[70vh] overflow-y-auto pr-6 pl-[0px] pt-2 pb-5 hidden custom-scrollbar select-none animate-slide-down-fade">
                                  <!-- Dynamically generated trailing list -->
                              </div>
 
@@ -10830,7 +10857,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
             </section>
 
             <!-- Floating Segment Selector Circle Buttons Stack -->
-            <div id="village-segment-floating-buttons" class="absolute top-[180px] right-6 z-[2000] flex flex-col items-end transition-all duration-300" style="display: none;">
+            <div id="village-segment-floating-buttons" class="absolute top-[180px] right-6 z-[2000] flex flex-col-reverse items-end transition-all duration-300" style="display: none;">
                 
                 <!-- Switcher buttons under the menu with labels + ? help badges on the left -->
                 <div class="menu-sub-button-wrapper">
@@ -10838,7 +10865,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
                         <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Offerings Map</span>
                         <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-map" onclick="showVillageHelpPopup('btn-segment-map',event)">?</button>
                     </div>
-                    <button id="btn-segment-map" onclick="switchVillageSegment('map')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-blue-600 border-blue-600 text-white pulse-blue-light dark:bg-blue-500 dark:border-blue-500 dark:text-[#18201a] scale-110 z-20 active:scale-95 transition-all cursor-pointer" title="Offerings Map">
+                    <button id="btn-segment-map" onclick="switchVillageSegment('map')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gray-600 border-gray-600 text-white pulse-gray-light dark:bg-gray-700 dark:border-gray-700 dark:text-white scale-110 z-20 active:scale-95 transition-all cursor-pointer" title="Offerings Map">
                         <span class="material-symbols-outlined text-[24px]">map</span>
                     </button>
                 </div>
@@ -10848,7 +10875,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
                         <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Needs Map</span>
                         <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-needs-map" onclick="showVillageHelpPopup('btn-segment-needs-map',event)">?</button>
                     </div>
-                    <button id="btn-segment-needs-map" onclick="switchVillageSegment('needs_map')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-orange-600 border-orange-600 text-white pulse-amber-light active:scale-95 transition-all cursor-pointer" title="Needs Map">
+                    <button id="btn-segment-needs-map" onclick="switchVillageSegment('needs_map')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gray-600 border-gray-600 text-white pulse-gray-light dark:bg-gray-700 dark:border-gray-700 dark:text-white active:scale-95 transition-all cursor-pointer" title="Needs Map">
                         <span class="material-symbols-outlined text-[24px]">explore</span>
                     </button>
                 </div>
@@ -10858,7 +10885,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
                         <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Needs List</span>
                         <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-needs" onclick="showVillageHelpPopup('btn-segment-needs',event)">?</button>
                     </div>
-                    <button id="btn-segment-needs" onclick="switchVillageSegment('needs')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-sky-600 border-sky-600 text-white pulse-sky-light active:scale-95 transition-all cursor-pointer" title="Needs List">
+                    <button id="btn-segment-needs" onclick="switchVillageSegment('needs')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gray-600 border-gray-600 text-white pulse-gray-light dark:bg-gray-700 dark:border-gray-700 dark:text-white active:scale-95 transition-all cursor-pointer" title="Needs List">
                         <span class="material-symbols-outlined text-[24px]">shopping_basket</span>
                     </button>
                 </div>
@@ -10868,7 +10895,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
                         <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Offerings List</span>
                         <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-list" onclick="showVillageHelpPopup('btn-segment-list',event)">?</button>
                     </div>
-                    <button id="btn-segment-list" onclick="switchVillageSegment('list')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-violet-600 border-violet-600 text-white pulse-violet-light active:scale-95 transition-all cursor-pointer" title="Offerings List">
+                    <button id="btn-segment-list" onclick="switchVillageSegment('list')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gray-600 border-gray-600 text-white pulse-gray-light dark:bg-gray-700 dark:border-gray-700 dark:text-white active:scale-95 transition-all cursor-pointer" title="Offerings List">
                         <span class="material-symbols-outlined text-[24px]">view_list</span>
                     </button>
                 </div>
@@ -10878,7 +10905,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
                         <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Events List</span>
                         <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-events" onclick="showVillageHelpPopup('btn-segment-events',event)">?</button>
                     </div>
-                    <button id="btn-segment-events" onclick="switchVillageSegment('events')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-teal-600 border-teal-600 text-white pulse-teal-light active:scale-95 transition-all cursor-pointer" title="Events List">
+                    <button id="btn-segment-events" onclick="switchVillageSegment('events')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gray-600 border-gray-600 text-white pulse-gray-light dark:bg-gray-700 dark:border-gray-700 dark:text-white active:scale-95 transition-all cursor-pointer" title="Events List">
                         <span class="material-symbols-outlined text-[24px]">event</span>
                     </button>
                 </div>
@@ -16517,12 +16544,12 @@ html.dark .category-tray, html.dark .category-list-overlay {
                 <nav id="global-navbar" class="hidden absolute bottom-0 left-0 w-full z-[5000] flex flex-row justify-center items-center gap-3 bg-white border-t border-outline-variant/20 h-16 shadow-[0_-4px_20px_rgba(48,138,94,0.02)]">
                     <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="profile_settings" onclick="handleNavbarTap('profile_settings')">
                         <div class="nav-icon-wrapper flex items-center justify-center w-12 h-9 rounded-full transition-all duration-300">
-                            <span class="material-symbols-outlined text-[28px]">person</span>
+                            <span class="material-symbols-outlined text-[28px]">account_circle</span>
                         </div>
                     </div>
                     <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="offer" onclick="handleNavbarTap('offer')">
                         <div class="nav-icon-wrapper flex items-center justify-center w-12 h-9 rounded-full transition-all duration-300">
-                            <span class="material-symbols-outlined text-[28px]">add</span>
+                            <span class="material-symbols-outlined text-[28px]">add_circle</span>
                         </div>
                     </div>
                     <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="chat_hub" onclick="handleNavbarTap('chat_hub')">
@@ -16534,7 +16561,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
                     </div>
                     <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="village" onclick="handleNavbarTap('village')">
                         <div class="nav-icon-wrapper flex items-center justify-center w-12 h-9 rounded-full transition-all duration-300">
-                            <span class="material-symbols-outlined text-[28px]">map</span>
+                            <span class="material-symbols-outlined text-[28px]">explore</span>
                         </div>
                     </div>
                 </nav>
@@ -20616,57 +20643,26 @@ function updateNavBarIcons(activeViewId) {
         highlightViewId = 'profile_settings';
     }
 
-    const NAV_COLORS = {
-        village: {
-            active: '#8B5CF6',         // purple
-            inactive: 'rgba(139, 92, 246, 0.55)',
-            glowLight: 'rgba(139, 92, 246, 0.15)',
-            glowDark: 'rgba(139, 92, 246, 0.3)'
-        },
-        profile_settings: {
-            active: '#2563eb',         // blue like the navigation button
-            inactive: 'rgba(37, 99, 235, 0.55)',
-            glowLight: 'rgba(37, 99, 235, 0.15)',
-            glowDark: 'rgba(37, 99, 235, 0.3)'
-        },
-        chat_hub: {
-            active: '#F97316',         // orange
-            inactive: 'rgba(249, 117, 22, 0.55)',
-            glowLight: 'rgba(249, 117, 22, 0.15)',
-            glowDark: 'rgba(249, 117, 22, 0.3)'
-        },
-        offer: {
-            active: '#D946EF',         // fuchsia
-            inactive: 'rgba(217, 70, 239, 0.55)',
-            glowLight: 'rgba(217, 70, 239, 0.15)',
-            glowDark: 'rgba(217, 70, 239, 0.3)'
-        },
-        home: {
-            active: '#308A5E',         // forest-green
-            inactive: 'rgba(48, 138, 94, 0.55)',
-            glowLight: 'rgba(48, 138, 94, 0.15)',
-            glowDark: 'rgba(48, 138, 94, 0.3)'
-        }
-    };
-
     const isDarkMode = document.documentElement.classList.contains('dark');
+
+    // Grey scale config
+    const activeColor = isDarkMode ? '#cccccc' : '#5a5a5a';          // Slate grey in light mode, light silver-grey in dark mode
+    const inactiveColor = isDarkMode ? '#555555' : '#bbbbbb';        // Dark grey in dark mode, light grey in light mode
+    const glowBg = isDarkMode ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.04)'; // Subtle circular highlight
 
     document.querySelectorAll('[data-nav]').forEach(btn => {
         const view = btn.getAttribute('data-nav');
         const iconWrapper = btn.querySelector('.nav-icon-wrapper');
         const icon = btn.querySelector('.material-symbols-outlined');
         const label = btn.querySelector('span:last-child');
-        
-        const config = NAV_COLORS[view] || NAV_COLORS.home;
 
         // Strip default green classes to ensure custom styles take absolute priority
         btn.classList.remove('text-forest-green', 'text-[#424840]');
 
         if (view === highlightViewId) {
-            btn.style.color = config.active;
+            btn.style.color = activeColor;
             if (iconWrapper) {
                 iconWrapper.classList.add('active-tab');
-                const glowBg = isDarkMode ? config.glowDark : config.glowLight;
                 iconWrapper.style.setProperty('background-color', glowBg, 'important');
             }
             if (label) {
@@ -20677,7 +20673,7 @@ function updateNavBarIcons(activeViewId) {
                 icon.style.fontVariationSettings = "'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24";
             }
         } else {
-            btn.style.color = config.inactive;
+            btn.style.color = inactiveColor;
             if (iconWrapper) {
                 iconWrapper.classList.remove('active-tab');
                 iconWrapper.style.setProperty('background-color', 'transparent', 'important');
@@ -21979,11 +21975,9 @@ function createEventAndSave(title, type, datetime, endDatetime, location, desc) 
         const avatarUrl = (state.currentUser && state.currentUser.avatar) ? state.currentUser.avatar : DEFAULT_AVATAR;
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
-            html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid #2563eb !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
+            html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid #2563eb !important; background-color: #6b7280 !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
                     <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">${iconName}</span>
-                    <div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid #2563eb !important; background-color: #2563eb !important; overflow: hidden !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;">
-                        <img src="${avatarUrl}" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important;" />
-                    </div>
+                    
                    </div>`,
             iconSize: [38, 38],
             iconAnchor: [19, 19]
@@ -26193,11 +26187,9 @@ function submitCreateEventFromOfferFlow(e) {
         const avatarUrl = (state.currentUser && state.currentUser.avatar) ? state.currentUser.avatar : DEFAULT_AVATAR;
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
-            html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid #2563eb !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
+            html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid #2563eb !important; background-color: #6b7280 !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
                     <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">${iconName}</span>
-                    <div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid #2563eb !important; background-color: #2563eb !important; overflow: hidden !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;">
-                        <img src="${avatarUrl}" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important;" />
-                    </div>
+                    
                    </div>`,
             iconSize: [38, 38],
             iconAnchor: [19, 19]
@@ -26404,14 +26396,10 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
     // Add dynamic marker on Leaflet map for user's new offering!
     if (leafletMap) {
         const pinImgUrl = getCategoryPresetImage(newOffer.category);
-        const avatarUrl = (state.currentUser && state.currentUser.avatar) ? state.currentUser.avatar : DEFAULT_AVATAR;
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
             html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid #2563eb !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
                     <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">${icon}</span>
-                    <div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid #2563eb !important; background-color: #2563eb !important; overflow: hidden !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;">
-                        <img src="${avatarUrl}" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important;" />
-                    </div>
                    </div>`,
             iconSize: [38, 38],
             iconAnchor: [19, 19]
@@ -34071,14 +34059,10 @@ function plotMapMarkersOnly() {
                 const iconName = offer.icon || getCategoryIcon(offer.category);
                 const pinImgUrl = getCategoryPresetImage(offer.category);
 
-                const avatarUrl = (state.currentUser && state.currentUser.avatar) ? state.currentUser.avatar : DEFAULT_AVATAR;
                 const customIcon = L.divIcon({
                     className: 'custom-div-icon',
                     html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid #2563eb !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
                             <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">${iconName}</span>
-                            <div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid #2563eb !important; background-color: #2563eb !important; overflow: hidden !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;">
-                                <img src="${avatarUrl}" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important;" />
-                            </div>
                            </div>`,
                     iconSize: [38, 38],
                     iconAnchor: [19, 19]
@@ -34114,10 +34098,7 @@ function plotMapMarkersOnly() {
                 const isMe = (evt.host === displayName || evt.host === 'Lily Kaufmann');
                 const borderStyle = isMe ? 'border: 2px solid #2563eb !important;' : 'border: 2px solid white !important;';
                 const avatarUrl = (state.currentUser && state.currentUser.avatar) ? state.currentUser.avatar : DEFAULT_AVATAR;
-                const avatarBadgeHtml = isMe ? `
-                        <div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid #2563eb !important; background-color: #2563eb !important; overflow: hidden !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;">
-                            <img src="${avatarUrl}" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important;" />
-                        </div>` : '';
+                const avatarBadgeHtml = '';
 
                 const customIcon = L.divIcon({
                     className: 'custom-div-icon',
@@ -34203,10 +34184,7 @@ function plotMapMarkersOnly() {
 
                 const isMe = (need.neighborName === displayName);
                 const borderStyle = isMe ? 'border: 2px solid #2563eb !important;' : 'border: 2px solid white !important;';
-                const avatarBadgeHtml = isMe ? `
-                        <div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid #2563eb !important; background-color: #2563eb !important; overflow: hidden !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;">
-                            <img src="${avatarUrl}" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important;" />
-                        </div>` : '';
+                const avatarBadgeHtml = '';
 
                 const customIcon = L.divIcon({
                     className: 'custom-div-icon',
@@ -43780,16 +43758,129 @@ function openMapExplanationModal() {
     if (modal) modal.classList.remove('hidden');
 }
 
+let isMapHelpActive = false;
+
+function toggleMapInteractiveHelp() {
+    if (typeof playSound === 'function') playSound('click');
+    if (isMapHelpActive) {
+        exitMapInteractiveHelp();
+    } else {
+        enterMapInteractiveHelp();
+    }
+}
+
+function enterMapInteractiveHelp() {
+    isMapHelpActive = true;
+    document.body.classList.add('help-mode-active');
+    
+    const triggerBtn = document.getElementById('btn-map-guide-trigger');
+    if (triggerBtn) {
+        triggerBtn.classList.add('help-active');
+    }
+    
+    const overlay = document.getElementById('map-interactive-help-overlay');
+    if (overlay) {
+        overlay.classList.remove('hidden');
+        overlay.style.opacity = '1';
+    }
+    
+    const targets = [
+        { id: 'btn-segment-filter', name: 'Category Filter', desc: 'Tap this to filter the village map pins by category, such as Food, Tools, Services, or Skills. This helps you quickly find what you are looking for.', icon: 'tune' },
+        { id: 'snap-to-neighborhood-btn', name: 'Location Reset', desc: 'Tap this to center the map back to your neighborhood community hub. This is useful if you have panned far away.', icon: 'my_location' },
+        { id: 'btn-segment-trigger', name: 'Village Menu', desc: 'Tap this to switch between different sections of the village view: Map view, Offerings List, Needs List, and local Events.', icon: 'grid_view' },
+        { id: 'village-search-container', name: 'Map Search', desc: 'Search for specific items, services, or neighbors on the map. As you type, recommendations and suggestions will appear below.', icon: 'search' }
+    ];
+    
+    targets.forEach(t => {
+        const el = document.getElementById(t.id);
+        if (el) {
+            const existing = el.querySelector('.help-badge-dot');
+            if (existing) existing.remove();
+            
+            const badge = document.createElement('div');
+            badge.className = 'help-badge-dot';
+            badge.innerText = '?';
+            badge.title = `Help for ${t.name}`;
+            
+            badge.onclick = function(e) {
+                e.stopPropagation();
+                if (typeof playSound === 'function') playSound('click');
+                showMapHelpDetail(t.name, t.desc, t.icon);
+            };
+            
+            const style = window.getComputedStyle(el);
+            if (style.position === 'static') {
+                el.style.position = 'relative';
+            }
+            el.appendChild(badge);
+        }
+    });
+    
+    showMapHelpIntro();
+    openMapExplanationModal();
+}
+
+function exitMapInteractiveHelp() {
+    closeMapExplanationModal();
+}
+
+function showMapHelpIntro() {
+    const intro = document.getElementById('map-help-modal-intro');
+    const detail = document.getElementById('map-help-modal-detail');
+    if (intro) intro.classList.remove('hidden');
+    if (detail) detail.classList.add('hidden');
+}
+
+function showMapHelpDetail(title, desc, icon) {
+    const intro = document.getElementById('map-help-modal-intro');
+    const detail = document.getElementById('map-help-modal-detail');
+    if (intro) intro.classList.add('hidden');
+    if (detail) detail.classList.remove('hidden');
+    
+    const titleEl = document.getElementById('map-help-detail-title');
+    const descEl = document.getElementById('map-help-detail-desc');
+    const iconEl = document.getElementById('map-help-detail-icon');
+    
+    if (titleEl) titleEl.innerText = title;
+    if (descEl) descEl.innerHTML = desc;
+    if (iconEl) iconEl.innerText = icon;
+    
+    const modal = document.getElementById('map-explanation-modal');
+    if (modal) modal.classList.remove('hidden');
+}
+
 function closeMapExplanationModal() {
     if (typeof playSound === 'function') playSound('click');
     const modal = document.getElementById('map-explanation-modal');
     if (modal) modal.classList.add('hidden');
+    
+    if (isMapHelpActive) {
+        isMapHelpActive = false;
+        document.body.classList.remove('help-mode-active');
+        
+        const triggerBtn = document.getElementById('btn-map-guide-trigger');
+        if (triggerBtn) {
+            triggerBtn.classList.remove('help-active');
+        }
+        
+        const overlay = document.getElementById('map-interactive-help-overlay');
+        if (overlay) {
+            overlay.classList.add('hidden');
+            overlay.style.opacity = '0';
+        }
+        
+        document.querySelectorAll('.help-badge-dot').forEach(badge => badge.remove());
+    }
 }
 
 window.openProfileStatExplanation = openProfileStatExplanation;
 window.closeProfileStatExplanationModal = closeProfileStatExplanationModal;
 window.openMapExplanationModal = openMapExplanationModal;
 window.closeMapExplanationModal = closeMapExplanationModal;
+window.toggleMapInteractiveHelp = toggleMapInteractiveHelp;
+window.exitMapInteractiveHelp = exitMapInteractiveHelp;
+window.showMapHelpIntro = showMapHelpIntro;
+window.showMapHelpDetail = showMapHelpDetail;
 window.closeLevelUpOverlay = closeLevelUpOverlay;
 
 window.openItemDetailsByTitle = function(title, neighborName) {

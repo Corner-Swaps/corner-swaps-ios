@@ -1675,12 +1675,12 @@ html.dark .chat-bubble-other {
     top: 4.5rem !important; /* 72px */
 }
 #village-segment-floating-buttons {
-    bottom: 88px !important;
+    bottom: 198px !important;
     right: 24px !important;
     top: auto !important;
 }
 #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: 236px !important;
+    bottom: 352px !important;
 }
 
 #meetup-map-footer {
@@ -1710,12 +1710,12 @@ html.dark .chat-bubble-other {
     top: calc(4.5rem + env(safe-area-inset-top)) !important;
 }
 .native-app-env #village-segment-floating-buttons {
-    bottom: calc(88px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(198px + env(safe-area-inset-bottom)) !important;
     right: 24px !important;
     top: auto !important;
 }
 .native-app-env #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: calc(236px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(352px + env(safe-area-inset-bottom)) !important;
 }
 
 .native-app-env #meetup-map-footer {

@@ -3986,57 +3986,26 @@ function updateNavBarIcons(activeViewId) {
         highlightViewId = 'profile_settings';
     }
 
-    const NAV_COLORS = {
-        village: {
-            active: '#8B5CF6',         // purple
-            inactive: 'rgba(139, 92, 246, 0.55)',
-            glowLight: 'rgba(139, 92, 246, 0.15)',
-            glowDark: 'rgba(139, 92, 246, 0.3)'
-        },
-        profile_settings: {
-            active: '#2563eb',         // blue like the navigation button
-            inactive: 'rgba(37, 99, 235, 0.55)',
-            glowLight: 'rgba(37, 99, 235, 0.15)',
-            glowDark: 'rgba(37, 99, 235, 0.3)'
-        },
-        chat_hub: {
-            active: '#F97316',         // orange
-            inactive: 'rgba(249, 117, 22, 0.55)',
-            glowLight: 'rgba(249, 117, 22, 0.15)',
-            glowDark: 'rgba(249, 117, 22, 0.3)'
-        },
-        offer: {
-            active: '#D946EF',         // fuchsia
-            inactive: 'rgba(217, 70, 239, 0.55)',
-            glowLight: 'rgba(217, 70, 239, 0.15)',
-            glowDark: 'rgba(217, 70, 239, 0.3)'
-        },
-        home: {
-            active: '#308A5E',         // forest-green
-            inactive: 'rgba(48, 138, 94, 0.55)',
-            glowLight: 'rgba(48, 138, 94, 0.15)',
-            glowDark: 'rgba(48, 138, 94, 0.3)'
-        }
-    };
-
     const isDarkMode = document.documentElement.classList.contains('dark');
+
+    // Grey scale config
+    const activeColor = isDarkMode ? '#cccccc' : '#5a5a5a';          // Slate grey in light mode, light silver-grey in dark mode
+    const inactiveColor = isDarkMode ? '#555555' : '#bbbbbb';        // Dark grey in dark mode, light grey in light mode
+    const glowBg = isDarkMode ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.04)'; // Subtle circular highlight
 
     document.querySelectorAll('[data-nav]').forEach(btn => {
         const view = btn.getAttribute('data-nav');
         const iconWrapper = btn.querySelector('.nav-icon-wrapper');
         const icon = btn.querySelector('.material-symbols-outlined');
         const label = btn.querySelector('span:last-child');
-        
-        const config = NAV_COLORS[view] || NAV_COLORS.home;
 
         // Strip default green classes to ensure custom styles take absolute priority
         btn.classList.remove('text-forest-green', 'text-[#424840]');
 
         if (view === highlightViewId) {
-            btn.style.color = config.active;
+            btn.style.color = activeColor;
             if (iconWrapper) {
                 iconWrapper.classList.add('active-tab');
-                const glowBg = isDarkMode ? config.glowDark : config.glowLight;
                 iconWrapper.style.setProperty('background-color', glowBg, 'important');
             }
             if (label) {
@@ -4047,7 +4016,6 @@ function updateNavBarIcons(activeViewId) {
                 icon.style.fontVariationSettings = "'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24";
             }
         } else {
-            const inactiveColor = isDarkMode ? 'rgba(253, 251, 247, 0.6)' : '#424840';
             btn.style.color = inactiveColor;
             if (iconWrapper) {
                 iconWrapper.classList.remove('active-tab');
@@ -5352,9 +5320,7 @@ function createEventAndSave(title, type, datetime, endDatetime, location, desc) 
             className: 'custom-div-icon',
             html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid #2563eb !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
                     <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">${iconName}</span>
-                    <div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid #2563eb !important; background-color: #2563eb !important; overflow: hidden !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;">
-                        <img src="${avatarUrl}" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important;" />
-                    </div>
+                    
                    </div>`,
             iconSize: [38, 38],
             iconAnchor: [19, 19]
@@ -9566,9 +9532,7 @@ function submitCreateEventFromOfferFlow(e) {
             className: 'custom-div-icon',
             html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid #2563eb !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
                     <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">${iconName}</span>
-                    <div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid #2563eb !important; background-color: #2563eb !important; overflow: hidden !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;">
-                        <img src="${avatarUrl}" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important;" />
-                    </div>
+                    
                    </div>`,
             iconSize: [38, 38],
             iconAnchor: [19, 19]
@@ -9775,14 +9739,10 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
     // Add dynamic marker on Leaflet map for user's new offering!
     if (leafletMap) {
         const pinImgUrl = getCategoryPresetImage(newOffer.category);
-        const avatarUrl = (state.currentUser && state.currentUser.avatar) ? state.currentUser.avatar : DEFAULT_AVATAR;
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
             html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid #2563eb !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
                     <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">${icon}</span>
-                    <div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid #2563eb !important; background-color: #2563eb !important; overflow: hidden !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;">
-                        <img src="${avatarUrl}" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important;" />
-                    </div>
                    </div>`,
             iconSize: [38, 38],
             iconAnchor: [19, 19]
@@ -17451,14 +17411,10 @@ function plotMapMarkersOnly() {
                 const iconName = offer.icon || getCategoryIcon(offer.category);
                 const pinImgUrl = getCategoryPresetImage(offer.category);
 
-                const avatarUrl = (state.currentUser && state.currentUser.avatar) ? state.currentUser.avatar : DEFAULT_AVATAR;
                 const customIcon = L.divIcon({
                     className: 'custom-div-icon',
                     html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid #2563eb !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
                             <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">${iconName}</span>
-                            <div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid #2563eb !important; background-color: #2563eb !important; overflow: hidden !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;">
-                                <img src="${avatarUrl}" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important;" />
-                            </div>
                            </div>`,
                     iconSize: [38, 38],
                     iconAnchor: [19, 19]
@@ -17494,10 +17450,7 @@ function plotMapMarkersOnly() {
                 const isMe = (evt.host === displayName || evt.host === 'Lily Kaufmann');
                 const borderStyle = isMe ? 'border: 2px solid #2563eb !important;' : 'border: 2px solid white !important;';
                 const avatarUrl = (state.currentUser && state.currentUser.avatar) ? state.currentUser.avatar : DEFAULT_AVATAR;
-                const avatarBadgeHtml = isMe ? `
-                        <div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid #2563eb !important; background-color: #2563eb !important; overflow: hidden !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;">
-                            <img src="${avatarUrl}" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important;" />
-                        </div>` : '';
+                const avatarBadgeHtml = '';
 
                 const customIcon = L.divIcon({
                     className: 'custom-div-icon',
@@ -17583,10 +17536,7 @@ function plotMapMarkersOnly() {
 
                 const isMe = (need.neighborName === displayName);
                 const borderStyle = isMe ? 'border: 2px solid #2563eb !important;' : 'border: 2px solid white !important;';
-                const avatarBadgeHtml = isMe ? `
-                        <div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid #2563eb !important; background-color: #2563eb !important; overflow: hidden !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;">
-                            <img src="${avatarUrl}" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important;" />
-                        </div>` : '';
+                const avatarBadgeHtml = '';
 
                 const customIcon = L.divIcon({
                     className: 'custom-div-icon',
