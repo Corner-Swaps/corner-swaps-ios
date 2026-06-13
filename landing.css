@@ -199,9 +199,7 @@ body.no-scroll #view-chat_detail.active {
     opacity: 0;
 }
 
-.animate-shuffle {
-    animation: shuffleFade 0.35s ease-in-out forwards;
-}
+.animate-shuffle { animation: shuffleFade 0.15s ease-in-out forwards; }
 
 @keyframes finalReveal {
     0% { opacity: 0; transform: scale(0.8); }

@@ -3243,16 +3243,16 @@ function showView(viewId, mode) {
     }
     collapseVillageMenu();
     
-    // Redirect public website landing page to welcome/village in native app wrapper
-    // Ensure show-simulator class is active on both html and body to lock application inside the iPhone 16 mockup frame
-    const isNative = document.documentElement.classList.contains('native-app-env') || (document.body && document.body.classList.contains('native-app'));
+    const isNative = window.isNativeApp === true || document.documentElement.classList.contains('native-app-env') || (document.body && document.body.classList.contains('native-app'));
     console.log("[NATIVE CHECK] isNative:", isNative, "documentElement classes:", document.documentElement.className, "body classes:", document.body ? document.body.className : "no body");
     if (!isNative) {
         document.body.classList.add('show-simulator');
         document.documentElement.classList.add('show-simulator');
+        document.body.classList.remove('native-app');
     } else {
         document.body.classList.remove('show-simulator');
         document.documentElement.classList.remove('show-simulator');
+        document.body.classList.add('native-app');
     }
     
     // Auto-dismiss level up overlay if switching views
@@ -3573,6 +3573,14 @@ function showView(viewId, mode) {
         setTimeout(checkAndInvalidate, 150);
         setTimeout(checkAndInvalidate, 350);
         setTimeout(checkAndInvalidate, 600);
+
+        // 🎉 First-time map entry confetti — fires once per install
+        if (!safeLocalStorage.getItem('corner_swaps_map_confetti_shown')) {
+            safeLocalStorage.setItem('corner_swaps_map_confetti_shown', 'true');
+            setTimeout(() => {
+                if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
+            }, 800);
+        }
     }
     if (viewId === 'chat_hub') {
         renderConversationsList();
@@ -3830,11 +3838,11 @@ function renderHomeDashboard() {
                 <img src="${neighbor.offerImg || PLACEHOLDER_IMAGE}" class="w-12 h-12 rounded-xl object-cover border border-outline-variant/20 flex-shrink-0">
                 <div class="flex-grow min-w-0">
                     <div class="flex justify-between items-start">
-                        <h4 class="font-bold text-forest-green text-xs truncate">${neighbor.offerTitle}</h4>
+                        <h4 class="font-bold text-black dark:text-white text-xs truncate">${neighbor.offerTitle}</h4>
                         <span class="text-[9px] text-on-surface-variant font-medium ml-2">${neighbor.location}</span>
                     </div>
                     <p class="text-[10px] text-on-surface-variant line-clamp-2 mt-0.5">${neighbor.offerDesc}</p>
-                    <div class="flex items-center gap-1.5 mt-2 text-[9px] text-forest-green/60 font-bold uppercase tracking-wider">
+                    <div class="flex items-center gap-1.5 mt-2 text-[9px] text-black/60 dark:text-white/60 font-bold uppercase tracking-wider">
                         <span class="material-symbols-outlined text-[10px]">person</span>
                         <span>${neighbor.name} · ${neighbor.vouches} ❤️</span>
                     </div>
@@ -4090,16 +4098,14 @@ function startAppInitialization() {
                     if (state.currentUser) {
                         showView('village');
                     } else {
-                        state.isGuest = true;
-                        showView('village');
+                        showView('welcome');
                     }
                 }
             } catch (e) {
                 console.error("Error during app startup sequence:", e);
                 try {
                     state = JSON.parse(INITIAL_STATE_STRING);
-                    state.isGuest = true;
-                    showView('village');
+                    showView('welcome');
                 } catch (err) {
                     console.error("Fallback failed:", err);
                 }
@@ -4348,6 +4354,181 @@ function renderOfferPhotosList() {
     updateEventPhotoPlaceholder();
 }
 window.renderOfferPhotosList = renderOfferPhotosList;
+
+const LISTING_ICON_DATABASE = [
+    // Category Icons
+    { name: 'restaurant', label: 'Food & Drink', color: '#ef4444' },
+    { name: 'local_pizza', label: 'Pizza/Food', color: '#f97316' },
+    { name: 'spa', label: 'Spa/Health', color: '#22c55e' },
+    { name: 'yard', label: 'Garden/Yard', color: '#84cc16' },
+    { name: 'favorite', label: 'Heart', color: '#f43f5e' },
+    { name: 'star', label: 'Star', color: '#eab308' },
+    { name: 'eco', label: 'Eco/Green', color: '#10b981' },
+    { name: 'home', label: 'Home', color: '#ea580c' },
+    { name: 'cleaning_services', label: 'Cleanup', color: '#06b6d4' },
+    { name: 'handyman', label: 'Handyman', color: '#8b5cf6' },
+    { name: 'construction', label: 'Tools', color: '#6366f1' },
+    { name: 'school', label: 'Education', color: '#3b82f6' },
+    { name: 'translate', label: 'Language', color: '#a855f7' },
+    { name: 'menu_book', label: 'Book/Read', color: '#f59e0b' },
+    { name: 'info', label: 'Info', color: '#0ea5e9' },
+    { name: 'groups', label: 'Social/Group', color: '#3b82f6' },
+    { name: 'palette', label: 'Art/Creative', color: '#d946ef' },
+    { name: 'sports_esports', label: 'Games/Play', color: '#0ea5e9' },
+    { name: 'festival', label: 'Festival', color: '#ea580c' },
+    { name: 'volunteer_activism', label: 'Give/Love', color: '#ec4899' },
+    { name: 'child_care', label: 'Child Care', color: '#f43f5e' },
+    { name: 'checkroom', label: 'Clothing', color: '#ec4899' },
+    { name: 'stroller', label: 'Kids/Mat', color: '#f43f5e' },
+    { name: 'more_horiz', label: 'Other', color: '#64748b' },
+    { name: 'cached', label: 'Swap', color: '#10b981' },
+    { name: 'inventory_2', label: 'Item/Box', color: '#b45309' },
+    { name: 'explore', label: 'Explore', color: '#0284c7' },
+    { name: 'handshake', label: 'Deal/Swap', color: '#308A5E' }
+];
+
+const CATEGORY_TO_ICONS_MAP = {
+    // Offering / Need Categories
+    'Food & Drink': ['local_pizza', 'spa', 'yard', 'favorite', 'star', 'eco'],
+    'Home & Living': ['home', 'cleaning_services', 'handyman', 'construction', 'star', 'favorite'],
+    'Home and Living': ['home', 'cleaning_services', 'handyman', 'construction', 'star', 'favorite'],
+    'Garden & Outdoors': ['yard', 'eco', 'construction', 'star', 'home'],
+    'Skills & Education': ['school', 'translate', 'menu_book', 'info', 'star', 'groups'],
+    'Handyman & Services': ['handyman', 'construction', 'cleaning_services', 'star', 'home'],
+    'Creative & Art': ['palette', 'sports_esports', 'menu_book', 'star', 'festival'],
+    'Health': ['spa', 'favorite', 'volunteer_activism', 'star', 'child_care'],
+    'Clothing & Apparel': ['checkroom', 'palette', 'star', 'favorite'],
+    'Books, Games, Entertainment': ['menu_book', 'sports_esports', 'star', 'school'],
+    'Books & Games': ['menu_book', 'sports_esports', 'star', 'school'],
+    'Kids & Maternity': ['child_care', 'favorite', 'star', 'sports_esports'],
+    'Kids and Maternity': ['child_care', 'favorite', 'star', 'sports_esports'],
+    'Language or Info Exchange': ['translate', 'school', 'menu_book', 'info', 'star', 'groups'],
+    'Event or Meetup': ['groups', 'festival', 'volunteer_activism', 'handshake', 'star', 'favorite'],
+    'Other': ['more_horiz', 'cached', 'inventory_2', 'explore', 'handshake', 'star'],
+
+    // Event Types
+    'Workshop': ['school', 'menu_book', 'translate', 'handyman', 'construction', 'star'],
+    'Meetup': ['groups', 'handshake', 'favorite', 'star', 'festival'],
+    'Community Clean': ['cleaning_services', 'eco', 'yard', 'star', 'construction'],
+    'Book Swap': ['menu_book', 'sports_esports', 'star', 'school'],
+    'Playdate': ['child_care', 'favorite', 'star', 'sports_esports'],
+    'Garden Swap': ['yard', 'eco', 'star', 'home'],
+    'Repair Cafe': ['handyman', 'construction', 'star', 'cleaning_services'],
+    'Clothing Swap': ['checkroom', 'palette', 'star', 'favorite']
+};
+
+function getFilteredIcons() {
+    const mode = state.currentOfferMode || 'offering';
+    let selectedCat = '';
+    
+    if (mode === 'event') {
+        const select = document.getElementById('offer-event-type-select');
+        selectedCat = select ? select.value : '';
+    } else {
+        const select = document.getElementById('offer-category-select');
+        selectedCat = select ? select.value : '';
+    }
+    
+    if (selectedCat && CATEGORY_TO_ICONS_MAP[selectedCat]) {
+        const iconNames = CATEGORY_TO_ICONS_MAP[selectedCat];
+        return LISTING_ICON_DATABASE.filter(icon => iconNames.includes(icon.name));
+    }
+    
+    // Fallback/Default icons if no category selected
+    if (mode === 'event') {
+        const eventIcons = ['school', 'groups', 'cleaning_services', 'menu_book', 'child_care', 'yard', 'handyman', 'checkroom'];
+        return LISTING_ICON_DATABASE.filter(icon => eventIcons.includes(icon.name));
+    } else {
+        const categoryIcons = ['restaurant', 'home', 'yard', 'school', 'handyman', 'palette', 'spa', 'checkroom', 'sports_esports', 'stroller', 'groups', 'translate'];
+        return LISTING_ICON_DATABASE.filter(icon => categoryIcons.includes(icon.name));
+    }
+}
+
+function openIconSelectorModal() {
+    if (typeof window.triggerHapticFeedback === 'function') window.triggerHapticFeedback('light');
+    if (typeof playSound === 'function') playSound('click');
+    const modal = document.getElementById('icon-selector-modal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        renderIconSelectorGrid();
+    }
+}
+window.openIconSelectorModal = openIconSelectorModal;
+
+function closeIconSelectorModal() {
+    const modal = document.getElementById('icon-selector-modal');
+    if (modal) modal.classList.add('hidden');
+}
+window.closeIconSelectorModal = closeIconSelectorModal;
+
+// Close modal when tapping backdrop
+const iconSelectorBackdrop = document.querySelector('#icon-selector-modal .absolute.inset-0');
+if (iconSelectorBackdrop) {
+    iconSelectorBackdrop.onclick = closeIconSelectorModal;
+}
+
+function renderIconSelectorGrid() {
+    const grid = document.getElementById('icon-selector-grid');
+    if (!grid) return;
+    
+    const filteredIcons = getFilteredIcons();
+    
+    grid.innerHTML = filteredIcons.map(icon => {
+        const isSelected = state.selectedOfferIcon === icon.name;
+        const selectedClass = isSelected ? 'bg-forest-green text-warm-cream border-forest-green' : 'bg-warm-cream/40 dark:bg-[#1b261f]/30 border-outline-variant/20 text-forest-green dark:text-emerald-400 hover:bg-forest-green/5';
+        
+        // Icon color when selected vs not selected
+        const iconStyle = isSelected ? '' : `style="color: ${icon.color} !important;"`;
+        
+        return `
+            <button type="button" onclick="selectIcon('${icon.name}')" class="px-4 py-3 min-h-[56px] border rounded-2xl flex flex-row items-center justify-start text-left gap-3 active:scale-95 transition-all cursor-pointer ${selectedClass}">
+                <span class="material-symbols-outlined text-2xl flex-shrink-0" ${iconStyle} style="font-variation-settings: 'FILL' ${isSelected ? 1 : 0};">${icon.name}</span>
+                <span class="text-xs font-bold leading-tight truncate ${isSelected ? 'text-warm-cream/90' : 'text-black dark:text-warm-cream'}">${icon.label}</span>
+            </button>
+        `;
+    }).join('');
+}
+window.renderIconSelectorGrid = renderIconSelectorGrid;
+
+function selectIcon(iconName) {
+    if (typeof window.triggerHapticFeedback === 'function') window.triggerHapticFeedback('medium');
+    if (typeof playSound === 'function') playSound('success');
+    state.selectedOfferIcon = iconName;
+    saveState();
+    renderOfferIconDisplay();
+    closeIconSelectorModal();
+}
+window.selectIcon = selectIcon;
+
+function removeOfferIcon() {
+    if (typeof window.triggerHapticFeedback === 'function') window.triggerHapticFeedback('light');
+    if (typeof playSound === 'function') playSound('click');
+    state.selectedOfferIcon = "";
+    saveState();
+    renderOfferIconDisplay();
+}
+window.removeOfferIcon = removeOfferIcon;
+
+function renderOfferIconDisplay() {
+    const placeholder = document.getElementById('offer-icon-placeholder');
+    const selectedDisplay = document.getElementById('offer-icon-selected-display');
+    const removeBtn = document.getElementById('offer-icon-remove');
+    const symbolSpan = document.getElementById('offer-selected-icon-symbol');
+    
+    if (state.selectedOfferIcon) {
+        if (placeholder) placeholder.classList.add('hidden');
+        if (selectedDisplay) selectedDisplay.classList.remove('hidden');
+        if (removeBtn) removeBtn.classList.remove('hidden');
+        if (symbolSpan) {
+            symbolSpan.innerText = state.selectedOfferIcon;
+        }
+    } else {
+        if (placeholder) placeholder.classList.remove('hidden');
+        if (selectedDisplay) selectedDisplay.classList.add('hidden');
+        if (removeBtn) removeBtn.classList.add('hidden');
+    }
+}
+window.renderOfferIconDisplay = renderOfferIconDisplay;
 
 function getEventIconDetails(type) {
     const t = (type || '').toLowerCase();
@@ -4712,12 +4893,12 @@ function handleSignIn(e) {
         displayName: 'Lily Kaufmann',
         email: 'lily@community.com',
         avatar: DEFAULT_AVATAR,
-        location: 'Fairview',
-        address: '1190 W 12th Avenue, Vancouver, BC',
+        location: '',
+        address: '',
         lat: 49.2608,
         lng: -123.1368,
-        skills: ['Acoustic Guitar Tutoring', 'Garden Weeding'],
-        needs: ['Yoga Sessions', 'Fresh Sourdough Bread'],
+        skills: [],
+        needs: [],
         instagram: 'https://instagram.com/lilykaufmann',
         facebook: 'https://facebook.com/lilykaufmann',
         tiktok: 'https://tiktok.com/@lilykaufmann'
@@ -4725,7 +4906,7 @@ function handleSignIn(e) {
     state.isGuest = false;
     saveState();
     playSound('click');
-    showView('village');
+    showView('profile_step_1');
 }
 
 window.handleDevAutoLogin = function() {
@@ -4773,6 +4954,19 @@ function handleLogout() {
     playSound('click');
     showView('welcome');
 }
+
+window.restartOnboarding = function() {
+    if (!confirm('This will reset your session and restart the full onboarding experience. Continue?')) return;
+    playSound('click');
+    // Clear all persisted state
+    safeLocalStorage.removeItem('barterland_state');
+    safeLocalStorage.removeItem('barterland_state_sig');
+    safeLocalStorage.removeItem('reinstated_onboarding_v1');
+    safeLocalStorage.removeItem('corner_swaps_map_confetti_shown');
+    // Reset in-memory state
+    try { state = JSON.parse(INITIAL_STATE_STRING); } catch(e) { state = {}; }
+    showView('welcome');
+};
 function toggleConsentButton() {
     const cb1 = document.getElementById('consent-check-1')?.checked;
     const cb2 = document.getElementById('consent-check-2')?.checked;
@@ -4855,11 +5049,7 @@ function handleProfileConsentSubmit() {
     }
     state.eulaAgreed = true;
     saveState();
-    if (state.currentUser && (state.currentUser.location || state.locationConsent)) {
-        showView('chat_hub');
-    } else {
-        showView('profile_location_permission');
-    }
+    showView('profile_location_permission');
 }
 
 // Client-side Policy Validators
@@ -5142,9 +5332,232 @@ function submitProfileStep1(location) {
     
     saveState();
     playSound('click');
-    showView('village');
-    triggerSuccessConfetti();
+    showView('lead_giving');
 }
+
+// Onboarding Drafts
+let onboardingDraftOfferings = [];
+let onboardingDraftNeeds = [];
+let onboardingDraftEvents = [];
+
+window.handleAddDraftOffering = function() {
+    const titleInput = document.getElementById('setup-offer-title');
+    const catInput = document.getElementById('setup-offer-category');
+    if (!titleInput || !catInput) return;
+    const title = titleInput.value.trim();
+    const category = catInput.value;
+    if (!title) {
+        alert("Please enter an offering title.");
+        return;
+    }
+    
+    onboardingDraftOfferings.push({ title, category });
+    titleInput.value = '';
+    renderOnboardingChips();
+    if (typeof playSound === 'function') playSound('click');
+};
+
+window.handleAddDraftNeed = function() {
+    const titleInput = document.getElementById('setup-need-title');
+    const catInput = document.getElementById('setup-need-category');
+    if (!titleInput || !catInput) return;
+    const title = titleInput.value.trim();
+    const category = catInput.value;
+    if (!title) {
+        alert("Please enter a need title.");
+        return;
+    }
+    
+    onboardingDraftNeeds.push({ title, category });
+    titleInput.value = '';
+    renderOnboardingChips();
+    if (typeof playSound === 'function') playSound('click');
+};
+
+window.handleAddDraftEvent = function() {
+    const titleInput = document.getElementById('setup-event-title');
+    const typeInput = document.getElementById('setup-event-type');
+    if (!titleInput || !typeInput) return;
+    const title = titleInput.value.trim();
+    const type = typeInput.value;
+    if (!title) {
+        alert("Please enter an event title.");
+        return;
+    }
+    
+    onboardingDraftEvents.push({ title, type });
+    titleInput.value = '';
+    renderOnboardingChips();
+    if (typeof playSound === 'function') playSound('click');
+};
+
+window.removeDraftOffering = function(index) {
+    onboardingDraftOfferings.splice(index, 1);
+    renderOnboardingChips();
+    if (typeof playSound === 'function') playSound('click');
+};
+
+window.removeDraftNeed = function(index) {
+    onboardingDraftNeeds.splice(index, 1);
+    renderOnboardingChips();
+    if (typeof playSound === 'function') playSound('click');
+};
+
+window.removeDraftEvent = function(index) {
+    onboardingDraftEvents.splice(index, 1);
+    renderOnboardingChips();
+    if (typeof playSound === 'function') playSound('click');
+};
+
+function renderOnboardingChips() {
+    const offerContainer = document.getElementById('setup-draft-offerings-container');
+    const needContainer = document.getElementById('setup-draft-needs-container');
+    const eventContainer = document.getElementById('setup-draft-events-container');
+    
+    if (offerContainer) {
+        offerContainer.innerHTML = onboardingDraftOfferings.map((item, idx) => `
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-forest-green text-warm-cream rounded-full text-[10px] font-bold">
+                ${item.title} (${item.category})
+                <button type="button" onclick="removeDraftOffering(${idx})" class="text-warm-cream/80 hover:text-white ml-0.5 border-none bg-transparent p-0 cursor-pointer flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[12px] font-bold">close</span>
+                </button>
+            </span>
+        `).join('');
+    }
+    
+    if (needContainer) {
+        needContainer.innerHTML = onboardingDraftNeeds.map((item, idx) => `
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-[#1e293b] text-warm-cream rounded-full text-[10px] font-bold">
+                ${item.title} (${item.category})
+                <button type="button" onclick="removeDraftNeed(${idx})" class="text-warm-cream/80 hover:text-white ml-0.5 border-none bg-transparent p-0 cursor-pointer flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[12px] font-bold">close</span>
+                </button>
+            </span>
+        `).join('');
+    }
+    
+    if (eventContainer) {
+        eventContainer.innerHTML = onboardingDraftEvents.map((item, idx) => `
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-[#4338ca] text-warm-cream rounded-full text-[10px] font-bold">
+                ${item.title} (${item.type})
+                <button type="button" onclick="removeDraftEvent(${idx})" class="text-warm-cream/80 hover:text-white ml-0.5 border-none bg-transparent p-0 cursor-pointer flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[12px] font-bold">close</span>
+                </button>
+            </span>
+        `).join('');
+    }
+}
+
+window.handleSetupProfileSubmit = function() {
+    if (!state.currentUser) {
+        state.currentUser = {};
+    }
+    
+    // Add offerings to state.userOfferings
+    onboardingDraftOfferings.forEach(item => {
+        const id = 'offering-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        const iconMap = {
+            'Food & Drink': 'restaurant',
+            'Home, Living & Gear': 'home',
+            'Garden & Outdoors': 'yard',
+            'Skills & Education': 'school',
+            'Handyman & Services': 'handyman',
+            'Creative & Art': 'palette',
+            'Health': 'health_and_safety',
+            'Clothing & Apparel': 'apparel',
+            'Kids, Puzzles & Books': 'child_care',
+            'Other': 'info'
+        };
+        const icon = iconMap[item.category] || 'info';
+        
+        state.userOfferings.push({
+            id,
+            title: item.title,
+            category: item.category,
+            desc: `Shared during onboarding. Come swap or borrow from me in the neighborhood!`,
+            icon: icon,
+            image: null,
+            lat: state.currentUser.lat || 49.2608,
+            lng: state.currentUser.lng || -123.1368
+        });
+    });
+    
+    // Add needs to state.userNeeds
+    onboardingDraftNeeds.forEach(item => {
+        const id = 'need-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        const iconMap = {
+            'Food & Drink': 'shopping_basket',
+            'Home, Living & Gear': 'home',
+            'Garden & Outdoors': 'yard',
+            'Skills & Education': 'school',
+            'Handyman & Services': 'handyman',
+            'Creative & Art': 'palette',
+            'Health': 'health_and_safety',
+            'Clothing & Apparel': 'apparel',
+            'Kids, Puzzles & Books': 'child_care',
+            'Other': 'info'
+        };
+        const icon = iconMap[item.category] || 'info';
+        
+        if (!state.userNeeds) state.userNeeds = [];
+        state.userNeeds.push({
+            id,
+            title: item.title,
+            category: item.category,
+            desc: `Requested during onboarding. Looking for local help or swaps!`,
+            icon: icon,
+            lat: state.currentUser.lat || 49.2608,
+            lng: state.currentUser.lng || -123.1368
+        });
+    });
+
+    // Add events to state.events
+    onboardingDraftEvents.forEach(item => {
+        const id = 'event-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        
+        if (!state.events) state.events = [];
+        // Set event time to tomorrow
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(10, 0, 0, 0);
+        
+        state.events.push({
+            id,
+            title: item.title,
+            type: item.type,
+            datetime: tomorrow.toISOString().substring(0, 16),
+            endDatetime: new Date(tomorrow.getTime() + 2 * 60 * 60 * 1000).toISOString().substring(0, 16),
+            location: state.currentUser.location || 'Fairview',
+            desc: `Hosted by ${state.currentUser.displayName || 'Me'}. Set up during onboarding!`,
+            lat: state.currentUser.lat || 49.2608,
+            lng: state.currentUser.lng || -123.1368,
+            host: state.currentUser.displayName || 'Me'
+        });
+    });
+
+    // Clear drafts
+    onboardingDraftOfferings = [];
+    onboardingDraftNeeds = [];
+    onboardingDraftEvents = [];
+    
+    saveState();
+    if (typeof playSound === 'function') playSound('click');
+    showView('village');
+    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
+    if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
+};
+
+window.handleSetupProfileSkip = function() {
+    // Clear drafts
+    onboardingDraftOfferings = [];
+    onboardingDraftNeeds = [];
+    onboardingDraftEvents = [];
+    
+    if (typeof playSound === 'function') playSound('click');
+    showView('village');
+    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
+    if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
+};
 
 window.advanceFromLeadGiving = function() {
     playSound('click');
@@ -5198,6 +5611,12 @@ function toggleTagSelection(el) {
 
 function handleProfileStep2() {
     const skills = [];
+    const grid = document.getElementById('wizard-skills-categories-grid');
+    if (grid) {
+        grid.querySelectorAll('button.selected-category').forEach(btn => {
+            skills.push(btn.getAttribute('data-category'));
+        });
+    }
     document.querySelectorAll('#skills-options-container .selected').forEach(tag => {
         skills.push(tag.getAttribute('data-tag'));
     });
@@ -5211,15 +5630,35 @@ function handleProfileStep2() {
     showView('profile_step_3');
 }
 
+function skipProfileStep2() {
+    state.currentUser.skills = [];
+    saveState();
+    playSound('click');
+    showView('profile_step_3');
+}
+
 function handleProfileStep3() {
     const needs = [];
+    const grid = document.getElementById('wizard-needs-categories-grid');
+    if (grid) {
+        grid.querySelectorAll('button.selected-category').forEach(btn => {
+            needs.push(btn.getAttribute('data-category'));
+        });
+    }
     document.querySelectorAll('#needs-options-container .selected').forEach(tag => {
         needs.push(tag.getAttribute('data-tag'));
     });
     state.currentUser.needs = needs;
     saveState();
     playSound('click');
-    showView('village');
+    showView('profile_step_custom_listing');
+}
+
+function skipProfileStep3() {
+    state.currentUser.needs = [];
+    saveState();
+    playSound('click');
+    showView('profile_step_custom_listing');
 }
 
 function goToMapFromCelebration() {
@@ -5230,6 +5669,109 @@ function goToMapFromCelebration() {
     }
     showView('village');
 }
+window.goToMapFromCelebration = goToMapFromCelebration;
+
+window.confirmSafeSpotsOnboarding = function() {
+    if (typeof playSound === 'function') playSound('click');
+    showView('profile_step_1');
+};
+
+window.onboardingPostType = 'offering';
+window.setOnboardingPostType = function(type) {
+    if (typeof playSound === 'function') playSound('click');
+    window.onboardingPostType = type;
+    const types = ['offering', 'need', 'event'];
+    types.forEach(t => {
+        const btn = document.getElementById(`onboarding-post-type-${t}`);
+        if (btn) {
+            if (t === type) {
+                btn.className = "p-2.5 bg-forest-green text-white border border-forest-green rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all select-none";
+            } else {
+                btn.className = "p-2.5 bg-white border border-outline-variant/30 text-forest-green rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all select-none";
+            }
+        }
+    });
+};
+
+window.submitOnboardingCustomListing = function() {
+    const title = document.getElementById('onboarding-post-title').value.trim();
+    const desc = document.getElementById('onboarding-post-desc').value.trim();
+    if (!title || !desc) {
+        alert("Please enter a title and description for your post.");
+        return;
+    }
+    
+    // Safety checks
+    if (typeof checkSafetyPolicy === 'function' && (checkSafetyPolicy(title) || checkSafetyPolicy(desc))) {
+        showSafetyContentViolation();
+        return;
+    }
+    if (typeof checkCashlessPolicy === 'function' && (checkCashlessPolicy(title) || checkCashlessPolicy(desc))) {
+        showSafetyMoneyWarning();
+        return;
+    }
+    
+    const id = (window.onboardingPostType || 'offering') + '-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+    
+    if (window.onboardingPostType === 'offering') {
+        state.userOfferings.push({
+            id,
+            title: title,
+            category: 'Other',
+            desc: desc,
+            icon: 'info',
+            image: null,
+            lat: state.currentUser.lat || 49.2608,
+            lng: state.currentUser.lng || -123.1368
+        });
+    } else if (window.onboardingPostType === 'need') {
+        if (!state.userNeeds) state.userNeeds = [];
+        state.userNeeds.push({
+            id,
+            title: title,
+            category: 'Other',
+            desc: desc,
+            icon: 'info',
+            lat: state.currentUser.lat || 49.2608,
+            lng: state.currentUser.lng || -123.1368
+        });
+    } else if (window.onboardingPostType === 'event') {
+        if (!state.events) state.events = [];
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(12, 0, 0, 0);
+        state.events.push({
+            id,
+            title: title,
+            type: 'Meetup',
+            datetime: tomorrow.toISOString().substring(0, 16),
+            endDatetime: new Date(tomorrow.getTime() + 2 * 60 * 60 * 1000).toISOString().substring(0, 16),
+            location: state.currentUser.location || 'Fairview',
+            desc: desc,
+            lat: state.currentUser.lat || 49.2608,
+            lng: state.currentUser.lng || -123.1368,
+            host: state.currentUser.displayName || 'Me'
+        });
+    }
+    
+    saveState();
+    if (typeof playSound === 'function') playSound('click');
+    showView('village');
+    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
+    if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
+};
+
+window.skipOnboardingCustomListing = function() {
+    if (typeof playSound === 'function') playSound('click');
+    showView('village');
+    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
+    if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
+};
+
+window.skipOnboardingLocation = function() {
+    if (typeof playSound === 'function') playSound('click');
+    showView('create_account_safe_spots');
+};
 window.goToMapFromCelebration = goToMapFromCelebration;
 
 // Profile Step 4: Host Event (Optional) Handlers
@@ -5456,7 +5998,7 @@ function renderEventsList() {
                             <span class="-ml-2 px-2 py-0.5 bg-forest-green/10 dark:bg-forest-green/20 text-black dark:text-white rounded text-[8px] font-bold uppercase tracking-wider">${evt.type}</span>
                             <span class="text-[9px] text-black dark:text-white font-medium">${times.timeDisplay} · ${times.badgeDate}</span>
                         </div>
-                        <h4 class="text-forest-green dark:text-white truncate leading-tight mt-0.5">${evt.title}</h4>
+                        <h4 class="text-black dark:text-white truncate leading-tight mt-0.5">${evt.title}</h4>
                         <p class="text-gray-500 dark:text-gray-400 line-clamp-1 mt-0.5">${evt.desc}</p>
                     </div>
 
@@ -5503,7 +6045,7 @@ function renderBulletinsList() {
         
         card.innerHTML = `
             <div class="flex justify-between items-start">
-                <h4 class="font-headline font-bold text-sm text-forest-green">${bulletin.title}</h4>
+                <h4 class="font-headline font-bold text-sm text-black dark:text-white">${bulletin.title}</h4>
                 <span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${getBulletinTypeBadgeClass(bulletin.type)}">${bulletin.type}</span>
             </div>
             <p class="text-xs text-on-surface-variant leading-relaxed text-left line-clamp-3">${bulletin.desc}</p>
@@ -5514,7 +6056,7 @@ function renderBulletinsList() {
                     <span>•</span>
                     <span>${bulletin.date}</span>
                 </div>
-                <button class="flex items-center gap-1 text-forest-green hover:opacity-80 active:scale-90 transition-transform font-bold" onclick="event.stopPropagation(); likeBulletin('${bulletin.id}')">
+                <button class="flex items-center gap-1 text-black dark:text-white hover:opacity-80 active:scale-90 transition-transform font-bold" onclick="event.stopPropagation(); likeBulletin('${bulletin.id}')">
                     <span class="material-symbols-outlined text-xs text-rose-500" style="font-variation-settings: 'FILL' 1;">favorite</span>
                     <span id="bulletin-likes-${bulletin.id}">${bulletin.likes}</span>
                 </button>
@@ -7524,11 +8066,11 @@ function openNeighborProfileModal(neighborName) {
                         openEventDetail(evt.id);
                     };
                     card.innerHTML = `
-                        <div class="w-8 h-8 rounded-lg bg-forest-green/5 text-forest-green flex items-center justify-center mr-3 flex-shrink-0">
+                        <div class="w-8 h-8 rounded-lg bg-black/5 dark:bg-white/10 text-black dark:text-white flex items-center justify-center mr-3 flex-shrink-0">
                             <span class="material-symbols-outlined text-base">event</span>
                         </div>
                         <div class="flex-grow min-w-0 pr-3 text-left">
-                            <h4 class="font-medium text-forest-green dark:text-white text-[11px] truncate leading-tight">${evt.title}</h4>
+                            <h4 class="font-medium text-black dark:text-white text-[11px] truncate leading-tight">${evt.title}</h4>
                             <p class="text-[9px] text-gray-500 truncate flex items-center flex-wrap gap-1 mt-0.5">
                                 By ${evt.host || 'Community'} · <span>${formattedDate} at ${formattedTime}</span>
                             </p>
@@ -7567,7 +8109,7 @@ function openNeighborProfileModal(neighborName) {
                 <span class="material-symbols-outlined text-[24px]">${offerIcon}</span>
             </div>
             <div class="flex-grow min-w-0 pr-3 text-left">
-                <h4 class="text-forest-green dark:text-white truncate leading-tight font-medium">${neighbor.offerTitle}</h4>
+                <h4 class="text-black dark:text-white truncate leading-tight font-medium">${neighbor.offerTitle}</h4>
                 <p class="text-gray-500 truncate mt-0.5"><span class="text-gray-600">${neighbor.category || 'Other'}</span></p>
             </div>
             <span class="text-[9.5px] text-forest-green font-semibold flex items-center gap-0.5 opacity-80 shrink-0">
@@ -7589,7 +8131,7 @@ function openNeighborProfileModal(neighborName) {
                     <span class="material-symbols-outlined text-[24px]">${needInfo.icon}</span>
                 </div>
                 <div class="flex-grow min-w-0 pr-3 text-left">
-                    <h4 class="text-forest-green dark:text-white truncate leading-tight font-medium">${need}</h4>
+                    <h4 class="text-black dark:text-white truncate leading-tight font-medium">${need}</h4>
                     <p class="text-gray-500 truncate mt-0.5"><span class="text-gray-600">${needInfo.category || 'Other'}</span></p>
                 </div>
                 <span class="text-[9.5px] text-forest-green font-semibold flex items-center gap-0.5 opacity-80 shrink-0">
@@ -8111,6 +8653,17 @@ function toggleMapInfoMode() {
     playSound('click');
     mapInfoModeActive = !mapInfoModeActive;
     renderMapFilterCircles();
+    // Update the persistent help button appearance
+    const helpBtn = document.getElementById('btn-map-info-help');
+    if (helpBtn) {
+        if (mapInfoModeActive) {
+            helpBtn.classList.remove('bg-amber-400', 'hover:bg-amber-500');
+            helpBtn.classList.add('bg-forest-green', 'hover:bg-forest-green/80');
+        } else {
+            helpBtn.classList.remove('bg-forest-green', 'hover:bg-forest-green/80');
+            helpBtn.classList.add('bg-amber-400', 'hover:bg-amber-500');
+        }
+    }
 }
 window.toggleMapInfoMode = toggleMapInfoMode;
 
@@ -8151,7 +8704,7 @@ function updateCategoryCircleStyle(circle, cat, isActive) {
     if (!circle || !cat) return;
     
     // Find the corresponding category-label element in the same row
-    const parentRow = circle.closest('.flex');
+    const parentRow = circle.closest('.map-category-item');
     const label = parentRow ? parentRow.querySelector('.category-label') : null;
     
     if (mapInfoModeActive && cat.name !== 'Clear Filter') {
@@ -8231,58 +8784,56 @@ function renderMapFilterCircles() {
     
     const showLabels = true;
 
-    // Render the Info row at the very top of the list
+    // Render the Info row
+    const infoCircleBg = mapInfoModeActive ? '#308A5E' : '#4b5563';
+    const infoAnimStyle = `transition-delay: 0s !important; -webkit-transition-delay: 0s !important;`;
     const isDark = document.documentElement.classList.contains('dark');
     const gapColor = isDark ? '#141c16' : '#ffffff';
-    const infoCircleBg = mapInfoModeActive ? '#308A5E' : '#4b5563';
     const infoCircleActiveShadow = mapInfoModeActive ? `box-shadow: 0 0 0 2px ${gapColor}, 0 0 0 4px #308A5E, 0 8px 16px rgba(0,0,0,0.35) !important;` : 'box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15) !important;';
     
-    const infoAnimStyle = `transition-delay: 0s !important; -webkit-transition-delay: 0s !important;`;
-    
     const infoRowHtml = `
-        <div class="map-category-item flex items-center justify-end gap-1 select-none cursor-pointer group active:scale-95 transition-transform" 
+        <div class="map-category-item flex items-center gap-1.5 select-none cursor-pointer active:scale-95 transition-transform shrink-0 relative" 
              data-category-name="Info" 
              onclick="toggleMapInfoMode()" 
              style="${infoAnimStyle}">
-            <!-- Label to the left -->
-            <span class="category-label text-[10px] font-bold text-black dark:text-[#308A5E] select-none leading-none">
-                Info
-            </span>
             <!-- Circle element -->
             <div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all duration-200 flex-shrink-0 relative filter-category-info-circle"
                  style="background-color: ${infoCircleBg} !important; color: #FFFFFF !important; ${infoCircleActiveShadow} transform: ${mapInfoModeActive ? 'scale(1.1)' : 'scale(1.0)'} !important; opacity: ${mapInfoModeActive ? '1' : '0.65'} !important;">
                 <span class="material-symbols-outlined text-[13px]">help</span>
             </div>
+            <!-- Label to the right -->
+            <span class="category-label text-[10px] font-bold select-none leading-none">
+                Info
+            </span>
         </div>
     `;
 
     const categoriesHtml = MAP_FILTER_CATEGORIES.map((cat, idx) => {
         const delay = (idx + 1) * 0.025; // 25ms stagger per item
         const animStyle = `transition-delay: ${delay}s !important; -webkit-transition-delay: ${delay}s !important;`;
-        const labelClass = showLabels ? '' : 'hidden';
         
         // If info mode is active, display a pulsating ? badge overlay on each category circle (except Clear Filter)
         const infoBadgeHtml = (mapInfoModeActive && cat.name !== "Clear Filter") ? `
-            <div class="absolute -top-1 -right-1 w-4 h-4 bg-amber-500 text-white rounded-full flex items-center justify-center border border-white dark:border-[#141c16] shadow-sm animate-pulse z-10">
-                <span class="text-[9px] font-extrabold font-mono">?</span>
+            <div class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-amber-500 text-white rounded-full flex items-center justify-center border border-white dark:border-[#141c16] shadow-sm animate-pulse z-10">
+                <span class="text-[8px] font-extrabold font-mono">?</span>
             </div>
         ` : '';
 
         return `
-            <div class="map-category-item flex items-center justify-end gap-1 select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="map-category-item flex items-center gap-1.5 select-none cursor-pointer active:scale-95 transition-transform shrink-0 relative" 
                  data-category-name="${cat.name}" 
                  onclick="toggleMapFilterCategory('${cat.name}', this)" 
                  style="${animStyle}">
-                <!-- Label to the left -->
-                <span class="category-label text-[10px] font-bold text-black dark:text-[#308A5E] select-none leading-none ${labelClass}">
-                    ${cat.displayName}
-                </span>
                 <!-- Circle element -->
                 <div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all duration-200 filter-category-circle flex-shrink-0 relative" 
                      data-category="${cat.name}">
                     <span class="material-symbols-outlined text-[13px]">${cat.icon}</span>
                     ${infoBadgeHtml}
                 </div>
+                <!-- Label to the right -->
+                <span class="category-label text-[10px] font-bold select-none leading-none">
+                    ${cat.displayName}
+                </span>
             </div>
         `;
     }).join('');
@@ -8662,7 +9213,7 @@ function openCategoryView(categoryName) {
                     <p class="text-xs text-on-surface-variant/80 dark:text-warm-cream/60 truncate mt-0.5">${neighbor.name} · ${neighbor.category}</p>
                 </div>
                 <div class="flex flex-col items-end flex-shrink-0 select-none text-right">
-                    <span class="text-[10px] font-bold text-forest-green dark:text-emerald-400 uppercase tracking-wider">${neighbor.location.split(' ')[0]}</span>
+                    <span class="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">${neighbor.location.split(' ')[0]}</span>
                     <span class="text-[9px] text-on-surface-variant/50 dark:text-warm-cream/40 mt-0.5">${neighbor.vouches || 0} ❤️</span>
                 </div>
             `;
@@ -8690,7 +9241,7 @@ function openCategoryView(categoryName) {
                     <p class="text-xs text-on-surface-variant/80 dark:text-warm-cream/60 truncate mt-0.5">Lily K. · ${offer.category}</p>
                 </div>
                 <div class="flex flex-col items-end flex-shrink-0 select-none text-right">
-                    <span class="text-[10px] font-bold text-forest-green dark:text-emerald-400 uppercase tracking-wider">${(offer.location || 'Oakwood').split(' ')[0]}</span>
+                    <span class="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">${(offer.location || 'Oakwood').split(' ')[0]}</span>
                     <span class="text-[9px] text-on-surface-variant/50 dark:text-warm-cream/40 mt-0.5">Active</span>
                 </div>
             `;
@@ -9242,9 +9793,15 @@ function resetOfferFormToSelector() {
     const selectorScreen = document.getElementById('offer-type-selector-screen');
     const formWrapper = document.getElementById('offer-form-wrapper');
     const dashboard = document.getElementById('creative-dashboard-screen');
-    if (selectorScreen) selectorScreen.classList.remove('hidden');
+    
+    // Always show dashboard by default on close/reset to ensure we go back to Creative Dashboard first
+    if (dashboard) {
+        dashboard.classList.remove('hidden');
+        if (selectorScreen) selectorScreen.classList.add('hidden');
+    } else {
+        if (selectorScreen) selectorScreen.classList.remove('hidden');
+    }
     if (formWrapper) formWrapper.classList.add('hidden');
-    if (dashboard) dashboard.classList.add('hidden');
 
     updateCreativeDashboard();
     
@@ -10135,13 +10692,13 @@ function renderConversationsList() {
                 </div>
                 <div class="flex-grow min-w-0 flex flex-col gap-0.5">
                     <div class="flex justify-between items-baseline">
-                        <h3 class="font-headline text-[19.5px] ${isVerified ? 'text-forest-green dark:text-emerald-400 font-black' : (isUnreadCard ? 'font-bold text-forest-green' : 'font-bold text-on-surface')} flex items-center gap-1.5 truncate">
+                        <h3 class="font-headline text-base ${isVerified ? 'text-black dark:text-white font-black' : (isUnreadCard ? 'font-bold text-black dark:text-white' : 'font-bold text-on-surface')} flex items-center gap-1.5 truncate">
                             <span>${displayName}</span>
                             ${(conv.negotiation && conv.negotiation.meetupLocation) ? '<span class="material-symbols-outlined text-[14px] font-bold" title="Meeting location set" style="font-variation-settings: \'FILL\' 1; color: #f59e0b !important;">map</span>' : ''}
                             ${conv.isPinned ? '<span class="material-symbols-outlined text-[14px] text-amber-500 font-bold" style="font-variation-settings: \'FILL\' 1;">keep</span>' : ''}
                         </h3>
                     </div>
-                    <p class="text-xs truncate leading-relaxed ${isVerified ? 'text-forest-green dark:text-emerald-400 font-black' : (isUnreadCard ? 'text-on-surface font-semibold' : 'text-outline')}">${checkmarkPrefix}${lastMsgText}</p>
+                    <p class="text-xs truncate leading-relaxed ${isVerified ? 'text-black dark:text-white font-black' : (isUnreadCard ? 'text-black dark:text-white font-semibold' : 'text-outline')}">${checkmarkPrefix}${lastMsgText}</p>
                     <div class="flex items-center gap-2 text-[10px] text-outline dark:text-warm-cream/50 mt-0.5">
                         <span class="font-medium">${lastMsgTime || 'Yesterday'}</span>
                         ${badge ? `
@@ -10922,8 +11479,8 @@ function renderChatDetail(conv) {
                             <!-- Bubble: Side-by-Side Swap Proposal -->
                             <div id="msg-bubble-${index}" class="chat-bubble-hover py-3 px-3.5 rounded-3xl rounded-tr-none shadow-md cursor-pointer select-none transition-all duration-200 w-[280px] text-left flex flex-col gap-2.5 bg-white dark:bg-[#18201a] border-2 border-emerald-500/80 dark:border-emerald-500/60" onclick="window.viewSwapOfferOnMap('${offeredId}', '${requestedId}', 'mine'); event.stopPropagation();">
                                 <div class="flex items-center gap-1.5 border-b border-black/10 dark:border-white/10 pb-1.5">
-                                    <span class="material-symbols-outlined text-[14px] font-bold text-emerald-600 dark:text-emerald-400">swap_horiz</span>
-                                    <span class="text-[9px] uppercase tracking-wider font-extrabold text-emerald-600 dark:text-emerald-400">Proposed Swap</span>
+                                    <span class="material-symbols-outlined text-[14px] font-bold text-black dark:text-white">swap_horiz</span>
+                                    <span class="text-[9px] uppercase tracking-wider font-extrabold text-black dark:text-white">Proposed Swap</span>
                                 </div>
                                 <div class="flex items-center justify-between gap-2.5">
                                     <!-- Left: Give -->
@@ -10931,11 +11488,11 @@ function renderChatDetail(conv) {
                                         <div class="w-full aspect-square rounded-xl overflow-hidden relative border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5">
                                             <img src="${leftImg}" class="w-full h-full object-cover">
                                         </div>
-                                        <div class="text-[9px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest mt-1.5">GIVE</div>
+                                        <div class="text-[9px] font-black text-black dark:text-white uppercase tracking-widest mt-1.5">GIVE</div>
                                     </div>
                                     
                                     <!-- Center Plus Sign -->
-                                    <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shadow-sm font-bold text-base">
+                                    <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm font-bold text-base">
                                         +
                                     </div>
                                     
@@ -10949,7 +11506,7 @@ function renderChatDetail(conv) {
                                 </div>
                                 <!-- Status Pill at the bottom -->
                                 <div class="mt-1 flex justify-center">
-                                    <div class="px-3 py-1.5 rounded-full text-[10px] font-bold text-center bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shadow-sm w-full select-none">
+                                    <div class="px-3 py-1.5 rounded-full text-[10px] font-bold text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none">
                                         ${conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'
                                             ? 'Agreement Confirmed! ⚡'
                                             : `${escapeHTML(conv.neighborName)} to agree?`}
@@ -11016,8 +11573,8 @@ function renderChatDetail(conv) {
                             <!-- Bubble: Side-by-Side Swap Proposal -->
                             <div id="msg-bubble-${index}" class="chat-bubble-hover py-3 px-3.5 rounded-3xl rounded-tl-none shadow-md cursor-pointer select-none transition-all duration-200 w-[280px] text-left flex flex-col gap-2.5 bg-white dark:bg-[#18201a] border-2 border-emerald-500/80 dark:border-emerald-500/60" onclick="window.viewSwapOfferOnMap('${offeredId}', '${requestedId}', 'mine'); event.stopPropagation();">
                                 <div class="flex items-center gap-1.5 border-b border-black/10 dark:border-white/10 pb-1.5">
-                                    <span class="material-symbols-outlined text-[14px] font-bold text-emerald-600 dark:text-emerald-400">swap_horiz</span>
-                                    <span class="text-[9px] uppercase tracking-wider font-extrabold text-emerald-600 dark:text-emerald-400">Proposed Swap</span>
+                                    <span class="material-symbols-outlined text-[14px] font-bold text-black dark:text-white">swap_horiz</span>
+                                    <span class="text-[9px] uppercase tracking-wider font-extrabold text-black dark:text-white">Proposed Swap</span>
                                 </div>
                                 <div class="flex items-center justify-between gap-2.5">
                                     <!-- Left: Get (what I get) -->
@@ -11025,11 +11582,11 @@ function renderChatDetail(conv) {
                                         <div class="w-full aspect-square rounded-xl overflow-hidden relative border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5">
                                             <img src="${leftImg}" class="w-full h-full object-cover">
                                         </div>
-                                        <div class="text-[9px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest mt-1.5">GET</div>
+                                        <div class="text-[9px] font-black text-black dark:text-white uppercase tracking-widest mt-1.5">GET</div>
                                     </div>
                                     
                                     <!-- Center Plus Sign -->
-                                    <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shadow-sm font-bold text-base">
+                                    <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm font-bold text-base">
                                         +
                                     </div>
                                     
@@ -11043,7 +11600,7 @@ function renderChatDetail(conv) {
                                 </div>
                                 <!-- Status Pill at the bottom -->
                                 <div class="mt-1 flex justify-center">
-                                    <div class="px-3 py-1.5 rounded-full text-[10px] font-bold text-center bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shadow-sm w-full select-none">
+                                    <div class="px-3 py-1.5 rounded-full text-[10px] font-bold text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none">
                                         ${conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'
                                             ? 'Agreement Confirmed! ⚡'
                                             : 'You to agree?'}
@@ -11546,7 +12103,7 @@ function renderChatTradeDrawer(conv) {
                     </div>
                 ` : ''}
             </div>
-            <div class="bg-emerald-500/10 text-emerald-800 dark:text-emerald-400 border border-emerald-500/20 p-3.5 rounded-xl text-xs font-bold text-center">
+            <div class="bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 p-3.5 rounded-xl text-xs font-bold text-center">
                 Swap Completed! Thanks for building trust in the community.
             </div>
         `;
@@ -13141,7 +13698,7 @@ function renderProfileSettings() {
                     openEventDetail(evt.id);
                 };
                 card.innerHTML = `
-                    <div class="w-8 h-8 rounded-lg bg-forest-green/5 text-forest-green flex items-center justify-center mr-3 flex-shrink-0">
+                    <div class="w-8 h-8 rounded-lg bg-black/5 dark:bg-white/10 text-black dark:text-white flex items-center justify-center mr-3 flex-shrink-0">
                         <span class="material-symbols-outlined text-base">event</span>
                     </div>
                     <div class="flex-grow min-w-0 pr-3 text-left">
@@ -14203,6 +14760,10 @@ function switchVillageSegment(type) {
         if (meetupFooter) meetupFooter.classList.remove('hidden');
         if (mapControls) mapControls.classList.add('hidden');
         if (categoryDropdown) categoryDropdown.classList.add('hidden');
+        const filterBtn = document.getElementById('btn-segment-filter');
+        if (filterBtn) filterBtn.classList.add('hidden');
+        const helpBtn = document.getElementById('btn-map-info-help');
+        if (helpBtn) helpBtn.classList.add('hidden');
     } else {
         if (searchBar) searchBar.classList.remove('hidden');
         if (meetupFooter) meetupFooter.classList.add('hidden');
@@ -14214,6 +14775,24 @@ function switchVillageSegment(type) {
                 mapControls.classList.remove('hidden');
             } else {
                 mapControls.style.display = 'none';
+            }
+        }
+
+        const filterBtn = document.getElementById('btn-segment-filter');
+        if (filterBtn) {
+            if (isMapSegment) {
+                filterBtn.classList.remove('hidden');
+            } else {
+                filterBtn.classList.add('hidden');
+            }
+        }
+
+        const helpBtn = document.getElementById('btn-map-info-help');
+        if (helpBtn) {
+            if (isMapSegment) {
+                helpBtn.classList.remove('hidden');
+            } else {
+                helpBtn.classList.add('hidden');
             }
         }
 
@@ -19583,7 +20162,7 @@ function openMatchingAccountsModal(matches) {
             <div class="flex-grow min-w-0">
                 <h4 class="text-xs font-bold text-black dark:text-white truncate">${escapeHTML(name)}</h4>
                 <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">
-                    ${escapeHTML(location)} · <span class="font-medium text-forest-green dark:text-emerald-400">"${escapeHTML(itemTitle)}"</span>
+                    ${escapeHTML(location)} · <span class="font-medium text-black dark:text-white">"${escapeHTML(itemTitle)}"</span>
                 </p>
             </div>
         `;
@@ -20192,7 +20771,9 @@ window.handleSignUp = handleSignUp;
 window.addCustomSetupTag = addCustomSetupTag;
 window.handleProfileStep1 = handleProfileStep1;
 window.handleProfileStep2 = handleProfileStep2;
+window.skipProfileStep2 = skipProfileStep2;
 window.handleProfileStep3 = handleProfileStep3;
+window.skipProfileStep3 = skipProfileStep3;
 window.toggleCategoryTray = toggleCategoryTray;
 window.closeCategoryView = closeCategoryView;
 window.openCreateGroupModal = openCreateGroupModal;
@@ -21376,6 +21957,30 @@ window.grantOnboardingLocationConsent = function() {
     window.openLocationPrivacyModal();
 };
 
+window.skipOnboardingLocation = function() {
+    if (typeof playSound === 'function') playSound('click');
+    state.onboardingLocationRequest = false;
+    state.locationConsent = false;
+    if (!state.currentUser) state.currentUser = {};
+    state.currentUser.lat = 49.2608;
+    state.currentUser.lng = -123.1368;
+    state.currentUser.locationAccuracy = 'approximate';
+    
+    const accuracySelect = document.getElementById('settings-location-accuracy');
+    const gpsToggle = document.getElementById('settings-location-gps');
+    if (accuracySelect) accuracySelect.value = 'approximate';
+    if (gpsToggle) gpsToggle.checked = false;
+    
+    saveState();
+    
+    if (typeof leafletMap !== 'undefined' && leafletMap) {
+        if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
+        leafletMap.setView([49.2608, -123.1368], 15, { animate: true });
+    }
+    
+    showView('create_account_safe_spots');
+};
+
 window.selectLocationConsent = function(mode) {
     if (typeof playSound === 'function') playSound('click');
     const modes = ['approximate', 'precise'];
@@ -21400,7 +22005,7 @@ window.grantLocationConsent = function(mode) {
         if (state.onboardingLocationRequest) {
             state.onboardingLocationRequest = false;
             saveState();
-            showView('profile_step_1');
+            showView('create_account_safe_spots');
         } else {
             showView('settings_detail');
             setTimeout(() => {
@@ -21527,7 +22132,7 @@ function applyFinalCoords(lat, lng, mode) {
         
         // Auto transition to manual neighborhood selection view after brief delay
         setTimeout(() => {
-            showView('profile_step_1');
+            showView('create_account_safe_spots');
         }, 2000);
     } else {
         console.log(`Success: Location access enabled using ${mode} accuracy mode.`);
@@ -22089,28 +22694,15 @@ let clothesSelections = { type: '', gender: '', age: '' };
 
 function selectWizardCategory(type, categoryName) {
     playSound('click');
-    const selectId = type === 'skills' ? 'wizard-skills-category-select' : 'wizard-needs-category-select';
-    const select = document.getElementById(selectId);
-    if (select) {
-        select.value = categoryName;
-    }
-    
     const gridId = type === 'skills' ? 'wizard-skills-categories-grid' : 'wizard-needs-categories-grid';
     const grid = document.getElementById(gridId);
     if (grid) {
-        grid.querySelectorAll('button').forEach(btn => {
-            if (btn.getAttribute('data-category') === categoryName) {
-                btn.classList.add('bg-forest-green', 'text-warm-cream', 'border-forest-green');
-                btn.classList.remove('bg-white', 'text-forest-green', 'border-outline-variant/30');
-            } else {
-                btn.classList.remove('bg-forest-green', 'text-warm-cream', 'border-forest-green');
-                btn.classList.add('bg-white', 'text-forest-green', 'border-outline-variant/30');
-            }
-        });
+        const btn = Array.from(grid.querySelectorAll('button')).find(b => b.getAttribute('data-category') === categoryName);
+        if (btn) {
+            btn.classList.toggle('active');
+            btn.classList.toggle('selected-category');
+        }
     }
-
-    currentSubcategoryContext = type === 'skills' ? 'wizard-skills' : 'wizard-needs';
-    openSubcategoryModal(categoryName);
 }
 
 function selectOfferCategory(categoryName) {
@@ -23404,11 +23996,11 @@ window.renderNeighborProfileConfirmations = function(neighborName) {
                     <div class="flex flex-col gap-1 text-xs">
                         <div class="flex justify-between">
                             <span class="text-on-surface-variant font-medium">You Offer:</span>
-                            <span class="font-bold text-forest-green dark:text-emerald-400">${escapeHTML(offered)}</span>
+                            <span class="font-bold text-black dark:text-white">${escapeHTML(offered)}</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-on-surface-variant font-medium">You Receive:</span>
-                            <span class="font-bold text-forest-green dark:text-emerald-400">${escapeHTML(requested)}</span>
+                            <span class="font-bold text-black dark:text-white">${escapeHTML(requested)}</span>
                         </div>
                     </div>
                 </div>
@@ -23425,21 +24017,21 @@ window.renderNeighborProfileConfirmations = function(neighborName) {
                 <div class="bg-white dark:bg-[#18201a] border border-outline-variant/35 rounded-2xl p-4 flex flex-col gap-2.5">
                     <div class="flex justify-between items-center border-b border-outline-variant/15 pb-2">
                         <span class="text-[9.5px] font-bold text-on-surface-variant uppercase tracking-wider">Exchange status</span>
-                        <span class="text-[9px] bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded font-bold uppercase">Completed</span>
+                        <span class="text-[9px] bg-black/5 dark:bg-white/10 text-black dark:text-white px-2 py-0.5 rounded font-bold uppercase">Completed</span>
                     </div>
                     <div class="flex flex-col gap-1 text-xs">
                         <div class="flex justify-between">
                             <span class="text-on-surface-variant font-medium">You Offered:</span>
-                            <span class="font-bold text-forest-green dark:text-emerald-400">${escapeHTML(offered)}</span>
+                            <span class="font-bold text-black dark:text-white">${escapeHTML(offered)}</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-on-surface-variant font-medium">You Received:</span>
-                            <span class="font-bold text-forest-green dark:text-emerald-400">${escapeHTML(requested)}</span>
+                            <span class="font-bold text-black dark:text-white">${escapeHTML(requested)}</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-emerald-500/10 text-emerald-800 dark:text-emerald-400 border border-emerald-500/20 p-3.5 rounded-xl text-xs font-bold text-center">
+                <div class="bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 p-3.5 rounded-xl text-xs font-bold text-center">
                     Swap Completed! You earned +10 Karma points.
                 </div>
             </div>
@@ -23835,7 +24427,7 @@ window.renderMeetingSpotList = function(spots = null) {
                 <div class="flex flex-col gap-0.5 flex-grow">
                     <div class="flex justify-between items-center w-full">
                         <h4 class="font-bold text-xs text-on-surface">${spot.name}</h4>
-                        <span class="text-[9px] text-emerald-600 font-bold flex items-center gap-0.5 shrink-0">
+                        <span class="text-[9px] text-black dark:text-white font-bold flex items-center gap-0.5 shrink-0">
                             <span class="material-symbols-outlined text-[10px] font-bold">verified_user</span> Verified
                         </span>
                     </div>
@@ -23978,7 +24570,7 @@ function closeSuggestMeetingSpotModal() {
 function initMeetingSpotMap() {
     if (meetingSpotMap) {
         meetingSpotMap.setView([49.2608, -123.1368], 14);
-        meetingSpotMap.invalidateSize();
+        staggeredInvalidateSize(meetingSpotMap);
         plotMeetingSpotMarkers(VERIFIED_SPOTS);
         
         // Show tap indicator initially
@@ -24020,6 +24612,8 @@ function initMeetingSpotMap() {
     const indicator = document.getElementById('map-tap-indicator');
     if (indicator) indicator.classList.remove('hidden');
 
+    staggeredInvalidateSize(meetingSpotMap);
+
     // Click listener to drop custom pin and select meeting spot
     meetingSpotMap.on('click', function(e) {
         const lat = e.latlng.lat;
@@ -24039,6 +24633,7 @@ function initMeetingSpotMap() {
 }
 
 function plotMeetingSpotMarkers(spots) {
+    if (!meetingSpotMap) return;
     meetingSpotMarkers.forEach(m => meetingSpotMap.removeLayer(m));
     meetingSpotMarkers = [];
     
@@ -24101,7 +24696,7 @@ function selectMeetingSpot(spot) {
             spotSafety.innerHTML = `<span class="material-symbols-outlined text-[12px] font-bold text-blue-600">person_pin_circle</span> Custom Spot (User Proposed)`;
         } else {
             spotSafety.className = "text-[9px] text-black font-bold flex items-center gap-1 mt-1";
-            spotSafety.innerHTML = `<span class="material-symbols-outlined text-[12px] font-bold text-emerald-600">verified_user</span> Verified Safe Zone: ${spot.safetyInfo || 'Public Zone'}`;
+            spotSafety.innerHTML = `<span class="material-symbols-outlined text-[12px] font-bold text-black dark:text-white">verified_user</span> Verified Safe Zone: ${spot.safetyInfo || 'Public Zone'}`;
         }
     }
     
@@ -25498,6 +26093,15 @@ function scrollToTop(viewId) {
 }
 window.scrollToTop = scrollToTop;
 
+function staggeredInvalidateSize(mapInstance) {
+    if (!mapInstance) return;
+    mapInstance.invalidateSize();
+    setTimeout(() => { if (mapInstance) mapInstance.invalidateSize(); }, 50);
+    setTimeout(() => { if (mapInstance) mapInstance.invalidateSize(); }, 150);
+    setTimeout(() => { if (mapInstance) mapInstance.invalidateSize(); }, 400);
+    setTimeout(() => { if (mapInstance) mapInstance.invalidateSize(); }, 800);
+}
+
 // Meetup Location Picker Logic
 let tempMeetupCoords = null;
 let tempMeetupRadius = 100;
@@ -25560,11 +26164,7 @@ function openMeetupLocationPicker() {
     meetupPickerMap.setView(centerCoords, 15);
 
     // Invalidate map size to ensure it renders correctly
-    setTimeout(() => {
-        if (meetupPickerMap) {
-            meetupPickerMap.invalidateSize();
-        }
-    }, 100);
+    staggeredInvalidateSize(meetupPickerMap);
 
     // Reset controls
     const slider = document.getElementById('meetup-radius-slider');
@@ -26467,7 +27067,7 @@ function openSwapProposalPage() {
                         <div class="text-[12px] font-bold text-black dark:text-warm-cream truncate leading-tight">${escapeHTML(off.title)}</div>
                         <div class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 truncate mt-1 leading-normal">${escapeHTML(off.desc || 'No description provided')}</div>
                         <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
-                            <span class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[8px] font-bold bg-forest-green/10 text-forest-green dark:bg-emerald-500/10 dark:text-emerald-400">
+                            <span class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[8px] font-bold bg-black/5 dark:bg-white/10 text-black dark:text-white">
                                 <span class="material-symbols-outlined text-[10px]">${iconName}</span>
                                 ${escapeHTML(off.category)}
                             </span>
@@ -27263,7 +27863,7 @@ function renderReviewsList() {
                 </div>
             </div>
             <div class="flex-grow min-w-0 flex flex-col justify-center gap-1">
-                <h3 class="font-headline text-[19.5px] font-bold text-on-surface truncate leading-tight">
+                <h3 class="font-headline text-base font-bold text-on-surface truncate leading-tight">
                     ${escapeHTML(rev.neighborName)}
                 </h3>
                 <div class="flex items-center gap-1.5 text-[11px] text-red-600 dark:text-red-400 font-bold leading-tight">

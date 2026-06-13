@@ -34,6 +34,24 @@ h1, h2, h3, h4, h5, h6, .font-headline, .font-body {
     font-family: 'Outfit', sans-serif !important;
 }
 
+/* Standardized onboarding and authentication screen titles */
+.onboarding-title {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 1.35rem !important; /* Resized from 1.5rem to look cleaner and fit better on mobile viewports */
+    font-weight: 800 !important; /* font-extrabold */
+    color: #000000 !important; /* Color forced to black */
+    text-transform: uppercase !important;
+    text-align: center !important;
+    letter-spacing: -0.025em !important; /* tracking-tight */
+    line-height: 1.25 !important; /* leading-tight */
+    margin-bottom: 0.5rem !important; /* mb-2 */
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    display: block !important;
+    width: 100% !important;
+}
+
+
 /* ============================================================
    SIMULATOR MODE LOCKDOWN
    When body.show-simulator is active, EVERYTHING must live
@@ -414,9 +432,7 @@ html:has(#view-landing.active) body {
     opacity: 0;
 }
 
-.animate-shuffle {
-    animation: shuffleFade 0.2s ease-in-out forwards;
-}
+.animate-shuffle { animation: shuffleFade 0.15s ease-in-out forwards; }
 
 @keyframes finalReveal {
     0% { opacity: 0; transform: scale(0.8); }
@@ -559,11 +575,14 @@ html:has(#view-landing.active) body {
     background: #ecebeb;
 }
 
-#offer-photo-hero,
 #map-detail-hero-container,
-#event-detail-hero-container,
-#group-photo-hero {
+#event-detail-hero-container {
     height: 360px !important;
+}
+
+#offer-photo-hero,
+#group-photo-hero {
+    height: 145px !important;
 }
 
 .photo-hero.has-image {
@@ -876,6 +895,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
     display: block !important;
     width: 100vw !important;
     height: 100vh !important;
+    transform: none !important;
     background: transparent !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -968,6 +988,8 @@ html.dark #phone-header-bar .material-symbols-outlined {
 }
 
 .native-app-env #view-profile_settings {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     padding-bottom: 0 !important;
 }
 .native-app-env #profile-settings-scroll-container {
@@ -1272,18 +1294,52 @@ select::-ms-expand {
 }
 
 /* Override default native view top padding for full bleed views */
-.native-app-env #view-offer,
 .native-app-env #view-event_detail,
 .native-app-env #view-create_group {
     padding-top: 0 !important;
 }
 
 .native-app-env #view-offer {
-    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom)) !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+}
+
+.native-app-env #creative-dashboard-screen,
+.native-app-env #offer-type-selector-screen {
+    overflow-y: auto !important;
+    height: 100% !important;
+    padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
+    padding-bottom: calc(84px + env(safe-area-inset-bottom)) !important;
+    box-sizing: border-box !important;
+}
+
+.native-app-env #offer-form-wrapper {
+    overflow: hidden !important;
+    height: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.native-app-env #offer-form-scroll-container {
+    overflow-y: auto !important;
+    height: 100% !important;
+    padding-bottom: calc(84px + env(safe-area-inset-bottom)) !important;
+    box-sizing: border-box !important;
+}
+
+.native-app-env #offer-photo-hero {
+    padding-top: calc(1.5rem + env(safe-area-inset-top)) !important;
+}
+
+/* Force all active screens in native app to have a background color (prevents green leakage) */
+.native-app-env .screen-view:not(#view-village) {
+    background-color: var(--warm-cream) !important;
 }
 
 /* Reposition Close/Back buttons in native environment to clear safe areas */
-.native-app-env #offer-close-btn,
+.native-app-env #offer-close-btn {
+    top: calc(1rem + env(safe-area-inset-top)) !important;
+    right: 1.5rem !important;
+}
 .native-app-env #map-detail-close-btn,
 .native-app-env #map-event-detail-close-btn,
 .native-app-env #event-detail-back-btn,
@@ -1702,9 +1758,10 @@ html.dark .chat-bubble-other {
     right: 20px !important;
 }
 .native-app-env #map-category-dropdown {
-    top: calc(50px + env(safe-area-inset-top)) !important;
-    left: auto !important;
+    top: calc(10px + env(safe-area-inset-top)) !important;
+    left: 70px !important;
     right: 20px !important;
+    height: 36px !important;
 }
 .native-app-env #active-filter-banner {
     top: calc(4.5rem + env(safe-area-inset-top)) !important;
@@ -4261,9 +4318,7 @@ html.dark #view-definitions :not(button):not(button *):not(.material-symbols-out
 .clothes-opt-btn,
 .shoes-opt-btn,
 .shoes-size-btn,
-.lang-opt-btn,
-.wizard-skills-category-btn,
-.wizard-needs-category-btn {
+.lang-opt-btn {
     height: 52px !important;
     min-height: 52px !important;
     max-height: 52px !important;
@@ -4280,9 +4335,7 @@ html.dark #view-definitions :not(button):not(button *):not(.material-symbols-out
 
 /* Category & Subcategory buttons with icons should align items left */
 .offer-category-btn,
-.sub-opt-btn,
-.wizard-skills-category-btn,
-.wizard-needs-category-btn {
+.sub-opt-btn {
     justify-content: flex-start !important;
     text-align: left !important;
 }
@@ -4306,9 +4359,7 @@ html.dark #view-definitions :not(button):not(button *):not(.material-symbols-out
 .shoes-opt-btn span:not(.material-symbols-outlined),
 .shoes-size-btn span:not(.material-symbols-outlined),
 .lang-opt-btn span:not(.material-symbols-outlined),
-.preset-opt-btn span:not(.material-symbols-outlined),
-.wizard-skills-category-btn span:not(.material-symbols-outlined),
-.wizard-needs-category-btn span:not(.material-symbols-outlined) {
+.preset-opt-btn span:not(.material-symbols-outlined) {
     white-space: nowrap !important;
     text-wrap: nowrap !important;
     overflow: hidden !important;
@@ -4318,9 +4369,33 @@ html.dark #view-definitions :not(button):not(button *):not(.material-symbols-out
 }
 
 .offer-category-btn span:not(.material-symbols-outlined),
-.sub-opt-btn span:not(.material-symbols-outlined),
+.sub-opt-btn span:not(.material-symbols-outlined) {
+    text-align: left !important;
+}
+
+/* Custom styles for onboarding wizard category buttons with wrapping support */
+.wizard-skills-category-btn,
+.wizard-needs-category-btn {
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    padding: 6px 8px !important;
+    width: 100% !important;
+    min-height: 52px !important;
+    height: auto !important;
+    max-height: none !important;
+    white-space: normal !important;
+    text-wrap: wrap !important;
+}
+
 .wizard-skills-category-btn span:not(.material-symbols-outlined),
 .wizard-needs-category-btn span:not(.material-symbols-outlined) {
+    white-space: normal !important;
+    text-wrap: wrap !important;
+    max-width: 100% !important;
+    display: inline-block !important;
     text-align: left !important;
 }
 
@@ -4951,66 +5026,235 @@ button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
     color: #000000 !important;
 }
 
-/* Force all text in onboarding wizard & login slides to be black */
+/* Force all text and labels in onboarding wizard & login slides to be black in light mode */
+#view-welcome,
 #view-sign_in,
+#view-create_account,
+#view-create_account_social,
+#view-profile_consent,
+#view-profile_location_permission,
+#view-create_account_safe_spots,
 #view-profile_step_1,
 #view-lead_giving,
 #view-profile_step_2,
 #view-profile_step_3,
-#view-sign_in *:not(h1):not(h2):not(button.bg-forest-green):not(button.bg-error):not(button#btn-autofill-register):not(button#btn-autofill-register-social):not(.bg-forest-green *):not(.bg-error *):not(#btn-autofill-register *):not(#btn-autofill-register-social *):not(.material-symbols-outlined),
-#view-profile_step_1 *:not(h1):not(h2):not(button.bg-forest-green):not(button.bg-error):not(button#btn-autofill-register):not(button#btn-autofill-register-social):not(.bg-forest-green *):not(.bg-error *):not(#btn-autofill-register *):not(#btn-autofill-register-social *):not(.material-symbols-outlined),
-#view-lead_giving *:not(h1):not(h2):not(button.bg-forest-green):not(button.bg-error):not(button#btn-autofill-register):not(button#btn-autofill-register-social):not(.bg-forest-green *):not(.bg-error *):not(#btn-autofill-register *):not(#btn-autofill-register-social *):not(.material-symbols-outlined),
-#view-profile_step_2 *:not(h1):not(h2):not(button.bg-forest-green):not(button.bg-error):not(button#btn-autofill-register):not(button#btn-autofill-register-social):not(.bg-forest-green *):not(.bg-error *):not(#btn-autofill-register *):not(#btn-autofill-register-social *):not(.material-symbols-outlined),
-#view-profile_step_3 *:not(h1):not(h2):not(button.bg-forest-green):not(button.bg-error):not(button#btn-autofill-register):not(button#btn-autofill-register-social):not(.bg-forest-green *):not(.bg-error *):not(#btn-autofill-register *):not(#btn-autofill-register-social *):not(.material-symbols-outlined) {
+#view-profile_step_custom_listing,
+#view-set_up_profile {
     color: #000000 !important;
 }
 
-/* Explicitly turn category grid buttons and option buttons black in onboarding */
+#view-welcome *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-sign_in *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-create_account *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-create_account_social *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-profile_consent *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-profile_location_permission *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-create_account_safe_spots *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-profile_step_1 *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-lead_giving *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-profile_step_2 *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-profile_step_3 *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-profile_step_custom_listing *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-set_up_profile *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error) {
+    color: #000000 !important;
+}
+
+/* Force all icons in onboarding wizard & login slides to be green */
+#view-welcome .material-symbols-outlined,
+#view-sign_in .material-symbols-outlined,
+#view-create_account .material-symbols-outlined,
+#view-create_account_social .material-symbols-outlined,
+#view-profile_consent .material-symbols-outlined,
+#view-profile_location_permission .material-symbols-outlined,
+#view-create_account_safe_spots .material-symbols-outlined,
+#view-profile_step_1 .material-symbols-outlined,
+#view-lead_giving .material-symbols-outlined,
+#view-profile_step_2 .material-symbols-outlined:not(.wizard-skills-category-btn *),
+#view-profile_step_3 .material-symbols-outlined:not(.wizard-needs-category-btn *),
+#view-profile_step_custom_listing .material-symbols-outlined,
+#view-set_up_profile .material-symbols-outlined {
+    color: #308A5E !important;
+}
+
+/* Explicitly turn category grid buttons and option buttons black in onboarding with green icons */
 .wizard-skills-category-btn,
 .wizard-needs-category-btn,
 .neighborhood-opt-btn {
     color: #000000 !important;
-    border-color: rgba(0, 0, 0, 0.25) !important;
+    border: 1px solid rgba(48, 138, 94, 0.2) !important;
+    background-color: #ffffff !important;
 }
-.wizard-skills-category-btn .material-symbols-outlined,
-.wizard-needs-category-btn .material-symbols-outlined,
 .neighborhood-opt-btn .material-symbols-outlined {
-    color: #000000 !important;
+    color: #308A5E !important;
 }
 
-/* Ensure selected states of options inside onboarding grid display high contrast white text */
+/* Selected states of options inside onboarding grid: light green background, green border, black text, green icons */
 .wizard-skills-category-btn.active,
 .wizard-needs-category-btn.active,
 .neighborhood-opt-btn.active {
-    background-color: #308A5E !important;
-    color: #ffffff !important;
+    background-color: rgba(48, 138, 94, 0.12) !important;
+    color: #000000 !important;
     border-color: #308A5E !important;
 }
-.wizard-skills-category-btn.active .material-symbols-outlined,
-.wizard-needs-category-btn.active .material-symbols-outlined {
-    color: #ffffff !important;
-}
 
-/* Force placeholder texts to be high contrast black/grey for readability */
+/* Force placeholder texts to be legible grey for readability */
 #view-sign_in input::placeholder,
 #view-create_account input::placeholder,
 #view-create_account_social input::placeholder,
 #view-profile_step_1 input::placeholder,
-#view-profile_step_2 textarea::placeholder,
-#view-profile_step_3 textarea::placeholder {
-    color: rgba(0, 0, 0, 0.6) !important;
+#view-profile_step_custom_listing input::placeholder,
+#view-profile_step_custom_listing textarea::placeholder,
+#view-set_up_profile input::placeholder {
+    color: #888888 !important;
 }
 
-/* Keep the titles green as requested */
+/* Standardized black headers for all onboarding screens */
 #view-sign_in h1,
 #view-create_account h1,
 #view-create_account_social h1,
+#view-profile_consent h1,
 #view-profile_consent h2,
+#view-profile_location_permission h1,
 #view-profile_location_permission h2,
+#view-create_account_safe_spots h1,
+#view-profile_step_1 h1,
 #view-profile_step_1 h2,
+#view-lead_giving h1,
 #view-lead_giving h2,
+#view-profile_step_2 h1,
 #view-profile_step_2 h2,
-#view-profile_step_3 h2 {
+#view-profile_step_3 h1,
+#view-profile_step_3 h2,
+#view-profile_step_custom_listing h1,
+#view-set_up_profile h1 {
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+    line-height: 1.25 !important;
+    color: #000000 !important;
+}
+
+/* Dark mode overrides for onboarding screen texts (white text on dark backgrounds) */
+html.dark #view-welcome,
+html.dark #view-sign_in,
+html.dark #view-create_account,
+html.dark #view-create_account_social,
+html.dark #view-profile_consent,
+html.dark #view-profile_location_permission,
+html.dark #view-create_account_safe_spots,
+html.dark #view-profile_step_1,
+html.dark #view-lead_giving,
+html.dark #view-profile_step_2,
+html.dark #view-profile_step_3,
+html.dark #view-profile_step_custom_listing,
+html.dark #view-set_up_profile {
+    color: #ffffff !important;
+}
+
+html.dark #view-welcome *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-sign_in *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-create_account *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-create_account_social *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-profile_consent *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-profile_location_permission *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-create_account_safe_spots *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-profile_step_1 *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-lead_giving *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-profile_step_2 *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-profile_step_3 *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-profile_step_custom_listing *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-set_up_profile *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error) {
+    color: #ffffff !important;
+}
+
+html.dark #view-sign_in h1,
+html.dark #view-create_account h1,
+html.dark #view-create_account_social h1,
+html.dark #view-profile_consent h1,
+html.dark #view-profile_consent h2,
+html.dark #view-profile_location_permission h1,
+html.dark #view-profile_location_permission h2,
+html.dark #view-create_account_safe_spots h1,
+html.dark #view-profile_step_1 h1,
+html.dark #view-profile_step_1 h2,
+html.dark #view-lead_giving h1,
+html.dark #view-lead_giving h2,
+html.dark #view-profile_step_2 h1,
+html.dark #view-profile_step_2 h2,
+html.dark #view-profile_step_3 h1,
+html.dark #view-profile_step_3 h2,
+html.dark #view-profile_step_custom_listing h1,
+html.dark #view-set_up_profile h1 {
+    color: #ffffff !important;
+}
+
+/* Premium white background buttons with green borders, black text, and green icons in onboarding */
+#view-welcome button:not([onclick*="handleDevAutoLogin"]),
+#view-sign_in button[type="submit"],
+#view-sign_in button[onclick*="create_account"],
+#view-create_account button[type="submit"],
+#view-create_account_social button[type="submit"],
+#consent-continue-btn,
+#btn-onboarding-location-permission,
+#btn-onboarding-safespots-confirm,
+#view-profile_step_1 button[type="submit"],
+#view-lead_giving button,
+#view-profile_step_2 button[onclick*="handleProfileStep2"],
+#view-profile_step_3 button[onclick*="handleProfileStep3"],
+#view-profile_step_custom_listing button[onclick*="submitOnboardingCustomListing"],
+#view-profile_step_custom_listing button[onclick*="skipOnboardingCustomListing"],
+#view-set_up_profile button[onclick*="handleSetupProfileSubmit"],
+#view-set_up_profile button[onclick*="handleSetupProfileSkip"] {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 2px solid #308A5E !important;
+    border-radius: 16px !important;
+    font-weight: 700 !important;
+    height: 56px !important;
+    box-shadow: 0 4px 12px rgba(48, 138, 94, 0.08) !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+#view-welcome button:not([onclick*="handleDevAutoLogin"]) *,
+#view-sign_in button[type="submit"] *,
+#view-sign_in button[onclick*="create_account"] *,
+#view-create_account button[type="submit"] *,
+#view-create_account_social button[type="submit"] *,
+#consent-continue-btn *,
+#btn-onboarding-location-permission *,
+#btn-onboarding-safespots-confirm *,
+#view-profile_step_1 button[type="submit"] *,
+#view-lead_giving button *,
+#view-profile_step_2 button[onclick*="handleProfileStep2"] *,
+#view-profile_step_3 button[onclick*="handleProfileStep3"] *,
+#view-profile_step_custom_listing button[onclick*="submitOnboardingCustomListing"] *,
+#view-profile_step_custom_listing button[onclick*="skipOnboardingCustomListing"] *,
+#view-set_up_profile button[onclick*="handleSetupProfileSubmit"] *,
+#view-set_up_profile button[onclick*="handleSetupProfileSkip"] * {
+    color: #308A5E !important;
+}
+
+/* Dark mode buttons in onboarding */
+html.dark #view-welcome button:not([onclick*="handleDevAutoLogin"]),
+html.dark #view-sign_in button[type="submit"],
+html.dark #view-sign_in button[onclick*="create_account"],
+html.dark #view-create_account button[type="submit"],
+html.dark #view-create_account_social button[type="submit"],
+html.dark #consent-continue-btn,
+html.dark #btn-onboarding-location-permission,
+html.dark #btn-onboarding-safespots-confirm,
+html.dark #view-profile_step_1 button[type="submit"],
+html.dark #view-lead_giving button,
+html.dark #view-profile_step_2 button[onclick*="handleProfileStep2"],
+html.dark #view-profile_step_3 button[onclick*="handleProfileStep3"],
+html.dark #view-profile_step_custom_listing button[onclick*="submitOnboardingCustomListing"],
+html.dark #view-profile_step_custom_listing button[onclick*="skipOnboardingCustomListing"],
+html.dark #view-set_up_profile button[onclick*="handleSetupProfileSubmit"],
+html.dark #view-set_up_profile button[onclick*="handleSetupProfileSkip"] {
+    background-color: #161e1a !important;
+    color: #ffffff !important;
+    border: 2px solid #308A5E !important;
+}
     font-family: 'Outfit', sans-serif !important;
     font-size: 22px !important;
     font-weight: 800 !important;
@@ -5040,8 +5284,8 @@ html.dark #view-profile_step_3 h2 {
 #btn-onboarding-location-permission,
 #view-profile_step_1 button[type="submit"],
 #view-lead_giving button,
-#view-profile_step_2 button,
-#view-profile_step_3 button {
+#view-profile_step_2 button:not(.wizard-skills-category-btn),
+#view-profile_step_3 button:not(.wizard-needs-category-btn) {
     background-color: #308A5E !important;
     color: #ffffff !important;
     border-color: #308A5E !important;
@@ -5056,27 +5300,62 @@ html.dark #view-profile_step_3 h2 {
 #btn-onboarding-location-permission *,
 #view-profile_step_1 button[type="submit"] *,
 #view-lead_giving button *,
-#view-profile_step_2 button *,
-#view-profile_step_3 button * {
+#view-profile_step_2 button:not(.wizard-skills-category-btn) *,
+#view-profile_step_3 button:not(.wizard-needs-category-btn) * {
     color: #ffffff !important;
 }
 
 /* Position and align map category circles dropdown on the left to stack cleanly under top-left control buttons */
 #map-category-dropdown {
-    left: 22px !important;
-    right: auto !important;
-    align-items: flex-start !important;
-    padding-left: 6px !important;
+    position: absolute !important;
+    top: 10px !important;
+    left: 70px !important;
+    right: 24px !important;
+    height: 36px !important;
+    display: none;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    white-space: nowrap !important;
+    background-color: transparent !important;
+    padding: 0 4px !important;
+    z-index: 2000 !important;
+    scrollbar-width: none !important;
+}
+#map-category-dropdown::-webkit-scrollbar {
+    display: none !important;
+}
+
+#map-category-dropdown.expanded {
+    display: flex !important;
 }
 
 #map-category-dropdown .map-category-item {
-    justify-content: flex-start !important;
+    display: flex !important;
+    align-items: center !important;
     flex-direction: row !important;
+    gap: 6px !important;
+    padding: 4px 10px !important;
+    border-radius: 9999px !important;
+    background-color: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    transition: all 0.2s ease !important;
+    flex-shrink: 0 !important;
 }
 
-#map-category-dropdown .map-category-item .category-label {
-    margin-left: 0 !important;
-    margin-right: 0.5rem !important;
+.dark #map-category-dropdown .map-category-item {
+    background-color: #161e1a !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 
@@ -5495,16 +5774,28 @@ html.dark #view-sign_in {
 #view-create_account_social p,
 #view-profile_consent p,
 #view-profile_location_permission p,
+#view-create_account_safe_spots p,
 #view-profile_step_1 p,
+#view-lead_giving p,
+#view-profile_step_2 p,
+#view-profile_step_3 p,
+#view-profile_step_custom_listing p,
+#view-set_up_profile p,
 #view-sign_in p {
-    color: #55665b !important;
+    color: #000000 !important;
 }
 html.dark #view-welcome p,
 html.dark #view-create_account p,
 html.dark #view-create_account_social p,
 html.dark #view-profile_consent p,
 html.dark #view-profile_location_permission p,
+html.dark #view-create_account_safe_spots p,
 html.dark #view-profile_step_1 p,
+html.dark #view-lead_giving p,
+html.dark #view-profile_step_2 p,
+html.dark #view-profile_step_3 p,
+html.dark #view-profile_step_custom_listing p,
+html.dark #view-set_up_profile p,
 html.dark #view-sign_in p {
     color: #9ab0a1 !important;
 }
@@ -6055,3 +6346,58 @@ body.show-simulator #global-navbar.navbar-behind {
 .native-app-env #global-navbar.navbar-behind {
     transform: translateX(-50%) translateY(24px) !important;
 }
+
+/* ==================================================== */
+/* CUSTON ONBOARDING & MAP VIEW ALIGNMENT OVERRIDES */
+/* ==================================================== */
+
+/* Welcome screen text colors */
+#view-welcome p,
+#view-welcome .text-gray-500,
+#view-welcome .text-sm {
+    font-family: 'Outfit', sans-serif !important;
+    color: #000000 !important;
+}
+
+html.dark #view-welcome p,
+html.dark #view-welcome .text-gray-500,
+html.dark #view-welcome .text-sm {
+    color: #ffffff !important;
+}
+
+#view-welcome .bg-forest-green .material-symbols-outlined {
+    color: #ffffff !important;
+}
+
+/* Safe Space Agreement Screen (EULA) Text Color overrides */
+#view-profile_consent p,
+#view-profile_consent .EULA-accordion-item span:not(.material-symbols-outlined),
+#view-profile_consent .EULA-accordion-content p,
+#view-profile_consent #liability-scroll-box,
+#view-profile_consent #consent-checkboxes-container span:not(.material-symbols-outlined) {
+    font-family: 'Outfit', sans-serif !important;
+    color: #000000 !important;
+}
+
+html.dark #view-profile_consent p,
+html.dark #view-profile_consent .EULA-accordion-item span:not(.material-symbols-outlined),
+html.dark #view-profile_consent .EULA-accordion-content p,
+html.dark #view-profile_consent #liability-scroll-box,
+html.dark #view-profile_consent #consent-checkboxes-container span:not(.material-symbols-outlined) {
+    color: #ffffff !important;
+}
+
+/* Map View full-width mobile padding fix */
+#view-village {
+    padding: 0 !important;
+}
+
+/* Filter Dropdown horizontal alignment fix */
+.native-app-env #map-category-dropdown {
+    left: 24px !important;
+}
+
+.native-app-env #map-category-dropdown .map-category-item {
+    padding-left: 0 !important;
+}
+

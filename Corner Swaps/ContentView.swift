@@ -166,6 +166,7 @@ struct WebView: UIViewRepresentable {
         webView.scrollView.bounces = false
         webView.scrollView.alwaysBounceVertical = false
         webView.scrollView.alwaysBounceHorizontal = false
+        webView.scrollView.contentInsetAdjustmentBehavior = .never
         
         NSLog("[SWIFT] Loading self-contained HTML string...")
         print("[SWIFT] Loading self-contained HTML string...")
