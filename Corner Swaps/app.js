@@ -4622,7 +4622,7 @@ function updateEventPhotoPlaceholder() {
     if (state.currentOfferMode === 'event' && eventType && !dataUrl) {
         const details = getEventIconDetails(eventType);
         
-        parent.className = "relative w-[84px] h-[84px] rounded-xl flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:opacity-90 active:scale-95 transition-all shadow-sm group event-stock-thumbnail";
+        parent.className = "relative w-[100px] h-[100px] rounded-xl flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:opacity-90 active:scale-95 transition-all shadow-sm group event-stock-thumbnail";
         parent.style.setProperty('--bg-light', details.bgColor);
         parent.style.setProperty('--bg-dark', details.darkBgColor);
         parent.style.setProperty('--color-light', details.color);
@@ -4632,7 +4632,7 @@ function updateEventPhotoPlaceholder() {
         placeholder.innerHTML = `<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">${details.icon}</span>`;
         if (preview) preview.classList.add('hidden');
     } else {
-        parent.className = "relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group";
+        parent.className = "relative w-[100px] h-[100px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group";
         parent.style.removeProperty('--bg-light');
         parent.style.removeProperty('--bg-dark');
         parent.style.removeProperty('--color-light');
@@ -4640,7 +4640,7 @@ function updateEventPhotoPlaceholder() {
         parent.style.borderColor = '';
         parent.style.backgroundColor = '';
         
-        placeholder.innerHTML = `<span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-2xl group-hover:scale-110 transition-transform">add_a_photo</span>`;
+        placeholder.innerHTML = `<span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-3xl group-hover:scale-110 transition-transform">add_a_photo</span>`;
     }
 }
 window.updateEventPhotoPlaceholder = updateEventPhotoPlaceholder;
@@ -17773,6 +17773,9 @@ function refreshAllLayouts() {
     renderEventsList();
     renderProfileSettings();
     renderHomeDashboard();
+    if (window.syncUserNavbarInfo) {
+        window.syncUserNavbarInfo();
+    }
     if (leafletMap) {
         leafletMap.eachLayer(layer => {
             if (layer instanceof L.Marker || layer instanceof L.Circle) {
@@ -22128,7 +22131,9 @@ function applyFinalCoords(lat, lng, mode) {
         if (textCloud) {
             textCloud.innerHTML = 'Location Permission Enabled <span style="margin-left: 8px; font-weight: bold;">✓</span>';
         }
-        triggerSuccessConfetti();
+        if (mode !== 'precise') {
+            triggerSuccessConfetti();
+        }
         
         // Auto transition to manual neighborhood selection view after brief delay
         setTimeout(() => {
@@ -26600,7 +26605,6 @@ window.requestGPSCentering = function() {
         // Re-plot markers to adjust distance calculations
         plotMapMarkersOnly();
         
-        triggerSuccessConfetti();
         playSound('success');
     }, (error) => {
         if (icon) {

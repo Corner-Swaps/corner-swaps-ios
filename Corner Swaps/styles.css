@@ -412,6 +412,25 @@ html:has(#view-landing.active) body {
     animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@keyframes fadeInOnly {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.animate-fade-in-only {
+    animation: fadeInOnly 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Force hardware acceleration and smooth compositing on all elements using backdrop-blur */
+.backdrop-blur-sm,
+.backdrop-blur-md,
+.backdrop-blur-lg,
+[class*="backdrop-blur"] {
+    will-change: backdrop-filter, opacity;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+}
+
 @keyframes pulse-slow {
     0%, 100% { opacity: 0.6; }
     50% { opacity: 1; }
@@ -969,7 +988,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
 .native-app-env #view-profile_step_1,
 .native-app-env #view-profile_step_2,
 .native-app-env #view-profile_step_3 {
-    padding-bottom: calc(3.5rem + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(7.5rem + env(safe-area-inset-bottom)) !important;
 }
 
 .native-app-env #view-chat_hub,
@@ -5071,9 +5090,15 @@ button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
 #view-lead_giving .material-symbols-outlined,
 #view-profile_step_2 .material-symbols-outlined:not(.wizard-skills-category-btn *),
 #view-profile_step_3 .material-symbols-outlined:not(.wizard-needs-category-btn *),
-#view-profile_step_custom_listing .material-symbols-outlined,
 #view-set_up_profile .material-symbols-outlined {
     color: #308A5E !important;
+}
+
+#view-profile_step_custom_listing .material-symbols-outlined {
+    color: #000000 !important;
+}
+html.dark #view-profile_step_custom_listing .material-symbols-outlined {
+    color: #ffffff !important;
 }
 
 /* Explicitly turn category grid buttons and option buttons black in onboarding with green icons */
@@ -5284,8 +5309,8 @@ html.dark #view-profile_step_3 h2 {
 #btn-onboarding-location-permission,
 #view-profile_step_1 button[type="submit"],
 #view-lead_giving button,
-#view-profile_step_2 button:not(.wizard-skills-category-btn),
-#view-profile_step_3 button:not(.wizard-needs-category-btn) {
+#view-profile_step_2 button:not(.wizard-skills-category-btn):not([onclick*="skip"]),
+#view-profile_step_3 button:not(.wizard-needs-category-btn):not([onclick*="skip"]) {
     background-color: #308A5E !important;
     color: #ffffff !important;
     border-color: #308A5E !important;
@@ -5300,8 +5325,8 @@ html.dark #view-profile_step_3 h2 {
 #btn-onboarding-location-permission *,
 #view-profile_step_1 button[type="submit"] *,
 #view-lead_giving button *,
-#view-profile_step_2 button:not(.wizard-skills-category-btn) *,
-#view-profile_step_3 button:not(.wizard-needs-category-btn) * {
+#view-profile_step_2 button:not(.wizard-skills-category-btn):not([onclick*="skip"]) *,
+#view-profile_step_3 button:not(.wizard-needs-category-btn):not([onclick*="skip"]) * {
     color: #ffffff !important;
 }
 
@@ -6400,4 +6425,67 @@ html.dark #view-profile_consent #consent-checkboxes-container span:not(.material
 .native-app-env #map-category-dropdown .map-category-item {
     padding-left: 0 !important;
 }
+
+/* Begin Your Journey screen black styling overrides */
+#view-create_account h1,
+#view-create_account h2,
+#view-create_account p,
+#view-create_account label,
+#view-create_account .material-symbols-outlined,
+#view-create_account span,
+#view-create_account input,
+#view-create_account button {
+    font-family: 'Outfit', sans-serif !important;
+}
+
+#view-create_account h1,
+#view-create_account h2,
+#view-create_account p,
+#view-create_account label:not(.cursor-pointer),
+#view-create_account .material-symbols-outlined,
+#view-create_account span:not(.cursor-pointer) {
+    color: #000000 !important;
+}
+
+#view-create_account div.border,
+#view-create_account form div.border,
+#view-create_account .profile-avatar-ring {
+    border-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+#view-create_account input {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+    color: #000000 !important;
+}
+
+#view-create_account input:focus {
+    border-color: #000000 !important;
+}
+
+#view-create_account .group:focus-within .material-symbols-outlined,
+#view-create_account .group:focus-within span {
+    color: #000000 !important;
+}
+
+#view-create_account label.cursor-pointer,
+#view-create_account label.cursor-pointer * {
+    color: #000000 !important;
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+#view-create_account label.cursor-pointer:hover {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+#view-create_account button[type="submit"] {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid #000000 !important;
+}
+
+#view-create_account button[type="submit"] * {
+    color: #ffffff !important;
+}
+
 
