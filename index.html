@@ -10206,12 +10206,29 @@ html.dark #view-create_group #group-friends-search::placeholder {
                 <!-- ==================================================== -->
                 <section id="view-chat_hub" class="screen-view flex-grow flex flex-col h-full overflow-hidden pb-20 relative bg-white dark:bg-[#18201a] pt-4">
                     <!-- Sticky Header Bar -->
-                    <div id="chat-hub-header-bar" class="flex items-center justify-between px-6 border-b border-outline-variant/10 dark:border-outline-variant/5 flex-shrink-0 select-none bg-white dark:bg-[#18201a]" style="height: 64px !important;">
-                        <div class="flex items-center gap-3">
-                            <span id="chat-hub-title-bar" class="w-[8px] h-[22px] rounded-full flex-shrink-0" style="background-color: #7c3aed !important;"></span>
-                            <h1 id="chat-hub-title-text" class="font-headline font-black uppercase tracking-wider app-screen-header-title" style="color: #7c3aed !important;">Read</h1>
+                    <div id="chat-hub-header-bar" class="flex items-center justify-center px-4 border-b border-outline-variant/10 dark:border-outline-variant/5 flex-shrink-0 select-none bg-white dark:bg-[#18201a]" style="height: 64px !important;">
+                        <div id="chat-segmented-control" class="relative w-full h-11 flex items-center justify-between gap-1 select-none bg-black/5 dark:bg-white/5 p-1 rounded-xl">
+                            <!-- Read (Active) -->
+                            <button id="btn-chat-segment-active" onclick="switchChatSegment('active')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm">
+                                Read
+                                <span id="badge-chat-segment-active" class="absolute -top-1.5 -right-1.5 chat-badge-circle z-50 hidden"></span>
+                            </button>
+                            <!-- Unread (Requests) -->
+                            <button id="btn-chat-segment-requests" onclick="switchChatSegment('requests')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-transparent rounded-xl bg-transparent text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5">
+                                Unread
+                                <span id="badge-chat-segment-requests" class="absolute -top-1.5 -right-1.5 chat-badge-circle z-50 hidden"></span>
+                            </button>
+                            <!-- Groups -->
+                            <button id="btn-chat-segment-groups" onclick="switchChatSegment('groups')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-transparent rounded-xl bg-transparent text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5">
+                                Groups
+                                <span id="badge-chat-segment-groups" class="absolute -top-1.5 -right-1.5 chat-badge-circle z-50 hidden"></span>
+                            </button>
+                            <!-- Reviews -->
+                            <button id="btn-chat-segment-reviews" onclick="switchChatSegment('reviews')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-transparent rounded-xl bg-transparent text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5">
+                                Reviews
+                                <span id="badge-chat-segment-reviews" class="absolute -top-1.5 -right-1.5 chat-badge-circle z-50 hidden"></span>
+                            </button>
                         </div>
-                        <div id="chat-hub-header-right" class="flex items-center gap-2"></div>
                     </div>
 
                     <!-- Auto-delete Notice Banner (Hidden, now accessed via info icon) -->
@@ -10222,66 +10239,7 @@ html.dark #view-create_group #group-friends-search::placeholder {
 
                     <div class="overflow-y-auto custom-scrollbar flex-grow pb-24" id="chat-threads-container"></div>
 
-                    <!-- Floating Segment & Options Circle Buttons Stack for Chat -->
-                    <div id="chat-segment-floating-buttons" class="absolute bottom-24 right-6 z-[3000] flex flex-col-reverse items-end transition-all duration-300" style="display: none;">
-                        <!-- Menu Trigger Button Container -->
-                        <div class="flex items-center justify-end">
-                            <button id="btn-chat-segment-trigger" onclick="toggleChatMenu()" class="w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-forest-green border border-outline-variant/30 active:scale-90 transition-all cursor-pointer text-white z-10 pulse-green-light" title="Chat Menu">
-                                <span id="chat-segment-trigger-icon" class="flex items-center justify-center w-[24px] h-[24px]">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="display: block; margin: auto;">
-                                        <circle cx="5" cy="5" r="2.2" />
-                                        <circle cx="12" cy="5" r="2.2" />
-                                        <circle cx="19" cy="5" r="2.2" />
-                                        <circle cx="5" cy="12" r="2.2" />
-                                        <circle cx="12" cy="12" r="2.2" />
-                                        <circle cx="19" cy="12" r="2.2" />
-                                        <circle cx="5" cy="19" r="2.2" />
-                                        <circle cx="12" cy="19" r="2.2" />
-                                        <circle cx="19" cy="19" r="2.2" />
-                                    </svg>
-                                </span>
-                            </button>
-                        </div>
 
-                        <!-- Switcher buttons under the menu with labels on the left -->
-                        <div class="menu-sub-button-wrapper">
-                            <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Read</span>
-                            <button id="btn-chat-segment-active" onclick="switchChatSegment('active')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-violet-600 border-violet-600 text-white active:scale-90 transition-all cursor-pointer pulse-violet-light" title="Read">
-                                <span class="material-symbols-outlined text-[24px]">chat</span>
-                                <span id="badge-chat-segment-active" class="absolute -top-1 -right-1 chat-badge-circle hidden"></span>
-                            </button>
-                        </div>
-
-                        <div class="menu-sub-button-wrapper">
-                            <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Unread</span>
-                            <button id="btn-chat-segment-requests" onclick="switchChatSegment('requests')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-blue-600 border-blue-600 text-white active:scale-90 transition-all cursor-pointer pulse-blue-light" title="Unread">
-                                <span class="material-symbols-outlined text-[24px]">question_answer</span>
-                                <span id="badge-chat-segment-requests" class="absolute -top-1 -right-1 chat-badge-circle hidden"></span>
-                            </button>
-                        </div>
-
-
-
-                        <div class="menu-sub-button-wrapper">
-                            <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Groups</span>
-                            <button id="btn-chat-segment-groups" onclick="switchChatSegment('groups')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-emerald-600 border-emerald-600 text-white active:scale-90 transition-all cursor-pointer pulse-emerald-light" title="Group Chats">
-                                <span class="material-symbols-outlined text-[24px]">groups</span>
-                                <span id="badge-chat-segment-groups" class="absolute -top-1 -right-1 chat-badge-circle hidden"></span>
-                            </button>
-                        </div>
-
-                        <div class="menu-sub-button-wrapper">
-                            <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Reviews</span>
-                            <button id="btn-chat-segment-reviews" onclick="switchChatSegment('reviews')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-rose-600 border-rose-600 text-white active:scale-90 transition-all cursor-pointer pulse-rose-light" title="Reviews">
-                                <span class="material-symbols-outlined text-[24px]">rate_review</span>
-                                <span id="badge-chat-segment-reviews" class="absolute -top-1 -right-1 chat-badge-circle hidden"></span>
-                            </button>
-                        </div>
-
-
-
-
-                    </div>
 
                     <!-- Chat Guide Modal Overlay (Combined Safety & Help) has been moved to global modals -->
                 </section>
@@ -24820,7 +24778,14 @@ function renderMapFilterCircles() {
         </div>
     `;
 
-    const categoriesHtml = MAP_FILTER_CATEGORIES.map((cat, idx) => {
+    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => {
+        if (currentVillageSegment === 'map' && c.name === 'Event or Meetup') {
+            return false;
+        }
+        return true;
+    });
+
+    const categoriesHtml = filteredCategories.map((cat, idx) => {
         const delay = (idx + 1) * 0.025; // 25ms stagger per item
         const animStyle = `transition-delay: ${delay}s !important; -webkit-transition-delay: ${delay}s !important;`;
         
@@ -25000,7 +24965,9 @@ function renderListFilterCircles() {
     const dropdown = document.getElementById('list-category-dropdown');
     if (!dropdown) return;
     
-    const categoriesHtml = MAP_FILTER_CATEGORIES.map((cat, idx) => {
+    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Event or Meetup');
+    
+    const categoriesHtml = filteredCategories.map((cat, idx) => {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         return `
@@ -40069,29 +40036,24 @@ window.switchChatSegment = function(type, muteSound = false) {
     collapseChatMenu();
     state.currentChatSegment = type;
     
-    const btnRequests = document.getElementById('btn-chat-segment-requests');
     const btnActive = document.getElementById('btn-chat-segment-active');
+    const btnRequests = document.getElementById('btn-chat-segment-requests');
     const btnGroups = document.getElementById('btn-chat-segment-groups');
-    const btnSwaps = document.getElementById('btn-chat-segment-swaps');
     const btnReviews = document.getElementById('btn-chat-segment-reviews');
     
-    const baseBtnClass = "relative menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 border active:scale-90 cursor-pointer";
-    
-    if (btnActive) {
-        btnActive.className = `${baseBtnClass} bg-violet-600 border-violet-600 text-white pulse-violet-light ${type === 'active' ? 'scale-110 ring-4 ring-violet-300 dark:ring-violet-800 z-20' : ''}`;
-    }
-    if (btnRequests) {
-        btnRequests.className = `${baseBtnClass} bg-blue-600 border-blue-600 text-white pulse-blue-light ${type === 'requests' ? 'scale-110 ring-4 ring-blue-300 dark:ring-blue-800 z-20' : ''}`;
-    }
-    if (btnGroups) {
-        btnGroups.className = `${baseBtnClass} bg-emerald-600 border-emerald-600 text-white pulse-emerald-light ${type === 'groups' ? 'scale-110 ring-4 ring-emerald-300 dark:ring-emerald-800 z-20' : ''}`;
-    }
-    if (btnSwaps) {
-        btnSwaps.className = `${baseBtnClass} bg-orange-600 border-orange-600 text-white pulse-amber-light ${type === 'swaps' ? 'scale-110 ring-4 ring-orange-300 dark:ring-orange-800 z-20' : ''}`;
-    }
-    if (btnReviews) {
-        btnReviews.className = `${baseBtnClass} bg-rose-600 border-rose-600 text-white pulse-rose-light ${type === 'reviews' ? 'scale-110 ring-4 ring-rose-300 dark:ring-rose-800 z-20' : ''}`;
-    }
+    const updateBtnStyle = (btn, btnType) => {
+        if (!btn) return;
+        if (type === btnType) {
+            btn.className = "relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm";
+        } else {
+            btn.className = "relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-transparent rounded-xl bg-transparent text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5";
+        }
+    };
+
+    updateBtnStyle(btnActive, 'active');
+    updateBtnStyle(btnRequests, 'requests');
+    updateBtnStyle(btnGroups, 'groups');
+    updateBtnStyle(btnReviews, 'reviews');
     
     renderConversationsList();
 };

@@ -8990,7 +8990,14 @@ function renderMapFilterCircles() {
         </div>
     `;
 
-    const categoriesHtml = MAP_FILTER_CATEGORIES.map((cat, idx) => {
+    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => {
+        if (currentVillageSegment === 'map' && c.name === 'Event or Meetup') {
+            return false;
+        }
+        return true;
+    });
+
+    const categoriesHtml = filteredCategories.map((cat, idx) => {
         const delay = (idx + 1) * 0.025; // 25ms stagger per item
         const animStyle = `transition-delay: ${delay}s !important; -webkit-transition-delay: ${delay}s !important;`;
         
@@ -9170,7 +9177,9 @@ function renderListFilterCircles() {
     const dropdown = document.getElementById('list-category-dropdown');
     if (!dropdown) return;
     
-    const categoriesHtml = MAP_FILTER_CATEGORIES.map((cat, idx) => {
+    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Event or Meetup');
+    
+    const categoriesHtml = filteredCategories.map((cat, idx) => {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         return `
@@ -24239,29 +24248,24 @@ window.switchChatSegment = function(type, muteSound = false) {
     collapseChatMenu();
     state.currentChatSegment = type;
     
-    const btnRequests = document.getElementById('btn-chat-segment-requests');
     const btnActive = document.getElementById('btn-chat-segment-active');
+    const btnRequests = document.getElementById('btn-chat-segment-requests');
     const btnGroups = document.getElementById('btn-chat-segment-groups');
-    const btnSwaps = document.getElementById('btn-chat-segment-swaps');
     const btnReviews = document.getElementById('btn-chat-segment-reviews');
     
-    const baseBtnClass = "relative menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 border active:scale-90 cursor-pointer";
-    
-    if (btnActive) {
-        btnActive.className = `${baseBtnClass} bg-violet-600 border-violet-600 text-white pulse-violet-light ${type === 'active' ? 'scale-110 ring-4 ring-violet-300 dark:ring-violet-800 z-20' : ''}`;
-    }
-    if (btnRequests) {
-        btnRequests.className = `${baseBtnClass} bg-blue-600 border-blue-600 text-white pulse-blue-light ${type === 'requests' ? 'scale-110 ring-4 ring-blue-300 dark:ring-blue-800 z-20' : ''}`;
-    }
-    if (btnGroups) {
-        btnGroups.className = `${baseBtnClass} bg-emerald-600 border-emerald-600 text-white pulse-emerald-light ${type === 'groups' ? 'scale-110 ring-4 ring-emerald-300 dark:ring-emerald-800 z-20' : ''}`;
-    }
-    if (btnSwaps) {
-        btnSwaps.className = `${baseBtnClass} bg-orange-600 border-orange-600 text-white pulse-amber-light ${type === 'swaps' ? 'scale-110 ring-4 ring-orange-300 dark:ring-orange-800 z-20' : ''}`;
-    }
-    if (btnReviews) {
-        btnReviews.className = `${baseBtnClass} bg-rose-600 border-rose-600 text-white pulse-rose-light ${type === 'reviews' ? 'scale-110 ring-4 ring-rose-300 dark:ring-rose-800 z-20' : ''}`;
-    }
+    const updateBtnStyle = (btn, btnType) => {
+        if (!btn) return;
+        if (type === btnType) {
+            btn.className = "relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm";
+        } else {
+            btn.className = "relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-transparent rounded-xl bg-transparent text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5";
+        }
+    };
+
+    updateBtnStyle(btnActive, 'active');
+    updateBtnStyle(btnRequests, 'requests');
+    updateBtnStyle(btnGroups, 'groups');
+    updateBtnStyle(btnReviews, 'reviews');
     
     renderConversationsList();
 };
