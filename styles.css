@@ -1044,11 +1044,12 @@ html.dark #phone-header-bar .material-symbols-outlined {
 }
 
 .native-app-env #view-chat_hub,
+.native-app-env #view-chat_detail,
 .native-app-env #view-definitions,
 .native-app-env #view-settings_detail,
 .native-app-env #view-blocked_users,
 .native-app-env #view-profile_settings {
-    padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
+    padding-top: calc(0.6rem + env(safe-area-inset-top)) !important;
 }
 
 .native-app-env #view-chat_hub,
@@ -1312,10 +1313,10 @@ html.dark #status-legend-bar {
     min-height: 0 !important;
     flex-grow: 1 !important;
     overflow: hidden !important;
-    background-color: var(--warm-cream) !important; /* Match standard app warm-cream theme instead of pure white */
+    background-color: #ffffff !important;
 }
 html.dark #view-chat_detail {
-    background-color: #101612 !important;
+    background-color: #18201a !important;
 }
 #chat-message-feed {
     flex-grow: 1 !important;
@@ -2446,7 +2447,6 @@ html.dark .profile-avatar-no-ring {
 
 /* Fix chat detail view bottom padding to prevent squishing when keyboard or input bar is shown */
 .native-app-env #view-chat_detail {
-    padding-top: 0 !important;
     padding-bottom: 0 !important;
 }
 
@@ -4286,27 +4286,35 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 /* Outer Chat Action Center container - glassmorphism, transparent, positioned low */
 #chat-action-center {
     position: absolute !important;
-    bottom: 6px !important;
-    left: 12px !important;
-    right: 12px !important;
-    width: calc(100% - 24px) !important;
+    bottom: 0px !important;
+    left: 0px !important;
+    right: 0px !important;
+    width: 100% !important;
     z-index: 20 !important;
-    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.35) !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
     background: rgba(255, 255, 255, 0.45) !important;
     backdrop-filter: blur(20px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 8px rgba(0, 0, 0, 0.04) !important;
-    border-radius: 24px !important;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.05) !important;
+    border-radius: 28px 28px 0 0 !important;
+    padding-bottom: 8px !important;
 }
 .native-app-env #chat-action-center {
-    bottom: calc(6px + env(safe-area-inset-bottom)) !important;
+    bottom: 0px !important;
+    padding-bottom: calc(4px + env(safe-area-inset-bottom)) !important;
 }
 html.dark #chat-action-center {
-    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.10) !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
     background: rgba(20, 28, 22, 0.65) !important;
     backdrop-filter: blur(20px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 1px 8px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.25) !important;
 }
 
 #chat-action-center.group-chat-action-center {
@@ -4314,15 +4322,15 @@ html.dark #chat-action-center {
     left: 0px !important;
     right: 0px !important;
     width: 100% !important;
-    border-radius: 24px 24px 0 0 !important;
-    padding-bottom: 12px !important;
+    border-radius: 28px 28px 0 0 !important;
+    padding-bottom: 8px !important;
     border-left: none !important;
     border-right: none !important;
     border-bottom: none !important;
 }
 .native-app-env #chat-action-center.group-chat-action-center {
     bottom: 0px !important;
-    padding-bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(4px + env(safe-area-inset-bottom)) !important;
 }
 
 
@@ -6524,47 +6532,17 @@ html.dark .category-tray, html.dark .category-list-overlay {
 }
 
 #view-chat_detail > div:first-of-type {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 20 !important;
-    padding-top: 16px !important;
-    padding-bottom: 16px !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-    background: transparent !important;
-    border: none !important;
-    border-bottom: none !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-}
-
-html.dark #view-chat_detail > div:first-of-type {
-    background: transparent !important;
-    border-bottom: none !important;
-}
-
-.native-app-env #view-chat_detail > div:first-of-type {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    padding-top: calc(16px + env(safe-area-inset-top)) !important;
-    padding-bottom: 16px !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
+    z-index: 10 !important;
 }
 
 /* Padding top and bottom on message feed to clear absolute header and floating footer while allowing scroll-under backdrop blur */
 #chat-message-feed {
-    padding-top: 76px !important;
+    padding-top: 16px !important;
     padding-bottom: 16px !important;
 }
 
 .native-app-env #chat-message-feed {
-    padding-top: calc(76px + env(safe-area-inset-top)) !important;
+    padding-top: 16px !important;
     padding-bottom: 16px !important;
 }
 

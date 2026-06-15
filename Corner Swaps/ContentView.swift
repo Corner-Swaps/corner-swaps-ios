@@ -49,6 +49,12 @@ class WeakScriptMessageHandler: NSObject, WKScriptMessageHandler {
     }
 }
 
+class CustomWebView: WKWebView {
+    override var inputAccessoryView: UIView? {
+        return nil
+    }
+}
+
 struct WebView: UIViewRepresentable {
     let fileURL: URL
     @Binding var initError: String?
@@ -197,7 +203,7 @@ struct WebView: UIViewRepresentable {
         let userScript = WKUserScript(source: js, injectionTime: .atDocumentStart, forMainFrameOnly: false)
         configuration.userContentController.addUserScript(userScript)
 
-        let webView = WKWebView(frame: .zero, configuration: configuration)
+        let webView = CustomWebView(frame: .zero, configuration: configuration)
         webView.allowsBackForwardNavigationGestures = true
         webView.scrollView.delegate = context.coordinator
         webView.navigationDelegate = context.coordinator
@@ -252,7 +258,7 @@ struct ContentView: View {
             if colorScheme == .dark {
                 Color(red: 16/255.0, green: 22/255.0, blue: 18/255.0)
             } else {
-                Color(red: 69/255.0, green: 122/255.0, blue: 86/255.0)
+                Color(red: 250/255.0, green: 248/255.0, blue: 245/255.0)
             }
             
             if let error = initError {
