@@ -4315,7 +4315,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 }
 .native-app-env #chat-action-center {
     bottom: 0px !important;
-    padding-bottom: calc(6px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(2px + env(safe-area-inset-bottom)) !important;
 }
 html.dark #chat-action-center {
     border: none !important;
@@ -4340,7 +4340,7 @@ html.dark #chat-action-center {
 }
 .native-app-env #chat-action-center.group-chat-action-center {
     bottom: 0px !important;
-    padding-bottom: calc(6px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(2px + env(safe-area-inset-bottom)) !important;
 }
 
 /* Glassmorphic Chat Input Pill (matching #global-navbar) */

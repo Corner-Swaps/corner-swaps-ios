@@ -5479,7 +5479,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 }
 .native-app-env #chat-action-center {
     bottom: 0px !important;
-    padding-bottom: calc(6px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(2px + env(safe-area-inset-bottom)) !important;
 }
 html.dark #chat-action-center {
     border: none !important;
@@ -5504,7 +5504,7 @@ html.dark #chat-action-center {
 }
 .native-app-env #chat-action-center.group-chat-action-center {
     bottom: 0px !important;
-    padding-bottom: calc(6px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(2px + env(safe-area-inset-bottom)) !important;
 }
 
 /* Glassmorphic Chat Input Pill (matching #global-navbar) */
@@ -10495,17 +10495,17 @@ html.dark #view-create_group #group-friends-search::placeholder {
                         <div class="flex items-center justify-center w-full">
                             <input type="file" id="chat-photo-input" accept="image/*" class="hidden" onchange="handleSendChatPhoto(this)"/>
                             <input type="file" id="chat-camera-input" accept="image/*" capture="camera" class="hidden" onchange="handleSendChatPhoto(this)"/>
-                            <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper-static" onpointerdown="window.handleChatInputWrapperTouch(event, this)">
+                            <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[64px] rounded-full px-4 py-1" id="chat-input-wrapper-static" onpointerdown="window.handleChatInputWrapperTouch(event, this)">
                                 <input class="flex-grow bg-transparent border-0 px-2 py-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
                                 <div class="flex items-center gap-1.5 flex-shrink-0">
-                                    <button id="chat-offer-swap-pill-btn" class="w-[38px] h-[38px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onpointerdown="if(state.currentConversationId) { window.openSwapLifecycleModal('initiator', state.currentConversationId); event.preventDefault(); }" onclick="if(state.currentConversationId) { window.openSwapLifecycleModal('initiator', state.currentConversationId); }" title="Offer a Swap">
-                                        <span class="material-symbols-outlined text-[17px]">handshake</span>
+                                    <button id="chat-offer-swap-pill-btn" class="w-[44px] h-[44px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onpointerdown="if(state.currentConversationId) { window.openSwapLifecycleModal('initiator', state.currentConversationId); event.preventDefault(); }" onclick="if(state.currentConversationId) { window.openSwapLifecycleModal('initiator', state.currentConversationId); }" title="Offer a Swap">
+                                        <span class="material-symbols-outlined text-[20px]">handshake</span>
                                     </button>
-                                    <button id="chat-map-shortcut-btn" class="w-[38px] h-[38px] bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer hidden" onclick="if(state.currentConversationId) window.viewMeetupLocationOnMap(state.currentConversationId)" title="View Swap Map">
-                                        <span class="material-symbols-outlined text-[17px] text-white">map</span>
+                                    <button id="chat-map-shortcut-btn" class="w-[44px] h-[44px] bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer hidden" onclick="if(state.currentConversationId) window.viewMeetupLocationOnMap(state.currentConversationId)" title="View Swap Map">
+                                        <span class="material-symbols-outlined text-[20px] text-white">map</span>
                                     </button>
-                                    <button class="w-[38px] h-[38px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer" onclick="handleSendTextMessage()" title="Send">
-                                        <span class="material-symbols-outlined text-[17px]">send</span>
+                                    <button class="w-[44px] h-[44px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer" onclick="handleSendTextMessage()" title="Send">
+                                        <span class="material-symbols-outlined text-[20px]">send</span>
                                     </button>
                                 </div>
                             </div>
