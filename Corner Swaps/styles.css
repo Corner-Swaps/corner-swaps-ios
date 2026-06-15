@@ -1631,6 +1631,10 @@ select::-ms-expand {
     border-color: rgba(56, 189, 248, 0.45) !important;
 }
 
+#snap-to-neighborhood-btn {
+    display: none !important;
+}
+
 #btn-segment-trigger, #snap-to-neighborhood-btn {
     width: 48px !important;
     height: 48px !important;
@@ -1839,12 +1843,12 @@ html.dark .chat-bubble-other {
     top: 4.5rem !important; /* 72px */
 }
 #village-segment-floating-buttons {
-    bottom: 88px !important;
+    bottom: 198px !important;
     right: 24px !important;
     top: auto !important;
 }
 #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: 236px !important;
+    bottom: 346px !important;
 }
 
 #floating-map-controls {
@@ -1891,12 +1895,12 @@ html.dark .chat-bubble-other {
     top: calc(4.5rem + env(safe-area-inset-top)) !important;
 }
 .native-app-env #village-segment-floating-buttons {
-    bottom: calc(88px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(198px + env(safe-area-inset-bottom)) !important;
     right: 24px !important;
     top: auto !important;
 }
 .native-app-env #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: calc(236px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(346px + env(safe-area-inset-bottom)) !important;
 }
 
 .native-app-env #meetup-map-footer {
@@ -1949,7 +1953,7 @@ html.dark .chat-bubble-other {
     opacity: 1 !important;
     transform: scale(1) translateY(0) !important;
     pointer-events: auto !important;
-    margin-bottom: 10px !important;
+    margin-bottom: 5px !important;
     overflow: visible !important;
 }
 
@@ -2060,6 +2064,12 @@ html.dark .chat-bubble-other {
     color: #ffffff !important;
     border-color: #0d9488 !important;
 }
+#btn-segment-events-map {
+    background-color: #10b981 !important;
+    background: #10b981 !important;
+    color: #ffffff !important;
+    border-color: #10b981 !important;
+}
 #btn-segment-bulletins {
     background-color: #ea580c !important;
     background: #ea580c !important;
@@ -2105,7 +2115,10 @@ html.dark .chat-bubble-other {
 }
 
 #btn-segment-trigger {
-    /* Cleaned */
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 @keyframes trigger-glow-pulse {
@@ -2197,7 +2210,7 @@ html.dark .chat-bubble-other {
     opacity: 1 !important;
     transform: scale(1) translateY(0) !important;
     pointer-events: auto !important;
-    margin-bottom: 10px !important;
+    margin-bottom: 5px !important;
     overflow: visible !important;
 }
 
@@ -4273,7 +4286,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 /* Outer Chat Action Center container - glassmorphism, transparent, positioned low */
 #chat-action-center {
     position: absolute !important;
-    bottom: 12px !important;
+    bottom: 6px !important;
     left: 12px !important;
     right: 12px !important;
     width: calc(100% - 24px) !important;
@@ -4286,7 +4299,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
     border-radius: 24px !important;
 }
 .native-app-env #chat-action-center {
-    bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(6px + env(safe-area-inset-bottom)) !important;
 }
 html.dark #chat-action-center {
     border: 1px solid rgba(255, 255, 255, 0.10) !important;
@@ -5722,11 +5735,11 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
     bottom: 230px !important;
 }
 .iphone16-mode #village-segment-floating-buttons {
-    bottom: 88px !important;
+    bottom: 198px !important;
     top: auto !important;
 }
 .iphone16-mode #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: 236px !important;
+    bottom: 346px !important;
 }
 
 .iphone16-mode #map-category-dropdown {
@@ -6945,7 +6958,7 @@ html.dark .fused-search-capsule {
     font-size: 13px !important;
     font-family: 'Outfit', sans-serif !important;
     font-weight: 300 !important;
-    padding: 0 10px 0 6px !important;
+    padding: 0 10px 0 8px !important;
     color: #000000 !important;
     height: 100% !important;
     width: 100% !important;
@@ -6967,14 +6980,16 @@ html.dark .fused-search-input {
     max-width: 28px !important;
     max-height: 28px !important;
     color: #000000 !important;
-    background: transparent !important;
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-radius: 50% !important;
     border: none !important;
     margin-left: 2px !important;
-    transition: color 0.2s ease !important;
+    transition: all 0.2s ease !important;
 }
 
 html.dark .fused-location-btn {
     color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.1) !important;
 }
 
 .fused-location-btn.active-location {
@@ -7016,7 +7031,7 @@ html.dark .fused-divider {
     min-height: 26px !important;
     max-width: 26px !important;
     max-height: 26px !important;
-    margin-right: 6px !important;
+    margin-right: 0px !important;
     box-shadow: none !important;
     display: flex !important;
 }
@@ -7030,18 +7045,26 @@ html.dark .fused-divider {
     min-height: 28px !important;
     max-width: 28px !important;
     max-height: 28px !important;
+    margin-right: 6px !important;
     box-shadow: none !important;
     border: none !important;
-    background-color: transparent !important;
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    border-radius: 50% !important;
     display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+html.dark #btn-segment-filter.fused-filter-btn {
+    background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 #btn-segment-filter.fused-filter-btn:hover {
-    background-color: rgba(0, 0, 0, 0.05) !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 html.dark #btn-segment-filter.fused-filter-btn:hover {
-    background-color: rgba(255, 255, 255, 0.1) !important;
+    background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 #btn-segment-filter.fused-filter-btn.active-filter-circle {
@@ -7053,6 +7076,27 @@ html.dark #btn-segment-filter.fused-filter-btn:hover {
 html.dark #btn-segment-filter.fused-filter-btn.active-filter-circle {
     background-color: #82b995 !important;
     color: #111814 !important;
+}
+
+/* Fused Clear Search Button */
+.fused-clear-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
+    color: #6b7280 !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: color 0.2s ease !important;
+}
+html.dark .fused-clear-btn {
+    color: #9ca3af !important;
 }
 
 /* Suggestions Box overlay style */
@@ -7109,6 +7153,7 @@ html.dark .music-guidance-banner {
     border-color: rgba(255, 255, 255, 0.1) !important;
     color: #a0cfa5 !important;
 }
+
 
 
 

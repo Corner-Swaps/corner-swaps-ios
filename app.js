@@ -3433,17 +3433,17 @@ function showView(viewId, mode) {
                 if (mapControls) mapControls.style.display = 'none';
                 floatingContainer.classList.add('detail-active-trigger');
             } else {
-                const isMapSegment = currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map';
-                if (isMapSegment) {
-                    floatingContainer.style.display = 'flex';
-                    if (blueBtn) blueBtn.style.display = 'flex';
-                    if (mapControls) mapControls.style.display = 'flex';
-                } else {
-                    floatingContainer.style.display = 'none';
-                    if (blueBtn) blueBtn.style.display = 'none';
-                    if (mapControls) mapControls.style.display = 'none';
+                const isMapSegment = currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map' || currentVillageSegment === 'events_map';
+                floatingContainer.style.display = 'flex';
+                if (mapControls) mapControls.style.display = 'flex';
+                if (blueBtn) {
+                    if (isMapSegment) {
+                        blueBtn.style.display = 'flex';
+                    } else {
+                        blueBtn.style.display = 'none';
+                    }
                 }
-                if (triggerIcon) updateTriggerIconState(triggerIcon, !isMapSegment);
+                if (triggerIcon) updateTriggerIconState(triggerIcon, false);
                 floatingContainer.classList.remove('detail-active-trigger');
             }
         } else {
@@ -7512,21 +7512,18 @@ function closeMapItemDetail() {
     const blueBtn = document.getElementById('snap-to-neighborhood-btn');
     
     if (triggerIcon) {
-        updateTriggerIconState(triggerIcon, currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map');
+        updateTriggerIconState(triggerIcon, false);
         if (floatingContainer) {
             floatingContainer.classList.remove('detail-active-trigger');
             if (state.currentView === 'village' && !state.meetupMapMode) {
-                if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
-                    floatingContainer.style.display = 'none';
-                } else {
-                    floatingContainer.style.display = 'flex';
-                }
+                floatingContainer.style.display = 'flex';
             }
         }
     }
 
     if (blueBtn) {
-        if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
+        const isMapSegment = currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map' || currentVillageSegment === 'events_map';
+        if (!isMapSegment) {
             blueBtn.style.display = 'none';
         } else {
             blueBtn.style.display = 'flex';
@@ -7773,10 +7770,10 @@ function openMapEventDetail(eventId) {
     }
     document.getElementById('map-event-detail-overlay').classList.add('active');
     
-    // Keep the tab bar visible but initially hidden behind
+    // Keep the tab bar visible in event details
     const navbar = document.getElementById('global-navbar');
     if (navbar) {
-        navbar.classList.add('navbar-behind');
+        navbar.classList.remove('navbar-behind');
     }
     setTimeout(() => {
         if (typeof updateDetailNavbarState === 'function') updateDetailNavbarState();
@@ -8464,11 +8461,7 @@ function closeNeighborProfileModal() {
         const isDetailActive = (overlay && overlay.classList.contains('active')) || (eventOverlay && eventOverlay.classList.contains('active'));
         
         if (state.currentView === 'village' && !state.meetupMapMode) {
-            if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
-                floatingContainer.style.display = 'none';
-            } else {
-                floatingContainer.style.display = 'flex';
-            }
+            floatingContainer.style.display = 'flex';
             if (isDetailActive) {
                 floatingContainer.style.display = 'none';
                 floatingContainer.classList.add('detail-active-trigger');
@@ -8478,11 +8471,12 @@ function closeNeighborProfileModal() {
                 floatingContainer.classList.remove('detail-active-trigger');
                 const triggerIcon = document.getElementById('segment-trigger-icon');
                 if (triggerIcon) {
-                    updateTriggerIconState(triggerIcon, currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map');
+                    updateTriggerIconState(triggerIcon, false);
                 }
                 const blueBtn = document.getElementById('snap-to-neighborhood-btn');
                 if (blueBtn) {
-                    if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
+                    const isMapSegment = currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map' || currentVillageSegment === 'events_map';
+                    if (!isMapSegment) {
                         blueBtn.style.display = 'none';
                     } else {
                         blueBtn.style.display = 'flex';
@@ -8687,7 +8681,7 @@ window.handleMapFilterOverlayClick = handleMapFilterOverlayClick;
 function toggleCategoryTray() {
     playSound('click');
     collapseVillageMenu();
-    if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
+    if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map' && currentVillageSegment !== 'events_map') {
         switchVillageSegment('map');
     }
     
@@ -9405,11 +9399,12 @@ function openCategoryView(categoryName) {
         const blueBtn = document.getElementById('snap-to-neighborhood-btn');
         const floatingContainer = document.getElementById('village-segment-floating-buttons');
         if (triggerIcon) {
-            updateTriggerIconState(triggerIcon, currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map');
+            updateTriggerIconState(triggerIcon, false);
             if (floatingContainer) floatingContainer.classList.remove('detail-active-trigger');
         }
         if (blueBtn) {
-            if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
+            const isMapSegment = currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map' || currentVillageSegment === 'events_map';
+            if (!isMapSegment) {
                 blueBtn.style.display = 'none';
             } else {
                 blueBtn.style.display = 'flex';
@@ -9427,11 +9422,7 @@ function closeCategoryView() {
     // Restore floating buttons after category overlay is dismissed
     const floatingContainer = document.getElementById('village-segment-floating-buttons');
     if (floatingContainer && state.currentView === 'village') {
-        if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
-            floatingContainer.style.display = 'none';
-        } else {
-            floatingContainer.style.display = 'flex';
-        }
+        floatingContainer.style.display = 'flex';
     }
 }
 
@@ -11443,7 +11434,7 @@ function renderChatDetail(conv) {
                     <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm cursor-pointer hover:bg-amber-500/20 transition-all font-bold admin-message-bubble" onclick="openSuggestMeetingSpotModal()">
                         <p class="text-xs leading-relaxed">${escapeHTML(adminText)}</p>
                     </div>
-                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${formatMessageTime(msg.time)}</span>
+                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}</span>
                 </div>
             `;
             feed.appendChild(msgDiv);
@@ -11460,7 +11451,7 @@ function renderChatDetail(conv) {
                     <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm select-text font-medium admin-message-bubble">
                         <p class="text-xs leading-relaxed">${escapeHTML(adminText)}</p>
                     </div>
-                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${formatMessageTime(msg.time)}</span>
+                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}</span>
                 </div>
             `;
             feed.appendChild(msgDiv);
@@ -11477,7 +11468,7 @@ function renderChatDetail(conv) {
                     <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm cursor-pointer hover:bg-amber-500/20 transition-all font-bold animate-pulse-slow admin-message-bubble" onclick="window.viewMeetupLocationOnMap('${conv.id}')">
                         <p class="text-xs leading-relaxed underline">${escapeHTML(adminText)}</p>
                     </div>
-                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${formatMessageTime(msg.time)}</span>
+                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}</span>
                 </div>
             `;
             feed.appendChild(msgDiv);
@@ -11502,7 +11493,7 @@ function renderChatDetail(conv) {
                             <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm cursor-pointer hover:bg-amber-500/20 transition-all font-bold admin-message-bubble" onclick="openSuggestMeetingSpotModal()">
                                 <p class="text-xs leading-relaxed">Click this message to set up a meeting location</p>
                             </div>
-                            <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${formatMessageTime(msg.time)}</span>
+                            <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}</span>
                         </div>
                     `;
                     feed.appendChild(msgDiv);
@@ -11556,15 +11547,14 @@ function renderChatDetail(conv) {
                     <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm select-text admin-message-bubble">
                         <p class="text-xs leading-relaxed whitespace-pre-line font-medium">${escapeHTML(adminText)}</p>
                     </div>
-                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${formatMessageTime(msg.time)}</span>
+                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}</span>
                 </div>
             `;
         } else {
             const myAvatarUrl = state.currentUser ? state.currentUser.avatar : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80";
+            const myName = state.currentUser ? (state.currentUser.displayName || (state.currentUser.firstName && state.currentUser.lastName ? `${state.currentUser.firstName} ${state.currentUser.lastName}` : 'Lily Kaufmann')) : 'Lily Kaufmann';
             msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full animate-fade-in my-1.5 ${isMe ? 'self-end justify-end' : 'self-start justify-start'}`;
-            const senderLabel = (!isMe && conv.isGroup) 
-                ? `<span class="text-[9px] text-forest-green font-bold ml-2 mb-0.5">${msg.sender}</span>` 
-                : '';
+            const senderLabel = '';
                 
             let isSwap = msg.isSwapOffer;
             let offeredTitle = msg.offeredItemTitle;
@@ -11654,7 +11644,7 @@ function renderChatDetail(conv) {
                                 </div>
                             </div>
                             
-                            <span class="text-[9px] text-forest-green/60 dark:text-[#308A5E]/60 mt-1.5 font-semibold mr-1 select-none">${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
+                            <span class="text-[9px] text-forest-green/60 dark:text-[#308A5E]/60 mt-1.5 font-semibold mr-1 select-none">${escapeHTML(myName)} • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
                         </div>
                         <img src="${myAvatarUrl}" class="w-7 h-7 rounded-full flex-shrink-0 object-cover select-none cursor-pointer active:scale-95 transition-transform" onclick="showView('profile_settings')" title="View my profile"/>
                     `;
@@ -11695,7 +11685,7 @@ function renderChatDetail(conv) {
                             <div id="msg-bubble-${index}" class="chat-bubble-me chat-bubble-hover py-2 px-3.5 rounded-3xl rounded-tr-none shadow-sm cursor-pointer select-none transition-all duration-200" onclick="handleMessageClick(event, ${index})">
                                 ${bubbleInnerContent}
                             </div>
-                            <span class="text-[9px] text-forest-green/60 dark:text-[#308A5E]/60 mt-1 font-semibold mr-1 select-none">${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
+                            <span class="text-[9px] text-forest-green/60 dark:text-[#308A5E]/60 mt-1 font-semibold mr-1 select-none">${escapeHTML(myName)} • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
                         </div>
                         <img src="${myAvatarUrl}" class="w-7 h-7 rounded-full flex-shrink-0 object-cover select-none cursor-pointer active:scale-95 transition-transform" onclick="showView('profile_settings')" title="View my profile"/>
                     `;
@@ -11748,7 +11738,7 @@ function renderChatDetail(conv) {
                                 </div>
                             </div>
                             
-                            <span class="text-[9px] text-on-surface-variant/65 mt-1.5 font-semibold ml-1 select-none">${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
+                            <span class="text-[9px] text-on-surface-variant/65 mt-1.5 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
                         </div>
                     `;
                 } else {
@@ -11790,7 +11780,7 @@ function renderChatDetail(conv) {
                             <div id="msg-bubble-${index}" class="chat-bubble-other chat-bubble-hover py-2 px-3.5 rounded-3xl rounded-tl-none shadow-sm border border-outline-variant/15 dark:border-[#308A5E1f] cursor-pointer select-none transition-all duration-200" onclick="handleMessageClick(event, ${index})">
                                 ${bubbleInnerContent}
                             </div>
-                            <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
+                            <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
                         </div>
                     `;
                 }
@@ -14908,14 +14898,10 @@ function switchVillageSegment(type) {
         if (searchBar) searchBar.classList.remove('hidden');
         if (meetupFooter) meetupFooter.classList.add('hidden');
         
-        const isMapSegment = type === 'map' || type === 'needs_map' || type === 'gifts_map';
+        const isMapSegment = type === 'map' || type === 'needs_map' || type === 'gifts_map' || type === 'events_map';
         if (mapControls) {
-            if (isMapSegment) {
-                mapControls.style.display = 'flex';
-                mapControls.classList.remove('hidden');
-            } else {
-                mapControls.style.display = 'none';
-            }
+            mapControls.style.display = 'flex';
+            mapControls.classList.remove('hidden');
         }
 
         const filterBtn = document.getElementById('btn-segment-filter');
@@ -14937,7 +14923,7 @@ function switchVillageSegment(type) {
         }
 
         if (triggerIcon) {
-            updateTriggerIconState(triggerIcon, !isMapSegment);
+            updateTriggerIconState(triggerIcon, false);
             if (floatingContainer) {
                 floatingContainer.classList.remove('detail-active-trigger');
                 const overlay = document.getElementById('map-detail-overlay');
@@ -14948,11 +14934,7 @@ function switchVillageSegment(type) {
                     floatingContainer.style.display = 'none';
                     floatingContainer.classList.add('detail-active-trigger');
                 } else {
-                    if (!isMapSegment) {
-                        floatingContainer.style.display = 'none';
-                    } else {
-                        floatingContainer.style.display = 'flex';
-                    }
+                    floatingContainer.style.display = 'flex';
                 }
             }
             if (blueBtn) {
@@ -16555,21 +16537,7 @@ const initMapAndInputs = () => {
                 scrolledPast = isShort || isBottom || isBtnPast;
             }
         } else if (isEventActive) {
-            const container = document.getElementById('map-event-detail-scroll-container');
-            const reportBtn = document.getElementById('map-event-detail-report-btn');
-            if (container) {
-                const isShort = container.scrollHeight <= container.clientHeight + 10;
-                const isBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 20;
-                let isBtnPast = false;
-                if (reportBtn && reportBtn.style.display !== 'none' && !reportBtn.classList.contains('hidden')) {
-                    const containerRect = container.getBoundingClientRect();
-                    const btnRect = reportBtn.getBoundingClientRect();
-                    isBtnPast = (btnRect.bottom <= containerRect.bottom + 10);
-                } else {
-                    isBtnPast = isBottom || isShort;
-                }
-                scrolledPast = isShort || isBottom || isBtnPast;
-            }
+            scrolledPast = true;
         } else {
             navbar.classList.remove('navbar-behind');
             return;
@@ -17374,7 +17342,6 @@ function applyMapFiltering() {
     }
 
     const listClearButtons = [
-        'btn-clear-village-search',
         'btn-clear-village-list-search',
         'btn-clear-village-needs-search',
         'btn-clear-village-events-search',
@@ -18078,52 +18045,54 @@ function plotMapMarkersOnly() {
         return;
     }
     
-    // 1. Plot offerings/listings & events if we are on 'map' segment (Offerings Map) or 'gifts_map' (Gifts Map)
-    if (currentVillageSegment === 'map' || currentVillageSegment === 'gifts_map') {
-        Object.keys(state.neighbors).forEach(name => {
-            const neighbor = state.neighbors[name];
-            if (!neighbor) return;
-            
-            // If we are on gifts map, only plot neighbor if it's a karma/free swap!
-            if (currentVillageSegment === 'gifts_map' && !neighbor.isKarma) return;
+    // 1. Plot offerings/listings & events if we are on 'map' segment (Offerings Map), 'gifts_map' (Gifts Map), or 'events_map' (Events Map)
+    if (currentVillageSegment === 'map' || currentVillageSegment === 'gifts_map' || currentVillageSegment === 'events_map') {
+        if (currentVillageSegment !== 'events_map') {
+            Object.keys(state.neighbors).forEach(name => {
+                const neighbor = state.neighbors[name];
+                if (!neighbor) return;
+                
+                // If we are on gifts map, only plot neighbor if it's a karma/free swap!
+                if (currentVillageSegment === 'gifts_map' && !neighbor.isKarma) return;
 
-            const coords = validateCoords(neighbor.lat, neighbor.lng);
-            if (!coords) return;
-            const lat = coords.lat;
-            const lng = coords.lng;
-            if (getBarterItemStatus(name) !== 'Available') return; // Filter out pending/non-available listings
-            if (state.blockedUsers && state.blockedUsers.includes(name)) return;
-            if (state.suspendedUsers && state.suspendedUsers.includes(name)) return;
-            if (neighbor.suspended) return;
-            if (neighbor.shadowBanned) return; // Skip shadow-banned users
+                const coords = validateCoords(neighbor.lat, neighbor.lng);
+                if (!coords) return;
+                const lat = coords.lat;
+                const lng = coords.lng;
+                if (getBarterItemStatus(name) !== 'Available') return; // Filter out pending/non-available listings
+                if (state.blockedUsers && state.blockedUsers.includes(name)) return;
+                if (state.suspendedUsers && state.suspendedUsers.includes(name)) return;
+                if (neighbor.suspended) return;
+                if (neighbor.shadowBanned) return; // Skip shadow-banned users
 
-            const color = getCategoryColor(neighbor.category);
-            const iconName = neighbor.icon || getCategoryIcon(neighbor.category);
-            const pinImgUrl = getCategoryPresetImage(neighbor.category);
+                const color = getCategoryColor(neighbor.category);
+                const iconName = neighbor.icon || getCategoryIcon(neighbor.category);
+                const pinImgUrl = getCategoryPresetImage(neighbor.category);
 
-            // Append small heart badge for free Karma items
-            const heartBadge = neighbor.isKarma ? 
-                `<div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid white !important; background-color: #EF4444 !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important; z-index: 10 !important;">
-                    <span class="material-symbols-outlined text-[8px]" style="color: white !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
-                 </div>` : '';
+                // Append small heart badge for free Karma items
+                const heartBadge = neighbor.isKarma ? 
+                    `<div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid white !important; background-color: #EF4444 !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important; z-index: 10 !important;">
+                        <span class="material-symbols-outlined text-[8px]" style="color: white !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
+                     </div>` : '';
 
-            const customIcon = L.divIcon({
-                className: 'custom-div-icon',
-                html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid white !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
-                        <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">${iconName}</span>
-                        ${heartBadge}
-                       </div>`,
-                iconSize: [38, 38],
-                iconAnchor: [19, 19]
+                const customIcon = L.divIcon({
+                    className: 'custom-div-icon',
+                    html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid white !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
+                            <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">${iconName}</span>
+                            ${heartBadge}
+                           </div>`,
+                    iconSize: [38, 38],
+                    iconAnchor: [19, 19]
+                });
+
+                const marker = L.marker([lat, lng], { icon: customIcon }).addTo(leafletMap);
+                marker.on('click', () => {
+                    if (typeof playSound === 'function') playSound('click');
+                    openMapItemDetail(name);
+                });
+                mapMarkers.push({ marker, name: name });
             });
-
-            const marker = L.marker([lat, lng], { icon: customIcon }).addTo(leafletMap);
-            marker.on('click', () => {
-                if (typeof playSound === 'function') playSound('click');
-                openMapItemDetail(name);
-            });
-            mapMarkers.push({ marker, name: name });
-        });
+        }
 
         // Only plot user offerings on the regular offerings map (gifts_map displays neighbor free gifts)
         if (currentVillageSegment === 'map') {
@@ -18158,8 +18127,8 @@ function plotMapMarkersOnly() {
             });
         }
 
-        // Only plot events on standard offerings map segment
-        if (state.events && currentVillageSegment === 'map') {
+        // Plot events on standard offerings map segment or events map segment
+        if (state.events && (currentVillageSegment === 'map' || currentVillageSegment === 'events_map')) {
             state.events.forEach(evt => {
                 const coords = validateCoords(evt.lat, evt.lng);
                 if (!coords) return;
@@ -25583,10 +25552,6 @@ function toggleVillageMenu() {
         showView('profile_settings');
         return;
     }
-    if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map' && state.currentView === 'village') {
-        switchVillageSegment('map');
-        return;
-    }
     const container = document.getElementById('village-segment-floating-buttons');
     const icon = document.getElementById('segment-trigger-icon');
     if (container) {
@@ -25607,11 +25572,7 @@ function collapseVillageMenu() {
     if (container && container.classList.contains('expanded')) {
         container.classList.remove('expanded');
         if (icon) {
-            if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
-                updateTriggerIconState(icon, true);
-            } else {
-                updateTriggerIconState(icon, false);
-            }
+            updateTriggerIconState(icon, false);
         }
     }
 }
@@ -26903,7 +26864,9 @@ window.selectCategoryChip = function(cat) {
         renderVillageListView();
     } else if (currentVillageSegment === 'needs') {
         renderNeedsBoardView();
-    } else if (currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map') {
+    } else if (currentVillageSegment === 'events') {
+        renderEventsList();
+    } else if (currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map' || currentVillageSegment === 'events_map') {
         plotMapMarkersOnly();
     }
 };
@@ -28567,6 +28530,27 @@ window.submitNeighborReview = function() {
     // Switch to active segment and re-render
     window.switchChatSegment('active');
 };
+
+// Automatically update --chat-input-height based on the actual height of the chat action center container
+const initChatInputHeightObserver = () => {
+    const actionCenter = document.getElementById('chat-action-center');
+    const feed = document.getElementById('chat-message-feed');
+    if (!actionCenter || !feed) return;
+    
+    const observer = new ResizeObserver((entries) => {
+        for (let entry of entries) {
+            const height = entry.contentRect.height;
+            if (height > 0) {
+                feed.style.setProperty('--chat-input-height', `${height}px`);
+            }
+        }
+    });
+    observer.observe(actionCenter);
+};
+document.addEventListener('DOMContentLoaded', initChatInputHeightObserver);
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initChatInputHeightObserver();
+}
 
 // Global scope ends
 

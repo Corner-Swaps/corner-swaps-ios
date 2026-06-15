@@ -2792,6 +2792,10 @@ select::-ms-expand {
     border-color: rgba(56, 189, 248, 0.45) !important;
 }
 
+#snap-to-neighborhood-btn {
+    display: none !important;
+}
+
 #btn-segment-trigger, #snap-to-neighborhood-btn {
     width: 48px !important;
     height: 48px !important;
@@ -3000,12 +3004,12 @@ html.dark .chat-bubble-other {
     top: 4.5rem !important; /* 72px */
 }
 #village-segment-floating-buttons {
-    bottom: 88px !important;
+    bottom: 198px !important;
     right: 24px !important;
     top: auto !important;
 }
 #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: 236px !important;
+    bottom: 346px !important;
 }
 
 #floating-map-controls {
@@ -3052,12 +3056,12 @@ html.dark .chat-bubble-other {
     top: calc(4.5rem + env(safe-area-inset-top)) !important;
 }
 .native-app-env #village-segment-floating-buttons {
-    bottom: calc(88px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(198px + env(safe-area-inset-bottom)) !important;
     right: 24px !important;
     top: auto !important;
 }
 .native-app-env #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: calc(236px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(346px + env(safe-area-inset-bottom)) !important;
 }
 
 .native-app-env #meetup-map-footer {
@@ -3110,7 +3114,7 @@ html.dark .chat-bubble-other {
     opacity: 1 !important;
     transform: scale(1) translateY(0) !important;
     pointer-events: auto !important;
-    margin-bottom: 10px !important;
+    margin-bottom: 5px !important;
     overflow: visible !important;
 }
 
@@ -3221,6 +3225,12 @@ html.dark .chat-bubble-other {
     color: #ffffff !important;
     border-color: #0d9488 !important;
 }
+#btn-segment-events-map {
+    background-color: #10b981 !important;
+    background: #10b981 !important;
+    color: #ffffff !important;
+    border-color: #10b981 !important;
+}
 #btn-segment-bulletins {
     background-color: #ea580c !important;
     background: #ea580c !important;
@@ -3266,7 +3276,10 @@ html.dark .chat-bubble-other {
 }
 
 #btn-segment-trigger {
-    /* Cleaned */
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 @keyframes trigger-glow-pulse {
@@ -3358,7 +3371,7 @@ html.dark .chat-bubble-other {
     opacity: 1 !important;
     transform: scale(1) translateY(0) !important;
     pointer-events: auto !important;
-    margin-bottom: 10px !important;
+    margin-bottom: 5px !important;
     overflow: visible !important;
 }
 
@@ -5434,7 +5447,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 /* Outer Chat Action Center container - glassmorphism, transparent, positioned low */
 #chat-action-center {
     position: absolute !important;
-    bottom: 12px !important;
+    bottom: 6px !important;
     left: 12px !important;
     right: 12px !important;
     width: calc(100% - 24px) !important;
@@ -5447,7 +5460,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
     border-radius: 24px !important;
 }
 .native-app-env #chat-action-center {
-    bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(6px + env(safe-area-inset-bottom)) !important;
 }
 html.dark #chat-action-center {
     border: 1px solid rgba(255, 255, 255, 0.10) !important;
@@ -6883,11 +6896,11 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
     bottom: 230px !important;
 }
 .iphone16-mode #village-segment-floating-buttons {
-    bottom: 88px !important;
+    bottom: 198px !important;
     top: auto !important;
 }
 .iphone16-mode #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: 236px !important;
+    bottom: 346px !important;
 }
 
 .iphone16-mode #map-category-dropdown {
@@ -8106,7 +8119,7 @@ html.dark .fused-search-capsule {
     font-size: 13px !important;
     font-family: 'Outfit', sans-serif !important;
     font-weight: 300 !important;
-    padding: 0 10px 0 6px !important;
+    padding: 0 10px 0 8px !important;
     color: #000000 !important;
     height: 100% !important;
     width: 100% !important;
@@ -8128,14 +8141,16 @@ html.dark .fused-search-input {
     max-width: 28px !important;
     max-height: 28px !important;
     color: #000000 !important;
-    background: transparent !important;
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-radius: 50% !important;
     border: none !important;
     margin-left: 2px !important;
-    transition: color 0.2s ease !important;
+    transition: all 0.2s ease !important;
 }
 
 html.dark .fused-location-btn {
     color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.1) !important;
 }
 
 .fused-location-btn.active-location {
@@ -8177,7 +8192,7 @@ html.dark .fused-divider {
     min-height: 26px !important;
     max-width: 26px !important;
     max-height: 26px !important;
-    margin-right: 6px !important;
+    margin-right: 0px !important;
     box-shadow: none !important;
     display: flex !important;
 }
@@ -8191,18 +8206,26 @@ html.dark .fused-divider {
     min-height: 28px !important;
     max-width: 28px !important;
     max-height: 28px !important;
+    margin-right: 6px !important;
     box-shadow: none !important;
     border: none !important;
-    background-color: transparent !important;
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    border-radius: 50% !important;
     display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+html.dark #btn-segment-filter.fused-filter-btn {
+    background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 #btn-segment-filter.fused-filter-btn:hover {
-    background-color: rgba(0, 0, 0, 0.05) !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 html.dark #btn-segment-filter.fused-filter-btn:hover {
-    background-color: rgba(255, 255, 255, 0.1) !important;
+    background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 #btn-segment-filter.fused-filter-btn.active-filter-circle {
@@ -8214,6 +8237,27 @@ html.dark #btn-segment-filter.fused-filter-btn:hover {
 html.dark #btn-segment-filter.fused-filter-btn.active-filter-circle {
     background-color: #82b995 !important;
     color: #111814 !important;
+}
+
+/* Fused Clear Search Button */
+.fused-clear-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
+    color: #6b7280 !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: color 0.2s ease !important;
+}
+html.dark .fused-clear-btn {
+    color: #9ca3af !important;
 }
 
 /* Suggestions Box overlay style */
@@ -9374,38 +9418,34 @@ html.dark .music-guidance-banner {
                             <div id="meetup-map-footer" class="hidden absolute bottom-12 right-6 z-[3000] flex flex-col-reverse items-end transition-all duration-300">
                                 <!-- Location Button (always visible below the close/X button) -->
                                 <div class="flex items-center justify-end">
-                                    <button id="meetup-snap-btn" class="w-12 h-12 bg-forest-green border-forest-green dark:bg-[#308A5E] dark:border-[#308A5E] hover:opacity-90 rounded-full flex items-center justify-center text-white dark:text-[#18201a] active:scale-90 transition-all shadow-lg transition-all duration-300 pulse-green-light" onclick="snapToUserNeighborhood()" title="Snap back to neighborhood">
+                                    <button id="meetup-snap-btn" class="w-12 h-12 bg-blue-600 border-blue-600 dark:bg-blue-600 dark:border-blue-600 hover:opacity-90 rounded-full flex items-center justify-center text-white active:scale-90 transition-all shadow-lg transition-all duration-300 pulse-blue-light" onclick="snapToUserNeighborhood()" title="Snap back to neighborhood">
                                         <span class="material-symbols-outlined text-2xl font-bold">my_location</span>
                                     </button>
                                 </div>
                                 
                                 <!-- Back to Chat Button (visually above location button, space separated) -->
                                 <div class="flex items-center justify-end mb-2.5">
-                                    <button class="w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-forest-green border border-outline-variant/30 active:scale-90 transition-all cursor-pointer text-white" onclick="window.exitMeetupMapMode()" title="Back to Chat">
+                                    <button class="w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-[#1a1c18] dark:bg-[#1a1c18] border border-white/10 active:scale-90 transition-all cursor-pointer text-white" onclick="window.exitMeetupMapMode()" title="Back to Chat">
                                         <span class="material-symbols-outlined text-[24px]">close</span>
                                     </button>
                                 </div>
                             </div>
 
-                             <!-- Hidden search bar for JS compatibility (kept in DOM to prevent errors) -->
-                             <div id="village-search-bar-overlay" class="hidden" style="display: none !important;">
-                                 <input type="text" id="village-search-input" oninput="applyMapFiltering();">
-                                 <button id="btn-clear-village-search" onclick="clearVillageSearch()"></button>
-                                 <div id="village-search-suggestions" class="hidden"></div>
+                             <!-- Fused Search & Filter Bar Container -->
+                             <div id="village-search-bar-overlay" class="pointer-events-auto absolute z-[2000] flex flex-col items-stretch transition-all duration-300">
+                                 <div class="fused-search-capsule">
+                                     <!-- Category Filter inside capsule -->
+                                     <button id="btn-segment-filter" onclick="toggleCategoryTray()" class="w-7 h-7 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 fused-filter-btn" title="Category Filter">
+                                         <span class="material-symbols-outlined text-[15px]" id="map-filter-icon">tune</span>
+                                     </button>
+                                     <!-- Location button inside capsule -->
+                                     <button id="btn-integrated-location" onclick="snapToUserNeighborhood()" class="fused-location-btn active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Snap to my location">
+                                         <span class="material-symbols-outlined text-[15px]">my_location</span>
+                                     </button>
+                                     <input type="text" id="village-search-input" oninput="applyMapFiltering();" placeholder="Search your neighbourhood" class="fused-search-input">
+                                 </div>
+                                 <div id="village-search-suggestions" class="hidden fused-suggestions-box"></div>
                              </div>
-                             
-                             <!-- Always-visible Help/Info button — sits above the filter button -->
-                             <button id="btn-map-info-help"
-                                     onclick="toggleMapInfoMode()"
-                                     class="pointer-events-auto w-7 h-7 rounded-full flex items-center justify-center bg-amber-400 hover:bg-amber-500 active:scale-90 transition-all cursor-pointer text-white shadow-md absolute top-[0px] left-[27px] z-[2001]"
-                                     title="What do the map pins mean?">
-                                 <span class="material-symbols-outlined text-[13px]">question_mark</span>
-                             </button>
-
-                             <!-- Category Filter Button — positioned on the left side -->
-                             <button id="btn-segment-filter" onclick="toggleCategoryTray()" class="pointer-events-auto rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm absolute top-[10px] left-6 z-[2000]" title="Category Filter">
-                                 <span class="material-symbols-outlined" id="map-filter-icon">tune</span>
-                             </button>
                              
                              <!-- Floating Map Controls — positioned on the right side -->
                              <div id="floating-map-controls" class="absolute bottom-24 right-6 z-[2000] flex flex-col-reverse items-center gap-2.5 select-none pointer-events-none" style="overflow: visible !important;">
@@ -9415,9 +9455,9 @@ html.dark .music-guidance-banner {
                                  </button>
 
                                  <!-- Menu Trigger Button Container (above location button) -->
-                                 <button id="btn-segment-trigger" onclick="toggleVillageMenu()" class="pointer-events-auto w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-forest-green border border-outline-variant/30 active:scale-90 transition-all cursor-pointer text-white pulse-green-light" title="Menu">
+                                 <button id="btn-segment-trigger" onclick="toggleVillageMenu()" class="pointer-events-auto w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-white border border-black/10 active:scale-90 transition-all cursor-pointer text-black" title="Menu">
                                      <span id="segment-trigger-icon" class="flex items-center justify-center w-[24px] h-[24px]">
-                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="display: block; margin: auto;">
+                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="black" style="display: block; margin: auto;">
                                              <circle cx="5" cy="5" r="2.2" />
                                              <circle cx="12" cy="5" r="2.2" />
                                              <circle cx="19" cy="5" r="2.2" />
@@ -9473,10 +9513,10 @@ html.dark .music-guidance-banner {
                                     
                                     <!-- Buttons -->
                                     <div class="flex gap-2 mt-auto">
-                                        <button onclick="openFullMapDetail()" class="flex-grow py-1 bg-forest-green/10 text-forest-green dark:bg-[#308A5E]/15 dark:text-[#308A5E] rounded-lg text-[10px] font-bold active:scale-[0.97] transition-all">
+                                        <button onclick="openFullMapDetail()" class="flex-grow py-1 bg-blue-600/10 text-blue-600 dark:bg-blue-600/20 dark:text-blue-400 rounded-lg text-[10px] font-bold active:scale-[0.97] transition-all">
                                             View Details
                                         </button>
-                                        <button id="peek-chat-btn" class="flex-grow py-1 bg-forest-green text-warm-cream rounded-lg text-[10px] font-bold active:scale-[0.97] transition-all flex items-center justify-center gap-1">
+                                        <button id="peek-chat-btn" class="flex-grow py-1 bg-blue-600 text-white rounded-lg text-[10px] font-bold active:scale-[0.97] transition-all flex items-center justify-center gap-1">
                                             <span class="material-symbols-outlined text-xs">chat</span> Chat
                                         </button>
                                     </div>
@@ -9872,7 +9912,7 @@ html.dark .music-guidance-banner {
                                  </div>
                              </div>
                             <!-- Content Container -->
-                            <div class="px-6 pt-3 pb-0 space-y-3.5 text-left flex-grow">
+                            <div class="px-6 pt-3 pb-28 space-y-3.5 text-left flex-grow">
                                 <div class="flex flex-col w-full">
                                     <!-- Category and Date Badge -->
                                     <div class="flex items-center justify-between">
@@ -9986,7 +10026,7 @@ html.dark .music-guidance-banner {
             <!-- Floating Segment Selector Circle Buttons Stack -->
             <div id="village-segment-floating-buttons" class="absolute top-[180px] right-6 z-[2000] flex flex-col-reverse items-end transition-all duration-300" style="display: none;">
                 
-                <!-- Switcher buttons under the menu with labels + ? help badges on the left -->
+                <!-- 1. Offering Map (DOM first -> bottom of stack) -->
                 <div class="menu-sub-button-wrapper">
                     <div class="flex items-center gap-1.5">
                         <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Offerings Map</span>
@@ -9996,17 +10036,41 @@ html.dark .music-guidance-banner {
                         <span class="material-symbols-outlined text-[24px]">map</span>
                     </button>
                 </div>
-                
+
+                <!-- 2. Needs Map -->
                 <div class="menu-sub-button-wrapper">
                     <div class="flex items-center gap-1.5">
                         <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Needs Map</span>
                         <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-needs-map" onclick="showVillageHelpPopup('btn-segment-needs-map',event)">?</button>
                     </div>
                     <button id="btn-segment-needs-map" onclick="switchVillageSegment('needs_map')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gray-600 border-gray-600 text-white pulse-gray-light dark:bg-gray-700 dark:border-gray-700 dark:text-white active:scale-95 transition-all cursor-pointer" title="Needs Map">
-                        <span class="material-symbols-outlined text-[24px]">explore</span>
+                        <span class="material-symbols-outlined text-[24px]">shopping_basket</span>
                     </button>
                 </div>
 
+                <!-- 3. Event Map -->
+                <div class="menu-sub-button-wrapper">
+                    <div class="flex items-center gap-1.5">
+                        <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Events Map</span>
+                        <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-events-map" onclick="showVillageHelpPopup('btn-segment-events-map',event)">?</button>
+                    </div>
+                    <button id="btn-segment-events-map" onclick="switchVillageSegment('events_map')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gray-600 border-gray-600 text-white pulse-gray-light dark:bg-gray-700 dark:border-gray-700 dark:text-white active:scale-95 transition-all cursor-pointer" title="Events Map">
+                        <span class="material-symbols-outlined text-[24px]">event</span>
+                    </button>
+                </div>
+
+                <!-- 4. Offering List -->
+                <div class="menu-sub-button-wrapper">
+                    <div class="flex items-center gap-1.5">
+                        <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Offerings List</span>
+                        <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-list" onclick="showVillageHelpPopup('btn-segment-list',event)">?</button>
+                    </div>
+                    <button id="btn-segment-list" onclick="switchVillageSegment('list')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gray-600 border-gray-600 text-white pulse-gray-light dark:bg-gray-700 dark:border-gray-700 dark:text-white active:scale-95 transition-all cursor-pointer" title="Offerings List">
+                        <span class="material-symbols-outlined text-[24px]">view_list</span>
+                    </button>
+                </div>
+
+                <!-- 5. Needs List -->
                 <div class="menu-sub-button-wrapper">
                     <div class="flex items-center gap-1.5">
                         <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Needs List</span>
@@ -10017,16 +10081,7 @@ html.dark .music-guidance-banner {
                     </button>
                 </div>
 
-                <div class="menu-sub-button-wrapper">
-                    <div class="flex items-center gap-1.5">
-                        <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Offerings List</span>
-                        <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-list" onclick="showVillageHelpPopup('btn-segment-list',event)">?</button>
-                    </div>
-                    <button id="btn-segment-list" onclick="switchVillageSegment('list')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gray-600 border-gray-600 text-white pulse-gray-light dark:bg-gray-700 dark:border-gray-700 dark:text-white active:scale-95 transition-all cursor-pointer" title="Offerings List">
-                        <span class="material-symbols-outlined text-[24px]">view_list</span>
-                    </button>
-                </div>
-                
+                <!-- 6. Event List -->
                 <div class="menu-sub-button-wrapper">
                     <div class="flex items-center gap-1.5">
                         <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Events List</span>
@@ -10129,12 +10184,12 @@ html.dark .music-guidance-banner {
                     <div class="px-6 bg-white/75 dark:bg-[#101612]/75 backdrop-blur-md border-b border-outline-variant/10 dark:border-outline-variant/5 flex items-center justify-between z-10 shrink-0 select-none" style="height: 64px !important;">
                         <div class="flex items-center gap-3 flex-grow min-w-0">
                             <!-- Avatar Wrapper with Status Dot Overlay -->
-                            <div class="relative flex-shrink-0 cursor-pointer active:scale-95 transition-transform" onclick="handleChatHeaderClick()">
+                            <div class="relative flex-shrink-0 cursor-pointer active:scale-95 transition-transform hidden" onclick="handleChatHeaderClick()">
                                 <div class="profile-avatar-ring w-10 h-10 flex-shrink-0"><img id="chat-header-avatar" class="w-full h-full object-cover rounded-full" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop"/></div>
                                 <div id="chat-header-single-dot" class="absolute -bottom-0.5 -right-0.5 w-[14px] h-[14px] rounded-full bg-[#00FF66] border-[2.5px] border-white dark:border-[#101612] z-10 shadow-sm transition-all duration-300 hidden"></div>
                             </div>
                             <!-- Name and Status info -->
-                            <div class="min-w-0 flex-grow">
+                            <div class="min-w-0 flex-grow hidden">
                                 <h3 id="chat-header-name" class="font-headline text-base font-extrabold text-black dark:text-white cursor-pointer active:opacity-85 transition-opacity truncate leading-tight flex items-center gap-1.5" onclick="handleChatHeaderClick()">Sarah Chen</h3>
                                 <div class="flex items-center gap-2 mt-0.5">
                                     <span id="chat-header-single-status-label" class="hidden text-[9px] uppercase tracking-wider font-extrabold text-black/60 dark:text-white/60">Available</span>
@@ -15702,7 +15757,6 @@ html.dark .music-guidance-banner {
                     <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="chat_hub" onclick="handleNavbarTap('chat_hub')">
                         <div class="nav-icon-wrapper relative flex items-center justify-center w-12 h-9 rounded-full transition-all duration-300">
                             <span id="chat-icon-symbol" class="material-symbols-outlined text-[28px] transition-all duration-300">chat_bubble</span>
-                            <!-- pulsing red dot unread indicator is replaced by whole chat box pulsing (kept for reference compat but hidden) -->
                             <span id="chat-notification-badge" class="absolute top-0.5 right-1.5 chat-badge-circle hidden"></span>
                         </div>
                     </div>
@@ -15787,10 +15841,10 @@ html.dark .music-guidance-banner {
 
             <!-- Footer Buttons -->
             <div class="flex gap-2.5 mt-4 pt-3 border-t border-outline-variant/15 flex-shrink-0">
-                <button class="flex-grow py-3 bg-white dark:bg-[#18201a] border border-outline-variant/30 dark:border-outline-variant/15 text-forest-green dark:text-[#308A5E] font-bold text-xs rounded-xl active:scale-[0.98] transition-transform cursor-pointer" onclick="closeMeetupLocationPicker(false)">
+                <button class="flex-grow py-3 bg-white dark:bg-[#18201a] border border-outline-variant/30 dark:border-outline-variant/15 text-slate-700 dark:text-[#FDFBF7]/80 font-bold text-xs rounded-xl active:scale-[0.98] transition-transform cursor-pointer" onclick="closeMeetupLocationPicker(false)">
                     Cancel
                 </button>
-                <button id="meetup-confirm-btn" class="flex-grow py-3 bg-forest-green text-warm-cream dark:bg-[#308A5E] dark:text-[#101612] font-bold text-xs rounded-xl active:scale-[0.98] transition-transform shadow-md disabled:opacity-50 disabled:pointer-events-none cursor-pointer border-none" onclick="confirmMeetupLocation()" disabled>
+                <button id="meetup-confirm-btn" class="flex-grow py-3 bg-blue-600 text-white dark:bg-blue-600 dark:text-white font-bold text-xs rounded-xl active:scale-[0.98] transition-transform shadow-md disabled:opacity-50 disabled:pointer-events-none cursor-pointer border-none" onclick="confirmMeetupLocation()" disabled>
                     Confirm
                 </button>
             </div>
@@ -19242,17 +19296,17 @@ function showView(viewId, mode) {
                 if (mapControls) mapControls.style.display = 'none';
                 floatingContainer.classList.add('detail-active-trigger');
             } else {
-                const isMapSegment = currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map';
-                if (isMapSegment) {
-                    floatingContainer.style.display = 'flex';
-                    if (blueBtn) blueBtn.style.display = 'flex';
-                    if (mapControls) mapControls.style.display = 'flex';
-                } else {
-                    floatingContainer.style.display = 'none';
-                    if (blueBtn) blueBtn.style.display = 'none';
-                    if (mapControls) mapControls.style.display = 'none';
+                const isMapSegment = currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map' || currentVillageSegment === 'events_map';
+                floatingContainer.style.display = 'flex';
+                if (mapControls) mapControls.style.display = 'flex';
+                if (blueBtn) {
+                    if (isMapSegment) {
+                        blueBtn.style.display = 'flex';
+                    } else {
+                        blueBtn.style.display = 'none';
+                    }
                 }
-                if (triggerIcon) updateTriggerIconState(triggerIcon, !isMapSegment);
+                if (triggerIcon) updateTriggerIconState(triggerIcon, false);
                 floatingContainer.classList.remove('detail-active-trigger');
             }
         } else {
@@ -23321,21 +23375,18 @@ function closeMapItemDetail() {
     const blueBtn = document.getElementById('snap-to-neighborhood-btn');
     
     if (triggerIcon) {
-        updateTriggerIconState(triggerIcon, currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map');
+        updateTriggerIconState(triggerIcon, false);
         if (floatingContainer) {
             floatingContainer.classList.remove('detail-active-trigger');
             if (state.currentView === 'village' && !state.meetupMapMode) {
-                if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
-                    floatingContainer.style.display = 'none';
-                } else {
-                    floatingContainer.style.display = 'flex';
-                }
+                floatingContainer.style.display = 'flex';
             }
         }
     }
 
     if (blueBtn) {
-        if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
+        const isMapSegment = currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map' || currentVillageSegment === 'events_map';
+        if (!isMapSegment) {
             blueBtn.style.display = 'none';
         } else {
             blueBtn.style.display = 'flex';
@@ -23582,10 +23633,10 @@ function openMapEventDetail(eventId) {
     }
     document.getElementById('map-event-detail-overlay').classList.add('active');
     
-    // Keep the tab bar visible but initially hidden behind
+    // Keep the tab bar visible in event details
     const navbar = document.getElementById('global-navbar');
     if (navbar) {
-        navbar.classList.add('navbar-behind');
+        navbar.classList.remove('navbar-behind');
     }
     setTimeout(() => {
         if (typeof updateDetailNavbarState === 'function') updateDetailNavbarState();
@@ -24273,11 +24324,7 @@ function closeNeighborProfileModal() {
         const isDetailActive = (overlay && overlay.classList.contains('active')) || (eventOverlay && eventOverlay.classList.contains('active'));
         
         if (state.currentView === 'village' && !state.meetupMapMode) {
-            if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
-                floatingContainer.style.display = 'none';
-            } else {
-                floatingContainer.style.display = 'flex';
-            }
+            floatingContainer.style.display = 'flex';
             if (isDetailActive) {
                 floatingContainer.style.display = 'none';
                 floatingContainer.classList.add('detail-active-trigger');
@@ -24287,11 +24334,12 @@ function closeNeighborProfileModal() {
                 floatingContainer.classList.remove('detail-active-trigger');
                 const triggerIcon = document.getElementById('segment-trigger-icon');
                 if (triggerIcon) {
-                    updateTriggerIconState(triggerIcon, currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map');
+                    updateTriggerIconState(triggerIcon, false);
                 }
                 const blueBtn = document.getElementById('snap-to-neighborhood-btn');
                 if (blueBtn) {
-                    if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
+                    const isMapSegment = currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map' || currentVillageSegment === 'events_map';
+                    if (!isMapSegment) {
                         blueBtn.style.display = 'none';
                     } else {
                         blueBtn.style.display = 'flex';
@@ -24496,7 +24544,7 @@ window.handleMapFilterOverlayClick = handleMapFilterOverlayClick;
 function toggleCategoryTray() {
     playSound('click');
     collapseVillageMenu();
-    if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
+    if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map' && currentVillageSegment !== 'events_map') {
         switchVillageSegment('map');
     }
     
@@ -25214,11 +25262,12 @@ function openCategoryView(categoryName) {
         const blueBtn = document.getElementById('snap-to-neighborhood-btn');
         const floatingContainer = document.getElementById('village-segment-floating-buttons');
         if (triggerIcon) {
-            updateTriggerIconState(triggerIcon, currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map');
+            updateTriggerIconState(triggerIcon, false);
             if (floatingContainer) floatingContainer.classList.remove('detail-active-trigger');
         }
         if (blueBtn) {
-            if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
+            const isMapSegment = currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map' || currentVillageSegment === 'events_map';
+            if (!isMapSegment) {
                 blueBtn.style.display = 'none';
             } else {
                 blueBtn.style.display = 'flex';
@@ -25236,11 +25285,7 @@ function closeCategoryView() {
     // Restore floating buttons after category overlay is dismissed
     const floatingContainer = document.getElementById('village-segment-floating-buttons');
     if (floatingContainer && state.currentView === 'village') {
-        if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
-            floatingContainer.style.display = 'none';
-        } else {
-            floatingContainer.style.display = 'flex';
-        }
+        floatingContainer.style.display = 'flex';
     }
 }
 
@@ -27252,7 +27297,7 @@ function renderChatDetail(conv) {
                     <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm cursor-pointer hover:bg-amber-500/20 transition-all font-bold admin-message-bubble" onclick="openSuggestMeetingSpotModal()">
                         <p class="text-xs leading-relaxed">${escapeHTML(adminText)}</p>
                     </div>
-                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${formatMessageTime(msg.time)}</span>
+                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}</span>
                 </div>
             `;
             feed.appendChild(msgDiv);
@@ -27269,7 +27314,7 @@ function renderChatDetail(conv) {
                     <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm select-text font-medium admin-message-bubble">
                         <p class="text-xs leading-relaxed">${escapeHTML(adminText)}</p>
                     </div>
-                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${formatMessageTime(msg.time)}</span>
+                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}</span>
                 </div>
             `;
             feed.appendChild(msgDiv);
@@ -27286,7 +27331,7 @@ function renderChatDetail(conv) {
                     <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm cursor-pointer hover:bg-amber-500/20 transition-all font-bold animate-pulse-slow admin-message-bubble" onclick="window.viewMeetupLocationOnMap('${conv.id}')">
                         <p class="text-xs leading-relaxed underline">${escapeHTML(adminText)}</p>
                     </div>
-                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${formatMessageTime(msg.time)}</span>
+                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}</span>
                 </div>
             `;
             feed.appendChild(msgDiv);
@@ -27311,7 +27356,7 @@ function renderChatDetail(conv) {
                             <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm cursor-pointer hover:bg-amber-500/20 transition-all font-bold admin-message-bubble" onclick="openSuggestMeetingSpotModal()">
                                 <p class="text-xs leading-relaxed">Click this message to set up a meeting location</p>
                             </div>
-                            <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${formatMessageTime(msg.time)}</span>
+                            <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}</span>
                         </div>
                     `;
                     feed.appendChild(msgDiv);
@@ -27365,15 +27410,14 @@ function renderChatDetail(conv) {
                     <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm select-text admin-message-bubble">
                         <p class="text-xs leading-relaxed whitespace-pre-line font-medium">${escapeHTML(adminText)}</p>
                     </div>
-                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${formatMessageTime(msg.time)}</span>
+                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}</span>
                 </div>
             `;
         } else {
             const myAvatarUrl = state.currentUser ? state.currentUser.avatar : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80";
+            const myName = state.currentUser ? (state.currentUser.displayName || (state.currentUser.firstName && state.currentUser.lastName ? `${state.currentUser.firstName} ${state.currentUser.lastName}` : 'Lily Kaufmann')) : 'Lily Kaufmann';
             msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full animate-fade-in my-1.5 ${isMe ? 'self-end justify-end' : 'self-start justify-start'}`;
-            const senderLabel = (!isMe && conv.isGroup) 
-                ? `<span class="text-[9px] text-forest-green font-bold ml-2 mb-0.5">${msg.sender}</span>` 
-                : '';
+            const senderLabel = '';
                 
             let isSwap = msg.isSwapOffer;
             let offeredTitle = msg.offeredItemTitle;
@@ -27463,7 +27507,7 @@ function renderChatDetail(conv) {
                                 </div>
                             </div>
                             
-                            <span class="text-[9px] text-forest-green/60 dark:text-[#308A5E]/60 mt-1.5 font-semibold mr-1 select-none">${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
+                            <span class="text-[9px] text-forest-green/60 dark:text-[#308A5E]/60 mt-1.5 font-semibold mr-1 select-none">${escapeHTML(myName)} • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
                         </div>
                         <img src="${myAvatarUrl}" class="w-7 h-7 rounded-full flex-shrink-0 object-cover select-none cursor-pointer active:scale-95 transition-transform" onclick="showView('profile_settings')" title="View my profile"/>
                     `;
@@ -27504,7 +27548,7 @@ function renderChatDetail(conv) {
                             <div id="msg-bubble-${index}" class="chat-bubble-me chat-bubble-hover py-2 px-3.5 rounded-3xl rounded-tr-none shadow-sm cursor-pointer select-none transition-all duration-200" onclick="handleMessageClick(event, ${index})">
                                 ${bubbleInnerContent}
                             </div>
-                            <span class="text-[9px] text-forest-green/60 dark:text-[#308A5E]/60 mt-1 font-semibold mr-1 select-none">${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
+                            <span class="text-[9px] text-forest-green/60 dark:text-[#308A5E]/60 mt-1 font-semibold mr-1 select-none">${escapeHTML(myName)} • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
                         </div>
                         <img src="${myAvatarUrl}" class="w-7 h-7 rounded-full flex-shrink-0 object-cover select-none cursor-pointer active:scale-95 transition-transform" onclick="showView('profile_settings')" title="View my profile"/>
                     `;
@@ -27557,7 +27601,7 @@ function renderChatDetail(conv) {
                                 </div>
                             </div>
                             
-                            <span class="text-[9px] text-on-surface-variant/65 mt-1.5 font-semibold ml-1 select-none">${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
+                            <span class="text-[9px] text-on-surface-variant/65 mt-1.5 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
                         </div>
                     `;
                 } else {
@@ -27599,7 +27643,7 @@ function renderChatDetail(conv) {
                             <div id="msg-bubble-${index}" class="chat-bubble-other chat-bubble-hover py-2 px-3.5 rounded-3xl rounded-tl-none shadow-sm border border-outline-variant/15 dark:border-[#308A5E1f] cursor-pointer select-none transition-all duration-200" onclick="handleMessageClick(event, ${index})">
                                 ${bubbleInnerContent}
                             </div>
-                            <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
+                            <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
                         </div>
                     `;
                 }
@@ -30717,14 +30761,10 @@ function switchVillageSegment(type) {
         if (searchBar) searchBar.classList.remove('hidden');
         if (meetupFooter) meetupFooter.classList.add('hidden');
         
-        const isMapSegment = type === 'map' || type === 'needs_map' || type === 'gifts_map';
+        const isMapSegment = type === 'map' || type === 'needs_map' || type === 'gifts_map' || type === 'events_map';
         if (mapControls) {
-            if (isMapSegment) {
-                mapControls.style.display = 'flex';
-                mapControls.classList.remove('hidden');
-            } else {
-                mapControls.style.display = 'none';
-            }
+            mapControls.style.display = 'flex';
+            mapControls.classList.remove('hidden');
         }
 
         const filterBtn = document.getElementById('btn-segment-filter');
@@ -30746,7 +30786,7 @@ function switchVillageSegment(type) {
         }
 
         if (triggerIcon) {
-            updateTriggerIconState(triggerIcon, !isMapSegment);
+            updateTriggerIconState(triggerIcon, false);
             if (floatingContainer) {
                 floatingContainer.classList.remove('detail-active-trigger');
                 const overlay = document.getElementById('map-detail-overlay');
@@ -30757,11 +30797,7 @@ function switchVillageSegment(type) {
                     floatingContainer.style.display = 'none';
                     floatingContainer.classList.add('detail-active-trigger');
                 } else {
-                    if (!isMapSegment) {
-                        floatingContainer.style.display = 'none';
-                    } else {
-                        floatingContainer.style.display = 'flex';
-                    }
+                    floatingContainer.style.display = 'flex';
                 }
             }
             if (blueBtn) {
@@ -32364,21 +32400,7 @@ const initMapAndInputs = () => {
                 scrolledPast = isShort || isBottom || isBtnPast;
             }
         } else if (isEventActive) {
-            const container = document.getElementById('map-event-detail-scroll-container');
-            const reportBtn = document.getElementById('map-event-detail-report-btn');
-            if (container) {
-                const isShort = container.scrollHeight <= container.clientHeight + 10;
-                const isBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 20;
-                let isBtnPast = false;
-                if (reportBtn && reportBtn.style.display !== 'none' && !reportBtn.classList.contains('hidden')) {
-                    const containerRect = container.getBoundingClientRect();
-                    const btnRect = reportBtn.getBoundingClientRect();
-                    isBtnPast = (btnRect.bottom <= containerRect.bottom + 10);
-                } else {
-                    isBtnPast = isBottom || isShort;
-                }
-                scrolledPast = isShort || isBottom || isBtnPast;
-            }
+            scrolledPast = true;
         } else {
             navbar.classList.remove('navbar-behind');
             return;
@@ -33183,7 +33205,6 @@ function applyMapFiltering() {
     }
 
     const listClearButtons = [
-        'btn-clear-village-search',
         'btn-clear-village-list-search',
         'btn-clear-village-needs-search',
         'btn-clear-village-events-search',
@@ -33887,52 +33908,54 @@ function plotMapMarkersOnly() {
         return;
     }
     
-    // 1. Plot offerings/listings & events if we are on 'map' segment (Offerings Map) or 'gifts_map' (Gifts Map)
-    if (currentVillageSegment === 'map' || currentVillageSegment === 'gifts_map') {
-        Object.keys(state.neighbors).forEach(name => {
-            const neighbor = state.neighbors[name];
-            if (!neighbor) return;
-            
-            // If we are on gifts map, only plot neighbor if it's a karma/free swap!
-            if (currentVillageSegment === 'gifts_map' && !neighbor.isKarma) return;
+    // 1. Plot offerings/listings & events if we are on 'map' segment (Offerings Map), 'gifts_map' (Gifts Map), or 'events_map' (Events Map)
+    if (currentVillageSegment === 'map' || currentVillageSegment === 'gifts_map' || currentVillageSegment === 'events_map') {
+        if (currentVillageSegment !== 'events_map') {
+            Object.keys(state.neighbors).forEach(name => {
+                const neighbor = state.neighbors[name];
+                if (!neighbor) return;
+                
+                // If we are on gifts map, only plot neighbor if it's a karma/free swap!
+                if (currentVillageSegment === 'gifts_map' && !neighbor.isKarma) return;
 
-            const coords = validateCoords(neighbor.lat, neighbor.lng);
-            if (!coords) return;
-            const lat = coords.lat;
-            const lng = coords.lng;
-            if (getBarterItemStatus(name) !== 'Available') return; // Filter out pending/non-available listings
-            if (state.blockedUsers && state.blockedUsers.includes(name)) return;
-            if (state.suspendedUsers && state.suspendedUsers.includes(name)) return;
-            if (neighbor.suspended) return;
-            if (neighbor.shadowBanned) return; // Skip shadow-banned users
+                const coords = validateCoords(neighbor.lat, neighbor.lng);
+                if (!coords) return;
+                const lat = coords.lat;
+                const lng = coords.lng;
+                if (getBarterItemStatus(name) !== 'Available') return; // Filter out pending/non-available listings
+                if (state.blockedUsers && state.blockedUsers.includes(name)) return;
+                if (state.suspendedUsers && state.suspendedUsers.includes(name)) return;
+                if (neighbor.suspended) return;
+                if (neighbor.shadowBanned) return; // Skip shadow-banned users
 
-            const color = getCategoryColor(neighbor.category);
-            const iconName = neighbor.icon || getCategoryIcon(neighbor.category);
-            const pinImgUrl = getCategoryPresetImage(neighbor.category);
+                const color = getCategoryColor(neighbor.category);
+                const iconName = neighbor.icon || getCategoryIcon(neighbor.category);
+                const pinImgUrl = getCategoryPresetImage(neighbor.category);
 
-            // Append small heart badge for free Karma items
-            const heartBadge = neighbor.isKarma ? 
-                `<div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid white !important; background-color: #EF4444 !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important; z-index: 10 !important;">
-                    <span class="material-symbols-outlined text-[8px]" style="color: white !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
-                 </div>` : '';
+                // Append small heart badge for free Karma items
+                const heartBadge = neighbor.isKarma ? 
+                    `<div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid white !important; background-color: #EF4444 !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important; z-index: 10 !important;">
+                        <span class="material-symbols-outlined text-[8px]" style="color: white !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
+                     </div>` : '';
 
-            const customIcon = L.divIcon({
-                className: 'custom-div-icon',
-                html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid white !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
-                        <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">${iconName}</span>
-                        ${heartBadge}
-                       </div>`,
-                iconSize: [38, 38],
-                iconAnchor: [19, 19]
+                const customIcon = L.divIcon({
+                    className: 'custom-div-icon',
+                    html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid white !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
+                            <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">${iconName}</span>
+                            ${heartBadge}
+                           </div>`,
+                    iconSize: [38, 38],
+                    iconAnchor: [19, 19]
+                });
+
+                const marker = L.marker([lat, lng], { icon: customIcon }).addTo(leafletMap);
+                marker.on('click', () => {
+                    if (typeof playSound === 'function') playSound('click');
+                    openMapItemDetail(name);
+                });
+                mapMarkers.push({ marker, name: name });
             });
-
-            const marker = L.marker([lat, lng], { icon: customIcon }).addTo(leafletMap);
-            marker.on('click', () => {
-                if (typeof playSound === 'function') playSound('click');
-                openMapItemDetail(name);
-            });
-            mapMarkers.push({ marker, name: name });
-        });
+        }
 
         // Only plot user offerings on the regular offerings map (gifts_map displays neighbor free gifts)
         if (currentVillageSegment === 'map') {
@@ -33967,8 +33990,8 @@ function plotMapMarkersOnly() {
             });
         }
 
-        // Only plot events on standard offerings map segment
-        if (state.events && currentVillageSegment === 'map') {
+        // Plot events on standard offerings map segment or events map segment
+        if (state.events && (currentVillageSegment === 'map' || currentVillageSegment === 'events_map')) {
             state.events.forEach(evt => {
                 const coords = validateCoords(evt.lat, evt.lng);
                 if (!coords) return;
@@ -41392,10 +41415,6 @@ function toggleVillageMenu() {
         showView('profile_settings');
         return;
     }
-    if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map' && state.currentView === 'village') {
-        switchVillageSegment('map');
-        return;
-    }
     const container = document.getElementById('village-segment-floating-buttons');
     const icon = document.getElementById('segment-trigger-icon');
     if (container) {
@@ -41416,11 +41435,7 @@ function collapseVillageMenu() {
     if (container && container.classList.contains('expanded')) {
         container.classList.remove('expanded');
         if (icon) {
-            if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map') {
-                updateTriggerIconState(icon, true);
-            } else {
-                updateTriggerIconState(icon, false);
-            }
+            updateTriggerIconState(icon, false);
         }
     }
 }
@@ -42712,7 +42727,9 @@ window.selectCategoryChip = function(cat) {
         renderVillageListView();
     } else if (currentVillageSegment === 'needs') {
         renderNeedsBoardView();
-    } else if (currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map') {
+    } else if (currentVillageSegment === 'events') {
+        renderEventsList();
+    } else if (currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map' || currentVillageSegment === 'events_map') {
         plotMapMarkersOnly();
     }
 };
@@ -44376,6 +44393,27 @@ window.submitNeighborReview = function() {
     // Switch to active segment and re-render
     window.switchChatSegment('active');
 };
+
+// Automatically update --chat-input-height based on the actual height of the chat action center container
+const initChatInputHeightObserver = () => {
+    const actionCenter = document.getElementById('chat-action-center');
+    const feed = document.getElementById('chat-message-feed');
+    if (!actionCenter || !feed) return;
+    
+    const observer = new ResizeObserver((entries) => {
+        for (let entry of entries) {
+            const height = entry.contentRect.height;
+            if (height > 0) {
+                feed.style.setProperty('--chat-input-height', `${height}px`);
+            }
+        }
+    });
+    observer.observe(actionCenter);
+};
+document.addEventListener('DOMContentLoaded', initChatInputHeightObserver);
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initChatInputHeightObserver();
+}
 
 // Global scope ends
 </script>
