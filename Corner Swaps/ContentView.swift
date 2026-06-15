@@ -291,7 +291,12 @@ struct ContentView: View {
         }
         .ignoresSafeArea(.container, edges: .all)
         .onAppear {
-            prepareWebAssets()
+            let websiteDataTypes = WKWebsiteDataStore.allWebsiteDataTypes()
+            let dateFrom = Date(timeIntervalSince1970: 0)
+            WKWebsiteDataStore.default().removeData(ofTypes: websiteDataTypes, modifiedSince: dateFrom) {
+                print("[SWIFT] All WKWebView caches and website data cleared successfully.")
+                prepareWebAssets()
+            }
         }
     }
     

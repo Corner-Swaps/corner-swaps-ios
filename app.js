@@ -6109,6 +6109,12 @@ function renderEventsList() {
             // Distance filter check
             if (evt.distance > maxRadius) return false;
 
+            // Category filter check
+            if (activeCategoryFilter) {
+                const matchesCategory = isCategoryMatchHelper(evt.type, activeCategoryFilter) || isCategoryMatchHelper(evt.category, activeCategoryFilter);
+                if (!matchesCategory) return false;
+            }
+
             // Search filter check
             return fuzzySearchMatch(query, evt.title, evt.desc, evt.type, evt.location, evt.host);
         });
@@ -9096,9 +9102,11 @@ window.toggleListCategoryDropdown = function() {
     if (!dropdown) return;
     const isHidden = dropdown.classList.contains('hidden');
     
-    // Close other dropdown if open
+    // Close other dropdowns if open
     const needsDropdown = document.getElementById('needs-category-dropdown');
     if (needsDropdown) needsDropdown.classList.add('hidden');
+    const eventsDropdown = document.getElementById('events-category-dropdown');
+    if (eventsDropdown) eventsDropdown.classList.add('hidden');
     
     const filterIcon = document.getElementById('list-filter-icon');
     const filterBtn = document.getElementById('btn-list-filter');
@@ -9129,9 +9137,11 @@ window.toggleNeedsCategoryDropdown = function() {
     if (!dropdown) return;
     const isHidden = dropdown.classList.contains('hidden');
     
-    // Close other dropdown if open
+    // Close other dropdowns if open
     const listDropdown = document.getElementById('list-category-dropdown');
     if (listDropdown) listDropdown.classList.add('hidden');
+    const eventsDropdown = document.getElementById('events-category-dropdown');
+    if (eventsDropdown) eventsDropdown.classList.add('hidden');
     
     const filterIcon = document.getElementById('needs-filter-icon');
     const filterBtn = document.getElementById('btn-needs-filter');
@@ -9269,6 +9279,98 @@ window.selectNeedsCategoryFilter = function(categoryName, element) {
     if (typeof applyMapFiltering === 'function') applyMapFiltering();
     renderNeedsBoardView();
 };
+
+window.toggleEventsCategoryDropdown = function() {
+    playSound('click');
+    const dropdown = document.getElementById('events-category-dropdown');
+    if (!dropdown) return;
+    const isHidden = dropdown.classList.contains('hidden');
+    
+    // Close other dropdowns if open
+    const listDropdown = document.getElementById('list-category-dropdown');
+    if (listDropdown) listDropdown.classList.add('hidden');
+    const needsDropdown = document.getElementById('needs-category-dropdown');
+    if (needsDropdown) needsDropdown.classList.add('hidden');
+    
+    const filterIcon = document.getElementById('events-filter-icon');
+    const filterBtn = document.getElementById('btn-events-filter');
+    
+    if (isHidden) {
+        renderEventsFilterCircles();
+        dropdown.classList.remove('hidden');
+        if (filterIcon) {
+            filterIcon.innerText = 'close';
+        }
+        if (filterBtn) {
+            filterBtn.classList.add('active-filter-circle');
+        }
+    } else {
+        dropdown.classList.add('hidden');
+        if (filterIcon) {
+            filterIcon.innerText = 'tune';
+        }
+        if (filterBtn) {
+            filterBtn.classList.remove('active-filter-circle');
+        }
+    }
+};
+
+window.selectEventsCategoryFilter = function(categoryName, element) {
+    playSound('click');
+    if (categoryName === 'Clear Filter') {
+        activeCategoryFilter = null;
+        state.activeMapFilters = [];
+    } else {
+        activeCategoryFilter = (activeCategoryFilter === categoryName) ? null : categoryName;
+        state.activeMapFilters = activeCategoryFilter ? [activeCategoryFilter] : [];
+    }
+    saveState();
+    
+    const dropdown = document.getElementById('events-category-dropdown');
+    if (dropdown) dropdown.classList.add('hidden');
+    const filterIcon = document.getElementById('events-filter-icon');
+    if (filterIcon) filterIcon.innerText = 'tune';
+    const filterBtn = document.getElementById('btn-events-filter');
+    if (filterBtn) filterBtn.classList.remove('active-filter-circle');
+    
+    if (typeof applyMapFiltering === 'function') applyMapFiltering();
+    renderEventsList();
+};
+
+function renderEventsFilterCircles() {
+    const dropdown = document.getElementById('events-category-dropdown');
+    if (!dropdown) return;
+    
+    const categoriesHtml = MAP_FILTER_CATEGORIES.map((cat, idx) => {
+        const delay = idx * 0.02;
+        const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
+        return `
+            <div class="flex items-center justify-end gap-1 select-none cursor-pointer group active:scale-95 transition-transform" 
+                 onclick="selectEventsCategoryFilter('${cat.name}', this)" 
+                 style="${animStyle}">
+                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none">
+                    ${cat.displayName}
+                </span>
+                <div class="w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 events-filter-category-circle flex-shrink-0" 
+                     data-category="${cat.name}">
+                    <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    dropdown.innerHTML = categoriesHtml;
+
+    dropdown.querySelectorAll('.events-filter-category-circle').forEach(circle => {
+        const catName = circle.getAttribute('data-category');
+        const cat = MAP_FILTER_CATEGORIES.find(c => c.name === catName);
+        const isActive = (activeCategoryFilter === catName) || (catName === 'Clear Filter' && !activeCategoryFilter);
+        if (circle && cat) {
+            updateCategoryCircleStyle(circle, cat, isActive);
+        }
+    });
+}
+window.renderEventsFilterCircles = renderEventsFilterCircles;
 
 function openCategoryView(categoryName) {
     playSound('click');
@@ -14946,6 +15048,22 @@ function switchVillageSegment(type) {
     closeMapCategoryDropdown();
     collapseVillageMenu();
     currentVillageSegment = type;
+
+    if (type === 'map' || type === 'needs_map' || type === 'gifts_map' || type === 'events_map') {
+        state.activeViewMode = 'map';
+        if (type === 'map') state.activeCategory = 'offerings';
+        else if (type === 'needs_map') state.activeCategory = 'needs';
+        else if (type === 'events_map') state.activeCategory = 'events';
+    } else {
+        state.activeViewMode = 'list';
+        if (type === 'list') state.activeCategory = 'offerings';
+        else if (type === 'needs') state.activeCategory = 'needs';
+        else if (type === 'events') state.activeCategory = 'events';
+    }
+    saveState();
+    if (typeof updateTopSegmentedControlUI === 'function') {
+        updateTopSegmentedControlUI(state.activeCategory);
+    }
 
     const overlay = document.getElementById('map-detail-overlay');
     const eventOverlay = document.getElementById('map-event-detail-overlay');
@@ -22119,6 +22237,17 @@ function initAddressAutocomplete() {
         }
     });
 }
+
+window.handleAddMapTap = function() {
+    playSound('click');
+    if (currentVillageSegment === 'needs_map') {
+        showView('offer', 'need');
+    } else if (currentVillageSegment === 'events_map') {
+        showView('offer', 'event');
+    } else {
+        showView('offer', 'offering');
+    }
+};
 
 window.snapToUserNeighborhood = function() {
     if (state.adminAuthenticated) {

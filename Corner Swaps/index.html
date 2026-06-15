@@ -3086,12 +3086,13 @@ html.dark .chat-bubble-other {
     top: calc(16px + env(safe-area-inset-top)) !important;
 }
 
+
 /* List views safe area content shifting (ensures headers/search fields are visible below notch) and layout correction */
 #village-list-container,
 #village-needs-container,
 #village-events-container,
 #village-bulletins-container {
-    padding-top: 2rem !important;
+    padding-top: 0.6rem !important;
     padding-left: 1.25rem !important;
     padding-right: 1.25rem !important;
     padding-bottom: 120px !important;
@@ -3100,7 +3101,7 @@ html.dark .chat-bubble-other {
 .native-app-env #village-needs-container,
 .native-app-env #village-events-container,
 .native-app-env #village-bulletins-container {
-    padding-top: calc(2rem + env(safe-area-inset-top)) !important;
+    padding-top: calc(0.6rem + env(safe-area-inset-top)) !important;
     padding-bottom: calc(120px + env(safe-area-inset-bottom)) !important;
 }
 
@@ -9518,14 +9519,17 @@ html.dark #view-create_group #group-friends-search::placeholder {
 
                             <!-- Fused Search & Filter Bar Container -->
                             <div id="village-search-bar-overlay" class="pointer-events-auto absolute z-[2000] flex flex-col items-stretch transition-all duration-300">
-                                <div class="fused-search-capsule">
-                                    <button id="btn-segment-filter" onclick="toggleCategoryTray()" class="w-7 h-7 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-black border border-black/10 dark:border-white/10 flex-shrink-0 fused-filter-btn" title="Category Filter">
-                                        <span class="material-symbols-outlined text-[15px]" id="map-filter-icon">tune</span>
+                                <div class="fused-search-capsule select-none">
+                                    <button onclick="handleAddMapTap()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Add Listing" style="display: none !important; border: 0 !important; margin-left: 6px !important;">
+                                        <span class="material-symbols-outlined text-[15px] font-black">add</span>
                                     </button>
-                                    <button id="btn-integrated-location" onclick="snapToUserNeighborhood()" class="fused-location-btn active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Snap to my location">
+                                    <button id="btn-integrated-location" onclick="snapToUserNeighborhood()" class="fused-location-btn active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Snap to my location" style="margin-left: 6px !important;">
                                         <span class="material-symbols-outlined text-[15px]">my_location</span>
                                     </button>
                                     <input type="text" id="village-search-input" oninput="applyMapFiltering();" placeholder="Search listings, events and offerings" class="fused-search-input">
+                                    <button id="btn-segment-filter" onclick="toggleCategoryTray()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter" style="display: none !important; border: 0 !important; margin-right: 6px !important;">
+                                        <span class="material-symbols-outlined text-[15px]" id="map-filter-icon">tune</span>
+                                    </button>
                                 </div>
                                 <div id="village-search-suggestions" class="hidden fused-suggestions-box"></div>
                                 
@@ -9569,7 +9573,7 @@ html.dark #view-create_group #group-friends-search::placeholder {
                              <div id="interactive-help-tooltip" class="hidden" style="pointer-events:none;"></div>
 
                              <!-- Trailing vertical category circles (LEFT-aligned under filter button) -->
-                             <div id="map-category-dropdown" class="absolute top-[72px] left-[24px] z-[3000] flex flex-col items-start gap-2 max-h-[70vh] overflow-y-auto pr-6 pl-[0px] pt-2 pb-5 hidden custom-scrollbar select-none animate-slide-down-fade">
+                             <div id="map-category-dropdown" class="absolute top-[112px] left-[24px] z-[3000] flex flex-col items-start gap-2 max-h-[70vh] overflow-y-auto pr-6 pl-[0px] pt-2 pb-5 hidden custom-scrollbar select-none animate-slide-down-fade">
                                  <!-- Dynamically generated trailing list -->
                              </div>
 
@@ -9715,16 +9719,16 @@ html.dark #view-create_group #group-friends-search::placeholder {
 
                     <!-- SUB-VIEW 2: GRID LIST VIEW CONTAINER -->
                     <div id="village-list-container" class="hidden absolute inset-0 z-10 overflow-y-auto pl-6 pr-20 pt-6 pb-24 custom-scrollbar bg-warm-cream dark:bg-[#18201a] flex flex-col gap-3">
-                        <div class="mb-2 px-1 flex flex-col gap-3 flex-shrink-0">
-                            <!-- Fused Search Capsule with Add button -->
+                        <div class="mb-2 px-1 flex flex-col gap-2.5 flex-shrink-0">
+                            <!-- Fused Search Capsule with Add button and Filter button -->
                             <div class="fused-search-capsule select-none">
-                                <button onclick="toggleCategoryTray()" class="w-7 h-7 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-black border border-black/10 dark:border-white/10 flex-shrink-0 fused-filter-btn" title="Category Filter">
-                                    <span class="material-symbols-outlined text-[15px]">tune</span>
-                                </button>
-                                <button onclick="showView('offer', 'offering')" class="w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Add Offering" style="border: 0 !important; margin-left: 6px !important;">
+                                <button onclick="showView('offer', 'offering')" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Add Offering" style="display: none !important; border: 0 !important; margin-left: 6px !important;">
                                     <span class="material-symbols-outlined text-[15px] font-black">add</span>
                                 </button>
                                 <input type="text" id="village-list-search-input" oninput="syncVillageSearch(this.value);" placeholder="Search listings, events and offerings" class="fused-search-input">
+                                <button id="btn-list-filter" onclick="toggleListCategoryDropdown()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter" style="display: none !important; border: 0 !important; margin-right: 6px !important;">
+                                    <span class="material-symbols-outlined text-[15px]" id="list-filter-icon">tune</span>
+                                </button>
                             </div>
 
                             <!-- Offerings List Category Dropdown -->
@@ -9733,7 +9737,7 @@ html.dark #view-create_group #group-friends-search::placeholder {
                             </div>
 
                             <!-- Pills Control (Offerings, Needs, Events) -->
-                            <div class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-1">
+                            <div class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-0">
                                 <button type="button" onclick="switchVillageSegment('list')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm">
                                     Offerings
                                 </button>
@@ -9767,16 +9771,16 @@ html.dark #view-create_group #group-friends-search::placeholder {
 
                     <!-- SUB-VIEW 3: COMMUNITY NEEDS BOARD CONTAINER -->
                     <div id="village-needs-container" class="hidden absolute inset-0 z-10 overflow-y-auto pl-6 pr-20 pt-6 pb-24 custom-scrollbar bg-warm-cream dark:bg-[#18201a] flex flex-col gap-3">
-                        <div class="mb-2 px-1 flex flex-col gap-3 flex-shrink-0">
-                            <!-- Fused Search Capsule with Add button -->
+                        <div class="mb-2 px-1 flex flex-col gap-2.5 flex-shrink-0">
+                            <!-- Fused Search Capsule with Add button and Filter button -->
                             <div class="fused-search-capsule select-none">
-                                <button onclick="toggleCategoryTray()" class="w-7 h-7 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-black border border-black/10 dark:border-white/10 flex-shrink-0 fused-filter-btn" title="Category Filter">
-                                    <span class="material-symbols-outlined text-[15px]">tune</span>
-                                </button>
-                                <button onclick="showView('offer', 'need')" class="w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Add Need" style="border: 0 !important; margin-left: 6px !important;">
+                                <button onclick="showView('offer', 'need')" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Add Need" style="display: none !important; border: 0 !important; margin-left: 6px !important;">
                                     <span class="material-symbols-outlined text-[15px] font-black">add</span>
                                 </button>
                                 <input type="text" id="village-needs-search-input" oninput="syncVillageSearch(this.value);" placeholder="Search listings, events and offerings" class="fused-search-input">
+                                <button id="btn-needs-filter" onclick="toggleNeedsCategoryDropdown()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter" style="display: none !important; border: 0 !important; margin-right: 6px !important;">
+                                    <span class="material-symbols-outlined text-[15px]" id="needs-filter-icon">tune</span>
+                                </button>
                             </div>
 
                             <!-- Needs Board Category Dropdown -->
@@ -9785,7 +9789,7 @@ html.dark #view-create_group #group-friends-search::placeholder {
                             </div>
 
                             <!-- Pills Control (Offerings, Needs, Events) -->
-                            <div class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-1">
+                            <div class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-0">
                                 <button type="button" onclick="switchVillageSegment('list')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-gray-500 dark:text-gray-400">
                                     Offerings
                                 </button>
@@ -9819,20 +9823,25 @@ html.dark #view-create_group #group-friends-search::placeholder {
 
                     <!-- SUB-VIEW 4: COMMUNITY EVENTS CONTAINER -->
                     <div id="village-events-container" class="hidden absolute inset-0 z-10 overflow-y-auto pl-6 pr-20 pt-6 pb-24 custom-scrollbar bg-warm-cream dark:bg-[#18201a] flex flex-col gap-3">
-                        <div class="mb-2 px-1 flex flex-col gap-3 flex-shrink-0">
-                            <!-- Fused Search Capsule with Add button -->
+                        <div class="mb-2 px-1 flex flex-col gap-2.5 flex-shrink-0">
+                            <!-- Fused Search Capsule with Add button and Filter button -->
                             <div class="fused-search-capsule select-none">
-                                <button onclick="toggleCategoryTray()" class="w-7 h-7 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-black border border-black/10 dark:border-white/10 flex-shrink-0 fused-filter-btn" title="Category Filter">
-                                    <span class="material-symbols-outlined text-[15px]">tune</span>
-                                </button>
-                                <button onclick="showView('offer', 'event')" class="w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Host Event" style="border: 0 !important; margin-left: 6px !important;">
+                                <button onclick="showView('offer', 'event')" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Host Event" style="display: none !important; border: 0 !important; margin-left: 6px !important;">
                                     <span class="material-symbols-outlined text-[15px] font-black">add</span>
                                 </button>
                                 <input type="text" id="village-events-search-input" oninput="syncVillageSearch(this.value);" placeholder="Search listings, events and offerings" class="fused-search-input">
+                                <button id="btn-events-filter" onclick="toggleEventsCategoryDropdown()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter" style="display: none !important; border: 0 !important; margin-right: 6px !important;">
+                                    <span class="material-symbols-outlined text-[15px]" id="events-filter-icon">tune</span>
+                                </button>
+                            </div>
+
+                            <!-- Events List Category Dropdown -->
+                            <div id="events-category-dropdown" class="absolute top-32 right-6 z-[3000] flex flex-col items-end gap-2.5 max-h-[50vh] overflow-y-auto pl-5 pr-4 pt-2 pb-5 hidden custom-scrollbar select-none bg-warm-cream/95 dark:bg-[#18201a]/95 backdrop-blur-md rounded-2xl border border-outline-variant/30 shadow-xl p-3 animate-slide-down-fade">
+                                <!-- Dynamically generated trailing list -->
                             </div>
 
                             <!-- Pills Control (Offerings, Needs, Events) -->
-                            <div class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-1">
+                            <div class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-0">
                                 <button type="button" onclick="switchVillageSegment('list')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-gray-500 dark:text-gray-400">
                                     Offerings
                                 </button>
@@ -21928,6 +21937,12 @@ function renderEventsList() {
             // Distance filter check
             if (evt.distance > maxRadius) return false;
 
+            // Category filter check
+            if (activeCategoryFilter) {
+                const matchesCategory = isCategoryMatchHelper(evt.type, activeCategoryFilter) || isCategoryMatchHelper(evt.category, activeCategoryFilter);
+                if (!matchesCategory) return false;
+            }
+
             // Search filter check
             return fuzzySearchMatch(query, evt.title, evt.desc, evt.type, evt.location, evt.host);
         });
@@ -24915,9 +24930,11 @@ window.toggleListCategoryDropdown = function() {
     if (!dropdown) return;
     const isHidden = dropdown.classList.contains('hidden');
     
-    // Close other dropdown if open
+    // Close other dropdowns if open
     const needsDropdown = document.getElementById('needs-category-dropdown');
     if (needsDropdown) needsDropdown.classList.add('hidden');
+    const eventsDropdown = document.getElementById('events-category-dropdown');
+    if (eventsDropdown) eventsDropdown.classList.add('hidden');
     
     const filterIcon = document.getElementById('list-filter-icon');
     const filterBtn = document.getElementById('btn-list-filter');
@@ -24948,9 +24965,11 @@ window.toggleNeedsCategoryDropdown = function() {
     if (!dropdown) return;
     const isHidden = dropdown.classList.contains('hidden');
     
-    // Close other dropdown if open
+    // Close other dropdowns if open
     const listDropdown = document.getElementById('list-category-dropdown');
     if (listDropdown) listDropdown.classList.add('hidden');
+    const eventsDropdown = document.getElementById('events-category-dropdown');
+    if (eventsDropdown) eventsDropdown.classList.add('hidden');
     
     const filterIcon = document.getElementById('needs-filter-icon');
     const filterBtn = document.getElementById('btn-needs-filter');
@@ -25088,6 +25107,98 @@ window.selectNeedsCategoryFilter = function(categoryName, element) {
     if (typeof applyMapFiltering === 'function') applyMapFiltering();
     renderNeedsBoardView();
 };
+
+window.toggleEventsCategoryDropdown = function() {
+    playSound('click');
+    const dropdown = document.getElementById('events-category-dropdown');
+    if (!dropdown) return;
+    const isHidden = dropdown.classList.contains('hidden');
+    
+    // Close other dropdowns if open
+    const listDropdown = document.getElementById('list-category-dropdown');
+    if (listDropdown) listDropdown.classList.add('hidden');
+    const needsDropdown = document.getElementById('needs-category-dropdown');
+    if (needsDropdown) needsDropdown.classList.add('hidden');
+    
+    const filterIcon = document.getElementById('events-filter-icon');
+    const filterBtn = document.getElementById('btn-events-filter');
+    
+    if (isHidden) {
+        renderEventsFilterCircles();
+        dropdown.classList.remove('hidden');
+        if (filterIcon) {
+            filterIcon.innerText = 'close';
+        }
+        if (filterBtn) {
+            filterBtn.classList.add('active-filter-circle');
+        }
+    } else {
+        dropdown.classList.add('hidden');
+        if (filterIcon) {
+            filterIcon.innerText = 'tune';
+        }
+        if (filterBtn) {
+            filterBtn.classList.remove('active-filter-circle');
+        }
+    }
+};
+
+window.selectEventsCategoryFilter = function(categoryName, element) {
+    playSound('click');
+    if (categoryName === 'Clear Filter') {
+        activeCategoryFilter = null;
+        state.activeMapFilters = [];
+    } else {
+        activeCategoryFilter = (activeCategoryFilter === categoryName) ? null : categoryName;
+        state.activeMapFilters = activeCategoryFilter ? [activeCategoryFilter] : [];
+    }
+    saveState();
+    
+    const dropdown = document.getElementById('events-category-dropdown');
+    if (dropdown) dropdown.classList.add('hidden');
+    const filterIcon = document.getElementById('events-filter-icon');
+    if (filterIcon) filterIcon.innerText = 'tune';
+    const filterBtn = document.getElementById('btn-events-filter');
+    if (filterBtn) filterBtn.classList.remove('active-filter-circle');
+    
+    if (typeof applyMapFiltering === 'function') applyMapFiltering();
+    renderEventsList();
+};
+
+function renderEventsFilterCircles() {
+    const dropdown = document.getElementById('events-category-dropdown');
+    if (!dropdown) return;
+    
+    const categoriesHtml = MAP_FILTER_CATEGORIES.map((cat, idx) => {
+        const delay = idx * 0.02;
+        const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
+        return `
+            <div class="flex items-center justify-end gap-1 select-none cursor-pointer group active:scale-95 transition-transform" 
+                 onclick="selectEventsCategoryFilter('${cat.name}', this)" 
+                 style="${animStyle}">
+                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none">
+                    ${cat.displayName}
+                </span>
+                <div class="w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 events-filter-category-circle flex-shrink-0" 
+                     data-category="${cat.name}">
+                    <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    dropdown.innerHTML = categoriesHtml;
+
+    dropdown.querySelectorAll('.events-filter-category-circle').forEach(circle => {
+        const catName = circle.getAttribute('data-category');
+        const cat = MAP_FILTER_CATEGORIES.find(c => c.name === catName);
+        const isActive = (activeCategoryFilter === catName) || (catName === 'Clear Filter' && !activeCategoryFilter);
+        if (circle && cat) {
+            updateCategoryCircleStyle(circle, cat, isActive);
+        }
+    });
+}
+window.renderEventsFilterCircles = renderEventsFilterCircles;
 
 function openCategoryView(categoryName) {
     playSound('click');
@@ -30765,6 +30876,22 @@ function switchVillageSegment(type) {
     closeMapCategoryDropdown();
     collapseVillageMenu();
     currentVillageSegment = type;
+
+    if (type === 'map' || type === 'needs_map' || type === 'gifts_map' || type === 'events_map') {
+        state.activeViewMode = 'map';
+        if (type === 'map') state.activeCategory = 'offerings';
+        else if (type === 'needs_map') state.activeCategory = 'needs';
+        else if (type === 'events_map') state.activeCategory = 'events';
+    } else {
+        state.activeViewMode = 'list';
+        if (type === 'list') state.activeCategory = 'offerings';
+        else if (type === 'needs') state.activeCategory = 'needs';
+        else if (type === 'events') state.activeCategory = 'events';
+    }
+    saveState();
+    if (typeof updateTopSegmentedControlUI === 'function') {
+        updateTopSegmentedControlUI(state.activeCategory);
+    }
 
     const overlay = document.getElementById('map-detail-overlay');
     const eventOverlay = document.getElementById('map-event-detail-overlay');
@@ -37938,6 +38065,17 @@ function initAddressAutocomplete() {
         }
     });
 }
+
+window.handleAddMapTap = function() {
+    playSound('click');
+    if (currentVillageSegment === 'needs_map') {
+        showView('offer', 'need');
+    } else if (currentVillageSegment === 'events_map') {
+        showView('offer', 'event');
+    } else {
+        showView('offer', 'offering');
+    }
+};
 
 window.snapToUserNeighborhood = function() {
     if (state.adminAuthenticated) {
