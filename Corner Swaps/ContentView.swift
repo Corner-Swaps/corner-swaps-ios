@@ -49,11 +49,6 @@ class WeakScriptMessageHandler: NSObject, WKScriptMessageHandler {
     }
 }
 
-class CustomWebView: WKWebView {
-    override var inputAccessoryView: UIView? {
-        return nil
-    }
-}
 
 struct WebView: UIViewRepresentable {
     let fileURL: URL
@@ -203,7 +198,7 @@ struct WebView: UIViewRepresentable {
         let userScript = WKUserScript(source: js, injectionTime: .atDocumentStart, forMainFrameOnly: false)
         configuration.userContentController.addUserScript(userScript)
 
-        let webView = CustomWebView(frame: .zero, configuration: configuration)
+        let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.allowsBackForwardNavigationGestures = true
         webView.scrollView.delegate = context.coordinator
         webView.navigationDelegate = context.coordinator
@@ -220,21 +215,11 @@ struct WebView: UIViewRepresentable {
         webView.scrollView.alwaysBounceHorizontal = false
         webView.scrollView.contentInsetAdjustmentBehavior = .never
         
-        NSLog("[SWIFT] Clearing cache and loading file URL...")
-        print("[SWIFT] Clearing cache and loading file URL...")
+        NSLog("[SWIFT] Loading self-contained HTML string...")
+        print("[SWIFT] Loading self-contained HTML string...")
         fflush(stdout)
         
-        let websiteDataTypes: Set<String> = [
-            WKWebsiteDataTypeDiskCache,
-            WKWebsiteDataTypeMemoryCache,
-            WKWebsiteDataTypeOfflineWebApplicationCache
-        ]
-        
-        WKWebsiteDataStore.default().removeData(ofTypes: websiteDataTypes, modifiedSince: Date(timeIntervalSince1970: 0)) {
-            DispatchQueue.main.async {
-                webView.loadFileURL(fileURL, allowingReadAccessTo: Bundle.main.resourceURL ?? fileURL.deletingLastPathComponent())
-            }
-        }
+        webView.loadFileURL(fileURL, allowingReadAccessTo: Bundle.main.resourceURL ?? fileURL.deletingLastPathComponent())
         
         return webView
     }
@@ -333,7 +318,10 @@ struct ContentView: View {
 // MARK: - WKWebView Input Accessory Removal Extension
 extension WKWebView {
     func hideAccessoryBar() {
-        // Disabled runtime swizzling/subclassing of WKContentView to prevent input focus freezes on iOS 16/17/18.
+        guard let contentViewClass = NSClassFromString("WKContentView") else { return }
+        let selector = Selector(("inputAccessoryView"))
+        let imp: @convention(block) (AnyObject) -> AnyObject? = { _ in nil }
+        class_replaceMethod(contentViewClass, selector, imp_implementationWithBlock(imp), "@@:")
     }
 }
 

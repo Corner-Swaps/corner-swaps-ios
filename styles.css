@@ -3710,7 +3710,6 @@ html:not(.dark) #neighbor-profile-modal button.bg-forest-green * {
     border-color: #ffffff !important;
 }
 
-/* Chat notification badges in red circles */
 .chat-badge-circle,
 #chat-notification-badge {
     background-color: #dc2626 !important;
@@ -3730,6 +3729,10 @@ html:not(.dark) #neighbor-profile-modal button.bg-forest-green * {
     z-index: 10000 !important;
     line-height: 1 !important;
     box-sizing: border-box !important;
+}
+.chat-badge-circle.hidden,
+#chat-notification-badge.hidden {
+    display: none !important;
 }
 
 /* Chat bubble paragraphs alignment (Style 3 profile offerings matching) */
@@ -4297,6 +4300,8 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
     -webkit-backdrop-filter: none !important;
     box-shadow: none !important;
     border-radius: 0 !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
     padding-bottom: 8px !important;
 }
 .native-app-env #chat-action-center {
@@ -6779,13 +6784,13 @@ button:active,
 }
 
 /* Custom focus indicator styling for keyboard accessibility */
-input:focus, 
+input:not(#chat-text-input):focus, 
 select:focus, 
 textarea:focus {
     outline: 2px solid var(--forest-green) !important;
     outline-offset: 2px !important;
 }
-html.dark input:focus, 
+html.dark input:not(#chat-text-input):focus, 
 html.dark select:focus, 
 html.dark textarea:focus {
     outline: 2px solid #308A5E !important;

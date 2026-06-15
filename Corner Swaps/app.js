@@ -11744,7 +11744,7 @@ function renderChatDetail(conv) {
                         <div class="flex flex-col items-start max-w-[78%]">
                             ${senderLabel}
                             <!-- Bubble: Side-by-Side Swap Proposal -->
-                            <div id="msg-bubble-${index}" class="chat-bubble-hover py-3 px-3.5 rounded-3xl rounded-tl-none shadow-md cursor-pointer select-none transition-all duration-200 w-[280px] text-left flex flex-col gap-2.5 bg-white dark:bg-[#18201a] border-2 border-emerald-500/80 dark:border-emerald-500/60" onclick="window.viewSwapOfferOnMap('${offeredId}', '${requestedId}', 'mine'); event.stopPropagation();">
+                            <div id="msg-bubble-${index}" class="chat-bubble-hover py-3 px-3.5 rounded-3xl rounded-tl-none shadow-md cursor-pointer select-none transition-all duration-200 w-[280px] text-left flex flex-col gap-2.5 bg-white dark:bg-[#18201a] border-2 border-emerald-500/80 dark:border-emerald-500/60" onclick="window.openSwapLifecycleModal('receiver', '${conv.id}'); event.stopPropagation();">
                                 <div class="flex items-center gap-1.5 border-b border-black/10 dark:border-white/10 pb-1.5">
                                     <span class="material-symbols-outlined text-[14px] font-bold text-black dark:text-white">swap_horiz</span>
                                     <span class="text-[9px] uppercase tracking-wider font-extrabold text-black dark:text-white">Proposed Swap</span>
@@ -11820,7 +11820,7 @@ function renderChatDetail(conv) {
                         <img src="${avatarUrl}" class="w-7 h-7 rounded-full flex-shrink-0 object-cover select-none cursor-pointer active:scale-95 transition-transform" onclick="openNeighborProfileModal('${escapeHTML(conv.neighborName)}')" title="View profile"/>
                         <div class="flex flex-col items-start max-w-[78%]">
                             ${senderLabel}
-                            <div id="msg-bubble-${index}" class="chat-bubble-other chat-bubble-hover py-2 px-3.5 rounded-3xl rounded-tl-none shadow-sm border border-outline-variant/15 dark:border-[#308A5E1f] cursor-pointer select-none transition-all duration-200" onclick="handleMessageClick(event, ${index})">
+                            <div id="msg-bubble-${index}" class="chat-bubble-other chat-bubble-hover py-2 px-3.5 rounded-3xl rounded-tl-none shadow-sm border border-outline-variant/15 dark:border-[#308A5E1f] cursor-pointer select-none transition-all duration-200" onclick="${msg.isKarmaSwapRequest ? `window.openSwapLifecycleModal('receiver', '${conv.id}'); event.stopPropagation();` : `handleMessageClick(event, ${index})`}">
                                 ${bubbleInnerContent}
                             </div>
                             <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
@@ -11937,7 +11937,7 @@ function renderChatTradeDrawer(conv) {
                         <div class="flex items-center gap-1.5 flex-shrink-0">
                             ${isKarmaGift ? '' : `
                             ${status === 'accepted' || status === 'completed' ? '' : `
-                            <button id="chat-offer-swap-pill-btn" class="w-[38px] h-[38px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer" onclick="openSwapProposalPage()" title="${conv.isRequest ? 'Propose Different Swap' : 'Offer a Swap'}">
+                            <button id="chat-offer-swap-pill-btn" class="w-[38px] h-[38px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onpointerdown="window.openSwapLifecycleModal('initiator', '${conv.id}'); event.preventDefault();" onclick="window.openSwapLifecycleModal('initiator', '${conv.id}')" title="${conv.isRequest ? 'Propose Different Swap' : 'Offer a Swap'}">
                                 <span class="material-symbols-outlined text-[17px]">handshake</span>
                             </button>
                             `}
@@ -11953,30 +11953,6 @@ function renderChatTradeDrawer(conv) {
                         </div>
                     </div>
                 </div>
-
-                <!-- Offer a Swap / Confirm Swap Button -->
-                ${isKarmaGift ? '' : `
-                    ${status === 'accepted' || status === 'completed' ? '' : `
-                        ${conv.isRequest ? `
-                        <div class="flex justify-center w-full mt-1 shrink-0">
-                            <div class="flex items-center justify-between bg-white dark:bg-[#1b261f] border border-outline-variant/35 rounded-2xl p-2 px-3.5 w-[calc(100%-32px)] max-w-[370px] shadow-sm select-none">
-                                <span class="text-[10.5px] font-bold text-on-surface-variant dark:text-warm-cream/80">Swap Proposed</span>
-                                <div class="flex items-center gap-2">
-                                    <button class="w-[30px] h-[30px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-90 transition-transform cursor-pointer border-0" onclick="openSwapProposalPage()" title="Propose Different Swap">
-                                        <span class="material-symbols-outlined text-sm">handshake</span>
-                                    </button>
-                                    <button class="w-[30px] h-[30px] rounded-full bg-[#ef4444]/10 hover:bg-[#ef4444]/20 text-[#ef4444] flex items-center justify-center active:scale-90 transition-transform cursor-pointer border-0" onclick="window.handleDeclineSwapRequest('${conv.id}')" title="Decline Swap">
-                                        <span class="material-symbols-outlined text-sm font-bold">close</span>
-                                    </button>
-                                    <button class="w-[30px] h-[30px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-90 transition-transform cursor-pointer border-0" onclick="window.handleAcceptSwapRequest('${conv.id}')" title="Accept Swap">
-                                        <span class="material-symbols-outlined text-sm font-bold">check</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        ` : ''}
-                    `}
-                `}
             `;
         }
     }
@@ -28637,9 +28613,374 @@ const initChatInputHeightObserver = () => {
     observer.observe(actionCenter);
 };
 document.addEventListener('DOMContentLoaded', initChatInputHeightObserver);
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    initChatInputHeightObserver();
-}
+// Unified Swap/Karma Request Modal Lifecycle (State A & State B)
+window.openSwapLifecycleModal = function(role, conversationId) {
+    if (typeof playSound === 'function') playSound('click');
+    
+    // Save current active conversation
+    state.currentConversationId = conversationId;
+    
+    const conv = state.conversations.find(c => c.id === conversationId);
+    if (!conv) return;
+    
+    const container = document.getElementById('offer-swap-container');
+    const bs = document.getElementById('offer-swap-bottom-sheet');
+    if (!container || !bs) return;
+    
+    // Reset selected offered item
+    state.selectedSwapListingId = null;
+    
+    if (role === 'initiator') {
+        // Render Initiator View (Propose swap)
+        container.innerHTML = `
+            <div class="flex items-center justify-between p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
+                <div class="flex flex-col">
+                    <h3 class="text-sm font-bold text-black dark:text-white leading-tight">Offer a Swap</h3>
+                    <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5">Propose an item to swap or ask for a Karma request.</p>
+                </div>
+                <button class="w-8 h-8 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center text-black dark:text-white active:scale-90 transition-transform cursor-pointer border-0 flex-shrink-0" onclick="window.closeSwapLifecycleModal()">
+                    <span class="material-symbols-outlined text-sm font-bold">close</span>
+                </button>
+            </div>
+            
+            <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 max-h-[70vh]">
+                <!-- My Items to Offer -->
+                <div class="flex flex-col gap-1.5 shrink-0">
+                    <span class="text-[10px] font-black text-black/50 dark:text-white/50 uppercase tracking-wider">My Items to Offer</span>
+                    <div class="flex gap-3 overflow-x-auto py-1.5 hide-scrollbar select-none w-full" id="lifecycle-offerings-scroller">
+                        <!-- Populated dynamically below -->
+                    </div>
+                </div>
+                
+                <!-- Custom Item Input -->
+                <div class="flex flex-col gap-1.5 shrink-0">
+                    <span class="text-[10px] font-black text-black/50 dark:text-white/50 uppercase tracking-wider">Custom Item (Optional)</span>
+                    <input type="text" id="lifecycle-custom-text" class="w-full bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl p-3 text-xs outline-none focus:ring-1 focus:ring-forest-green text-on-surface" placeholder="Type an item name..."/>
+                </div>
+                
+                <!-- Action buttons -->
+                <div class="flex flex-col gap-2 mt-2 shrink-0 pb-2">
+                    <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.submitLifecycleSwap(false)">Propose Swap</button>
+                    <button class="w-full bg-forest-green/20 hover:bg-forest-green/30 text-forest-green py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="window.submitLifecycleSwap(true)">Request a Karma Swap</button>
+                </div>
+            </div>
+        `;
+        
+        // Populate items in scroller
+        const scroller = document.getElementById('lifecycle-offerings-scroller');
+        if (scroller) {
+            scroller.innerHTML = '';
+            if (state.userOfferings && state.userOfferings.length > 0) {
+                state.userOfferings.forEach(off => {
+                    const card = document.createElement('button');
+                    card.type = 'button';
+                    card.className = `w-[88px] flex-shrink-0 flex flex-col items-center p-2.5 rounded-2xl border border-black/10 dark:border-white/10 transition-all cursor-pointer text-center bg-white dark:bg-[#101612]`;
+                    card.setAttribute('data-id', off.id);
+                    
+                    const imgUrl = off.image || getCategoryPresetImage(off.category) || PLACEHOLDER_IMAGE;
+                    card.innerHTML = `
+                        <div class="w-16 h-16 rounded-xl overflow-hidden bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 mb-1.5 flex-shrink-0">
+                            <img src="${imgUrl}" class="w-full h-full object-cover animate-fade-in">
+                        </div>
+                        <div class="text-[9.5px] font-bold text-black dark:text-warm-cream leading-tight max-w-[80px] truncate">${escapeHTML(off.title)}</div>
+                    `;
+                    card.onclick = () => {
+                        playSound('click');
+                        state.selectedSwapListingId = off.id;
+                        const customText = document.getElementById('lifecycle-custom-text');
+                        if (customText) customText.value = '';
+                        scroller.querySelectorAll('button').forEach(btn => {
+                            if (btn.getAttribute('data-id') === off.id) {
+                                btn.classList.add('border-forest-green', 'ring-1', 'ring-forest-green');
+                            } else {
+                                btn.classList.remove('border-forest-green', 'ring-1', 'ring-forest-green');
+                            }
+                        });
+                    };
+                    scroller.appendChild(card);
+                });
+            } else {
+                scroller.innerHTML = `<p class="text-[10px] text-outline italic py-2">No active listings on your profile.</p>`;
+            }
+        }
+        
+        const customText = document.getElementById('lifecycle-custom-text');
+        if (customText) {
+            customText.oninput = () => {
+                state.selectedSwapListingId = null;
+                if (scroller) {
+                    scroller.querySelectorAll('button').forEach(btn => {
+                        btn.classList.remove('border-forest-green', 'ring-1', 'ring-forest-green');
+                    });
+                }
+            };
+        }
+        
+    } else if (role === 'receiver') {
+        // Render Receiver View (Review swap proposal or karma request)
+        const isKarma = conv.messages.some(m => m.isKarmaSwapRequest);
+        const offeredTitle = conv.negotiation?.offeredItem || "item";
+        const requestedTitle = conv.negotiation?.requestedItem || "item";
+        
+        let offeredImage = PLACEHOLDER_IMAGE;
+        let requestedImage = PLACEHOLDER_IMAGE;
+        
+        const offImg = getItemImageByTitle(offeredTitle);
+        if (offImg) offeredImage = offImg;
+        
+        const reqImg = getItemImageByTitle(requestedTitle);
+        if (reqImg) requestedImage = reqImg;
+        
+        // Try fallback neighbor image
+        if (offeredImage === PLACEHOLDER_IMAGE) {
+            const neighbor = state.neighbors[conv.neighborName];
+            if (neighbor && neighbor.offerImg) {
+                offeredImage = neighbor.offerImg;
+            }
+        }
+        
+        if (isKarma) {
+            container.innerHTML = `
+                <div class="flex items-center justify-between p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
+                    <div class="flex flex-col">
+                        <h3 class="text-sm font-bold text-black dark:text-white leading-tight">Review Karma Request</h3>
+                        <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5">Requested by ${escapeHTML(conv.neighborName)}</p>
+                    </div>
+                    <button class="w-8 h-8 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center text-black dark:text-white active:scale-90 transition-transform cursor-pointer border-0 flex-shrink-0" onclick="window.closeSwapLifecycleModal()">
+                        <span class="material-symbols-outlined text-sm font-bold">close</span>
+                    </button>
+                </div>
+                
+                <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 max-h-[70vh] items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-500/20 shadow-sm mb-2 shrink-0">
+                        <span class="material-symbols-outlined text-3xl font-bold">favorite</span>
+                    </div>
+                    
+                    <div class="flex flex-col items-center gap-2 shrink-0">
+                        <h4 class="text-sm font-bold text-black dark:text-white">Karma Swap Request</h4>
+                        <p class="text-[11px] text-on-surface-variant dark:text-warm-cream/80 max-w-[90%] leading-relaxed">
+                            Your neighbor ${escapeHTML(conv.neighborName)} wants your <strong class="text-forest-green">"${escapeHTML(requestedTitle)}"</strong> but doesn't have an item to trade right now. 
+                            They are proposing a Karma Swap. By helping them out, you will receive <span class="text-amber-500 font-extrabold">+50 Karma Points</span>!
+                        </p>
+                    </div>
+                    
+                    <!-- Action buttons -->
+                    <div class="flex flex-col gap-2 w-full mt-4 shrink-0 pb-2">
+                        <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.acceptLifecycleProposedSwap('${conv.id}')">Accept Karma Swap</button>
+                        <button class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="window.declineLifecycleProposedSwap('${conv.id}')">Decline Request</button>
+                    </div>
+                </div>
+            `;
+        } else {
+            container.innerHTML = `
+                <div class="flex items-center justify-between p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
+                    <div class="flex flex-col">
+                        <h3 class="text-sm font-bold text-black dark:text-white leading-tight">Review Swap Proposal</h3>
+                        <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5">Offered by ${escapeHTML(conv.neighborName)}</p>
+                    </div>
+                    <button class="w-8 h-8 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center text-black dark:text-white active:scale-90 transition-transform cursor-pointer border-0 flex-shrink-0" onclick="window.closeSwapLifecycleModal()">
+                        <span class="material-symbols-outlined text-sm font-bold">close</span>
+                    </button>
+                </div>
+                
+                <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 max-h-[70vh]">
+                    <div class="flex items-center justify-between gap-4 shrink-0">
+                        <!-- Offered Item (Left) -->
+                        <div class="flex-grow flex-1 flex flex-col items-center p-3.5 bg-black/[0.02] dark:bg-white/[0.02] border border-outline-variant/10 rounded-2xl min-w-0">
+                            <div class="w-20 h-20 rounded-xl overflow-hidden relative border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex-shrink-0">
+                                <img src="${offeredImage}" class="w-full h-full object-cover">
+                            </div>
+                            <div class="text-[9px] font-black text-black/50 dark:text-white/50 uppercase tracking-widest mt-2">THEY GIVE</div>
+                            <div class="text-xs font-extrabold text-black dark:text-warm-cream text-center truncate w-full mt-1">${escapeHTML(offeredTitle)}</div>
+                        </div>
+                        
+                        <!-- Center Swap Icon -->
+                        <div class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-forest-green/10 text-forest-green border border-forest-green/20 shadow-sm">
+                            <span class="material-symbols-outlined text-base font-bold animate-pulse">swap_horiz</span>
+                        </div>
+                        
+                        <!-- Requested Item (Right) -->
+                        <div class="flex-grow flex-1 flex flex-col items-center p-3.5 bg-black/[0.02] dark:bg-white/[0.02] border border-outline-variant/10 rounded-2xl min-w-0">
+                            <div class="w-20 h-20 rounded-xl overflow-hidden relative border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex-shrink-0">
+                                <img src="${requestedImage}" class="w-full h-full object-cover">
+                            </div>
+                            <div class="text-[9px] font-black text-black/50 dark:text-white/50 uppercase tracking-widest mt-2">YOU GIVE</div>
+                            <div class="text-xs font-extrabold text-black dark:text-warm-cream text-center truncate w-full mt-1">${escapeHTML(requestedTitle)}</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action buttons -->
+                    <div class="flex flex-col gap-2 mt-4 shrink-0 pb-2">
+                        <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.acceptLifecycleProposedSwap('${conv.id}')">Accept Swap</button>
+                        <button class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="window.declineLifecycleProposedSwap('${conv.id}')">Decline Swap</button>
+                    </div>
+                </div>
+            `;
+        }
+    }
+    
+    // Slide sheet in
+    bs.classList.remove('pointer-events-none', 'opacity-0');
+    bs.classList.add('opacity-100');
+    container.classList.remove('translate-y-full');
+    container.classList.add('translate-y-0');
+};
+
+window.closeSwapLifecycleModal = function() {
+    if (typeof playSound === 'function') playSound('click');
+    const bs = document.getElementById('offer-swap-bottom-sheet');
+    const container = document.getElementById('offer-swap-container');
+    if (bs && container) {
+        bs.classList.remove('opacity-100');
+        bs.classList.add('opacity-0', 'pointer-events-none');
+        container.classList.remove('translate-y-0');
+        container.classList.add('translate-y-full');
+    }
+};
+
+window.acceptLifecycleProposedSwap = function(convId) {
+    window.closeSwapLifecycleModal();
+    if (typeof window.handleAcceptSwapRequest === 'function') {
+        window.handleAcceptSwapRequest(convId);
+    }
+};
+
+window.declineLifecycleProposedSwap = function(convId) {
+    window.closeSwapLifecycleModal();
+    if (typeof window.handleDeclineSwapRequest === 'function') {
+        window.handleDeclineSwapRequest(convId);
+    }
+};
+
+window.submitLifecycleSwap = function(isKarma) {
+    if (state.chatLockdownMode) {
+        alert("The community chat network is temporarily muted under administrative lockdown.");
+        return;
+    }
+    const conv = state.conversations.find(c => c.id === state.currentConversationId);
+    if (!conv) return;
+    
+    let offeredText = "";
+    if (isKarma) {
+        offeredText = "Karma Points";
+    } else {
+        const customText = document.getElementById('lifecycle-custom-text')?.value.trim() || "";
+        const selectedListingId = state.selectedSwapListingId;
+        if (selectedListingId) {
+            const off = state.userOfferings.find(o => o.id === selectedListingId);
+            if (off) {
+                offeredText = off.title;
+            }
+        } else if (customText) {
+            offeredText = customText;
+        }
+    }
+    
+    if (!offeredText) {
+        // Highlight errors
+        const input = document.getElementById('lifecycle-custom-text');
+        if (input) {
+            input.classList.add('border-red-500', 'focus:ring-red-500');
+            setTimeout(() => input.classList.remove('border-red-500', 'focus:ring-red-500'), 1500);
+        }
+        return;
+    }
+    
+    // Safety checks
+    if (!isKarma) {
+        if (checkSafetyPolicy(offeredText)) {
+            showSafetyContentViolation();
+            return;
+        }
+        if (checkCashlessPolicy(offeredText)) {
+            showSafetyMoneyWarning();
+            return;
+        }
+        if (checkExactAddress(offeredText)) {
+            showSafetyAddressWarning();
+            return;
+        }
+    }
+    
+    let msgText = "";
+    let offeredId = "";
+    let offeredImage = PLACEHOLDER_IMAGE;
+    let requestedId = "";
+    let requestedImage = PLACEHOLDER_IMAGE;
+    
+    if (isKarma) {
+        const req = conv.negotiation?.requestedItem || "item";
+        msgText = `Hey! I'm really interested in your "${req}". I don't have anything to trade right now, but would you be open to a Karma Swap? You'd receive +50 Karma Points for helping a neighbor, and it would mean the world to me! 💛✨`;
+        if (!conv.negotiation) conv.negotiation = {};
+        conv.negotiation.isKarmaSwap = true;
+    } else {
+        const req = conv.negotiation?.requestedItem || "item";
+        msgText = `SWAP OFFER: I would like to swap my "${offeredText}" for your "${req}".`;
+        if (!conv.negotiation) conv.negotiation = {};
+        conv.negotiation.isKarmaSwap = false;
+        
+        const selectedListingId = state.selectedSwapListingId;
+        if (selectedListingId && selectedListingId !== 'custom') {
+            const off = state.userOfferings.find(o => o.id === selectedListingId);
+            if (off) {
+                offeredId = off.id;
+                offeredImage = off.image || PLACEHOLDER_IMAGE;
+            }
+        }
+        
+        const neighbor = state.neighbors[conv.neighborName];
+        if (neighbor) {
+            requestedId = conv.neighborName;
+            requestedImage = neighbor.offerImg || PLACEHOLDER_IMAGE;
+        }
+    }
+    
+    const newMsg = {
+        sender: 'me',
+        text: msgText,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+    if (isKarma) {
+        newMsg.isKarmaSwapRequest = true;
+        newMsg.requestedItem = conv.negotiation.requestedItem || "item";
+    } else {
+        newMsg.isSwapOffer = true;
+        newMsg.offeredItemTitle = offeredText;
+        newMsg.offeredItemImage = offeredImage;
+        newMsg.offeredItemId = offeredId;
+        newMsg.requestedItemTitle = conv.negotiation.requestedItem || "item";
+        newMsg.requestedItemImage = requestedImage;
+        newMsg.requestedItemId = requestedId;
+    }
+    conv.messages.push(newMsg);
+    
+    // Add admin confirmation
+    conv.messages.push({
+        sender: 'App admin',
+        text: "Swap proposed! Our team has sent the request to your neighbor. We'll let you know as soon as they respond.",
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    });
+    
+    conv.negotiation.status = 'pending';
+    conv.negotiation.offeredItem = offeredText;
+    conv.negotiation.isFromOfferSwapModal = true;
+    
+    saveState();
+    window.closeSwapLifecycleModal();
+    renderChatDetail(conv);
+    if (typeof playSound === 'function') playSound('message');
+    
+    if (!isKarma && typeof triggerSuccessConfetti === 'function') {
+        triggerSuccessConfetti();
+    }
+    
+    if (conv.mockAcceptTimer) {
+        clearTimeout(conv.mockAcceptTimer);
+    }
+    conv.mockAcceptTimer = setTimeout(() => {
+        window.simulatePartnerAccept(conv.id);
+    }, 4000);
+};
 
 // Global scope ends
 
