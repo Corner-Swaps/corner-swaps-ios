@@ -9530,17 +9530,17 @@ html.dark #view-create_group #group-friends-search::placeholder {
                                 <div id="village-search-suggestions" class="hidden fused-suggestions-box"></div>
                                 
                                 <!-- Top Segmented Control (Offerings, Needs, Events) -->
-                                <div id="village-segmented-control" class="relative mt-2.5 w-[88%] mx-auto h-9 flex items-center justify-between gap-2 select-none">
+                                <div id="village-segmented-control" class="relative mt-2.5 w-full h-10 flex items-center justify-between gap-2 select-none">
                                     <!-- Sliding background pill -->
-                                    <div id="village-active-pill-bg" class="hidden absolute top-0.5 left-0.5 bottom-0.5 bg-white dark:bg-[#374151] shadow rounded-[10px] transition-all duration-200" style="width: 0px; left: 0px;"></div>
+                                    <div id="village-active-pill-bg" class="hidden absolute top-0.5 left-0.5 bottom-0.5 bg-white dark:bg-[#2d3a30] shadow rounded-[10px] transition-all duration-200" style="width: 0px; left: 0px;"></div>
                                     
-                                    <button type="button" id="btn-segment-tab-offerings" data-category="offerings" onclick="handleCategorySegmentTap('offerings')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#374151] text-black dark:text-white shadow-sm">
+                                    <button type="button" id="btn-segment-tab-offerings" data-category="offerings" onclick="handleCategorySegmentTap('offerings')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm">
                                         Offerings
                                     </button>
-                                    <button type="button" id="btn-segment-tab-needs" data-category="needs" onclick="handleCategorySegmentTap('needs')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2937]/90 text-[#555] dark:text-[#bbb]">
+                                    <button type="button" id="btn-segment-tab-needs" data-category="needs" onclick="handleCategorySegmentTap('needs')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-gray-500 dark:text-gray-400">
                                         Needs
                                     </button>
-                                    <button type="button" id="btn-segment-tab-events" data-category="events" onclick="handleCategorySegmentTap('events')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2937]/90 text-[#555] dark:text-[#bbb]">
+                                    <button type="button" id="btn-segment-tab-events" data-category="events" onclick="handleCategorySegmentTap('events')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-gray-500 dark:text-gray-400">
                                         Events
                                     </button>
                                 </div>
@@ -44943,11 +44943,11 @@ function updateTopSegmentedControlUI(category) {
         if (!btn) return;
         const btnCategory = btn.getAttribute('data-category');
         if (btnCategory === category) {
-            btn.classList.remove('text-[#555]', 'dark:text-[#bbb]', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2937]/90');
-            btn.classList.add('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#374151]', 'shadow-sm');
+            btn.classList.remove('text-gray-500', 'dark:text-gray-400', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2922]/90');
+            btn.classList.add('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#2d3a30]', 'shadow-sm');
         } else {
-            btn.classList.remove('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#374151]', 'shadow-sm');
-            btn.classList.add('text-[#555]', 'dark:text-[#bbb]', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2937]/90');
+            btn.classList.remove('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#2d3a30]', 'shadow-sm');
+            btn.classList.add('text-gray-500', 'dark:text-gray-400', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2922]/90');
         }
     });
 }

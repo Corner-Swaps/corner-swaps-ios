@@ -29124,11 +29124,11 @@ function updateTopSegmentedControlUI(category) {
         if (!btn) return;
         const btnCategory = btn.getAttribute('data-category');
         if (btnCategory === category) {
-            btn.classList.remove('text-[#555]', 'dark:text-[#bbb]', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2937]/90');
-            btn.classList.add('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#374151]', 'shadow-sm');
+            btn.classList.remove('text-gray-500', 'dark:text-gray-400', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2922]/90');
+            btn.classList.add('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#2d3a30]', 'shadow-sm');
         } else {
-            btn.classList.remove('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#374151]', 'shadow-sm');
-            btn.classList.add('text-[#555]', 'dark:text-[#bbb]', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2937]/90');
+            btn.classList.remove('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#2d3a30]', 'shadow-sm');
+            btn.classList.add('text-gray-500', 'dark:text-gray-400', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2922]/90');
         }
     });
 }
