@@ -214,10 +214,21 @@ struct WebView: UIViewRepresentable {
         webView.scrollView.alwaysBounceHorizontal = false
         webView.scrollView.contentInsetAdjustmentBehavior = .never
         
-        NSLog("[SWIFT] Loading self-contained HTML string...")
-        print("[SWIFT] Loading self-contained HTML string...")
+        NSLog("[SWIFT] Clearing cache and loading file URL...")
+        print("[SWIFT] Clearing cache and loading file URL...")
         fflush(stdout)
-        webView.loadFileURL(fileURL, allowingReadAccessTo: Bundle.main.resourceURL ?? fileURL.deletingLastPathComponent())
+        
+        let websiteDataTypes: Set<String> = [
+            WKWebsiteDataTypeDiskCache,
+            WKWebsiteDataTypeMemoryCache,
+            WKWebsiteDataTypeOfflineWebApplicationCache
+        ]
+        
+        WKWebsiteDataStore.default().removeData(ofTypes: websiteDataTypes, modifiedSince: Date(timeIntervalSince1970: 0)) {
+            DispatchQueue.main.async {
+                webView.loadFileURL(fileURL, allowingReadAccessTo: Bundle.main.resourceURL ?? fileURL.deletingLastPathComponent())
+            }
+        }
         
         return webView
     }

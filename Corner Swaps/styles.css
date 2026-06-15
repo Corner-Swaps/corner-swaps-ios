@@ -1843,12 +1843,12 @@ html.dark .chat-bubble-other {
     top: 4.5rem !important; /* 72px */
 }
 #village-segment-floating-buttons {
-    bottom: 198px !important;
+    bottom: 138px !important;
     right: 24px !important;
     top: auto !important;
 }
 #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: 346px !important;
+    bottom: 286px !important;
 }
 
 #floating-map-controls {
@@ -1895,12 +1895,12 @@ html.dark .chat-bubble-other {
     top: calc(4.5rem + env(safe-area-inset-top)) !important;
 }
 .native-app-env #village-segment-floating-buttons {
-    bottom: calc(198px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(138px + env(safe-area-inset-bottom)) !important;
     right: 24px !important;
     top: auto !important;
 }
 .native-app-env #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: calc(346px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(286px + env(safe-area-inset-bottom)) !important;
 }
 
 .native-app-env #meetup-map-footer {
@@ -5735,11 +5735,11 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
     bottom: 230px !important;
 }
 .iphone16-mode #village-segment-floating-buttons {
-    bottom: 198px !important;
+    bottom: 138px !important;
     top: auto !important;
 }
 .iphone16-mode #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: 346px !important;
+    bottom: 286px !important;
 }
 
 .iphone16-mode #map-category-dropdown {
@@ -6979,7 +6979,7 @@ html.dark .fused-search-input {
     min-height: 28px !important;
     max-width: 28px !important;
     max-height: 28px !important;
-    color: #000000 !important;
+    color: #3b82f6 !important;
     background: rgba(0, 0, 0, 0.05) !important;
     border-radius: 50% !important;
     border: none !important;
@@ -6988,7 +6988,7 @@ html.dark .fused-search-input {
 }
 
 html.dark .fused-location-btn {
-    color: #ffffff !important;
+    color: #3b82f6 !important;
     background: rgba(255, 255, 255, 0.1) !important;
 }
 

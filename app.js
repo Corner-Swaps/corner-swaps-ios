@@ -22040,6 +22040,13 @@ window.snapToUserNeighborhood = function() {
         }
         return;
     }
+    
+    // Add blue styling feedback to the little navigation icon
+    const intBtn = document.getElementById('btn-integrated-location');
+    if (intBtn) {
+        intBtn.classList.add('active-location');
+    }
+    
     if (!state.locationConsent) {
         window.openLocationPrivacyModal();
         return;
@@ -22056,7 +22063,31 @@ window.snapToUserNeighborhood = function() {
             leafletMap.setView([state.currentUser.lat, state.currentUser.lng], 15, { animate: true });
         }
     } else {
-        alert("Please set your private address in settings first!");
+        // Try getting browser geolocation directly
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                if (!state.currentUser) state.currentUser = {};
+                state.currentUser.lat = lat;
+                state.currentUser.lng = lng;
+                saveState();
+                
+                const btn = document.getElementById('snap-to-neighborhood-btn');
+                if (btn) {
+                    btn.classList.remove('bg-amber-500', 'border-amber-500', 'hover:bg-amber-600', 'pulse-amber-light', 'bg-forest-green', 'border-forest-green', 'hover:bg-forest-green/90', 'pulse-green-light');
+                    btn.classList.add('pulse-blue-light');
+                    btn.classList.add('bg-blue-600', 'border-blue-600', 'hover:bg-blue-700');
+                }
+                if (leafletMap) {
+                    leafletMap.setView([lat, lng], 15, { animate: true });
+                }
+            }, (error) => {
+                alert("Please set your private address in settings first!");
+            });
+        } else {
+            alert("Please set your private address in settings first!");
+        }
     }
 };
 
