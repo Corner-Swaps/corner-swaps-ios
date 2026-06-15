@@ -8383,6 +8383,17 @@ html.dark #view-create_group #group-desc-input::placeholder,
 html.dark #view-create_group #group-friends-search::placeholder {
     color: #6b7280 !important;
 }
+
+/* Top Segmented Control & Sliding Pill Refactor */
+#village-segmented-control {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+.dark #village-segmented-control {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+#village-active-pill-bg {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
 </style>
     <!-- Tailwind Configuration (removed - runtime replaced with pre-compiled CSS) -->
     <script>
@@ -9517,6 +9528,22 @@ html.dark #view-create_group #group-friends-search::placeholder {
                                     <input type="text" id="village-search-input" oninput="applyMapFiltering();" placeholder="Search listings, events and offerings" class="fused-search-input">
                                 </div>
                                 <div id="village-search-suggestions" class="hidden fused-suggestions-box"></div>
+                                
+                                <!-- Top Segmented Control (Offerings, Needs, Events) -->
+                                <div id="village-segmented-control" class="relative mt-2.5 w-full h-9 flex items-center justify-between gap-3 select-none">
+                                    <!-- Sliding background pill -->
+                                    <div id="village-active-pill-bg" class="hidden absolute top-0.5 left-0.5 bottom-0.5 bg-white dark:bg-[#2d3a30] shadow rounded-[10px] transition-all duration-200" style="width: 0px; left: 0px;"></div>
+                                    
+                                    <button type="button" id="btn-segment-tab-offerings" data-category="offerings" onclick="handleCategorySegmentTap('offerings')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm">
+                                        Offerings
+                                    </button>
+                                    <button type="button" id="btn-segment-tab-needs" data-category="needs" onclick="handleCategorySegmentTap('needs')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-[#555] dark:text-[#bbb]">
+                                        Needs
+                                    </button>
+                                    <button type="button" id="btn-segment-tab-events" data-category="events" onclick="handleCategorySegmentTap('events')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-[#555] dark:text-[#bbb]">
+                                        Events
+                                    </button>
+                                </div>
                             </div>
                              
                              <!-- Floating Map Controls — positioned on the right side -->
@@ -9526,22 +9553,7 @@ html.dark #view-create_group #group-friends-search::placeholder {
                                      <span class="material-symbols-outlined text-2xl font-bold">my_location</span>
                                  </button>
 
-                                 <!-- Menu Trigger Button Container (above location button) -->
-                                 <button id="btn-segment-trigger" onclick="toggleVillageMenu()" class="pointer-events-auto w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-white border border-black/10 active:scale-90 transition-all cursor-pointer text-black" title="Menu">
-                                     <span id="segment-trigger-icon" class="flex items-center justify-center w-[24px] h-[24px]">
-                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="black" style="display: block; margin: auto;">
-                                             <circle cx="5" cy="5" r="2.2" />
-                                             <circle cx="12" cy="5" r="2.2" />
-                                             <circle cx="19" cy="5" r="2.2" />
-                                             <circle cx="5" cy="12" r="2.2" />
-                                             <circle cx="12" cy="12" r="2.2" />
-                                             <circle cx="19" cy="12" r="2.2" />
-                                             <circle cx="5" cy="19" r="2.2" />
-                                             <circle cx="12" cy="19" r="2.2" />
-                                             <circle cx="19" cy="19" r="2.2" />
-                                         </svg>
-                                     </span>
-                                 </button>
+
                              </div>
 
                              <!-- Invisible Close-on-Click Overlay (for category filter) -->
@@ -15628,9 +15640,13 @@ html.dark #view-create_group #group-friends-search::placeholder {
                                      <span class="material-symbols-outlined text-[18px]">chat_bubble</span>
                                      <span class="text-[10px] font-bold uppercase tracking-wider">Chat</span>
                                  </div>
-                                 <div class="nav-item flex items-center justify-center cursor-pointer text-[#424840] dark:text-[#FDFBF7]/60 gap-1 px-2 py-1.5 rounded-xl transition-all hover:bg-forest-green/5 hover:text-forest-green" data-nav="village" onclick="showView('village')">
+                                 <div class="nav-item flex items-center justify-center cursor-pointer text-[#424840] dark:text-[#FDFBF7]/60 gap-1 px-2 py-1.5 rounded-xl transition-all hover:bg-forest-green/5 hover:text-forest-green" data-nav="village_list" onclick="handleNavbarTap('village_list')">
+                                     <span class="material-symbols-outlined text-[18px]">format_list_bulleted</span>
+                                     <span class="text-[10px] font-bold uppercase tracking-wider">List</span>
+                                 </div>
+                                 <div class="nav-item flex items-center justify-center cursor-pointer text-[#424840] dark:text-[#FDFBF7]/60 gap-1 px-2 py-1.5 rounded-xl transition-all hover:bg-forest-green/5 hover:text-forest-green" data-nav="village_map" onclick="handleNavbarTap('village_map')">
                                      <span class="material-symbols-outlined text-[18px]">map</span>
-                                     <span class="text-[10px] font-bold uppercase tracking-wider">Village</span>
+                                     <span class="text-[10px] font-bold uppercase tracking-wider">Map</span>
                                  </div>
                             </div>
 
@@ -15665,26 +15681,31 @@ html.dark #view-create_group #group-friends-search::placeholder {
 
                 <!-- GLOBAL BOTTOM NAVIGATION BAR -->
                 <!-- ==================================================== -->
-                <nav id="global-navbar" class="hidden absolute bottom-0 left-0 w-full z-[5000] flex flex-row justify-center items-center gap-3 bg-white border-t border-outline-variant/20 h-16 shadow-[0_-4px_20px_rgba(48,138,94,0.02)]">
-                    <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="profile_settings" onclick="handleNavbarTap('profile_settings')">
-                        <div class="nav-icon-wrapper flex items-center justify-center w-12 h-9 rounded-full transition-all duration-300">
+                <nav id="global-navbar" class="hidden absolute bottom-0 left-0 w-full z-[5000] flex flex-row justify-center items-center gap-1 bg-white border-t border-outline-variant/20 h-16 shadow-[0_-4px_20px_rgba(48,138,94,0.02)]">
+                    <div class="w-14 flex flex-col items-center justify-center cursor-pointer" data-nav="profile_settings" onclick="handleNavbarTap('profile_settings')">
+                        <div class="nav-icon-wrapper flex items-center justify-center w-11 h-9 rounded-full transition-all duration-300">
                             <span class="material-symbols-outlined text-[28px]">account_circle</span>
                         </div>
                     </div>
-                    <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="offer" onclick="handleNavbarTap('offer')">
-                        <div class="nav-icon-wrapper flex items-center justify-center w-12 h-9 rounded-full transition-all duration-300">
+                    <div class="w-14 flex flex-col items-center justify-center cursor-pointer" data-nav="offer" onclick="handleNavbarTap('offer')">
+                        <div class="nav-icon-wrapper flex items-center justify-center w-11 h-9 rounded-full transition-all duration-300">
                             <span class="material-symbols-outlined text-[28px]">add_circle</span>
                         </div>
                     </div>
-                    <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="chat_hub" onclick="handleNavbarTap('chat_hub')">
-                        <div class="nav-icon-wrapper relative flex items-center justify-center w-12 h-9 rounded-full transition-all duration-300">
+                    <div class="w-14 flex flex-col items-center justify-center cursor-pointer" data-nav="chat_hub" onclick="handleNavbarTap('chat_hub')">
+                        <div class="nav-icon-wrapper relative flex items-center justify-center w-11 h-9 rounded-full transition-all duration-300">
                             <span id="chat-icon-symbol" class="material-symbols-outlined text-[28px] transition-all duration-300">chat_bubble</span>
                             <span id="chat-notification-badge" class="absolute top-0.5 right-1.5 chat-badge-circle hidden"></span>
                         </div>
                     </div>
-                    <div class="w-16 flex flex-col items-center justify-center cursor-pointer" data-nav="village" onclick="handleNavbarTap('village')">
-                        <div class="nav-icon-wrapper flex items-center justify-center w-12 h-9 rounded-full transition-all duration-300">
+                    <div class="w-14 flex flex-col items-center justify-center cursor-pointer" data-nav="village_map" onclick="handleNavbarTap('village_map')">
+                        <div class="nav-icon-wrapper flex items-center justify-center w-11 h-9 rounded-full transition-all duration-300">
                             <span class="material-symbols-outlined text-[28px]">map</span>
+                        </div>
+                    </div>
+                    <div class="w-14 flex flex-col items-center justify-center cursor-pointer" data-nav="village_list" onclick="handleNavbarTap('village_list')">
+                        <div class="nav-icon-wrapper flex items-center justify-center w-11 h-9 rounded-full transition-all duration-300">
+                            <span class="material-symbols-outlined text-[28px]">format_list_bulleted</span>
                         </div>
                     </div>
                 </nav>
@@ -17815,6 +17836,12 @@ function loadState() {
     if (typeof state.eulaAgreed === 'undefined') {
         state.eulaAgreed = false;
     }
+    if (!state.activeCategory) {
+        state.activeCategory = 'offerings';
+    }
+    if (!state.activeViewMode) {
+        state.activeViewMode = 'map';
+    }
     if (ensureFriendsList()) {
         needsSave = true;
     }
@@ -19000,11 +19027,30 @@ function handleNavbarTap(viewId) {
             window.closeChatCameraModal();
         }
     }
-    if (viewId === 'village') {
-        // Exiting from event_detail or other views back to map
-        if (typeof switchVillageSegment === 'function') {
-            switchVillageSegment('map');
+    if (viewId === 'village_map') {
+        state.activeViewMode = 'map';
+        saveState();
+        showView('village');
+        if (typeof updateVillageViewFromState === 'function') {
+            updateVillageViewFromState();
         }
+        return;
+    }
+    if (viewId === 'village_list') {
+        state.activeViewMode = 'list';
+        saveState();
+        showView('village');
+        if (typeof updateVillageViewFromState === 'function') {
+            updateVillageViewFromState();
+        }
+        return;
+    }
+    if (viewId === 'village') {
+        showView('village');
+        if (typeof updateVillageViewFromState === 'function') {
+            updateVillageViewFromState();
+        }
+        return;
     }
     if (viewId === 'offer') {
         if (typeof resetOfferFormToSelector === 'function') {
@@ -19122,6 +19168,7 @@ function showView(viewId, mode) {
                 currentViewEl.scrollTop = 0; // Immediate fallback
             }
         }
+        updateNavBarIcons(viewId);
         return;
     }
 
@@ -19889,7 +19936,9 @@ window.handleHomeFeedbackSubmit = function(event) {
 function updateNavBarIcons(activeViewId) {
     let highlightViewId = activeViewId;
     if (['event_detail', 'events_hub', 'create_event', 'create_bulletin', 'create_group'].includes(activeViewId)) {
-        highlightViewId = 'village';
+        highlightViewId = (state.activeViewMode === 'list') ? 'village_list' : 'village_map';
+    } else if (activeViewId === 'village') {
+        highlightViewId = (state.activeViewMode === 'list') ? 'village_list' : 'village_map';
     } else if (['settings_detail', 'adjust_homepage', 'definitions', 'neighborhood_tips'].includes(activeViewId)) {
         highlightViewId = 'profile_settings';
     }
@@ -19991,12 +20040,18 @@ function startAppInitialization() {
                     safeLocalStorage.setItem('reinstated_onboarding_v1', 'true');
                 }
                 loadState();
+                if (typeof updateVillageViewFromState === 'function') {
+                    updateVillageViewFromState();
+                }
                 const hash = window.location.hash;
                 if (hash && hash !== '#/' && hash !== '#') {
                     window.handleHashRoute();
                 } else {
                     if (state.currentUser) {
                         showView('village');
+                        if (typeof updateVillageViewFromState === 'function') {
+                            updateVillageViewFromState();
+                        }
                     } else {
                         showView('welcome');
                     }
@@ -30823,7 +30878,7 @@ function switchVillageSegment(type) {
         btnGifts.className = `${baseBtnClass} bg-rose-600 border-rose-600 text-white pulse-rose-light ${type === 'gifts_map' ? 'scale-110 ring-4 ring-rose-300 dark:ring-rose-800 z-20' : ''}`;
     }
 
-    if (type === 'map' || type === 'needs_map' || type === 'gifts_map') {
+    if (type === 'map' || type === 'needs_map' || type === 'gifts_map' || type === 'events_map') {
         mapContainer.classList.remove('hidden');
         listContainer.classList.add('hidden');
         needsContainer.classList.add('hidden');
@@ -44814,6 +44869,76 @@ window.submitLifecycleSwap = function(isKarma) {
         window.simulatePartnerAccept(conv.id);
     }, 4000);
 };
+
+function updateVillageViewFromState() {
+    const category = state.activeCategory || 'offerings';
+    const viewMode = state.activeViewMode || 'map';
+    
+    let targetSegment = 'map';
+    if (viewMode === 'map') {
+        if (category === 'offerings') {
+            targetSegment = 'map';
+        } else if (category === 'needs') {
+            targetSegment = 'needs_map';
+        } else if (category === 'events') {
+            targetSegment = 'events_map';
+        }
+    } else { // viewMode === 'list'
+        if (category === 'offerings') {
+            targetSegment = 'list';
+        } else if (category === 'needs') {
+            targetSegment = 'needs';
+        } else if (category === 'events') {
+            targetSegment = 'events';
+        }
+    }
+    
+    if (typeof switchVillageSegment === 'function') {
+        switchVillageSegment(targetSegment);
+    }
+    
+    updateTopSegmentedControlUI(category);
+}
+window.updateVillageViewFromState = updateVillageViewFromState;
+
+function handleCategorySegmentTap(category) {
+    if (typeof playSound === 'function') playSound('click');
+    state.activeCategory = category;
+    saveState();
+    updateVillageViewFromState();
+}
+window.handleCategorySegmentTap = handleCategorySegmentTap;
+
+function updateTopSegmentedControlUI(category) {
+    const pill = document.getElementById('village-active-pill-bg');
+    const btnOfferings = document.getElementById('btn-segment-tab-offerings');
+    const btnNeeds = document.getElementById('btn-segment-tab-needs');
+    const btnEvents = document.getElementById('btn-segment-tab-events');
+    
+    let targetBtn = null;
+    if (category === 'offerings') targetBtn = btnOfferings;
+    else if (category === 'needs') targetBtn = btnNeeds;
+    else if (category === 'events') targetBtn = btnEvents;
+    
+    if (pill && targetBtn) {
+        pill.style.width = `${targetBtn.offsetWidth}px`;
+        pill.style.left = `${targetBtn.offsetLeft}px`;
+    }
+    
+    const btns = [btnOfferings, btnNeeds, btnEvents];
+    btns.forEach(btn => {
+        if (!btn) return;
+        const btnCategory = btn.getAttribute('data-category');
+        if (btnCategory === category) {
+            btn.classList.remove('text-[#555]', 'dark:text-[#bbb]', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2922]/90');
+            btn.classList.add('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#2d3a30]', 'shadow-sm');
+        } else {
+            btn.classList.remove('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#2d3a30]', 'shadow-sm');
+            btn.classList.add('text-[#555]', 'dark:text-[#bbb]', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2922]/90');
+        }
+    });
+}
+window.updateTopSegmentedControlUI = updateTopSegmentedControlUI;
 
 // Global scope ends
 </script>

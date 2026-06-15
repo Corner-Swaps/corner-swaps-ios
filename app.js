@@ -2030,6 +2030,12 @@ function loadState() {
     if (typeof state.eulaAgreed === 'undefined') {
         state.eulaAgreed = false;
     }
+    if (!state.activeCategory) {
+        state.activeCategory = 'offerings';
+    }
+    if (!state.activeViewMode) {
+        state.activeViewMode = 'map';
+    }
     if (ensureFriendsList()) {
         needsSave = true;
     }
@@ -3215,11 +3221,30 @@ function handleNavbarTap(viewId) {
             window.closeChatCameraModal();
         }
     }
-    if (viewId === 'village') {
-        // Exiting from event_detail or other views back to map
-        if (typeof switchVillageSegment === 'function') {
-            switchVillageSegment('map');
+    if (viewId === 'village_map') {
+        state.activeViewMode = 'map';
+        saveState();
+        showView('village');
+        if (typeof updateVillageViewFromState === 'function') {
+            updateVillageViewFromState();
         }
+        return;
+    }
+    if (viewId === 'village_list') {
+        state.activeViewMode = 'list';
+        saveState();
+        showView('village');
+        if (typeof updateVillageViewFromState === 'function') {
+            updateVillageViewFromState();
+        }
+        return;
+    }
+    if (viewId === 'village') {
+        showView('village');
+        if (typeof updateVillageViewFromState === 'function') {
+            updateVillageViewFromState();
+        }
+        return;
     }
     if (viewId === 'offer') {
         if (typeof resetOfferFormToSelector === 'function') {
@@ -3337,6 +3362,7 @@ function showView(viewId, mode) {
                 currentViewEl.scrollTop = 0; // Immediate fallback
             }
         }
+        updateNavBarIcons(viewId);
         return;
     }
 
@@ -4104,7 +4130,9 @@ window.handleHomeFeedbackSubmit = function(event) {
 function updateNavBarIcons(activeViewId) {
     let highlightViewId = activeViewId;
     if (['event_detail', 'events_hub', 'create_event', 'create_bulletin', 'create_group'].includes(activeViewId)) {
-        highlightViewId = 'village';
+        highlightViewId = (state.activeViewMode === 'list') ? 'village_list' : 'village_map';
+    } else if (activeViewId === 'village') {
+        highlightViewId = (state.activeViewMode === 'list') ? 'village_list' : 'village_map';
     } else if (['settings_detail', 'adjust_homepage', 'definitions', 'neighborhood_tips'].includes(activeViewId)) {
         highlightViewId = 'profile_settings';
     }
@@ -4206,12 +4234,18 @@ function startAppInitialization() {
                     safeLocalStorage.setItem('reinstated_onboarding_v1', 'true');
                 }
                 loadState();
+                if (typeof updateVillageViewFromState === 'function') {
+                    updateVillageViewFromState();
+                }
                 const hash = window.location.hash;
                 if (hash && hash !== '#/' && hash !== '#') {
                     window.handleHashRoute();
                 } else {
                     if (state.currentUser) {
                         showView('village');
+                        if (typeof updateVillageViewFromState === 'function') {
+                            updateVillageViewFromState();
+                        }
                     } else {
                         showView('welcome');
                     }
@@ -15038,7 +15072,7 @@ function switchVillageSegment(type) {
         btnGifts.className = `${baseBtnClass} bg-rose-600 border-rose-600 text-white pulse-rose-light ${type === 'gifts_map' ? 'scale-110 ring-4 ring-rose-300 dark:ring-rose-800 z-20' : ''}`;
     }
 
-    if (type === 'map' || type === 'needs_map' || type === 'gifts_map') {
+    if (type === 'map' || type === 'needs_map' || type === 'gifts_map' || type === 'events_map') {
         mapContainer.classList.remove('hidden');
         listContainer.classList.add('hidden');
         needsContainer.classList.add('hidden');
@@ -29029,6 +29063,76 @@ window.submitLifecycleSwap = function(isKarma) {
         window.simulatePartnerAccept(conv.id);
     }, 4000);
 };
+
+function updateVillageViewFromState() {
+    const category = state.activeCategory || 'offerings';
+    const viewMode = state.activeViewMode || 'map';
+    
+    let targetSegment = 'map';
+    if (viewMode === 'map') {
+        if (category === 'offerings') {
+            targetSegment = 'map';
+        } else if (category === 'needs') {
+            targetSegment = 'needs_map';
+        } else if (category === 'events') {
+            targetSegment = 'events_map';
+        }
+    } else { // viewMode === 'list'
+        if (category === 'offerings') {
+            targetSegment = 'list';
+        } else if (category === 'needs') {
+            targetSegment = 'needs';
+        } else if (category === 'events') {
+            targetSegment = 'events';
+        }
+    }
+    
+    if (typeof switchVillageSegment === 'function') {
+        switchVillageSegment(targetSegment);
+    }
+    
+    updateTopSegmentedControlUI(category);
+}
+window.updateVillageViewFromState = updateVillageViewFromState;
+
+function handleCategorySegmentTap(category) {
+    if (typeof playSound === 'function') playSound('click');
+    state.activeCategory = category;
+    saveState();
+    updateVillageViewFromState();
+}
+window.handleCategorySegmentTap = handleCategorySegmentTap;
+
+function updateTopSegmentedControlUI(category) {
+    const pill = document.getElementById('village-active-pill-bg');
+    const btnOfferings = document.getElementById('btn-segment-tab-offerings');
+    const btnNeeds = document.getElementById('btn-segment-tab-needs');
+    const btnEvents = document.getElementById('btn-segment-tab-events');
+    
+    let targetBtn = null;
+    if (category === 'offerings') targetBtn = btnOfferings;
+    else if (category === 'needs') targetBtn = btnNeeds;
+    else if (category === 'events') targetBtn = btnEvents;
+    
+    if (pill && targetBtn) {
+        pill.style.width = `${targetBtn.offsetWidth}px`;
+        pill.style.left = `${targetBtn.offsetLeft}px`;
+    }
+    
+    const btns = [btnOfferings, btnNeeds, btnEvents];
+    btns.forEach(btn => {
+        if (!btn) return;
+        const btnCategory = btn.getAttribute('data-category');
+        if (btnCategory === category) {
+            btn.classList.remove('text-[#555]', 'dark:text-[#bbb]', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2922]/90');
+            btn.classList.add('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#2d3a30]', 'shadow-sm');
+        } else {
+            btn.classList.remove('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#2d3a30]', 'shadow-sm');
+            btn.classList.add('text-[#555]', 'dark:text-[#bbb]', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2922]/90');
+        }
+    });
+}
+window.updateTopSegmentedControlUI = updateTopSegmentedControlUI;
 
 // Global scope ends
 
