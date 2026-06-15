@@ -4291,30 +4291,24 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
     right: 0px !important;
     width: 100% !important;
     z-index: 20 !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.35) !important;
-    border-bottom: none !important;
-    border-left: none !important;
-    border-right: none !important;
-    background: rgba(255, 255, 255, 0.45) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.05) !important;
-    border-radius: 28px 28px 0 0 !important;
+    border: none !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
     padding-bottom: 8px !important;
 }
 .native-app-env #chat-action-center {
     bottom: 0px !important;
-    padding-bottom: calc(4px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(6px + env(safe-area-inset-bottom)) !important;
 }
 html.dark #chat-action-center {
-    border-top: 1px solid rgba(255, 255, 255, 0.10) !important;
-    border-bottom: none !important;
-    border-left: none !important;
-    border-right: none !important;
-    background: rgba(20, 28, 22, 0.65) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.25) !important;
+    border: none !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
 }
 
 #chat-action-center.group-chat-action-center {
@@ -4322,15 +4316,44 @@ html.dark #chat-action-center {
     left: 0px !important;
     right: 0px !important;
     width: 100% !important;
-    border-radius: 28px 28px 0 0 !important;
+    border-radius: 0 !important;
     padding-bottom: 8px !important;
-    border-left: none !important;
-    border-right: none !important;
-    border-bottom: none !important;
+    border: none !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
 }
 .native-app-env #chat-action-center.group-chat-action-center {
     bottom: 0px !important;
-    padding-bottom: calc(4px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(6px + env(safe-area-inset-bottom)) !important;
+}
+
+/* Glassmorphic Chat Input Pill (matching #global-navbar) */
+.chat-pill-input-wrapper {
+    background: rgba(255, 255, 255, 0.45) !important;
+    backdrop-filter: blur(24px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s !important;
+}
+
+html.dark .chat-pill-input-wrapper {
+    background: rgba(20, 28, 22, 0.45) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.chat-pill-input-wrapper:focus-within {
+    border-color: rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05), 0 8px 32px rgba(0, 0, 0, 0.06) !important;
+    background: rgba(255, 255, 255, 0.6) !important;
+}
+
+html.dark .chat-pill-input-wrapper:focus-within {
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05), 0 8px 32px rgba(0, 0, 0, 0.06) !important;
+    background: rgba(20, 28, 22, 0.6) !important;
 }
 
 

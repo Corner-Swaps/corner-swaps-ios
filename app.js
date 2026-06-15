@@ -11887,20 +11887,22 @@ function renderChatTradeDrawer(conv) {
         if (actionCenter) {
             actionCenter.innerHTML = `
                 <!-- Keyboard text input row -->
-                <div class="flex items-center gap-2 w-full">
+                <div class="flex items-center justify-center w-full">
                     <input type="file" id="chat-photo-input" accept="image/*" class="hidden" onchange="handleSendChatPhoto(this)"/>
                     <input type="file" id="chat-camera-input" accept="image/*" capture="camera" class="hidden" onchange="handleSendChatPhoto(this)"/>
-                    <div class="flex-grow flex items-center bg-white dark:bg-[#1b261f] border border-outline-variant/35 rounded-full px-4 py-1 shadow-sm focus-within:border-neutral-400 dark:focus-within:border-neutral-600 focus-within:ring-1 focus-within:ring-neutral-400 dark:focus-within:ring-neutral-600" id="chat-input-wrapper-group">
-                        <input class="flex-grow bg-transparent border-0 px-2 py-2.5 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" onfocus="var w=this.closest('#chat-input-wrapper-group');if(w){var isDark=document.documentElement.classList.contains('dark');w.style.borderColor=isDark?'rgba(255,255,255,0.3)':'rgba(0,0,0,0.3)';w.style.boxShadow=isDark?'0 0 0 2px rgba(255,255,255,0.05)':'0 0 0 2px rgba(0,0,0,0.05)';}" onblur="var w=this.closest('#chat-input-wrapper-group');if(w){w.style.borderColor='';w.style.boxShadow='';}" />
+                    <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper-group">
+                        <input class="flex-grow bg-transparent border-0 px-2 py-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
+                        <div class="flex items-center gap-1.5 flex-shrink-0">
+                            ${hasMapViewLink ? `
+                            <button class="w-[38px] h-[38px] bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer" onclick="window.viewMeetupLocationOnMap('${conv.id}')" title="View Swap Map">
+                                <span class="material-symbols-outlined text-[17px] text-white">map</span>
+                            </button>
+                            ` : ''}
+                            <button class="w-[38px] h-[38px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer" onclick="handleSendTextMessage()" title="Send">
+                                <span class="material-symbols-outlined text-[17px]">send</span>
+                            </button>
+                        </div>
                     </div>
-                    ${hasMapViewLink ? `
-                    <button class="w-11 h-11 bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onclick="window.viewMeetupLocationOnMap('${conv.id}')" title="View Swap Map">
-                        <span class="material-symbols-outlined text-lg text-white">map</span>
-                    </button>
-                    ` : ''}
-                    <button class="w-11 h-11 bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onclick="handleSendTextMessage()" title="Send">
-                        <span class="material-symbols-outlined text-lg">send</span>
-                    </button>
                 </div>
             `;
         }
@@ -11912,64 +11914,67 @@ function renderChatTradeDrawer(conv) {
     if (actionCenter) {
         if (conv.isOld && status !== 'completed' && !conv.expirationBannerDismissed) {
             actionCenter.innerHTML = `
-                <div class="p-3.5 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex flex-col gap-2 items-center text-center select-none w-full">
-                    <span class="material-symbols-outlined text-amber-600 font-bold text-2xl animate-pulse">help</span>
-                    <h4 class="text-xs font-bold text-amber-800 dark:text-amber-300">This 48h conversation has expired. Did you swap?</h4>
-                    <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/70 leading-normal max-w-[90%]">Recording your swap details awards you +25 Karma points and lets you clean up your profile listings.</p>
-                    <div class="flex gap-2 w-full mt-1">
-                        <button class="flex-grow bg-forest-green text-warm-cream py-2 rounded-xl text-xs font-bold active:scale-95 transition-all shadow-sm cursor-pointer border-0" onclick="openDidYouSwapModal('${conv.id}')">Yes, we swapped!</button>
-                        <button class="flex-grow bg-white dark:bg-[#1b261f] border border-outline-variant/35 text-on-surface-variant dark:text-warm-cream py-2 rounded-xl text-xs font-bold active:scale-95 transition-all cursor-pointer" onclick="closeChatExpirationBanner('${conv.id}')">No, we didn't</button>
+                <div class="flex justify-center w-full">
+                    <div class="p-3.5 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex flex-col gap-2 items-center text-center select-none w-[calc(100%-32px)] max-w-[370px]">
+                        <span class="material-symbols-outlined text-amber-600 font-bold text-2xl animate-pulse">help</span>
+                        <h4 class="text-xs font-bold text-amber-800 dark:text-amber-300">This 48h conversation has expired. Did you swap?</h4>
+                        <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/70 leading-normal max-w-[90%]">Recording your swap details awards you +25 Karma points and lets you clean up your profile listings.</p>
+                        <div class="flex gap-2 w-full mt-1">
+                            <button class="flex-grow bg-forest-green text-warm-cream py-2 rounded-xl text-xs font-bold active:scale-95 transition-all shadow-sm cursor-pointer border-0" onclick="openDidYouSwapModal('${conv.id}')">Yes, we swapped!</button>
+                            <button class="flex-grow bg-white dark:bg-[#1b261f] border border-outline-variant/35 text-on-surface-variant dark:text-warm-cream py-2 rounded-xl text-xs font-bold active:scale-95 transition-all cursor-pointer" onclick="closeChatExpirationBanner('${conv.id}')">No, we didn't</button>
+                        </div>
                     </div>
                 </div>
             `;
         } else {
             actionCenter.innerHTML = `
-                <!-- Quick templates horizontal-scroll bar -->
-                <div class="flex gap-2 overflow-x-auto hide-scrollbar select-none" id="chat-quick-templates">
-                    ${isKarmaGift ? `
-                    <button class="bg-white dark:bg-white/5 hover:bg-forest-green/10 text-forest-green dark:text-warm-cream text-[10.5px] font-extrabold px-3 py-1.5 rounded-full border border-outline-variant/20 whitespace-nowrap active:scale-95 transition-all" onclick="sendTemplateMessage('Thank you so much! I\\\'m so excited! 💛')">Thank you so much! 💛</button>
-                    <button class="bg-white dark:bg-white/5 hover:bg-forest-green/10 text-forest-green dark:text-warm-cream text-[10.5px] font-extrabold px-3 py-1.5 rounded-full border border-outline-variant/20 whitespace-nowrap active:scale-95 transition-all" onclick="sendTemplateMessage('I\\\'m so excited! This would be wonderful. 😊')">I'm so excited! 😊</button>
-                    <button class="bg-white dark:bg-white/5 hover:bg-forest-green/10 text-forest-green dark:text-warm-cream text-[10.5px] font-extrabold px-3 py-1.5 rounded-full border border-outline-variant/20 whitespace-nowrap active:scale-95 transition-all" onclick="sendTemplateMessage('Where is a good place for us to meet up? 📍')">Where to meet? 📍</button>
-                    ` : `
-                    <button class="bg-white dark:bg-white/5 hover:bg-forest-green/10 text-forest-green dark:text-warm-cream text-[10.5px] font-extrabold px-3 py-1.5 rounded-full border border-outline-variant/20 whitespace-nowrap active:scale-95 transition-all" onclick="sendTemplateMessage('I\\\'m super interested! Let\\\'s swap.')">Interested!</button>
-                    <button class="bg-white dark:bg-white/5 hover:bg-forest-green/10 text-forest-green dark:text-warm-cream text-[10.5px] font-extrabold px-3 py-1.5 rounded-full border border-outline-variant/20 whitespace-nowrap active:scale-95 transition-all" onclick="sendTemplateMessage('When and where are you free to meet up for the trade?')">When to meet?</button>
-                    <button class="bg-white dark:bg-white/5 hover:bg-forest-green/10 text-forest-green dark:text-warm-cream text-[10.5px] font-extrabold px-3 py-1.5 rounded-full border border-outline-variant/20 whitespace-nowrap active:scale-95 transition-all" onclick="sendTemplateMessage('Hi there! Is this still available?')">Still available?</button>
-                    `}
-                </div>
-
                 <!-- Keyboard text input row -->
-                <div class="flex items-center gap-2 w-full">
+                <div class="flex items-center justify-center w-full">
                     <input type="file" id="chat-photo-input" accept="image/*" class="hidden" onchange="handleSendChatPhoto(this)"/>
                     <input type="file" id="chat-camera-input" accept="image/*" capture="camera" class="hidden" onchange="handleSendChatPhoto(this)"/>
-                    <div class="flex-grow flex items-center bg-white dark:bg-[#1b261f] border border-outline-variant/35 rounded-full px-4 py-1 shadow-sm focus-within:border-neutral-400 dark:focus-within:border-neutral-600 focus-within:ring-1 focus-within:ring-neutral-400 dark:focus-within:ring-neutral-600" id="chat-input-wrapper">
-                        <input class="flex-grow bg-transparent border-0 px-2 py-2.5 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" onfocus="var w=this.closest('#chat-input-wrapper');if(w){var isDark=document.documentElement.classList.contains('dark');w.style.borderColor=isDark?'rgba(255,255,255,0.3)':'rgba(0,0,0,0.3)';w.style.boxShadow=isDark?'0 0 0 2px rgba(255,255,255,0.05)':'0 0 0 2px rgba(0,0,0,0.05)';}" onblur="var w=this.closest('#chat-input-wrapper');if(w){w.style.borderColor='';w.style.boxShadow='';}" />
+                    <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper">
+                        <input class="flex-grow bg-transparent border-0 px-2 py-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
+                        <div class="flex items-center gap-1.5 flex-shrink-0">
+                            ${isKarmaGift ? '' : `
+                            ${status === 'accepted' || status === 'completed' ? '' : `
+                            <button id="chat-offer-swap-pill-btn" class="w-[38px] h-[38px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer" onclick="openSwapProposalPage()" title="${conv.isRequest ? 'Propose Different Swap' : 'Offer a Swap'}">
+                                <span class="material-symbols-outlined text-[17px]">handshake</span>
+                            </button>
+                            `}
+                            `}
+                            ${hasMapViewLink ? `
+                            <button class="w-[38px] h-[38px] bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer" onclick="window.viewMeetupLocationOnMap('${conv.id}')" title="View Swap Map">
+                                <span class="material-symbols-outlined text-[17px] text-white">map</span>
+                            </button>
+                            ` : ''}
+                            <button class="w-[38px] h-[38px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer" onclick="handleSendTextMessage()" title="Send">
+                                <span class="material-symbols-outlined text-[17px]">send</span>
+                            </button>
+                        </div>
                     </div>
-                    ${hasMapViewLink ? `
-                    <button class="w-11 h-11 bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onclick="window.viewMeetupLocationOnMap('${conv.id}')" title="View Swap Map">
-                        <span class="material-symbols-outlined text-lg text-white">map</span>
-                    </button>
-                    ` : ''}
-                    <button class="w-11 h-11 bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onclick="handleSendTextMessage()" title="Send">
-                        <span class="material-symbols-outlined text-lg">send</span>
-                    </button>
                 </div>
 
                 <!-- Offer a Swap / Confirm Swap Button -->
                 ${isKarmaGift ? '' : `
                     ${status === 'accepted' || status === 'completed' ? '' : `
-                    <div class="flex flex-col gap-2.5 w-full mt-1 shrink-0">
-                        <button id="chat-offer-swap-btn" class="w-full bg-forest-green text-warm-cream py-2.5 rounded-full font-bold text-[11px] active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-forest-green/90 shadow-sm cursor-pointer border-0" onclick="openSwapProposalPage()">
-                            <span class="material-symbols-outlined text-sm font-bold">swap_horiz</span> ${conv.isRequest ? 'Propose Different Swap' : 'Offer a Swap'}
-                        </button>
                         ${conv.isRequest ? `
-                        <button class="w-full bg-forest-green/20 hover:bg-forest-green/30 text-forest-green py-2.5 rounded-full font-bold text-[11px] active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 shadow-sm cursor-pointer border-0" onclick="window.handleAcceptSwapRequest('${conv.id}')">
-                            <span class="material-symbols-outlined text-sm font-bold">check_circle</span> Accept Swap
-                        </button>
-                        <button class="w-full bg-white border border-[#ef4444]/20 hover:bg-[#ef4444]/5 text-[#ef4444] py-2.5 rounded-full font-bold text-[11px] active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 shadow-sm cursor-pointer" onclick="window.handleDeclineSwapRequest('${conv.id}')">
-                            <span class="material-symbols-outlined text-sm font-bold">cancel</span> Decline Swap
-                        </button>
+                        <div class="flex justify-center w-full mt-1 shrink-0">
+                            <div class="flex items-center justify-between bg-white dark:bg-[#1b261f] border border-outline-variant/35 rounded-2xl p-2 px-3.5 w-[calc(100%-32px)] max-w-[370px] shadow-sm select-none">
+                                <span class="text-[10.5px] font-bold text-on-surface-variant dark:text-warm-cream/80">Swap Proposed</span>
+                                <div class="flex items-center gap-2">
+                                    <button class="w-[30px] h-[30px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-90 transition-transform cursor-pointer border-0" onclick="openSwapProposalPage()" title="Propose Different Swap">
+                                        <span class="material-symbols-outlined text-sm">handshake</span>
+                                    </button>
+                                    <button class="w-[30px] h-[30px] rounded-full bg-[#ef4444]/10 hover:bg-[#ef4444]/20 text-[#ef4444] flex items-center justify-center active:scale-90 transition-transform cursor-pointer border-0" onclick="window.handleDeclineSwapRequest('${conv.id}')" title="Decline Swap">
+                                        <span class="material-symbols-outlined text-sm font-bold">close</span>
+                                    </button>
+                                    <button class="w-[30px] h-[30px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-90 transition-transform cursor-pointer border-0" onclick="window.handleAcceptSwapRequest('${conv.id}')" title="Accept Swap">
+                                        <span class="material-symbols-outlined text-sm font-bold">check</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         ` : ''}
-                    </div>
                     `}
                 `}
             `;
