@@ -7891,9 +7891,11 @@ function handleMapEventRSVPToggle() {
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
         conv.unread = true;
+        conv.unreadCount = (conv.unreadCount || 0) + 1;
     }
 
     saveState();
+    updateChatNotificationBadge();
     renderMapEventRSVPs(event);
     renderEventsList();
     renderProfileSettings();
@@ -10657,18 +10659,23 @@ function renderConversationsList() {
 
         // Filter based on selected Segment
         if (segment === 'requests') {
-            if (!conv.isRequest) return;
-        } else if (segment === 'active') {
+            // "Unread" tab: individual unread chats/requests
+            if (conv.isGroup || conv.isOld) return;
             const isCompleted = conv.negotiation && conv.negotiation.status === 'completed';
             if (isCompleted) return;
-            if (conv.isGroup || conv.isRequest) return;
-            if (conv.isOld) return;
+            if (!isUnread) return;
+        } else if (segment === 'active') {
+            // "Read" tab: individual read chats/requests
+            const isCompleted = conv.negotiation && conv.negotiation.status === 'completed';
+            if (isCompleted) return;
+            if (conv.isGroup || conv.isOld) return;
             // Disappear after 48 hours from location chosen
             if (conv.negotiation && conv.negotiation.meetupLocation && conv.locationChosenAt) {
                 if (Date.now() - conv.locationChosenAt >= 48 * 60 * 60 * 1000) {
                     return;
                 }
             }
+            if (isUnread) return;
         } else if (segment === 'groups') {
             if (!conv.isGroup) return;
         } else if (segment === 'swaps') {
@@ -10756,7 +10763,11 @@ function renderConversationsList() {
                 ? 'bg-forest-green/[0.02] dark:bg-forest-green/[0.06]' 
                 : 'bg-transparent';
 
-            const statusDotOverlay = '';
+            const statusDotOverlay = isUnreadCard ? `
+                <span class="absolute -top-1 -right-1 chat-badge-circle z-50">
+                    ${unreadCount}
+                </span>
+            ` : '';
 
             const badge = getExpirationBadgeDetails(conv);
             const badgeHtml = badge ? `
@@ -11283,6 +11294,38 @@ function startChatConversation(convIdOrNeighborName) {
 function renderChatDetail(conv) {
     if (typeof window.closeStatusDropdownMenu === 'function') window.closeStatusDropdownMenu();
     if (typeof window.closeConfirmationsDropdownMenu === 'function') window.closeConfirmationsDropdownMenu();
+
+    // Dynamically update the header bar themed vertical pill and uppercase title text
+    const detailBarEl = document.getElementById('chat-detail-title-bar');
+    const detailTitleEl = document.getElementById('chat-detail-title-text');
+    if (detailBarEl && detailTitleEl) {
+        let activeColor = '#7c3aed'; // default Read (violet-600)
+        let displayTitle = 'Read';
+        const segment = state.currentChatSegment || 'active';
+        if (segment === 'requests') {
+            activeColor = '#2563eb'; // blue-600
+            displayTitle = 'Unread';
+        } else if (segment === 'active') {
+            activeColor = '#7c3aed'; // violet-600
+            displayTitle = 'Read';
+        } else if (segment === 'groups') {
+            activeColor = '#059669'; // emerald-600
+            displayTitle = 'Group Chats';
+        } else if (segment === 'reviews') {
+            activeColor = '#ef4444'; // red-600
+            displayTitle = 'Reviews';
+        } else if (segment === 'swaps') {
+            activeColor = '#ea580c'; // orange-600
+            displayTitle = 'Successful Swaps';
+        } else if (segment === 'old') {
+            activeColor = '#308A5E'; // forest-green
+            displayTitle = 'Archived Chats';
+        }
+        detailTitleEl.innerText = displayTitle;
+        detailTitleEl.style.setProperty('color', activeColor, 'important');
+        detailBarEl.className = 'w-[8px] h-[22px] rounded-full flex-shrink-0';
+        detailBarEl.style.setProperty('background-color', activeColor, 'important');
+    }
 
     // Toggle the auto-delete banner based on group status
     const banner = document.getElementById('chat-detail-auto-delete-banner');
@@ -13494,6 +13537,13 @@ function submitSendTextMessage(text) {
                 text: replyText,
                 time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             });
+            if (state.currentConversationId === current.id) {
+                current.unread = false;
+                current.unreadCount = 0;
+            } else {
+                current.unread = true;
+                current.unreadCount = (current.unreadCount || 0) + 1;
+            }
             saveState();
             if (typeof scanMessageForPrivacy === 'function') {
                 scanMessageForPrivacy(replyText);
@@ -13501,6 +13551,7 @@ function submitSendTextMessage(text) {
             if (state.currentConversationId === current.id) {
                 renderChatDetail(current);
             }
+            updateChatNotificationBadge();
         }
     }, 4000);
 }
@@ -21175,9 +21226,11 @@ function handleEventRSVPToggle() {
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
         conv.unread = true;
+        conv.unreadCount = (conv.unreadCount || 0) + 1;
     }
 
     saveState();
+    updateChatNotificationBadge();
     renderEventRSVPs(event);
     renderEventsList();
     renderProfileSettings();
@@ -21225,9 +21278,11 @@ window.handleEventRSVPToggleFromList = function(eventId, eventObj) {
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
         conv.unread = true;
+        conv.unreadCount = (conv.unreadCount || 0) + 1;
     }
 
     saveState();
+    updateChatNotificationBadge();
     renderEventsList();
     renderProfileSettings();
     if (state.currentView === 'event_detail' && state.activeEventId === eventId) {
@@ -23936,14 +23991,12 @@ function updateChatNotificationBadge() {
             if (c.chatDeleted) return;
             const count = c.unreadCount || (c.unread ? 1 : 0);
             if (count > 0) {
-                if (c.isRequest) {
-                    requestsUnread += count;
-                } else if (c.isGroup) {
+                if (c.isGroup) {
                     groupsUnread += count;
                 } else if (c.isOld) {
                     oldUnread += count;
                 } else {
-                    activeUnread += count;
+                    requestsUnread += count;
                 }
             }
         });
@@ -28570,7 +28623,7 @@ const initChatInputHeightObserver = () => {
     
     const observer = new ResizeObserver((entries) => {
         for (let entry of entries) {
-            const height = entry.contentRect.height;
+            const height = actionCenter.offsetHeight;
             if (height > 0) {
                 feed.style.setProperty('--chat-input-height', `${height}px`);
             }

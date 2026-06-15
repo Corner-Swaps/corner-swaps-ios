@@ -4262,25 +4262,25 @@ html.dark #chat-action-center div.focus-within\:border-forest-green {
     transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
     -webkit-tap-highlight-color: transparent !important;
 }
-/* Turn green IMMEDIATELY when focused - no gray flash */
+/* Turn gray/neutral when focused */
 #chat-action-center div.focus-within\:border-forest-green:focus-within {
-    border-color: #308A5E !important;
-    box-shadow: 0 0 0 2px rgba(48, 138, 94, 0.25) !important;
+    border-color: rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05) !important;
     transition: none !important;
 }
 html.dark #chat-action-center div.focus-within\:border-forest-green:focus-within {
-    border-color: #10b981 !important;
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05) !important;
     transition: none !important;
 }
 /* :has(input:focus) fallback for iOS WebKit */
 #chat-action-center div.focus-within\:border-forest-green:has(input:focus) {
-    border-color: #308A5E !important;
-    box-shadow: 0 0 0 2px rgba(48, 138, 94, 0.25) !important;
+    border-color: rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05) !important;
 }
 html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:focus) {
-    border-color: #10b981 !important;
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05) !important;
 }
 
 /* Outer Chat Action Center container - glassmorphism, transparent, positioned low */
@@ -4308,6 +4308,23 @@ html.dark #chat-action-center {
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 1px 8px rgba(0, 0, 0, 0.15) !important;
 }
+
+#chat-action-center.group-chat-action-center {
+    bottom: 0px !important;
+    left: 0px !important;
+    right: 0px !important;
+    width: 100% !important;
+    border-radius: 24px 24px 0 0 !important;
+    padding-bottom: 12px !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+}
+.native-app-env #chat-action-center.group-chat-action-center {
+    bottom: 0px !important;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+}
+
 
 /* Swap Journey header bar card and hover states - force black outline and black text */
 #chat-info-bar-container > div {
@@ -7152,6 +7169,40 @@ html.dark .music-guidance-banner {
     background-color: rgba(255, 255, 255, 0.05) !important;
     border-color: rgba(255, 255, 255, 0.1) !important;
     color: #a0cfa5 !important;
+}
+
+/* Ensure the create group view is scrollable on all platforms, including iOS native webview */
+#view-create_group {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+/* Ensure typed text and placeholders inside the create group form are black and readable */
+#view-create_group #group-name-input,
+#view-create_group #group-desc-input,
+#view-create_group #group-friends-search {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+}
+
+#view-create_group #group-name-input::placeholder,
+#view-create_group #group-desc-input::placeholder,
+#view-create_group #group-friends-search::placeholder {
+    color: #6b7280 !important;
+}
+
+/* Even in dark mode, make these inputs white background and black text as requested */
+html.dark #view-create_group #group-name-input,
+html.dark #view-create_group #group-desc-input,
+html.dark #view-create_group #group-friends-search {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+}
+
+html.dark #view-create_group #group-name-input::placeholder,
+html.dark #view-create_group #group-desc-input::placeholder,
+html.dark #view-create_group #group-friends-search::placeholder {
+    color: #6b7280 !important;
 }
 
 
