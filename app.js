@@ -11849,14 +11849,6 @@ function renderChatDetail(conv) {
     }, 50);
     setTimeout(() => {
         feed.scrollTop = feed.scrollHeight;
-    }, 150);ld(msgDiv);
-    });
-
-    renderNegotiationControl(conv);
-    renderChatTradeDrawer(conv);
-
-    setTimeout(() => {
-        feed.scrollTop = feed.scrollHeight;
     }, 150);
 }
 

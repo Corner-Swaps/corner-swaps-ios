@@ -11448,7 +11448,12 @@ function renderChatDetail(conv) {
     const feed = document.getElementById('chat-message-feed');
     feed.innerHTML = "";
 
-    // Insert a flex-grow spacer to push messag    conv.messages.forEach((msg, index) => {
+    // Insert a flex-grow spacer to push messages to the bottom
+    const spacer = document.createElement('div');
+    spacer.className = "flex-grow";
+    feed.appendChild(spacer);
+
+    conv.messages.forEach((msg, index) => {
         const isMe = msg.sender === 'me';
         const isSystem = msg.sender === 'System';
         const isAdmin = msg.sender === 'App admin';
@@ -11842,14 +11847,6 @@ function renderChatDetail(conv) {
     setTimeout(() => {
         feed.scrollTop = feed.scrollHeight;
     }, 50);
-    setTimeout(() => {
-        feed.scrollTop = feed.scrollHeight;
-    }, 150);ld(msgDiv);
-    });
-
-    renderNegotiationControl(conv);
-    renderChatTradeDrawer(conv);
-
     setTimeout(() => {
         feed.scrollTop = feed.scrollHeight;
     }, 150);
