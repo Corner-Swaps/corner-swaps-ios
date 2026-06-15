@@ -7679,7 +7679,7 @@ html.dark .category-info-highlighted::after {
     transform: translateX(-50%) !important;
     width: calc(100% - 32px) !important;
     max-width: 370px !important;
-    gap: 30px !important;
+    gap: 18px !important;
     height: 64px !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
@@ -9530,17 +9530,17 @@ html.dark #view-create_group #group-friends-search::placeholder {
                                 <div id="village-search-suggestions" class="hidden fused-suggestions-box"></div>
                                 
                                 <!-- Top Segmented Control (Offerings, Needs, Events) -->
-                                <div id="village-segmented-control" class="relative mt-2.5 w-full h-9 flex items-center justify-between gap-3 select-none">
+                                <div id="village-segmented-control" class="relative mt-2.5 w-[88%] mx-auto h-9 flex items-center justify-between gap-2 select-none">
                                     <!-- Sliding background pill -->
-                                    <div id="village-active-pill-bg" class="hidden absolute top-0.5 left-0.5 bottom-0.5 bg-white dark:bg-[#2d3a30] shadow rounded-[10px] transition-all duration-200" style="width: 0px; left: 0px;"></div>
+                                    <div id="village-active-pill-bg" class="hidden absolute top-0.5 left-0.5 bottom-0.5 bg-white dark:bg-[#374151] shadow rounded-[10px] transition-all duration-200" style="width: 0px; left: 0px;"></div>
                                     
-                                    <button type="button" id="btn-segment-tab-offerings" data-category="offerings" onclick="handleCategorySegmentTap('offerings')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm">
+                                    <button type="button" id="btn-segment-tab-offerings" data-category="offerings" onclick="handleCategorySegmentTap('offerings')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#374151] text-black dark:text-white shadow-sm">
                                         Offerings
                                     </button>
-                                    <button type="button" id="btn-segment-tab-needs" data-category="needs" onclick="handleCategorySegmentTap('needs')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-[#555] dark:text-[#bbb]">
+                                    <button type="button" id="btn-segment-tab-needs" data-category="needs" onclick="handleCategorySegmentTap('needs')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2937]/90 text-[#555] dark:text-[#bbb]">
                                         Needs
                                     </button>
-                                    <button type="button" id="btn-segment-tab-events" data-category="events" onclick="handleCategorySegmentTap('events')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-[#555] dark:text-[#bbb]">
+                                    <button type="button" id="btn-segment-tab-events" data-category="events" onclick="handleCategorySegmentTap('events')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2937]/90 text-[#555] dark:text-[#bbb]">
                                         Events
                                     </button>
                                 </div>
@@ -9715,32 +9715,34 @@ html.dark #view-create_group #group-friends-search::placeholder {
 
                     <!-- SUB-VIEW 2: GRID LIST VIEW CONTAINER -->
                     <div id="village-list-container" class="hidden absolute inset-0 z-10 overflow-y-auto pl-6 pr-20 pt-6 pb-24 custom-scrollbar bg-warm-cream dark:bg-[#18201a] flex flex-col gap-3">
-                        <div class="mb-4 px-1 flex flex-col gap-3 flex-shrink-0">
-                            <div class="flex items-center justify-between mb-1">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-[8px] h-[22px] bg-violet-600 rounded-full flex-shrink-0" style="background-color: #7c3aed !important;"></span>
-                                    <h3 class="font-headline font-black uppercase tracking-wider app-screen-header-title" style="color: #7c3aed !important; text-transform: uppercase !important;">OFFERINGS LIST</h3>
-                                </div>
-                                <button onclick="showView('offer', 'offering')" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Add Offering">
+                        <div class="mb-2 px-1 flex flex-col gap-3 flex-shrink-0">
+                            <!-- Fused Search Capsule with Add button -->
+                            <div class="fused-search-capsule select-none">
+                                <button onclick="toggleCategoryTray()" class="w-7 h-7 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-black border border-black/10 dark:border-white/10 flex-shrink-0 fused-filter-btn" title="Category Filter">
+                                    <span class="material-symbols-outlined text-[15px]">tune</span>
+                                </button>
+                                <button onclick="showView('offer', 'offering')" class="w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Add Offering" style="border: 0 !important; margin-left: 6px !important;">
                                     <span class="material-symbols-outlined text-[15px] font-black">add</span>
                                 </button>
+                                <input type="text" id="village-list-search-input" oninput="syncVillageSearch(this.value);" placeholder="Search listings, events and offerings" class="fused-search-input">
                             </div>
 
                             <!-- Offerings List Category Dropdown -->
                             <div id="list-category-dropdown" class="absolute top-32 right-6 z-[3000] flex flex-col items-end gap-2.5 max-h-[50vh] overflow-y-auto pl-5 pr-4 pt-2 pb-5 hidden custom-scrollbar select-none bg-warm-cream/95 dark:bg-[#18201a]/95 backdrop-blur-md rounded-2xl border border-outline-variant/30 shadow-xl p-3 animate-slide-down-fade">
                                 <!-- Dynamically generated trailing list -->
                             </div>
-                            
-                            <!-- Sort Controls -->
-                            <div class="flex items-center gap-2 select-none">
-                                <div class="flex-grow flex items-center gap-2 bg-white dark:bg-[#1b261f] border border-outline-variant/20 dark:border-outline-variant/10 rounded-xl px-3 py-1.5 shadow-sm">
-                                    <span class="material-symbols-outlined text-[14px] text-forest-green dark:text-emerald-400">sort</span>
-                                    <select id="list-sort-select" onchange="renderVillageListView()" class="w-full bg-transparent border-0 text-[10px] font-bold text-black dark:text-warm-cream focus:ring-0 outline-none cursor-pointer p-0 select-none">
-                                        <option value="nearest" class="bg-white dark:bg-[#18201a] text-black dark:text-warm-cream">Nearest First</option>
-                                        <option value="newest" class="bg-white dark:bg-[#18201a] text-black dark:text-warm-cream">Newest First</option>
-                                        <option value="category" class="bg-white dark:bg-[#18201a] text-black dark:text-warm-cream">Sort by Category</option>
-                                    </select>
-                                </div>
+
+                            <!-- Pills Control (Offerings, Needs, Events) -->
+                            <div class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-1">
+                                <button type="button" onclick="switchVillageSegment('list')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm">
+                                    Offerings
+                                </button>
+                                <button type="button" onclick="switchVillageSegment('needs')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-gray-500 dark:text-gray-400">
+                                    Needs
+                                </button>
+                                <button type="button" onclick="switchVillageSegment('events')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-gray-500 dark:text-gray-400">
+                                    Events
+                                </button>
                             </div>
 
                             <!-- Distance Range Filter Slider -->
@@ -9765,32 +9767,34 @@ html.dark #view-create_group #group-friends-search::placeholder {
 
                     <!-- SUB-VIEW 3: COMMUNITY NEEDS BOARD CONTAINER -->
                     <div id="village-needs-container" class="hidden absolute inset-0 z-10 overflow-y-auto pl-6 pr-20 pt-6 pb-24 custom-scrollbar bg-warm-cream dark:bg-[#18201a] flex flex-col gap-3">
-                        <div class="mb-4 px-1 flex flex-col gap-3 flex-shrink-0">
-                            <div class="flex items-center justify-between mb-1">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-[8px] h-[22px] bg-sky-600 rounded-full flex-shrink-0" style="background-color: #0284c7 !important;"></span>
-                                    <h3 class="font-headline font-black uppercase tracking-wider app-screen-header-title" style="color: #0284c7 !important; text-transform: uppercase !important;">NEEDS LIST</h3>
-                                </div>
-                                <button onclick="showView('offer', 'need')" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Add Need">
+                        <div class="mb-2 px-1 flex flex-col gap-3 flex-shrink-0">
+                            <!-- Fused Search Capsule with Add button -->
+                            <div class="fused-search-capsule select-none">
+                                <button onclick="toggleCategoryTray()" class="w-7 h-7 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-black border border-black/10 dark:border-white/10 flex-shrink-0 fused-filter-btn" title="Category Filter">
+                                    <span class="material-symbols-outlined text-[15px]">tune</span>
+                                </button>
+                                <button onclick="showView('offer', 'need')" class="w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Add Need" style="border: 0 !important; margin-left: 6px !important;">
                                     <span class="material-symbols-outlined text-[15px] font-black">add</span>
                                 </button>
+                                <input type="text" id="village-needs-search-input" oninput="syncVillageSearch(this.value);" placeholder="Search listings, events and offerings" class="fused-search-input">
                             </div>
 
                             <!-- Needs Board Category Dropdown -->
                             <div id="needs-category-dropdown" class="absolute top-32 right-6 z-[3000] flex flex-col items-end gap-2.5 max-h-[50vh] overflow-y-auto pl-5 pr-4 pt-2 pb-5 hidden custom-scrollbar select-none bg-warm-cream/95 dark:bg-[#18201a]/95 backdrop-blur-md rounded-2xl border border-outline-variant/30 shadow-xl p-3 animate-slide-down-fade">
                                 <!-- Dynamically generated trailing list -->
                             </div>
-                            
-                            <!-- Sort Controls -->
-                            <div class="flex items-center gap-2 select-none">
-                                <div class="flex-grow flex items-center gap-2 bg-white dark:bg-[#1b261f] border border-outline-variant/20 dark:border-outline-variant/10 rounded-xl px-3 py-1.5 shadow-sm">
-                                    <span class="material-symbols-outlined text-[14px] text-forest-green dark:text-emerald-400">sort</span>
-                                    <select id="needs-sort-select" onchange="renderNeedsBoardView()" class="w-full bg-transparent border-0 text-[10px] font-bold text-black dark:text-warm-cream focus:ring-0 outline-none cursor-pointer p-0 select-none">
-                                        <option value="nearest" class="bg-white dark:bg-[#18201a] text-black dark:text-warm-cream">Nearest First</option>
-                                        <option value="newest" class="bg-white dark:bg-[#18201a] text-black dark:text-warm-cream">Newest First</option>
-                                        <option value="category" class="bg-white dark:bg-[#18201a] text-black dark:text-warm-cream">Sort by Category</option>
-                                    </select>
-                                </div>
+
+                            <!-- Pills Control (Offerings, Needs, Events) -->
+                            <div class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-1">
+                                <button type="button" onclick="switchVillageSegment('list')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-gray-500 dark:text-gray-400">
+                                    Offerings
+                                </button>
+                                <button type="button" onclick="switchVillageSegment('needs')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm">
+                                    Needs
+                                </button>
+                                <button type="button" onclick="switchVillageSegment('events')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-gray-500 dark:text-gray-400">
+                                    Events
+                                </button>
                             </div>
 
                             <!-- Distance Range Filter Slider -->
@@ -9815,14 +9819,28 @@ html.dark #view-create_group #group-friends-search::placeholder {
 
                     <!-- SUB-VIEW 4: COMMUNITY EVENTS CONTAINER -->
                     <div id="village-events-container" class="hidden absolute inset-0 z-10 overflow-y-auto pl-6 pr-20 pt-6 pb-24 custom-scrollbar bg-warm-cream dark:bg-[#18201a] flex flex-col gap-3">
-                        <div class="mb-4 px-1 flex flex-col gap-3 flex-shrink-0">
-                            <div class="flex items-center justify-between mb-1">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-[8px] h-[22px] bg-rose-600 rounded-full flex-shrink-0" style="background-color: #e11d48 !important;"></span>
-                                    <h3 class="font-headline font-black uppercase tracking-wider app-screen-header-title" style="color: #e11d48 !important; text-transform: uppercase !important;">EVENTS LIST</h3>
-                                </div>
-                                <button onclick="showView('offer', 'event')" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Host Event">
+                        <div class="mb-2 px-1 flex flex-col gap-3 flex-shrink-0">
+                            <!-- Fused Search Capsule with Add button -->
+                            <div class="fused-search-capsule select-none">
+                                <button onclick="toggleCategoryTray()" class="w-7 h-7 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-black border border-black/10 dark:border-white/10 flex-shrink-0 fused-filter-btn" title="Category Filter">
+                                    <span class="material-symbols-outlined text-[15px]">tune</span>
+                                </button>
+                                <button onclick="showView('offer', 'event')" class="w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Host Event" style="border: 0 !important; margin-left: 6px !important;">
                                     <span class="material-symbols-outlined text-[15px] font-black">add</span>
+                                </button>
+                                <input type="text" id="village-events-search-input" oninput="syncVillageSearch(this.value);" placeholder="Search listings, events and offerings" class="fused-search-input">
+                            </div>
+
+                            <!-- Pills Control (Offerings, Needs, Events) -->
+                            <div class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-1">
+                                <button type="button" onclick="switchVillageSegment('list')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-gray-500 dark:text-gray-400">
+                                    Offerings
+                                </button>
+                                <button type="button" onclick="switchVillageSegment('needs')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-gray-500 dark:text-gray-400">
+                                    Needs
+                                </button>
+                                <button type="button" onclick="switchVillageSegment('events')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm">
+                                    Events
                                 </button>
                             </div>
                             <!-- Distance Range Filter Slider -->
@@ -10719,11 +10737,6 @@ html.dark #view-create_group #group-friends-search::placeholder {
                         <!-- Header Summary (Similar to Profile Page) -->
                         <section class="flex flex-col items-center mb-8 mt-4 select-none">
                             <div class="text-center">
-                                <h2 class="text-2xl text-black dark:text-warm-cream font-headline font-bold">Creative Hub</h2>
-                                <p class="text-on-surface-variant dark:text-warm-cream/80 text-xs font-semibold mt-1">
-                                    Create and manage your village contributions
-                                </p>
-                                
                                 <!-- Stats Badges Row -->
                                 <div class="flex items-center justify-center gap-5 mt-6 flex-wrap">
                                     <!-- Active Offerings Stats -->
@@ -44930,11 +44943,11 @@ function updateTopSegmentedControlUI(category) {
         if (!btn) return;
         const btnCategory = btn.getAttribute('data-category');
         if (btnCategory === category) {
-            btn.classList.remove('text-[#555]', 'dark:text-[#bbb]', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2922]/90');
-            btn.classList.add('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#2d3a30]', 'shadow-sm');
+            btn.classList.remove('text-[#555]', 'dark:text-[#bbb]', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2937]/90');
+            btn.classList.add('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#374151]', 'shadow-sm');
         } else {
-            btn.classList.remove('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#2d3a30]', 'shadow-sm');
-            btn.classList.add('text-[#555]', 'dark:text-[#bbb]', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2922]/90');
+            btn.classList.remove('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#374151]', 'shadow-sm');
+            btn.classList.add('text-[#555]', 'dark:text-[#bbb]', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2937]/90');
         }
     });
 }
