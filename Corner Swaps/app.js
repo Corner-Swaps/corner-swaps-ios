@@ -3434,16 +3434,22 @@ function showView(viewId, mode) {
                 floatingContainer.classList.add('detail-active-trigger');
             } else {
                 const isMapSegment = currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map' || currentVillageSegment === 'events_map';
-                floatingContainer.style.display = 'flex';
-                if (mapControls) mapControls.style.display = 'flex';
-                if (blueBtn) {
-                    if (isMapSegment) {
-                        blueBtn.style.display = 'flex';
-                    } else {
-                        blueBtn.style.display = 'none';
+                if (state.meetupMapMode) {
+                    floatingContainer.style.display = 'none';
+                    if (mapControls) mapControls.style.display = 'none';
+                    if (blueBtn) blueBtn.style.display = 'none';
+                } else {
+                    floatingContainer.style.display = 'flex';
+                    if (mapControls) mapControls.style.display = 'flex';
+                    if (blueBtn) {
+                        if (isMapSegment) {
+                            blueBtn.style.display = 'flex';
+                        } else {
+                            blueBtn.style.display = 'none';
+                        }
                     }
+                    if (triggerIcon) updateTriggerIconState(triggerIcon, false);
                 }
-                if (triggerIcon) updateTriggerIconState(triggerIcon, false);
                 floatingContainer.classList.remove('detail-active-trigger');
             }
         } else {
@@ -11442,15 +11448,12 @@ function renderChatDetail(conv) {
     const feed = document.getElementById('chat-message-feed');
     feed.innerHTML = "";
 
-    // Insert a flex-grow spacer to push messages to the bottom
-    const spacer = document.createElement('div');
-    spacer.className = "flex-grow";
-    feed.appendChild(spacer);
-
-    conv.messages.forEach((msg, index) => {
+    // Insert a flex-grow spacer to push messag    conv.messages.forEach((msg, index) => {
         const isMe = msg.sender === 'me';
         const isSystem = msg.sender === 'System';
         const isAdmin = msg.sender === 'App admin';
+        const isLatest = index === conv.messages.length - 1;
+        const animClass = isLatest ? 'animate-fade-in' : '';
         
         // Ensure first letter of admin message is capitalized
         let adminText = msg.text;
@@ -11468,7 +11471,7 @@ function renderChatDetail(conv) {
                 feed.appendChild(msgDiv);
                 return;
             }
-            msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full animate-fade-in my-1.5 self-start justify-start`;
+            msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full ${animClass} my-1.5 self-start justify-start`;
             msgDiv.innerHTML = `
                 <div class="w-7 h-7 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 select-none shadow-sm border border-amber-500/25">
                     <span class="material-symbols-outlined text-[15px]">settings</span>
@@ -11485,7 +11488,7 @@ function renderChatDetail(conv) {
         }
 
         if (msg.isMeetupWaiting) {
-            msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full animate-fade-in my-1.5 self-start justify-start`;
+            msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full ${animClass} my-1.5 self-start justify-start`;
             msgDiv.innerHTML = `
                 <div class="w-7 h-7 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 select-none shadow-sm border border-amber-500/25">
                     <span class="material-symbols-outlined text-[15px]">settings</span>
@@ -11502,7 +11505,7 @@ function renderChatDetail(conv) {
         }
 
         if (msg.isMapViewLink) {
-            msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full animate-fade-in my-1.5 self-start justify-start`;
+            msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full ${animClass} my-1.5 self-start justify-start`;
             msgDiv.innerHTML = `
                 <div class="w-7 h-7 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 select-none shadow-sm border border-amber-500/25">
                     <span class="material-symbols-outlined text-[15px]">settings</span>
@@ -11519,7 +11522,7 @@ function renderChatDetail(conv) {
         }
 
         if (isSystem) {
-            msgDiv.className = 'flex flex-col items-center justify-center animate-fade-in my-2 w-full';
+            msgDiv.className = `flex flex-col items-center justify-center ${animClass} my-2 w-full`;
             if (msg.isMeetupPrompt) {
                 if (conv.negotiation && conv.negotiation.meetupLocation && conv.negotiation.meetupTime) {
                     // Suppress the "View map for your location" gray box entirely
@@ -11527,7 +11530,7 @@ function renderChatDetail(conv) {
                     msgDiv.className = 'hidden';
                 } else {
                     // Turn it into the green admin meetup click trigger as fallback
-                    msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full animate-fade-in my-1.5 self-start justify-start`;
+                    msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full ${animClass} my-1.5 self-start justify-start`;
                     msgDiv.innerHTML = `
                         <div class="w-7 h-7 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 select-none shadow-sm border border-amber-500/25">
                             <span class="material-symbols-outlined text-[15px]">settings</span>
@@ -11581,7 +11584,7 @@ function renderChatDetail(conv) {
                 msgDiv.innerHTML = `<span class="px-4 py-2 rounded-xl bg-forest-green/5 text-forest-green font-semibold text-xs border border-forest-green/10 text-center max-w-[90%]">${escapeHTML(msg.text)}</span>`;
             }
         } else if (isAdmin) {
-            msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full animate-fade-in my-1.5 self-start justify-start`;
+            msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full ${animClass} my-1.5 self-start justify-start`;
             msgDiv.innerHTML = `
                 <div class="w-7 h-7 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 select-none shadow-sm border border-amber-500/25">
                     <span class="material-symbols-outlined text-[15px]">settings</span>
@@ -11596,7 +11599,7 @@ function renderChatDetail(conv) {
         } else {
             const myAvatarUrl = state.currentUser ? state.currentUser.avatar : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80";
             const myName = state.currentUser ? (state.currentUser.displayName || (state.currentUser.firstName && state.currentUser.lastName ? `${state.currentUser.firstName} ${state.currentUser.lastName}` : 'Lily Kaufmann')) : 'Lily Kaufmann';
-            msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full animate-fade-in my-1.5 ${isMe ? 'self-end justify-end' : 'self-start justify-start'}`;
+            msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full ${animClass} my-1.5 ${isMe ? 'self-end justify-end' : 'self-start justify-start'}`;
             const senderLabel = '';
                 
             let isSwap = msg.isSwapOffer;
@@ -11623,7 +11626,7 @@ function renderChatDetail(conv) {
                     offeredTitle = match[1];
                     requestedTitle = match[2];
                     
-                    const myOff = state.userOfferings.find(o => o.title.toLowerCase() === offeredTitle.toLowerCase());
+                    const myOff = state.userOfferOfferings = state.userOfferings.find(o => o.title.toLowerCase() === offeredTitle.toLowerCase());
                     if (myOff) {
                         offeredId = myOff.id;
                         offeredImg = myOff.image || PLACEHOLDER_IMAGE;
@@ -11646,7 +11649,7 @@ function renderChatDetail(conv) {
                     const leftImg = offeredImg;
                     const rightImg = requestedImg;
 
-                    msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full animate-fade-in my-1.5 self-end justify-end`;
+                    msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full ${animClass} my-1.5 self-end justify-end`;
                     msgDiv.innerHTML = `
                         <div class="flex flex-col items-end max-w-[78%]">
                             <!-- Bubble: Side-by-Side Swap Proposal -->
@@ -11738,13 +11741,13 @@ function renderChatDetail(conv) {
                     const leftImg = offeredImg;
                     const rightImg = requestedImg;
 
-                    msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full animate-fade-in my-1.5 self-start justify-start`;
+                    msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full ${animClass} my-1.5 self-start justify-start`;
                     msgDiv.innerHTML = `
                         <img src="${avatarUrl}" class="w-7 h-7 rounded-full flex-shrink-0 object-cover select-none cursor-pointer active:scale-95 transition-transform" onclick="openNeighborProfileModal('${escapeHTML(conv.neighborName)}')" title="View profile"/>
                         <div class="flex flex-col items-start max-w-[78%]">
                             ${senderLabel}
                             <!-- Bubble: Side-by-Side Swap Proposal -->
-                            <div id="msg-bubble-${index}" class="chat-bubble-hover py-3 px-3.5 rounded-3xl rounded-tl-none shadow-md cursor-pointer select-none transition-all duration-200 w-[280px] text-left flex flex-col gap-2.5 bg-white dark:bg-[#18201a] border-2 border-emerald-500/80 dark:border-emerald-500/60" onclick="window.openSwapLifecycleModal('receiver', '${conv.id}'); event.stopPropagation();">
+                            <div id="msg-bubble-${index}" class="chat-bubble-hover py-3 px-3.5 rounded-3xl rounded-tr-none shadow-md cursor-pointer select-none transition-all duration-200 w-[280px] text-left flex flex-col gap-2.5 bg-white dark:bg-[#18201a] border-2 border-emerald-500/80 dark:border-emerald-500/60" onclick="window.openSwapLifecycleModal('receiver', '${conv.id}'); event.stopPropagation();">
                                 <div class="flex items-center gap-1.5 border-b border-black/10 dark:border-white/10 pb-1.5">
                                     <span class="material-symbols-outlined text-[14px] font-bold text-black dark:text-white">swap_horiz</span>
                                     <span class="text-[9px] uppercase tracking-wider font-extrabold text-black dark:text-white">Proposed Swap</span>
@@ -11835,6 +11838,18 @@ function renderChatDetail(conv) {
     renderNegotiationControl(conv);
     renderChatTradeDrawer(conv);
 
+    feed.scrollTop = feed.scrollHeight;
+    setTimeout(() => {
+        feed.scrollTop = feed.scrollHeight;
+    }, 50);
+    setTimeout(() => {
+        feed.scrollTop = feed.scrollHeight;
+    }, 150);ld(msgDiv);
+    });
+
+    renderNegotiationControl(conv);
+    renderChatTradeDrawer(conv);
+
     setTimeout(() => {
         feed.scrollTop = feed.scrollHeight;
     }, 150);
@@ -11890,7 +11905,7 @@ function renderChatTradeDrawer(conv) {
                 <div class="flex items-center justify-center w-full">
                     <input type="file" id="chat-photo-input" accept="image/*" class="hidden" onchange="handleSendChatPhoto(this)"/>
                     <input type="file" id="chat-camera-input" accept="image/*" capture="camera" class="hidden" onchange="handleSendChatPhoto(this)"/>
-                    <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper-group">
+                    <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper-group" onpointerdown="window.handleChatInputWrapperTouch(event, this)">
                         <input class="flex-grow bg-transparent border-0 px-2 py-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
                         <div class="flex items-center gap-1.5 flex-shrink-0">
                             ${hasMapViewLink ? `
@@ -11932,7 +11947,7 @@ function renderChatTradeDrawer(conv) {
                 <div class="flex items-center justify-center w-full">
                     <input type="file" id="chat-photo-input" accept="image/*" class="hidden" onchange="handleSendChatPhoto(this)"/>
                     <input type="file" id="chat-camera-input" accept="image/*" capture="camera" class="hidden" onchange="handleSendChatPhoto(this)"/>
-                    <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper">
+                    <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper" onpointerdown="window.handleChatInputWrapperTouch(event, this)">
                         <input class="flex-grow bg-transparent border-0 px-2 py-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
                         <div class="flex items-center gap-1.5 flex-shrink-0">
                             ${isKarmaGift ? '' : `
@@ -14919,13 +14934,18 @@ function switchVillageSegment(type) {
         if (floatingContainer) floatingContainer.style.display = 'none';
         if (blueBtn) blueBtn.style.display = 'none';
         if (searchBar) searchBar.classList.add('hidden');
-        if (meetupFooter) meetupFooter.classList.remove('hidden');
-        if (mapControls) mapControls.classList.add('hidden');
+        if (meetupFooter) meetupFooter.classList.add('hidden');
+        if (mapControls) {
+            mapControls.classList.add('hidden');
+            mapControls.style.display = 'none';
+        }
         if (categoryDropdown) categoryDropdown.classList.add('hidden');
         const filterBtn = document.getElementById('btn-segment-filter');
         if (filterBtn) filterBtn.classList.add('hidden');
         const helpBtn = document.getElementById('btn-map-info-help');
         if (helpBtn) helpBtn.classList.add('hidden');
+        const meetupCloseBtn = document.getElementById('meetup-close-btn');
+        if (meetupCloseBtn) meetupCloseBtn.classList.remove('hidden');
     } else {
         if (searchBar) searchBar.classList.remove('hidden');
         if (meetupFooter) meetupFooter.classList.add('hidden');
@@ -14935,6 +14955,8 @@ function switchVillageSegment(type) {
             mapControls.style.display = 'flex';
             mapControls.classList.remove('hidden');
         }
+        const meetupCloseBtn = document.getElementById('meetup-close-btn');
+        if (meetupCloseBtn) meetupCloseBtn.classList.add('hidden');
 
         const filterBtn = document.getElementById('btn-segment-filter');
         if (filterBtn) {
@@ -27758,6 +27780,9 @@ window.exitMeetupMapMode = function() {
     state.meetupMapCoords = null;
     state.meetupMapName = null;
     
+    const meetupCloseBtn = document.getElementById('meetup-close-btn');
+    if (meetupCloseBtn) meetupCloseBtn.classList.add('hidden');
+    
     const mapControls = document.getElementById('floating-map-controls');
     if (mapControls) mapControls.classList.remove('hidden');
     
@@ -28613,6 +28638,16 @@ const initChatInputHeightObserver = () => {
     observer.observe(actionCenter);
 };
 document.addEventListener('DOMContentLoaded', initChatInputHeightObserver);
+
+window.handleChatInputWrapperTouch = function(event, wrapper) {
+    if (event.target.closest('button') || event.target.closest('input[type="file"]')) {
+        return;
+    }
+    const input = wrapper.querySelector('input[type="text"]');
+    if (input) {
+        input.focus();
+    }
+};
 // Unified Swap/Karma Request Modal Lifecycle (State A & State B)
 window.openSwapLifecycleModal = function(role, conversationId) {
     if (typeof playSound === 'function') playSound('click');
@@ -28624,7 +28659,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
     if (!conv) return;
     
     const container = document.getElementById('offer-swap-container');
-    const bs = document.getElementById('offer-swap-bottom-sheet');
+    const bs = document.getElementById('offer-swap-modal');
     if (!container || !bs) return;
     
     // Reset selected offered item
@@ -28633,12 +28668,10 @@ window.openSwapLifecycleModal = function(role, conversationId) {
     if (role === 'initiator') {
         // Render Initiator View (Propose swap)
         container.innerHTML = `
-            <div class="flex items-center justify-between p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
-                <div class="flex flex-col">
-                    <h3 class="text-sm font-bold text-black dark:text-white leading-tight">Offer a Swap</h3>
-                    <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5">Propose an item to swap or ask for a Karma request.</p>
-                </div>
-                <button class="w-8 h-8 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center text-black dark:text-white active:scale-90 transition-transform cursor-pointer border-0 flex-shrink-0" onclick="window.closeSwapLifecycleModal()">
+            <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
+                <h3 class="text-sm font-bold text-black dark:text-white leading-tight text-center">Offer a Swap</h3>
+                <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5 text-center">Propose an item to swap or ask for a Karma request.</p>
+                <button class="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center text-black dark:text-white active:scale-90 transition-transform cursor-pointer border-0 flex-shrink-0" onclick="window.closeSwapLifecycleModal()">
                     <span class="material-symbols-outlined text-sm font-bold">close</span>
                 </button>
             </div>
@@ -28647,7 +28680,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                 <!-- My Items to Offer -->
                 <div class="flex flex-col gap-1.5 shrink-0">
                     <span class="text-[10px] font-black text-black/50 dark:text-white/50 uppercase tracking-wider">My Items to Offer</span>
-                    <div class="flex gap-3 overflow-x-auto py-1.5 hide-scrollbar select-none w-full" id="lifecycle-offerings-scroller">
+                    <div class="flex flex-col gap-2 py-1 select-none w-full" id="lifecycle-offerings-scroller">
                         <!-- Populated dynamically below -->
                     </div>
                 </div>
@@ -28674,15 +28707,25 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                 state.userOfferings.forEach(off => {
                     const card = document.createElement('button');
                     card.type = 'button';
-                    card.className = `w-[88px] flex-shrink-0 flex flex-col items-center p-2.5 rounded-2xl border border-black/10 dark:border-white/10 transition-all cursor-pointer text-center bg-white dark:bg-[#101612]`;
+                    card.className = `w-full flex items-center p-3 rounded-xl border border-black/10 dark:border-white/10 transition-all cursor-pointer text-left bg-white dark:bg-[#101612] hover:bg-forest-green/5`;
                     card.setAttribute('data-id', off.id);
                     
-                    const imgUrl = off.image || getCategoryPresetImage(off.category) || PLACEHOLDER_IMAGE;
+                    const offIcon = off.icon || getCategoryIcon(off.category) || 'local_offer';
+                    const catColor = getCategoryColor(off.category);
+                    const catObj = MAP_FILTER_CATEGORIES.find(c => c.name === off.category || c.displayName === off.category);
+                    const bgStyle = catObj ? `background-color: rgba(${catObj.rgb}, 0.15) !important; color: ${catColor} !important;` : '';
+                    
                     card.innerHTML = `
-                        <div class="w-16 h-16 rounded-xl overflow-hidden bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 mb-1.5 flex-shrink-0">
-                            <img src="${imgUrl}" class="w-full h-full object-cover animate-fade-in">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3 flex-shrink-0" style="${bgStyle}">
+                            <span class="material-symbols-outlined text-[18px]">${offIcon}</span>
                         </div>
-                        <div class="text-[9.5px] font-bold text-black dark:text-warm-cream leading-tight max-w-[80px] truncate">${escapeHTML(off.title)}</div>
+                        <div class="flex-grow min-w-0 pr-3">
+                            <div class="text-xs font-bold text-black dark:text-white truncate">${escapeHTML(off.title)}</div>
+                            <div class="text-[10px] text-gray-500 dark:text-gray-400 truncate">${escapeHTML(off.category || 'Other')}</div>
+                        </div>
+                        <div class="check-indicator w-4 h-4 rounded-full border border-black/20 dark:border-white/20 flex items-center justify-center flex-shrink-0 ml-auto transition-all bg-transparent">
+                            <span class="material-symbols-outlined text-[10px] text-white opacity-0 select-none font-bold">check</span>
+                        </div>
                     `;
                     card.onclick = () => {
                         playSound('click');
@@ -28690,10 +28733,22 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                         const customText = document.getElementById('lifecycle-custom-text');
                         if (customText) customText.value = '';
                         scroller.querySelectorAll('button').forEach(btn => {
+                            const indicator = btn.querySelector('.check-indicator');
+                            const indicatorCheck = btn.querySelector('.check-indicator span');
                             if (btn.getAttribute('data-id') === off.id) {
-                                btn.classList.add('border-forest-green', 'ring-1', 'ring-forest-green');
+                                btn.classList.add('border-forest-green', 'bg-forest-green/5', 'dark:bg-forest-green/10');
+                                if (indicator) {
+                                    indicator.classList.remove('bg-transparent', 'border-black/20', 'dark:border-white/20');
+                                    indicator.classList.add('bg-forest-green', 'border-forest-green');
+                                }
+                                if (indicatorCheck) indicatorCheck.classList.remove('opacity-0');
                             } else {
-                                btn.classList.remove('border-forest-green', 'ring-1', 'ring-forest-green');
+                                btn.classList.remove('border-forest-green', 'bg-forest-green/5', 'dark:bg-forest-green/10');
+                                if (indicator) {
+                                    indicator.classList.add('bg-transparent', 'border-black/20', 'dark:border-white/20');
+                                    indicator.classList.remove('bg-forest-green', 'border-forest-green');
+                                }
+                                if (indicatorCheck) indicatorCheck.classList.add('opacity-0');
                             }
                         });
                     };
@@ -28741,12 +28796,10 @@ window.openSwapLifecycleModal = function(role, conversationId) {
         
         if (isKarma) {
             container.innerHTML = `
-                <div class="flex items-center justify-between p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
-                    <div class="flex flex-col">
-                        <h3 class="text-sm font-bold text-black dark:text-white leading-tight">Review Karma Request</h3>
-                        <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5">Requested by ${escapeHTML(conv.neighborName)}</p>
-                    </div>
-                    <button class="w-8 h-8 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center text-black dark:text-white active:scale-90 transition-transform cursor-pointer border-0 flex-shrink-0" onclick="window.closeSwapLifecycleModal()">
+                <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
+                    <h3 class="text-sm font-bold text-black dark:text-white leading-tight text-center">Review Karma Request</h3>
+                    <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5 text-center">Requested by ${escapeHTML(conv.neighborName)}</p>
+                    <button class="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center text-black dark:text-white active:scale-90 transition-transform cursor-pointer border-0 flex-shrink-0" onclick="window.closeSwapLifecycleModal()">
                         <span class="material-symbols-outlined text-sm font-bold">close</span>
                     </button>
                 </div>
@@ -28773,12 +28826,10 @@ window.openSwapLifecycleModal = function(role, conversationId) {
             `;
         } else {
             container.innerHTML = `
-                <div class="flex items-center justify-between p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
-                    <div class="flex flex-col">
-                        <h3 class="text-sm font-bold text-black dark:text-white leading-tight">Review Swap Proposal</h3>
-                        <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5">Offered by ${escapeHTML(conv.neighborName)}</p>
-                    </div>
-                    <button class="w-8 h-8 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center text-black dark:text-white active:scale-90 transition-transform cursor-pointer border-0 flex-shrink-0" onclick="window.closeSwapLifecycleModal()">
+                <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
+                    <h3 class="text-sm font-bold text-black dark:text-white leading-tight text-center">Review Swap Proposal</h3>
+                    <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5 text-center">Offered by ${escapeHTML(conv.neighborName)}</p>
+                    <button class="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center text-black dark:text-white active:scale-90 transition-transform cursor-pointer border-0 flex-shrink-0" onclick="window.closeSwapLifecycleModal()">
                         <span class="material-symbols-outlined text-sm font-bold">close</span>
                     </button>
                 </div>
@@ -28828,7 +28879,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
 
 window.closeSwapLifecycleModal = function() {
     if (typeof playSound === 'function') playSound('click');
-    const bs = document.getElementById('offer-swap-bottom-sheet');
+    const bs = document.getElementById('offer-swap-modal');
     const container = document.getElementById('offer-swap-container');
     if (bs && container) {
         bs.classList.remove('opacity-100');

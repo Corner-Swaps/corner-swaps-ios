@@ -1870,6 +1870,11 @@ html.dark .chat-bubble-other {
     bottom: 172px !important;
 }
 
+#meetup-close-btn {
+    top: 16px !important;
+    right: 24px !important;
+}
+
 /* iOS Native App safe area positioning overrides */
 .native-app-env #btn-segment-filter {
     top: calc(10px + env(safe-area-inset-top)) !important;
@@ -1911,6 +1916,10 @@ html.dark .chat-bubble-other {
 }
 .native-app-env #view-village:has(#map-peek-card.active) #meetup-map-footer {
     bottom: calc(172px + env(safe-area-inset-bottom)) !important;
+}
+
+.native-app-env #meetup-close-btn {
+    top: calc(16px + env(safe-area-inset-top)) !important;
 }
 
 /* List views safe area content shifting (ensures headers/search fields are visible below notch) and layout correction */
