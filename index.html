@@ -1159,20 +1159,51 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
     <!-- Custom CSS -->
     <style>/* Custom CSS for Barterland - Organic Modernism Theme */
+/* Custom CSS for Barterland - Organic Modernism Theme */
 
 /* Import Google Fonts (Loaded asynchronously via link tag in head to prevent render blocking) */
+/* @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap'); */
 
 .material-symbols-outlined {
     font-family: 'Material Symbols Outlined' !important;
+    vertical-align: middle !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24 !important;
 }
 
 :root {
     --forest-green: #308A5E;
-    --warm-cream: #ffffff;
+    --warm-cream: #FAF8F5;
     --white: #ffffff;
+    --dark-bg: #101612;
     --green-overlay: rgba(48, 138, 94, 0.05);
     --green-overlay-md: rgba(48, 138, 94, 0.1);
     --border-color: rgba(48, 138, 94, 0.15);
+    
+    /* Centralized border-radius tokens */
+    --radius-xxs: 2px;
+    --radius-xs: 4px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+    
+    /* Centralized typography tokens */
+    --font-xxs: 10px;
+    --font-xs: 12px;
+    
+    /* Centralized simulator/component layout size tokens */
+    --dynamic-island-width: 95px;
+    --pulse-ring-size: 260px;
+    --badge-item-width: 106px;
+    
+    /* Centralized shadow tokens */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 /* Base resets */
@@ -1192,6 +1223,32 @@ body {
 h1, h2, h3, h4, h5, h6, .font-headline, .font-body {
     font-family: 'Outfit', sans-serif !important;
 }
+
+/* Standardized onboarding and authentication screen titles */
+.onboarding-title {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 1.35rem !important; /* Resized from 1.5rem to look cleaner and fit better on mobile viewports */
+    font-weight: 800 !important; /* font-extrabold */
+    color: #000000 !important; /* Color forced to black */
+    text-transform: uppercase !important;
+    text-align: center !important;
+    letter-spacing: -0.025em !important; /* tracking-tight */
+    line-height: 1.25 !important; /* leading-tight */
+    margin-bottom: 0.5rem !important; /* mb-2 */
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    display: block !important;
+    width: 100% !important;
+}
+
+/* Standardized onboarding and authentication screen paddings */
+.onboarding-screen {
+    padding-top: calc(1.5rem + env(safe-area-inset-top)) !important;
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)) !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+}
+
 
 /* ============================================================
    SIMULATOR MODE LOCKDOWN
@@ -1345,7 +1402,7 @@ body.show-simulator .phone-frame::before {
     top: 11px;
     left: 50%;
     transform: translateX(-50%);
-    width: 95px;
+    width: var(--dynamic-island-width);
     height: 25px;
     background-color: #000000;
     border-radius: 20px;
@@ -1372,7 +1429,7 @@ body.show-simulator .phone-frame::after {
 body.show-simulator .phone-button {
     position: absolute;
     background: linear-gradient(to bottom, #3a3d45, #1e1f24);
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
     z-index: 1; /* Tucked under the phone frame bezel */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
@@ -1411,7 +1468,7 @@ body.show-simulator .camera-control-btn {
     top: calc(50% + 80px);
     right: calc(50% - 210.5px);
     background: #121316 !important;
-    border-radius: 5px;
+    border-radius: var(--radius-xs);
     box-shadow: inset 0 1px 2px rgba(0,0,0,0.8), 0 0.5px 1px rgba(255,255,255,0.15);
 }
 
@@ -1485,18 +1542,30 @@ html:has(#view-landing.active) body {
 }
 
 /* Custom Scrollbars */
-.custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background: transparent;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background: var(--forest-green);
-    border-radius: 10px;
+::-webkit-scrollbar-thumb {
+    background: rgba(48, 138, 94, 0.3) !important;
+    border-radius: var(--radius-full) !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(48, 138, 94, 0.6) !important;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4) !important;
 }
 
 /* Screen Views */
@@ -1553,6 +1622,25 @@ html:has(#view-landing.active) body {
     animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@keyframes fadeInOnly {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.animate-fade-in-only {
+    animation: fadeInOnly 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Force hardware acceleration and smooth compositing on all elements using backdrop-blur */
+.backdrop-blur-sm,
+.backdrop-blur-md,
+.backdrop-blur-lg,
+[class*="backdrop-blur"] {
+    will-change: backdrop-filter, opacity;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+}
+
 @keyframes pulse-slow {
     0%, 100% { opacity: 0.6; }
     50% { opacity: 1; }
@@ -1573,9 +1661,7 @@ html:has(#view-landing.active) body {
     opacity: 0;
 }
 
-.animate-shuffle {
-    animation: shuffleFade 0.2s ease-in-out forwards;
-}
+.animate-shuffle { animation: shuffleFade 0.15s ease-in-out forwards; }
 
 @keyframes finalReveal {
     0% { opacity: 0; transform: scale(0.8); }
@@ -1723,9 +1809,12 @@ html:has(#view-landing.active) body {
     height: 360px !important;
 }
 
-#offer-photo-hero,
+#offer-photo-hero {
+    height: 240px !important;
+}
+
 #group-photo-hero {
-    height: 145px !important;
+    height: 290px !important;
 }
 
 .photo-hero.has-image {
@@ -1787,16 +1876,16 @@ html.dark body {
 
 html.dark .phone-frame {
     border-color: #2c2c2e !important;
-    background-color: #101612 !important;
+    background-color: var(--dark-bg) !important;
     box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 html.dark .app-container {
-    background-color: #101612 !important;
+    background-color: var(--dark-bg) !important;
 }
 
 html.dark .screen-view {
-    background-color: #101612 !important;
+    background-color: var(--dark-bg) !important;
 }
 
 html.dark .bg-white {
@@ -1810,11 +1899,11 @@ html.dark .text-on-surface {
 }
 
 html.dark .bg-warm-cream {
-    background-color: #101612 !important;
+    background-color: var(--dark-bg) !important;
 }
 
 html.dark .bg-\[\#FDFBF7\] {
-    background-color: #101612 !important;
+    background-color: var(--dark-bg) !important;
 }
 
 html.dark .bg-surface-container-low {
@@ -1922,10 +2011,12 @@ html.dark #phone-header-bar .material-symbols-outlined {
     align-items: center !important;
     padding: 24px !important;
     overflow-y: auto !important;
+    pointer-events: none !important; /* Don't block map touches when off-screen */
 }
 
 .category-tray.expanded {
     transform: translateY(0) !important;
+    pointer-events: auto !important;
 }
 
 .tray-handle-area {
@@ -1943,7 +2034,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
     width: 36px !important;
     height: 4px !important;
     background-color: var(--border-color) !important;
-    border-radius: 2px !important;
+    border-radius: var(--radius-full) !important;
     margin-bottom: 4px !important;
 }
 
@@ -1993,7 +2084,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
     flex-grow: 1 !important;
     min-height: 0 !important;
     overscroll-behavior: contain !important;
-    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(66px + env(safe-area-inset-bottom) + 12px) !important;
 }
 .detail-overlay .overflow-y-auto::-webkit-scrollbar,
 .detail-overlay .custom-scrollbar::-webkit-scrollbar {
@@ -2002,15 +2093,21 @@ html.dark #phone-header-bar .material-symbols-outlined {
 
 /* Category Items list overlay */
 .category-list-overlay {
-    top: 0 !important; /* Cover entire phone screen down to the navbar */
-    height: 100% !important;
-    z-index: 50 !important;
+    top: auto !important;
+    bottom: 0 !important;
+    height: 65vh !important;
+    max-height: 70vh !important;
+    border-radius: 32px 32px 0 0 !important;
+    z-index: 2500 !important;
     transform: translateY(100%) !important;
     transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1) !important;
+    padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important;
+    pointer-events: none !important; /* Don't block map touches when off-screen */
 }
 
 .category-list-overlay.active {
     transform: translateY(0) !important;
+    pointer-events: auto !important;
 }
 
 /* ==================================================== */
@@ -2100,16 +2197,11 @@ html.dark #phone-header-bar .material-symbols-outlined {
 }
 
 .native-app-env #view-profile_consent,
+.native-app-env #view-profile_location_permission,
 .native-app-env #view-profile_step_1,
 .native-app-env #view-profile_step_2,
-.native-app-env #view-profile_step_3,
-.native-app-env #view-create_account_safe_spots {
+.native-app-env #view-profile_step_3 {
     padding-bottom: calc(7.5rem + env(safe-area-inset-bottom)) !important;
-}
-
-.native-app-env #view-profile_location_permission {
-    padding-top: calc(3.5rem + env(safe-area-inset-top)) !important;
-    padding-bottom: calc(3.5rem + env(safe-area-inset-bottom)) !important;
 }
 
 .native-app-env #view-chat_hub,
@@ -2165,23 +2257,37 @@ html.dark #phone-header-bar .material-symbols-outlined {
 }
 
 #neighbor-profile-modal {
-    background-color: #ffffff !important;
+    background-color: var(--warm-cream) !important;
 }
+
 html.dark #neighbor-profile-modal {
-    background-color: #101612 !important;
+    background-color: var(--dark-bg) !important;
 }
 
 /* Safe area padding for the full-screen neighbor profile modal in iOS native view */
 .native-app-env #neighbor-profile-modal {
-    padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
-    padding-bottom: env(safe-area-inset-bottom) !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.native-app-env #neighbor-profile-header {
+    padding-top: env(safe-area-inset-top) !important;
+}
+
+.native-app-env #neighbor-profile-scroll-container {
+    padding-top: calc(3.5rem + env(safe-area-inset-top)) !important;
+    padding-bottom: calc(3rem + env(safe-area-inset-bottom)) !important;
 }
 
 /* Safe area padding for category tray and list overlays in iOS native view */
-.native-app-env .category-tray,
-.native-app-env .category-list-overlay {
+.native-app-env .category-tray {
     padding-top: env(safe-area-inset-top) !important;
     padding-bottom: env(safe-area-inset-bottom) !important;
+}
+
+.native-app-env .category-list-overlay {
+    padding-top: 0 !important;
+    padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important;
 }
 
 /* Glowing Dot Status System - Active scale-glowing pulses */
@@ -2342,13 +2448,13 @@ html.dark .bento-card:hover {
     padding: 8px 16px;
     background-color: var(--warm-cream);
     border-bottom: 1px solid var(--border-color);
-    font-size: 8px;
+    font-size: var(--font-xxs);
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
 }
 html.dark #status-legend-bar {
-    background-color: #101612;
+    background-color: var(--dark-bg);
 }
 
 /* Glowing dot styling */
@@ -2367,7 +2473,7 @@ html.dark #status-legend-bar {
     min-height: 0 !important;
     flex-grow: 1 !important;
     overflow: hidden !important;
-    background-color: #ffffff !important; /* Force pure white in light mode instead of creamy white */
+    background-color: var(--warm-cream) !important; /* Match standard app warm-cream theme instead of pure white */
 }
 html.dark #view-chat_detail {
     background-color: #101612 !important;
@@ -2445,9 +2551,22 @@ select::-ms-expand {
     overflow-y: auto !important;
     height: 100% !important;
     padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
-    padding-bottom: calc(84px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(120px + env(safe-area-inset-bottom)) !important;
     box-sizing: border-box !important;
 }
+
+#creative-dashboard-screen {
+    overflow-y: auto !important;
+    height: 100% !important;
+    padding-bottom: 120px !important;
+    box-sizing: border-box !important;
+    -webkit-overflow-scrolling: touch;
+}
+
+#creative-dashboard-screen.hidden ~ #creative-fab-btn {
+    display: none !important;
+}
+
 
 .native-app-env #offer-form-wrapper {
     overflow: hidden !important;
@@ -2464,6 +2583,7 @@ select::-ms-expand {
 
 .native-app-env #offer-photo-hero {
     padding-top: calc(1.5rem + env(safe-area-inset-top)) !important;
+    height: calc(240px + env(safe-area-inset-top)) !important;
 }
 
 /* Force all active screens in native app to have a background color (prevents green leakage) */
@@ -2517,7 +2637,7 @@ select::-ms-expand {
 .app-container p,
 .app-container span:not(.material-symbols-outlined):not(#user-vouches-count):not(#user-karma-score):not(#user-trades-made):not(#badges-unlocked-count):not(#global-navbar *):not(#widget-swaps-counter *):not(#final-brand-text),
 .app-container label,
-.app-container button:not(.btn-increase-size):not(#add-new-btn):not(#add-need-btn):not(#global-navbar *):not(#widget-swaps-counter *),
+.app-container button:not(.btn-increase-size):not(#add-new-btn):not(#add-need-btn):not(#global-navbar *):not(#widget-swaps-counter *):not(#chat-quick-templates *),
 .app-container a,
 .app-container li,
 .app-container div.app-body-text {
@@ -2527,12 +2647,12 @@ select::-ms-expand {
     line-height: 1.4 !important;
 }
 
-/* Prevents iOS Safari auto-zoom on input focus by scaling to 15px */
+/* Prevents iOS Safari auto-zoom on input focus by scaling to 16px */
 .app-container input,
 .app-container select,
 .app-container textarea {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 15px !important;
+    font-size: 16px !important;
     font-weight: 450 !important;
 }
 
@@ -2540,27 +2660,27 @@ select::-ms-expand {
 #widget-my-offerings button,
 #widget-my-needs button {
     font-size: 18px !important;
-    font-weight: 750 !important;
+    font-weight: 700 !important;
 }
 
 /* Specificity overrides to allow inline Tailwind text sizes to work correctly on elements inside .app-container */
-.app-container .text-3xl { font-size: 28px !important; font-weight: 850 !important; letter-spacing: -0.025em !important; }
-.app-container .text-2xl { font-size: 28px !important; font-weight: 850 !important; letter-spacing: -0.025em !important; }
-.app-container .text-xl { font-size: 22px !important; font-weight: 750 !important; letter-spacing: -0.015em !important; }
-.app-container .text-lg { font-size: 20px !important; font-weight: 750 !important; letter-spacing: -0.015em !important; }
-.app-container .text-base { font-size: 18px !important; font-weight: 750 !important; letter-spacing: -0.015em !important; }
-.app-container .text-sm { font-size: 16px !important; font-weight: 450 !important; }
-.app-container .text-xs { font-size: 14px !important; font-weight: 450 !important; }
-.app-container .text-\[15px\] { font-size: 17px !important; font-weight: 750 !important; }
-.app-container .text-\[13\.5px\] { font-size: 15.5px !important; font-weight: 450 !important; }
-.app-container .text-\[13px\] { font-size: 15px !important; font-weight: 450 !important; }
-.app-container .text-\[12\.5px\] { font-size: 14.5px !important; font-weight: 450 !important; }
-.app-container .text-\[12px\] { font-size: 14px !important; font-weight: 450 !important; }
-.app-container .text-\[11\.5px\] { font-size: 13.5px !important; font-weight: 450 !important; }
-.app-container .text-\[11px\] { font-size: 13px !important; font-weight: 450 !important; }
-.app-container .text-\[10\.5px\] { font-size: 12.5px !important; font-weight: 450 !important; }
-.app-container .text-\[10px\] { font-size: 12px !important; font-weight: 450 !important; }
-.app-container .text-\[9px\] { font-size: 11px !important; font-weight: 450 !important; }
+.app-container .text-3xl { font-size: 30px !important; font-weight: 800 !important; letter-spacing: -0.025em !important; }
+.app-container .text-2xl { font-size: 24px !important; font-weight: 800 !important; letter-spacing: -0.025em !important; }
+.app-container .text-xl { font-size: 20px !important; font-weight: 700 !important; letter-spacing: -0.015em !important; }
+.app-container .text-lg { font-size: 18px !important; font-weight: 700 !important; letter-spacing: -0.015em !important; }
+.app-container .text-base { font-size: 16px !important; font-weight: 700 !important; letter-spacing: -0.015em !important; }
+.app-container .text-sm { font-size: 14px !important; font-weight: 400 !important; }
+.app-container .text-xs { font-size: 12px !important; font-weight: 400 !important; }
+.app-container .text-\[15px\] { font-size: 15px !important; font-weight: 750 !important; }
+.app-container .text-\[14\.5px\] { font-size: 14.5px !important; font-weight: 450 !important; }
+.app-container .text-\[13px\] { font-size: 13px !important; font-weight: 450 !important; }
+.app-container .text-\[12\.5px\] { font-size: 12.5px !important; font-weight: 450 !important; }
+.app-container .text-\[12px\] { font-size: 12px !important; font-weight: 450 !important; }
+.app-container .text-\[11\.5px\] { font-size: 11.5px !important; font-weight: 450 !important; }
+.app-container .text-\[11px\] { font-size: 11px !important; font-weight: 450 !important; }
+.app-container .text-\[10\.5px\] { font-size: 10.5px !important; font-weight: 450 !important; }
+.app-container .text-\[10px\] { font-size: 10px !important; font-weight: 450 !important; }
+.app-container .text-\[9px\] { font-size: 9px !important; font-weight: 450 !important; }
 .app-container .text-\[8px\] { font-size: 10px !important; font-weight: 450 !important; }
 .app-container .text-\[7\.5px\] { font-size: 9.5px !important; font-weight: 450 !important; }
 
@@ -2602,16 +2722,6 @@ select::-ms-expand {
 }
 
 /* Color-themed glowing pulse animations for the speed dial selector buttons */
-@keyframes pulse-gray-light {
-    0% { box-shadow: 0 0 0 0 rgba(107, 114, 128, 0.45), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
-    70% { box-shadow: 0 0 0 8px rgba(107, 114, 128, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
-    100% { box-shadow: 0 0 0 0 rgba(107, 114, 128, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
-}
-.pulse-gray-light {
-    animation: pulse-gray-light 2.2s infinite !important;
-    border-color: rgba(107, 114, 128, 0.45) !important;
-}
-
 @keyframes pulse-blue-light {
     0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.45), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
     70% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
@@ -2692,9 +2802,6 @@ select::-ms-expand {
     padding: 0 !important;
     border-radius: 9999px !important;
 }
-#btn-segment-trigger span, #snap-to-neighborhood-btn span {
-    font-size: 24px !important;
-}
 #btn-segment-filter {
     width: 34px !important;
     height: 34px !important;
@@ -2729,7 +2836,7 @@ select::-ms-expand {
 .leaflet-popup-content-wrapper {
     background: var(--warm-cream) !important;
     color: var(--forest-green) !important;
-    border-radius: 14px !important;
+    border-radius: var(--radius-md) !important;
     border: 1px solid rgba(48, 138, 94, 0.15) !important;
     box-shadow: 0 10px 25px -5px rgba(48, 138, 94, 0.15) !important;
     padding: 0 !important;
@@ -2887,20 +2994,27 @@ html.dark .chat-bubble-other {
 
 /* Default positioning (Web environment) */
 #village-search-bar-overlay {
-    top: 1rem !important; /* 16px */
+    top: 0.6rem !important; /* 9.6px */
 }
 #active-filter-banner {
     top: 4.5rem !important; /* 72px */
 }
 #village-segment-floating-buttons {
-    bottom: 188px !important;
+    bottom: 88px !important;
     right: 24px !important;
     top: auto !important;
-    transition: bottom 0.3s ease !important;
 }
 #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: 342px !important;
+    bottom: 236px !important;
+}
+
+#floating-map-controls {
+    bottom: 82px !important;
+    right: 24px !important;
     top: auto !important;
+}
+#view-village:has(#map-peek-card.active) #floating-map-controls {
+    bottom: 230px !important;
 }
 
 #meetup-map-footer {
@@ -2913,47 +3027,37 @@ html.dark .chat-bubble-other {
 }
 
 /* iOS Native App safe area positioning overrides */
-.native-app-env #village-search-bar-overlay {
-    top: calc(1rem + env(safe-area-inset-top)) !important;
-}
-.native-app-env #floating-map-controls {
-    bottom: calc(82px + env(safe-area-inset-bottom)) !important;
-    right: 20px !important;
-    top: auto !important;
-    transition: bottom 0.3s ease !important;
-}
-.native-app-env #view-village:has(#map-peek-card.active) #floating-map-controls {
-    bottom: calc(236px + env(safe-area-inset-bottom)) !important;
-}
-#floating-map-controls {
-    bottom: 82px !important;
-    right: 24px !important;
-    top: auto !important;
-    transition: bottom 0.3s ease !important;
-}
-#view-village:has(#map-peek-card.active) #floating-map-controls {
-    bottom: 236px !important;
-}
 .native-app-env #btn-segment-filter {
     top: calc(10px + env(safe-area-inset-top)) !important;
 }
+.native-app-env #village-search-bar-overlay {
+    top: calc(0.6rem + env(safe-area-inset-top)) !important;
+}
+.native-app-env #floating-map-controls {
+    bottom: calc(82px + env(safe-area-inset-bottom)) !important;
+    right: 24px !important;
+    top: auto !important;
+}
+.native-app-env #view-village:has(#map-peek-card.active) #floating-map-controls {
+    bottom: calc(230px + env(safe-area-inset-bottom)) !important;
+}
 .native-app-env #map-category-dropdown {
-    top: calc(50px + env(safe-area-inset-top)) !important;
+    top: calc(58px + env(safe-area-inset-top)) !important;
+    left: 32px !important;
     right: auto !important;
-    left: 24px !important;
+    height: auto !important;
+    max-height: calc(100% - 150px) !important;
 }
 .native-app-env #active-filter-banner {
     top: calc(4.5rem + env(safe-area-inset-top)) !important;
 }
 .native-app-env #village-segment-floating-buttons {
-    bottom: calc(188px + env(safe-area-inset-bottom)) !important;
-    right: 20px !important;
+    bottom: calc(88px + env(safe-area-inset-bottom)) !important;
+    right: 24px !important;
     top: auto !important;
-    transition: bottom 0.3s ease !important;
 }
 .native-app-env #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: calc(342px + env(safe-area-inset-bottom)) !important;
-    top: auto !important;
+    bottom: calc(236px + env(safe-area-inset-bottom)) !important;
 }
 
 .native-app-env #meetup-map-footer {
@@ -3065,6 +3169,20 @@ html.dark .chat-bubble-other {
     white-space: nowrap !important;
     font-size: 13px !important;
     font-weight: 700 !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 12px !important;
+    padding: 6px 10px !important;
+    color: #1b4d3e !important; /* forest green */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.dark .app-container .category-label {
+    background-color: rgba(24, 32, 26, 0.95) !important;
+    border-color: rgba(48, 138, 94, 0.15) !important;
+    color: #f5f2eb !important; /* warm cream */
 }
 
 /* White background sub-buttons with themed icon/border colors */
@@ -3147,23 +3265,6 @@ html.dark .chat-bubble-other {
     border-color: #f43f5e !important;
 }
 
-.app-container .category-label {
-    background-color: rgba(255, 255, 255, 0.95) !important;
-    border: 1px solid rgba(0, 0, 0, 0.1) !important;
-    border-radius: 12px !important;
-    padding: 6px 10px !important;
-    color: #1b4d3e !important; /* forest green */
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
-.dark .app-container .category-label {
-    background-color: rgba(24, 32, 26, 0.95) !important;
-    border-color: rgba(48, 138, 94, 0.15) !important;
-    color: #f5f2eb !important; /* warm cream */
-}
-
 #btn-segment-trigger {
     /* Cleaned */
 }
@@ -3184,25 +3285,6 @@ html.dark .chat-bubble-other {
 
 /* Disable transition on collapse so they disappear instantly all at once */
 #village-segment-floating-buttons:not(.expanded) .menu-sub-button-wrapper { transition: none !important; }
-
-/* Active segment label: white pill background with border, black text (like filter chips) */
-/* Using both :has() and an explicit .label-active class for iOS Safari compatibility */
-#village-segment-floating-buttons .menu-sub-button-wrapper:has(.scale-110) .menu-sub-button-label,
-#village-segment-floating-buttons .menu-sub-button-wrapper.label-active .menu-sub-button-label {
-    color: #1b4d3e !important;
-    text-shadow: none !important;
-    background-color: rgba(255, 255, 255, 0.95) !important;
-    border: 1px solid rgba(0, 0, 0, 0.15) !important;
-    border-radius: 12px !important;
-    padding: 6px 10px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.10) !important;
-}
-.dark #village-segment-floating-buttons .menu-sub-button-wrapper:has(.scale-110) .menu-sub-button-label,
-.dark #village-segment-floating-buttons .menu-sub-button-wrapper.label-active .menu-sub-button-label {
-    color: #f5f2eb !important;
-    background-color: rgba(24, 32, 26, 0.95) !important;
-    border-color: rgba(48, 138, 94, 0.3) !important;
-}
 
 /* Stats Counter Scrollable container styling to prevent drop shadow clipping and add horizontal scroll fade mask */
 #widget-swaps-counter {
@@ -3244,13 +3326,13 @@ html.dark .chat-bubble-other {
 
 /* Chat Segment Floating Buttons Stack */
 #chat-segment-floating-buttons {
-    bottom: 82px !important;
+    bottom: 88px !important;
     right: 24px !important;
     top: auto !important;
 }
 .native-app-env #chat-segment-floating-buttons {
-    bottom: calc(82px + env(safe-area-inset-bottom)) !important;
-    right: 20px !important;
+    bottom: calc(88px + env(safe-area-inset-bottom)) !important;
+    right: 24px !important;
     top: auto !important;
 }
 
@@ -3430,8 +3512,8 @@ html.dark .profile-avatar-no-ring {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.4);
-    width: 260px;
-    height: 260px;
+    width: var(--pulse-ring-size);
+    height: var(--pulse-ring-size);
     border-radius: 50%;
     background-color: rgba(74, 138, 96, 0.08); /* Very soft green fill */
     border: 1.5px solid rgba(74, 138, 96, 0.25);
@@ -3461,10 +3543,10 @@ html.dark .profile-avatar-no-ring {
     z-index: 50;
     animation: float-up-fade 1.2s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
     white-space: nowrap;
-    background: #308A5E;
+    background: var(--forest-green);
     border: 1px solid rgba(217, 144, 54, 0.3);
     padding: 4px 8px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -3512,7 +3594,7 @@ html.dark .profile-avatar-no-ring {
 
 /* Fix chat detail view bottom padding to prevent squishing when keyboard or input bar is shown */
 .native-app-env #view-chat_detail {
-    padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
+    padding-top: 0 !important;
     padding-bottom: 0 !important;
 }
 
@@ -3575,6 +3657,24 @@ html.dark .profile-avatar-no-ring {
     height: 0 !important;
     overflow: hidden !important;
     opacity: 0 !important;
+    transform: scale(0.8) translateY(-8px) !important;
+    pointer-events: none !important;
+    transition: height 0.22s ease-out, max-height 0.22s ease-out, margin-bottom 0.22s ease-out, opacity 0.22s ease-out, transform 0.22s cubic-bezier(0.25, 1.1, 0.5, 1) !important;
+    margin-bottom: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* Info item (first row) — matches same animation pattern */
+.map-category-info-item {
+    max-height: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
     transform: scale(0.4) translateY(-12px) !important;
     pointer-events: none !important;
     transition: height 0.25s ease, max-height 0.25s ease, margin-bottom 0.25s ease, opacity 0.25s ease, transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
@@ -3585,12 +3685,22 @@ html.dark .profile-avatar-no-ring {
 }
 
 #map-category-dropdown.expanded .map-category-item {
-    max-height: 30px !important;
-    height: 30px !important;
+    max-height: 34px !important;
+    height: 34px !important;
     opacity: 1 !important;
     transform: scale(1) translateY(0) !important;
     pointer-events: auto !important;
-    margin-bottom: 6px !important;
+    margin-bottom: 8px !important;
+    overflow: visible !important;
+}
+
+#map-category-dropdown.expanded .map-category-info-item {
+    max-height: 34px !important;
+    height: 34px !important;
+    opacity: 1 !important;
+    transform: scale(1) translateY(0) !important;
+    pointer-events: auto !important;
+    margin-bottom: 12px !important;
     overflow: visible !important;
 }
 
@@ -4109,17 +4219,16 @@ html.dark .guest-lock-btn span {
 }
 
 /* Premium Badge Revamp */
-/* Premium Badge Revamp */
 .premium-badge-item {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: space-between !important;
     flex-shrink: 0 !important;
-    width: 106px !important;
-    min-width: 106px !important;
+    width: var(--badge-item-width) !important;
+    min-width: var(--badge-item-width) !important;
     padding: 12px 6px !important;
-    border-radius: 20px !important;
+    border-radius: var(--radius-lg) !important;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
     position: relative !important;
     cursor: pointer !important;
@@ -4384,7 +4493,7 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 
 #self-profile-badge-icon,
 #neighbor-profile-badge-icon {
-    color: #3b82f6 !important;
+    color: #f59e0b !important;
 }
 
 /* Unified 3-Style Typography System for Profile Settings (from Badges downwards) */
@@ -4393,10 +4502,8 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 #widget-badges-section h3,
 #widget-my-offerings h3,
 #widget-my-needs h3,
-#widget-my-events h3,
 #widget-friends-list h3,
 #widget-swaps-history h3,
-#widget-saved h3,
 #widget-saved-listings h3,
 #widget-upcoming-events h3,
 #widget-saved-events h3,
@@ -4544,21 +4651,23 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 }
 
 /* Force all detail sheet action buttons to follow consistent lowercase theme */
-#map-detail-overlay button,
+#map-detail-overlay button:not(#map-detail-chat-btn),
 #map-event-detail-overlay button,
 #view-event_detail button {
     text-transform: lowercase !important;
     letter-spacing: normal !important;
 }
 
+#map-detail-chat-btn {
+    text-transform: none !important;
+}
+
 /* Profile section: Black text for headings, lists, and placeholders underneath badges (Light Mode Only) */
 html:not(.dark) #widget-upcoming-events *:not(.material-symbols-outlined),
 html:not(.dark) #widget-my-offerings *:not(.material-symbols-outlined),
 html:not(.dark) #widget-my-needs *:not(.material-symbols-outlined),
-html:not(.dark) #widget-my-events *:not(.material-symbols-outlined),
 html:not(.dark) #widget-saved-listings *:not(.material-symbols-outlined),
 html:not(.dark) #widget-saved-events *:not(.material-symbols-outlined),
-html:not(.dark) #widget-saved *:not(.material-symbols-outlined),
 html:not(.dark) #widget-friends-list *:not(.material-symbols-outlined),
 html:not(.dark) #widget-swaps-history *:not(.material-symbols-outlined),
 html:not(.dark) #widget-home-tips *:not(.material-symbols-outlined),
@@ -4772,10 +4881,10 @@ html:not(.dark) #neighbor-profile-modal button.bg-forest-green * {
 }
 
 /* Chat bubble paragraphs alignment (Style 3 profile offerings matching) */
-.chat-bubble-me p, .chat-bubble-other p {
+.app-container .chat-bubble-me p, .app-container .chat-bubble-other p {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 14px !important;
-    font-weight: 400 !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
 }
 
 .admin-message-bubble {
@@ -4783,10 +4892,10 @@ html:not(.dark) #neighbor-profile-modal button.bg-forest-green * {
     border-bottom-left-radius: 4px !important;
 }
 
-.admin-message-bubble, .admin-message-bubble p {
+.app-container .admin-message-bubble, .app-container .admin-message-bubble p {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 14px !important;
-    font-weight: 400 !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
 }
 
 
@@ -4839,7 +4948,7 @@ html.dark #view-create_group :not(.material-symbols-outlined):not(.bg-forest-gre
 }
 
 #offer-type-selector-screen {
-    margin-top: 12vh !important;
+    margin-top: 4vh !important;
     margin-bottom: auto !important;
 }
 
@@ -4873,16 +4982,6 @@ html.dark .swap-listing-box:hover {
 .swap-listing-box.active-swap-box {
     background-color: rgba(48, 138, 94, 0.05) !important;
     border-color: #308A5E !important;
-    box-shadow: none !important;
-}
-
-.swap-listing-box.error-swap-box {
-    border-color: #ef4444 !important;
-    box-shadow: none !important;
-}
-
-#offer-swap-custom-text.error-custom-text {
-    border-color: #ef4444 !important;
     box-shadow: none !important;
 }
 
@@ -5281,28 +5380,25 @@ html.dark #chat-message-feed span.select-none {
 
 /* Quick suggestions chips ("Interested!", "When to meet?", "Still available?") - force black outline and black text */
 #chat-quick-templates button {
-    background-color: rgba(255, 255, 255, 0.45) !important;
-    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    background-color: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
     color: #000000 !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-    transition: all 0.3s ease !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
 }
 #chat-quick-templates button:hover {
-    background-color: rgba(0, 0, 0, 0.06) !important;
+    background-color: rgba(0, 0, 0, 0.04) !important;
 }
 html.dark #chat-quick-templates button {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
     color: #ffffff !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-    transition: all 0.3s ease !important;
 }
 html.dark #chat-quick-templates button:hover {
     background-color: rgba(255, 255, 255, 0.12) !important;
 }
 
+/* Chat Input field container border - force black/gray outline */
 /* Chat Input field container - default subtle border, green on focus */
 #chat-action-center div.focus-within\:border-forest-green {
     border-color: rgba(0, 0, 0, 0.15) !important;
@@ -5337,31 +5433,28 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 
 /* Outer Chat Action Center container - glassmorphism, transparent, positioned low */
 #chat-action-center {
-    border-top: 1px solid rgba(255, 255, 255, 0.35) !important;
-    border-bottom: none !important;
-    border-left: none !important;
-    border-right: none !important;
-    background: rgba(255, 255, 255, 0.85) !important;
+    position: absolute !important;
+    bottom: 12px !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: calc(100% - 24px) !important;
+    z-index: 20 !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    background: rgba(255, 255, 255, 0.45) !important;
     backdrop-filter: blur(20px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.06) !important;
-    margin-bottom: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    margin-top: auto !important;
-    border-radius: 28px 28px 0 0 !important;
-    width: 100% !important;
-    padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 8px rgba(0, 0, 0, 0.04) !important;
+    border-radius: 24px !important;
+}
+.native-app-env #chat-action-center {
+    bottom: calc(12px + env(safe-area-inset-bottom)) !important;
 }
 html.dark #chat-action-center {
-    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-    border-bottom: none !important;
-    border-left: none !important;
-    border-right: none !important;
-    background: rgba(20, 28, 22, 0.85) !important;
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    background: rgba(20, 28, 22, 0.65) !important;
     backdrop-filter: blur(20px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.20) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 1px 8px rgba(0, 0, 0, 0.15) !important;
 }
 
 /* Swap Journey header bar card and hover states - force black outline and black text */
@@ -5520,9 +5613,7 @@ html.dark #view-definitions :not(button):not(button *):not(.material-symbols-out
 .clothes-opt-btn,
 .shoes-opt-btn,
 .shoes-size-btn,
-.lang-opt-btn,
-.wizard-skills-category-btn,
-.wizard-needs-category-btn {
+.lang-opt-btn {
     height: 52px !important;
     min-height: 52px !important;
     max-height: 52px !important;
@@ -5539,9 +5630,7 @@ html.dark #view-definitions :not(button):not(button *):not(.material-symbols-out
 
 /* Category & Subcategory buttons with icons should align items left */
 .offer-category-btn,
-.sub-opt-btn,
-.wizard-skills-category-btn,
-.wizard-needs-category-btn {
+.sub-opt-btn {
     justify-content: flex-start !important;
     text-align: left !important;
 }
@@ -5565,9 +5654,7 @@ html.dark #view-definitions :not(button):not(button *):not(.material-symbols-out
 .shoes-opt-btn span:not(.material-symbols-outlined),
 .shoes-size-btn span:not(.material-symbols-outlined),
 .lang-opt-btn span:not(.material-symbols-outlined),
-.preset-opt-btn span:not(.material-symbols-outlined),
-.wizard-skills-category-btn span:not(.material-symbols-outlined),
-.wizard-needs-category-btn span:not(.material-symbols-outlined) {
+.preset-opt-btn span:not(.material-symbols-outlined) {
     white-space: nowrap !important;
     text-wrap: nowrap !important;
     overflow: hidden !important;
@@ -5577,9 +5664,33 @@ html.dark #view-definitions :not(button):not(button *):not(.material-symbols-out
 }
 
 .offer-category-btn span:not(.material-symbols-outlined),
-.sub-opt-btn span:not(.material-symbols-outlined),
+.sub-opt-btn span:not(.material-symbols-outlined) {
+    text-align: left !important;
+}
+
+/* Custom styles for onboarding wizard category buttons with wrapping support */
+.wizard-skills-category-btn,
+.wizard-needs-category-btn {
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    padding: 6px 8px !important;
+    width: 100% !important;
+    min-height: 52px !important;
+    height: auto !important;
+    max-height: none !important;
+    white-space: normal !important;
+    text-wrap: wrap !important;
+}
+
 .wizard-skills-category-btn span:not(.material-symbols-outlined),
 .wizard-needs-category-btn span:not(.material-symbols-outlined) {
+    white-space: normal !important;
+    text-wrap: wrap !important;
+    max-width: 100% !important;
+    display: inline-block !important;
     text-align: left !important;
 }
 
@@ -5627,14 +5738,12 @@ html.dark #view-definitions :not(button):not(button *):not(.material-symbols-out
 }
 
 /* 5. Saved Listings Header Icon (Orchid Purple) */
-#widget-saved-listings h3 span.material-symbols-outlined,
-#widget-saved h3 span.material-symbols-outlined {
+#widget-saved-listings h3 span.material-symbols-outlined {
     color: #a855f7 !important;
 }
 
-/* 6. Saved Events Header Icon (Violet-Indigo) / My Listed Events */
-#widget-saved-events h3 span.material-symbols-outlined,
-#widget-my-events h3 span.material-symbols-outlined {
+/* 6. Saved Events Header Icon (Violet-Indigo) */
+#widget-saved-events h3 span.material-symbols-outlined {
     color: #6366f1 !important;
 }
 
@@ -6212,34 +6321,86 @@ button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
     color: #000000 !important;
 }
 
-/* Force all text in onboarding wizard & login slides to be black */
+/* Force all text and labels in onboarding wizard & login slides to be black in light mode */
+#view-welcome,
 #view-sign_in,
+#view-create_account,
+#view-create_account_credentials,
+#view-create_account_social,
+#view-profile_consent,
+#view-profile_location_permission,
+#view-create_account_safe_spots,
 #view-profile_step_1,
 #view-lead_giving,
 #view-profile_step_2,
 #view-profile_step_3,
-#view-sign_in *:not(h1):not(h2):not(button.bg-forest-green):not(button.bg-error):not(button#btn-autofill-register):not(button#btn-autofill-register-social):not(.bg-forest-green *):not(.bg-error *):not(#btn-autofill-register *):not(#btn-autofill-register-social *):not(.material-symbols-outlined),
-#view-profile_step_1 *:not(h1):not(h2):not(button.bg-forest-green):not(button.bg-error):not(button#btn-autofill-register):not(button#btn-autofill-register-social):not(.bg-forest-green *):not(.bg-error *):not(#btn-autofill-register *):not(#btn-autofill-register-social *):not(.material-symbols-outlined),
-#view-lead_giving *:not(h1):not(h2):not(button.bg-forest-green):not(button.bg-error):not(button#btn-autofill-register):not(button#btn-autofill-register-social):not(.bg-forest-green *):not(.bg-error *):not(#btn-autofill-register *):not(#btn-autofill-register-social *):not(.material-symbols-outlined),
-#view-profile_step_2 *:not(h1):not(h2):not(button.bg-forest-green):not(button.bg-error):not(button#btn-autofill-register):not(button#btn-autofill-register-social):not(.bg-forest-green *):not(.bg-error *):not(#btn-autofill-register *):not(#btn-autofill-register-social *):not(.material-symbols-outlined),
-#view-profile_step_3 *:not(h1):not(h2):not(button.bg-forest-green):not(button.bg-error):not(button#btn-autofill-register):not(button#btn-autofill-register-social):not(.bg-forest-green *):not(.bg-error *):not(#btn-autofill-register *):not(#btn-autofill-register-social *):not(.material-symbols-outlined) {
+#view-profile_step_custom_listing,
+#view-set_up_profile {
     color: #000000 !important;
 }
 
-/* Explicitly turn category grid buttons and option buttons black in onboarding */
+#view-welcome *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-sign_in *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-create_account *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-create_account_credentials *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-create_account_social *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-profile_consent *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-profile_location_permission *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-create_account_safe_spots *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-profile_step_1 *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-lead_giving *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-profile_step_2 *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-profile_step_3 *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-profile_step_custom_listing *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-set_up_profile *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error) {
+    color: #000000 !important;
+}
+
+/* Force all icons in onboarding wizard & login slides to be green */
+#view-welcome .material-symbols-outlined,
+#view-sign_in .material-symbols-outlined,
+#view-create_account .material-symbols-outlined,
+#view-create_account_social .material-symbols-outlined,
+#view-profile_consent .material-symbols-outlined,
+#view-profile_location_permission .material-symbols-outlined,
+#view-create_account_safe_spots .material-symbols-outlined,
+#view-profile_step_1 .material-symbols-outlined,
+#view-lead_giving .material-symbols-outlined,
+#view-profile_step_2 .material-symbols-outlined:not(.wizard-skills-category-btn *),
+#view-profile_step_3 .material-symbols-outlined:not(.wizard-needs-category-btn *),
+#view-set_up_profile .material-symbols-outlined {
+    color: #308A5E !important;
+}
+
+#view-profile_step_custom_listing .material-symbols-outlined,
+#view-create_account_credentials .material-symbols-outlined {
+    color: #000000 !important;
+}
+html.dark #view-profile_step_custom_listing .material-symbols-outlined,
+html.dark #view-create_account_credentials .material-symbols-outlined {
+    color: #ffffff !important;
+}
+
+/* Explicitly turn category grid buttons and option buttons black in onboarding with green icons */
 .wizard-skills-category-btn,
 .wizard-needs-category-btn,
 .neighborhood-opt-btn {
     color: #000000 !important;
-    border-color: rgba(0, 0, 0, 0.25) !important;
+    border: 1px solid rgba(48, 138, 94, 0.2) !important;
+    background-color: #ffffff !important;
 }
-.wizard-skills-category-btn .material-symbols-outlined,
-.wizard-needs-category-btn .material-symbols-outlined,
+html.dark .wizard-skills-category-btn,
+html.dark .wizard-needs-category-btn,
+html.dark .neighborhood-opt-btn {
+    color: #ffffff !important;
+    border: 1px solid rgba(48, 138, 94, 0.3) !important;
+    background-color: rgba(48, 138, 94, 0.1) !important;
+}
 .neighborhood-opt-btn .material-symbols-outlined {
-    color: #000000 !important;
+    color: #308A5E !important;
 }
 
-/* Ensure selected states of options inside onboarding grid display high contrast white text */
+/* Selected states of options inside onboarding grid: forest green background, white text, green border */
 .wizard-skills-category-btn.active,
 .wizard-needs-category-btn.active,
 .neighborhood-opt-btn.active {
@@ -6247,33 +6408,174 @@ button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
     color: #ffffff !important;
     border-color: #308A5E !important;
 }
-.wizard-skills-category-btn.active .material-symbols-outlined,
-.wizard-needs-category-btn.active .material-symbols-outlined {
+html.dark .wizard-skills-category-btn.active,
+html.dark .wizard-needs-category-btn.active,
+html.dark .neighborhood-opt-btn.active {
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    border-color: #308A5E !important;
+}
+
+/* Force placeholder texts to be legible grey for readability */
+#view-sign_in input::placeholder,
+#view-create_account input::placeholder,
+#view-create_account_credentials input::placeholder,
+#view-create_account_social input::placeholder,
+#view-profile_step_1 input::placeholder,
+#view-profile_step_custom_listing input::placeholder,
+#view-profile_step_custom_listing textarea::placeholder,
+#view-set_up_profile input::placeholder {
+    color: #888888 !important;
+}
+
+/* Standardized black headers for all onboarding screens */
+#view-sign_in h1,
+#view-create_account h1,
+#view-create_account_credentials h1,
+#view-create_account_social h1,
+#view-profile_consent h1,
+#view-profile_consent h2,
+#view-profile_location_permission h1,
+#view-profile_location_permission h2,
+#view-create_account_safe_spots h1,
+#view-profile_step_1 h1,
+#view-profile_step_1 h2,
+#view-lead_giving h1,
+#view-lead_giving h2,
+#view-profile_step_2 h1,
+#view-profile_step_2 h2,
+#view-profile_step_3 h1,
+#view-profile_step_3 h2,
+#view-profile_step_custom_listing h1,
+#view-set_up_profile h1 {
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+    line-height: 1.25 !important;
+    color: #000000 !important;
+}
+
+/* Dark mode overrides for onboarding screen texts (white text on dark backgrounds) */
+html.dark #view-welcome,
+html.dark #view-sign_in,
+html.dark #view-create_account,
+html.dark #view-create_account_credentials,
+html.dark #view-create_account_social,
+html.dark #view-profile_consent,
+html.dark #view-profile_location_permission,
+html.dark #view-create_account_safe_spots,
+html.dark #view-profile_step_1,
+html.dark #view-lead_giving,
+html.dark #view-profile_step_2,
+html.dark #view-profile_step_3,
+html.dark #view-profile_step_custom_listing,
+html.dark #view-set_up_profile {
     color: #ffffff !important;
 }
 
-/* Force placeholder texts to be high contrast black/grey for readability */
-#view-sign_in input::placeholder,
-#view-create_account input::placeholder,
-#view-create_account_social input::placeholder,
-#view-profile_step_1 input::placeholder,
-#view-profile_step_2 textarea::placeholder,
-#view-profile_step_3 textarea::placeholder {
-    color: rgba(0, 0, 0, 0.6) !important;
+html.dark #view-welcome *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-sign_in *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-create_account *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-create_account_credentials *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-create_account_social *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-profile_consent *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-profile_location_permission *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-create_account_safe_spots *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-profile_step_1 *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-lead_giving *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-profile_step_2 *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-profile_step_3 *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-profile_step_custom_listing *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-set_up_profile *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error) {
+    color: #ffffff !important;
 }
 
-/* Keep the titles green/dark as requested, supporting both h1 and h2 tags across views */
-#view-welcome h1, #view-welcome h2,
-#view-sign_in h1, #view-sign_in h2,
-#view-create_account h1, #view-create_account h2,
-#view-create_account_social h1, #view-create_account_social h2,
-#view-profile_consent h1, #view-profile_consent h2,
-#view-profile_location_permission h1, #view-profile_location_permission h2,
-#view-create_account_safe_spots h1, #view-create_account_safe_spots h2,
-#view-profile_step_1 h1, #view-profile_step_1 h2,
-#view-lead_giving h1, #view-lead_giving h2,
-#view-profile_step_2 h1, #view-profile_step_2 h2,
-#view-profile_step_3 h1, #view-profile_step_3 h2 {
+html.dark #view-sign_in h1,
+html.dark #view-create_account h1,
+html.dark #view-create_account_credentials h1,
+html.dark #view-create_account_social h1,
+html.dark #view-profile_consent h1,
+html.dark #view-profile_consent h2,
+html.dark #view-profile_location_permission h1,
+html.dark #view-profile_location_permission h2,
+html.dark #view-create_account_safe_spots h1,
+html.dark #view-profile_step_1 h1,
+html.dark #view-profile_step_1 h2,
+html.dark #view-lead_giving h1,
+html.dark #view-lead_giving h2,
+html.dark #view-profile_step_2 h1,
+html.dark #view-profile_step_2 h2,
+html.dark #view-profile_step_3 h1,
+html.dark #view-profile_step_3 h2,
+html.dark #view-profile_step_custom_listing h1,
+html.dark #view-set_up_profile h1 {
+    color: #ffffff !important;
+}
+
+/* Premium white background buttons with green borders, black text, and green icons in onboarding */
+#view-welcome button:not([onclick*="handleDevAutoLogin"]),
+#view-sign_in button[type="submit"],
+#view-sign_in button[onclick*="create_account"],
+#view-create_account button[type="submit"],
+#view-create_account_social button[type="submit"],
+#consent-continue-btn,
+#btn-onboarding-location-permission,
+#btn-onboarding-safespots-confirm,
+#view-profile_step_1 button[type="submit"],
+#view-lead_giving button,
+#view-profile_step_2 button[onclick*="handleProfileStep2"],
+#view-profile_step_3 button[onclick*="handleProfileStep3"],
+#view-profile_step_custom_listing button[onclick*="skipOnboardingCustomListing"],
+#view-set_up_profile button[onclick*="handleSetupProfileSubmit"],
+#view-set_up_profile button[onclick*="handleSetupProfileSkip"] {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 2px solid #308A5E !important;
+    border-radius: 16px !important;
+    font-weight: 700 !important;
+    height: 56px !important;
+    box-shadow: 0 4px 12px rgba(48, 138, 94, 0.08) !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+#view-welcome button:not([onclick*="handleDevAutoLogin"]) *,
+#view-sign_in button[type="submit"] *,
+#view-sign_in button[onclick*="create_account"] *,
+#view-create_account button[type="submit"] *,
+#view-create_account_social button[type="submit"] *,
+#consent-continue-btn *,
+#btn-onboarding-location-permission *,
+#btn-onboarding-safespots-confirm *,
+#view-profile_step_1 button[type="submit"] *,
+#view-lead_giving button *,
+#view-profile_step_2 button[onclick*="handleProfileStep2"] *,
+#view-profile_step_3 button[onclick*="handleProfileStep3"] *,
+#view-profile_step_custom_listing button[onclick*="skipOnboardingCustomListing"] *,
+#view-set_up_profile button[onclick*="handleSetupProfileSubmit"] *,
+#view-set_up_profile button[onclick*="handleSetupProfileSkip"] * {
+    color: #308A5E !important;
+}
+
+/* Dark mode buttons in onboarding */
+html.dark #view-welcome button:not([onclick*="handleDevAutoLogin"]),
+html.dark #view-sign_in button[type="submit"],
+html.dark #view-sign_in button[onclick*="create_account"],
+html.dark #view-create_account button[type="submit"],
+html.dark #view-create_account_social button[type="submit"],
+html.dark #consent-continue-btn,
+html.dark #btn-onboarding-location-permission,
+html.dark #btn-onboarding-safespots-confirm,
+html.dark #view-profile_step_1 button[type="submit"],
+html.dark #view-lead_giving button,
+html.dark #view-profile_step_2 button[onclick*="handleProfileStep2"],
+html.dark #view-profile_step_3 button[onclick*="handleProfileStep3"],
+html.dark #view-profile_step_custom_listing button[onclick*="skipOnboardingCustomListing"],
+html.dark #view-set_up_profile button[onclick*="handleSetupProfileSubmit"],
+html.dark #view-set_up_profile button[onclick*="handleSetupProfileSkip"] {
+    background-color: #161e1a !important;
+    color: #ffffff !important;
+    border: 2px solid #308A5E !important;
+}
     font-family: 'Outfit', sans-serif !important;
     font-size: 22px !important;
     font-weight: 800 !important;
@@ -6281,29 +6583,16 @@ button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
     line-height: 1.25 !important;
     color: #12281a !important;
 }
-html.dark #view-welcome h1, html.dark #view-welcome h2,
-html.dark #view-sign_in h1, html.dark #view-sign_in h2,
-html.dark #view-create_account h1, html.dark #view-create_account h2,
-html.dark #view-create_account_social h1, html.dark #view-create_account_social h2,
-html.dark #view-profile_consent h1, html.dark #view-profile_consent h2,
-html.dark #view-profile_location_permission h1, html.dark #view-profile_location_permission h2,
-html.dark #view-create_account_safe_spots h1, html.dark #view-create_account_safe_spots h2,
-html.dark #view-profile_step_1 h1, html.dark #view-profile_step_1 h2,
-html.dark #view-lead_giving h1, html.dark #view-lead_giving h2,
-html.dark #view-profile_step_2 h1, html.dark #view-profile_step_2 h2,
-html.dark #view-profile_step_3 h1, html.dark #view-profile_step_3 h2 {
+html.dark #view-sign_in h1,
+html.dark #view-create_account h1,
+html.dark #view-create_account_social h1,
+html.dark #view-profile_consent h2,
+html.dark #view-profile_location_permission h2,
+html.dark #view-profile_step_1 h2,
+html.dark #view-lead_giving h2,
+html.dark #view-profile_step_2 h2,
+html.dark #view-profile_step_3 h2 {
     color: #ffffff !important;
-}
-
-#view-profile_step_2 h2,
-#view-profile_step_3 h2 {
-    text-align: center !important;
-    width: 100% !important;
-}
-#view-profile_step_2 p,
-#view-profile_step_3 p {
-    text-align: center !important;
-    width: 100% !important;
 }
 
 /* Ensure green submit/action buttons stay green and text/icons inside them stay white */
@@ -6317,10 +6606,11 @@ html.dark #view-profile_step_3 h1, html.dark #view-profile_step_3 h2 {
 #view-profile_step_1 button[type="submit"],
 #view-lead_giving button,
 #view-profile_step_2 button:not(.wizard-skills-category-btn):not([onclick*="skip"]),
-#view-profile_step_3 button:not(.wizard-needs-category-btn):not([onclick*="skip"]) {
+#view-profile_step_3 button:not(.wizard-needs-category-btn):not([onclick*="skip"]),
+#view-profile_step_custom_listing button[onclick*="submitOnboardingCustomListing"] {
     background-color: #308A5E !important;
     color: #ffffff !important;
-    border: none !important;
+    border-color: #308A5E !important;
 }
 
 #view-sign_in button[type="submit"] *,
@@ -6333,182 +6623,96 @@ html.dark #view-profile_step_3 h1, html.dark #view-profile_step_3 h2 {
 #view-profile_step_1 button[type="submit"] *,
 #view-lead_giving button *,
 #view-profile_step_2 button:not(.wizard-skills-category-btn):not([onclick*="skip"]) *,
-#view-profile_step_3 button:not(.wizard-needs-category-btn):not([onclick*="skip"]) * {
+#view-profile_step_3 button:not(.wizard-needs-category-btn):not([onclick*="skip"]) *,
+#view-profile_step_custom_listing button[onclick*="submitOnboardingCustomListing"] * {
     color: #ffffff !important;
 }
 
-/* Safe Space Agreement Screen (EULA) Text Color overrides */
-#view-profile_consent p,
-#view-profile_consent .EULA-accordion-item span:not(.material-symbols-outlined),
-#view-profile_consent .EULA-accordion-content p,
-#view-profile_consent #liability-scroll-box,
-#view-profile_consent #consent-checkboxes-container span:not(.material-symbols-outlined) {
-    font-family: 'Outfit', sans-serif !important;
-    color: #000000 !important;
+/* Onboarding Card Textarea Overrides */
+.onboarding-card textarea {
+    background-color: #faf9f6 !important;
+    border: 1.5px solid rgba(48, 138, 94, 0.12) !important;
+    border-radius: 16px !important;
+    color: #1c2d24 !important;
+    font-weight: 500 !important;
+    height: 96px !important;
+    transition: all 0.25s ease !important;
+}
+html.dark .onboarding-card textarea {
+    background-color: #0d120f !important;
+    border-color: rgba(130, 185, 149, 0.12) !important;
+    color: #fcfbf7 !important;
+}
+.onboarding-card textarea:focus {
+    border-color: var(--forest-green) !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 4px rgba(48, 138, 94, 0.1) !important;
+}
+html.dark .onboarding-card textarea:focus {
+    border-color: #82b995 !important;
+    background-color: #111814 !important;
+    box-shadow: 0 0 0 4px rgba(130, 185, 149, 0.1) !important;
+}
+.onboarding-card textarea::placeholder {
+    color: #8fa095 !important;
+    font-weight: 400 !important;
+}
+html.dark .onboarding-card textarea::placeholder {
+    color: #5e6f65 !important;
 }
 
-html.dark #view-profile_consent p,
-html.dark #view-profile_consent .EULA-accordion-item span:not(.material-symbols-outlined),
-html.dark #view-profile_consent .EULA-accordion-content p,
-html.dark #view-profile_consent #liability-scroll-box,
-html.dark #view-profile_consent #consent-checkboxes-container span:not(.material-symbols-outlined) {
-    color: #ffffff !important;
-}
-
-/* Custom Typography Alignment for Onboarding Subtexts and Inputs */
-#view-welcome div.text-\[11px\] {
-    font-family: 'Outfit', sans-serif !important;
-    color: #000000 !important;
-}
-
-#view-welcome .bg-forest-green .material-symbols-outlined {
-    color: #ffffff !important;
-}
-
-#view-create_account input,
-#view-create_account_social input {
-    font-family: 'Outfit', sans-serif !important;
-    color: var(--forest-green, #308A5E) !important;
-}
-
-#view-create_account input::placeholder,
-#view-create_account_social input::placeholder {
-    font-family: 'Outfit', sans-serif !important;
-    color: rgba(48, 138, 94, 0.5) !important;
-}
-
-html.dark #view-welcome div.text-\[11px\] {
-    color: #ffffff !important;
-}
-
-html.dark #view-create_account input,
-html.dark #view-create_account_social input {
-    color: #a7f3d0 !important;
-}
-
-html.dark #view-create_account input::placeholder,
-html.dark #view-create_account_social input::placeholder {
-    color: rgba(167, 243, 208, 0.5) !important;
-}
-
-/* Remove map side padding on mobile viewports so it loads fully */
-#view-village {
-    padding: 0 !important;
-}
-
-/* Position and align map category circles dropdown on the left under the category filter button */
+/* Position and align map category circles dropdown on the left to stack cleanly under top-left control buttons */
 #map-category-dropdown {
-    left: 24px !important;
+    position: absolute !important;
+    top: 58px !important;
+    left: 32px !important;
     right: auto !important;
-    top: 50px !important;
+    height: auto !important;
+    max-height: calc(100% - 150px) !important;
+    display: none;
+    flex-direction: column !important;
     align-items: flex-start !important;
+    gap: 4px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    white-space: nowrap !important;
+    background-color: transparent !important;
+    padding: 0 4px 60px 0 !important;
+    z-index: 3000 !important;
+    scrollbar-width: none !important;
+}
+#map-category-dropdown::-webkit-scrollbar {
+    display: none !important;
+}
+
+#map-category-dropdown.expanded {
+    display: flex !important;
 }
 
 #map-category-dropdown .map-category-item {
-    justify-content: flex-start !important;
-    flex-direction: row !important; /* Circle on left, label on right */
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
-#map-category-dropdown .map-category-item .category-label {
-    margin-right: 0 !important;
-    margin-left: 0.5rem !important;
-    font-size: 9px !important;
-}
-
-#map-category-dropdown .map-category-item .filter-category-circle,
-#map-category-dropdown .map-category-item .filter-category-info-circle {
-    width: 34px !important;
-    height: 34px !important;
-    min-width: 34px !important;
-    min-height: 34px !important;
-}
-
-#map-category-dropdown .map-category-item span.material-symbols-outlined {
-    font-size: 16px !important;
-}
-
-/* === Interactive Help Mode — Full Implementation === */
-
-/* Scrim overlay that dims the map */
-#map-interactive-help-overlay {
-    background: rgba(0, 0, 0, 0.52) !important;
-    backdrop-filter: blur(1.5px) !important;
-    -webkit-backdrop-filter: blur(1.5px) !important;
-}
-
-/* Bouncing ? badges on map controls */
-.help-badge-dot {
-    position: absolute !important;
-    top: -6px !important;
-    right: -6px !important;
-    width: 18px !important;
-    height: 18px !important;
-    background: #308A5E !important;
-    color: white !important;
-    border-radius: 50% !important;
-    font-size: 10px !important;
-    font-weight: 900 !important;
-    font-family: system-ui, -apple-system, sans-serif !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
-    z-index: 4000 !important;
+    flex-direction: row !important;
+    gap: 6px !important;
+    padding: 0 !important;
+    border-radius: 9999px !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    opacity: 1 !important;
+    transform: none !important;
     pointer-events: auto !important;
-    cursor: pointer !important;
-    border: 2px solid white !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.35) !important;
-    animation: helpBadgeBounce 1.5s ease-in-out infinite !important;
-    line-height: 1 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    transition: all 0.2s ease !important;
+    flex-shrink: 0 !important;
 }
 
-.dark .help-badge-dot {
-    border-color: #18201a !important;
-}
-
-@keyframes helpBadgeBounce {
-    0%, 100% { transform: translateY(0) scale(1); }
-    40%  { transform: translateY(-5px) scale(1.25); }
-    60%  { transform: translateY(-2px) scale(1.1); }
-}
-
-/* Stagger badge animations so they don't all bounce in sync */
-.help-badge-dot:nth-of-type(2)  { animation-delay: 0.15s !important; }
-.help-badge-dot:nth-of-type(3)  { animation-delay: 0.30s !important; }
-.help-badge-dot:nth-of-type(4)  { animation-delay: 0.45s !important; }
-.help-badge-dot:nth-of-type(5)  { animation-delay: 0.60s !important; }
-
-/* Help mode: lift interactive elements above the scrim */
-.help-mode-active #floating-map-controls      { z-index: 3000 !important; }
-.help-mode-active #village-segment-floating-buttons { z-index: 3000 !important; }
-.help-mode-active #map-category-dropdown      { z-index: 4000 !important; }
-.help-mode-active #interactive-help-tooltip   { z-index: 3500 !important; }
-.help-mode-active #category-tray              { z-index: 3000 !important; }
-.help-mode-active .bento-card                 { overflow: visible !important; }
-
-/* Help-mode full-screen interaction blocker scrim */
-#help-mode-scrim {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 2500;
-    /* fully transparent — just blocks pointer events */
-    background: transparent;
-    pointer-events: all;
-    touch-action: none;
-    cursor: not-allowed;
-}
-.help-mode-active #help-mode-scrim {
-    display: block;
-}
-
-/* Help button active (green) state */
-#btn-map-guide-trigger.help-active {
-    background-color: #308A5E !important;
-    color: white !important;
-    border-color: #308A5E !important;
-    box-shadow: 0 4px 14px rgba(48,138,94,0.45) !important;
+.dark #map-category-dropdown .map-category-item {
+    background-color: transparent !important;
+    border-color: transparent !important;
 }
 
 
@@ -6539,7 +6743,6 @@ html.dark #view-create_account_social input::placeholder {
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
     pointer-events: none;
     box-sizing: border-box;
-    transition: color 0.4s ease, fill 0.4s ease, background 0.4s ease, border-color 0.4s ease;
 }
 
 #iphone16-status-bar svg {
@@ -6581,7 +6784,7 @@ html.dark #view-create_account_social input::placeholder {
     width: 25px;
     height: 12.5px;
     border: 1px solid rgba(0, 0, 0, 0.7);
-    border-radius: 3.5px;
+    border-radius: var(--radius-xs);
     padding: 1px;
     display: flex;
     align-items: center;
@@ -6592,7 +6795,7 @@ html.dark #view-create_account_social input::placeholder {
     height: 100%;
     width: 79%;
     background-color: #ff3b30; /* Apple system red */
-    border-radius: 1.5px;
+    border-radius: var(--radius-xxs);
 }
 
 #iphone16-status-bar .battery-tip {
@@ -6646,14 +6849,14 @@ body:has(#view-village.active) #iphone16-status-bar {
 }
 
 /* Use white icons on the loading screen */
-body:has(#loading-screen:not(.hidden):not(.fading-out)) #iphone16-status-bar {
+body:has(#loading-screen:not(.hidden)) #iphone16-status-bar {
     color: #ffffff;
     fill: #ffffff;
 }
-body:has(#loading-screen:not(.hidden):not(.fading-out)) #iphone16-status-bar .battery-container {
+body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-container {
     border-color: rgba(255, 255, 255, 0.7);
 }
-body:has(#loading-screen:not(.hidden):not(.fading-out)) #iphone16-status-bar .battery-tip {
+body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
     background-color: rgba(255, 255, 255, 0.7);
 }
 
@@ -6673,42 +6876,31 @@ body:has(#loading-screen:not(.hidden):not(.fading-out)) #iphone16-status-bar .ba
 }
 
 .iphone16-mode #floating-map-controls {
-    top: 38px !important;
+    bottom: 82px !important;
+    top: auto !important;
+}
+.iphone16-mode #view-village:has(#map-peek-card.active) #floating-map-controls {
+    bottom: 230px !important;
+}
+.iphone16-mode #village-segment-floating-buttons {
+    bottom: 88px !important;
+    top: auto !important;
+}
+.iphone16-mode #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
+    bottom: 236px !important;
 }
 
 .iphone16-mode #map-category-dropdown {
-    top: 82px !important;
+    top: 68px !important;
 }
 
 /* Ensure onboarding screens are padded too */
 .iphone16-mode #view-profile_consent,
 .iphone16-mode #view-profile_location_permission,
-.iphone16-mode #view-create_account_safe_spots,
 .iphone16-mode #view-profile_step_1,
 .iphone16-mode #view-profile_step_2,
 .iphone16-mode #view-profile_step_3 {
     padding-top: 44px !important;
-}
-
-/* Admin moderation page/modal styling updates */
-#admin-widget-page-content h3,
-.admin-widget-modal-container h3 {
-    display: none !important; /* Delete the small title with the icon on the left side */
-}
-
-/* Make all text black inside, except buttons and toggle controls */
-#admin-widget-page-content :not(button):not(button *):not(input):not(.peer):not(label):not(label *),
-.admin-widget-modal-container :not(button):not(button *):not(input):not(.peer):not(label):not(label *) {
-    color: #000000 !important;
-}
-
-/* Make sure the font size is the same (12px) for all of the options/text inside, excluding icons */
-#admin-widget-page-content p,
-#admin-widget-page-content span:not(.material-symbols-outlined),
-.admin-widget-modal-container p,
-.admin-widget-modal-container span:not(.material-symbols-outlined) {
-    font-size: 12px !important;
-    line-height: 1.5 !important;
 }
 
 /* Custom premium checkboxes for EULA */
@@ -6723,59 +6915,7 @@ body:has(#loading-screen:not(.hidden):not(.fading-out)) #iphone16-status-bar .ba
     justify-content: center;
     background-color: #fff;
     transition: all 0.2s ease;
-    flex-shrink: 0;
 }
-
-/* Safe Space Agreement Screen (EULA) Text Color overrides */
-#view-profile_consent p,
-#view-profile_consent .EULA-accordion-item span:not(.material-symbols-outlined),
-#view-profile_consent .EULA-accordion-content p,
-#view-profile_consent #liability-scroll-box,
-#view-profile_consent #consent-checkboxes-container span:not(.material-symbols-outlined) {
-    font-family: 'Outfit', sans-serif !important;
-    color: #000000 !important;
-}
-
-html.dark #view-profile_consent p,
-html.dark #view-profile_consent .EULA-accordion-item span:not(.material-symbols-outlined),
-html.dark #view-profile_consent .EULA-accordion-content p,
-html.dark #view-profile_consent #liability-scroll-box,
-html.dark #view-profile_consent #consent-checkboxes-container span:not(.material-symbols-outlined) {
-    color: #ffffff !important;
-}
-
-/* Custom Typography Alignment for Onboarding Subtexts and Inputs */
-#view-welcome div.text-\[11px\] {
-    font-family: 'Outfit', sans-serif !important;
-    color: #000000 !important;
-}
-
-#view-create_account input,
-#view-create_account_social input {
-    font-family: 'Outfit', sans-serif !important;
-    color: var(--forest-green, #308A5E) !important;
-}
-
-#view-create_account input::placeholder,
-#view-create_account_social input::placeholder {
-    font-family: 'Outfit', sans-serif !important;
-    color: rgba(48, 138, 94, 0.5) !important;
-}
-
-html.dark #view-welcome div.text-\[11px\] {
-    color: #ffffff !important;
-}
-
-html.dark #view-create_account input,
-html.dark #view-create_account_social input {
-    color: #a7f3d0 !important;
-}
-
-html.dark #view-create_account input::placeholder,
-html.dark #view-create_account_social input::placeholder {
-    color: rgba(167, 243, 208, 0.5) !important;
-}
-
 
 .checkbox-wrapper input[type="checkbox"] {
     position: absolute;
@@ -6946,6 +7086,7 @@ html.dark .event-stock-thumbnail {
     #view-create_account_social,
     #view-profile_consent,
     #view-profile_location_permission,
+    #view-create_account_safe_spots,
     #view-profile_step_1 {
         padding-left: 1.25rem !important;
         padding-right: 1.25rem !important;
@@ -6956,7 +7097,7 @@ html.dark .event-stock-thumbnail {
 .onboarding-card {
     background-color: #ffffff !important;
     border: 1px solid rgba(48, 138, 94, 0.08) !important;
-    border-radius: 28px !important;
+    border-radius: var(--radius-xl) !important;
     padding: 26px 24px !important;
     box-shadow: 0 20px 48px -12px rgba(48, 138, 94, 0.05), 0 8px 16px -8px rgba(48, 138, 94, 0.03) !important;
     width: 100% !important;
@@ -6974,6 +7115,7 @@ html.dark .onboarding-card {
 /* Base text styling overrides for onboarding screens to make them feel organic and cohesive */
 #view-welcome,
 #view-create_account,
+#view-create_account_credentials,
 #view-create_account_social,
 #view-profile_consent,
 #view-profile_location_permission,
@@ -6982,11 +7124,13 @@ html.dark .onboarding-card {
 #view-lead_giving,
 #view-profile_step_2,
 #view-profile_step_3,
+#view-profile_step_custom_listing,
 #view-sign_in {
     background: linear-gradient(180deg, #FDFCF8 0%, #F4F1E6 100%) !important;
 }
 html.dark #view-welcome,
 html.dark #view-create_account,
+html.dark #view-create_account_credentials,
 html.dark #view-create_account_social,
 html.dark #view-profile_consent,
 html.dark #view-profile_location_permission,
@@ -6995,27 +7139,40 @@ html.dark #view-profile_step_1,
 html.dark #view-lead_giving,
 html.dark #view-profile_step_2,
 html.dark #view-profile_step_3,
+html.dark #view-profile_step_custom_listing,
 html.dark #view-sign_in {
     background: linear-gradient(180deg, #111713 0%, #0a0e0b 100%) !important;
 }
 
 #view-welcome p,
 #view-create_account p,
+#view-create_account_credentials p,
 #view-create_account_social p,
 #view-profile_consent p,
 #view-profile_location_permission p,
 #view-create_account_safe_spots p,
 #view-profile_step_1 p,
+#view-lead_giving p,
+#view-profile_step_2 p,
+#view-profile_step_3 p,
+#view-profile_step_custom_listing p,
+#view-set_up_profile p,
 #view-sign_in p {
-    color: #55665b !important;
+    color: #000000 !important;
 }
 html.dark #view-welcome p,
 html.dark #view-create_account p,
+html.dark #view-create_account_credentials p,
 html.dark #view-create_account_social p,
 html.dark #view-profile_consent p,
 html.dark #view-profile_location_permission p,
 html.dark #view-create_account_safe_spots p,
 html.dark #view-profile_step_1 p,
+html.dark #view-lead_giving p,
+html.dark #view-profile_step_2 p,
+html.dark #view-profile_step_3 p,
+html.dark #view-profile_step_custom_listing p,
+html.dark #view-set_up_profile p,
 html.dark #view-sign_in p {
     color: #9ab0a1 !important;
 }
@@ -7306,66 +7463,812 @@ html.dark .location-icon-container {
     to { transform: rotate(360deg); }
 }
 
-/* Begin Your Journey screen black styling overrides */
-#view-create_account h1,
-#view-create_account h2,
-#view-create_account p,
-#view-create_account label,
-#view-create_account .material-symbols-outlined,
-#view-create_account span,
-#view-create_account input,
-#view-create_account button {
+/* --- START: Map Filter Dropdown Responsive Sizing (Based on mobile device height) --- */
+
+/* Base default styling (Medium screens: iPhone 12/13/14/15/16 Pro, height 701px to 860px) */
+#map-category-dropdown,
+#list-category-dropdown,
+#needs-category-dropdown {
+    gap: 4px !important;
+}
+#map-category-dropdown .filter-category-circle,
+#map-category-dropdown .filter-category-info-circle,
+.list-filter-category-circle,
+.needs-filter-category-circle,
+#btn-segment-filter,
+#btn-map-guide-trigger {
+    width: 28px !important;
+    height: 28px !important;
+}
+#map-category-dropdown .filter-category-circle span,
+#map-category-dropdown .filter-category-info-circle span,
+.list-filter-category-circle span,
+.needs-filter-category-circle span,
+#btn-segment-filter span,
+#btn-map-guide-trigger span {
+    font-size: 14px !important;
+}
+#map-category-dropdown .category-label {
+    font-size: 9.5px !important;
+    padding: 3px 8px !important;
+}
+
+/* Small Screens (e.g. iPhone SE / screen height <= 700px) */
+@media (max-height: 700px) {
+    html:not(.show-simulator) #map-category-dropdown {
+        gap: 2.5px !important;
+        top: 42px !important;
+    }
+    html:not(.show-simulator) .native-app-env #map-category-dropdown {
+        top: calc(32px + env(safe-area-inset-top)) !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .filter-category-circle,
+    html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle,
+    html:not(.show-simulator) #btn-segment-filter,
+    html:not(.show-simulator) #btn-map-guide-trigger {
+        width: 22px !important;
+        height: 22px !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .filter-category-circle span,
+    html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle span,
+    html:not(.show-simulator) #btn-segment-filter span,
+    html:not(.show-simulator) #btn-map-guide-trigger span {
+        font-size: 11px !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .category-label {
+        font-size: 8px !important;
+        padding: 2px 6px !important;
+    }
+}
+
+/* Large Screens (e.g. iPhone 16 Pro Max / screen height > 860px) */
+@media (min-height: 861px) {
+    html:not(.show-simulator) #map-category-dropdown {
+        gap: 5.5px !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .filter-category-circle,
+    html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle,
+    html:not(.show-simulator) #btn-segment-filter,
+    html:not(.show-simulator) #btn-map-guide-trigger {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .filter-category-circle span,
+    html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle span,
+    html:not(.show-simulator) #btn-segment-filter span,
+    html:not(.show-simulator) #btn-map-guide-trigger span {
+        font-size: 16px !important;
+    }
+    html:not(.show-simulator) #map-category-dropdown .category-label {
+        font-size: 10.5px !important;
+        padding: 3px 8px !important;
+    }
+}
+
+/* Category Information Mode Highlight Badge */
+.category-info-highlighted {
+    position: relative !important;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4) !important;
+}
+.category-info-highlighted::after {
+    content: '?' !important;
+    position: absolute !important;
+    top: -5px !important;
+    right: -5px !important;
+    width: 15px !important;
+    height: 15px !important;
+    border-radius: 50% !important;
+    background-color: #EF4444 !important; /* Premium red badge */
+    color: white !important;
+    font-size: 10px !important;
+    font-weight: 950 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
+    border: 1px solid white !important;
+    z-index: 100 !important;
+}
+html.dark .category-info-highlighted::after {
+    border-color: #101612 !important;
+}
+
+/* --- END: Map Filter Dropdown Responsive Sizing --- */
+
+/* Native App explicit height and layout overrides */
+.native-app-env .screen-view.active {
+    display: flex !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    flex: 1 !important;
+}
+
+.native-app-env #view-village.active {
+    overflow: hidden !important;
+    z-index: 10 !important;
+}
+
+.native-app-env #global-navbar:not(.hidden) {
+    position: absolute !important;
+    bottom: calc(2px + env(safe-area-inset-bottom)) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 32px) !important;
+    max-width: 370px !important;
+    gap: 30px !important;
+    height: 64px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    border-radius: 9999px !important;
+    background: rgba(255, 255, 255, 0.45) !important;
+    backdrop-filter: blur(24px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+    z-index: 5000 !important;
+    display: flex !important;
+}
+
+html.dark.native-app-env #global-navbar:not(.hidden) {
+    background: rgba(20, 28, 22, 0.45) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Category Tray / List Overlay - Opaque background to prevent disorientation */
+.category-tray, .category-list-overlay {
+    background: var(--warm-cream) !important;
+    border: 1px solid rgba(48, 138, 94, 0.15) !important;
+    border-bottom: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+html.dark .category-tray, html.dark .category-list-overlay {
+    background: #101612 !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+.category-tray {
+    justify-content: flex-end !important;
+    padding-bottom: 24px !important;
+}
+
+.native-app-env .category-tray {
+    padding-bottom: calc(24px + env(safe-area-inset-bottom)) !important;
+}
+
+/* ==================================================== */
+/* CHAT SCREEN GLASSMORPHISM & CLOSE BUTTON UPDATES */
+/* ==================================================== */
+
+/* Absolute Glassmorphic Chat Header */
+#view-chat_detail {
+    position: relative !important;
+}
+
+#view-chat_detail > div:first-of-type {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 20 !important;
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+html.dark #view-chat_detail > div:first-of-type {
+    background: transparent !important;
+    border-bottom: none !important;
+}
+
+.native-app-env #view-chat_detail > div:first-of-type {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding-top: calc(16px + env(safe-area-inset-top)) !important;
+    padding-bottom: 16px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+}
+
+/* Padding top and bottom on message feed to clear absolute header and floating footer while allowing scroll-under backdrop blur */
+#chat-message-feed {
+    padding-top: 76px !important;
+    padding-bottom: 16px !important;
+}
+
+.native-app-env #chat-message-feed {
+    padding-top: calc(76px + env(safe-area-inset-top)) !important;
+    padding-bottom: 16px !important;
+}
+
+/* Ensure the bottom-most messages can scroll completely above the floating input wrapper and suggested template messages chips */
+#chat-message-feed::after {
+    content: '' !important;
+    display: block !important;
+    height: calc(var(--chat-input-height, 140px) + 16px) !important;
+    flex-shrink: 0 !important;
+    pointer-events: none !important;
+}
+
+.native-app-env #chat-message-feed::after {
+    height: calc(var(--chat-input-height, 140px) + 16px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+/* Custom Chat Section Font & Size Consistency */
+#view-chat_detail input,
+#view-chat_detail textarea {
     font-family: 'Outfit', sans-serif !important;
+    font-size: 16px !important;
 }
 
-#view-create_account h1,
-#view-create_account h2,
-#view-create_account p,
-#view-create_account label:not(.cursor-pointer),
-#view-create_account .material-symbols-outlined,
-#view-create_account span:not(.cursor-pointer) {
+.app-container .chat-bubble-me p,
+.app-container .chat-bubble-other p,
+.app-container .admin-message-bubble p,
+.app-container .chat-bubble-me .text-sm,
+.app-container .chat-bubble-other .text-sm,
+.app-container .chat-bubble-me,
+.app-container .chat-bubble-other,
+.app-container .admin-message-bubble {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
+}
+
+/* Onboarding & Settings Input Fields Styling to Match Chat Size and Font */
+input,
+textarea,
+select,
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+input[type="datetime-local"] {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 16px !important; /* Force 16px to prevent iOS Safari auto-zoom on focus */
+}
+
+/* Ensure placeholder texts also match the Outfit font and size */
+input::placeholder,
+textarea::placeholder {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 16px !important;
+}
+
+/* Hide Leaflet popup close buttons */
+.leaflet-container a.leaflet-popup-close-button {
+    display: none !important;
+}
+
+/* Smoothly transition the navbar when it is hidden behind card */
+#global-navbar {
+    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease !important;
+}
+
+#global-navbar.navbar-behind {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+body.show-simulator #global-navbar.navbar-behind {
+    transform: translateY(24px) !important;
+}
+
+.native-app-env #global-navbar.navbar-behind {
+    transform: translateX(-50%) translateY(24px) !important;
+}
+
+/* ==================================================== */
+/* CUSTON ONBOARDING & MAP VIEW ALIGNMENT OVERRIDES */
+/* ==================================================== */
+
+/* Welcome screen text colors */
+#view-welcome p,
+#view-welcome .text-gray-500,
+#view-welcome .text-sm {
+    font-family: 'Outfit', sans-serif !important;
     color: #000000 !important;
 }
 
-#view-create_account div.border,
-#view-create_account form div.border,
-#view-create_account .profile-avatar-ring {
-    border-color: rgba(0, 0, 0, 0.15) !important;
+html.dark #view-welcome p,
+html.dark #view-welcome .text-gray-500,
+html.dark #view-welcome .text-sm {
+    color: #ffffff !important;
 }
 
-#view-create_account input {
-    border-color: rgba(0, 0, 0, 0.2) !important;
+#view-welcome .bg-forest-green .material-symbols-outlined {
+    color: #ffffff !important;
+}
+
+/* Safe Space Agreement Screen (EULA) Text Color overrides */
+#view-profile_consent p,
+#view-profile_consent .EULA-accordion-item span:not(.material-symbols-outlined),
+#view-profile_consent .EULA-accordion-content p,
+#view-profile_consent #liability-scroll-box,
+#view-profile_consent #consent-checkboxes-container span:not(.material-symbols-outlined) {
+    font-family: 'Outfit', sans-serif !important;
     color: #000000 !important;
 }
 
-#view-create_account input:focus {
-    border-color: #000000 !important;
+html.dark #view-profile_consent p,
+html.dark #view-profile_consent .EULA-accordion-item span:not(.material-symbols-outlined),
+html.dark #view-profile_consent .EULA-accordion-content p,
+html.dark #view-profile_consent #liability-scroll-box,
+html.dark #view-profile_consent #consent-checkboxes-container span:not(.material-symbols-outlined) {
+    color: #ffffff !important;
 }
 
-#view-create_account .group:focus-within .material-symbols-outlined,
-#view-create_account .group:focus-within span {
-    color: #000000 !important;
+/* Map View full-width mobile padding fix */
+#view-village {
+    padding: 0 !important;
 }
 
-#view-create_account label.cursor-pointer,
-#view-create_account label.cursor-pointer * {
-    color: #000000 !important;
+/* Filter Dropdown horizontal alignment fix */
+.native-app-env #map-category-dropdown {
+    left: 32px !important;
+}
+
+.native-app-env #map-category-dropdown .map-category-item {
+    padding-left: 0 !important;
+}
+
+
+/* Standardized safe area top padding for native environment */
+.native-app-env #view-profile_settings,
+.native-app-env #view-adjust_homepage,
+.native-app-env #view-settings_detail,
+.native-app-env #view-create_event,
+.native-app-env #view-events_hub {
+    padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
+}
+
+
+/* Standardized close/back navigation buttons */
+.nav-close-btn {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     background-color: rgba(0, 0, 0, 0.05) !important;
-    border-color: rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    color: #000000 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+    transition: all 0.15s ease !important;
+    flex-shrink: 0 !important;
+}
+html.dark .nav-close-btn {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--warm-cream) !important;
 }
 
-#view-create_account label.cursor-pointer:hover {
-    background-color: rgba(0, 0, 0, 0.1) !important;
+
+/* Standardized screen header layout */
+.screen-header {
+    height: 56px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    flex-shrink: 0 !important;
+    border-bottom: 1px solid rgba(48, 138, 94, 0.08) !important;
+    background-color: var(--warm-cream) !important;
+}
+html.dark .screen-header {
+    background-color: var(--dark-bg) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
 }
 
-#view-create_account button[type="submit"] {
+
+/* Checked checkboxes consistent styles */
+html.dark .checkbox-wrapper:has(input[type="checkbox"]:checked) {
+    border-color: #308A5E !important;
+    background-color: #308A5E !important;
+}
+
+/* Global interactive hover and active scale transitions */
+button, 
+.btn, 
+.btn-primary, 
+.btn-secondary, 
+.nav-close-btn, 
+.category-chip, 
+.interactive-card {
+    transition: transform 0.1s ease, background-color 0.15s ease, opacity 0.15s ease !important;
+}
+
+button:active, 
+.btn:active, 
+.btn-primary:active, 
+.btn-secondary:active, 
+.nav-close-btn:active, 
+.category-chip:active, 
+.interactive-card:active {
+    transform: scale(0.95) !important;
+}
+
+/* Custom focus indicator styling for keyboard accessibility */
+input:focus, 
+select:focus, 
+textarea:focus {
+    outline: 2px solid var(--forest-green) !important;
+    outline-offset: 2px !important;
+}
+html.dark input:focus, 
+html.dark select:focus, 
+html.dark textarea:focus {
+    outline: 2px solid #308A5E !important;
+    outline-offset: 2px !important;
+}
+
+/* Disable focus highlight for search inputs */
+#village-search-input:focus,
+#village-list-search-input:focus,
+#village-needs-search-input:focus,
+#village-events-search-input:focus,
+#village-bulletins-search-input:focus,
+#meeting-spot-search-input:focus,
+#admin-user-search-input:focus,
+#chat-search-input:focus,
+.fused-search-input:focus,
+#village-search-input:active,
+#village-list-search-input:active,
+#village-needs-search-input:active,
+#village-events-search-input:active,
+#village-bulletins-search-input:active,
+#meeting-spot-search-input:active,
+#admin-user-search-input:active,
+#chat-search-input:active,
+.fused-search-input:active,
+input[placeholder*="Search" i]:focus,
+input[placeholder*="Search" i]:active {
+    outline: none !important;
+    outline-offset: 0 !important;
+    box-shadow: none !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html.dark #village-search-input:focus,
+html.dark #village-list-search-input:focus,
+html.dark #village-needs-search-input:focus,
+html.dark #village-events-search-input:focus,
+html.dark #village-bulletins-search-input:focus,
+html.dark #meeting-spot-search-input:focus,
+html.dark #admin-user-search-input:focus,
+html.dark #chat-search-input:focus,
+html.dark .fused-search-input:focus,
+html.dark #village-search-input:active,
+html.dark #village-list-search-input:active,
+html.dark #village-needs-search-input:active,
+html.dark #village-events-search-input:active,
+html.dark #village-bulletins-search-input:active,
+html.dark #meeting-spot-search-input:active,
+html.dark #admin-user-search-input:active,
+html.dark #chat-search-input:active,
+html.dark .fused-search-input:active,
+html.dark input[placeholder*="Search" i]:focus,
+html.dark input[placeholder*="Search" i]:active {
+    outline: none !important;
+    outline-offset: 0 !important;
+    box-shadow: none !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Custom black buttons for credentials page */
+#view-create_account_credentials button[type="submit"],
+#btn-autofill-register-credentials {
     background-color: #000000 !important;
     color: #ffffff !important;
-    border: 1px solid #000000 !important;
+    border: 2px solid #000000 !important;
+    border-radius: 16px !important;
+    font-weight: 700 !important;
+    height: 56px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+#view-create_account_credentials button[type="submit"]:active,
+#btn-autofill-register-credentials:active {
+    transform: scale(0.97) !important;
+    background-color: #1c1c1c !important;
+}
+html.dark #view-create_account_credentials button[type="submit"],
+html.dark #btn-autofill-register-credentials {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 2px solid #ffffff !important;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2) !important;
 }
 
-#view-create_account button[type="submit"] * {
+/* Custom Toggle Switch for Safe Space Agreement */
+.switch-container {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+}
+.switch-container input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(48, 138, 94, 0.15);
+    transition: .25s ease;
+    border-radius: 24px;
+    border: 1px solid rgba(48, 138, 94, 0.2);
+}
+.switch-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 2px;
+    bottom: 2px;
+    background-color: #308a5e;
+    transition: .25s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+input:checked + .switch-slider {
+    background-color: #308a5e;
+    border-color: #308a5e;
+}
+input:checked + .switch-slider:before {
+    transform: translateX(20px);
+    background-color: #ffffff;
+}
+
+html.dark .switch-slider {
+    background-color: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.15);
+}
+html.dark .switch-slider:before {
+    background-color: rgba(255,255,255,0.4);
+}
+html.dark input:checked + .switch-slider {
+    background-color: #308a5e;
+    border-color: #308a5e;
+}
+html.dark input:checked + .switch-slider:before {
+    background-color: #ffffff;
+}
+
+/* Fused Search & Filter Bar Container */
+#village-search-bar-overlay {
+    position: absolute !important;
+    left: 24px !important;
+    z-index: 2000 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: calc(100% - 48px) !important;
+    max-width: 480px !important;
+    transition: all 0.3s ease !important;
+}
+#village-search-bar-overlay.hidden {
+    display: none !important;
+}
+
+/* Fused Search Capsule */
+.fused-search-capsule {
+    display: flex !important;
+    align-items: center !important;
+    background-color: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-radius: 9999px !important;
+    padding: 4px 8px 4px 8px !important;
+    height: 42px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s ease !important;
+    width: 100% !important;
+}
+
+html.dark .fused-search-capsule {
+    background-color: rgba(24, 32, 26, 0.92) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Capsule Search Input */
+.fused-search-input {
+    flex-grow: 1 !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    font-size: 13px !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 300 !important;
+    padding: 0 10px 0 6px !important;
+    color: #000000 !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+html.dark .fused-search-input {
     color: #ffffff !important;
+}
+
+/* Fused Location Button */
+.fused-location-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
+    color: #000000 !important;
+    background: transparent !important;
+    border: none !important;
+    margin-left: 2px !important;
+    transition: color 0.2s ease !important;
+}
+
+html.dark .fused-location-btn {
+    color: #ffffff !important;
+}
+
+.fused-location-btn.active-location {
+    color: #3b82f6 !important;
+}
+
+html.dark .fused-location-btn.active-location {
+    color: #3b82f6 !important;
+}
+
+.fused-search-input::placeholder {
+    color: rgba(0, 0, 0, 0.4) !important;
+    font-weight: 300 !important;
+}
+
+html.dark .fused-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+    font-weight: 300 !important;
+}
+
+/* Fused Divider Line */
+.fused-divider {
+    width: 1px !important;
+    height: 18px !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    margin: 0 8px !important;
+}
+
+html.dark .fused-divider {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Help Info button (inside capsule) */
+#btn-map-info-help.fused-help-btn {
+    position: static !important;
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
+    max-width: 26px !important;
+    max-height: 26px !important;
+    margin-right: 6px !important;
+    box-shadow: none !important;
+    display: flex !important;
+}
+
+/* Segment Filter Button inside capsule */
+#btn-segment-filter.fused-filter-btn {
+    position: static !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
+    box-shadow: none !important;
+    border: none !important;
+    background-color: transparent !important;
+    display: flex !important;
+}
+
+#btn-segment-filter.fused-filter-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+html.dark #btn-segment-filter.fused-filter-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+#btn-segment-filter.fused-filter-btn.active-filter-circle {
+    background-color: #308A5E !important; /* Unified brand green color instead of indigo */
+    color: #ffffff !important;
+    border-radius: 50% !important;
+}
+
+html.dark #btn-segment-filter.fused-filter-btn.active-filter-circle {
+    background-color: #82b995 !important;
+    color: #111814 !important;
+}
+
+/* Suggestions Box overlay style */
+.fused-suggestions-box {
+    margin-top: 8px !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+    padding: 6px !important;
+    max-height: 240px !important;
+    overflow-y: auto !important;
+    width: 100% !important;
+}
+
+html.dark .fused-suggestions-box {
+    background-color: rgba(24, 32, 26, 0.95) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4) !important;
+}
+
+#meetup-map-close-btn {
+    position: absolute !important;
+    top: 16px !important;
+    right: 16px !important;
+    z-index: 3000 !important;
+}
+
+.native-app-env #meetup-map-close-btn {
+    top: calc(16px + env(safe-area-inset-top)) !important;
+}
+
+/* Music Guidance Banner Styling */
+.music-guidance-banner {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 12px !important;
+    margin-bottom: 16px !important;
+    border-radius: var(--radius-lg) !important;
+    font-size: var(--font-xs) !important;
+    text-align: left !important;
+    line-height: 1.4 !important;
+    user-select: none !important;
+    background-color: rgba(48, 138, 94, 0.08) !important;
+    border: 1px solid rgba(48, 138, 94, 0.2) !important;
+    color: var(--forest-green) !important;
+}
+
+html.dark .music-guidance-banner {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #a0cfa5 !important;
 }
 </style>
     <!-- Tailwind Configuration (removed - runtime replaced with pre-compiled CSS) -->
@@ -9546,6 +10449,9 @@ html.dark .location-icon-container {
                 <!-- COMMUNITY EVENT DETAIL VIEW -->
                 <!-- ==================================================== -->
                 <section id="view-event_detail" class="screen-view flex-grow overflow-y-auto pb-32 sm:pb-16">
+                    <button id="event-detail-back-btn" class="nav-close-btn absolute cursor-pointer z-50 flex items-center justify-center" onclick="exitEventDetail()" title="Go Back">
+                        <span class="material-symbols-outlined text-lg">arrow_back</span>
+                    </button>
                     <div id="event-detail-hero-container" class="relative h-[330px] w-full flex-shrink-0 overflow-hidden">
                         <!-- Carousel Scroll Wrapper -->
                         <div id="event-detail-carousel" class="w-full h-full flex overflow-x-auto scroll-snap-x scrollbar-none" style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
@@ -14900,7 +15806,8 @@ html.dark .location-icon-container {
 //# sourceMappingURL=leaflet.js.map</script>
     
     <!-- Application Logic Javascript -->
-    <script>window.isAppStartup = true;
+    <script>
+window.isAppStartup = true;
 // Safe safeLocalStorage wrapper to prevent SecurityErrors under file:// protocol on iOS WKWebView
 const safeLocalStorage = (function() {
     const memoryStore = {};
@@ -16005,8 +16912,50 @@ const SEARCH_SYNONYMS = {
     "health": ["health", "wellness", "yoga", "meditation", "mindfulness", "stretching", "breathing", "relaxation", "anxiety", "stress", "sleep", "massage", "aromatherapy", "oils", "spa"],
     "clothing": ["clothing", "apparel", "wear", "sewing", "hem", "hemming", "alteration", "mend", "mending", "patch", "zipper", "knitting", "wool", "beanie", "boots", "shoes", "leather"],
     "kids": ["kids", "children", "baby", "toddler", "maternity", "toys", "lego", "puzzles", "jigsaw", "books", "board games", "playdate", "stroller"],
-    "camping": ["camping", "tent", "outdoor", "sleeping bag", "air mattress", "mattress", "hiking", "gear", "cargo bike", "bicycle", "bike"]
+    "camping": ["camping", "tent", "outdoor", "sleeping bag", "air mattress", "mattress", "hiking", "gear", "cargo bike", "bicycle", "bike"],
+    "music": ["music", "musical", "instrument", "instruments", "guitar", "gitar", "acoustic", "electric", "bass", "piano", "keyboard", "lessons", "tutoring", "vocal", "singing", "voice", "song", "tutor", "violin", "flute", "drums", "drum", "jamming", "jams", "band", "chord", "chords", "harmony", "melody"],
+    "guitar": ["guitar", "gitar", "acoustic", "electric", "bass", "strings", "strumming", "chords", "instrument", "instruments", "music", "musical"],
+    "piano": ["piano", "keyboard", "synth", "synthesizer", "keys", "pianist", "instrument", "instruments", "music", "musical"],
+    "violin": ["violin", "fiddle", "viola", "cello", "strings", "instrument", "instruments", "music", "musical"]
 };
+
+const MUSICAL_INSTRUMENTS = [
+    "guitar", "gitar", "piano", "keyboard", "drums", "drum", "violin", "viola", "cello", "flute",
+    "clarinet", "oboe", "bassoon", "saxophone", "sax", "trumpet", "trombone", "tuba", "french horn",
+    "ukulele", "banjo", "mandolin", "harp", "synthesizer", "synth", "accordion", "harmonica", "xylophone",
+    "tambourine", "recorder", "percussion", "vocals", "singer", "vocal", "singing", "music", "musical",
+    "instrument", "instruments", "jams", "jamming", "song", "lyrics", "acoustic", "electric guitar", "bass guitar"
+];
+
+function getLevenshteinDistance(s1, s2) {
+    if (!s1 || !s2) return (s1 || s2).length;
+    if (s1.length < s2.length) return getLevenshteinDistance(s2, s1);
+    let prevRow = Array.from({length: s2.length + 1}, (_, i) => i);
+    for (let i = 0; i < s1.length; i++) {
+        let currRow = [i + 1];
+        for (let j = 0; j < s2.length; j++) {
+            let insertions = prevRow[j + 1] + 1;
+            let deletions = currRow[j] + 1;
+            let substitutions = prevRow[j] + (s1[i] === s2[j] ? 0 : 1);
+            currRow.push(Math.min(insertions, deletions, substitutions));
+        }
+        prevRow = currRow;
+    }
+    return prevRow[s2.length];
+}
+
+function isMusicalQuery(query) {
+    if (!query) return false;
+    const words = query.toLowerCase().split(/[\s,.-]+/).filter(w => w.length > 0);
+    return words.some(word => {
+        return MUSICAL_INSTRUMENTS.some(inst => {
+            if (inst.startsWith(word) || word.startsWith(inst)) return true;
+            if (word.length >= 4 && getLevenshteinDistance(word, inst) <= 1) return true;
+            if (word.length >= 6 && getLevenshteinDistance(word, inst) <= 2) return true;
+            return false;
+        });
+    });
+}
 
 function fuzzySearchMatch(query, ...fields) {
     if (!query) return true;
@@ -16016,10 +16965,20 @@ function fuzzySearchMatch(query, ...fields) {
     
     const targetText = fields.filter(f => typeof f === 'string').join(' ').toLowerCase();
     
+    // Check musical query and musical target condition
+    const isMusicalQ = isMusicalQuery(query);
+    const isMusicalT = MUSICAL_INSTRUMENTS.some(inst => targetText.includes(inst));
+    if (isMusicalQ && isMusicalT) {
+        return true;
+    }
+    
     function getSynonyms(word) {
         const result = new Set([word]);
         for (const [key, list] of Object.entries(SEARCH_SYNONYMS)) {
-            if (key.includes(word) || word.includes(key) || list.some(item => item.includes(word) || word.includes(item))) {
+            const matchKey = key.includes(word) || word.includes(key) || (word.length >= 4 && getLevenshteinDistance(word, key) <= 1);
+            const matchList = list.some(item => item.includes(word) || word.includes(item) || (word.length >= 4 && getLevenshteinDistance(word, item) <= 1));
+            
+            if (matchKey || matchList) {
                 list.forEach(syn => result.add(syn));
                 result.add(key);
             }
@@ -16029,10 +16988,57 @@ function fuzzySearchMatch(query, ...fields) {
     
     return words.every(word => {
         const terms = getSynonyms(word);
-        return terms.some(term => targetText.includes(term));
+        const targetWords = targetText.split(/[\s,.-]+/).filter(w => w.length > 0);
+        
+        return terms.some(term => {
+            return targetWords.some(tWord => {
+                if (tWord.includes(term) || term.includes(tWord)) return true;
+                const distance = getLevenshteinDistance(term, tWord);
+                if (term.length >= 4 && distance <= 1) return true;
+                if (term.length >= 6 && distance <= 2) return true;
+                return false;
+            });
+        });
     });
 }
 window.fuzzySearchMatch = fuzzySearchMatch;
+
+function escapeHtml(text) {
+    if (!text) return "";
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function renderMusicGuidanceBanner(container, query) {
+    if (!container) return;
+    const bannerId = `${container.id}-music-guidance`;
+    const existing = document.getElementById(bannerId);
+    if (existing) existing.remove();
+
+    if (!query) return;
+    const isMusical = isMusicalQuery(query);
+    if (!isMusical) return;
+
+    const banner = document.createElement('div');
+    banner.id = bannerId;
+    banner.className = "music-guidance-banner bg-forest-green/10 dark:bg-white/5 border border-forest-green/20 dark:border-white/10 rounded-2xl p-3 mb-4 flex items-center gap-3 text-xs text-forest-green dark:text-[#a0cfa5] animate-fade-in text-left select-none";
+    banner.innerHTML = `
+        <span class="material-symbols-outlined text-base flex-shrink-0 animate-bounce text-rose-500">music_note</span>
+        <div class="flex-grow leading-normal">
+            <span class="font-bold">Music Swap Guide:</span> Searching for <strong>"${escapeHtml(query)}"</strong>? We're showing results for that instrument, plus other instruments, music lessons, and gear in your neighborhood!
+        </div>
+    `;
+    if (container.firstChild) {
+        container.insertBefore(banner, container.firstChild);
+    } else {
+        container.appendChild(banner);
+    }
+}
+
 
 // Loading Screen Icons for Shuffling Animation
 const SHUFFLE_ICONS = [
@@ -17975,7 +18981,11 @@ function updateTriggerIconState(iconEl, isX) {
     if (isX) {
         iconEl.innerHTML = 'close';
     } else {
-        iconEl.innerHTML = 'apps';
+        if (iconEl.id === 'chat-segment-trigger-icon') {
+            iconEl.innerHTML = 'apps';
+        } else {
+            iconEl.innerHTML = 'menu';
+        }
     }
 }
 window.updateTriggerIconState = updateTriggerIconState;
@@ -18145,8 +19155,6 @@ function showView(viewId, mode) {
     }
     collapseVillageMenu();
     
-    // Redirect public website landing page to welcome/village in native app wrapper
-    // Ensure show-simulator class is active on both html and body to lock application inside the iPhone 16 mockup frame
     const isNative = window.isNativeApp === true || document.documentElement.classList.contains('native-app-env') || (document.body && document.body.classList.contains('native-app'));
     console.log("[NATIVE CHECK] isNative:", isNative, "documentElement classes:", document.documentElement.className, "body classes:", document.body ? document.body.className : "no body");
     if (!isNative) {
@@ -18608,6 +19616,12 @@ function exitCreateEvent() {
     showView(origin);
 }
 window.exitCreateEvent = exitCreateEvent;
+
+function exitEventDetail() {
+    if (typeof playSound === 'function') playSound('click');
+    showView(state.lastEventView || 'events_hub');
+}
+window.exitEventDetail = exitEventDetail;
 
 function renderHomeDashboard() {
     const user = state.currentUser || { firstName: 'Lily', lastName: 'Kaufmann', displayName: 'Lily Kaufmann', location: 'Mount Pleasant', avatar: DEFAULT_AVATAR };
@@ -19549,6 +20563,7 @@ function updateEventPhotoPlaceholder() {
 }
 window.updateEventPhotoPlaceholder = updateEventPhotoPlaceholder;
 
+// EVENT STOCK PHOTO DICTIONARY
 const EVENT_STOCK_PHOTOS = {
     'Food & Drink': [
         'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=300&auto=format&fit=crop',
@@ -20807,12 +21822,18 @@ function renderEventsList() {
     ].filter(el => el !== null);
     
     if (containers.length === 0) return;
+
+    const searchInput = document.getElementById('village-events-search-input') || document.getElementById('village-search-input');
+    const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
     
     containers.forEach(container => {
         container.innerHTML = "";
 
+        // Render music guidance banner if query is musical
+        renderMusicGuidanceBanner(container, query);
+
         if (!state.events || state.events.length === 0) {
-            container.innerHTML = `
+            container.innerHTML += `
                 <div class="text-center py-12 bg-white rounded-2xl border border-outline-variant/20 p-6">
                     <span class="material-symbols-outlined text-4xl text-forest-green/40 mb-2 font-light">event_busy</span>
                     <p class="text-xs text-on-surface-variant">No community events hosted yet.</p>
@@ -20855,17 +21876,21 @@ function renderEventsList() {
             if (hostObj && hostObj.suspended) return false;
             
             // Distance filter check
-            return evt.distance <= maxRadius;
+            if (evt.distance > maxRadius) return false;
+
+            // Search filter check
+            return fuzzySearchMatch(query, evt.title, evt.desc, evt.type, evt.location, evt.host);
         });
 
         if (filteredEvents.length === 0) {
-            container.innerHTML = `
-                <div class="text-center py-12 bg-white rounded-2xl border border-outline-variant/20 p-6">
-                    <span class="material-symbols-outlined text-4xl text-forest-green/40 mb-2 font-light">event_busy</span>
-                    <p class="text-xs text-on-surface-variant">No community events hosted yet.</p>
-                    <p class="text-[10px] text-outline mt-1">Be the first to kickstart an event in your neighborhood!</p>
-                </div>
+            // Note: Use container.insertAdjacentHTML or innerHTML addition to preserve the music banner if present
+            const emptyDiv = document.createElement('div');
+            emptyDiv.className = "text-center py-12 bg-white rounded-2xl border border-outline-variant/20 p-6";
+            emptyDiv.innerHTML = `
+                <span class="material-symbols-outlined text-4xl text-forest-green/40 mb-2 font-light">event_busy</span>
+                <p class="text-xs text-on-surface-variant">No matching events found.</p>
             `;
+            container.appendChild(emptyDiv);
             return;
         }
 
@@ -20886,7 +21911,7 @@ function renderEventsList() {
                 openEventDetail(evt.id);
             };
 
-            const isUserHost = evt.host === 'me' || evt.host === 'Lily Kaufmann' || (state.currentUser && evt.host === (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`));
+            const isUserHost = evt.host === 'me' || evt.host === 'Lily Kaufmann' || (state.currentUser && evt.host === (state.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`));
             const distanceDisplay = isUserHost ? '0 km' : `${formatRadiusValue(evt.distance)} away`;
 
             card.innerHTML = `
@@ -20930,8 +21955,14 @@ function renderBulletinsList() {
     
     container.innerHTML = "";
 
+    const searchInput = document.getElementById('village-bulletins-search-input');
+    const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+
+    // Prepend music guidance banner if query is musical
+    renderMusicGuidanceBanner(container, query);
+
     if (!state.bulletins || state.bulletins.length === 0) {
-        container.innerHTML = `
+        container.innerHTML += `
             <div class="text-center py-12 bg-white rounded-2xl border border-outline-variant/20 p-6">
                 <span class="material-symbols-outlined text-4xl text-forest-green/40 mb-2 font-light">campaign</span>
                 <p class="text-xs text-on-surface-variant">No announcements posted yet.</p>
@@ -20941,7 +21972,22 @@ function renderBulletinsList() {
         return;
     }
 
-    state.bulletins.forEach(bulletin => {
+    const filteredBulletins = state.bulletins.filter(bulletin => {
+        return fuzzySearchMatch(query, bulletin.title, bulletin.desc, bulletin.type, bulletin.author);
+    });
+
+    if (filteredBulletins.length === 0) {
+        const emptyDiv = document.createElement('div');
+        emptyDiv.className = "text-center py-12 bg-white rounded-2xl border border-outline-variant/20 p-6";
+        emptyDiv.innerHTML = `
+            <span class="material-symbols-outlined text-4xl text-forest-green/40 mb-2 font-light">campaign</span>
+            <p class="text-xs text-on-surface-variant">No matching announcements found.</p>
+        `;
+        container.appendChild(emptyDiv);
+        return;
+    }
+
+    filteredBulletins.forEach(bulletin => {
         const card = document.createElement('div');
         card.className = "bg-white border border-outline-variant/30 hover:border-forest-green cursor-pointer transition-all duration-200 rounded-2xl p-4.5 shadow-sm space-y-3 relative text-left active:scale-[0.99]";
         card.onclick = () => openBulletinDetailModal(bulletin.id);
@@ -24767,13 +25813,6 @@ function updateCreativeDashboard() {
         const needs = state.userNeeds || [];
         const events = (state.events || []).filter(evt => evt.host === 'me' || evt.host === 'Lily Kaufmann');
 
-        // Update avatar image in the Creative Hub circle
-        const user = state.currentUser || { firstName: 'Lily', lastName: 'Kaufmann', email: 'lily@community.com', location: 'Oakwood Village', avatar: DEFAULT_AVATAR };
-        const creativeHubAvatarEl = document.getElementById('creative-hub-avatar');
-        if (creativeHubAvatarEl) {
-            creativeHubAvatarEl.src = user.avatar || DEFAULT_AVATAR;
-        }
-
         // Update counts
         const offeringsCountEl = document.getElementById('creative-stat-offerings');
         if (offeringsCountEl) {
@@ -26661,6 +27700,19 @@ function renderChatTradeDrawer(conv) {
             `;
         } else {
             actionCenter.innerHTML = `
+                <!-- Quick templates horizontal-scroll bar -->
+                <div class="flex gap-2 overflow-x-auto hide-scrollbar select-none" id="chat-quick-templates">
+                    ${isKarmaGift ? `
+                    <button class="bg-white dark:bg-white/5 hover:bg-forest-green/10 text-forest-green dark:text-warm-cream text-[10.5px] font-extrabold px-3 py-1.5 rounded-full border border-outline-variant/20 whitespace-nowrap active:scale-95 transition-all" onclick="sendTemplateMessage('Thank you so much! I\\\'m so excited! 💛')">Thank you so much! 💛</button>
+                    <button class="bg-white dark:bg-white/5 hover:bg-forest-green/10 text-forest-green dark:text-warm-cream text-[10.5px] font-extrabold px-3 py-1.5 rounded-full border border-outline-variant/20 whitespace-nowrap active:scale-95 transition-all" onclick="sendTemplateMessage('I\\\'m so excited! This would be wonderful. 😊')">I'm so excited! 😊</button>
+                    <button class="bg-white dark:bg-white/5 hover:bg-forest-green/10 text-forest-green dark:text-warm-cream text-[10.5px] font-extrabold px-3 py-1.5 rounded-full border border-outline-variant/20 whitespace-nowrap active:scale-95 transition-all" onclick="sendTemplateMessage('Where is a good place for us to meet up? 📍')">Where to meet? 📍</button>
+                    ` : `
+                    <button class="bg-white dark:bg-white/5 hover:bg-forest-green/10 text-forest-green dark:text-warm-cream text-[10.5px] font-extrabold px-3 py-1.5 rounded-full border border-outline-variant/20 whitespace-nowrap active:scale-95 transition-all" onclick="sendTemplateMessage('I\\\'m super interested! Let\\\'s swap.')">Interested!</button>
+                    <button class="bg-white dark:bg-white/5 hover:bg-forest-green/10 text-forest-green dark:text-warm-cream text-[10.5px] font-extrabold px-3 py-1.5 rounded-full border border-outline-variant/20 whitespace-nowrap active:scale-95 transition-all" onclick="sendTemplateMessage('When and where are you free to meet up for the trade?')">When to meet?</button>
+                    <button class="bg-white dark:bg-white/5 hover:bg-forest-green/10 text-forest-green dark:text-warm-cream text-[10.5px] font-extrabold px-3 py-1.5 rounded-full border border-outline-variant/20 whitespace-nowrap active:scale-95 transition-all" onclick="sendTemplateMessage('Hi there! Is this still available?')">Still available?</button>
+                    `}
+                </div>
+
                 <!-- Keyboard text input row -->
                 <div class="flex items-center gap-2 w-full">
                     <input type="file" id="chat-photo-input" accept="image/*" class="hidden" onchange="handleSendChatPhoto(this)"/>
@@ -29997,8 +31049,23 @@ function renderVillageListView() {
     if (!listInner) return;
     listInner.innerHTML = "";
 
-    const searchInput = document.getElementById('village-list-search-input'); // Synced text input
+    const searchInput = document.getElementById('village-list-search-input') || document.getElementById('village-search-input'); // Synced text input
     const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+
+    // Render music guidance banner if query is musical
+    renderMusicGuidanceBanner(listInner, query);
+
+    // Event delegation setup (Fix 9)
+    if (!listInner.getAttribute('data-delegated')) {
+        listInner.setAttribute('data-delegated', 'true');
+        listInner.addEventListener('click', (e) => {
+            const card = e.target.closest('[data-action="view-detail"]');
+            if (card) {
+                const id = card.getAttribute('data-id');
+                openMapItemDetail(id);
+            }
+        });
+    }
 
     const maxRadius = listSlider ? radiusIndexToKm(listSlider.value) : (state.stats.radius || 5);
 
@@ -30048,11 +31115,7 @@ function renderVillageListView() {
 
     // Filter
     let filteredListings = listingsPool.filter(item => {
-        const matchesSearch = !query || 
-                              item.name.toLowerCase().includes(query) || 
-                              item.title.toLowerCase().includes(query) || 
-                              item.desc.toLowerCase().includes(query) || 
-                              item.category.toLowerCase().includes(query);
+        const matchesSearch = fuzzySearchMatch(query, item.name, item.title, item.desc, item.category);
                               
         let matchesCategory = false;
         if (!activeCategoryFilter) {
@@ -30160,8 +31223,23 @@ function renderNeedsBoardView() {
     if (needsSlider) needsSlider.value = radiusKmToIndex(radiusVal);
     if (needsLabel) needsLabel.innerText = formatRadiusValue(radiusVal);
 
-    const searchInput = document.getElementById('village-needs-search-input'); // Synced text input
+    const searchInput = document.getElementById('village-needs-search-input') || document.getElementById('village-search-input'); // Synced text input
     const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+
+    // Render music guidance banner if query is musical
+    renderMusicGuidanceBanner(listContainer, query);
+
+    // Event delegation setup (Fix 9)
+    if (!listContainer.getAttribute('data-delegated')) {
+        listContainer.setAttribute('data-delegated', 'true');
+        listContainer.addEventListener('click', (e) => {
+            const card = e.target.closest('[data-action="view-detail"]');
+            if (card) {
+                const id = card.getAttribute('data-id');
+                openMapItemDetail(id);
+            }
+        });
+    }
 
     const maxRadius = needsSlider ? radiusIndexToKm(needsSlider.value) : (state.stats.radius || 5);
 
@@ -30215,11 +31293,7 @@ function renderNeedsBoardView() {
 
     // Filter
     let filteredNeeds = needsPool.filter(need => {
-        const matchesSearch = !query ||
-                              need.neighborName.toLowerCase().includes(query) ||
-                              need.needTitle.toLowerCase().includes(query) ||
-                              need.needDesc.toLowerCase().includes(query) ||
-                              need.category.toLowerCase().includes(query);
+        const matchesSearch = fuzzySearchMatch(query, need.neighborName, need.needTitle, need.needDesc, need.category);
                               
         const matchesCategory = !activeCategoryFilter || isCategoryMatchHelper(need.category, activeCategoryFilter);
         
@@ -32144,11 +33218,7 @@ function applyMapFiltering() {
             const eventId = m.name.replace('evt_', '');
             const event = state.events ? state.events.find(e => e.id === eventId) : null;
             if (event) {
-                matchSearch = !query || 
-                              event.title.toLowerCase().includes(query) || 
-                              event.desc.toLowerCase().includes(query) || 
-                              event.type.toLowerCase().includes(query) || 
-                              event.location.toLowerCase().includes(query);
+                matchSearch = fuzzySearchMatch(query, event.title, event.desc, event.type, event.location, event.host);
                 itemCategory = event.type;
             }
         } else if (m.name.startsWith('need_')) {
@@ -32156,21 +33226,14 @@ function applyMapFiltering() {
             const needId = m.name.replace('need_', '');
             const need = state.needsBoard ? state.needsBoard.find(n => n.id === needId) : null;
             if (need) {
-                matchSearch = !query || 
-                              need.needTitle.toLowerCase().includes(query) || 
-                              need.needDesc.toLowerCase().includes(query) || 
-                              need.category.toLowerCase().includes(query) ||
-                              need.neighborName.toLowerCase().includes(query);
+                matchSearch = fuzzySearchMatch(query, need.needTitle, need.needDesc, need.category, need.neighborName);
                 itemCategory = need.category;
             }
         } else if (m.name.startsWith('off_') || m.name === '1' || m.name === '2') {
             itemType = 'offer';
             const offer = state.userOfferings.find(o => o.id === m.name);
             if (offer) {
-                matchSearch = !query || 
-                              offer.title.toLowerCase().includes(query) || 
-                              offer.desc.toLowerCase().includes(query) || 
-                              offer.category.toLowerCase().includes(query);
+                matchSearch = fuzzySearchMatch(query, offer.title, offer.desc, offer.category);
                 itemCategory = offer.category;
             }
         } else {
@@ -32179,11 +33242,7 @@ function applyMapFiltering() {
             if (state.neighbors && state.neighbors.hasOwnProperty && state.neighbors.hasOwnProperty(m.name)) {
                 const neighbor = state.neighbors[m.name];
                 if (neighbor) {
-                    matchSearch = !query || 
-                                  neighbor.name.toLowerCase().includes(query) || 
-                                  neighbor.offerTitle.toLowerCase().includes(query) || 
-                                  neighbor.offerDesc.toLowerCase().includes(query) || 
-                                  neighbor.category.toLowerCase().includes(query);
+                    matchSearch = fuzzySearchMatch(query, neighbor.name, neighbor.offerTitle, neighbor.offerDesc, neighbor.category);
                     itemCategory = neighbor.category;
                 }
             }
@@ -37028,7 +38087,9 @@ function applyFinalCoords(lat, lng, mode) {
         if (textCloud) {
             textCloud.innerHTML = 'Location Permission Enabled <span style="margin-left: 8px; font-weight: bold;">✓</span>';
         }
-        triggerSuccessConfetti();
+        if (mode !== 'precise') {
+            triggerSuccessConfetti();
+        }
         
         // Auto transition to manual neighborhood selection view after brief delay
         setTimeout(() => {
@@ -39183,6 +40244,8 @@ function syncVillageSearch(val) {
     applyMapFiltering();
     renderVillageListView();
     renderNeedsBoardView();
+    renderEventsList();
+    renderBulletinsList();
 }
 window.syncVillageSearch = syncVillageSearch;
 
@@ -39202,6 +40265,8 @@ document.addEventListener('input', function(e) {
         });
         renderVillageListView();
         renderNeedsBoardView();
+        renderEventsList();
+        renderBulletinsList();
         updateSearchSuggestions(val);
     }
 });
@@ -39963,13 +41028,25 @@ function updateSearchSuggestions(query) {
 
     let items = [];
 
+    // Prepend special musical suggestion card if the query is musical
+    if (isMusicalQuery(q)) {
+        items.push({
+            id: 'special_music_card',
+            title: '🎵 Explore Community Music Swaps',
+            subtitle: `View music instruments, lessons, and gear for "${query}"`,
+            icon: 'music_note',
+            lat: null,
+            lng: null,
+            isSpecial: true,
+            queryVal: query
+        });
+    }
+
     // Add matching offerings from neighbors
     Object.keys(state.neighbors).forEach(key => {
         const neighbor = state.neighbors[key];
         if (neighbor && !neighbor.suspended && !(state.suspendedUsers && state.suspendedUsers.includes(key)) && !(state.blockedUsers && state.blockedUsers.includes(key))) {
-            const matchesTitle = neighbor.offerTitle && neighbor.offerTitle.toLowerCase().includes(q);
-            const matchesCategory = neighbor.category && neighbor.category.toLowerCase().includes(q);
-            if (matchesTitle || matchesCategory) {
+            if (fuzzySearchMatch(q, neighbor.offerTitle, neighbor.category, neighbor.name)) {
                 items.push({
                     id: key,
                     title: neighbor.offerTitle,
@@ -39985,9 +41062,7 @@ function updateSearchSuggestions(query) {
     // Add matching events
     state.events.forEach(evt => {
         if (!(state.suspendedUsers && state.suspendedUsers.includes(evt.host))) {
-            const matchesTitle = evt.title && evt.title.toLowerCase().includes(q);
-            const matchesDesc = evt.desc && evt.desc.toLowerCase().includes(q);
-            if (matchesTitle || matchesDesc) {
+            if (fuzzySearchMatch(q, evt.title, evt.desc, evt.type, evt.host || '')) {
                 items.push({
                     id: `evt_${evt.id}`,
                     title: evt.title,
@@ -40011,7 +41086,11 @@ function updateSearchSuggestions(query) {
         const div = document.createElement('div');
         div.className = "flex items-center gap-3 px-3.5 py-2.5 hover:bg-forest-green/5 dark:hover:bg-white/5 rounded-xl cursor-pointer active:scale-[0.98] transition-transform select-none";
         div.onclick = () => {
-            selectSearchSuggestion(item.id, item.title, item.lat, item.lng);
+            if (item.isSpecial) {
+                selectSearchSuggestion(item.id, item.queryVal, null, null);
+            } else {
+                selectSearchSuggestion(item.id, item.title, item.lat, item.lng);
+            }
         };
         div.innerHTML = `
             <span class="material-symbols-outlined text-forest-green dark:text-[#a0cfa5] text-base">${item.icon}</span>
@@ -40045,16 +41124,30 @@ function selectSearchSuggestion(id, title, lat, lng) {
     // Hide suggestions container with animation
     adjustSearchSuggestionsVisibility(false);
 
-    // Refresh map markers filtering
-    applyMapFiltering();
+    if (id === 'special_music_card') {
+        // Refresh all list views and map markers filtering
+        applyMapFiltering();
+        renderVillageListView();
+        renderNeedsBoardView();
+        renderEventsList();
+        renderBulletinsList();
 
-    // Center map on location
-    if (leafletMap) {
-        leafletMap.setView([lat, lng], 15);
+        // Switch to Offerings list view segment to show results and the music guidance banner
+        switchVillageSegment('list');
+    } else {
+        // Refresh map markers filtering
+        applyMapFiltering();
+
+        // Center map on location
+        if (leafletMap && lat !== null && lng !== null) {
+            leafletMap.setView([lat, lng], 15);
+        }
+
+        // Open detail peek card
+        if (id) {
+            openMapItemPeek(id);
+        }
     }
-
-    // Open detail peek card
-    openMapItemPeek(id);
 }
 window.selectSearchSuggestion = selectSearchSuggestion;
 
@@ -41500,7 +42593,6 @@ window.requestGPSCentering = function() {
         // Re-plot markers to adjust distance calculations
         plotMapMarkersOnly();
         
-        triggerSuccessConfetti();
         playSound('success');
     }, (error) => {
         if (icon) {
@@ -43285,6 +44377,7 @@ window.submitNeighborReview = function() {
     window.switchChatSegment('active');
 };
 
-// Global scope ends</script>
+// Global scope ends
+</script>
 </body>
 </html>

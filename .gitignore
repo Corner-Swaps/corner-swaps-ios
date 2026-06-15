@@ -9,4 +9,6 @@ DerivedData/
 *.swp
 *.lock
 build_output/
+build.log
+
 

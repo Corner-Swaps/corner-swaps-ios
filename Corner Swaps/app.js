@@ -1103,8 +1103,50 @@ const SEARCH_SYNONYMS = {
     "health": ["health", "wellness", "yoga", "meditation", "mindfulness", "stretching", "breathing", "relaxation", "anxiety", "stress", "sleep", "massage", "aromatherapy", "oils", "spa"],
     "clothing": ["clothing", "apparel", "wear", "sewing", "hem", "hemming", "alteration", "mend", "mending", "patch", "zipper", "knitting", "wool", "beanie", "boots", "shoes", "leather"],
     "kids": ["kids", "children", "baby", "toddler", "maternity", "toys", "lego", "puzzles", "jigsaw", "books", "board games", "playdate", "stroller"],
-    "camping": ["camping", "tent", "outdoor", "sleeping bag", "air mattress", "mattress", "hiking", "gear", "cargo bike", "bicycle", "bike"]
+    "camping": ["camping", "tent", "outdoor", "sleeping bag", "air mattress", "mattress", "hiking", "gear", "cargo bike", "bicycle", "bike"],
+    "music": ["music", "musical", "instrument", "instruments", "guitar", "gitar", "acoustic", "electric", "bass", "piano", "keyboard", "lessons", "tutoring", "vocal", "singing", "voice", "song", "tutor", "violin", "flute", "drums", "drum", "jamming", "jams", "band", "chord", "chords", "harmony", "melody"],
+    "guitar": ["guitar", "gitar", "acoustic", "electric", "bass", "strings", "strumming", "chords", "instrument", "instruments", "music", "musical"],
+    "piano": ["piano", "keyboard", "synth", "synthesizer", "keys", "pianist", "instrument", "instruments", "music", "musical"],
+    "violin": ["violin", "fiddle", "viola", "cello", "strings", "instrument", "instruments", "music", "musical"]
 };
+
+const MUSICAL_INSTRUMENTS = [
+    "guitar", "gitar", "piano", "keyboard", "drums", "drum", "violin", "viola", "cello", "flute",
+    "clarinet", "oboe", "bassoon", "saxophone", "sax", "trumpet", "trombone", "tuba", "french horn",
+    "ukulele", "banjo", "mandolin", "harp", "synthesizer", "synth", "accordion", "harmonica", "xylophone",
+    "tambourine", "recorder", "percussion", "vocals", "singer", "vocal", "singing", "music", "musical",
+    "instrument", "instruments", "jams", "jamming", "song", "lyrics", "acoustic", "electric guitar", "bass guitar"
+];
+
+function getLevenshteinDistance(s1, s2) {
+    if (!s1 || !s2) return (s1 || s2).length;
+    if (s1.length < s2.length) return getLevenshteinDistance(s2, s1);
+    let prevRow = Array.from({length: s2.length + 1}, (_, i) => i);
+    for (let i = 0; i < s1.length; i++) {
+        let currRow = [i + 1];
+        for (let j = 0; j < s2.length; j++) {
+            let insertions = prevRow[j + 1] + 1;
+            let deletions = currRow[j] + 1;
+            let substitutions = prevRow[j] + (s1[i] === s2[j] ? 0 : 1);
+            currRow.push(Math.min(insertions, deletions, substitutions));
+        }
+        prevRow = currRow;
+    }
+    return prevRow[s2.length];
+}
+
+function isMusicalQuery(query) {
+    if (!query) return false;
+    const words = query.toLowerCase().split(/[\s,.-]+/).filter(w => w.length > 0);
+    return words.some(word => {
+        return MUSICAL_INSTRUMENTS.some(inst => {
+            if (inst.startsWith(word) || word.startsWith(inst)) return true;
+            if (word.length >= 4 && getLevenshteinDistance(word, inst) <= 1) return true;
+            if (word.length >= 6 && getLevenshteinDistance(word, inst) <= 2) return true;
+            return false;
+        });
+    });
+}
 
 function fuzzySearchMatch(query, ...fields) {
     if (!query) return true;
@@ -1114,10 +1156,20 @@ function fuzzySearchMatch(query, ...fields) {
     
     const targetText = fields.filter(f => typeof f === 'string').join(' ').toLowerCase();
     
+    // Check musical query and musical target condition
+    const isMusicalQ = isMusicalQuery(query);
+    const isMusicalT = MUSICAL_INSTRUMENTS.some(inst => targetText.includes(inst));
+    if (isMusicalQ && isMusicalT) {
+        return true;
+    }
+    
     function getSynonyms(word) {
         const result = new Set([word]);
         for (const [key, list] of Object.entries(SEARCH_SYNONYMS)) {
-            if (key.includes(word) || word.includes(key) || list.some(item => item.includes(word) || word.includes(item))) {
+            const matchKey = key.includes(word) || word.includes(key) || (word.length >= 4 && getLevenshteinDistance(word, key) <= 1);
+            const matchList = list.some(item => item.includes(word) || word.includes(item) || (word.length >= 4 && getLevenshteinDistance(word, item) <= 1));
+            
+            if (matchKey || matchList) {
                 list.forEach(syn => result.add(syn));
                 result.add(key);
             }
@@ -1127,10 +1179,57 @@ function fuzzySearchMatch(query, ...fields) {
     
     return words.every(word => {
         const terms = getSynonyms(word);
-        return terms.some(term => targetText.includes(term));
+        const targetWords = targetText.split(/[\s,.-]+/).filter(w => w.length > 0);
+        
+        return terms.some(term => {
+            return targetWords.some(tWord => {
+                if (tWord.includes(term) || term.includes(tWord)) return true;
+                const distance = getLevenshteinDistance(term, tWord);
+                if (term.length >= 4 && distance <= 1) return true;
+                if (term.length >= 6 && distance <= 2) return true;
+                return false;
+            });
+        });
     });
 }
 window.fuzzySearchMatch = fuzzySearchMatch;
+
+function escapeHtml(text) {
+    if (!text) return "";
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function renderMusicGuidanceBanner(container, query) {
+    if (!container) return;
+    const bannerId = `${container.id}-music-guidance`;
+    const existing = document.getElementById(bannerId);
+    if (existing) existing.remove();
+
+    if (!query) return;
+    const isMusical = isMusicalQuery(query);
+    if (!isMusical) return;
+
+    const banner = document.createElement('div');
+    banner.id = bannerId;
+    banner.className = "music-guidance-banner bg-forest-green/10 dark:bg-white/5 border border-forest-green/20 dark:border-white/10 rounded-2xl p-3 mb-4 flex items-center gap-3 text-xs text-forest-green dark:text-[#a0cfa5] animate-fade-in text-left select-none";
+    banner.innerHTML = `
+        <span class="material-symbols-outlined text-base flex-shrink-0 animate-bounce text-rose-500">music_note</span>
+        <div class="flex-grow leading-normal">
+            <span class="font-bold">Music Swap Guide:</span> Searching for <strong>"${escapeHtml(query)}"</strong>? We're showing results for that instrument, plus other instruments, music lessons, and gear in your neighborhood!
+        </div>
+    `;
+    if (container.firstChild) {
+        container.insertBefore(banner, container.firstChild);
+    } else {
+        container.appendChild(banner);
+    }
+}
+
 
 // Loading Screen Icons for Shuffling Animation
 const SHUFFLE_ICONS = [
@@ -3073,7 +3172,11 @@ function updateTriggerIconState(iconEl, isX) {
     if (isX) {
         iconEl.innerHTML = 'close';
     } else {
-        iconEl.innerHTML = 'apps';
+        if (iconEl.id === 'chat-segment-trigger-icon') {
+            iconEl.innerHTML = 'apps';
+        } else {
+            iconEl.innerHTML = 'menu';
+        }
     }
 }
 window.updateTriggerIconState = updateTriggerIconState;
@@ -3704,6 +3807,12 @@ function exitCreateEvent() {
     showView(origin);
 }
 window.exitCreateEvent = exitCreateEvent;
+
+function exitEventDetail() {
+    if (typeof playSound === 'function') playSound('click');
+    showView(state.lastEventView || 'events_hub');
+}
+window.exitEventDetail = exitEventDetail;
 
 function renderHomeDashboard() {
     const user = state.currentUser || { firstName: 'Lily', lastName: 'Kaufmann', displayName: 'Lily Kaufmann', location: 'Mount Pleasant', avatar: DEFAULT_AVATAR };
@@ -5904,12 +6013,18 @@ function renderEventsList() {
     ].filter(el => el !== null);
     
     if (containers.length === 0) return;
+
+    const searchInput = document.getElementById('village-events-search-input') || document.getElementById('village-search-input');
+    const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
     
     containers.forEach(container => {
         container.innerHTML = "";
 
+        // Render music guidance banner if query is musical
+        renderMusicGuidanceBanner(container, query);
+
         if (!state.events || state.events.length === 0) {
-            container.innerHTML = `
+            container.innerHTML += `
                 <div class="text-center py-12 bg-white rounded-2xl border border-outline-variant/20 p-6">
                     <span class="material-symbols-outlined text-4xl text-forest-green/40 mb-2 font-light">event_busy</span>
                     <p class="text-xs text-on-surface-variant">No community events hosted yet.</p>
@@ -5952,17 +6067,21 @@ function renderEventsList() {
             if (hostObj && hostObj.suspended) return false;
             
             // Distance filter check
-            return evt.distance <= maxRadius;
+            if (evt.distance > maxRadius) return false;
+
+            // Search filter check
+            return fuzzySearchMatch(query, evt.title, evt.desc, evt.type, evt.location, evt.host);
         });
 
         if (filteredEvents.length === 0) {
-            container.innerHTML = `
-                <div class="text-center py-12 bg-white rounded-2xl border border-outline-variant/20 p-6">
-                    <span class="material-symbols-outlined text-4xl text-forest-green/40 mb-2 font-light">event_busy</span>
-                    <p class="text-xs text-on-surface-variant">No community events hosted yet.</p>
-                    <p class="text-[10px] text-outline mt-1">Be the first to kickstart an event in your neighborhood!</p>
-                </div>
+            // Note: Use container.insertAdjacentHTML or innerHTML addition to preserve the music banner if present
+            const emptyDiv = document.createElement('div');
+            emptyDiv.className = "text-center py-12 bg-white rounded-2xl border border-outline-variant/20 p-6";
+            emptyDiv.innerHTML = `
+                <span class="material-symbols-outlined text-4xl text-forest-green/40 mb-2 font-light">event_busy</span>
+                <p class="text-xs text-on-surface-variant">No matching events found.</p>
             `;
+            container.appendChild(emptyDiv);
             return;
         }
 
@@ -5983,7 +6102,7 @@ function renderEventsList() {
                 openEventDetail(evt.id);
             };
 
-            const isUserHost = evt.host === 'me' || evt.host === 'Lily Kaufmann' || (state.currentUser && evt.host === (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`));
+            const isUserHost = evt.host === 'me' || evt.host === 'Lily Kaufmann' || (state.currentUser && evt.host === (state.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`));
             const distanceDisplay = isUserHost ? '0 km' : `${formatRadiusValue(evt.distance)} away`;
 
             card.innerHTML = `
@@ -6027,8 +6146,14 @@ function renderBulletinsList() {
     
     container.innerHTML = "";
 
+    const searchInput = document.getElementById('village-bulletins-search-input');
+    const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+
+    // Prepend music guidance banner if query is musical
+    renderMusicGuidanceBanner(container, query);
+
     if (!state.bulletins || state.bulletins.length === 0) {
-        container.innerHTML = `
+        container.innerHTML += `
             <div class="text-center py-12 bg-white rounded-2xl border border-outline-variant/20 p-6">
                 <span class="material-symbols-outlined text-4xl text-forest-green/40 mb-2 font-light">campaign</span>
                 <p class="text-xs text-on-surface-variant">No announcements posted yet.</p>
@@ -6038,7 +6163,22 @@ function renderBulletinsList() {
         return;
     }
 
-    state.bulletins.forEach(bulletin => {
+    const filteredBulletins = state.bulletins.filter(bulletin => {
+        return fuzzySearchMatch(query, bulletin.title, bulletin.desc, bulletin.type, bulletin.author);
+    });
+
+    if (filteredBulletins.length === 0) {
+        const emptyDiv = document.createElement('div');
+        emptyDiv.className = "text-center py-12 bg-white rounded-2xl border border-outline-variant/20 p-6";
+        emptyDiv.innerHTML = `
+            <span class="material-symbols-outlined text-4xl text-forest-green/40 mb-2 font-light">campaign</span>
+            <p class="text-xs text-on-surface-variant">No matching announcements found.</p>
+        `;
+        container.appendChild(emptyDiv);
+        return;
+    }
+
+    filteredBulletins.forEach(bulletin => {
         const card = document.createElement('div');
         card.className = "bg-white border border-outline-variant/30 hover:border-forest-green cursor-pointer transition-all duration-200 rounded-2xl p-4.5 shadow-sm space-y-3 relative text-left active:scale-[0.99]";
         card.onclick = () => openBulletinDetailModal(bulletin.id);
@@ -15100,8 +15240,23 @@ function renderVillageListView() {
     if (!listInner) return;
     listInner.innerHTML = "";
 
-    const searchInput = document.getElementById('village-list-search-input'); // Synced text input
+    const searchInput = document.getElementById('village-list-search-input') || document.getElementById('village-search-input'); // Synced text input
     const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+
+    // Render music guidance banner if query is musical
+    renderMusicGuidanceBanner(listInner, query);
+
+    // Event delegation setup (Fix 9)
+    if (!listInner.getAttribute('data-delegated')) {
+        listInner.setAttribute('data-delegated', 'true');
+        listInner.addEventListener('click', (e) => {
+            const card = e.target.closest('[data-action="view-detail"]');
+            if (card) {
+                const id = card.getAttribute('data-id');
+                openMapItemDetail(id);
+            }
+        });
+    }
 
     const maxRadius = listSlider ? radiusIndexToKm(listSlider.value) : (state.stats.radius || 5);
 
@@ -15151,11 +15306,7 @@ function renderVillageListView() {
 
     // Filter
     let filteredListings = listingsPool.filter(item => {
-        const matchesSearch = !query || 
-                              item.name.toLowerCase().includes(query) || 
-                              item.title.toLowerCase().includes(query) || 
-                              item.desc.toLowerCase().includes(query) || 
-                              item.category.toLowerCase().includes(query);
+        const matchesSearch = fuzzySearchMatch(query, item.name, item.title, item.desc, item.category);
                               
         let matchesCategory = false;
         if (!activeCategoryFilter) {
@@ -15263,8 +15414,23 @@ function renderNeedsBoardView() {
     if (needsSlider) needsSlider.value = radiusKmToIndex(radiusVal);
     if (needsLabel) needsLabel.innerText = formatRadiusValue(radiusVal);
 
-    const searchInput = document.getElementById('village-needs-search-input'); // Synced text input
+    const searchInput = document.getElementById('village-needs-search-input') || document.getElementById('village-search-input'); // Synced text input
     const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+
+    // Render music guidance banner if query is musical
+    renderMusicGuidanceBanner(listContainer, query);
+
+    // Event delegation setup (Fix 9)
+    if (!listContainer.getAttribute('data-delegated')) {
+        listContainer.setAttribute('data-delegated', 'true');
+        listContainer.addEventListener('click', (e) => {
+            const card = e.target.closest('[data-action="view-detail"]');
+            if (card) {
+                const id = card.getAttribute('data-id');
+                openMapItemDetail(id);
+            }
+        });
+    }
 
     const maxRadius = needsSlider ? radiusIndexToKm(needsSlider.value) : (state.stats.radius || 5);
 
@@ -15318,11 +15484,7 @@ function renderNeedsBoardView() {
 
     // Filter
     let filteredNeeds = needsPool.filter(need => {
-        const matchesSearch = !query ||
-                              need.neighborName.toLowerCase().includes(query) ||
-                              need.needTitle.toLowerCase().includes(query) ||
-                              need.needDesc.toLowerCase().includes(query) ||
-                              need.category.toLowerCase().includes(query);
+        const matchesSearch = fuzzySearchMatch(query, need.neighborName, need.needTitle, need.needDesc, need.category);
                               
         const matchesCategory = !activeCategoryFilter || isCategoryMatchHelper(need.category, activeCategoryFilter);
         
@@ -17247,11 +17409,7 @@ function applyMapFiltering() {
             const eventId = m.name.replace('evt_', '');
             const event = state.events ? state.events.find(e => e.id === eventId) : null;
             if (event) {
-                matchSearch = !query || 
-                              event.title.toLowerCase().includes(query) || 
-                              event.desc.toLowerCase().includes(query) || 
-                              event.type.toLowerCase().includes(query) || 
-                              event.location.toLowerCase().includes(query);
+                matchSearch = fuzzySearchMatch(query, event.title, event.desc, event.type, event.location, event.host);
                 itemCategory = event.type;
             }
         } else if (m.name.startsWith('need_')) {
@@ -17259,21 +17417,14 @@ function applyMapFiltering() {
             const needId = m.name.replace('need_', '');
             const need = state.needsBoard ? state.needsBoard.find(n => n.id === needId) : null;
             if (need) {
-                matchSearch = !query || 
-                              need.needTitle.toLowerCase().includes(query) || 
-                              need.needDesc.toLowerCase().includes(query) || 
-                              need.category.toLowerCase().includes(query) ||
-                              need.neighborName.toLowerCase().includes(query);
+                matchSearch = fuzzySearchMatch(query, need.needTitle, need.needDesc, need.category, need.neighborName);
                 itemCategory = need.category;
             }
         } else if (m.name.startsWith('off_') || m.name === '1' || m.name === '2') {
             itemType = 'offer';
             const offer = state.userOfferings.find(o => o.id === m.name);
             if (offer) {
-                matchSearch = !query || 
-                              offer.title.toLowerCase().includes(query) || 
-                              offer.desc.toLowerCase().includes(query) || 
-                              offer.category.toLowerCase().includes(query);
+                matchSearch = fuzzySearchMatch(query, offer.title, offer.desc, offer.category);
                 itemCategory = offer.category;
             }
         } else {
@@ -17282,11 +17433,7 @@ function applyMapFiltering() {
             if (state.neighbors && state.neighbors.hasOwnProperty && state.neighbors.hasOwnProperty(m.name)) {
                 const neighbor = state.neighbors[m.name];
                 if (neighbor) {
-                    matchSearch = !query || 
-                                  neighbor.name.toLowerCase().includes(query) || 
-                                  neighbor.offerTitle.toLowerCase().includes(query) || 
-                                  neighbor.offerDesc.toLowerCase().includes(query) || 
-                                  neighbor.category.toLowerCase().includes(query);
+                    matchSearch = fuzzySearchMatch(query, neighbor.name, neighbor.offerTitle, neighbor.offerDesc, neighbor.category);
                     itemCategory = neighbor.category;
                 }
             }
@@ -24288,6 +24435,8 @@ function syncVillageSearch(val) {
     applyMapFiltering();
     renderVillageListView();
     renderNeedsBoardView();
+    renderEventsList();
+    renderBulletinsList();
 }
 window.syncVillageSearch = syncVillageSearch;
 
@@ -24307,6 +24456,8 @@ document.addEventListener('input', function(e) {
         });
         renderVillageListView();
         renderNeedsBoardView();
+        renderEventsList();
+        renderBulletinsList();
         updateSearchSuggestions(val);
     }
 });
@@ -25068,13 +25219,25 @@ function updateSearchSuggestions(query) {
 
     let items = [];
 
+    // Prepend special musical suggestion card if the query is musical
+    if (isMusicalQuery(q)) {
+        items.push({
+            id: 'special_music_card',
+            title: '🎵 Explore Community Music Swaps',
+            subtitle: `View music instruments, lessons, and gear for "${query}"`,
+            icon: 'music_note',
+            lat: null,
+            lng: null,
+            isSpecial: true,
+            queryVal: query
+        });
+    }
+
     // Add matching offerings from neighbors
     Object.keys(state.neighbors).forEach(key => {
         const neighbor = state.neighbors[key];
         if (neighbor && !neighbor.suspended && !(state.suspendedUsers && state.suspendedUsers.includes(key)) && !(state.blockedUsers && state.blockedUsers.includes(key))) {
-            const matchesTitle = neighbor.offerTitle && neighbor.offerTitle.toLowerCase().includes(q);
-            const matchesCategory = neighbor.category && neighbor.category.toLowerCase().includes(q);
-            if (matchesTitle || matchesCategory) {
+            if (fuzzySearchMatch(q, neighbor.offerTitle, neighbor.category, neighbor.name)) {
                 items.push({
                     id: key,
                     title: neighbor.offerTitle,
@@ -25090,9 +25253,7 @@ function updateSearchSuggestions(query) {
     // Add matching events
     state.events.forEach(evt => {
         if (!(state.suspendedUsers && state.suspendedUsers.includes(evt.host))) {
-            const matchesTitle = evt.title && evt.title.toLowerCase().includes(q);
-            const matchesDesc = evt.desc && evt.desc.toLowerCase().includes(q);
-            if (matchesTitle || matchesDesc) {
+            if (fuzzySearchMatch(q, evt.title, evt.desc, evt.type, evt.host || '')) {
                 items.push({
                     id: `evt_${evt.id}`,
                     title: evt.title,
@@ -25116,7 +25277,11 @@ function updateSearchSuggestions(query) {
         const div = document.createElement('div');
         div.className = "flex items-center gap-3 px-3.5 py-2.5 hover:bg-forest-green/5 dark:hover:bg-white/5 rounded-xl cursor-pointer active:scale-[0.98] transition-transform select-none";
         div.onclick = () => {
-            selectSearchSuggestion(item.id, item.title, item.lat, item.lng);
+            if (item.isSpecial) {
+                selectSearchSuggestion(item.id, item.queryVal, null, null);
+            } else {
+                selectSearchSuggestion(item.id, item.title, item.lat, item.lng);
+            }
         };
         div.innerHTML = `
             <span class="material-symbols-outlined text-forest-green dark:text-[#a0cfa5] text-base">${item.icon}</span>
@@ -25150,16 +25315,30 @@ function selectSearchSuggestion(id, title, lat, lng) {
     // Hide suggestions container with animation
     adjustSearchSuggestionsVisibility(false);
 
-    // Refresh map markers filtering
-    applyMapFiltering();
+    if (id === 'special_music_card') {
+        // Refresh all list views and map markers filtering
+        applyMapFiltering();
+        renderVillageListView();
+        renderNeedsBoardView();
+        renderEventsList();
+        renderBulletinsList();
 
-    // Center map on location
-    if (leafletMap) {
-        leafletMap.setView([lat, lng], 15);
+        // Switch to Offerings list view segment to show results and the music guidance banner
+        switchVillageSegment('list');
+    } else {
+        // Refresh map markers filtering
+        applyMapFiltering();
+
+        // Center map on location
+        if (leafletMap && lat !== null && lng !== null) {
+            leafletMap.setView([lat, lng], 15);
+        }
+
+        // Open detail peek card
+        if (id) {
+            openMapItemPeek(id);
+        }
     }
-
-    // Open detail peek card
-    openMapItemPeek(id);
 }
 window.selectSearchSuggestion = selectSearchSuggestion;
 

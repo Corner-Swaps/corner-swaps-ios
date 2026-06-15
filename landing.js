@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typeof showView === 'function') {
                 showView('sign_in');
             } else {
-                window.location.href = 'app.html';
+                window.location.href = 'index.html';
             }
         });
     }

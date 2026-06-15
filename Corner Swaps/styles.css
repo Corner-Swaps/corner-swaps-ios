@@ -5,15 +5,44 @@
 
 .material-symbols-outlined {
     font-family: 'Material Symbols Outlined' !important;
+    vertical-align: middle !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24 !important;
 }
 
 :root {
     --forest-green: #308A5E;
-    --warm-cream: #ffffff;
+    --warm-cream: #FAF8F5;
     --white: #ffffff;
+    --dark-bg: #101612;
     --green-overlay: rgba(48, 138, 94, 0.05);
     --green-overlay-md: rgba(48, 138, 94, 0.1);
     --border-color: rgba(48, 138, 94, 0.15);
+    
+    /* Centralized border-radius tokens */
+    --radius-xxs: 2px;
+    --radius-xs: 4px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+    
+    /* Centralized typography tokens */
+    --font-xxs: 10px;
+    --font-xs: 12px;
+    
+    /* Centralized simulator/component layout size tokens */
+    --dynamic-island-width: 95px;
+    --pulse-ring-size: 260px;
+    --badge-item-width: 106px;
+    
+    /* Centralized shadow tokens */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 /* Base resets */
@@ -49,6 +78,14 @@ h1, h2, h3, h4, h5, h6, .font-headline, .font-body {
     padding-right: 0.5rem !important;
     display: block !important;
     width: 100% !important;
+}
+
+/* Standardized onboarding and authentication screen paddings */
+.onboarding-screen {
+    padding-top: calc(1.5rem + env(safe-area-inset-top)) !important;
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)) !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
 }
 
 
@@ -204,7 +241,7 @@ body.show-simulator .phone-frame::before {
     top: 11px;
     left: 50%;
     transform: translateX(-50%);
-    width: 95px;
+    width: var(--dynamic-island-width);
     height: 25px;
     background-color: #000000;
     border-radius: 20px;
@@ -231,7 +268,7 @@ body.show-simulator .phone-frame::after {
 body.show-simulator .phone-button {
     position: absolute;
     background: linear-gradient(to bottom, #3a3d45, #1e1f24);
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
     z-index: 1; /* Tucked under the phone frame bezel */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
@@ -270,7 +307,7 @@ body.show-simulator .camera-control-btn {
     top: calc(50% + 80px);
     right: calc(50% - 210.5px);
     background: #121316 !important;
-    border-radius: 5px;
+    border-radius: var(--radius-xs);
     box-shadow: inset 0 1px 2px rgba(0,0,0,0.8), 0 0.5px 1px rgba(255,255,255,0.15);
 }
 
@@ -344,18 +381,30 @@ html:has(#view-landing.active) body {
 }
 
 /* Custom Scrollbars */
-.custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background: transparent;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background: var(--forest-green);
-    border-radius: 10px;
+::-webkit-scrollbar-thumb {
+    background: rgba(48, 138, 94, 0.3) !important;
+    border-radius: var(--radius-full) !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(48, 138, 94, 0.6) !important;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4) !important;
 }
 
 /* Screen Views */
@@ -599,9 +648,12 @@ html:has(#view-landing.active) body {
     height: 360px !important;
 }
 
-#offer-photo-hero,
+#offer-photo-hero {
+    height: 240px !important;
+}
+
 #group-photo-hero {
-    height: 145px !important;
+    height: 290px !important;
 }
 
 .photo-hero.has-image {
@@ -663,16 +715,16 @@ html.dark body {
 
 html.dark .phone-frame {
     border-color: #2c2c2e !important;
-    background-color: #101612 !important;
+    background-color: var(--dark-bg) !important;
     box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 html.dark .app-container {
-    background-color: #101612 !important;
+    background-color: var(--dark-bg) !important;
 }
 
 html.dark .screen-view {
-    background-color: #101612 !important;
+    background-color: var(--dark-bg) !important;
 }
 
 html.dark .bg-white {
@@ -686,11 +738,11 @@ html.dark .text-on-surface {
 }
 
 html.dark .bg-warm-cream {
-    background-color: #101612 !important;
+    background-color: var(--dark-bg) !important;
 }
 
 html.dark .bg-\[\#FDFBF7\] {
-    background-color: #101612 !important;
+    background-color: var(--dark-bg) !important;
 }
 
 html.dark .bg-surface-container-low {
@@ -821,7 +873,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
     width: 36px !important;
     height: 4px !important;
     background-color: var(--border-color) !important;
-    border-radius: 2px !important;
+    border-radius: var(--radius-full) !important;
     margin-bottom: 4px !important;
 }
 
@@ -1044,16 +1096,26 @@ html.dark #phone-header-bar .material-symbols-outlined {
 }
 
 #neighbor-profile-modal {
-    background-color: #ffffff !important;
+    background-color: var(--warm-cream) !important;
 }
+
 html.dark #neighbor-profile-modal {
-    background-color: #101612 !important;
+    background-color: var(--dark-bg) !important;
 }
 
 /* Safe area padding for the full-screen neighbor profile modal in iOS native view */
 .native-app-env #neighbor-profile-modal {
-    padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
-    padding-bottom: env(safe-area-inset-bottom) !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.native-app-env #neighbor-profile-header {
+    padding-top: env(safe-area-inset-top) !important;
+}
+
+.native-app-env #neighbor-profile-scroll-container {
+    padding-top: calc(3.5rem + env(safe-area-inset-top)) !important;
+    padding-bottom: calc(3rem + env(safe-area-inset-bottom)) !important;
 }
 
 /* Safe area padding for category tray and list overlays in iOS native view */
@@ -1225,13 +1287,13 @@ html.dark .bento-card:hover {
     padding: 8px 16px;
     background-color: var(--warm-cream);
     border-bottom: 1px solid var(--border-color);
-    font-size: 8px;
+    font-size: var(--font-xxs);
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
 }
 html.dark #status-legend-bar {
-    background-color: #101612;
+    background-color: var(--dark-bg);
 }
 
 /* Glowing dot styling */
@@ -1250,7 +1312,7 @@ html.dark #status-legend-bar {
     min-height: 0 !important;
     flex-grow: 1 !important;
     overflow: hidden !important;
-    background-color: #ffffff !important; /* Force pure white in light mode instead of creamy white */
+    background-color: var(--warm-cream) !important; /* Match standard app warm-cream theme instead of pure white */
 }
 html.dark #view-chat_detail {
     background-color: #101612 !important;
@@ -1328,9 +1390,22 @@ select::-ms-expand {
     overflow-y: auto !important;
     height: 100% !important;
     padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
-    padding-bottom: calc(84px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(120px + env(safe-area-inset-bottom)) !important;
     box-sizing: border-box !important;
 }
+
+#creative-dashboard-screen {
+    overflow-y: auto !important;
+    height: 100% !important;
+    padding-bottom: 120px !important;
+    box-sizing: border-box !important;
+    -webkit-overflow-scrolling: touch;
+}
+
+#creative-dashboard-screen.hidden ~ #creative-fab-btn {
+    display: none !important;
+}
+
 
 .native-app-env #offer-form-wrapper {
     overflow: hidden !important;
@@ -1347,6 +1422,7 @@ select::-ms-expand {
 
 .native-app-env #offer-photo-hero {
     padding-top: calc(1.5rem + env(safe-area-inset-top)) !important;
+    height: calc(240px + env(safe-area-inset-top)) !important;
 }
 
 /* Force all active screens in native app to have a background color (prevents green leakage) */
@@ -1400,7 +1476,7 @@ select::-ms-expand {
 .app-container p,
 .app-container span:not(.material-symbols-outlined):not(#user-vouches-count):not(#user-karma-score):not(#user-trades-made):not(#badges-unlocked-count):not(#global-navbar *):not(#widget-swaps-counter *):not(#final-brand-text),
 .app-container label,
-.app-container button:not(.btn-increase-size):not(#add-new-btn):not(#add-need-btn):not(#global-navbar *):not(#widget-swaps-counter *),
+.app-container button:not(.btn-increase-size):not(#add-new-btn):not(#add-need-btn):not(#global-navbar *):not(#widget-swaps-counter *):not(#chat-quick-templates *),
 .app-container a,
 .app-container li,
 .app-container div.app-body-text {
@@ -1423,19 +1499,19 @@ select::-ms-expand {
 #widget-my-offerings button,
 #widget-my-needs button {
     font-size: 18px !important;
-    font-weight: 750 !important;
+    font-weight: 700 !important;
 }
 
 /* Specificity overrides to allow inline Tailwind text sizes to work correctly on elements inside .app-container */
-.app-container .text-3xl { font-size: 30px !important; font-weight: 850 !important; letter-spacing: -0.025em !important; }
-.app-container .text-2xl { font-size: 24px !important; font-weight: 850 !important; letter-spacing: -0.025em !important; }
-.app-container .text-xl { font-size: 20px !important; font-weight: 750 !important; letter-spacing: -0.015em !important; }
-.app-container .text-lg { font-size: 18px !important; font-weight: 750 !important; letter-spacing: -0.015em !important; }
-.app-container .text-base { font-size: 16px !important; font-weight: 750 !important; letter-spacing: -0.015em !important; }
-.app-container .text-sm { font-size: 14px !important; font-weight: 450 !important; }
-.app-container .text-xs { font-size: 12px !important; font-weight: 450 !important; }
+.app-container .text-3xl { font-size: 30px !important; font-weight: 800 !important; letter-spacing: -0.025em !important; }
+.app-container .text-2xl { font-size: 24px !important; font-weight: 800 !important; letter-spacing: -0.025em !important; }
+.app-container .text-xl { font-size: 20px !important; font-weight: 700 !important; letter-spacing: -0.015em !important; }
+.app-container .text-lg { font-size: 18px !important; font-weight: 700 !important; letter-spacing: -0.015em !important; }
+.app-container .text-base { font-size: 16px !important; font-weight: 700 !important; letter-spacing: -0.015em !important; }
+.app-container .text-sm { font-size: 14px !important; font-weight: 400 !important; }
+.app-container .text-xs { font-size: 12px !important; font-weight: 400 !important; }
 .app-container .text-\[15px\] { font-size: 15px !important; font-weight: 750 !important; }
-.app-container .text-\[13\.5px\] { font-size: 13.5px !important; font-weight: 450 !important; }
+.app-container .text-\[14\.5px\] { font-size: 14.5px !important; font-weight: 450 !important; }
 .app-container .text-\[13px\] { font-size: 13px !important; font-weight: 450 !important; }
 .app-container .text-\[12\.5px\] { font-size: 12.5px !important; font-weight: 450 !important; }
 .app-container .text-\[12px\] { font-size: 12px !important; font-weight: 450 !important; }
@@ -1565,6 +1641,19 @@ select::-ms-expand {
     padding: 0 !important;
     border-radius: 9999px !important;
 }
+#btn-segment-filter {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    max-width: 34px !important;
+    max-height: 34px !important;
+    padding: 0 !important;
+    border-radius: 9999px !important;
+}
+#btn-segment-filter span {
+    font-size: 16px !important;
+}
 
 /* Scrollbar hiding utilities */
 .no-scrollbar::-webkit-scrollbar,
@@ -1586,7 +1675,7 @@ select::-ms-expand {
 .leaflet-popup-content-wrapper {
     background: var(--warm-cream) !important;
     color: var(--forest-green) !important;
-    border-radius: 14px !important;
+    border-radius: var(--radius-md) !important;
     border: 1px solid rgba(48, 138, 94, 0.15) !important;
     box-shadow: 0 10px 25px -5px rgba(48, 138, 94, 0.15) !important;
     padding: 0 !important;
@@ -1744,18 +1833,27 @@ html.dark .chat-bubble-other {
 
 /* Default positioning (Web environment) */
 #village-search-bar-overlay {
-    top: 1rem !important; /* 16px */
+    top: 0.6rem !important; /* 9.6px */
 }
 #active-filter-banner {
     top: 4.5rem !important; /* 72px */
 }
 #village-segment-floating-buttons {
-    bottom: 198px !important;
+    bottom: 88px !important;
     right: 24px !important;
     top: auto !important;
 }
 #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: 352px !important;
+    bottom: 236px !important;
+}
+
+#floating-map-controls {
+    bottom: 82px !important;
+    right: 24px !important;
+    top: auto !important;
+}
+#view-village:has(#map-peek-card.active) #floating-map-controls {
+    bottom: 230px !important;
 }
 
 #meetup-map-footer {
@@ -1768,30 +1866,37 @@ html.dark .chat-bubble-other {
 }
 
 /* iOS Native App safe area positioning overrides */
+.native-app-env #btn-segment-filter {
+    top: calc(10px + env(safe-area-inset-top)) !important;
+}
 .native-app-env #village-search-bar-overlay {
-    top: calc(1rem + env(safe-area-inset-top)) !important;
+    top: calc(0.6rem + env(safe-area-inset-top)) !important;
 }
 .native-app-env #floating-map-controls {
-    top: calc(0.2rem + env(safe-area-inset-top)) !important;
-    left: auto !important;
-    right: 20px !important;
+    bottom: calc(82px + env(safe-area-inset-bottom)) !important;
+    right: 24px !important;
+    top: auto !important;
+}
+.native-app-env #view-village:has(#map-peek-card.active) #floating-map-controls {
+    bottom: calc(230px + env(safe-area-inset-bottom)) !important;
 }
 .native-app-env #map-category-dropdown {
-    top: calc(10px + env(safe-area-inset-top)) !important;
-    left: 70px !important;
-    right: 20px !important;
-    height: 36px !important;
+    top: calc(58px + env(safe-area-inset-top)) !important;
+    left: 32px !important;
+    right: auto !important;
+    height: auto !important;
+    max-height: calc(100% - 150px) !important;
 }
 .native-app-env #active-filter-banner {
     top: calc(4.5rem + env(safe-area-inset-top)) !important;
 }
 .native-app-env #village-segment-floating-buttons {
-    bottom: calc(198px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(88px + env(safe-area-inset-bottom)) !important;
     right: 24px !important;
     top: auto !important;
 }
 .native-app-env #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: calc(352px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(236px + env(safe-area-inset-bottom)) !important;
 }
 
 .native-app-env #meetup-map-footer {
@@ -2246,8 +2351,8 @@ html.dark .profile-avatar-no-ring {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.4);
-    width: 260px;
-    height: 260px;
+    width: var(--pulse-ring-size);
+    height: var(--pulse-ring-size);
     border-radius: 50%;
     background-color: rgba(74, 138, 96, 0.08); /* Very soft green fill */
     border: 1.5px solid rgba(74, 138, 96, 0.25);
@@ -2277,10 +2382,10 @@ html.dark .profile-avatar-no-ring {
     z-index: 50;
     animation: float-up-fade 1.2s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
     white-space: nowrap;
-    background: #308A5E;
+    background: var(--forest-green);
     border: 1px solid rgba(217, 144, 54, 0.3);
     padding: 4px 8px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -2328,7 +2433,7 @@ html.dark .profile-avatar-no-ring {
 
 /* Fix chat detail view bottom padding to prevent squishing when keyboard or input bar is shown */
 .native-app-env #view-chat_detail {
-    padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
+    padding-top: 0 !important;
     padding-bottom: 0 !important;
 }
 
@@ -2959,10 +3064,10 @@ html.dark .guest-lock-btn span {
     align-items: center !important;
     justify-content: space-between !important;
     flex-shrink: 0 !important;
-    width: 106px !important;
-    min-width: 106px !important;
+    width: var(--badge-item-width) !important;
+    min-width: var(--badge-item-width) !important;
     padding: 12px 6px !important;
-    border-radius: 20px !important;
+    border-radius: var(--radius-lg) !important;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
     position: relative !important;
     cursor: pointer !important;
@@ -3227,7 +3332,7 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 
 #self-profile-badge-icon,
 #neighbor-profile-badge-icon {
-    color: #3b82f6 !important;
+    color: #f59e0b !important;
 }
 
 /* Unified 3-Style Typography System for Profile Settings (from Badges downwards) */
@@ -3615,10 +3720,10 @@ html:not(.dark) #neighbor-profile-modal button.bg-forest-green * {
 }
 
 /* Chat bubble paragraphs alignment (Style 3 profile offerings matching) */
-.chat-bubble-me p, .chat-bubble-other p {
+.app-container .chat-bubble-me p, .app-container .chat-bubble-other p {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 14px !important;
-    font-weight: 400 !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
 }
 
 .admin-message-bubble {
@@ -3626,10 +3731,10 @@ html:not(.dark) #neighbor-profile-modal button.bg-forest-green * {
     border-bottom-left-radius: 4px !important;
 }
 
-.admin-message-bubble, .admin-message-bubble p {
+.app-container .admin-message-bubble, .app-container .admin-message-bubble p {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 14px !important;
-    font-weight: 400 !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
 }
 
 
@@ -3682,7 +3787,7 @@ html.dark #view-create_group :not(.material-symbols-outlined):not(.bg-forest-gre
 }
 
 #offer-type-selector-screen {
-    margin-top: 12vh !important;
+    margin-top: 4vh !important;
     margin-bottom: auto !important;
 }
 
@@ -4117,6 +4222,8 @@ html.dark #chat-message-feed span.select-none {
     background-color: #ffffff !important;
     border: 1px solid rgba(0, 0, 0, 0.2) !important;
     color: #000000 !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
 }
 #chat-quick-templates button:hover {
     background-color: rgba(0, 0, 0, 0.04) !important;
@@ -4165,20 +4272,28 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 
 /* Outer Chat Action Center container - glassmorphism, transparent, positioned low */
 #chat-action-center {
-    border-color: rgba(255, 255, 255, 0.35) !important;
+    position: absolute !important;
+    bottom: 12px !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: calc(100% - 24px) !important;
+    z-index: 20 !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
     background: rgba(255, 255, 255, 0.45) !important;
     backdrop-filter: blur(20px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04) !important;
-    margin-bottom: 4px !important;
-    margin-top: auto !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 8px rgba(0, 0, 0, 0.04) !important;
+    border-radius: 24px !important;
+}
+.native-app-env #chat-action-center {
+    bottom: calc(12px + env(safe-area-inset-bottom)) !important;
 }
 html.dark #chat-action-center {
-    border-color: rgba(255, 255, 255, 0.10) !important;
-    background: rgba(20, 28, 22, 0.45) !important;
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    background: rgba(20, 28, 22, 0.65) !important;
     backdrop-filter: blur(20px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.20), 0 1px 4px rgba(0, 0, 0, 0.10) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 1px 8px rgba(0, 0, 0, 0.15) !important;
 }
 
 /* Swap Journey header bar card and hover states - force black outline and black text */
@@ -5049,6 +5164,7 @@ button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
 #view-welcome,
 #view-sign_in,
 #view-create_account,
+#view-create_account_credentials,
 #view-create_account_social,
 #view-profile_consent,
 #view-profile_location_permission,
@@ -5065,6 +5181,7 @@ button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
 #view-welcome *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
 #view-sign_in *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
 #view-create_account *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-create_account_credentials *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
 #view-create_account_social *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
 #view-profile_consent *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
 #view-profile_location_permission *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
@@ -5094,10 +5211,12 @@ button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
     color: #308A5E !important;
 }
 
-#view-profile_step_custom_listing .material-symbols-outlined {
+#view-profile_step_custom_listing .material-symbols-outlined,
+#view-create_account_credentials .material-symbols-outlined {
     color: #000000 !important;
 }
-html.dark #view-profile_step_custom_listing .material-symbols-outlined {
+html.dark #view-profile_step_custom_listing .material-symbols-outlined,
+html.dark #view-create_account_credentials .material-symbols-outlined {
     color: #ffffff !important;
 }
 
@@ -5109,22 +5228,37 @@ html.dark #view-profile_step_custom_listing .material-symbols-outlined {
     border: 1px solid rgba(48, 138, 94, 0.2) !important;
     background-color: #ffffff !important;
 }
+html.dark .wizard-skills-category-btn,
+html.dark .wizard-needs-category-btn,
+html.dark .neighborhood-opt-btn {
+    color: #ffffff !important;
+    border: 1px solid rgba(48, 138, 94, 0.3) !important;
+    background-color: rgba(48, 138, 94, 0.1) !important;
+}
 .neighborhood-opt-btn .material-symbols-outlined {
     color: #308A5E !important;
 }
 
-/* Selected states of options inside onboarding grid: light green background, green border, black text, green icons */
+/* Selected states of options inside onboarding grid: forest green background, white text, green border */
 .wizard-skills-category-btn.active,
 .wizard-needs-category-btn.active,
 .neighborhood-opt-btn.active {
-    background-color: rgba(48, 138, 94, 0.12) !important;
-    color: #000000 !important;
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    border-color: #308A5E !important;
+}
+html.dark .wizard-skills-category-btn.active,
+html.dark .wizard-needs-category-btn.active,
+html.dark .neighborhood-opt-btn.active {
+    background-color: #308A5E !important;
+    color: #ffffff !important;
     border-color: #308A5E !important;
 }
 
 /* Force placeholder texts to be legible grey for readability */
 #view-sign_in input::placeholder,
 #view-create_account input::placeholder,
+#view-create_account_credentials input::placeholder,
 #view-create_account_social input::placeholder,
 #view-profile_step_1 input::placeholder,
 #view-profile_step_custom_listing input::placeholder,
@@ -5136,6 +5270,7 @@ html.dark #view-profile_step_custom_listing .material-symbols-outlined {
 /* Standardized black headers for all onboarding screens */
 #view-sign_in h1,
 #view-create_account h1,
+#view-create_account_credentials h1,
 #view-create_account_social h1,
 #view-profile_consent h1,
 #view-profile_consent h2,
@@ -5163,6 +5298,7 @@ html.dark #view-profile_step_custom_listing .material-symbols-outlined {
 html.dark #view-welcome,
 html.dark #view-sign_in,
 html.dark #view-create_account,
+html.dark #view-create_account_credentials,
 html.dark #view-create_account_social,
 html.dark #view-profile_consent,
 html.dark #view-profile_location_permission,
@@ -5179,6 +5315,7 @@ html.dark #view-set_up_profile {
 html.dark #view-welcome *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
 html.dark #view-sign_in *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
 html.dark #view-create_account *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-create_account_credentials *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
 html.dark #view-create_account_social *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
 html.dark #view-profile_consent *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
 html.dark #view-profile_location_permission *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
@@ -5194,6 +5331,7 @@ html.dark #view-set_up_profile *:not(.material-symbols-outlined):not(button.bg-f
 
 html.dark #view-sign_in h1,
 html.dark #view-create_account h1,
+html.dark #view-create_account_credentials h1,
 html.dark #view-create_account_social h1,
 html.dark #view-profile_consent h1,
 html.dark #view-profile_consent h2,
@@ -5226,7 +5364,6 @@ html.dark #view-set_up_profile h1 {
 #view-lead_giving button,
 #view-profile_step_2 button[onclick*="handleProfileStep2"],
 #view-profile_step_3 button[onclick*="handleProfileStep3"],
-#view-profile_step_custom_listing button[onclick*="submitOnboardingCustomListing"],
 #view-profile_step_custom_listing button[onclick*="skipOnboardingCustomListing"],
 #view-set_up_profile button[onclick*="handleSetupProfileSubmit"],
 #view-set_up_profile button[onclick*="handleSetupProfileSkip"] {
@@ -5252,7 +5389,6 @@ html.dark #view-set_up_profile h1 {
 #view-lead_giving button *,
 #view-profile_step_2 button[onclick*="handleProfileStep2"] *,
 #view-profile_step_3 button[onclick*="handleProfileStep3"] *,
-#view-profile_step_custom_listing button[onclick*="submitOnboardingCustomListing"] *,
 #view-profile_step_custom_listing button[onclick*="skipOnboardingCustomListing"] *,
 #view-set_up_profile button[onclick*="handleSetupProfileSubmit"] *,
 #view-set_up_profile button[onclick*="handleSetupProfileSkip"] * {
@@ -5272,7 +5408,6 @@ html.dark #view-profile_step_1 button[type="submit"],
 html.dark #view-lead_giving button,
 html.dark #view-profile_step_2 button[onclick*="handleProfileStep2"],
 html.dark #view-profile_step_3 button[onclick*="handleProfileStep3"],
-html.dark #view-profile_step_custom_listing button[onclick*="submitOnboardingCustomListing"],
 html.dark #view-profile_step_custom_listing button[onclick*="skipOnboardingCustomListing"],
 html.dark #view-set_up_profile button[onclick*="handleSetupProfileSubmit"],
 html.dark #view-set_up_profile button[onclick*="handleSetupProfileSkip"] {
@@ -5310,7 +5445,8 @@ html.dark #view-profile_step_3 h2 {
 #view-profile_step_1 button[type="submit"],
 #view-lead_giving button,
 #view-profile_step_2 button:not(.wizard-skills-category-btn):not([onclick*="skip"]),
-#view-profile_step_3 button:not(.wizard-needs-category-btn):not([onclick*="skip"]) {
+#view-profile_step_3 button:not(.wizard-needs-category-btn):not([onclick*="skip"]),
+#view-profile_step_custom_listing button[onclick*="submitOnboardingCustomListing"] {
     background-color: #308A5E !important;
     color: #ffffff !important;
     border-color: #308A5E !important;
@@ -5326,27 +5462,62 @@ html.dark #view-profile_step_3 h2 {
 #view-profile_step_1 button[type="submit"] *,
 #view-lead_giving button *,
 #view-profile_step_2 button:not(.wizard-skills-category-btn):not([onclick*="skip"]) *,
-#view-profile_step_3 button:not(.wizard-needs-category-btn):not([onclick*="skip"]) * {
+#view-profile_step_3 button:not(.wizard-needs-category-btn):not([onclick*="skip"]) *,
+#view-profile_step_custom_listing button[onclick*="submitOnboardingCustomListing"] * {
     color: #ffffff !important;
+}
+
+/* Onboarding Card Textarea Overrides */
+.onboarding-card textarea {
+    background-color: #faf9f6 !important;
+    border: 1.5px solid rgba(48, 138, 94, 0.12) !important;
+    border-radius: 16px !important;
+    color: #1c2d24 !important;
+    font-weight: 500 !important;
+    height: 96px !important;
+    transition: all 0.25s ease !important;
+}
+html.dark .onboarding-card textarea {
+    background-color: #0d120f !important;
+    border-color: rgba(130, 185, 149, 0.12) !important;
+    color: #fcfbf7 !important;
+}
+.onboarding-card textarea:focus {
+    border-color: var(--forest-green) !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 4px rgba(48, 138, 94, 0.1) !important;
+}
+html.dark .onboarding-card textarea:focus {
+    border-color: #82b995 !important;
+    background-color: #111814 !important;
+    box-shadow: 0 0 0 4px rgba(130, 185, 149, 0.1) !important;
+}
+.onboarding-card textarea::placeholder {
+    color: #8fa095 !important;
+    font-weight: 400 !important;
+}
+html.dark .onboarding-card textarea::placeholder {
+    color: #5e6f65 !important;
 }
 
 /* Position and align map category circles dropdown on the left to stack cleanly under top-left control buttons */
 #map-category-dropdown {
     position: absolute !important;
-    top: 10px !important;
-    left: 70px !important;
-    right: 24px !important;
-    height: 36px !important;
+    top: 58px !important;
+    left: 32px !important;
+    right: auto !important;
+    height: auto !important;
+    max-height: calc(100% - 150px) !important;
     display: none;
-    flex-direction: row !important;
-    align-items: center !important;
-    gap: 8px !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
     white-space: nowrap !important;
     background-color: transparent !important;
-    padding: 0 4px !important;
-    z-index: 2000 !important;
+    padding: 0 4px 60px 0 !important;
+    z-index: 3000 !important;
     scrollbar-width: none !important;
 }
 #map-category-dropdown::-webkit-scrollbar {
@@ -5362,13 +5533,13 @@ html.dark #view-profile_step_3 h2 {
     align-items: center !important;
     flex-direction: row !important;
     gap: 6px !important;
-    padding: 4px 10px !important;
+    padding: 0 !important;
     border-radius: 9999px !important;
-    background-color: #ffffff !important;
-    border: 1px solid rgba(0, 0, 0, 0.1) !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
-    height: 28px !important;
-    min-height: 28px !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    height: 32px !important;
+    min-height: 32px !important;
     opacity: 1 !important;
     transform: none !important;
     pointer-events: auto !important;
@@ -5379,8 +5550,8 @@ html.dark #view-profile_step_3 h2 {
 }
 
 .dark #map-category-dropdown .map-category-item {
-    background-color: #161e1a !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
 }
 
 
@@ -5452,7 +5623,7 @@ html.dark #view-profile_step_3 h2 {
     width: 25px;
     height: 12.5px;
     border: 1px solid rgba(0, 0, 0, 0.7);
-    border-radius: 3.5px;
+    border-radius: var(--radius-xs);
     padding: 1px;
     display: flex;
     align-items: center;
@@ -5463,7 +5634,7 @@ html.dark #view-profile_step_3 h2 {
     height: 100%;
     width: 79%;
     background-color: #ff3b30; /* Apple system red */
-    border-radius: 1.5px;
+    border-radius: var(--radius-xxs);
 }
 
 #iphone16-status-bar .battery-tip {
@@ -5544,11 +5715,22 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
 }
 
 .iphone16-mode #floating-map-controls {
-    top: 38px !important;
+    bottom: 82px !important;
+    top: auto !important;
+}
+.iphone16-mode #view-village:has(#map-peek-card.active) #floating-map-controls {
+    bottom: 230px !important;
+}
+.iphone16-mode #village-segment-floating-buttons {
+    bottom: 88px !important;
+    top: auto !important;
+}
+.iphone16-mode #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
+    bottom: 236px !important;
 }
 
 .iphone16-mode #map-category-dropdown {
-    top: 82px !important;
+    top: 68px !important;
 }
 
 /* Ensure onboarding screens are padded too */
@@ -5743,6 +5925,7 @@ html.dark .event-stock-thumbnail {
     #view-create_account_social,
     #view-profile_consent,
     #view-profile_location_permission,
+    #view-create_account_safe_spots,
     #view-profile_step_1 {
         padding-left: 1.25rem !important;
         padding-right: 1.25rem !important;
@@ -5753,7 +5936,7 @@ html.dark .event-stock-thumbnail {
 .onboarding-card {
     background-color: #ffffff !important;
     border: 1px solid rgba(48, 138, 94, 0.08) !important;
-    border-radius: 28px !important;
+    border-radius: var(--radius-xl) !important;
     padding: 26px 24px !important;
     box-shadow: 0 20px 48px -12px rgba(48, 138, 94, 0.05), 0 8px 16px -8px rgba(48, 138, 94, 0.03) !important;
     width: 100% !important;
@@ -5771,31 +5954,38 @@ html.dark .onboarding-card {
 /* Base text styling overrides for onboarding screens to make them feel organic and cohesive */
 #view-welcome,
 #view-create_account,
+#view-create_account_credentials,
 #view-create_account_social,
 #view-profile_consent,
 #view-profile_location_permission,
+#view-create_account_safe_spots,
 #view-profile_step_1,
 #view-lead_giving,
 #view-profile_step_2,
 #view-profile_step_3,
+#view-profile_step_custom_listing,
 #view-sign_in {
     background: linear-gradient(180deg, #FDFCF8 0%, #F4F1E6 100%) !important;
 }
 html.dark #view-welcome,
 html.dark #view-create_account,
+html.dark #view-create_account_credentials,
 html.dark #view-create_account_social,
 html.dark #view-profile_consent,
 html.dark #view-profile_location_permission,
+html.dark #view-create_account_safe_spots,
 html.dark #view-profile_step_1,
 html.dark #view-lead_giving,
 html.dark #view-profile_step_2,
 html.dark #view-profile_step_3,
+html.dark #view-profile_step_custom_listing,
 html.dark #view-sign_in {
     background: linear-gradient(180deg, #111713 0%, #0a0e0b 100%) !important;
 }
 
 #view-welcome p,
 #view-create_account p,
+#view-create_account_credentials p,
 #view-create_account_social p,
 #view-profile_consent p,
 #view-profile_location_permission p,
@@ -5811,6 +6001,7 @@ html.dark #view-sign_in {
 }
 html.dark #view-welcome p,
 html.dark #view-create_account p,
+html.dark #view-create_account_credentials p,
 html.dark #view-create_account_social p,
 html.dark #view-profile_consent p,
 html.dark #view-profile_location_permission p,
@@ -6117,7 +6308,7 @@ html.dark .location-icon-container {
 #map-category-dropdown,
 #list-category-dropdown,
 #needs-category-dropdown {
-    gap: 5px !important;
+    gap: 4px !important;
 }
 #map-category-dropdown .filter-category-circle,
 #map-category-dropdown .filter-category-info-circle,
@@ -6144,11 +6335,11 @@ html.dark .location-icon-container {
 /* Small Screens (e.g. iPhone SE / screen height <= 700px) */
 @media (max-height: 700px) {
     html:not(.show-simulator) #map-category-dropdown {
-        gap: 3px !important;
-        top: 52px !important;
+        gap: 2.5px !important;
+        top: 42px !important;
     }
     html:not(.show-simulator) .native-app-env #map-category-dropdown {
-        top: calc(42px + env(safe-area-inset-top)) !important;
+        top: calc(32px + env(safe-area-inset-top)) !important;
     }
     html:not(.show-simulator) #map-category-dropdown .filter-category-circle,
     html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle,
@@ -6172,7 +6363,7 @@ html.dark .location-icon-container {
 /* Large Screens (e.g. iPhone 16 Pro Max / screen height > 860px) */
 @media (min-height: 861px) {
     html:not(.show-simulator) #map-category-dropdown {
-        gap: 7px !important;
+        gap: 5.5px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .filter-category-circle,
     html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle,
@@ -6248,7 +6439,8 @@ html.dark .category-info-highlighted::after {
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 32px) !important;
-    max-width: 420px !important;
+    max-width: 370px !important;
+    gap: 30px !important;
     height: 64px !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
@@ -6307,11 +6499,56 @@ html.dark .category-tray, html.dark .category-list-overlay {
     left: 0 !important;
     right: 0 !important;
     z-index: 20 !important;
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 
-/* Padding top on message feed to clear absolute header while allowing scroll-under backdrop blur */
+html.dark #view-chat_detail > div:first-of-type {
+    background: transparent !important;
+    border-bottom: none !important;
+}
+
+.native-app-env #view-chat_detail > div:first-of-type {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding-top: calc(16px + env(safe-area-inset-top)) !important;
+    padding-bottom: 16px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+}
+
+/* Padding top and bottom on message feed to clear absolute header and floating footer while allowing scroll-under backdrop blur */
 #chat-message-feed {
-    padding-top: 72px !important;
+    padding-top: 76px !important;
+    padding-bottom: 16px !important;
+}
+
+.native-app-env #chat-message-feed {
+    padding-top: calc(76px + env(safe-area-inset-top)) !important;
+    padding-bottom: 16px !important;
+}
+
+/* Ensure the bottom-most messages can scroll completely above the floating input wrapper and suggested template messages chips */
+#chat-message-feed::after {
+    content: '' !important;
+    display: block !important;
+    height: calc(var(--chat-input-height, 140px) + 16px) !important;
+    flex-shrink: 0 !important;
+    pointer-events: none !important;
+}
+
+.native-app-env #chat-message-feed::after {
+    height: calc(var(--chat-input-height, 140px) + 16px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
 /* Custom Chat Section Font & Size Consistency */
@@ -6321,11 +6558,17 @@ html.dark .category-tray, html.dark .category-list-overlay {
     font-size: 16px !important;
 }
 
-.chat-bubble-me p,
-.chat-bubble-other p,
-.admin-message-bubble p {
+.app-container .chat-bubble-me p,
+.app-container .chat-bubble-other p,
+.app-container .admin-message-bubble p,
+.app-container .chat-bubble-me .text-sm,
+.app-container .chat-bubble-other .text-sm,
+.app-container .chat-bubble-me,
+.app-container .chat-bubble-other,
+.app-container .admin-message-bubble {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 14px !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
 }
 
 /* Onboarding & Settings Input Fields Styling to Match Chat Size and Font */
@@ -6419,73 +6662,453 @@ html.dark #view-profile_consent #consent-checkboxes-container span:not(.material
 
 /* Filter Dropdown horizontal alignment fix */
 .native-app-env #map-category-dropdown {
-    left: 24px !important;
+    left: 32px !important;
 }
 
 .native-app-env #map-category-dropdown .map-category-item {
     padding-left: 0 !important;
 }
 
-/* Begin Your Journey screen black styling overrides */
-#view-create_account h1,
-#view-create_account h2,
-#view-create_account p,
-#view-create_account label,
-#view-create_account .material-symbols-outlined,
-#view-create_account span,
-#view-create_account input,
-#view-create_account button {
-    font-family: 'Outfit', sans-serif !important;
+
+/* Standardized safe area top padding for native environment */
+.native-app-env #view-profile_settings,
+.native-app-env #view-adjust_homepage,
+.native-app-env #view-settings_detail,
+.native-app-env #view-create_event,
+.native-app-env #view-events_hub {
+    padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
 }
 
-#view-create_account h1,
-#view-create_account h2,
-#view-create_account p,
-#view-create_account label:not(.cursor-pointer),
-#view-create_account .material-symbols-outlined,
-#view-create_account span:not(.cursor-pointer) {
-    color: #000000 !important;
-}
 
-#view-create_account div.border,
-#view-create_account form div.border,
-#view-create_account .profile-avatar-ring {
-    border-color: rgba(0, 0, 0, 0.15) !important;
-}
-
-#view-create_account input {
-    border-color: rgba(0, 0, 0, 0.2) !important;
-    color: #000000 !important;
-}
-
-#view-create_account input:focus {
-    border-color: #000000 !important;
-}
-
-#view-create_account .group:focus-within .material-symbols-outlined,
-#view-create_account .group:focus-within span {
-    color: #000000 !important;
-}
-
-#view-create_account label.cursor-pointer,
-#view-create_account label.cursor-pointer * {
-    color: #000000 !important;
+/* Standardized close/back navigation buttons */
+.nav-close-btn {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     background-color: rgba(0, 0, 0, 0.05) !important;
-    border-color: rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    color: #000000 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+    transition: all 0.15s ease !important;
+    flex-shrink: 0 !important;
+}
+html.dark .nav-close-btn {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--warm-cream) !important;
 }
 
-#view-create_account label.cursor-pointer:hover {
-    background-color: rgba(0, 0, 0, 0.1) !important;
+
+/* Standardized screen header layout */
+.screen-header {
+    height: 56px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    flex-shrink: 0 !important;
+    border-bottom: 1px solid rgba(48, 138, 94, 0.08) !important;
+    background-color: var(--warm-cream) !important;
+}
+html.dark .screen-header {
+    background-color: var(--dark-bg) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
 }
 
-#view-create_account button[type="submit"] {
+
+/* Checked checkboxes consistent styles */
+html.dark .checkbox-wrapper:has(input[type="checkbox"]:checked) {
+    border-color: #308A5E !important;
+    background-color: #308A5E !important;
+}
+
+/* Global interactive hover and active scale transitions */
+button, 
+.btn, 
+.btn-primary, 
+.btn-secondary, 
+.nav-close-btn, 
+.category-chip, 
+.interactive-card {
+    transition: transform 0.1s ease, background-color 0.15s ease, opacity 0.15s ease !important;
+}
+
+button:active, 
+.btn:active, 
+.btn-primary:active, 
+.btn-secondary:active, 
+.nav-close-btn:active, 
+.category-chip:active, 
+.interactive-card:active {
+    transform: scale(0.95) !important;
+}
+
+/* Custom focus indicator styling for keyboard accessibility */
+input:focus, 
+select:focus, 
+textarea:focus {
+    outline: 2px solid var(--forest-green) !important;
+    outline-offset: 2px !important;
+}
+html.dark input:focus, 
+html.dark select:focus, 
+html.dark textarea:focus {
+    outline: 2px solid #308A5E !important;
+    outline-offset: 2px !important;
+}
+
+/* Disable focus highlight for search inputs */
+#village-search-input:focus,
+#village-list-search-input:focus,
+#village-needs-search-input:focus,
+#village-events-search-input:focus,
+#village-bulletins-search-input:focus,
+#meeting-spot-search-input:focus,
+#admin-user-search-input:focus,
+#chat-search-input:focus,
+.fused-search-input:focus,
+#village-search-input:active,
+#village-list-search-input:active,
+#village-needs-search-input:active,
+#village-events-search-input:active,
+#village-bulletins-search-input:active,
+#meeting-spot-search-input:active,
+#admin-user-search-input:active,
+#chat-search-input:active,
+.fused-search-input:active,
+input[placeholder*="Search" i]:focus,
+input[placeholder*="Search" i]:active {
+    outline: none !important;
+    outline-offset: 0 !important;
+    box-shadow: none !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html.dark #village-search-input:focus,
+html.dark #village-list-search-input:focus,
+html.dark #village-needs-search-input:focus,
+html.dark #village-events-search-input:focus,
+html.dark #village-bulletins-search-input:focus,
+html.dark #meeting-spot-search-input:focus,
+html.dark #admin-user-search-input:focus,
+html.dark #chat-search-input:focus,
+html.dark .fused-search-input:focus,
+html.dark #village-search-input:active,
+html.dark #village-list-search-input:active,
+html.dark #village-needs-search-input:active,
+html.dark #village-events-search-input:active,
+html.dark #village-bulletins-search-input:active,
+html.dark #meeting-spot-search-input:active,
+html.dark #admin-user-search-input:active,
+html.dark #chat-search-input:active,
+html.dark .fused-search-input:active,
+html.dark input[placeholder*="Search" i]:focus,
+html.dark input[placeholder*="Search" i]:active {
+    outline: none !important;
+    outline-offset: 0 !important;
+    box-shadow: none !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Custom black buttons for credentials page */
+#view-create_account_credentials button[type="submit"],
+#btn-autofill-register-credentials {
     background-color: #000000 !important;
     color: #ffffff !important;
-    border: 1px solid #000000 !important;
+    border: 2px solid #000000 !important;
+    border-radius: 16px !important;
+    font-weight: 700 !important;
+    height: 56px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+#view-create_account_credentials button[type="submit"]:active,
+#btn-autofill-register-credentials:active {
+    transform: scale(0.97) !important;
+    background-color: #1c1c1c !important;
+}
+html.dark #view-create_account_credentials button[type="submit"],
+html.dark #btn-autofill-register-credentials {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 2px solid #ffffff !important;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2) !important;
 }
 
-#view-create_account button[type="submit"] * {
+/* Custom Toggle Switch for Safe Space Agreement */
+.switch-container {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+}
+.switch-container input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(48, 138, 94, 0.15);
+    transition: .25s ease;
+    border-radius: 24px;
+    border: 1px solid rgba(48, 138, 94, 0.2);
+}
+.switch-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 2px;
+    bottom: 2px;
+    background-color: #308a5e;
+    transition: .25s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+input:checked + .switch-slider {
+    background-color: #308a5e;
+    border-color: #308a5e;
+}
+input:checked + .switch-slider:before {
+    transform: translateX(20px);
+    background-color: #ffffff;
+}
+
+html.dark .switch-slider {
+    background-color: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.15);
+}
+html.dark .switch-slider:before {
+    background-color: rgba(255,255,255,0.4);
+}
+html.dark input:checked + .switch-slider {
+    background-color: #308a5e;
+    border-color: #308a5e;
+}
+html.dark input:checked + .switch-slider:before {
+    background-color: #ffffff;
+}
+
+/* Fused Search & Filter Bar Container */
+#village-search-bar-overlay {
+    position: absolute !important;
+    left: 24px !important;
+    z-index: 2000 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: calc(100% - 48px) !important;
+    max-width: 480px !important;
+    transition: all 0.3s ease !important;
+}
+#village-search-bar-overlay.hidden {
+    display: none !important;
+}
+
+/* Fused Search Capsule */
+.fused-search-capsule {
+    display: flex !important;
+    align-items: center !important;
+    background-color: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-radius: 9999px !important;
+    padding: 4px 8px 4px 8px !important;
+    height: 42px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s ease !important;
+    width: 100% !important;
+}
+
+html.dark .fused-search-capsule {
+    background-color: rgba(24, 32, 26, 0.92) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Capsule Search Input */
+.fused-search-input {
+    flex-grow: 1 !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    font-size: 13px !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 300 !important;
+    padding: 0 10px 0 6px !important;
+    color: #000000 !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+html.dark .fused-search-input {
     color: #ffffff !important;
 }
+
+/* Fused Location Button */
+.fused-location-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
+    color: #000000 !important;
+    background: transparent !important;
+    border: none !important;
+    margin-left: 2px !important;
+    transition: color 0.2s ease !important;
+}
+
+html.dark .fused-location-btn {
+    color: #ffffff !important;
+}
+
+.fused-location-btn.active-location {
+    color: #3b82f6 !important;
+}
+
+html.dark .fused-location-btn.active-location {
+    color: #3b82f6 !important;
+}
+
+.fused-search-input::placeholder {
+    color: rgba(0, 0, 0, 0.4) !important;
+    font-weight: 300 !important;
+}
+
+html.dark .fused-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+    font-weight: 300 !important;
+}
+
+/* Fused Divider Line */
+.fused-divider {
+    width: 1px !important;
+    height: 18px !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    margin: 0 8px !important;
+}
+
+html.dark .fused-divider {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Help Info button (inside capsule) */
+#btn-map-info-help.fused-help-btn {
+    position: static !important;
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
+    max-width: 26px !important;
+    max-height: 26px !important;
+    margin-right: 6px !important;
+    box-shadow: none !important;
+    display: flex !important;
+}
+
+/* Segment Filter Button inside capsule */
+#btn-segment-filter.fused-filter-btn {
+    position: static !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
+    box-shadow: none !important;
+    border: none !important;
+    background-color: transparent !important;
+    display: flex !important;
+}
+
+#btn-segment-filter.fused-filter-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+html.dark #btn-segment-filter.fused-filter-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+#btn-segment-filter.fused-filter-btn.active-filter-circle {
+    background-color: #308A5E !important; /* Unified brand green color instead of indigo */
+    color: #ffffff !important;
+    border-radius: 50% !important;
+}
+
+html.dark #btn-segment-filter.fused-filter-btn.active-filter-circle {
+    background-color: #82b995 !important;
+    color: #111814 !important;
+}
+
+/* Suggestions Box overlay style */
+.fused-suggestions-box {
+    margin-top: 8px !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+    padding: 6px !important;
+    max-height: 240px !important;
+    overflow-y: auto !important;
+    width: 100% !important;
+}
+
+html.dark .fused-suggestions-box {
+    background-color: rgba(24, 32, 26, 0.95) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4) !important;
+}
+
+#meetup-map-close-btn {
+    position: absolute !important;
+    top: 16px !important;
+    right: 16px !important;
+    z-index: 3000 !important;
+}
+
+.native-app-env #meetup-map-close-btn {
+    top: calc(16px + env(safe-area-inset-top)) !important;
+}
+
+/* Music Guidance Banner Styling */
+.music-guidance-banner {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 12px !important;
+    margin-bottom: 16px !important;
+    border-radius: var(--radius-lg) !important;
+    font-size: var(--font-xs) !important;
+    text-align: left !important;
+    line-height: 1.4 !important;
+    user-select: none !important;
+    background-color: rgba(48, 138, 94, 0.08) !important;
+    border: 1px solid rgba(48, 138, 94, 0.2) !important;
+    color: var(--forest-green) !important;
+}
+
+html.dark .music-guidance-banner {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #a0cfa5 !important;
+}
+
 
 

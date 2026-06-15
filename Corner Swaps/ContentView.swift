@@ -12,19 +12,56 @@ class LogMessageHandler: NSObject, WKScriptMessageHandler {
 }
 
 class HapticMessageHandler: NSObject, WKScriptMessageHandler {
+    private static let light = UIImpactFeedbackGenerator(style: .light)
+    private static let medium = UIImpactFeedbackGenerator(style: .medium)
+    private static let success = UINotificationFeedbackGenerator()
+    private static let warning = UINotificationFeedbackGenerator()
+
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        let style = message.body as? String ?? "medium"
         DispatchQueue.main.async {
-            let generator = UIImpactFeedbackGenerator(style: .medium)
-            generator.prepare()
-            generator.impactOccurred()
+            switch style {
+            case "light":
+                Self.light.prepare()
+                Self.light.impactOccurred()
+            case "success":
+                Self.success.prepare()
+                Self.success.notificationOccurred(.success)
+            case "warning":
+                Self.warning.prepare()
+                Self.warning.notificationOccurred(.warning)
+            default:
+                Self.medium.prepare()
+                Self.medium.impactOccurred()
+            }
         }
     }
 }
 
+class WeakScriptMessageHandler: NSObject, WKScriptMessageHandler {
+    weak var delegate: WKScriptMessageHandler?
+    init(_ delegate: WKScriptMessageHandler) {
+        self.delegate = delegate
+        super.init()
+    }
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        delegate?.userContentController(userContentController, didReceive: message)
+    }
+}
+
 struct WebView: UIViewRepresentable {
-    let html: String
+    let fileURL: URL
+    @Binding var initError: String?
     
     class Coordinator: NSObject, UIScrollViewDelegate, WKNavigationDelegate, WKUIDelegate {
+        var parent: WebView
+        let logHandler = LogMessageHandler()
+        let hapticHandler = HapticMessageHandler()
+        
+        init(_ parent: WebView) {
+            self.parent = parent
+        }
+        
         func viewForZooming(in scrollView: UIScrollView) -> UIView? {
             return nil
         }
@@ -66,12 +103,18 @@ struct WebView: UIViewRepresentable {
             NSLog("[SWIFT ERROR] didFailProvisionalNavigation: %@", error.localizedDescription)
             print("[SWIFT ERROR] didFailProvisionalNavigation: \(error.localizedDescription)")
             fflush(stdout)
+            DispatchQueue.main.async {
+                self.parent.initError = error.localizedDescription
+            }
         }
         
         func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
             NSLog("[SWIFT ERROR] didFail: %@", error.localizedDescription)
             print("[SWIFT ERROR] didFail: \(error.localizedDescription)")
             fflush(stdout)
+            DispatchQueue.main.async {
+                self.parent.initError = error.localizedDescription
+            }
         }
 
         // Handle JS Alert panel
@@ -117,17 +160,19 @@ struct WebView: UIViewRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator()
+        Coordinator(self)
     }
 
     func makeUIView(context: Context) -> WKWebView {
         let configuration = WKWebViewConfiguration()
         
-        let logHandler = LogMessageHandler()
-        configuration.userContentController.add(logHandler, name: "logHandler")
+        // Enable KVC file access options to bypass local file origin masking
+        configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
+        configuration.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
         
-        let hapticHandler = HapticMessageHandler()
-        configuration.userContentController.add(hapticHandler, name: "hapticHandler")
+        let coordinator = context.coordinator
+        configuration.userContentController.add(WeakScriptMessageHandler(coordinator.logHandler), name: "logHandler")
+        configuration.userContentController.add(WeakScriptMessageHandler(coordinator.hapticHandler), name: "hapticHandler")
         
         let js = """
         if (document.documentElement) {
@@ -135,7 +180,8 @@ struct WebView: UIViewRepresentable {
         }
         window.isNativeApp = true;
         window.onerror = function(message, source, lineno, colno, error) {
-            window.webkit.messageHandlers.logHandler.postMessage("ERROR: " + message + " at " + source + ":" + lineno);
+            var details = error ? (error.message + "\\n" + error.stack) : message;
+            window.webkit.messageHandlers.logHandler.postMessage("ERROR: " + details + " at " + source + ":" + lineno);
         };
         var originalLog = console.log;
         console.log = function() {
@@ -171,18 +217,23 @@ struct WebView: UIViewRepresentable {
         NSLog("[SWIFT] Loading self-contained HTML string...")
         print("[SWIFT] Loading self-contained HTML string...")
         fflush(stdout)
-        webView.loadHTMLString(html, baseURL: Bundle.main.resourceURL)
+        webView.loadFileURL(fileURL, allowingReadAccessTo: Bundle.main.resourceURL ?? fileURL.deletingLastPathComponent())
         
         return webView
     }
 
     func updateUIView(_ webView: WKWebView, context: Context) {
     }
+    
+    static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
+        uiView.configuration.userContentController.removeScriptMessageHandler(forName: "logHandler")
+        uiView.configuration.userContentController.removeScriptMessageHandler(forName: "hapticHandler")
+    }
 }
 
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
-    @State private var webHTML: String? = nil
+    @State private var webURL: URL? = nil
     @State private var initError: String? = nil
     
     var body: some View {
@@ -206,13 +257,26 @@ struct ContentView: View {
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
+                    Button(action: {
+                        self.initError = nil
+                        self.prepareWebAssets()
+                    }) {
+                        Text("Retry Connection")
+                            .font(.subheadline)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 12)
+                            .background(Color.white.opacity(0.2))
+                            .cornerRadius(12)
+                    }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color(red: 69/255.0, green: 122/255.0, blue: 86/255.0))
-            } else if let html = webHTML {
-                WebView(html: html)
+            } else if let url = webURL {
+                WebView(fileURL: url, initError: $initError)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .ignoresSafeArea()
+                    .ignoresSafeArea(.container)
             } else {
                 VStack {
                     ProgressView()
@@ -223,7 +287,7 @@ struct ContentView: View {
                 }
             }
         }
-        .edgesIgnoringSafeArea(.all)
+        .ignoresSafeArea(.container, edges: .all)
         .onAppear {
             prepareWebAssets()
         }
@@ -241,16 +305,7 @@ struct ContentView: View {
             return
         }
         
-        do {
-            let htmlString = try String(contentsOf: srcURL, encoding: .utf8)
-            if htmlString.isEmpty {
-                initError = "Loaded index.html is empty"
-            } else {
-                webHTML = htmlString
-            }
-        } catch {
-            initError = "Error reading index.html: \(error.localizedDescription)"
-        }
+        webURL = srcURL
     }
 }
 
@@ -261,26 +316,7 @@ struct ContentView: View {
 // MARK: - WKWebView Input Accessory Removal Extension
 extension WKWebView {
     func hideAccessoryBar() {
-        guard let contentView = self.scrollView.subviews.first(where: { 
-            type(of: $0).description().hasPrefix("WKContent") 
-        }) else { return }
-        
-        let objClass: AnyClass = type(of: contentView)
-        let className = "\(objClass)_NoAccessory"
-        
-        var subclass: AnyClass? = NSClassFromString(className)
-        if subclass == nil {
-            subclass = objc_allocateClassPair(objClass, className, 0)
-            if let subclass = subclass {
-                let imp: @convention(block) (AnyObject) -> AnyObject? = { _ in nil }
-                class_addMethod(subclass, Selector(("inputAccessoryView")), imp_implementationWithBlock(imp), "@@:")
-                objc_registerClassPair(subclass)
-            }
-        }
-        
-        if let subclass = subclass {
-            object_setClass(contentView, subclass)
-        }
+        // Disabled runtime swizzling/subclassing of WKContentView to prevent input focus freezes on iOS 16/17/18.
     }
 }
 
