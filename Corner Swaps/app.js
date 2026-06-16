@@ -6158,19 +6158,21 @@ function renderEventsList() {
                 </div>
                 <!-- Right Details Portion -->
                 <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
-                    <div class="space-y-0.5">
-                        <div class="flex items-center gap-2">
-                            <span class="-ml-2 px-1.5 py-0.5 bg-forest-green/10 dark:bg-forest-green/20 text-black dark:text-white rounded text-[7.5px] font-bold uppercase tracking-wider">${evt.type}</span>
-                            <span class="text-[8.5px] text-black dark:text-white font-medium">${times.timeDisplay} · ${times.badgeDate}</span>
+                    <div>
+                        <div class="flex items-center justify-between gap-2">
+                            <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${evt.title}</h4>
+                            <span class="flex-shrink-0 text-[8.5px] text-forest-green dark:text-[#308A5E] font-bold bg-forest-green/10 dark:bg-forest-green/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${times.badgeDate}</span>
                         </div>
-                        <h4 class="text-black dark:text-white truncate leading-tight text-xs font-bold mt-0.5">${evt.title}</h4>
-                        <p class="text-gray-500 dark:text-gray-400 line-clamp-1 text-[11px] mt-0.5">${evt.desc}</p>
+                        <p class="text-xs text-black dark:text-white line-clamp-1 mt-0.5">${evt.desc}</p>
                     </div>
 
-                    <div class="flex items-center gap-1.5 mt-1">
-                        <!-- Host details with circular avatar bubble -->
-                        <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${hostAvatar}" class="w-full h-full object-cover rounded-full"></div>
-                        <span class="text-[10px] text-black dark:text-white font-semibold truncate">Host: ${evt.host || 'Member'} · ${distanceDisplay}</span>
+                    <div class="flex items-center justify-between gap-1.5 mt-1">
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <!-- Host details with circular avatar bubble -->
+                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${hostAvatar}" class="w-full h-full object-cover rounded-full"></div>
+                            <span class="text-[10px] text-black dark:text-white font-semibold truncate">${evt.host || 'Member'}</span>
+                        </div>
+                        <span class="text-[9px] text-gray-500 dark:text-gray-400 font-medium flex-shrink-0">${evt.type} · ${times.timeDisplay} · ${distanceDisplay}</span>
                     </div>
                 </div>
             `;
@@ -24288,11 +24290,16 @@ window.clearChatSearch = function() {
     const input = document.getElementById('chat-search-input');
     if (input) {
         input.value = "";
+        input.blur();
     }
     state.chatSearchQuery = "";
     const clearBtn = document.getElementById('btn-clear-chat-search');
     if (clearBtn) {
         clearBtn.classList.add('hidden');
+    }
+    const navbar = document.getElementById('global-navbar');
+    if (navbar) {
+        navbar.classList.remove('hidden');
     }
     renderConversationsList();
 };
@@ -29274,7 +29281,8 @@ function initSearchBehavior() {
         { inputId: 'village-list-search-input', clearBtnId: 'btn-list-search-clear' },
         { inputId: 'village-needs-search-input', clearBtnId: 'btn-needs-search-clear' },
         { inputId: 'village-events-search-input', clearBtnId: 'btn-events-search-clear' },
-        { inputId: 'village-bulletins-search-input', clearBtnId: 'btn-bulletins-search-clear' }
+        { inputId: 'village-bulletins-search-input', clearBtnId: 'btn-bulletins-search-clear' },
+        { inputId: 'chat-search-input', clearBtnId: 'btn-clear-chat-search' }
     ];
 
     searchInputs.forEach(({ inputId, clearBtnId }) => {
