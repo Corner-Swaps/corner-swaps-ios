@@ -67,6 +67,12 @@ struct WebView: UIViewRepresentable {
             return nil
         }
         
+        func scrollViewDidScroll(_ scrollView: UIScrollView) {
+            if scrollView.contentOffset != .zero {
+                scrollView.contentOffset = .zero
+            }
+        }
+        
         func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
             if let url = navigationAction.request.url {
                 let scheme = url.scheme?.lowercased() ?? ""
@@ -278,7 +284,7 @@ struct ContentView: View {
             } else if let url = webURL {
                 WebView(fileURL: url, initError: $initError)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .ignoresSafeArea(.container)
+                    .ignoresSafeArea()
             } else {
                 VStack {
                     ProgressView()
@@ -289,7 +295,7 @@ struct ContentView: View {
                 }
             }
         }
-        .ignoresSafeArea(.container, edges: .all)
+        .ignoresSafeArea()
         .onAppear {
             let websiteDataTypes = WKWebsiteDataStore.allWebsiteDataTypes()
             let dateFrom = Date(timeIntervalSince1970: 0)

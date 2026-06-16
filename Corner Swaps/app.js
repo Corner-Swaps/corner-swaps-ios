@@ -3345,6 +3345,7 @@ function showView(viewId, mode) {
     if (viewId === 'home') {
         viewId = 'village';
     }
+    const oldViewId = (state && state.currentView) ? state.currentView : null;
     const disableTransition = window.isAppStartup;
     
     // If already on the view, handle double-tap behavior (scroll to top smoothly)
@@ -3506,11 +3507,28 @@ function showView(viewId, mode) {
 
     console.log("Switching view to:", viewId);
     
-    // Hide all views
-    document.querySelectorAll('.screen-view').forEach(view => {
-        view.classList.remove('active');
-        view.style.display = 'none';
-    });
+    // Check if transitioning between chat list and active chat detail on mobile/simulator viewport (non-split screen)
+    const isPushTransition = (viewId === 'chat_detail' && oldViewId && oldViewId !== 'chat_detail');
+    const isPopTransition = (oldViewId === 'chat_detail' && viewId && viewId !== 'chat_detail');
+    const isSplitScreen = !isNative && !document.body.classList.contains('show-simulator');
+    const shouldUseSlideTransition = (isPushTransition || isPopTransition) && !isSplitScreen;
+
+    if (!shouldUseSlideTransition) {
+        // Hide all views instantly for normal non-slide navigation transitions
+        document.querySelectorAll('.screen-view').forEach(view => {
+            view.classList.remove('active');
+            view.style.display = 'none';
+        });
+    } else {
+        // Only hide non-transitioning views
+        document.querySelectorAll('.screen-view').forEach(view => {
+            const id = view.id.replace('view-', '');
+            if (id !== oldViewId && id !== viewId) {
+                view.classList.remove('active');
+                view.style.display = 'none';
+            }
+        });
+    }
 
     // Show active view with safe fallback
     let activeView = document.getElementById(`view-${viewId}`);
@@ -3521,7 +3539,68 @@ function showView(viewId, mode) {
     }
 
     if (activeView) {
-        activeView.style.display = 'flex';
+        if (shouldUseSlideTransition) {
+            const incomingEl = activeView;
+            const outgoingEl = document.getElementById(`view-${oldViewId}`);
+            if (incomingEl && outgoingEl) {
+                // Setup animation configuration classes
+                incomingEl.classList.remove('active');
+                outgoingEl.classList.remove('active');
+                
+                if (isPushTransition) {
+                    incomingEl.className = 'screen-view slide-push-enter';
+                    outgoingEl.className = 'screen-view slide-push-exit';
+                } else {
+                    incomingEl.className = 'screen-view slide-pop-enter';
+                    outgoingEl.className = 'screen-view slide-pop-exit';
+                }
+                
+                incomingEl.style.display = 'flex';
+                outgoingEl.style.display = 'flex';
+                
+                // Force a layout reflow before starting the transform/opacity animations
+                incomingEl.offsetHeight; 
+                
+                // Set the animation target state
+                if (isPushTransition) {
+                    incomingEl.classList.add('slide-push-enter-active');
+                    outgoingEl.classList.add('slide-push-exit-active');
+                } else {
+                    incomingEl.classList.add('slide-pop-enter-active');
+                    outgoingEl.classList.add('slide-pop-exit-active');
+                }
+                
+                setTimeout(() => {
+                    // Reset to standard states after completion
+                    incomingEl.className = 'screen-view active';
+                    outgoingEl.className = 'screen-view';
+                    outgoingEl.style.display = 'none';
+                }, 350);
+            }
+        } else {
+            activeView.style.display = 'flex';
+            if (disableTransition) {
+                activeView.classList.add('no-transition');
+                activeView.classList.add('active');
+                if (viewId === 'profile_settings') {
+                    const scrollContainer = document.getElementById('profile-settings-scroll-container');
+                    if (scrollContainer) scrollContainer.scrollTop = 0;
+                } else {
+                    activeView.scrollTop = 0;
+                }
+                setTimeout(() => {
+                    activeView.classList.remove('no-transition');
+                }, 100);
+            } else {
+                setTimeout(() => activeView.classList.add('active'), 20);
+                if (viewId === 'profile_settings') {
+                    const scrollContainer = document.getElementById('profile-settings-scroll-container');
+                    if (scrollContainer) scrollContainer.scrollTop = 0;
+                } else {
+                    activeView.scrollTop = 0;
+                }
+            }
+        }
         
         if (viewId === 'profile_consent') {
             state.liabilityDisclaimerRead = true;
@@ -3553,28 +3632,6 @@ function showView(viewId, mode) {
             }
         }
         
-        if (disableTransition) {
-            activeView.classList.add('no-transition');
-            activeView.classList.add('active');
-            if (viewId === 'profile_settings') {
-                const scrollContainer = document.getElementById('profile-settings-scroll-container');
-                if (scrollContainer) scrollContainer.scrollTop = 0;
-            } else {
-                activeView.scrollTop = 0;
-            }
-            setTimeout(() => {
-                activeView.classList.remove('no-transition');
-            }, 100);
-        } else {
-            setTimeout(() => activeView.classList.add('active'), 20);
-            if (viewId === 'profile_settings') {
-                const scrollContainer = document.getElementById('profile-settings-scroll-container');
-                if (scrollContainer) scrollContainer.scrollTop = 0;
-            } else {
-                activeView.scrollTop = 0;
-            }
-        }
-
         if (viewId === 'offer') {
             if (typeof resetOfferValidationState === 'function') {
                 resetOfferValidationState();
@@ -6138,11 +6195,9 @@ function renderEventsList() {
 
             const hostNeighbor = state.neighbors[evt.host];
             const hostAvatar = hostNeighbor ? hostNeighbor.avatar : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80';
-            const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
-            const isUserRsvped = evt.rsvps ? evt.rsvps.includes(currentUser) : false;
-
+            
             const card = document.createElement('div');
-            card.className = "h-32 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+            card.className = "h-24 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
             
             card.onclick = () => {
                 openEventDetail(evt.id);
@@ -6151,19 +6206,23 @@ function renderEventsList() {
             const isUserHost = evt.host === 'me' || evt.host === 'Lily Kaufmann' || (state.currentUser && evt.host === (state.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`));
             const distanceDisplay = isUserHost ? '0 km' : `${formatRadiusValue(evt.distance)} away`;
 
+            const evtImages = evt.image ? evt.image.split('|||').filter(Boolean) : [];
+            const presetImg = getEventPresetImage(evt.type);
+            const img1 = evtImages[0] || presetImg;
+
             card.innerHTML = `
                 <!-- Left Image Portion -->
-                <div class="w-40 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
-                    ${getEventCardThumbnailHTML(evt)}
+                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
+                    <img src="${img1}" class="w-full h-full object-cover">
                 </div>
                 <!-- Right Details Portion -->
-                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
+                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between self-stretch">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${evt.title}</h4>
                             <span class="flex-shrink-0 text-[8.5px] text-forest-green dark:text-[#308A5E] font-bold bg-forest-green/10 dark:bg-forest-green/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${times.badgeDate}</span>
                         </div>
-                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1">${evt.desc}</p>
+                        <p class="text-xs text-[#5C635E] dark:text-gray-400 line-clamp-1 mt-0.5">${evt.desc}</p>
                     </div>
 
                     <div class="flex items-center justify-between gap-1.5 mt-1">
@@ -12050,7 +12109,7 @@ function renderChatTradeDrawer(conv) {
                     <input type="file" id="chat-photo-input" accept="image/*" class="hidden" onchange="handleSendChatPhoto(this)"/>
                     <input type="file" id="chat-camera-input" accept="image/*" capture="camera" class="hidden" onchange="handleSendChatPhoto(this)"/>
                     <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper-group" onpointerdown="window.handleChatInputWrapperTouch(event, this)">
-                        <input class="flex-grow bg-transparent border-0 px-2 py-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
+                        <input class="flex-grow bg-transparent border-0 h-full py-0 px-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
                         <div class="flex items-center gap-1.5 flex-shrink-0">
                             ${hasMapViewLink ? `
                             <button class="w-[38px] h-[38px] bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer" onclick="window.viewMeetupLocationOnMap('${conv.id}')" title="View Swap Map">
@@ -12092,7 +12151,7 @@ function renderChatTradeDrawer(conv) {
                     <input type="file" id="chat-photo-input" accept="image/*" class="hidden" onchange="handleSendChatPhoto(this)"/>
                     <input type="file" id="chat-camera-input" accept="image/*" capture="camera" class="hidden" onchange="handleSendChatPhoto(this)"/>
                     <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper" onpointerdown="window.handleChatInputWrapperTouch(event, this)">
-                        <input class="flex-grow bg-transparent border-0 px-2 py-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
+                        <input class="flex-grow bg-transparent border-0 h-full py-0 px-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
                         <div class="flex items-center gap-1.5 flex-shrink-0">
                             ${isKarmaGift ? '' : `
                             ${status === 'accepted' || status === 'completed' ? '' : `
@@ -15547,25 +15606,30 @@ function renderVillageListView() {
 
     filteredListings.forEach(item => {
         const card = document.createElement('div');
-        card.className = "h-32 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-24 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail(item.id);
+
+        const itemImages = item.image ? item.image.split('|||').filter(Boolean) : [];
+        const presetImg = getCategoryPresetImage(item.category || 'garden');
+        const img1 = itemImages[0] || presetImg;
 
         if (item.type === 'neighbor') {
             const neighbor = state.neighbors[item.name];
             const isKarma = neighbor && neighbor.isKarma;
-            const karmaLabelHTML = '';
             card.innerHTML = `
-                <div class="w-40 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
-                    <img src="${item.image}" class="w-full h-full object-cover">
+                <!-- Left Image Portion -->
+                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
+                    <img src="${img1}" class="w-full h-full object-cover">
                     ${isKarma ? `<div class="absolute bottom-1 right-1 bg-[#EF4444] w-5 h-5 rounded-full flex items-center justify-center shadow-sm" style="border: 1px solid white;"><span class="material-symbols-outlined text-xs" style="color: white !important; font-variation-settings: 'FILL' 1 !important;">favorite</span></div>` : ''}
                 </div>
-                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
+                <!-- Right Details Portion -->
+                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between self-stretch">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${item.title}</h4>
-                            <span class="flex-shrink-0 text-[8.5px] text-[#D99036] dark:text-[#E2A04E] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${item.category}</span>
+                            <span class="flex-shrink-0 text-[8.5px] text-[#D99036] dark:text-[#E2A04E] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${item.category || 'Offering'}</span>
                         </div>
-                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1">${item.desc}</p>
+                        <p class="text-xs text-[#5C635E] dark:text-gray-400 line-clamp-1 mt-0.5">${item.desc}</p>
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-1">
                         <div class="flex items-center gap-1.5 min-w-0">
@@ -15578,19 +15642,21 @@ function renderVillageListView() {
             `;
         } else {
             card.innerHTML = `
-                <div class="w-40 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
-                    <img src="${item.image}" class="w-full h-full object-cover">
+                <!-- Left Image Portion -->
+                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
+                    <img src="${img1}" class="w-full h-full object-cover">
                 </div>
-                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
+                <!-- Right Details Portion -->
+                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between self-stretch">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">
                                 ${item.title} 
                                 <span class="text-[9px] text-black dark:text-white font-bold bg-[#D99036]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
                             </h4>
-                            <span class="flex-shrink-0 text-[8.5px] text-[#D99036] dark:text-[#E2A04E] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${item.category}</span>
+                            <span class="flex-shrink-0 text-[8.5px] text-[#D99036] dark:text-[#E2A04E] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${item.category || 'Offering'}</span>
                         </div>
-                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1">${item.desc}</p>
+                        <p class="text-xs text-[#5C635E] dark:text-gray-400 line-clamp-1 mt-0.5">${item.desc}</p>
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-1">
                         <div class="flex items-center gap-1.5 min-w-0">
@@ -15722,30 +15788,35 @@ function renderNeedsBoardView() {
 
     filteredNeeds.forEach(need => {
         const card = document.createElement('div');
-        const needImg = getCategoryPresetImage(need.category);
         const needId = need.id;
-        card.className = "h-32 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-24 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail('need_' + needId);
         
         const currentUser = state.currentUser || {};
         const displayName = currentUser.displayName || `${currentUser.firstName || 'Lily'} ${currentUser.lastName || 'Kaufmann'}`;
         const isUserNeed = need.neighborName === displayName;
 
+        const needImages = need.image ? need.image.split('|||').filter(Boolean) : [];
+        const presetImg = getCategoryPresetImage(need.category || 'garden');
+        const img1 = needImages[0] || presetImg;
+
         if (isUserNeed) {
             card.innerHTML = `
-                <div class="w-40 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
-                    <img src="${needImg}" class="w-full h-full object-cover">
+                <!-- Left Image Portion -->
+                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
+                    <img src="${img1}" class="w-full h-full object-cover">
                 </div>
-                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
+                <!-- Right Details Portion -->
+                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between self-stretch">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">
                                 ${need.needTitle} 
                                 <span class="text-[9px] text-black dark:text-white font-bold bg-[#D99036]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
                             </h4>
-                            <span class="flex-shrink-0 text-[8.5px] text-[#D99036] dark:text-[#E2A04E] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${need.category}</span>
+                            <span class="flex-shrink-0 text-[8.5px] text-[#D99036] dark:text-[#E2A04E] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${need.category || 'Need'}</span>
                         </div>
-                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1">${need.needDesc}</p>
+                        <p class="text-xs text-[#5C635E] dark:text-gray-400 line-clamp-1 mt-0.5">${need.needDesc}</p>
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-1">
                         <div class="flex items-center gap-1.5 min-w-0">
@@ -15758,16 +15829,18 @@ function renderNeedsBoardView() {
             `;
         } else {
             card.innerHTML = `
-                <div class="w-40 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
-                    <img src="${needImg}" class="w-full h-full object-cover">
+                <!-- Left Image Portion -->
+                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
+                    <img src="${img1}" class="w-full h-full object-cover">
                 </div>
-                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
+                <!-- Right Details Portion -->
+                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between self-stretch">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${need.needTitle}</h4>
-                            <span class="flex-shrink-0 text-[8.5px] text-[#D99036] dark:text-[#E2A04E] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${need.category}</span>
+                            <span class="flex-shrink-0 text-[8.5px] text-[#D99036] dark:text-[#E2A04E] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${need.category || 'Need'}</span>
                         </div>
-                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1">${need.needDesc}</p>
+                        <p class="text-xs text-[#5C635E] dark:text-gray-400 line-clamp-1 mt-0.5">${need.needDesc}</p>
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-1">
                         <div class="flex items-center gap-1.5 min-w-0">
@@ -18213,7 +18286,7 @@ function plotMapMarkersOnly() {
             popupAnchor: [0, -19]
         });
         
-        const marker = L.marker([lat, lng], { icon: customIcon }).addTo(leafletMap);
+        const marker = L.marker([lat, lng], { icon: customIcon, interactive: false }).addTo(leafletMap);
         mapMarkers.push({ marker, name: 'meetup_location' });
         
         // Also plot current user's location
@@ -18253,7 +18326,7 @@ function plotMapMarkersOnly() {
                 popupAnchor: [0, -27]
             });
 
-            const userMarker = L.marker([uLat, uLng], { icon: userLocIcon }).addTo(leafletMap);
+            const userMarker = L.marker([uLat, uLng], { icon: userLocIcon, interactive: false }).addTo(leafletMap);
             mapMarkers.push({ marker: userMarker, name: 'user_location' });
         }
         
@@ -18944,7 +19017,7 @@ function renderAdminPanel() {
                         <span class="material-symbols-outlined text-base text-black dark:text-white">person_off</span>
                         <span class="font-bold text-black dark:text-white">${name}</span>
                     </div>
-                    <button class="py-1.5 px-3 bg-forest-green hover:bg-forest-green/90 text-warm-cream font-bold text-[10px] rounded-xl active:scale-[0.98] transition-transform cursor-pointer border-0 shadow-sm" onclick="handleUnsuspendUser('${name}')">Revoke Suspension</button>
+                    <button class="py-1.5 px-3 bg-forest-green hover:bg-forest-green/90 text-warm-cream font-bold text-[10px] rounded-xl active:scale-[0.98] transition-transform cursor-pointer border-0 shadow-sm" onclick="handleUnsuspendUser('${escapeHTML(name.replace(/'/g, "\\'"))}')">Revoke Suspension</button>
                 `;
                 suspList.appendChild(item);
             });
@@ -19441,12 +19514,41 @@ window.toggleSecurityLockdown = toggleSecurityLockdown;
 function handleUnsuspendUser(name) {
     playSound('click');
     if (confirm(`Are you sure you want to unsuspend ${name}?`)) {
+        const myName = state.currentUser ? state.currentUser.displayName : 'Lily Kaufmann';
+        const myEmail = state.currentUser ? state.currentUser.email : 'lily@community.com';
+        
+        const isSelf = (name === myName || name === myEmail || name === 'Lily Kaufmann' || name === 'lily@community.com');
+        
         if (state.suspendedUsers) {
-            state.suspendedUsers = state.suspendedUsers.filter(u => u !== name);
+            if (isSelf) {
+                state.suspendedUsers = state.suspendedUsers.filter(u => u !== myName && u !== myEmail && u !== 'Lily Kaufmann' && u !== 'lily@community.com');
+            } else {
+                state.suspendedUsers = state.suspendedUsers.filter(u => u !== name);
+            }
         }
+        
+        if (isSelf && state.currentUser) {
+            state.currentUser.suspended = false;
+            state.currentUser.strikes = 0;
+            state.currentUser.shadowBanned = false;
+        }
+        
         if (state.neighbors && state.neighbors[name]) {
             state.neighbors[name].suspended = false;
+            state.neighbors[name].strikes = 0;
+            state.neighbors[name].shadowBanned = false;
         }
+        
+        if (isSelf && state.neighbors) {
+            ['Lily Kaufmann', myName, myEmail].forEach(nKey => {
+                if (state.neighbors[nKey]) {
+                    state.neighbors[nKey].suspended = false;
+                    state.neighbors[nKey].strikes = 0;
+                    state.neighbors[nKey].shadowBanned = false;
+                }
+            });
+        }
+
         if (!state.moderationLogs) state.moderationLogs = [];
         state.moderationLogs.unshift({
             time: 'Just now',
@@ -19557,11 +19659,11 @@ window.searchAdminUsers = function() {
         item.className = "p-3 bg-white dark:bg-[#18201a] border border-outline-variant/30 rounded-xl flex items-center justify-between text-xs mb-3";
         
         const suspendBtn = u.isMe ? "" : (u.suspended ? `
-            <button class="py-1.5 px-3 bg-forest-green hover:bg-forest-green/90 text-warm-cream font-bold text-[10px] rounded-xl active:scale-[0.98] transition-transform cursor-pointer border-0 shadow-sm" onclick="handleUnsuspendUser('${escapeHTML(u.name)}')">
+            <button class="py-1.5 px-3 bg-forest-green hover:bg-forest-green/90 text-warm-cream font-bold text-[10px] rounded-xl active:scale-[0.98] transition-transform cursor-pointer border-0 shadow-sm" onclick="handleUnsuspendUser('${escapeHTML(u.name.replace(/'/g, "\\'"))}')">
                 Unsuspend
             </button>
         ` : `
-            <button class="py-1.5 px-3 bg-red-600 hover:bg-red-700 text-white font-bold text-[10px] rounded-xl active:scale-[0.98] transition-transform cursor-pointer border-0 shadow-sm" onclick="suspendUserFromDirectory('${escapeHTML(u.name)}')">
+            <button class="py-1.5 px-3 bg-red-600 hover:bg-red-700 text-white font-bold text-[10px] rounded-xl active:scale-[0.98] transition-transform cursor-pointer border-0 shadow-sm" onclick="suspendUserFromDirectory('${escapeHTML(u.name.replace(/'/g, "\\'"))}')">
                 Suspend
             </button>
         `);
@@ -19578,8 +19680,8 @@ window.searchAdminUsers = function() {
                     <p class="text-[9px] text-[#424840] font-bold mt-0.5 flex items-center gap-1 select-none">
                         Karma: <span class="text-forest-green">${u.karma} pts</span>
                         ${!u.isMe ? `
-                            <button class="w-4 h-4 bg-outline-variant/20 hover:bg-forest-green/10 text-forest-green rounded flex items-center justify-center font-black active:scale-90 transition-transform cursor-pointer border-0" onclick="adjustUserKarma('${escapeHTML(u.name)}', 10)">+</button>
-                            <button class="w-4 h-4 bg-outline-variant/20 hover:bg-error/10 text-error rounded flex items-center justify-center font-black active:scale-90 transition-transform cursor-pointer border-0" onclick="adjustUserKarma('${escapeHTML(u.name)}', -10)">-</button>
+                            <button class="w-4 h-4 bg-outline-variant/20 hover:bg-forest-green/10 text-forest-green rounded flex items-center justify-center font-black active:scale-90 transition-transform cursor-pointer border-0" onclick="adjustUserKarma('${escapeHTML(u.name.replace(/'/g, "\\'"))}', 10)">+</button>
+                            <button class="w-4 h-4 bg-outline-variant/20 hover:bg-error/10 text-error rounded flex items-center justify-center font-black active:scale-90 transition-transform cursor-pointer border-0" onclick="adjustUserKarma('${escapeHTML(u.name.replace(/'/g, "\\'"))}', -10)">-</button>
                         ` : ''}
                     </p>
                 </div>
@@ -19638,6 +19740,11 @@ window.suspendUserFromDirectory = function(name) {
     if (!state.suspendedUsers) state.suspendedUsers = [];
     if (!state.suspendedUsers.includes(name)) {
         state.suspendedUsers.push(name);
+        
+        if (state.neighbors && state.neighbors[name]) {
+            state.neighbors[name].suspended = true;
+            state.neighbors[name].strikes = 5;
+        }
         
         if (!state.moderationLogs) state.moderationLogs = [];
         state.moderationLogs.unshift({
@@ -25467,81 +25574,212 @@ function updateSearchSuggestions(query) {
         return;
     }
 
-    let items = [];
+    let allItems = [];
 
-    // Prepend special musical suggestion card if the query is musical
+    // Helper to check for exact substrings or word boundaries
+    function checkExactMatch(queryStr, title, subtitle) {
+        const queryClean = queryStr.toLowerCase().trim();
+        if (!queryClean) return false;
+        const titleClean = (title || "").toLowerCase();
+        const subtitleClean = (subtitle || "").toLowerCase();
+        return titleClean.includes(queryClean) || subtitleClean.includes(queryClean);
+    }
+
+    // 1. User Offerings
+    if (state.userOfferings) {
+        state.userOfferings.forEach(offer => {
+            if (typeof getBarterItemStatus === 'function' && getBarterItemStatus(offer.id) !== 'Available') return;
+            if (fuzzySearchMatch(q, offer.title, offer.desc || '', offer.category || '')) {
+                allItems.push({
+                    id: offer.id,
+                    title: offer.title,
+                    subtitle: `You · ${offer.category}`,
+                    icon: offer.icon || getCategoryIcon(offer.category),
+                    lat: offer.lat,
+                    lng: offer.lng,
+                    type: 'user_offer',
+                    badge: 'Offering (You)'
+                });
+            }
+        });
+    }
+
+    // 2. Neighbor Offerings
+    if (state.neighbors) {
+        Object.keys(state.neighbors).forEach(key => {
+            const neighbor = state.neighbors[key];
+            if (neighbor && !neighbor.suspended && !(state.suspendedUsers && state.suspendedUsers.includes(key)) && !(state.blockedUsers && state.blockedUsers.includes(key))) {
+                if (fuzzySearchMatch(q, neighbor.offerTitle || '', neighbor.category || '', neighbor.name || '')) {
+                    allItems.push({
+                        id: key,
+                        title: neighbor.offerTitle || 'Offering',
+                        subtitle: `${neighbor.name} · ${neighbor.category}`,
+                        icon: getCategoryIcon(neighbor.category),
+                        lat: neighbor.lat,
+                        lng: neighbor.lng,
+                        type: 'offer',
+                        badge: 'Offering'
+                    });
+                }
+            }
+        });
+    }
+
+    // 3. Needs Board
+    if (state.needsBoard) {
+        state.needsBoard.forEach(need => {
+            if (state.blockedUsers && state.blockedUsers.includes(need.neighborName)) return;
+            if (state.suspendedUsers && state.suspendedUsers.includes(need.neighborName)) return;
+            if (fuzzySearchMatch(q, need.needTitle || '', need.needDesc || '', need.category || '', need.neighborName || '')) {
+                let lat = need.lat;
+                let lng = need.lng;
+                if (!lat || !lng) {
+                    const user = state.currentUser || {};
+                    const displayName = user.displayName || `${user.firstName || 'Lily'} ${user.lastName || 'Kaufmann'}`;
+                    if (need.neighborName === displayName) {
+                        lat = user.lat;
+                        lng = user.lng;
+                    } else {
+                        const neighbor = state.neighbors[need.neighborName];
+                        if (neighbor) {
+                            lat = neighbor.lat;
+                            lng = neighbor.lng;
+                        }
+                    }
+                }
+                allItems.push({
+                    id: `need_${need.id}`,
+                    title: need.needTitle || 'Need Request',
+                    subtitle: `${need.neighborName} · Need Help`,
+                    icon: getCategoryIcon(need.category) || 'help_outline',
+                    lat: lat || 49.2827,
+                    lng: lng || -123.1207,
+                    type: 'need',
+                    badge: 'Need'
+                });
+            }
+        });
+    }
+
+    // 4. Events
+    if (state.events) {
+        state.events.forEach(evt => {
+            if (!(state.suspendedUsers && state.suspendedUsers.includes(evt.host))) {
+                if (fuzzySearchMatch(q, evt.title || '', evt.desc || '', evt.type || '', evt.host || '')) {
+                    allItems.push({
+                        id: `evt_${evt.id}`,
+                        title: evt.title || 'Event',
+                        subtitle: `Event · Hosted by ${evt.host || 'Community'}`,
+                        icon: 'event',
+                        lat: evt.lat,
+                        lng: evt.lng,
+                        type: 'event',
+                        badge: 'Event'
+                    });
+                }
+            }
+        });
+    }
+
+    // Separate into Exact and Similar matches
+    const exactMatches = [];
+    const similarMatches = [];
+
+    allItems.forEach(item => {
+        if (checkExactMatch(q, item.title, item.subtitle)) {
+            exactMatches.push(item);
+        } else {
+            similarMatches.push(item);
+        }
+    });
+
+    // Special music query handling
     if (isMusicalQuery(q)) {
-        items.push({
+        exactMatches.unshift({
             id: 'special_music_card',
             title: '🎵 Explore Community Music Swaps',
             subtitle: `View music instruments, lessons, and gear for "${query}"`,
             icon: 'music_note',
             lat: null,
             lng: null,
-            isSpecial: true,
-            queryVal: query
+            badge: 'Music Swap'
         });
     }
 
-    // Add matching offerings from neighbors
-    Object.keys(state.neighbors).forEach(key => {
-        const neighbor = state.neighbors[key];
-        if (neighbor && !neighbor.suspended && !(state.suspendedUsers && state.suspendedUsers.includes(key)) && !(state.blockedUsers && state.blockedUsers.includes(key))) {
-            if (fuzzySearchMatch(q, neighbor.offerTitle, neighbor.category, neighbor.name)) {
-                items.push({
-                    id: key,
-                    title: neighbor.offerTitle,
-                    subtitle: `${neighbor.name} · ${neighbor.category}`,
-                    icon: getCategoryMaterialIcon(neighbor.category),
-                    lat: neighbor.lat,
-                    lng: neighbor.lng
-                });
-            }
-        }
-    });
-
-    // Add matching events
-    state.events.forEach(evt => {
-        if (!(state.suspendedUsers && state.suspendedUsers.includes(evt.host))) {
-            if (fuzzySearchMatch(q, evt.title, evt.desc, evt.type, evt.host || '')) {
-                items.push({
-                    id: `evt_${evt.id}`,
-                    title: evt.title,
-                    subtitle: `Event · Hosted by ${evt.host || 'Community'}`,
-                    icon: 'event',
-                    lat: evt.lat,
-                    lng: evt.lng
-                });
-            }
-        }
-    });
-
-    if (items.length === 0) {
+    if (exactMatches.length === 0 && similarMatches.length === 0) {
         container.innerHTML = `<div class="px-3 py-2.5 text-xs text-on-surface-variant text-center">No matching suggestions</div>`;
         adjustSearchSuggestionsVisibility(true);
         return;
     }
 
+    // Highlight helper
+    function highlightQuery(title, queryStr) {
+        if (!queryStr) return title;
+        const escaped = queryStr.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        const regex = new RegExp(`(${escaped})`, 'gi');
+        return title.replace(regex, `<span class="search-highlight">$1</span>`);
+    }
+
     container.innerHTML = "";
-    items.slice(0, 5).forEach(item => {
-        const div = document.createElement('div');
-        div.className = "flex items-center gap-3 px-3.5 py-2.5 hover:bg-forest-green/5 dark:hover:bg-white/5 rounded-xl cursor-pointer active:scale-[0.98] transition-transform select-none";
-        div.onclick = () => {
-            if (item.isSpecial) {
-                selectSearchSuggestion(item.id, item.queryVal, null, null);
-            } else {
+
+    // 1. Render Exact Matches
+    if (exactMatches.length > 0) {
+        const hdr = document.createElement('div');
+        hdr.className = "suggestion-section-title exact";
+        hdr.innerHTML = `<span>Exact Matches</span><span class="suggestion-badge-count">${exactMatches.length}</span>`;
+        container.appendChild(hdr);
+
+        exactMatches.slice(0, 5).forEach(item => {
+            const div = document.createElement('div');
+            div.className = "fused-suggestion-item";
+            div.onclick = () => {
+                if (item.id === 'special_music_card') {
+                    selectSearchSuggestion(item.id, query, null, null);
+                } else {
+                    selectSearchSuggestion(item.id, item.title, item.lat, item.lng);
+                }
+            };
+            div.innerHTML = `
+                <div class="fused-suggestion-icon-wrapper">
+                    <span class="material-symbols-outlined text-base">${item.icon}</span>
+                </div>
+                <div class="fused-suggestion-info">
+                    <div class="fused-suggestion-title">${highlightQuery(item.title, query)}</div>
+                    <div class="fused-suggestion-subtitle">${item.subtitle}</div>
+                </div>
+                <span class="fused-suggestion-type-badge">${item.badge}</span>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    // 2. Render Similar Matches
+    if (similarMatches.length > 0) {
+        const hdr = document.createElement('div');
+        hdr.className = "suggestion-section-title similar";
+        hdr.innerHTML = `<span>Similar / Related Matches</span><span class="suggestion-badge-count">${similarMatches.length}</span>`;
+        container.appendChild(hdr);
+
+        similarMatches.slice(0, 5).forEach(item => {
+            const div = document.createElement('div');
+            div.className = "fused-suggestion-item";
+            div.onclick = () => {
                 selectSearchSuggestion(item.id, item.title, item.lat, item.lng);
-            }
-        };
-        div.innerHTML = `
-            <span class="material-symbols-outlined text-forest-green dark:text-[#a0cfa5] text-base">${item.icon}</span>
-            <div class="flex-grow min-w-0">
-                <div class="text-xs font-bold text-on-surface truncate">${item.title}</div>
-                <div class="text-[10px] text-on-surface-variant truncate">${item.subtitle}</div>
-            </div>
-        `;
-        container.appendChild(div);
-    });
+            };
+            div.innerHTML = `
+                <div class="fused-suggestion-icon-wrapper">
+                    <span class="material-symbols-outlined text-base">${item.icon}</span>
+                </div>
+                <div class="fused-suggestion-info">
+                    <div class="fused-suggestion-title">${highlightQuery(item.title, query)}</div>
+                    <div class="fused-suggestion-subtitle">${item.subtitle}</div>
+                </div>
+                <span class="fused-suggestion-type-badge">${item.badge}</span>
+            `;
+            container.appendChild(div);
+        });
+    }
+
     adjustSearchSuggestionsVisibility(true);
 }
 window.updateSearchSuggestions = updateSearchSuggestions;
@@ -25611,7 +25849,7 @@ function openMapItemPeek(idOrName) {
     }
     
     currentPeekItemId = idOrName;
-    let title = "", authorName = "", rating = "", category = "", image = "", isEvent = false, isUserOffer = false;
+    let title = "", authorName = "", rating = "", category = "", image = "", isEvent = false, isUserOffer = false, isUserNeed = false;
     let eventId = "";
 
     if (idOrName.startsWith('evt_')) {
@@ -25624,6 +25862,25 @@ function openMapItemPeek(idOrName) {
         category = event.type;
         image = getEventPresetImage(event.type);
         rating = "Community Event";
+    } else if (idOrName.startsWith('need_')) {
+        const needId = idOrName.replace('need_', '');
+        const need = state.needsBoard ? state.needsBoard.find(n => n.id === needId) : null;
+        if (!need) return;
+        title = need.needTitle;
+        category = need.category;
+        image = getCategoryPresetImage(need.category);
+        
+        const currentUser = state.currentUser || {};
+        const displayName = currentUser.displayName || `${currentUser.firstName || 'Lily'} ${currentUser.lastName || 'Kaufmann'}`;
+        if (need.neighborName === displayName) {
+            isUserNeed = true;
+            authorName = `${currentUser.firstName || 'Lily'} (You)`;
+            rating = "Your Need Request";
+        } else {
+            const neighbor = state.neighbors[need.neighborName];
+            authorName = need.neighborName;
+            rating = neighbor ? `Needs help · ${neighbor.vouches || 0} ❤️` : "Community Member";
+        }
     } else if (idOrName.startsWith('off_') || idOrName === '1' || idOrName === '2') {
         const offer = state.userOfferings.find(o => o.id === idOrName);
         if (!offer) return;
@@ -25704,6 +25961,13 @@ function openMapItemPeek(idOrName) {
     let isVerified = false;
     if (idOrName.startsWith('evt_')) {
         isVerified = false;
+    } else if (idOrName.startsWith('need_')) {
+        const needId = idOrName.replace('need_', '');
+        const need = state.needsBoard ? state.needsBoard.find(n => n.id === needId) : null;
+        if (need) {
+            const neighbor = state.neighbors[need.neighborName];
+            isVerified = neighbor ? (neighbor.verified === true) : false;
+        }
     } else if (idOrName.startsWith('off_') || idOrName === '1' || idOrName === '2') {
         isVerified = state.currentUser ? !!state.currentUser.verified : false;
     } else {
@@ -25724,7 +25988,7 @@ function openMapItemPeek(idOrName) {
                 closeMapItemPeek();
                 openEventDetail(eventId);
             };
-        } else if (isUserOffer) {
+        } else if (isUserOffer || isUserNeed) {
             chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs">person</span> Profile`;
             chatBtn.onclick = () => {
                 state.profileReferrer = 'map';
@@ -25737,7 +26001,14 @@ function openMapItemPeek(idOrName) {
             chatBtn.onclick = () => {
                 state.chatBackReferrer = { type: 'map_detail', id: idOrName };
                 closeMapItemPeek();
-                startChatConversation(idOrName);
+                if (idOrName.startsWith('need_')) {
+                    const needId = idOrName.replace('need_', '');
+                    const need = state.needsBoard ? state.needsBoard.find(n => n.id === needId) : null;
+                    const authorId = need ? need.neighborName : idOrName;
+                    startChatConversation(authorId);
+                } else {
+                    startChatConversation(idOrName);
+                }
             };
         }
     }
@@ -29392,12 +29663,52 @@ function clearSearchInput(inputId) {
 }
 window.clearSearchInput = clearSearchInput;
 
+// Keyboard transparency and positioning using Visual Viewport API
+function initKeyboardLayoutHandler() {
+    if (!window.visualViewport) return;
+
+    const handleViewportChange = () => {
+        const keyboardHeight = window.innerHeight - window.visualViewport.height;
+        const offset = Math.max(0, keyboardHeight);
+
+        document.documentElement.style.setProperty('--keyboard-offset', `${offset}px`);
+
+        if (offset > 10) {
+            document.body.classList.add('keyboard-visible');
+        } else {
+            document.body.classList.remove('keyboard-visible');
+        }
+
+        // Auto-scroll chat feed to bottom if keyboard appears
+        if (state && state.currentView === 'chat_detail' && offset > 10) {
+            const feed = document.getElementById('chat-message-feed');
+            if (feed) {
+                feed.scrollTop = feed.scrollHeight;
+                setTimeout(() => {
+                    feed.scrollTop = feed.scrollHeight;
+                }, 50);
+                setTimeout(() => {
+                    feed.scrollTop = feed.scrollHeight;
+                }, 150);
+            }
+        }
+    };
+
+    window.visualViewport.addEventListener('resize', handleViewportChange);
+    window.visualViewport.addEventListener('scroll', handleViewportChange);
+    
+    // Initial run
+    handleViewportChange();
+}
+
 // Initialize on DOM loaded
 document.addEventListener('DOMContentLoaded', () => {
     initSearchBehavior();
+    initKeyboardLayoutHandler();
 });
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
     initSearchBehavior();
+    initKeyboardLayoutHandler();
 }
 
 // Global scope ends
