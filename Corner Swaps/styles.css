@@ -442,6 +442,74 @@ html.dark ::-webkit-scrollbar-thumb:hover {
     opacity: 1 !important;
 }
 
+/* Slide Push Transitions (entering detail screen) */
+.screen-view.slide-push-enter {
+    display: flex !important;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: translate3d(100%, 0, 0) !important;
+    opacity: 1 !important;
+    transition: transform 350ms cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    z-index: 20;
+}
+.screen-view.slide-push-enter-active {
+    transform: translate3d(0, 0, 0) !important;
+}
+
+.screen-view.slide-push-exit {
+    display: flex !important;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: translate3d(0, 0, 0) !important;
+    opacity: 1 !important;
+    transition: transform 350ms cubic-bezier(0.25, 0.8, 0.25, 1), opacity 350ms cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    z-index: 10;
+}
+.screen-view.slide-push-exit-active {
+    transform: translate3d(-20%, 0, 0) !important;
+    opacity: 0.8 !important;
+}
+
+/* Slide Pop Transitions (exiting detail screen) */
+.screen-view.slide-pop-enter {
+    display: flex !important;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: translate3d(-20%, 0, 0) !important;
+    opacity: 0.8 !important;
+    transition: transform 350ms cubic-bezier(0.25, 0.8, 0.25, 1), opacity 350ms cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    z-index: 10;
+}
+.screen-view.slide-pop-enter-active {
+    transform: translate3d(0, 0, 0) !important;
+    opacity: 1 !important;
+}
+
+.screen-view.slide-pop-exit {
+    display: flex !important;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: translate3d(0, 0, 0) !important;
+    opacity: 1 !important;
+    transition: transform 350ms cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    z-index: 20;
+}
+.screen-view.slide-pop-exit-active {
+    transform: translate3d(100%, 0, 0) !important;
+}
+
 #view-village {
     transform: none !important;
 }
@@ -3465,9 +3533,7 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 #profile-upcoming-events-container h4,
 #neighbor-profile-upcoming-events-container h4,
 #profile-saved-events-container h4,
-#neighbor-profile-reviews h4,
-#village-events-list h4,
-#events-list-container h4 {
+#neighbor-profile-reviews h4 {
     font-family: 'Outfit', sans-serif !important;
     font-size: 14px !important;
     font-weight: 600 !important;
@@ -3812,9 +3878,19 @@ html:not(.dark) #neighbor-profile-modal button.bg-forest-green * {
 /* Chat input typography and color alignment with chat bubbles */
 #chat-text-input {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 14px !important;
+    font-size: 15px !important;
     font-weight: 400 !important;
     color: #000000 !important;
+    height: 100% !important;
+    line-height: normal !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+#chat-text-input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
 html.dark #chat-text-input {
@@ -3823,7 +3899,7 @@ html.dark #chat-text-input {
 
 #chat-text-input::placeholder {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 14px !important;
+    font-size: 15px !important;
     font-weight: 400 !important;
     color: rgba(0, 0, 0, 0.4) !important;
 }
@@ -7486,3 +7562,36 @@ html.dark #offer-swap-container h3 {
 html.dark #offer-swap-container p.text-on-surface-variant {
     color: rgba(255, 255, 255, 0.8) !important; /* White/warm cream in dark mode */
 }
+
+/* Standardized typography for list card titles */
+.list-card-title {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    opacity: 1.0 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+}
+html.dark .list-card-title {
+    color: #ffffff !important;
+}
+
+/* Standardized typography for list card descriptions */
+.list-card-description {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    color: rgba(0, 0, 0, 0.7) !important;
+    line-height: 1.5 !important;
+    margin-top: 4px !important;
+    margin-bottom: 0 !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+html.dark .list-card-description {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+

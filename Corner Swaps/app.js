@@ -6207,7 +6207,7 @@ function renderEventsList() {
             const hostAvatar = hostNeighbor ? hostNeighbor.avatar : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80';
             
             const card = document.createElement('div');
-            card.className = "h-72 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+            card.className = "h-[340px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
             
             card.onclick = () => {
                 openEventDetail(evt.id);
@@ -6220,19 +6220,27 @@ function renderEventsList() {
             const presetImg = getEventPresetImage(evt.type);
             const img1 = evtImages[0] || presetImg;
 
+            const rawCategory = evt.type || evt.category || 'Event';
+            const formattedCategory = rawCategory.replace(/\b\w/g, c => c.toUpperCase());
+            const isFree = (evt.category && evt.category.toLowerCase() === 'gifts') || (evt.type && evt.type.toLowerCase() === 'gifts');
+
             card.innerHTML = `
                 <!-- Top Image Portion -->
-                <div class="h-40 w-full relative overflow-hidden flex-shrink-0 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="h-48 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
+                    ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
                 <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch">
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0">
                     <div>
                         <div class="flex items-center justify-between gap-2">
-                            <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${evt.title}</h4>
-                            <span class="flex-shrink-0 text-[8.5px] text-white font-bold bg-[#308A5E] dark:bg-[#308A5E] px-2 py-0.5 rounded-full uppercase tracking-wider">${times.badgeDate}</span>
+                            <div class="flex items-center min-w-0 flex-grow">
+                                ${getCategoryIconHtml(evt.type || evt.category)}
+                                <h4 class="list-card-title truncate leading-tight">${evt.title}</h4>
+                            </div>
+                            <span class="flex-shrink-0 text-[11px] text-[#308A5E] dark:text-[#34D399] font-bold tracking-wide ml-2">${formattedCategory}</span>
                         </div>
-                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1 leading-relaxed">${evt.desc}</p>
+                        <p class="list-card-description">${evt.desc}</p>
                     </div>
 
                     <div class="flex items-center justify-between gap-1.5 mt-2">
@@ -6241,7 +6249,7 @@ function renderEventsList() {
                             <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${hostAvatar}" class="w-full h-full object-cover rounded-full"></div>
                             <span class="text-[10.5px] text-black dark:text-white font-semibold truncate">${evt.host || 'Member'}</span>
                         </div>
-                        <span class="text-[10.5px] text-black dark:text-white font-medium flex-shrink-0">${evt.type} · ${times.timeDisplay} · ${distanceDisplay}</span>
+                        <span class="text-[10.5px] text-black dark:text-white font-medium flex-shrink-0">${times.timeDisplay} · ${distanceDisplay}</span>
                     </div>
                 </div>
             `;
@@ -11510,7 +11518,18 @@ function startChatConversation(convIdOrNeighborName) {
     updateChatNotificationBadge();
     showView('chat_detail');
 
-    // Trigger push notification block removed
+    // Focus immediately to bring up the keyboard without delay
+    const chatInput = document.getElementById('chat-text-input');
+    if (chatInput) {
+        chatInput.focus();
+    }
+    // Fallback focus to ensure it succeeds after view renders/transitions
+    setTimeout(() => {
+        const inputFallback = document.getElementById('chat-text-input');
+        if (inputFallback) {
+            inputFallback.focus();
+        }
+    }, 100);
 }
 
 function renderChatDetail(conv) {
@@ -15616,30 +15635,37 @@ function renderVillageListView() {
 
     filteredListings.forEach(item => {
         const card = document.createElement('div');
-        card.className = "h-72 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-[340px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail(item.id);
 
         const itemImages = item.image ? item.image.split('|||').filter(Boolean) : [];
         const presetImg = getCategoryPresetImage(item.category || 'garden');
         const img1 = itemImages[0] || presetImg;
 
+        const rawCategory = item.category || 'Offering';
+        const formattedCategory = rawCategory.replace(/\b\w/g, c => c.toUpperCase());
+
         if (item.type === 'neighbor') {
             const neighbor = state.neighbors[item.name];
             const isKarma = neighbor && neighbor.isKarma;
+            const isFree = isKarma || (item.category && item.category.toLowerCase() === 'gifts');
             card.innerHTML = `
                 <!-- Top Image Portion -->
-                <div class="h-40 w-full relative overflow-hidden flex-shrink-0 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="h-48 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
-                    ${isKarma ? `<div class="absolute bottom-1 right-1 bg-[#EF4444] w-5 h-5 rounded-full flex items-center justify-center shadow-sm" style="border: 1px solid white;"><span class="material-symbols-outlined text-xs" style="color: white !important; font-variation-settings: 'FILL' 1 !important;">favorite</span></div>` : ''}
+                    ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
                 <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch">
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0">
                     <div>
                         <div class="flex items-center justify-between gap-2">
-                            <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${item.title}</h4>
-                            <span class="flex-shrink-0 text-[8.5px] text-white font-bold bg-[#308A5E] dark:bg-[#308A5E] px-2 py-0.5 rounded-full uppercase tracking-wider">${item.category || 'Offering'}</span>
+                            <div class="flex items-center min-w-0 flex-grow">
+                                ${getCategoryIconHtml(item.category)}
+                                <h4 class="list-card-title truncate leading-tight">${item.title}</h4>
+                            </div>
+                            <span class="flex-shrink-0 text-[11px] text-[#308A5E] dark:text-[#34D399] font-bold tracking-wide ml-2">${formattedCategory}</span>
                         </div>
-                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1 leading-relaxed">${item.desc}</p>
+                        <p class="list-card-description">${item.desc}</p>
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
@@ -15651,22 +15677,27 @@ function renderVillageListView() {
                 </div>
             `;
         } else {
+            const isFree = (item.category && item.category.toLowerCase() === 'gifts');
             card.innerHTML = `
                 <!-- Top Image Portion -->
-                <div class="h-40 w-full relative overflow-hidden flex-shrink-0 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="h-48 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
+                    ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
                 <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch">
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0">
                     <div>
                         <div class="flex items-center justify-between gap-2">
-                            <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">
-                                ${item.title} 
-                                <span class="text-[9px] text-black dark:text-white font-bold bg-[#D99036]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
-                            </h4>
-                            <span class="flex-shrink-0 text-[8.5px] text-white font-bold bg-[#308A5E] dark:bg-[#308A5E] px-2 py-0.5 rounded-full uppercase tracking-wider">${item.category || 'Offering'}</span>
+                            <div class="flex items-center min-w-0 flex-grow">
+                                ${getCategoryIconHtml(item.category)}
+                                <h4 class="list-card-title truncate leading-tight">
+                                    ${item.title} 
+                                    <span class="text-[9px] text-[#D99036] dark:text-[#FBBF24] font-bold bg-[#D99036]/10 dark:bg-[#FBBF24]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
+                                </h4>
+                            </div>
+                            <span class="flex-shrink-0 text-[11px] text-[#308A5E] dark:text-[#34D399] font-bold tracking-wide ml-2">${formattedCategory}</span>
                         </div>
-                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1 leading-relaxed">${item.desc}</p>
+                        <p class="list-card-description">${item.desc}</p>
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
@@ -15799,7 +15830,7 @@ function renderNeedsBoardView() {
     filteredNeeds.forEach(need => {
         const card = document.createElement('div');
         const needId = need.id;
-        card.className = "h-72 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-[340px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail('need_' + needId);
         
         const currentUser = state.currentUser || {};
@@ -15810,23 +15841,31 @@ function renderNeedsBoardView() {
         const presetImg = getCategoryPresetImage(need.category || 'garden');
         const img1 = needImages[0] || presetImg;
 
+        const rawCategory = need.category || 'Need';
+        const formattedCategory = rawCategory.replace(/\b\w/g, c => c.toUpperCase());
+        const isFree = (need.category && need.category.toLowerCase() === 'gifts');
+
         if (isUserNeed) {
             card.innerHTML = `
                 <!-- Top Image Portion -->
-                <div class="h-40 w-full relative overflow-hidden flex-shrink-0 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="h-48 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
+                    ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
                 <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch">
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0">
                     <div>
                         <div class="flex items-center justify-between gap-2">
-                            <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">
-                                ${need.needTitle} 
-                                <span class="text-[9px] text-black dark:text-white font-bold bg-[#D99036]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
-                            </h4>
-                            <span class="flex-shrink-0 text-[8.5px] text-white font-bold bg-[#308A5E] dark:bg-[#308A5E] px-2 py-0.5 rounded-full uppercase tracking-wider">${need.category || 'Need'}</span>
+                            <div class="flex items-center min-w-0 flex-grow">
+                                ${getCategoryIconHtml(need.category)}
+                                <h4 class="list-card-title truncate leading-tight">
+                                    ${need.needTitle} 
+                                    <span class="text-[9px] text-[#D99036] dark:text-[#FBBF24] font-bold bg-[#D99036]/10 dark:bg-[#FBBF24]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
+                                </h4>
+                            </div>
+                            <span class="flex-shrink-0 text-[11px] text-[#308A5E] dark:text-[#34D399] font-bold tracking-wide ml-2">${formattedCategory}</span>
                         </div>
-                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1 leading-relaxed">${need.needDesc}</p>
+                        <p class="list-card-description">${need.needDesc}</p>
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
@@ -15840,17 +15879,21 @@ function renderNeedsBoardView() {
         } else {
             card.innerHTML = `
                 <!-- Top Image Portion -->
-                <div class="h-40 w-full relative overflow-hidden flex-shrink-0 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="h-48 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
+                    ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
                 <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch">
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0">
                     <div>
                         <div class="flex items-center justify-between gap-2">
-                            <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${need.needTitle}</h4>
-                            <span class="flex-shrink-0 text-[8.5px] text-white font-bold bg-[#308A5E] dark:bg-[#308A5E] px-2 py-0.5 rounded-full uppercase tracking-wider">${need.category || 'Need'}</span>
+                            <div class="flex items-center min-w-0 flex-grow">
+                                ${getCategoryIconHtml(need.category)}
+                                <h4 class="list-card-title truncate leading-tight">${need.needTitle}</h4>
+                            </div>
+                            <span class="flex-shrink-0 text-[11px] text-[#308A5E] dark:text-[#34D399] font-bold tracking-wide ml-2">${formattedCategory}</span>
                         </div>
-                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1 leading-relaxed">${need.needDesc}</p>
+                        <p class="list-card-description">${need.needDesc}</p>
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
@@ -18218,6 +18261,41 @@ function refreshAllLayouts() {
         plotMapMarkersOnly();
     }
     renderBlockedList();
+}
+
+function getCategoryIconHtml(category) {
+    const cat = (category || '').toLowerCase().trim();
+    let icon = 'tag';
+    let color = '#308A5E'; // default forest green
+    if (cat.includes('garden') || cat.includes('plant') || cat.includes('seed')) {
+        icon = 'potted_plant';
+        color = '#10B981'; // green
+    } else if (cat.includes('tool') || cat.includes('diy') || cat.includes('hardware') || cat.includes('handyman')) {
+        icon = 'build';
+        color = '#F59E0B'; // amber/orange
+    } else if (cat.includes('kitchen') || cat.includes('food') || cat.includes('cook') || cat.includes('bake') || cat.includes('produce')) {
+        icon = 'restaurant';
+        color = '#EF4444'; // red
+    } else if (cat.includes('household') || cat.includes('home') || cat.includes('furniture') || cat.includes('living')) {
+        icon = 'home';
+        color = '#3B82F6'; // blue
+    } else if (cat.includes('book') || cat.includes('media') || cat.includes('study') || cat.includes('education') || cat.includes('skills')) {
+        icon = 'menu_book';
+        color = '#8B5CF6'; // purple
+    } else if (cat.includes('clothing') || cat.includes('apparel') || cat.includes('shoes')) {
+        icon = 'checkroom';
+        color = '#EC4899'; // pink
+    } else if (cat.includes('toy') || cat.includes('baby') || cat.includes('kid')) {
+        icon = 'smart_toy';
+        color = '#06B6D4'; // cyan
+    } else if (cat.includes('event') || cat.includes('meet') || cat.includes('gathering')) {
+        icon = 'event';
+        color = '#8B5CF6'; // purple
+    } else if (cat.includes('need') || cat.includes('request') || cat.includes('help')) {
+        icon = 'handshake';
+        color = '#F59E0B'; // amber
+    }
+    return `<span class="material-symbols-outlined text-sm flex-shrink-0" style="color: ${color} !important; font-variation-settings: 'FILL' 1 !important; margin-right: 4px; vertical-align: middle;">${icon}</span>`;
 }
 
 function getCategoryPresetImage(category) {
@@ -24804,28 +24882,42 @@ function syncVillageSearch(val) {
     renderNeedsBoardView();
     renderEventsList();
     renderBulletinsList();
+
+    if (typeof updateSearchSuggestions === 'function') {
+        updateSearchSuggestions(val);
+    }
+
+    // Sync clear buttons visibility
+    const clearBtnMappings = {
+        'village-search-input': 'btn-map-search-clear',
+        'village-list-search-input': 'btn-list-search-clear',
+        'village-needs-search-input': 'btn-needs-search-clear',
+        'village-events-search-input': 'btn-events-search-clear',
+        'village-bulletins-search-input': 'btn-bulletins-search-clear'
+    };
+    
+    for (const [inputId, btnId] of Object.entries(clearBtnMappings)) {
+        const input = document.getElementById(inputId);
+        const btn = document.getElementById(btnId);
+        if (input && btn) {
+            if (val.trim() === "") {
+                btn.classList.add('hidden');
+            } else {
+                if (document.activeElement === input) {
+                    btn.classList.remove('hidden');
+                } else {
+                    btn.classList.add('hidden');
+                }
+            }
+        }
+    }
 }
 window.syncVillageSearch = syncVillageSearch;
 
 // Hook sync event listener for the main search input
 document.addEventListener('input', function(e) {
     if (e.target && e.target.id === 'village-search-input') {
-        const val = e.target.value;
-        const subInputs = [
-            'village-list-search-input',
-            'village-needs-search-input',
-            'village-events-search-input',
-            'village-bulletins-search-input'
-        ];
-        subInputs.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.value = val;
-        });
-        renderVillageListView();
-        renderNeedsBoardView();
-        renderEventsList();
-        renderBulletinsList();
-        updateSearchSuggestions(val);
+        syncVillageSearch(e.target.value);
     }
 });
 
@@ -25549,32 +25641,117 @@ window.addStrikeToUser = addStrikeToUser;
 window.openListingSuccessModal = openListingSuccessModal;
 window.closeListingSuccessModal = closeListingSuccessModal;
 
+function getActiveSuggestionsInfo() {
+    const activeEl = document.activeElement;
+    if (activeEl) {
+        if (activeEl.id === 'village-search-input') {
+            return {
+                input: activeEl,
+                suggestions: document.getElementById('village-search-suggestions'),
+                overlay: document.getElementById('village-search-bar-overlay')
+            };
+        } else if (activeEl.id === 'village-list-search-input') {
+            return {
+                input: activeEl,
+                suggestions: document.getElementById('village-list-search-suggestions'),
+                overlay: null
+            };
+        } else if (activeEl.id === 'village-needs-search-input') {
+            return {
+                input: activeEl,
+                suggestions: document.getElementById('village-needs-search-suggestions'),
+                overlay: null
+            };
+        } else if (activeEl.id === 'village-events-search-input') {
+            return {
+                input: activeEl,
+                suggestions: document.getElementById('village-events-search-suggestions'),
+                overlay: null
+            };
+        }
+    }
+    // Fallback based on visible panels
+    const listContainer = document.getElementById('village-list-container');
+    const needsContainer = document.getElementById('village-needs-container');
+    const eventsContainer = document.getElementById('village-events-container');
+    
+    if (listContainer && !listContainer.classList.contains('hidden')) {
+        return {
+            input: document.getElementById('village-list-search-input'),
+            suggestions: document.getElementById('village-list-search-suggestions'),
+            overlay: null
+        };
+    } else if (needsContainer && !needsContainer.classList.contains('hidden')) {
+        return {
+            input: document.getElementById('village-needs-search-input'),
+            suggestions: document.getElementById('village-needs-search-suggestions'),
+            overlay: null
+        };
+    } else if (eventsContainer && !eventsContainer.classList.contains('hidden')) {
+        return {
+            input: document.getElementById('village-events-search-input'),
+            suggestions: document.getElementById('village-events-search-suggestions'),
+            overlay: null
+        };
+    }
+    
+    return {
+        input: document.getElementById('village-search-input'),
+        suggestions: document.getElementById('village-search-suggestions'),
+        overlay: document.getElementById('village-search-bar-overlay')
+    };
+}
+
 function adjustSearchSuggestionsVisibility(show) {
-    const overlay = document.getElementById('village-search-bar-overlay');
-    const suggestions = document.getElementById('village-search-suggestions');
-    if (!overlay || !suggestions) return;
+    const allSuggestionsIds = [
+        'village-search-suggestions',
+        'village-list-search-suggestions',
+        'village-needs-search-suggestions',
+        'village-events-search-suggestions'
+    ];
     
     if (window.searchSuggestionsTimeout) {
         clearTimeout(window.searchSuggestionsTimeout);
         window.searchSuggestionsTimeout = null;
     }
     
+    const activeInfo = getActiveSuggestionsInfo();
+    
     if (show) {
-        suggestions.classList.remove('hidden');
-        const contentHeight = suggestions.scrollHeight;
-        const targetHeight = Math.min(48 + contentHeight, 288);
-        overlay.style.height = `${targetHeight}px`;
+        // First hide others
+        allSuggestionsIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && id !== activeInfo.suggestions?.id) {
+                el.classList.add('hidden');
+            }
+        });
+        
+        if (activeInfo.suggestions) {
+            activeInfo.suggestions.classList.remove('hidden');
+            if (activeInfo.overlay) {
+                const contentHeight = activeInfo.suggestions.scrollHeight;
+                const targetHeight = Math.min(48 + contentHeight, 288);
+                activeInfo.overlay.style.height = `${targetHeight}px`;
+            }
+        }
     } else {
-        overlay.style.height = '48px';
+        const mainOverlay = document.getElementById('village-search-bar-overlay');
+        if (mainOverlay) {
+            mainOverlay.style.height = '48px';
+        }
         window.searchSuggestionsTimeout = setTimeout(() => {
-            suggestions.classList.add('hidden');
+            allSuggestionsIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
         }, 300);
     }
 }
 window.adjustSearchSuggestionsVisibility = adjustSearchSuggestionsVisibility;
 
 function updateSearchSuggestions(query) {
-    const container = document.getElementById('village-search-suggestions');
+    const activeInfo = getActiveSuggestionsInfo();
+    const container = activeInfo.suggestions;
     if (!container) return;
 
     const q = query.toLowerCase().trim();
@@ -25736,7 +25913,7 @@ function updateSearchSuggestions(query) {
     if (exactMatches.length > 0) {
         const hdr = document.createElement('div');
         hdr.className = "suggestion-section-title exact";
-        hdr.innerHTML = `<span>Exact Matches</span><span class="suggestion-badge-count">${exactMatches.length}</span>`;
+        hdr.innerHTML = `<span>Exact Matches</span>`;
         container.appendChild(hdr);
 
         exactMatches.slice(0, 5).forEach(item => {
@@ -25767,7 +25944,7 @@ function updateSearchSuggestions(query) {
     if (similarMatches.length > 0) {
         const hdr = document.createElement('div');
         hdr.className = "suggestion-section-title similar";
-        hdr.innerHTML = `<span>Similar / Related Matches</span><span class="suggestion-badge-count">${similarMatches.length}</span>`;
+        hdr.innerHTML = `<span>Similar Matches</span>`;
         container.appendChild(hdr);
 
         similarMatches.slice(0, 5).forEach(item => {
@@ -25832,9 +26009,9 @@ function selectSearchSuggestion(id, title, lat, lng) {
             leafletMap.setView([lat, lng], 15);
         }
 
-        // Open detail peek card
+        // Open detail card directly
         if (id) {
-            openMapItemPeek(id);
+            openMapItemDetail(id);
         }
     }
 }
@@ -25842,10 +26019,34 @@ window.selectSearchSuggestion = selectSearchSuggestion;
 
 // Dismiss suggestions when clicking outside
 document.addEventListener('click', (e) => {
-    const suggestions = document.getElementById('village-search-suggestions');
-    const searchInput = document.getElementById('village-search-input');
+    const searchIds = [
+        'village-search-input',
+        'village-list-search-input',
+        'village-needs-search-input',
+        'village-events-search-input'
+    ];
+    const suggestionsIds = [
+        'village-search-suggestions',
+        'village-list-search-suggestions',
+        'village-needs-search-suggestions',
+        'village-events-search-suggestions'
+    ];
+    
+    let clickedInside = false;
+    for (const id of [...searchIds, ...suggestionsIds]) {
+        const el = document.getElementById(id);
+        if (el && el.contains(e.target)) {
+            clickedInside = true;
+            break;
+        }
+    }
+    
     const overlay = document.getElementById('village-search-bar-overlay');
-    if (suggestions && searchInput && overlay && !overlay.contains(e.target)) {
+    if (overlay && overlay.contains(e.target)) {
+        clickedInside = true;
+    }
+    
+    if (!clickedInside) {
         adjustSearchSuggestionsVisibility(false);
     }
 });
@@ -29146,9 +29347,6 @@ window.openSwapLifecycleModal = function(role, conversationId) {
             <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
                 <h3 class="text-sm font-bold text-black dark:text-white leading-tight text-center">Offer a Swap</h3>
                 <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5 text-center">Propose an item to swap or ask for a Karma request.</p>
-                <button class="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center text-black dark:text-white active:scale-90 transition-transform cursor-pointer border-0 flex-shrink-0" onclick="window.closeSwapLifecycleModal()">
-                    <span class="material-symbols-outlined text-sm font-bold">close</span>
-                </button>
             </div>
             
             <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 max-h-[70vh]">
@@ -29274,9 +29472,6 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                 <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
                     <h3 class="text-sm font-bold text-black dark:text-white leading-tight text-center">Review Karma Request</h3>
                     <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5 text-center">Requested by ${escapeHTML(conv.neighborName)}</p>
-                    <button class="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center text-black dark:text-white active:scale-90 transition-transform cursor-pointer border-0 flex-shrink-0" onclick="window.closeSwapLifecycleModal()">
-                        <span class="material-symbols-outlined text-sm font-bold">close</span>
-                    </button>
                 </div>
                 
                 <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 max-h-[70vh] items-center text-center">
@@ -29304,9 +29499,6 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                 <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
                     <h3 class="text-sm font-bold text-black dark:text-white leading-tight text-center">Review Swap Proposal</h3>
                     <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5 text-center">Offered by ${escapeHTML(conv.neighborName)}</p>
-                    <button class="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center text-black dark:text-white active:scale-90 transition-transform cursor-pointer border-0 flex-shrink-0" onclick="window.closeSwapLifecycleModal()">
-                        <span class="material-symbols-outlined text-sm font-bold">close</span>
-                    </button>
                 </div>
                 
                 <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 max-h-[70vh]">
@@ -29606,16 +29798,53 @@ function initSearchBehavior() {
             if (floatingContainer) {
                 floatingContainer.style.display = 'none';
             }
-            // Show clear button (X)
+            // Show clear button (X) only if input is not empty
             if (clearBtn) {
-                clearBtn.classList.remove('hidden');
+                if (input.value.trim() !== "") {
+                    clearBtn.classList.remove('hidden');
+                } else {
+                    clearBtn.classList.add('hidden');
+                }
+            }
+            // Trigger suggestions if there is text in the search input
+            const suggestionInputIds = [
+                'village-search-input',
+                'village-list-search-input',
+                'village-needs-search-input',
+                'village-events-search-input'
+            ];
+            if (suggestionInputIds.includes(inputId) && input.value.trim()) {
+                updateSearchSuggestions(input.value);
             }
         });
 
-        // Ensure X button remains visible or shows up if user starts typing
+        // On Blur (Keyboard dismissed / tapped outside)
+        input.addEventListener('blur', () => {
+            // Restore bottom navbar and floating segment stack after a small delay
+            // to allow clear button clicks or suggestion selection tap events to process first
+            setTimeout(() => {
+                const navbar = document.getElementById('global-navbar');
+                if (navbar) {
+                    navbar.classList.remove('hidden');
+                }
+                const floatingContainer = document.getElementById('village-segment-floating-buttons');
+                if (floatingContainer && state.currentView === 'village') {
+                    const isMapSegment = currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map' || currentVillageSegment === 'events_map';
+                    if (!state.meetupMapMode) {
+                        floatingContainer.style.display = 'flex';
+                    }
+                }
+            }, 200);
+        });
+
+        // Ensure X button visibility matches whether there is text in the input
         input.addEventListener('input', () => {
             if (clearBtn) {
-                clearBtn.classList.remove('hidden');
+                if (input.value.trim() !== "") {
+                    clearBtn.classList.remove('hidden');
+                } else {
+                    clearBtn.classList.add('hidden');
+                }
             }
         });
     });
@@ -29677,30 +29906,40 @@ window.clearSearchInput = clearSearchInput;
 function initKeyboardLayoutHandler() {
     if (!window.visualViewport) return;
 
+    let prevOffset = -1;
+    let prevKeyboardVisible = null;
+
     const handleViewportChange = () => {
         const keyboardHeight = window.innerHeight - window.visualViewport.height;
         const offset = Math.max(0, keyboardHeight);
 
-        document.documentElement.style.setProperty('--keyboard-offset', `${offset}px`);
-
-        if (offset > 10) {
-            document.body.classList.add('keyboard-visible');
-        } else {
-            document.body.classList.remove('keyboard-visible');
+        if (offset !== prevOffset) {
+            document.documentElement.style.setProperty('--keyboard-offset', `${offset}px`);
+            prevOffset = offset;
         }
 
-        // Auto-scroll chat feed to bottom if keyboard appears
-        if (state && state.currentView === 'chat_detail' && offset > 10) {
-            const feed = document.getElementById('chat-message-feed');
-            if (feed) {
-                feed.scrollTop = feed.scrollHeight;
-                setTimeout(() => {
-                    feed.scrollTop = feed.scrollHeight;
-                }, 50);
-                setTimeout(() => {
-                    feed.scrollTop = feed.scrollHeight;
-                }, 150);
+        const isVisible = offset > 10;
+        if (isVisible !== prevKeyboardVisible) {
+            if (isVisible) {
+                document.body.classList.add('keyboard-visible');
+                
+                // Auto-scroll chat feed to bottom ONLY when keyboard first appears
+                if (state && state.currentView === 'chat_detail') {
+                    const feed = document.getElementById('chat-message-feed');
+                    if (feed) {
+                        feed.scrollTop = feed.scrollHeight;
+                        setTimeout(() => {
+                            feed.scrollTop = feed.scrollHeight;
+                        }, 50);
+                        setTimeout(() => {
+                            feed.scrollTop = feed.scrollHeight;
+                        }, 150);
+                    }
+                }
+            } else {
+                document.body.classList.remove('keyboard-visible');
             }
+            prevKeyboardVisible = isVisible;
         }
     };
 
