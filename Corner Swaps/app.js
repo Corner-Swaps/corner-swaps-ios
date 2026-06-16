@@ -6142,7 +6142,7 @@ function renderEventsList() {
             const isUserRsvped = evt.rsvps ? evt.rsvps.includes(currentUser) : false;
 
             const card = document.createElement('div');
-            card.className = "h-24 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+            card.className = "h-32 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
             
             card.onclick = () => {
                 openEventDetail(evt.id);
@@ -6153,7 +6153,7 @@ function renderEventsList() {
 
             card.innerHTML = `
                 <!-- Left Image Portion -->
-                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="w-40 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
                     ${getEventCardThumbnailHTML(evt)}
                 </div>
                 <!-- Right Details Portion -->
@@ -6163,7 +6163,7 @@ function renderEventsList() {
                             <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${evt.title}</h4>
                             <span class="flex-shrink-0 text-[8.5px] text-forest-green dark:text-[#308A5E] font-bold bg-forest-green/10 dark:bg-forest-green/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${times.badgeDate}</span>
                         </div>
-                        <p class="text-xs text-black dark:text-white line-clamp-1 mt-0.5">${evt.desc}</p>
+                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1">${evt.desc}</p>
                     </div>
 
                     <div class="flex items-center justify-between gap-1.5 mt-1">
@@ -15547,7 +15547,7 @@ function renderVillageListView() {
 
     filteredListings.forEach(item => {
         const card = document.createElement('div');
-        card.className = "h-24 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-32 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail(item.id);
 
         if (item.type === 'neighbor') {
@@ -15555,40 +15555,49 @@ function renderVillageListView() {
             const isKarma = neighbor && neighbor.isKarma;
             const karmaLabelHTML = '';
             card.innerHTML = `
-                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="w-40 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${item.image}" class="w-full h-full object-cover">
                     ${isKarma ? `<div class="absolute bottom-1 right-1 bg-[#EF4444] w-5 h-5 rounded-full flex items-center justify-center shadow-sm" style="border: 1px solid white;"><span class="material-symbols-outlined text-xs" style="color: white !important; font-variation-settings: 'FILL' 1 !important;">favorite</span></div>` : ''}
                 </div>
                 <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
                     <div>
-                        <div class="flex items-center gap-1">
+                        <div class="flex items-center justify-between gap-2">
                             <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${item.title}</h4>
-                            ${karmaLabelHTML}
+                            <span class="flex-shrink-0 text-[8.5px] text-[#D99036] dark:text-[#E2A04E] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${item.category}</span>
                         </div>
-                        <p class="text-xs text-black dark:text-white line-clamp-1 mt-0.5">${item.desc}</p>
+                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1">${item.desc}</p>
                     </div>
-                    <div class="flex items-center gap-1.5 mt-1">
-                        <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${item.avatar}" class="w-full h-full object-cover rounded-full"></div>
-                        <span class="text-[10px] text-black dark:text-white font-semibold truncate">${item.name} · ${formatRadiusValue(item.distance)} away</span>
+                    <div class="flex items-center justify-between gap-1.5 mt-1">
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${item.avatar}" class="w-full h-full object-cover rounded-full"></div>
+                            <span class="text-[10px] text-black dark:text-white font-semibold truncate">${item.name}</span>
+                        </div>
+                        <span class="text-[9px] text-gray-500 dark:text-gray-400 font-medium flex-shrink-0">${formatRadiusValue(item.distance)} away</span>
                     </div>
                 </div>
             `;
         } else {
             card.innerHTML = `
-                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="w-40 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${item.image}" class="w-full h-full object-cover">
                 </div>
                 <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
                     <div>
-                        <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">
-                            ${item.title} 
-                            <span class="text-[9px] text-black dark:text-white font-bold bg-[#D99036]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
-                        </h4>
-                        <p class="text-xs text-black dark:text-white line-clamp-1 mt-0.5">${item.desc}</p>
+                        <div class="flex items-center justify-between gap-2">
+                            <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">
+                                ${item.title} 
+                                <span class="text-[9px] text-black dark:text-white font-bold bg-[#D99036]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
+                            </h4>
+                            <span class="flex-shrink-0 text-[8.5px] text-[#D99036] dark:text-[#E2A04E] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${item.category}</span>
+                        </div>
+                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1">${item.desc}</p>
                     </div>
-                    <div class="flex items-center gap-1.5 mt-1">
-                        <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${item.avatar}" class="w-full h-full object-cover rounded-full"></div>
-                        <span class="text-[10px] text-black dark:text-white font-semibold truncate">${item.name} (You) · Village Trusted · 0 km</span>
+                    <div class="flex items-center justify-between gap-1.5 mt-1">
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${item.avatar}" class="w-full h-full object-cover rounded-full"></div>
+                            <span class="text-[10px] text-black dark:text-white font-semibold truncate">${item.name}</span>
+                        </div>
+                        <span class="text-[9px] text-gray-500 dark:text-gray-400 font-medium flex-shrink-0">Village Trusted · 0 km</span>
                     </div>
                 </div>
             `;
@@ -15715,7 +15724,7 @@ function renderNeedsBoardView() {
         const card = document.createElement('div');
         const needImg = getCategoryPresetImage(need.category);
         const needId = need.id;
-        card.className = "h-24 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-32 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail('need_' + needId);
         
         const currentUser = state.currentUser || {};
@@ -15724,36 +15733,48 @@ function renderNeedsBoardView() {
 
         if (isUserNeed) {
             card.innerHTML = `
-                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="w-40 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${needImg}" class="w-full h-full object-cover">
                 </div>
                 <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
                     <div>
-                        <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">
-                            ${need.needTitle} 
-                            <span class="text-[9px] text-black dark:text-white font-bold bg-[#D99036]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
-                        </h4>
-                        <p class="text-xs text-black dark:text-white line-clamp-1 mt-0.5">${need.needDesc}</p>
+                        <div class="flex items-center justify-between gap-2">
+                            <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">
+                                ${need.needTitle} 
+                                <span class="text-[9px] text-black dark:text-white font-bold bg-[#D99036]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
+                            </h4>
+                            <span class="flex-shrink-0 text-[8.5px] text-[#D99036] dark:text-[#E2A04E] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${need.category}</span>
+                        </div>
+                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1">${need.needDesc}</p>
                     </div>
-                    <div class="flex items-center gap-1.5 mt-1">
-                        <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${need.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
-                        <span class="text-[10px] text-black dark:text-white font-semibold truncate">${need.neighborName} (You) · Village Trusted · 0 km</span>
+                    <div class="flex items-center justify-between gap-1.5 mt-1">
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${need.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
+                            <span class="text-[10px] text-black dark:text-white font-semibold truncate">${need.neighborName}</span>
+                        </div>
+                        <span class="text-[9px] text-gray-500 dark:text-gray-400 font-medium flex-shrink-0">Village Trusted · 0 km</span>
                     </div>
                 </div>
             `;
         } else {
             card.innerHTML = `
-                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="w-40 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${needImg}" class="w-full h-full object-cover">
                 </div>
                 <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
                     <div>
-                        <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${need.needTitle}</h4>
-                        <p class="text-xs text-black dark:text-white line-clamp-1 mt-0.5">${need.needDesc}</p>
+                        <div class="flex items-center justify-between gap-2">
+                            <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${need.needTitle}</h4>
+                            <span class="flex-shrink-0 text-[8.5px] text-[#D99036] dark:text-[#E2A04E] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${need.category}</span>
+                        </div>
+                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1">${need.needDesc}</p>
                     </div>
-                    <div class="flex items-center gap-1.5 mt-1">
-                        <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${need.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
-                        <span class="text-[10px] text-black dark:text-white font-semibold truncate">${need.neighborName} · ${formatRadiusValue(need.distance)} away</span>
+                    <div class="flex items-center justify-between gap-1.5 mt-1">
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${need.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
+                            <span class="text-[10px] text-black dark:text-white font-semibold truncate">${need.neighborName}</span>
+                        </div>
+                        <span class="text-[9px] text-gray-500 dark:text-gray-400 font-medium flex-shrink-0">${formatRadiusValue(need.distance)} away</span>
                     </div>
                 </div>
             `;
@@ -21318,11 +21339,13 @@ function renderEventRSVPs(event) {
     } else {
         rsvpBtn.style.display = '';
         rsvpBtn.classList.remove('hidden');
+        rsvpBtn.className = "w-full py-2.5 rounded-xl font-bold text-[11px] active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 transition-all";
+
         if (isUserRsvped) {
-            rsvpBtn.className = "w-full bg-forest-green text-warm-cream py-2.5 rounded-xl font-bold text-[11px] active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-forest-green/95 transition-all";
+            rsvpBtn.classList.add('bg-black', 'text-white', 'hover:bg-black/90', 'dark:bg-white', 'dark:text-black', 'dark:hover:bg-white/90');
             rsvpBtn.innerHTML = '<span class="material-symbols-outlined text-xs">cancel</span> cancel rsvp';
         } else {
-            rsvpBtn.className = "w-full bg-white border border-forest-green/20 text-forest-green py-2.5 rounded-xl font-bold text-[11px] active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-forest-green/5 transition-all";
+            rsvpBtn.classList.add('bg-white', 'border', 'border-black/20', 'text-black', 'hover:bg-black/5', 'dark:bg-[#18201a]', 'dark:border-white/20', 'dark:text-white', 'dark:hover:bg-white/5');
             rsvpBtn.innerHTML = '<span class="material-symbols-outlined text-xs">check_circle</span> rsvp to event';
         }
     }

@@ -7267,6 +7267,7 @@ html.dark #view-create_group #group-friends-search::placeholder {
     color: #6b7280 !important;
 }
 
+
 /* Top Segmented Control & Sliding Pill Refactor */
 #village-segmented-control {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -7278,7 +7279,36 @@ html.dark #view-create_group #group-friends-search::placeholder {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+/* Meetup Safety Guidelines modal header styles */
+#meetup-safety-title {
+    font-size: 17px !important; /* Larger title */
+    font-weight: 850 !important; /* Font weight black */
+    color: #000000 !important; /* Explicitly black */
+}
+html.dark #meetup-safety-title {
+    color: #ffffff !important; /* White in dark mode */
+}
+#meetup-safety-subtitle {
+    font-size: 13px !important; /* Larger subtext/subject */
+    color: #000000 !important; /* Explicitly black */
+}
+html.dark #meetup-safety-subtitle {
+    color: rgba(255, 255, 255, 0.8) !important; /* White/warm cream in dark mode */
+}
 
-
-
-
+/* Offer Swap modal header styling */
+#offer-swap-container h3 {
+    font-size: 17px !important; /* Make title larger */
+    font-weight: 850 !important; /* Bold/Black font weight */
+    color: #000000 !important; /* Make it black */
+}
+html.dark #offer-swap-container h3 {
+    color: #ffffff !important; /* White in dark mode */
+}
+#offer-swap-container p.text-on-surface-variant {
+    font-size: 13px !important; /* Make subtext/subtitle larger */
+    color: #000000 !important; /* Make it black */
+}
+html.dark #offer-swap-container p.text-on-surface-variant {
+    color: rgba(255, 255, 255, 0.8) !important; /* White/warm cream in dark mode */
+}
