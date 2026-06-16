@@ -2669,8 +2669,24 @@ select::-ms-expand {
 }
 
 .native-app-env #offer-photo-hero {
-    padding-top: calc(1.5rem + env(safe-area-inset-top)) !important;
-    height: calc(240px + env(safe-area-inset-top)) !important;
+    padding-top: 1.5rem !important;
+    height: 240px !important;
+}
+
+#offer-form-header {
+    background-color: #ecebeb !important;
+}
+.dark #offer-form-header {
+    background-color: #202020 !important;
+}
+
+.native-app-env #offer-form-header {
+    padding-top: env(safe-area-inset-top) !important;
+    height: calc(56px + env(safe-area-inset-top)) !important;
+    background-color: #ecebeb !important;
+}
+.native-app-env.dark #offer-form-header {
+    background-color: #202020 !important;
 }
 
 /* Force all active screens in native app to have a background color (prevents green leakage) */
@@ -2745,7 +2761,8 @@ select::-ms-expand {
 
 /* Specific buttons scaled up */
 #widget-my-offerings button,
-#widget-my-needs button {
+#widget-my-needs button,
+#widget-my-events button {
     font-size: 18px !important;
     font-weight: 700 !important;
 }
@@ -3341,36 +3358,7 @@ html.dark .chat-bubble-other {
     border-color: #e11d48 !important;
 }
 
-#btn-chat-segment-active {
-    background-color: #8b5cf6 !important;
-    background: #8b5cf6 !important;
-    color: #ffffff !important;
-    border-color: #8b5cf6 !important;
-}
-#btn-chat-segment-requests {
-    background-color: #2563eb !important;
-    background: #2563eb !important;
-    color: #ffffff !important;
-    border-color: #2563eb !important;
-}
-#btn-chat-segment-groups {
-    background-color: #10b981 !important;
-    background: #10b981 !important;
-    color: #ffffff !important;
-    border-color: #10b981 !important;
-}
-#btn-chat-segment-swaps {
-    background-color: #ea580c !important;
-    background: #ea580c !important;
-    color: #ffffff !important;
-    border-color: #ea580c !important;
-}
-#btn-chat-segment-reviews {
-    background-color: #f43f5e !important;
-    background: #f43f5e !important;
-    color: #ffffff !important;
-    border-color: #f43f5e !important;
-}
+
 
 #btn-segment-trigger {
     background-color: #ffffff !important;
@@ -4655,6 +4643,7 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 #widget-badges-section h3,
 #widget-my-offerings h3,
 #widget-my-needs h3,
+#widget-my-events h3,
 #widget-friends-list h3,
 #widget-swaps-history h3,
 #widget-saved-listings h3,
@@ -4692,7 +4681,9 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 #widget-friends-list button,
 #profile-trade-log-container button,
 #widget-suggestion-box button,
-#widget-my-needs button:not(.rounded-full) {
+#widget-my-needs button:not(.rounded-full),
+#widget-my-offerings button:not(.rounded-full),
+#widget-my-events button:not(.rounded-full) {
     font-family: 'Outfit', sans-serif !important;
     font-size: 16px !important;
     font-weight: 700 !important;
@@ -4815,6 +4806,7 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 
 /* Profile section: Black text for headings, lists, and placeholders underneath badges (Light Mode Only) */
 html:not(.dark) #widget-upcoming-events *:not(.material-symbols-outlined),
+html:not(.dark) #widget-my-events *:not(.material-symbols-outlined),
 html:not(.dark) #widget-my-offerings *:not(.material-symbols-outlined),
 html:not(.dark) #widget-my-needs *:not(.material-symbols-outlined),
 html:not(.dark) #widget-saved-listings *:not(.material-symbols-outlined),
@@ -5503,7 +5495,10 @@ html:not(.dark) #village-events-search-input,
 html:not(.dark) #village-bulletins-search-input {
     color: #000000 !important;
 }
-html:not(.dark) #village-search-suggestions *:not(.material-symbols-outlined) {
+html:not(.dark) #village-search-suggestions *:not(.material-symbols-outlined),
+html:not(.dark) #village-list-search-suggestions *:not(.material-symbols-outlined),
+html:not(.dark) #village-needs-search-suggestions *:not(.material-symbols-outlined),
+html:not(.dark) #village-events-search-suggestions *:not(.material-symbols-outlined) {
     color: #000000 !important;
 }
 
@@ -5942,7 +5937,8 @@ html.dark #view-definitions :not(button):not(button *):not(.material-symbols-out
 
 /* 2. Upcoming Events Header Icon (Vibrant Indigo-Blue) */
 #widget-upcoming-events h3 span.material-symbols-outlined,
-#neighbor-widget-upcoming-events h3 span.material-symbols-outlined {
+#neighbor-widget-upcoming-events h3 span.material-symbols-outlined,
+#widget-my-events h3 span.material-symbols-outlined {
     color: #4f46e5 !important;
 }
 
@@ -8443,6 +8439,96 @@ html.dark .fused-clear-btn {
     color: #9ca3af !important;
 }
 
+/* Fused Intel Pill (Map Search Navigation) */
+.fused-intel-pill {
+    display: flex !important;
+    align-items: center !important;
+    background-color: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-radius: 9999px !important;
+    padding: 4px 8px 4px 8px !important;
+    height: 42px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s ease !important;
+    width: 100% !important;
+    margin-top: 8px !important;
+    box-sizing: border-box !important;
+}
+
+html.dark .fused-intel-pill {
+    background-color: rgba(24, 32, 26, 0.92) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.fused-intel-pill.hidden {
+    display: none !important;
+}
+
+.intel-nav-btn {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: rgba(0, 0, 0, 0.03) !important;
+    border: none !important;
+    color: #4b5563 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
+}
+
+html.dark .intel-nav-btn {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    color: #d1d5db !important;
+}
+
+.intel-nav-btn:hover {
+    background-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+html.dark .intel-nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.intel-nav-btn:active {
+    transform: scale(0.9) !important;
+}
+
+.intel-content-area {
+    flex-grow: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 8px !important;
+    min-width: 0 !important;
+    cursor: pointer !important;
+    height: 100% !important;
+}
+
+.intel-title {
+    color: #000000 !important;
+    font-family: 'Outfit', sans-serif !important;
+}
+
+html.dark .intel-title {
+    color: #ffffff !important;
+}
+
+.intel-badge {
+    font-family: 'Outfit', sans-serif !important;
+    flex-shrink: 0 !important;
+}
+
+.intel-index {
+    font-family: 'Outfit', sans-serif !important;
+    flex-shrink: 0 !important;
+}
+
 /* Suggestions Box overlay style */
 .fused-suggestions-box {
     margin-top: 8px !important;
@@ -8662,15 +8748,21 @@ html.dark .music-guidance-banner {
 }
 
 /* Ensure the create group view is scrollable on all platforms, including iOS native webview */
-#view-create_group {
+#view-create_group.active {
+    display: block !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
+    height: auto !important;
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
 }
 
-/* Ensure typed text and placeholders inside the create group form are black and readable */
+/* Ensure typed text and placeholders inside the create group form are black, readable and larger */
 #view-create_group #group-name-input,
 #view-create_group #group-desc-input,
 #view-create_group #group-friends-search {
+    font-size: 17px !important;
+    font-family: 'Outfit', sans-serif !important;
     color: #000000 !important;
     background-color: #ffffff !important;
 }
@@ -8678,13 +8770,21 @@ html.dark .music-guidance-banner {
 #view-create_group #group-name-input::placeholder,
 #view-create_group #group-desc-input::placeholder,
 #view-create_group #group-friends-search::placeholder {
+    font-size: 16px !important;
     color: #6b7280 !important;
+}
+
+/* Make form labels inside create group larger */
+#view-create_group label {
+    font-size: 15px !important;
+    font-weight: 700 !important;
 }
 
 /* Even in dark mode, make these inputs white background and black text as requested */
 html.dark #view-create_group #group-name-input,
 html.dark #view-create_group #group-desc-input,
 html.dark #view-create_group #group-friends-search {
+    font-size: 17px !important;
     color: #000000 !important;
     background-color: #ffffff !important;
 }
@@ -8692,6 +8792,7 @@ html.dark #view-create_group #group-friends-search {
 html.dark #view-create_group #group-name-input::placeholder,
 html.dark #view-create_group #group-desc-input::placeholder,
 html.dark #view-create_group #group-friends-search::placeholder {
+    font-size: 16px !important;
     color: #6b7280 !important;
 }
 
@@ -8765,12 +8866,24 @@ html.dark .list-card-title {
     margin-top: 4px !important;
     margin-bottom: 0 !important;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 html.dark .list-card-description {
     color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Absolute positioning styles for list search suggestions containers */
+#village-list-search-suggestions,
+#village-needs-search-suggestions,
+#village-events-search-suggestions {
+    position: absolute !important;
+    left: 4px !important;
+    right: 4px !important;
+    top: 48px !important;
+    z-index: 3000 !important;
+    width: calc(100% - 8px) !important;
 }
 </style>
     <!-- Tailwind Configuration (removed - runtime replaced with pre-compiled CSS) -->
@@ -9911,6 +10024,20 @@ html.dark .list-card-description {
                                         <span class="material-symbols-outlined text-[15px]" id="map-filter-icon">tune</span>
                                     </button>
                                 </div>
+                                <div id="village-search-intel-pill" class="hidden fused-intel-pill select-none">
+                                    <button id="btn-intel-prev" onclick="cycleIntelMatch(-1)" class="intel-nav-btn">
+                                        <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+                                    </button>
+                                    <div id="intel-pill-content" onclick="goToCurrentIntelMatch()" class="intel-content-area">
+                                        <span class="material-symbols-outlined text-[15px] text-[#308A5E] dark:text-[#308A5E] mr-1.5" id="intel-match-icon">location_on</span>
+                                        <span id="intel-match-title" class="intel-title font-bold text-xs truncate">Item Title</span>
+                                        <span id="intel-match-badge" class="intel-badge text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-1.5 bg-[#308A5E]/10 text-[#308A5E]">Exact</span>
+                                        <span id="intel-match-index" class="intel-index text-[10px] text-gray-400 ml-auto mr-1.5">1 of 1</span>
+                                    </div>
+                                    <button id="btn-intel-next" onclick="cycleIntelMatch(1)" class="intel-nav-btn">
+                                        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                                    </button>
+                                </div>
                                 <div id="village-search-suggestions" class="hidden fused-suggestions-box"></div>
                                 
                                 <!-- Top Segmented Control (Offerings, Needs, Events) -->
@@ -10614,28 +10741,28 @@ html.dark .list-card-description {
                     <div class="px-4 py-2.5 bg-white dark:bg-[#18201a] flex-shrink-0 select-none border-b border-outline-variant/5">
                         <div id="chat-segmented-control" class="relative w-full h-9 flex items-center justify-between gap-1 select-none">
                             <!-- Read (Active) -->
-                            <button id="btn-chat-segment-active" onclick="switchChatSegment('active')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-full border-0 bg-violet-500/10 text-violet-600 dark:text-violet-400 dark:bg-violet-500/15 shadow-sm">
+                            <button id="btn-chat-segment-active" onclick="switchChatSegment('active')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm">
                                 <span class="flex items-center gap-1.5 justify-center">
                                     <span>Read</span>
                                     <span id="badge-chat-segment-active" class="chat-badge-inline hidden"></span>
                                 </span>
                             </button>
                             <!-- Unread (Requests) -->
-                            <button id="btn-chat-segment-requests" onclick="switchChatSegment('requests')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-full border border-black/5 dark:border-white/5 bg-white dark:bg-[#1b261f] text-gray-500 dark:text-gray-400">
+                            <button id="btn-chat-segment-requests" onclick="switchChatSegment('requests')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-xl border border-black/5 dark:border-white/5 bg-white dark:bg-[#18201a] text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5">
                                 <span class="flex items-center gap-1.5 justify-center">
                                     <span>Unread</span>
                                     <span id="badge-chat-segment-requests" class="chat-badge-inline hidden"></span>
                                 </span>
                             </button>
                             <!-- Groups -->
-                            <button id="btn-chat-segment-groups" onclick="switchChatSegment('groups')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-full border border-black/5 dark:border-white/5 bg-white dark:bg-[#1b261f] text-gray-500 dark:text-gray-400">
+                            <button id="btn-chat-segment-groups" onclick="switchChatSegment('groups')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-xl border border-black/5 dark:border-white/5 bg-white dark:bg-[#18201a] text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5">
                                 <span class="flex items-center gap-1.5 justify-center">
                                     <span>Groups</span>
                                     <span id="badge-chat-segment-groups" class="chat-badge-inline hidden"></span>
                                 </span>
                             </button>
                             <!-- Reviews -->
-                            <button id="btn-chat-segment-reviews" onclick="switchChatSegment('reviews')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-full border border-black/5 dark:border-white/5 bg-white dark:bg-[#1b261f] text-gray-500 dark:text-gray-400">
+                            <button id="btn-chat-segment-reviews" onclick="switchChatSegment('reviews')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-xl border border-black/5 dark:border-white/5 bg-white dark:bg-[#18201a] text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5">
                                 <span class="flex items-center gap-1.5 justify-center">
                                     <span>Reviews</span>
                                     <span id="badge-chat-segment-reviews" class="chat-badge-inline hidden"></span>
@@ -11110,7 +11237,7 @@ html.dark .list-card-description {
                 <!-- ==================================================== -->
                 <!-- 11. OFFER VIEW (ACCORDION & VICINITY & WISH LIST) -->
                 <!-- ==================================================== -->
-                <section id="view-offer" class="screen-view flex-grow pb-24 overflow-hidden relative flex flex-col justify-start pt-6">
+                <section id="view-offer" class="screen-view flex-grow pb-24 overflow-hidden relative flex flex-col justify-start pt-0">
                     <!-- Creative Dashboard Screen (similar to Profile section) -->
                     <div id="creative-dashboard-screen" class="hidden w-full flex flex-col px-6 pb-6 text-center select-none">
                         <!-- Header Summary (Similar to Profile Page) -->
@@ -11238,12 +11365,9 @@ html.dark .list-card-description {
                     <!-- B. Unified Form Wrapper (hidden initially) -->
                     <div id="offer-form-wrapper" class="hidden h-full overflow-hidden relative pb-0 w-full flex flex-col">
                         <!-- Sticky Header Bar -->
-                        <div id="offer-form-header" class="w-full flex items-center justify-between px-4 bg-white dark:bg-[#101612] border-b border-outline-variant/20 z-10 shrink-0 select-none" style="height: 56px !important;">
-                            <button id="offer-back-btn" type="button" class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="resetOfferFormToSelector()" title="Back">
-                                <span class="material-symbols-outlined text-lg">arrow_back</span>
-                            </button>
+                        <div id="offer-form-header" class="w-full flex items-center justify-center px-4 bg-[#ecebeb] dark:bg-[#202020] border-b-0 z-10 shrink-0 select-none" style="height: 56px !important;">
+                            <!-- Deleted back arrow as requested -->
                             <span class="text-sm font-bold text-black dark:text-white font-headline">Create Listing</span>
-                            <div class="w-8 h-8 flex-shrink-0"></div> <!-- Spacer to center the title -->
                         </div>
 
                         <!-- Scrollable Form Container -->
@@ -11252,11 +11376,11 @@ html.dark .list-card-description {
                         <!-- 1. Hero Image area with three photo uploader slots -->
                         <section class="photo-hero w-full relative overflow-hidden flex flex-col justify-center items-center border-b border-outline-variant/30 flex-shrink-0 bg-[#ecebeb] dark:bg-[#202020] px-4 pt-5 pb-5" id="offer-photo-hero">
                             <div class="flex flex-col items-center w-full">
-                                <div class="flex justify-center items-center gap-3.5 flex-wrap">
+                                <div class="flex justify-center items-center gap-2 flex-wrap">
                                     <!-- Slot 0 (Primary) -->
-                                    <div class="relative w-[100px] h-[100px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(0)">
-                                        <div id="offer-photo-placeholder-0" class="flex items-center justify-center p-2">
-                                            <span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-3xl group-hover:scale-110 transition-transform">add_a_photo</span>
+                                    <div class="relative w-[115px] h-[115px] rounded-2xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(0)">
+                                        <div id="offer-photo-placeholder-0" class="w-full h-full flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-[42px] group-hover:scale-110 transition-transform">add_a_photo</span>
                                         </div>
                                         <img id="offer-photo-preview-0" class="w-full h-full object-cover hidden">
                                         <button id="offer-photo-remove-0" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferPhotoSlot(0)">
@@ -11266,9 +11390,9 @@ html.dark .list-card-description {
                                     </div>
 
                                     <!-- Slot 1 (Optional) -->
-                                    <div class="relative w-[100px] h-[100px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(1)">
-                                        <div id="offer-photo-placeholder-1" class="flex items-center justify-center p-2">
-                                            <span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-3xl group-hover:scale-110 transition-transform">add_a_photo</span>
+                                    <div class="relative w-[115px] h-[115px] rounded-2xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(1)">
+                                        <div id="offer-photo-placeholder-1" class="w-full h-full flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-[42px] group-hover:scale-110 transition-transform">add_a_photo</span>
                                         </div>
                                         <img id="offer-photo-preview-1" class="w-full h-full object-cover hidden">
                                         <button id="offer-photo-remove-1" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferPhotoSlot(1)">
@@ -11278,12 +11402,12 @@ html.dark .list-card-description {
                                     </div>
 
                                     <!-- Slot 2 (Icon Selector) -->
-                                    <div class="relative w-[100px] h-[100px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="openIconSelectorModal()">
-                                        <div id="offer-icon-placeholder" class="flex flex-col items-center justify-center p-2 text-center">
-                                            <span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-3xl group-hover:scale-110 transition-transform">interests</span>
+                                    <div class="relative w-[115px] h-[115px] rounded-2xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="openIconSelectorModal()">
+                                        <div id="offer-icon-placeholder" class="w-full h-full flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-[42px] group-hover:scale-110 transition-transform">interests</span>
                                         </div>
                                         <div id="offer-icon-selected-display" class="w-full h-full flex items-center justify-center hidden bg-forest-green/5 dark:bg-emerald-400/5">
-                                            <span id="offer-selected-icon-symbol" class="material-symbols-outlined text-[42px] text-forest-green dark:text-emerald-400" style="font-variation-settings: 'FILL' 1;">star</span>
+                                            <span id="offer-selected-icon-symbol" class="material-symbols-outlined text-[48px] text-forest-green dark:text-emerald-400" style="font-variation-settings: 'FILL' 1;">star</span>
                                         </div>
                                         <button id="offer-icon-remove" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferIcon()">
                                             <span class="material-symbols-outlined text-[10px] font-bold">close</span>
@@ -11543,7 +11667,10 @@ html.dark .list-card-description {
                         </div>
 
                         <div class="flex gap-3 mt-3 mb-2">
-                            <button id="btn-list-offering" class="w-full h-12 bg-forest-green text-warm-cream font-bold text-xs rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center shadow-md border-0 cursor-pointer text-center" onclick="handleAddOffering(event)">
+                            <button type="button" class="w-1/3 h-12 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-black dark:text-white font-bold text-xs rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center border border-black/10 dark:border-white/10 cursor-pointer text-center" onclick="resetOfferFormToSelector()">
+                                Cancel
+                            </button>
+                            <button id="btn-list-offering" class="w-2/3 h-12 bg-forest-green text-warm-cream font-bold text-xs rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center shadow-md border-0 cursor-pointer text-center" onclick="handleAddOffering(event)">
                                 List Offer
                             </button>
                         </div>
@@ -11636,6 +11763,77 @@ html.dark .list-card-description {
                         <div id="platform-swaps-counter"></div>
                     </div>
 
+                    <!-- My Offerings section -->
+                    <section id="widget-my-offerings" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
+                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center justify-between select-none w-full">
+                            <span class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-sm">local_offer</span> My Offerings
+                            </span>
+                            <button onclick="showView('offer', 'offering')" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Add Offering">
+                                <span class="material-symbols-outlined text-[15px] font-black">add</span>
+                            </button>
+                        </h3>
+                        <div class="space-y-3" id="my-offerings-container">
+                            <!-- Dynamic offerings cards -->
+                        </div>
+                    </section>
+
+                    <!-- My Needs section -->
+                    <section id="widget-my-needs" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
+                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center justify-between select-none w-full">
+                            <span class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-sm">shopping_basket</span> My Needs
+                            </span>
+                            <button onclick="toggleAddNeedForm()" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Add Need">
+                                <span class="material-symbols-outlined text-[15px] font-black">add</span>
+                            </button>
+                        </h3>
+                        
+                        <!-- Inline Add Need Form -->
+                        <div id="add-need-form-container" class="hidden bg-warm-cream/10 dark:bg-black/20 p-3.5 rounded-xl border border-black/10 dark:border-white/10 mb-3 space-y-3 text-left">
+                            <input type="text" id="new-need-title" placeholder="What do you need? (e.g. Weed whacker, Sourdough starter)" class="w-full h-10 px-3 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl text-xs focus:border-forest-green focus:ring-0 outline-none text-black dark:text-white">
+                            <p id="new-need-title-error" class="hidden text-error font-bold text-[10px] text-left mt-0.5">Your listing contains prohibited language and violates our community guidelines.</p>
+                            <input type="text" id="new-need-desc" placeholder="Brief description..." class="w-full h-10 px-3 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl text-xs focus:border-forest-green focus:ring-0 outline-none text-black dark:text-white">
+                            <p id="new-need-desc-error" class="hidden text-error font-bold text-[10px] text-left mt-0.5">Your listing contains prohibited language and violates our community guidelines.</p>
+                            <select id="new-need-category" class="w-full h-10 px-3 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl text-xs focus:border-forest-green focus:ring-0 outline-none text-black dark:text-white">
+                                <option value="" disabled selected>Choose a category...</option>
+                                <option value="Food & Drink">Food & Drink</option>
+                                <option value="Home and Living">Home and Living</option>
+                                <option value="Garden & Outdoors">Garden & Outdoors</option>
+                                <option value="Skills & Education">Skills & Education</option>
+                                <option value="Handyman & Services">Handyman & Services</option>
+                                <option value="Creative & Art">Creative & Art</option>
+                                <option value="Health">Health</option>
+                                <option value="Clothing & Apparel">Clothing & Apparel</option>
+                                <option value="Books, Games, Entertainment">Books, Games, Entertainment</option>
+                                <option value="Kids and Maternity">Kids and Maternity</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div class="flex gap-2">
+                                <button id="btn-save-need" class="w-full bg-black/[0.02] dark:bg-white/[0.02] border border-black/10 dark:border-white/10 text-forest-green dark:text-emerald-400 py-2 rounded-lg font-bold text-xs cursor-pointer active:scale-95 transition-all" onclick="handleAddNeedSubmit()">Save Need</button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3" id="my-needs-container">
+                            <!-- Dynamic user needs cards -->
+                        </div>
+                    </section>
+
+                    <!-- My Events section -->
+                    <section id="widget-my-events" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
+                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center justify-between select-none w-full">
+                            <span class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-sm">event_available</span> My Events
+                            </span>
+                            <button onclick="showView('create_event')" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Add Event">
+                                <span class="material-symbols-outlined text-[15px] font-black">add</span>
+                            </button>
+                        </h3>
+                        <div class="space-y-3" id="my-events-container">
+                            <!-- Dynamic user events cards -->
+                        </div>
+                    </section>
+
                     <!-- Unified Badges Section -->
                     <section id="widget-badges-section" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
                         <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
@@ -11654,23 +11852,6 @@ html.dark .list-card-description {
                         </h3>
                         <div class="space-y-3" id="profile-upcoming-events-container">
                             <!-- Dynamic upcoming events cards -->
-                        </div>
-                    </section>
-
-                    <!-- Consolidated Saved Section -->
-                    <section id="widget-saved" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
-                        <div class="flex items-center justify-between mb-3 w-full">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm">bookmark</span> Saved
-                            </h3>
-                            <select id="saved-section-filter" onchange="handleSavedFilterChange(this.value)" class="h-8 px-2 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl text-xs focus:border-forest-green focus:ring-0 outline-none text-black dark:text-white font-bold cursor-pointer">
-                                <option value="needs">Saved Needs</option>
-                                <option value="offerings">Saved Offerings</option>
-                                <option value="events">Saved Events</option>
-                            </select>
-                        </div>
-                        <div class="space-y-3" id="profile-saved-items-container">
-                            <!-- Dynamic saved items cards -->
                         </div>
                     </section>
 
@@ -15241,27 +15422,27 @@ html.dark .list-card-description {
                         </div>
                     </section>
 
-                    <div class="px-6 py-6 space-y-6 w-full max-w-sm mx-auto">
+                    <div class="px-6 py-6 space-y-6 w-full max-w-xl mx-auto">
                         <!-- Group Name Input -->
                         <div class="text-left w-full mb-2">
-                            <label class="block text-[9px] font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E] mb-2.5 text-left" for="group-name-input">
+                            <label class="block text-sm font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E] mb-2.5 text-left" for="group-name-input">
                                 Group Name
                             </label>
-                            <input class="w-full text-left bg-white dark:bg-[#101612] border border-outline-variant/30 rounded-xl focus:border-forest-green focus:ring-1 focus:ring-forest-green text-xs font-body py-3 px-4 transition-all placeholder:text-outline/40 shadow-sm" id="group-name-input" placeholder="e.g. Kitsilano Swappers Crew" type="text" required>
+                            <input class="w-full text-left bg-white dark:bg-[#101612] border border-outline-variant/30 rounded-xl focus:border-forest-green focus:ring-1 focus:ring-forest-green text-[15px] font-body py-3.5 px-4 transition-all placeholder:text-outline/40 shadow-sm" id="group-name-input" placeholder="e.g. Kitsilano Swappers Crew" type="text" required>
                         </div>
 
                         <!-- Group Description Input -->
                         <div class="text-left w-full mb-2">
-                            <label class="block text-[9px] font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E] mb-2.5 text-left" for="group-desc-input">
+                            <label class="block text-sm font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E] mb-2.5 text-left" for="group-desc-input">
                                 Group Description
                             </label>
-                            <textarea id="group-desc-input" class="w-full p-4 bg-white dark:bg-[#101612] border border-outline-variant/30 rounded-xl text-xs focus:border-forest-green focus:ring-0 outline-none min-h-[100px] placeholder:text-outline/40 leading-relaxed" placeholder="Describe group purpose, guidelines, or topics (e.g. swapping veggies, tool sharing)..." required></textarea>
+                            <textarea id="group-desc-input" class="w-full p-4 bg-white dark:bg-[#101612] border border-outline-variant/30 rounded-xl text-[15px] focus:border-forest-green focus:ring-0 outline-none min-h-[120px] placeholder:text-outline/40 leading-relaxed" placeholder="Describe group purpose, guidelines, or topics (e.g. swapping veggies, tool sharing)..." required></textarea>
                         </div>
 
                         <!-- Select Friends Section -->
                         <div class="text-left w-full mb-2">
                             <div class="flex justify-between items-center mb-2.5">
-                                <label class="block text-[9px] font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E]">
+                                <label class="block text-sm font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E]">
                                     Select Friends (Min. 1)
                                 </label>
                                 <span id="group-friends-count-badge" class="hidden text-[10px] font-bold bg-forest-green/10 dark:bg-emerald-950/20 text-forest-green dark:text-emerald-400 px-2 py-0.5 rounded-full border border-forest-green/10">0 Selected</span>
@@ -15269,7 +15450,7 @@ html.dark .list-card-description {
                             
                             <!-- Friend Search Input -->
                             <div class="relative w-full mb-3 flex items-center">
-                                <input class="w-full text-left bg-white dark:bg-[#101612] border border-outline-variant/30 rounded-xl focus:border-outline-variant focus:ring-0 text-xs font-body py-2.5 pl-9 pr-4 transition-all placeholder:text-outline/40 shadow-sm" id="group-friends-search" placeholder="Search friends by name..." type="text" oninput="filterGroupFriends(this.value)">
+                                <input class="w-full text-left bg-white dark:bg-[#101612] border border-outline-variant/30 rounded-xl focus:border-outline-variant focus:ring-0 text-[14px] font-body py-3 pl-9 pr-4 transition-all placeholder:text-outline/40 shadow-sm" id="group-friends-search" placeholder="Search friends by name..." type="text" oninput="filterGroupFriends(this.value)">
                                 <span class="material-symbols-outlined absolute left-3 text-outline/50 text-sm">search</span>
                             </div>
 
@@ -15280,10 +15461,10 @@ html.dark .list-card-description {
 
                         <!-- Cancel and Submit Buttons -->
                         <div class="flex gap-3 pt-4 border-t border-outline-variant/15">
-                            <button type="button" onclick="closeCreateGroupModal()" class="w-[35%] h-12 bg-transparent text-forest-green/70 hover:text-forest-green font-bold text-xs rounded-xl active:scale-95 transition-transform flex items-center justify-center cursor-pointer border border-outline-variant/30 bg-white/50 dark:bg-white/5">
+                            <button type="button" onclick="closeCreateGroupModal()" class="w-[35%] h-12 bg-transparent text-forest-green/70 hover:text-forest-green font-bold text-sm rounded-xl active:scale-95 transition-transform flex items-center justify-center cursor-pointer border border-outline-variant/30 bg-white/50 dark:bg-white/5">
                                 Cancel
                             </button>
-                            <button class="w-[65%] h-12 bg-forest-green text-warm-cream dark:bg-[#308A5E] dark:text-[#101612] font-bold text-xs rounded-xl active:scale-95 transition-transform flex items-center justify-center shadow border-0 cursor-pointer text-center" type="submit" onclick="event.preventDefault(); handleCreateGroup();">
+                            <button class="w-[65%] h-12 bg-forest-green text-warm-cream dark:bg-[#308A5E] dark:text-[#101612] font-bold text-sm rounded-xl active:scale-95 transition-transform flex items-center justify-center shadow border-0 cursor-pointer text-center" type="submit" onclick="event.preventDefault(); handleCreateGroup();">
                                 Create Group
                             </button>
                         </div>
@@ -22405,7 +22586,7 @@ function renderEventsList() {
             const hostAvatar = hostNeighbor ? hostNeighbor.avatar : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80';
             
             const card = document.createElement('div');
-            card.className = "h-[340px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+            card.className = "h-56 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-row cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
             
             card.onclick = () => {
                 openEventDetail(evt.id);
@@ -22423,13 +22604,13 @@ function renderEventsList() {
             const isFree = (evt.category && evt.category.toLowerCase() === 'gifts') || (evt.type && evt.type.toLowerCase() === 'gifts');
 
             card.innerHTML = `
-                <!-- Top Image Portion -->
-                <div class="h-48 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Left Image Portion -->
+                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0">
+                <!-- Right Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -27715,19 +27896,6 @@ function startChatConversation(convIdOrNeighborName) {
     renderChatDetail(conv);
     updateChatNotificationBadge();
     showView('chat_detail');
-
-    // Focus immediately to bring up the keyboard without delay
-    const chatInput = document.getElementById('chat-text-input');
-    if (chatInput) {
-        chatInput.focus();
-    }
-    // Fallback focus to ensure it succeeds after view renders/transitions
-    setTimeout(() => {
-        const inputFallback = document.getElementById('chat-text-input');
-        if (inputFallback) {
-            inputFallback.focus();
-        }
-    }, 100);
 }
 
 function renderChatDetail(conv) {
@@ -28865,14 +29033,14 @@ function openCreateGroupModal() {
             const name = friend.name;
             const avatar = friend.avatar || DEFAULT_AVATAR;
             const item = document.createElement('label');
-            item.className = "friend-select-btn flex items-center gap-2.5 p-2 bg-white dark:bg-[#101612] border border-outline-variant/30 dark:border-outline-variant/15 rounded-xl hover:border-forest-green dark:hover:border-[#308A5E] hover:bg-forest-green/5 dark:hover:bg-[#308A5E]/5 cursor-pointer transition-all select-none w-full relative text-left h-11 shadow-sm";
+            item.className = "friend-select-btn flex items-center gap-2.5 p-2 bg-white dark:bg-[#101612] border border-outline-variant/30 dark:border-outline-variant/15 rounded-xl hover:border-forest-green dark:hover:border-[#308A5E] hover:bg-forest-green/5 dark:hover:bg-[#308A5E]/5 cursor-pointer transition-all select-none w-full relative text-left h-12 shadow-sm";
             item.innerHTML = `
                 <input type="checkbox" name="group-members" value="${escapeHTML(name)}" class="hidden" />
                 <div class="w-7 h-7 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
                     <img src="${avatar}" class="w-full h-full object-cover" />
                 </div>
                 <div class="flex-grow min-w-0">
-                    <span class="friend-name text-[10px] font-bold text-on-surface dark:text-[#FDFBF7]/90 truncate block">${escapeHTML(name)}</span>
+                    <span class="friend-name text-[13px] font-bold text-on-surface dark:text-[#FDFBF7]/90 truncate block">${escapeHTML(name)}</span>
                 </div>
                 <div class="checkbox-indicator w-4 h-4 rounded-full border border-outline-variant/50 flex items-center justify-center text-white bg-transparent shrink-0">
                     <span class="material-symbols-outlined text-[10px] font-black hidden">check</span>
@@ -31833,7 +32001,7 @@ function renderVillageListView() {
 
     filteredListings.forEach(item => {
         const card = document.createElement('div');
-        card.className = "h-[340px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-56 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-row cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail(item.id);
 
         const itemImages = item.image ? item.image.split('|||').filter(Boolean) : [];
@@ -31848,13 +32016,13 @@ function renderVillageListView() {
             const isKarma = neighbor && neighbor.isKarma;
             const isFree = isKarma || (item.category && item.category.toLowerCase() === 'gifts');
             card.innerHTML = `
-                <!-- Top Image Portion -->
-                <div class="h-48 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Left Image Portion -->
+                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0">
+                <!-- Right Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -31877,13 +32045,13 @@ function renderVillageListView() {
         } else {
             const isFree = (item.category && item.category.toLowerCase() === 'gifts');
             card.innerHTML = `
-                <!-- Top Image Portion -->
-                <div class="h-48 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Left Image Portion -->
+                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0">
+                <!-- Right Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -32028,7 +32196,7 @@ function renderNeedsBoardView() {
     filteredNeeds.forEach(need => {
         const card = document.createElement('div');
         const needId = need.id;
-        card.className = "h-[340px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-56 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-row cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail('need_' + needId);
         
         const currentUser = state.currentUser || {};
@@ -32045,13 +32213,13 @@ function renderNeedsBoardView() {
 
         if (isUserNeed) {
             card.innerHTML = `
-                <!-- Top Image Portion -->
-                <div class="h-48 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Left Image Portion -->
+                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0">
+                <!-- Right Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -32076,13 +32244,13 @@ function renderNeedsBoardView() {
             `;
         } else {
             card.innerHTML = `
-                <!-- Top Image Portion -->
-                <div class="h-48 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Left Image Portion -->
+                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0">
+                <!-- Right Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -41900,6 +42068,124 @@ function getActiveSuggestionsInfo() {
     };
 }
 
+// Map search intelligence pill state
+window.currentIntelMatches = [];
+window.currentIntelIndex = -1;
+
+function updateIntelPillUI(exactCount, similarCount) {
+    const intelPill = document.getElementById('village-search-intel-pill');
+    if (!intelPill || !window.currentIntelMatches || window.currentIntelMatches.length === 0) return;
+
+    if (exactCount === undefined || similarCount === undefined) {
+        exactCount = 0;
+        similarCount = 0;
+        const q = (document.getElementById('village-search-input')?.value || "").toLowerCase().trim();
+        window.currentIntelMatches.forEach(item => {
+            const titleClean = (item.title || "").toLowerCase();
+            const subtitleClean = (item.subtitle || "").toLowerCase();
+            const isExact = titleClean.includes(q) || subtitleClean.includes(q);
+            if (isExact) {
+                exactCount++;
+            } else {
+                similarCount++;
+            }
+        });
+    }
+
+    const index = window.currentIntelIndex;
+    const item = window.currentIntelMatches[index];
+    if (!item) return;
+
+    const titleEl = document.getElementById('intel-match-title');
+    const badgeEl = document.getElementById('intel-match-badge');
+    const indexEl = document.getElementById('intel-match-index');
+    const iconEl = document.getElementById('intel-match-icon');
+    const prevBtn = document.getElementById('btn-intel-prev');
+    const nextBtn = document.getElementById('btn-intel-next');
+
+    if (titleEl) titleEl.textContent = item.title;
+    if (iconEl) iconEl.textContent = item.icon || 'location_on';
+
+    if (badgeEl) {
+        badgeEl.style.display = 'inline-block';
+        if (item.id === 'special_music_card') {
+            badgeEl.textContent = "Music";
+            badgeEl.className = "intel-badge text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-1.5 bg-purple-500/10 text-purple-500 dark:bg-purple-500/20 dark:text-purple-300";
+        } else {
+            const q = (document.getElementById('village-search-input')?.value || "").toLowerCase().trim();
+            const titleClean = (item.title || "").toLowerCase();
+            const subtitleClean = (item.subtitle || "").toLowerCase();
+            const isExact = titleClean.includes(q) || subtitleClean.includes(q);
+            if (isExact) {
+                badgeEl.textContent = "Exact";
+                badgeEl.className = "intel-badge text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-1.5 bg-[#308A5E]/10 text-[#308A5E] dark:bg-[#308A5E]/20 dark:text-[#50C878]";
+            } else {
+                badgeEl.textContent = "Similar";
+                badgeEl.className = "intel-badge text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-1.5 bg-amber-500/10 text-amber-500 dark:bg-amber-500/20 dark:text-amber-300";
+            }
+        }
+    }
+
+    if (indexEl) {
+        let breakDown = "";
+        if (exactCount > 0 && similarCount > 0) {
+            breakDown = ` (${exactCount} Ex, ${similarCount} Sim)`;
+        } else if (exactCount > 0) {
+            breakDown = ` (${exactCount} Exact)`;
+        } else if (similarCount > 0) {
+            breakDown = ` (${similarCount} Similar)`;
+        }
+        indexEl.textContent = `${index + 1} of ${window.currentIntelMatches.length}${breakDown}`;
+    }
+
+    if (prevBtn && nextBtn) {
+        if (window.currentIntelMatches.length <= 1) {
+            prevBtn.style.opacity = '0.3';
+            prevBtn.style.pointerEvents = 'none';
+            nextBtn.style.opacity = '0.3';
+            nextBtn.style.pointerEvents = 'none';
+        } else {
+            prevBtn.style.opacity = '1';
+            prevBtn.style.pointerEvents = 'auto';
+            nextBtn.style.opacity = '1';
+            nextBtn.style.pointerEvents = 'auto';
+        }
+    }
+}
+window.updateIntelPillUI = updateIntelPillUI;
+
+function cycleIntelMatch(offset) {
+    if (!window.currentIntelMatches || window.currentIntelMatches.length === 0) return;
+    let newIndex = window.currentIntelIndex + offset;
+    if (newIndex < 0) {
+        newIndex = window.currentIntelMatches.length - 1;
+    } else if (newIndex >= window.currentIntelMatches.length) {
+        newIndex = 0;
+    }
+    window.currentIntelIndex = newIndex;
+    updateIntelPillUI();
+    goToCurrentIntelMatch();
+}
+window.cycleIntelMatch = cycleIntelMatch;
+
+function goToCurrentIntelMatch() {
+    if (!window.currentIntelMatches || window.currentIntelIndex === -1) return;
+    const item = window.currentIntelMatches[window.currentIntelIndex];
+    if (!item) return;
+
+    if (item.id === 'special_music_card') {
+        selectSearchSuggestion(item.id, item.title, null, null);
+    } else {
+        if (leafletMap && item.lat !== null && item.lng !== null) {
+            leafletMap.setView([item.lat, item.lng], 15);
+        }
+        if (item.id) {
+            openMapItemDetail(item.id);
+        }
+    }
+}
+window.goToCurrentIntelMatch = goToCurrentIntelMatch;
+
 function adjustSearchSuggestionsVisibility(show) {
     const allSuggestionsIds = [
         'village-search-suggestions',
@@ -41914,6 +42200,8 @@ function adjustSearchSuggestionsVisibility(show) {
     }
     
     const activeInfo = getActiveSuggestionsInfo();
+    const isMapView = activeInfo.input && activeInfo.input.id === 'village-search-input';
+    const intelPill = document.getElementById('village-search-intel-pill');
     
     if (show) {
         // First hide others
@@ -41924,18 +42212,32 @@ function adjustSearchSuggestionsVisibility(show) {
             }
         });
         
-        if (activeInfo.suggestions) {
-            activeInfo.suggestions.classList.remove('hidden');
+        if (isMapView && intelPill && window.currentIntelMatches && window.currentIntelMatches.length > 0) {
+            intelPill.classList.remove('hidden');
+            if (activeInfo.suggestions) {
+                activeInfo.suggestions.classList.add('hidden');
+            }
             if (activeInfo.overlay) {
-                const contentHeight = activeInfo.suggestions.scrollHeight;
-                const targetHeight = Math.min(48 + contentHeight, 288);
-                activeInfo.overlay.style.height = `${targetHeight}px`;
+                activeInfo.overlay.style.height = '92px';
+            }
+        } else {
+            if (intelPill) intelPill.classList.add('hidden');
+            if (activeInfo.suggestions) {
+                activeInfo.suggestions.classList.remove('hidden');
+                if (activeInfo.overlay) {
+                    const contentHeight = activeInfo.suggestions.scrollHeight;
+                    const targetHeight = Math.min(48 + contentHeight, 288);
+                    activeInfo.overlay.style.height = `${targetHeight}px`;
+                }
             }
         }
     } else {
         const mainOverlay = document.getElementById('village-search-bar-overlay');
         if (mainOverlay) {
             mainOverlay.style.height = '48px';
+        }
+        if (intelPill) {
+            intelPill.classList.add('hidden');
         }
         window.searchSuggestionsTimeout = setTimeout(() => {
             allSuggestionsIds.forEach(id => {
@@ -41952,9 +42254,17 @@ function updateSearchSuggestions(query) {
     const container = activeInfo.suggestions;
     if (!container) return;
 
+    const isMapView = activeInfo.input && activeInfo.input.id === 'village-search-input';
+    const intelPill = document.getElementById('village-search-intel-pill');
+
     const q = query.toLowerCase().trim();
     if (!q) {
         container.innerHTML = "";
+        if (intelPill) {
+            intelPill.classList.add('hidden');
+        }
+        window.currentIntelMatches = [];
+        window.currentIntelIndex = -1;
         adjustSearchSuggestionsVisibility(false);
         return;
     }
@@ -42091,6 +42401,39 @@ function updateSearchSuggestions(query) {
         });
     }
 
+    if (isMapView && intelPill) {
+        container.classList.add('hidden');
+        container.innerHTML = "";
+
+        window.currentIntelMatches = [...exactMatches, ...similarMatches];
+        
+        if (window.currentIntelMatches.length === 0) {
+            window.currentIntelIndex = -1;
+            const titleEl = document.getElementById('intel-match-title');
+            const badgeEl = document.getElementById('intel-match-badge');
+            const indexEl = document.getElementById('intel-match-index');
+            const iconEl = document.getElementById('intel-match-icon');
+            const prevBtn = document.getElementById('btn-intel-prev');
+            const nextBtn = document.getElementById('btn-intel-next');
+            if (titleEl) titleEl.textContent = "No matching suggestions";
+            if (badgeEl) badgeEl.style.display = 'none';
+            if (indexEl) indexEl.textContent = "0 of 0";
+            if (iconEl) iconEl.textContent = "search_off";
+            if (prevBtn && nextBtn) {
+                prevBtn.style.opacity = '0.3';
+                prevBtn.style.pointerEvents = 'none';
+                nextBtn.style.opacity = '0.3';
+                nextBtn.style.pointerEvents = 'none';
+            }
+        } else {
+            window.currentIntelIndex = 0;
+            updateIntelPillUI(exactMatches.length, similarMatches.length);
+        }
+        intelPill.classList.remove('hidden');
+        adjustSearchSuggestionsVisibility(true);
+        return;
+    }
+
     if (exactMatches.length === 0 && similarMatches.length === 0) {
         container.innerHTML = `<div class="px-3 py-2.5 text-xs text-on-surface-variant text-center">No matching suggestions</div>`;
         adjustSearchSuggestionsVisibility(true);
@@ -42199,8 +42542,12 @@ function selectSearchSuggestion(id, title, lat, lng) {
         // Switch to Offerings list view segment to show results and the music guidance banner
         switchVillageSegment('list');
     } else {
-        // Refresh map markers filtering
+        // Refresh map markers filtering and all list views
         applyMapFiltering();
+        renderVillageListView();
+        renderNeedsBoardView();
+        renderEventsList();
+        renderBulletinsList();
 
         // Center map on location
         if (leafletMap && lat !== null && lng !== null) {
@@ -44976,9 +45323,9 @@ function renderReviewsList() {
                 <h3 class="font-headline text-base font-bold text-on-surface truncate leading-tight">
                     ${escapeHTML(rev.neighborName)}
                 </h3>
-                <div class="flex items-center gap-1.5 text-[11px] text-red-600 dark:text-red-400 font-bold leading-tight">
-                    <span class="material-symbols-outlined text-[13px] font-bold">schedule</span>
-                    <span>${remainingHours}h left Review Pending</span>
+                <div class="flex items-center gap-1.5 text-[11px] font-bold leading-tight">
+                    <span class="material-symbols-outlined text-[13px] font-bold text-red-600 dark:text-red-400">schedule</span>
+                    <span class="text-gray-500 dark:text-gray-400">${remainingHours}h left Review Pending</span>
                 </div>
             </div>
         `;

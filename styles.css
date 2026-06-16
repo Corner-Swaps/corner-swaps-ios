@@ -1491,8 +1491,24 @@ select::-ms-expand {
 }
 
 .native-app-env #offer-photo-hero {
-    padding-top: calc(1.5rem + env(safe-area-inset-top)) !important;
-    height: calc(240px + env(safe-area-inset-top)) !important;
+    padding-top: 1.5rem !important;
+    height: 240px !important;
+}
+
+#offer-form-header {
+    background-color: #ecebeb !important;
+}
+.dark #offer-form-header {
+    background-color: #202020 !important;
+}
+
+.native-app-env #offer-form-header {
+    padding-top: env(safe-area-inset-top) !important;
+    height: calc(56px + env(safe-area-inset-top)) !important;
+    background-color: #ecebeb !important;
+}
+.native-app-env.dark #offer-form-header {
+    background-color: #202020 !important;
 }
 
 /* Force all active screens in native app to have a background color (prevents green leakage) */
@@ -1567,7 +1583,8 @@ select::-ms-expand {
 
 /* Specific buttons scaled up */
 #widget-my-offerings button,
-#widget-my-needs button {
+#widget-my-needs button,
+#widget-my-events button {
     font-size: 18px !important;
     font-weight: 700 !important;
 }
@@ -2163,36 +2180,7 @@ html.dark .chat-bubble-other {
     border-color: #e11d48 !important;
 }
 
-#btn-chat-segment-active {
-    background-color: #8b5cf6 !important;
-    background: #8b5cf6 !important;
-    color: #ffffff !important;
-    border-color: #8b5cf6 !important;
-}
-#btn-chat-segment-requests {
-    background-color: #2563eb !important;
-    background: #2563eb !important;
-    color: #ffffff !important;
-    border-color: #2563eb !important;
-}
-#btn-chat-segment-groups {
-    background-color: #10b981 !important;
-    background: #10b981 !important;
-    color: #ffffff !important;
-    border-color: #10b981 !important;
-}
-#btn-chat-segment-swaps {
-    background-color: #ea580c !important;
-    background: #ea580c !important;
-    color: #ffffff !important;
-    border-color: #ea580c !important;
-}
-#btn-chat-segment-reviews {
-    background-color: #f43f5e !important;
-    background: #f43f5e !important;
-    color: #ffffff !important;
-    border-color: #f43f5e !important;
-}
+
 
 #btn-segment-trigger {
     background-color: #ffffff !important;
@@ -3477,6 +3465,7 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 #widget-badges-section h3,
 #widget-my-offerings h3,
 #widget-my-needs h3,
+#widget-my-events h3,
 #widget-friends-list h3,
 #widget-swaps-history h3,
 #widget-saved-listings h3,
@@ -3514,7 +3503,9 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 #widget-friends-list button,
 #profile-trade-log-container button,
 #widget-suggestion-box button,
-#widget-my-needs button:not(.rounded-full) {
+#widget-my-needs button:not(.rounded-full),
+#widget-my-offerings button:not(.rounded-full),
+#widget-my-events button:not(.rounded-full) {
     font-family: 'Outfit', sans-serif !important;
     font-size: 16px !important;
     font-weight: 700 !important;
@@ -3637,6 +3628,7 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 
 /* Profile section: Black text for headings, lists, and placeholders underneath badges (Light Mode Only) */
 html:not(.dark) #widget-upcoming-events *:not(.material-symbols-outlined),
+html:not(.dark) #widget-my-events *:not(.material-symbols-outlined),
 html:not(.dark) #widget-my-offerings *:not(.material-symbols-outlined),
 html:not(.dark) #widget-my-needs *:not(.material-symbols-outlined),
 html:not(.dark) #widget-saved-listings *:not(.material-symbols-outlined),
@@ -4325,7 +4317,10 @@ html:not(.dark) #village-events-search-input,
 html:not(.dark) #village-bulletins-search-input {
     color: #000000 !important;
 }
-html:not(.dark) #village-search-suggestions *:not(.material-symbols-outlined) {
+html:not(.dark) #village-search-suggestions *:not(.material-symbols-outlined),
+html:not(.dark) #village-list-search-suggestions *:not(.material-symbols-outlined),
+html:not(.dark) #village-needs-search-suggestions *:not(.material-symbols-outlined),
+html:not(.dark) #village-events-search-suggestions *:not(.material-symbols-outlined) {
     color: #000000 !important;
 }
 
@@ -4764,7 +4759,8 @@ html.dark #view-definitions :not(button):not(button *):not(.material-symbols-out
 
 /* 2. Upcoming Events Header Icon (Vibrant Indigo-Blue) */
 #widget-upcoming-events h3 span.material-symbols-outlined,
-#neighbor-widget-upcoming-events h3 span.material-symbols-outlined {
+#neighbor-widget-upcoming-events h3 span.material-symbols-outlined,
+#widget-my-events h3 span.material-symbols-outlined {
     color: #4f46e5 !important;
 }
 
@@ -7265,6 +7261,96 @@ html.dark .fused-clear-btn {
     color: #9ca3af !important;
 }
 
+/* Fused Intel Pill (Map Search Navigation) */
+.fused-intel-pill {
+    display: flex !important;
+    align-items: center !important;
+    background-color: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-radius: 9999px !important;
+    padding: 4px 8px 4px 8px !important;
+    height: 42px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s ease !important;
+    width: 100% !important;
+    margin-top: 8px !important;
+    box-sizing: border-box !important;
+}
+
+html.dark .fused-intel-pill {
+    background-color: rgba(24, 32, 26, 0.92) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.fused-intel-pill.hidden {
+    display: none !important;
+}
+
+.intel-nav-btn {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: rgba(0, 0, 0, 0.03) !important;
+    border: none !important;
+    color: #4b5563 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
+}
+
+html.dark .intel-nav-btn {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    color: #d1d5db !important;
+}
+
+.intel-nav-btn:hover {
+    background-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+html.dark .intel-nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.intel-nav-btn:active {
+    transform: scale(0.9) !important;
+}
+
+.intel-content-area {
+    flex-grow: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 8px !important;
+    min-width: 0 !important;
+    cursor: pointer !important;
+    height: 100% !important;
+}
+
+.intel-title {
+    color: #000000 !important;
+    font-family: 'Outfit', sans-serif !important;
+}
+
+html.dark .intel-title {
+    color: #ffffff !important;
+}
+
+.intel-badge {
+    font-family: 'Outfit', sans-serif !important;
+    flex-shrink: 0 !important;
+}
+
+.intel-index {
+    font-family: 'Outfit', sans-serif !important;
+    flex-shrink: 0 !important;
+}
+
 /* Suggestions Box overlay style */
 .fused-suggestions-box {
     margin-top: 8px !important;
@@ -7484,15 +7570,21 @@ html.dark .music-guidance-banner {
 }
 
 /* Ensure the create group view is scrollable on all platforms, including iOS native webview */
-#view-create_group {
+#view-create_group.active {
+    display: block !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
+    height: auto !important;
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
 }
 
-/* Ensure typed text and placeholders inside the create group form are black and readable */
+/* Ensure typed text and placeholders inside the create group form are black, readable and larger */
 #view-create_group #group-name-input,
 #view-create_group #group-desc-input,
 #view-create_group #group-friends-search {
+    font-size: 17px !important;
+    font-family: 'Outfit', sans-serif !important;
     color: #000000 !important;
     background-color: #ffffff !important;
 }
@@ -7500,13 +7592,21 @@ html.dark .music-guidance-banner {
 #view-create_group #group-name-input::placeholder,
 #view-create_group #group-desc-input::placeholder,
 #view-create_group #group-friends-search::placeholder {
+    font-size: 16px !important;
     color: #6b7280 !important;
+}
+
+/* Make form labels inside create group larger */
+#view-create_group label {
+    font-size: 15px !important;
+    font-weight: 700 !important;
 }
 
 /* Even in dark mode, make these inputs white background and black text as requested */
 html.dark #view-create_group #group-name-input,
 html.dark #view-create_group #group-desc-input,
 html.dark #view-create_group #group-friends-search {
+    font-size: 17px !important;
     color: #000000 !important;
     background-color: #ffffff !important;
 }
@@ -7514,6 +7614,7 @@ html.dark #view-create_group #group-friends-search {
 html.dark #view-create_group #group-name-input::placeholder,
 html.dark #view-create_group #group-desc-input::placeholder,
 html.dark #view-create_group #group-friends-search::placeholder {
+    font-size: 16px !important;
     color: #6b7280 !important;
 }
 
@@ -7587,11 +7688,24 @@ html.dark .list-card-title {
     margin-top: 4px !important;
     margin-bottom: 0 !important;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 html.dark .list-card-description {
     color: rgba(255, 255, 255, 0.7) !important;
 }
+
+/* Absolute positioning styles for list search suggestions containers */
+#village-list-search-suggestions,
+#village-needs-search-suggestions,
+#village-events-search-suggestions {
+    position: absolute !important;
+    left: 4px !important;
+    right: 4px !important;
+    top: 48px !important;
+    z-index: 3000 !important;
+    width: calc(100% - 8px) !important;
+}
+
 

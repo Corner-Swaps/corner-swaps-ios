@@ -6207,7 +6207,7 @@ function renderEventsList() {
             const hostAvatar = hostNeighbor ? hostNeighbor.avatar : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80';
             
             const card = document.createElement('div');
-            card.className = "h-[340px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+            card.className = "h-56 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-row cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
             
             card.onclick = () => {
                 openEventDetail(evt.id);
@@ -6225,13 +6225,13 @@ function renderEventsList() {
             const isFree = (evt.category && evt.category.toLowerCase() === 'gifts') || (evt.type && evt.type.toLowerCase() === 'gifts');
 
             card.innerHTML = `
-                <!-- Top Image Portion -->
-                <div class="h-48 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Left Image Portion -->
+                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0">
+                <!-- Right Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -11517,19 +11517,6 @@ function startChatConversation(convIdOrNeighborName) {
     renderChatDetail(conv);
     updateChatNotificationBadge();
     showView('chat_detail');
-
-    // Focus immediately to bring up the keyboard without delay
-    const chatInput = document.getElementById('chat-text-input');
-    if (chatInput) {
-        chatInput.focus();
-    }
-    // Fallback focus to ensure it succeeds after view renders/transitions
-    setTimeout(() => {
-        const inputFallback = document.getElementById('chat-text-input');
-        if (inputFallback) {
-            inputFallback.focus();
-        }
-    }, 100);
 }
 
 function renderChatDetail(conv) {
@@ -12667,14 +12654,14 @@ function openCreateGroupModal() {
             const name = friend.name;
             const avatar = friend.avatar || DEFAULT_AVATAR;
             const item = document.createElement('label');
-            item.className = "friend-select-btn flex items-center gap-2.5 p-2 bg-white dark:bg-[#101612] border border-outline-variant/30 dark:border-outline-variant/15 rounded-xl hover:border-forest-green dark:hover:border-[#308A5E] hover:bg-forest-green/5 dark:hover:bg-[#308A5E]/5 cursor-pointer transition-all select-none w-full relative text-left h-11 shadow-sm";
+            item.className = "friend-select-btn flex items-center gap-2.5 p-2 bg-white dark:bg-[#101612] border border-outline-variant/30 dark:border-outline-variant/15 rounded-xl hover:border-forest-green dark:hover:border-[#308A5E] hover:bg-forest-green/5 dark:hover:bg-[#308A5E]/5 cursor-pointer transition-all select-none w-full relative text-left h-12 shadow-sm";
             item.innerHTML = `
                 <input type="checkbox" name="group-members" value="${escapeHTML(name)}" class="hidden" />
                 <div class="w-7 h-7 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
                     <img src="${avatar}" class="w-full h-full object-cover" />
                 </div>
                 <div class="flex-grow min-w-0">
-                    <span class="friend-name text-[10px] font-bold text-on-surface dark:text-[#FDFBF7]/90 truncate block">${escapeHTML(name)}</span>
+                    <span class="friend-name text-[13px] font-bold text-on-surface dark:text-[#FDFBF7]/90 truncate block">${escapeHTML(name)}</span>
                 </div>
                 <div class="checkbox-indicator w-4 h-4 rounded-full border border-outline-variant/50 flex items-center justify-center text-white bg-transparent shrink-0">
                     <span class="material-symbols-outlined text-[10px] font-black hidden">check</span>
@@ -15635,7 +15622,7 @@ function renderVillageListView() {
 
     filteredListings.forEach(item => {
         const card = document.createElement('div');
-        card.className = "h-[340px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-56 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-row cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail(item.id);
 
         const itemImages = item.image ? item.image.split('|||').filter(Boolean) : [];
@@ -15650,13 +15637,13 @@ function renderVillageListView() {
             const isKarma = neighbor && neighbor.isKarma;
             const isFree = isKarma || (item.category && item.category.toLowerCase() === 'gifts');
             card.innerHTML = `
-                <!-- Top Image Portion -->
-                <div class="h-48 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Left Image Portion -->
+                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0">
+                <!-- Right Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -15679,13 +15666,13 @@ function renderVillageListView() {
         } else {
             const isFree = (item.category && item.category.toLowerCase() === 'gifts');
             card.innerHTML = `
-                <!-- Top Image Portion -->
-                <div class="h-48 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Left Image Portion -->
+                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0">
+                <!-- Right Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -15830,7 +15817,7 @@ function renderNeedsBoardView() {
     filteredNeeds.forEach(need => {
         const card = document.createElement('div');
         const needId = need.id;
-        card.className = "h-[340px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-56 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-row cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail('need_' + needId);
         
         const currentUser = state.currentUser || {};
@@ -15847,13 +15834,13 @@ function renderNeedsBoardView() {
 
         if (isUserNeed) {
             card.innerHTML = `
-                <!-- Top Image Portion -->
-                <div class="h-48 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Left Image Portion -->
+                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0">
+                <!-- Right Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -15878,13 +15865,13 @@ function renderNeedsBoardView() {
             `;
         } else {
             card.innerHTML = `
-                <!-- Top Image Portion -->
-                <div class="h-48 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Left Image Portion -->
+                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0">
+                <!-- Right Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -25702,6 +25689,124 @@ function getActiveSuggestionsInfo() {
     };
 }
 
+// Map search intelligence pill state
+window.currentIntelMatches = [];
+window.currentIntelIndex = -1;
+
+function updateIntelPillUI(exactCount, similarCount) {
+    const intelPill = document.getElementById('village-search-intel-pill');
+    if (!intelPill || !window.currentIntelMatches || window.currentIntelMatches.length === 0) return;
+
+    if (exactCount === undefined || similarCount === undefined) {
+        exactCount = 0;
+        similarCount = 0;
+        const q = (document.getElementById('village-search-input')?.value || "").toLowerCase().trim();
+        window.currentIntelMatches.forEach(item => {
+            const titleClean = (item.title || "").toLowerCase();
+            const subtitleClean = (item.subtitle || "").toLowerCase();
+            const isExact = titleClean.includes(q) || subtitleClean.includes(q);
+            if (isExact) {
+                exactCount++;
+            } else {
+                similarCount++;
+            }
+        });
+    }
+
+    const index = window.currentIntelIndex;
+    const item = window.currentIntelMatches[index];
+    if (!item) return;
+
+    const titleEl = document.getElementById('intel-match-title');
+    const badgeEl = document.getElementById('intel-match-badge');
+    const indexEl = document.getElementById('intel-match-index');
+    const iconEl = document.getElementById('intel-match-icon');
+    const prevBtn = document.getElementById('btn-intel-prev');
+    const nextBtn = document.getElementById('btn-intel-next');
+
+    if (titleEl) titleEl.textContent = item.title;
+    if (iconEl) iconEl.textContent = item.icon || 'location_on';
+
+    if (badgeEl) {
+        badgeEl.style.display = 'inline-block';
+        if (item.id === 'special_music_card') {
+            badgeEl.textContent = "Music";
+            badgeEl.className = "intel-badge text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-1.5 bg-purple-500/10 text-purple-500 dark:bg-purple-500/20 dark:text-purple-300";
+        } else {
+            const q = (document.getElementById('village-search-input')?.value || "").toLowerCase().trim();
+            const titleClean = (item.title || "").toLowerCase();
+            const subtitleClean = (item.subtitle || "").toLowerCase();
+            const isExact = titleClean.includes(q) || subtitleClean.includes(q);
+            if (isExact) {
+                badgeEl.textContent = "Exact";
+                badgeEl.className = "intel-badge text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-1.5 bg-[#308A5E]/10 text-[#308A5E] dark:bg-[#308A5E]/20 dark:text-[#50C878]";
+            } else {
+                badgeEl.textContent = "Similar";
+                badgeEl.className = "intel-badge text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-1.5 bg-amber-500/10 text-amber-500 dark:bg-amber-500/20 dark:text-amber-300";
+            }
+        }
+    }
+
+    if (indexEl) {
+        let breakDown = "";
+        if (exactCount > 0 && similarCount > 0) {
+            breakDown = ` (${exactCount} Ex, ${similarCount} Sim)`;
+        } else if (exactCount > 0) {
+            breakDown = ` (${exactCount} Exact)`;
+        } else if (similarCount > 0) {
+            breakDown = ` (${similarCount} Similar)`;
+        }
+        indexEl.textContent = `${index + 1} of ${window.currentIntelMatches.length}${breakDown}`;
+    }
+
+    if (prevBtn && nextBtn) {
+        if (window.currentIntelMatches.length <= 1) {
+            prevBtn.style.opacity = '0.3';
+            prevBtn.style.pointerEvents = 'none';
+            nextBtn.style.opacity = '0.3';
+            nextBtn.style.pointerEvents = 'none';
+        } else {
+            prevBtn.style.opacity = '1';
+            prevBtn.style.pointerEvents = 'auto';
+            nextBtn.style.opacity = '1';
+            nextBtn.style.pointerEvents = 'auto';
+        }
+    }
+}
+window.updateIntelPillUI = updateIntelPillUI;
+
+function cycleIntelMatch(offset) {
+    if (!window.currentIntelMatches || window.currentIntelMatches.length === 0) return;
+    let newIndex = window.currentIntelIndex + offset;
+    if (newIndex < 0) {
+        newIndex = window.currentIntelMatches.length - 1;
+    } else if (newIndex >= window.currentIntelMatches.length) {
+        newIndex = 0;
+    }
+    window.currentIntelIndex = newIndex;
+    updateIntelPillUI();
+    goToCurrentIntelMatch();
+}
+window.cycleIntelMatch = cycleIntelMatch;
+
+function goToCurrentIntelMatch() {
+    if (!window.currentIntelMatches || window.currentIntelIndex === -1) return;
+    const item = window.currentIntelMatches[window.currentIntelIndex];
+    if (!item) return;
+
+    if (item.id === 'special_music_card') {
+        selectSearchSuggestion(item.id, item.title, null, null);
+    } else {
+        if (leafletMap && item.lat !== null && item.lng !== null) {
+            leafletMap.setView([item.lat, item.lng], 15);
+        }
+        if (item.id) {
+            openMapItemDetail(item.id);
+        }
+    }
+}
+window.goToCurrentIntelMatch = goToCurrentIntelMatch;
+
 function adjustSearchSuggestionsVisibility(show) {
     const allSuggestionsIds = [
         'village-search-suggestions',
@@ -25716,6 +25821,8 @@ function adjustSearchSuggestionsVisibility(show) {
     }
     
     const activeInfo = getActiveSuggestionsInfo();
+    const isMapView = activeInfo.input && activeInfo.input.id === 'village-search-input';
+    const intelPill = document.getElementById('village-search-intel-pill');
     
     if (show) {
         // First hide others
@@ -25726,18 +25833,32 @@ function adjustSearchSuggestionsVisibility(show) {
             }
         });
         
-        if (activeInfo.suggestions) {
-            activeInfo.suggestions.classList.remove('hidden');
+        if (isMapView && intelPill && window.currentIntelMatches && window.currentIntelMatches.length > 0) {
+            intelPill.classList.remove('hidden');
+            if (activeInfo.suggestions) {
+                activeInfo.suggestions.classList.add('hidden');
+            }
             if (activeInfo.overlay) {
-                const contentHeight = activeInfo.suggestions.scrollHeight;
-                const targetHeight = Math.min(48 + contentHeight, 288);
-                activeInfo.overlay.style.height = `${targetHeight}px`;
+                activeInfo.overlay.style.height = '92px';
+            }
+        } else {
+            if (intelPill) intelPill.classList.add('hidden');
+            if (activeInfo.suggestions) {
+                activeInfo.suggestions.classList.remove('hidden');
+                if (activeInfo.overlay) {
+                    const contentHeight = activeInfo.suggestions.scrollHeight;
+                    const targetHeight = Math.min(48 + contentHeight, 288);
+                    activeInfo.overlay.style.height = `${targetHeight}px`;
+                }
             }
         }
     } else {
         const mainOverlay = document.getElementById('village-search-bar-overlay');
         if (mainOverlay) {
             mainOverlay.style.height = '48px';
+        }
+        if (intelPill) {
+            intelPill.classList.add('hidden');
         }
         window.searchSuggestionsTimeout = setTimeout(() => {
             allSuggestionsIds.forEach(id => {
@@ -25754,9 +25875,17 @@ function updateSearchSuggestions(query) {
     const container = activeInfo.suggestions;
     if (!container) return;
 
+    const isMapView = activeInfo.input && activeInfo.input.id === 'village-search-input';
+    const intelPill = document.getElementById('village-search-intel-pill');
+
     const q = query.toLowerCase().trim();
     if (!q) {
         container.innerHTML = "";
+        if (intelPill) {
+            intelPill.classList.add('hidden');
+        }
+        window.currentIntelMatches = [];
+        window.currentIntelIndex = -1;
         adjustSearchSuggestionsVisibility(false);
         return;
     }
@@ -25893,6 +26022,39 @@ function updateSearchSuggestions(query) {
         });
     }
 
+    if (isMapView && intelPill) {
+        container.classList.add('hidden');
+        container.innerHTML = "";
+
+        window.currentIntelMatches = [...exactMatches, ...similarMatches];
+        
+        if (window.currentIntelMatches.length === 0) {
+            window.currentIntelIndex = -1;
+            const titleEl = document.getElementById('intel-match-title');
+            const badgeEl = document.getElementById('intel-match-badge');
+            const indexEl = document.getElementById('intel-match-index');
+            const iconEl = document.getElementById('intel-match-icon');
+            const prevBtn = document.getElementById('btn-intel-prev');
+            const nextBtn = document.getElementById('btn-intel-next');
+            if (titleEl) titleEl.textContent = "No matching suggestions";
+            if (badgeEl) badgeEl.style.display = 'none';
+            if (indexEl) indexEl.textContent = "0 of 0";
+            if (iconEl) iconEl.textContent = "search_off";
+            if (prevBtn && nextBtn) {
+                prevBtn.style.opacity = '0.3';
+                prevBtn.style.pointerEvents = 'none';
+                nextBtn.style.opacity = '0.3';
+                nextBtn.style.pointerEvents = 'none';
+            }
+        } else {
+            window.currentIntelIndex = 0;
+            updateIntelPillUI(exactMatches.length, similarMatches.length);
+        }
+        intelPill.classList.remove('hidden');
+        adjustSearchSuggestionsVisibility(true);
+        return;
+    }
+
     if (exactMatches.length === 0 && similarMatches.length === 0) {
         container.innerHTML = `<div class="px-3 py-2.5 text-xs text-on-surface-variant text-center">No matching suggestions</div>`;
         adjustSearchSuggestionsVisibility(true);
@@ -26001,8 +26163,12 @@ function selectSearchSuggestion(id, title, lat, lng) {
         // Switch to Offerings list view segment to show results and the music guidance banner
         switchVillageSegment('list');
     } else {
-        // Refresh map markers filtering
+        // Refresh map markers filtering and all list views
         applyMapFiltering();
+        renderVillageListView();
+        renderNeedsBoardView();
+        renderEventsList();
+        renderBulletinsList();
 
         // Center map on location
         if (leafletMap && lat !== null && lng !== null) {
@@ -28778,9 +28944,9 @@ function renderReviewsList() {
                 <h3 class="font-headline text-base font-bold text-on-surface truncate leading-tight">
                     ${escapeHTML(rev.neighborName)}
                 </h3>
-                <div class="flex items-center gap-1.5 text-[11px] text-red-600 dark:text-red-400 font-bold leading-tight">
-                    <span class="material-symbols-outlined text-[13px] font-bold">schedule</span>
-                    <span>${remainingHours}h left Review Pending</span>
+                <div class="flex items-center gap-1.5 text-[11px] font-bold leading-tight">
+                    <span class="material-symbols-outlined text-[13px] font-bold text-red-600 dark:text-red-400">schedule</span>
+                    <span class="text-gray-500 dark:text-gray-400">${remainingHours}h left Review Pending</span>
                 </div>
             </div>
         `;
