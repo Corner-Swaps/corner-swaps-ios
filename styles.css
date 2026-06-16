@@ -2316,20 +2316,20 @@ html.dark .chat-bubble-other {
 
 /* Premium Gradient Border Ring for Profile Avatars */
 .profile-avatar-ring {
-    background: linear-gradient(135deg, #10B981 0%, #8B5CF6 50%, #FF6B6B 100%) !important;
-    padding: 2.5px !important;
+    background: transparent !important;
+    padding: 0 !important;
     border-radius: 50% !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08) !important;
-    overflow: visible !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
 }
 
 /* Ensure inner image or container creates the white/dark gap */
 .profile-avatar-ring img,
 .profile-avatar-ring div {
-    border: 2px solid var(--warm-cream) !important;
+    border: 0 !important;
     border-radius: 50% !important;
     width: 100% !important;
     height: 100% !important;
@@ -2338,7 +2338,7 @@ html.dark .chat-bubble-other {
 
 html.dark .profile-avatar-ring img,
 html.dark .profile-avatar-ring div {
-    border-color: #101612 !important;
+    border: 0 !important;
 }
 
 .profile-avatar-no-ring {
@@ -2801,14 +2801,58 @@ html.dark #btn-segment-filter.has-active-filter {
 #map-event-detail-overlay h4,
 #view-event_detail h4,
 #map-detail-location,
+#map-detail-category-subcategory,
 #map-detail-desc,
-#map-event-detail-location-text,
 #map-event-detail-datetime-text,
+#map-event-detail-location-text,
+#map-event-detail-category-subcategory,
 #map-event-detail-desc,
 #event-detail-location-text,
 #event-detail-datetime-text,
-#event-detail-desc-text {
+#event-detail-category-subcategory,
+#event-detail-desc-text,
+#map-detail-badge,
+#map-event-detail-badge,
+#event-detail-badge,
+#map-event-detail-date-badge,
+#event-detail-date-badge,
+#map-detail-status-text,
+#map-event-detail-rsvp-count,
+#event-detail-rsvp-count {
     font-family: 'Outfit', sans-serif !important;
+}
+
+/* Increase detail overlays and pop-ups text sizes by 30% */
+#map-detail-overlay h4,
+#map-event-detail-overlay h4,
+#view-event_detail h4,
+#map-detail-location,
+#map-detail-category-subcategory,
+#map-detail-desc,
+#map-event-detail-datetime-text,
+#map-event-detail-location-text,
+#map-event-detail-category-subcategory,
+#map-event-detail-desc,
+#event-detail-location-text,
+#event-detail-datetime-text,
+#event-detail-category-subcategory,
+#event-detail-desc-text,
+#map-detail-badge,
+#map-event-detail-badge,
+#event-detail-badge,
+#map-event-detail-date-badge,
+#event-detail-date-badge,
+#map-detail-status-text {
+    font-size: 15.5px !important; /* ~30% increase from 12px/text-xs */
+}
+
+#map-event-detail-overlay h4.text-\[10px\],
+#view-event_detail h4.text-\[10px\],
+#map-event-detail-overlay .uppercase.tracking-widest,
+#view-event_detail .uppercase.tracking-widest,
+#map-event-detail-rsvp-count,
+#event-detail-rsvp-count {
+    font-size: 13px !important; /* ~30% increase from 10px */
 }
 
 /* Chat lock animation keyframes and helper */
@@ -6298,15 +6342,15 @@ button[onclick*="showView("].self-start:active {
 
 /* Profile avatar upload preview elements */
 .profile-avatar-ring {
-    border: 2px solid var(--forest-green) !important;
-    padding: 2px !important;
-    background-color: #ffffff !important;
-    box-shadow: 0 4px 12px rgba(48, 138, 94, 0.08) !important;
+    border: 0 !important;
+    padding: 0 !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
     border-radius: 50% !important;
 }
 html.dark .profile-avatar-ring {
-    border-color: #82b995 !important;
-    background-color: #151d18 !important;
+    border-color: transparent !important;
+    background-color: transparent !important;
 }
 
 /* EULA scrollboxes & accordion items */

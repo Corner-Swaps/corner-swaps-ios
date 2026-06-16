@@ -6142,7 +6142,7 @@ function renderEventsList() {
             const isUserRsvped = evt.rsvps ? evt.rsvps.includes(currentUser) : false;
 
             const card = document.createElement('div');
-            card.className = "bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+            card.className = "h-24 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
             
             card.onclick = () => {
                 openEventDetail(evt.id);
@@ -6153,21 +6153,21 @@ function renderEventsList() {
 
             card.innerHTML = `
                 <!-- Left Image Portion -->
-                <div class="w-36 min-h-[110px] self-stretch flex-shrink-0 relative overflow-hidden">
+                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
                     ${getEventCardThumbnailHTML(evt)}
                 </div>
                 <!-- Right Details Portion -->
-                <div class="p-4 pl-3 flex-grow min-w-0 flex flex-col justify-between">
-                    <div class="space-y-1">
+                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
+                    <div class="space-y-0.5">
                         <div class="flex items-center gap-2">
-                            <span class="-ml-2 px-2 py-0.5 bg-forest-green/10 dark:bg-forest-green/20 text-black dark:text-white rounded text-[8px] font-bold uppercase tracking-wider">${evt.type}</span>
-                            <span class="text-[9px] text-black dark:text-white font-medium">${times.timeDisplay} · ${times.badgeDate}</span>
+                            <span class="-ml-2 px-1.5 py-0.5 bg-forest-green/10 dark:bg-forest-green/20 text-black dark:text-white rounded text-[7.5px] font-bold uppercase tracking-wider">${evt.type}</span>
+                            <span class="text-[8.5px] text-black dark:text-white font-medium">${times.timeDisplay} · ${times.badgeDate}</span>
                         </div>
-                        <h4 class="text-black dark:text-white truncate leading-tight mt-0.5">${evt.title}</h4>
-                        <p class="text-gray-500 dark:text-gray-400 line-clamp-1 mt-0.5">${evt.desc}</p>
+                        <h4 class="text-black dark:text-white truncate leading-tight text-xs font-bold mt-0.5">${evt.title}</h4>
+                        <p class="text-gray-500 dark:text-gray-400 line-clamp-1 text-[11px] mt-0.5">${evt.desc}</p>
                     </div>
 
-                    <div class="flex items-center gap-1.5 pt-2 mt-2">
+                    <div class="flex items-center gap-1.5 mt-1">
                         <!-- Host details with circular avatar bubble -->
                         <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${hostAvatar}" class="w-full h-full object-cover rounded-full"></div>
                         <span class="text-[10px] text-black dark:text-white font-semibold truncate">Host: ${evt.host || 'Member'} · ${distanceDisplay}</span>
@@ -15545,7 +15545,7 @@ function renderVillageListView() {
 
     filteredListings.forEach(item => {
         const card = document.createElement('div');
-        card.className = "bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-24 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail(item.id);
 
         if (item.type === 'neighbor') {
@@ -15553,11 +15553,11 @@ function renderVillageListView() {
             const isKarma = neighbor && neighbor.isKarma;
             const karmaLabelHTML = '';
             card.innerHTML = `
-                <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden">
+                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${item.image}" class="w-full h-full object-cover">
                     ${isKarma ? `<div class="absolute bottom-1 right-1 bg-[#EF4444] w-5 h-5 rounded-full flex items-center justify-center shadow-sm" style="border: 1px solid white;"><span class="material-symbols-outlined text-xs" style="color: white !important; font-variation-settings: 'FILL' 1 !important;">favorite</span></div>` : ''}
                 </div>
-                <div class="p-4 pl-3 flex-grow min-w-0 flex flex-col justify-between">
+                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
                     <div>
                         <div class="flex items-center gap-1">
                             <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${item.title}</h4>
@@ -15565,7 +15565,7 @@ function renderVillageListView() {
                         </div>
                         <p class="text-xs text-black dark:text-white line-clamp-1 mt-0.5">${item.desc}</p>
                     </div>
-                    <div class="flex items-center gap-1.5 mt-2">
+                    <div class="flex items-center gap-1.5 mt-1">
                         <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${item.avatar}" class="w-full h-full object-cover rounded-full"></div>
                         <span class="text-[10px] text-black dark:text-white font-semibold truncate">${item.name} · ${formatRadiusValue(item.distance)} away</span>
                     </div>
@@ -15573,10 +15573,10 @@ function renderVillageListView() {
             `;
         } else {
             card.innerHTML = `
-                <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden">
+                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${item.image}" class="w-full h-full object-cover">
                 </div>
-                <div class="p-4 pl-3 flex-grow min-w-0 flex flex-col justify-between">
+                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
                     <div>
                         <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">
                             ${item.title} 
@@ -15584,7 +15584,7 @@ function renderVillageListView() {
                         </h4>
                         <p class="text-xs text-black dark:text-white line-clamp-1 mt-0.5">${item.desc}</p>
                     </div>
-                    <div class="flex items-center gap-1.5 mt-2">
+                    <div class="flex items-center gap-1.5 mt-1">
                         <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${item.avatar}" class="w-full h-full object-cover rounded-full"></div>
                         <span class="text-[10px] text-black dark:text-white font-semibold truncate">${item.name} (You) · Village Trusted · 0 km</span>
                     </div>
@@ -15713,7 +15713,7 @@ function renderNeedsBoardView() {
         const card = document.createElement('div');
         const needImg = getCategoryPresetImage(need.category);
         const needId = need.id;
-        card.className = "bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-24 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail('need_' + needId);
         
         const currentUser = state.currentUser || {};
@@ -15722,10 +15722,10 @@ function renderNeedsBoardView() {
 
         if (isUserNeed) {
             card.innerHTML = `
-                <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden">
+                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${needImg}" class="w-full h-full object-cover">
                 </div>
-                <div class="p-4 pl-3 flex-grow min-w-0 flex flex-col justify-between">
+                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
                     <div>
                         <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">
                             ${need.needTitle} 
@@ -15733,7 +15733,7 @@ function renderNeedsBoardView() {
                         </h4>
                         <p class="text-xs text-black dark:text-white line-clamp-1 mt-0.5">${need.needDesc}</p>
                     </div>
-                    <div class="flex items-center gap-1.5 mt-2">
+                    <div class="flex items-center gap-1.5 mt-1">
                         <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${need.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
                         <span class="text-[10px] text-black dark:text-white font-semibold truncate">${need.neighborName} (You) · Village Trusted · 0 km</span>
                     </div>
@@ -15741,15 +15741,15 @@ function renderNeedsBoardView() {
             `;
         } else {
             card.innerHTML = `
-                <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden">
+                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${needImg}" class="w-full h-full object-cover">
                 </div>
-                <div class="p-4 pl-3 flex-grow min-w-0 flex flex-col justify-between">
+                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
                     <div>
                         <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${need.needTitle}</h4>
                         <p class="text-xs text-black dark:text-white line-clamp-1 mt-0.5">${need.needDesc}</p>
                     </div>
-                    <div class="flex items-center gap-1.5 mt-2">
+                    <div class="flex items-center gap-1.5 mt-1">
                         <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${need.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
                         <span class="text-[10px] text-black dark:text-white font-semibold truncate">${need.neighborName} · ${formatRadiusValue(need.distance)} away</span>
                     </div>
@@ -29266,6 +29266,108 @@ function updateTopSegmentedControlUI(category) {
     });
 }
 window.updateTopSegmentedControlUI = updateTopSegmentedControlUI;
+
+// Search Behavior and Navbar Toggling on keyboard/search focus
+function initSearchBehavior() {
+    const searchInputs = [
+        { inputId: 'village-search-input', clearBtnId: 'btn-map-search-clear' },
+        { inputId: 'village-list-search-input', clearBtnId: 'btn-list-search-clear' },
+        { inputId: 'village-needs-search-input', clearBtnId: 'btn-needs-search-clear' },
+        { inputId: 'village-events-search-input', clearBtnId: 'btn-events-search-clear' },
+        { inputId: 'village-bulletins-search-input', clearBtnId: 'btn-bulletins-search-clear' }
+    ];
+
+    searchInputs.forEach(({ inputId, clearBtnId }) => {
+        const input = document.getElementById(inputId);
+        const clearBtn = document.getElementById(clearBtnId);
+        if (!input) return;
+
+        // On Focus (Tapped search bar)
+        input.addEventListener('focus', () => {
+            // Hide bottom navbar
+            const navbar = document.getElementById('global-navbar');
+            if (navbar) {
+                navbar.classList.add('hidden');
+            }
+            // Hide floating segment stack on map or lists
+            const floatingContainer = document.getElementById('village-segment-floating-buttons');
+            if (floatingContainer) {
+                floatingContainer.style.display = 'none';
+            }
+            // Show clear button (X)
+            if (clearBtn) {
+                clearBtn.classList.remove('hidden');
+            }
+        });
+
+        // Ensure X button remains visible or shows up if user starts typing
+        input.addEventListener('input', () => {
+            if (clearBtn) {
+                clearBtn.classList.remove('hidden');
+            }
+        });
+    });
+}
+
+// Global function to clear search and exit search mode
+function clearSearchInput(inputId) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+
+    // Clear value
+    input.value = "";
+    
+    // Trigger input event to clear filter/results
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+
+    // Force blur to hide keyboard
+    input.blur();
+
+    // Hide clear buttons
+    const clearBtnIds = [
+        'btn-map-search-clear',
+        'btn-list-search-clear',
+        'btn-needs-search-clear',
+        'btn-events-search-clear',
+        'btn-bulletins-search-clear'
+    ];
+    clearBtnIds.forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) btn.classList.add('hidden');
+    });
+
+    // Restore bottom navbar and floating segment stack
+    const navbar = document.getElementById('global-navbar');
+    if (navbar) {
+        navbar.classList.remove('hidden');
+    }
+    const floatingContainer = document.getElementById('village-segment-floating-buttons');
+    if (floatingContainer && state.currentView === 'village') {
+        const isMapSegment = currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map' || currentVillageSegment === 'events_map';
+        if (!state.meetupMapMode) {
+            floatingContainer.style.display = 'flex';
+        }
+    }
+    
+    // Hide search suggestions
+    if (typeof adjustSearchSuggestionsVisibility === 'function') {
+        adjustSearchSuggestionsVisibility(false);
+    }
+    
+    // Synchronize all search bars
+    if (typeof syncVillageSearch === 'function') {
+        syncVillageSearch("");
+    }
+}
+window.clearSearchInput = clearSearchInput;
+
+// Initialize on DOM loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initSearchBehavior();
+});
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initSearchBehavior();
+}
 
 // Global scope ends
 

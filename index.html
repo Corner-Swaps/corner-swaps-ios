@@ -309,6 +309,20 @@
             display: none !important;
         }
         
+        .chat-badge-inline {
+            background-color: #ef4444 !important;
+            color: #ffffff !important;
+            font-size: 9px !important;
+            font-weight: 800 !important;
+            border-radius: 9999px !important;
+            padding: 1px 5.5px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            line-height: 1.2 !important;
+            margin-left: 4px !important;
+        }
+        
         /* Admin Widget Modal Custom Overrides */
         .admin-widget-modal-container .modal-content-card,
         #admin-modal-warn-user > div:not(.absolute),
@@ -3480,20 +3494,20 @@ html.dark .chat-bubble-other {
 
 /* Premium Gradient Border Ring for Profile Avatars */
 .profile-avatar-ring {
-    background: linear-gradient(135deg, #10B981 0%, #8B5CF6 50%, #FF6B6B 100%) !important;
-    padding: 2.5px !important;
+    background: transparent !important;
+    padding: 0 !important;
     border-radius: 50% !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08) !important;
-    overflow: visible !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
 }
 
 /* Ensure inner image or container creates the white/dark gap */
 .profile-avatar-ring img,
 .profile-avatar-ring div {
-    border: 2px solid var(--warm-cream) !important;
+    border: 0 !important;
     border-radius: 50% !important;
     width: 100% !important;
     height: 100% !important;
@@ -3502,7 +3516,7 @@ html.dark .chat-bubble-other {
 
 html.dark .profile-avatar-ring img,
 html.dark .profile-avatar-ring div {
-    border-color: #101612 !important;
+    border: 0 !important;
 }
 
 .profile-avatar-no-ring {
@@ -3965,14 +3979,58 @@ html.dark #btn-segment-filter.has-active-filter {
 #map-event-detail-overlay h4,
 #view-event_detail h4,
 #map-detail-location,
+#map-detail-category-subcategory,
 #map-detail-desc,
-#map-event-detail-location-text,
 #map-event-detail-datetime-text,
+#map-event-detail-location-text,
+#map-event-detail-category-subcategory,
 #map-event-detail-desc,
 #event-detail-location-text,
 #event-detail-datetime-text,
-#event-detail-desc-text {
+#event-detail-category-subcategory,
+#event-detail-desc-text,
+#map-detail-badge,
+#map-event-detail-badge,
+#event-detail-badge,
+#map-event-detail-date-badge,
+#event-detail-date-badge,
+#map-detail-status-text,
+#map-event-detail-rsvp-count,
+#event-detail-rsvp-count {
     font-family: 'Outfit', sans-serif !important;
+}
+
+/* Increase detail overlays and pop-ups text sizes by 30% */
+#map-detail-overlay h4,
+#map-event-detail-overlay h4,
+#view-event_detail h4,
+#map-detail-location,
+#map-detail-category-subcategory,
+#map-detail-desc,
+#map-event-detail-datetime-text,
+#map-event-detail-location-text,
+#map-event-detail-category-subcategory,
+#map-event-detail-desc,
+#event-detail-location-text,
+#event-detail-datetime-text,
+#event-detail-category-subcategory,
+#event-detail-desc-text,
+#map-detail-badge,
+#map-event-detail-badge,
+#event-detail-badge,
+#map-event-detail-date-badge,
+#event-detail-date-badge,
+#map-detail-status-text {
+    font-size: 15.5px !important; /* ~30% increase from 12px/text-xs */
+}
+
+#map-event-detail-overlay h4.text-\[10px\],
+#view-event_detail h4.text-\[10px\],
+#map-event-detail-overlay .uppercase.tracking-widest,
+#view-event_detail .uppercase.tracking-widest,
+#map-event-detail-rsvp-count,
+#event-detail-rsvp-count {
+    font-size: 13px !important; /* ~30% increase from 10px */
 }
 
 /* Chat lock animation keyframes and helper */
@@ -7462,15 +7520,15 @@ button[onclick*="showView("].self-start:active {
 
 /* Profile avatar upload preview elements */
 .profile-avatar-ring {
-    border: 2px solid var(--forest-green) !important;
-    padding: 2px !important;
-    background-color: #ffffff !important;
-    box-shadow: 0 4px 12px rgba(48, 138, 94, 0.08) !important;
+    border: 0 !important;
+    padding: 0 !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
     border-radius: 50% !important;
 }
 html.dark .profile-avatar-ring {
-    border-color: #82b995 !important;
-    background-color: #151d18 !important;
+    border-color: transparent !important;
+    background-color: transparent !important;
 }
 
 /* EULA scrollboxes & accordion items */
@@ -9529,6 +9587,9 @@ html.dark #view-create_group #group-friends-search::placeholder {
                                         <span class="material-symbols-outlined text-[15px]">my_location</span>
                                     </button>
                                     <input type="text" id="village-search-input" oninput="applyMapFiltering();" placeholder="Search listings, events and offerings" class="fused-search-input">
+                                    <button id="btn-map-search-clear" onclick="clearSearchInput('village-search-input')" class="hidden w-6 h-6 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 active:scale-90 transition-all text-black dark:text-white border-0 flex-shrink-0 ml-1 mr-1 shadow-sm" title="Clear Search">
+                                        <span class="material-symbols-outlined text-[13px]">close</span>
+                                    </button>
                                     <button id="btn-segment-filter" onclick="toggleCategoryTray()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter" style="display: none !important; border: 0 !important; margin-right: 6px !important;">
                                         <span class="material-symbols-outlined text-[15px]" id="map-filter-icon">tune</span>
                                     </button>
@@ -9728,6 +9789,9 @@ html.dark #view-create_group #group-friends-search::placeholder {
                                     <span class="material-symbols-outlined text-[15px] font-black">add</span>
                                 </button>
                                 <input type="text" id="village-list-search-input" oninput="syncVillageSearch(this.value);" placeholder="Search listings, events and offerings" class="fused-search-input">
+                                <button id="btn-list-search-clear" onclick="clearSearchInput('village-list-search-input')" class="hidden w-6 h-6 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 active:scale-90 transition-all text-black dark:text-white border-0 flex-shrink-0 ml-1 mr-1 shadow-sm" title="Clear Search">
+                                    <span class="material-symbols-outlined text-[13px]">close</span>
+                                </button>
                                 <button id="btn-list-filter" onclick="toggleListCategoryDropdown()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter" style="display: none !important; border: 0 !important; margin-right: 6px !important;">
                                     <span class="material-symbols-outlined text-[15px]" id="list-filter-icon">tune</span>
                                 </button>
@@ -9780,6 +9844,9 @@ html.dark #view-create_group #group-friends-search::placeholder {
                                     <span class="material-symbols-outlined text-[15px] font-black">add</span>
                                 </button>
                                 <input type="text" id="village-needs-search-input" oninput="syncVillageSearch(this.value);" placeholder="Search listings, events and offerings" class="fused-search-input">
+                                <button id="btn-needs-search-clear" onclick="clearSearchInput('village-needs-search-input')" class="hidden w-6 h-6 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 active:scale-90 transition-all text-black dark:text-white border-0 flex-shrink-0 ml-1 mr-1 shadow-sm" title="Clear Search">
+                                    <span class="material-symbols-outlined text-[13px]">close</span>
+                                </button>
                                 <button id="btn-needs-filter" onclick="toggleNeedsCategoryDropdown()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter" style="display: none !important; border: 0 !important; margin-right: 6px !important;">
                                     <span class="material-symbols-outlined text-[15px]" id="needs-filter-icon">tune</span>
                                 </button>
@@ -9832,6 +9899,9 @@ html.dark #view-create_group #group-friends-search::placeholder {
                                     <span class="material-symbols-outlined text-[15px] font-black">add</span>
                                 </button>
                                 <input type="text" id="village-events-search-input" oninput="syncVillageSearch(this.value);" placeholder="Search listings, events and offerings" class="fused-search-input">
+                                <button id="btn-events-search-clear" onclick="clearSearchInput('village-events-search-input')" class="hidden w-6 h-6 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 active:scale-90 transition-all text-black dark:text-white border-0 flex-shrink-0 ml-1 mr-1 shadow-sm" title="Clear Search">
+                                    <span class="material-symbols-outlined text-[13px]">close</span>
+                                </button>
                                 <button id="btn-events-filter" onclick="toggleEventsCategoryDropdown()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter" style="display: none !important; border: 0 !important; margin-right: 6px !important;">
                                     <span class="material-symbols-outlined text-[15px]" id="events-filter-icon">tune</span>
                                 </button>
@@ -9883,7 +9953,10 @@ html.dark #view-create_group #group-friends-search::placeholder {
                             <!-- Synced Search Bar inside Bulletins View -->
                             <div class="relative flex-grow flex items-center">
                                 <span class="material-symbols-outlined text-forest-green absolute left-3.5 text-base">search</span>
-                                <input type="text" id="village-bulletins-search-input" placeholder="Search Items, Needs, or Skills, Events" class="w-full h-10 pl-9 pr-10 bg-white border border-outline-variant/25 rounded-xl text-xs focus:border-forest-green focus:ring-0 outline-none placeholder:text-forest-green/75 dark:placeholder:text-warm-cream/60" oninput="syncVillageSearch(this.value);">
+                                <input type="text" id="village-bulletins-search-input" placeholder="Search Items, Needs, or Skills, Events" class="w-full h-10 pl-9 pr-10 bg-white border border-outline-variant/25 rounded-xl text-xs focus:border-outline-variant/25 focus:ring-0 outline-none placeholder:text-forest-green/75 dark:placeholder:text-warm-cream/60" oninput="syncVillageSearch(this.value);">
+                                <button id="btn-bulletins-search-clear" onclick="clearSearchInput('village-bulletins-search-input')" class="hidden absolute right-3 w-6 h-6 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 active:scale-90 transition-all text-black dark:text-white border-0 flex-shrink-0 shadow-sm" title="Clear Search">
+                                    <span class="material-symbols-outlined text-[13px]">close</span>
+                                </button>
                             </div>
                             <button class="w-full bg-forest-green text-warm-cream py-3 rounded-xl text-xs font-bold shadow-md hover:shadow-md active:scale-[0.98] transition-all flex items-center justify-center gap-2" onclick="openNewBulletinModal()">
                                 <span class="material-symbols-outlined text-sm">campaign</span> Post Announcement
@@ -10206,27 +10279,35 @@ html.dark #view-create_group #group-friends-search::placeholder {
                 <!-- ==================================================== -->
                 <section id="view-chat_hub" class="screen-view flex-grow flex flex-col h-full overflow-hidden pb-20 relative bg-white dark:bg-[#18201a] pt-4">
                     <!-- Sticky Header Bar -->
-                    <div id="chat-hub-header-bar" class="flex items-center justify-center px-4 border-b border-outline-variant/10 dark:border-outline-variant/5 flex-shrink-0 select-none bg-white dark:bg-[#18201a]" style="height: 64px !important;">
-                        <div id="chat-segmented-control" class="relative w-full h-11 flex items-center justify-between gap-1 select-none bg-black/5 dark:bg-white/5 p-1 rounded-xl">
+                    <div id="chat-hub-header-bar" class="flex items-center justify-center px-4 flex-shrink-0 select-none bg-white dark:bg-[#18201a]">
+                        <div id="chat-segmented-control" class="relative w-full h-9 flex items-center justify-between gap-1 select-none">
                             <!-- Read (Active) -->
-                            <button id="btn-chat-segment-active" onclick="switchChatSegment('active')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm">
-                                Read
-                                <span id="badge-chat-segment-active" class="absolute -top-1.5 -right-1.5 chat-badge-circle z-50 hidden"></span>
+                            <button id="btn-chat-segment-active" onclick="switchChatSegment('active')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-full border-0 bg-violet-500/10 text-violet-600 dark:text-violet-400 dark:bg-violet-500/15 shadow-sm">
+                                <span class="flex items-center gap-1.5 justify-center">
+                                    <span>Read</span>
+                                    <span id="badge-chat-segment-active" class="chat-badge-inline hidden"></span>
+                                </span>
                             </button>
                             <!-- Unread (Requests) -->
-                            <button id="btn-chat-segment-requests" onclick="switchChatSegment('requests')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-transparent rounded-xl bg-transparent text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5">
-                                Unread
-                                <span id="badge-chat-segment-requests" class="absolute -top-1.5 -right-1.5 chat-badge-circle z-50 hidden"></span>
+                            <button id="btn-chat-segment-requests" onclick="switchChatSegment('requests')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-full border border-black/5 dark:border-white/5 bg-white dark:bg-[#1b261f] text-gray-500 dark:text-gray-400">
+                                <span class="flex items-center gap-1.5 justify-center">
+                                    <span>Unread</span>
+                                    <span id="badge-chat-segment-requests" class="chat-badge-inline hidden"></span>
+                                </span>
                             </button>
                             <!-- Groups -->
-                            <button id="btn-chat-segment-groups" onclick="switchChatSegment('groups')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-transparent rounded-xl bg-transparent text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5">
-                                Groups
-                                <span id="badge-chat-segment-groups" class="absolute -top-1.5 -right-1.5 chat-badge-circle z-50 hidden"></span>
+                            <button id="btn-chat-segment-groups" onclick="switchChatSegment('groups')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-full border border-black/5 dark:border-white/5 bg-white dark:bg-[#1b261f] text-gray-500 dark:text-gray-400">
+                                <span class="flex items-center gap-1.5 justify-center">
+                                    <span>Groups</span>
+                                    <span id="badge-chat-segment-groups" class="chat-badge-inline hidden"></span>
+                                </span>
                             </button>
                             <!-- Reviews -->
-                            <button id="btn-chat-segment-reviews" onclick="switchChatSegment('reviews')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-transparent rounded-xl bg-transparent text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5">
-                                Reviews
-                                <span id="badge-chat-segment-reviews" class="absolute -top-1.5 -right-1.5 chat-badge-circle z-50 hidden"></span>
+                            <button id="btn-chat-segment-reviews" onclick="switchChatSegment('reviews')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-full border border-black/5 dark:border-white/5 bg-white dark:bg-[#1b261f] text-gray-500 dark:text-gray-400">
+                                <span class="flex items-center gap-1.5 justify-center">
+                                    <span>Reviews</span>
+                                    <span id="badge-chat-segment-reviews" class="chat-badge-inline hidden"></span>
+                                </span>
                             </button>
                         </div>
                     </div>
@@ -10599,7 +10680,7 @@ html.dark #view-create_group #group-friends-search::placeholder {
                         </div>
                     </div>
 
-                    <div class="px-6 py-6 space-y-6 text-left flex-grow">
+                    <div class="px-6 pt-3 pb-28 space-y-3.5 text-left flex-grow">
                         <div class="flex flex-col w-full">
                             <!-- Date and Category Badge -->
                             <div class="flex items-center justify-between">
@@ -10675,17 +10756,17 @@ html.dark #view-create_group #group-friends-search::placeholder {
                         <!-- Actions -->
                         <div class="flex flex-col gap-2 pt-1">
                             <!-- RSVP Toggle Button -->
-                            <button id="event-detail-rsvp-btn" class="w-full bg-white border border-forest-green/20 text-forest-green py-2.5 rounded-xl font-bold text-[11px] tracking-wider active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-forest-green/5" onclick="handleEventRSVPToggle()">
+                            <button id="event-detail-rsvp-btn" class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-2.5 rounded-xl font-bold text-[11px] tracking-wider active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5" onclick="handleEventRSVPToggle()">
                                 <span class="material-symbols-outlined text-xs">check_circle</span> RSVP to Event
                             </button>
 
                             <!-- Save Event Button -->
-                            <button id="event-detail-save-btn" class="w-full bg-white border border-forest-green/20 text-forest-green py-2.5 rounded-xl font-bold text-[11px] tracking-wider active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-forest-green/5">
+                            <button id="event-detail-save-btn" class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-2.5 rounded-xl font-bold text-[11px] tracking-wider active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5">
                                 <span id="event-detail-save-icon" class="material-symbols-outlined text-xs">bookmark</span> <span id="event-detail-save-text">Save Event</span>
                             </button>
                             
                             <!-- View Host Profile Button -->
-                            <button id="event-detail-host-profile-btn" class="w-full bg-white border border-forest-green/20 text-forest-green py-2.5 rounded-xl font-bold text-[11px] tracking-wider active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-forest-green/5" onclick="handleEventDetailHostClick()">
+                            <button id="event-detail-host-profile-btn" class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-2.5 rounded-xl font-bold text-[11px] tracking-wider active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5" onclick="handleEventDetailHostClick()">
                                 <span class="material-symbols-outlined text-xs">person</span> View Host Profile
                             </button>
                             
@@ -13493,7 +13574,7 @@ html.dark #view-create_group #group-friends-search::placeholder {
                                         <span class="absolute inset-y-0 left-3.5 flex items-center text-outline pointer-events-none">
                                             <span class="material-symbols-outlined text-base">search</span>
                                         </span>
-                                        <input type="text" id="admin-user-search-input" placeholder="Search neighbors by name..." class="w-full h-10 pl-10 pr-4 bg-white dark:bg-[#1c2420] border border-outline-variant rounded-xl text-xs outline-none focus:border-forest-green text-black dark:text-white" oninput="searchAdminUsers()">
+                                        <input type="text" id="admin-user-search-input" placeholder="Search neighbors by name..." class="w-full h-10 pl-10 pr-4 bg-white dark:bg-[#1c2420] border border-outline-variant rounded-xl text-xs outline-none focus:border-outline-variant text-black dark:text-white" oninput="searchAdminUsers()">
                                     </div>
                                     <div class="space-y-3 w-full" id="admin-users-list">
                                         <!-- Populated dynamically -->
@@ -14859,7 +14940,7 @@ html.dark #view-create_group #group-friends-search::placeholder {
                             
                             <!-- Friend Search Input -->
                             <div class="relative w-full mb-3 flex items-center">
-                                <input class="w-full text-left bg-white dark:bg-[#101612] border border-outline-variant/30 rounded-xl focus:border-forest-green focus:ring-1 focus:ring-forest-green text-xs font-body py-2.5 pl-9 pr-4 transition-all placeholder:text-outline/40 shadow-sm" id="group-friends-search" placeholder="Search friends by name..." type="text" oninput="filterGroupFriends(this.value)">
+                                <input class="w-full text-left bg-white dark:bg-[#101612] border border-outline-variant/30 rounded-xl focus:border-outline-variant focus:ring-0 text-xs font-body py-2.5 pl-9 pr-4 transition-all placeholder:text-outline/40 shadow-sm" id="group-friends-search" placeholder="Search friends by name..." type="text" oninput="filterGroupFriends(this.value)">
                                 <span class="material-symbols-outlined absolute left-3 text-outline/50 text-sm">search</span>
                             </div>
 
@@ -21930,7 +22011,7 @@ function renderEventsList() {
             const isUserRsvped = evt.rsvps ? evt.rsvps.includes(currentUser) : false;
 
             const card = document.createElement('div');
-            card.className = "bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+            card.className = "h-24 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
             
             card.onclick = () => {
                 openEventDetail(evt.id);
@@ -21941,21 +22022,21 @@ function renderEventsList() {
 
             card.innerHTML = `
                 <!-- Left Image Portion -->
-                <div class="w-36 min-h-[110px] self-stretch flex-shrink-0 relative overflow-hidden">
+                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
                     ${getEventCardThumbnailHTML(evt)}
                 </div>
                 <!-- Right Details Portion -->
-                <div class="p-4 pl-3 flex-grow min-w-0 flex flex-col justify-between">
-                    <div class="space-y-1">
+                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
+                    <div class="space-y-0.5">
                         <div class="flex items-center gap-2">
-                            <span class="-ml-2 px-2 py-0.5 bg-forest-green/10 dark:bg-forest-green/20 text-black dark:text-white rounded text-[8px] font-bold uppercase tracking-wider">${evt.type}</span>
-                            <span class="text-[9px] text-black dark:text-white font-medium">${times.timeDisplay} · ${times.badgeDate}</span>
+                            <span class="-ml-2 px-1.5 py-0.5 bg-forest-green/10 dark:bg-forest-green/20 text-black dark:text-white rounded text-[7.5px] font-bold uppercase tracking-wider">${evt.type}</span>
+                            <span class="text-[8.5px] text-black dark:text-white font-medium">${times.timeDisplay} · ${times.badgeDate}</span>
                         </div>
-                        <h4 class="text-black dark:text-white truncate leading-tight mt-0.5">${evt.title}</h4>
-                        <p class="text-gray-500 dark:text-gray-400 line-clamp-1 mt-0.5">${evt.desc}</p>
+                        <h4 class="text-black dark:text-white truncate leading-tight text-xs font-bold mt-0.5">${evt.title}</h4>
+                        <p class="text-gray-500 dark:text-gray-400 line-clamp-1 text-[11px] mt-0.5">${evt.desc}</p>
                     </div>
 
-                    <div class="flex items-center gap-1.5 pt-2 mt-2">
+                    <div class="flex items-center gap-1.5 mt-1">
                         <!-- Host details with circular avatar bubble -->
                         <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${hostAvatar}" class="w-full h-full object-cover rounded-full"></div>
                         <span class="text-[10px] text-black dark:text-white font-semibold truncate">Host: ${evt.host || 'Member'} · ${distanceDisplay}</span>
@@ -31333,7 +31414,7 @@ function renderVillageListView() {
 
     filteredListings.forEach(item => {
         const card = document.createElement('div');
-        card.className = "bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-24 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail(item.id);
 
         if (item.type === 'neighbor') {
@@ -31341,11 +31422,11 @@ function renderVillageListView() {
             const isKarma = neighbor && neighbor.isKarma;
             const karmaLabelHTML = '';
             card.innerHTML = `
-                <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden">
+                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${item.image}" class="w-full h-full object-cover">
                     ${isKarma ? `<div class="absolute bottom-1 right-1 bg-[#EF4444] w-5 h-5 rounded-full flex items-center justify-center shadow-sm" style="border: 1px solid white;"><span class="material-symbols-outlined text-xs" style="color: white !important; font-variation-settings: 'FILL' 1 !important;">favorite</span></div>` : ''}
                 </div>
-                <div class="p-4 pl-3 flex-grow min-w-0 flex flex-col justify-between">
+                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
                     <div>
                         <div class="flex items-center gap-1">
                             <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${item.title}</h4>
@@ -31353,7 +31434,7 @@ function renderVillageListView() {
                         </div>
                         <p class="text-xs text-black dark:text-white line-clamp-1 mt-0.5">${item.desc}</p>
                     </div>
-                    <div class="flex items-center gap-1.5 mt-2">
+                    <div class="flex items-center gap-1.5 mt-1">
                         <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${item.avatar}" class="w-full h-full object-cover rounded-full"></div>
                         <span class="text-[10px] text-black dark:text-white font-semibold truncate">${item.name} · ${formatRadiusValue(item.distance)} away</span>
                     </div>
@@ -31361,10 +31442,10 @@ function renderVillageListView() {
             `;
         } else {
             card.innerHTML = `
-                <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden">
+                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${item.image}" class="w-full h-full object-cover">
                 </div>
-                <div class="p-4 pl-3 flex-grow min-w-0 flex flex-col justify-between">
+                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
                     <div>
                         <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">
                             ${item.title} 
@@ -31372,7 +31453,7 @@ function renderVillageListView() {
                         </h4>
                         <p class="text-xs text-black dark:text-white line-clamp-1 mt-0.5">${item.desc}</p>
                     </div>
-                    <div class="flex items-center gap-1.5 mt-2">
+                    <div class="flex items-center gap-1.5 mt-1">
                         <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${item.avatar}" class="w-full h-full object-cover rounded-full"></div>
                         <span class="text-[10px] text-black dark:text-white font-semibold truncate">${item.name} (You) · Village Trusted · 0 km</span>
                     </div>
@@ -31501,7 +31582,7 @@ function renderNeedsBoardView() {
         const card = document.createElement('div');
         const needImg = getCategoryPresetImage(need.category);
         const needId = need.id;
-        card.className = "bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-24 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail('need_' + needId);
         
         const currentUser = state.currentUser || {};
@@ -31510,10 +31591,10 @@ function renderNeedsBoardView() {
 
         if (isUserNeed) {
             card.innerHTML = `
-                <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden">
+                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${needImg}" class="w-full h-full object-cover">
                 </div>
-                <div class="p-4 pl-3 flex-grow min-w-0 flex flex-col justify-between">
+                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
                     <div>
                         <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">
                             ${need.needTitle} 
@@ -31521,7 +31602,7 @@ function renderNeedsBoardView() {
                         </h4>
                         <p class="text-xs text-black dark:text-white line-clamp-1 mt-0.5">${need.needDesc}</p>
                     </div>
-                    <div class="flex items-center gap-1.5 mt-2">
+                    <div class="flex items-center gap-1.5 mt-1">
                         <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${need.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
                         <span class="text-[10px] text-black dark:text-white font-semibold truncate">${need.neighborName} (You) · Village Trusted · 0 km</span>
                     </div>
@@ -31529,15 +31610,15 @@ function renderNeedsBoardView() {
             `;
         } else {
             card.innerHTML = `
-                <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden">
+                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${needImg}" class="w-full h-full object-cover">
                 </div>
-                <div class="p-4 pl-3 flex-grow min-w-0 flex flex-col justify-between">
+                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between h-full">
                     <div>
                         <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${need.needTitle}</h4>
                         <p class="text-xs text-black dark:text-white line-clamp-1 mt-0.5">${need.needDesc}</p>
                     </div>
-                    <div class="flex items-center gap-1.5 mt-2">
+                    <div class="flex items-center gap-1.5 mt-1">
                         <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${need.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
                         <span class="text-[10px] text-black dark:text-white font-semibold truncate">${need.neighborName} · ${formatRadiusValue(need.distance)} away</span>
                     </div>
@@ -45054,6 +45135,108 @@ function updateTopSegmentedControlUI(category) {
     });
 }
 window.updateTopSegmentedControlUI = updateTopSegmentedControlUI;
+
+// Search Behavior and Navbar Toggling on keyboard/search focus
+function initSearchBehavior() {
+    const searchInputs = [
+        { inputId: 'village-search-input', clearBtnId: 'btn-map-search-clear' },
+        { inputId: 'village-list-search-input', clearBtnId: 'btn-list-search-clear' },
+        { inputId: 'village-needs-search-input', clearBtnId: 'btn-needs-search-clear' },
+        { inputId: 'village-events-search-input', clearBtnId: 'btn-events-search-clear' },
+        { inputId: 'village-bulletins-search-input', clearBtnId: 'btn-bulletins-search-clear' }
+    ];
+
+    searchInputs.forEach(({ inputId, clearBtnId }) => {
+        const input = document.getElementById(inputId);
+        const clearBtn = document.getElementById(clearBtnId);
+        if (!input) return;
+
+        // On Focus (Tapped search bar)
+        input.addEventListener('focus', () => {
+            // Hide bottom navbar
+            const navbar = document.getElementById('global-navbar');
+            if (navbar) {
+                navbar.classList.add('hidden');
+            }
+            // Hide floating segment stack on map or lists
+            const floatingContainer = document.getElementById('village-segment-floating-buttons');
+            if (floatingContainer) {
+                floatingContainer.style.display = 'none';
+            }
+            // Show clear button (X)
+            if (clearBtn) {
+                clearBtn.classList.remove('hidden');
+            }
+        });
+
+        // Ensure X button remains visible or shows up if user starts typing
+        input.addEventListener('input', () => {
+            if (clearBtn) {
+                clearBtn.classList.remove('hidden');
+            }
+        });
+    });
+}
+
+// Global function to clear search and exit search mode
+function clearSearchInput(inputId) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+
+    // Clear value
+    input.value = "";
+    
+    // Trigger input event to clear filter/results
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+
+    // Force blur to hide keyboard
+    input.blur();
+
+    // Hide clear buttons
+    const clearBtnIds = [
+        'btn-map-search-clear',
+        'btn-list-search-clear',
+        'btn-needs-search-clear',
+        'btn-events-search-clear',
+        'btn-bulletins-search-clear'
+    ];
+    clearBtnIds.forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) btn.classList.add('hidden');
+    });
+
+    // Restore bottom navbar and floating segment stack
+    const navbar = document.getElementById('global-navbar');
+    if (navbar) {
+        navbar.classList.remove('hidden');
+    }
+    const floatingContainer = document.getElementById('village-segment-floating-buttons');
+    if (floatingContainer && state.currentView === 'village') {
+        const isMapSegment = currentVillageSegment === 'map' || currentVillageSegment === 'needs_map' || currentVillageSegment === 'gifts_map' || currentVillageSegment === 'events_map';
+        if (!state.meetupMapMode) {
+            floatingContainer.style.display = 'flex';
+        }
+    }
+    
+    // Hide search suggestions
+    if (typeof adjustSearchSuggestionsVisibility === 'function') {
+        adjustSearchSuggestionsVisibility(false);
+    }
+    
+    // Synchronize all search bars
+    if (typeof syncVillageSearch === 'function') {
+        syncVillageSearch("");
+    }
+}
+window.clearSearchInput = clearSearchInput;
+
+// Initialize on DOM loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initSearchBehavior();
+});
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initSearchBehavior();
+}
 
 // Global scope ends
 </script>
