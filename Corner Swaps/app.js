@@ -1919,9 +1919,14 @@ function saveState() {
         const serialized = JSON.stringify(state);
         safeLocalStorage.setItem('barterland_state', serialized);
         
-        // Compute checksum of the serialized string
+        // Compute checksum of the serialized string using sampling for large strings to make it extremely fast
         let hash = 0;
-        for (let i = 0; i < serialized.length; i++) {
+        const len = serialized.length;
+        hash = (hash << 5) - hash + len;
+        hash |= 0;
+        
+        const step = len > 10000 ? Math.ceil(len / 500) : 1;
+        for (let i = 0; i < len; i += step) {
             hash = (hash << 5) - hash + serialized.charCodeAt(i);
             hash |= 0;
         }
@@ -1968,9 +1973,14 @@ function loadState() {
     const savedSig = safeLocalStorage.getItem('barterland_state_sig');
     let needsSave = false;
     if (saved) {
-        // Calculate hash of saved string to check integrity
+        // Calculate hash of saved string to check integrity using same optimized sampling algorithm
         let hash = 0;
-        for (let i = 0; i < saved.length; i++) {
+        const len = saved.length;
+        hash = (hash << 5) - hash + len;
+        hash |= 0;
+        
+        const step = len > 10000 ? Math.ceil(len / 500) : 1;
+        for (let i = 0; i < len; i += step) {
             hash = (hash << 5) - hash + saved.charCodeAt(i);
             hash |= 0;
         }
@@ -6197,7 +6207,7 @@ function renderEventsList() {
             const hostAvatar = hostNeighbor ? hostNeighbor.avatar : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80';
             
             const card = document.createElement('div');
-            card.className = "h-24 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+            card.className = "h-72 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
             
             card.onclick = () => {
                 openEventDetail(evt.id);
@@ -6211,27 +6221,27 @@ function renderEventsList() {
             const img1 = evtImages[0] || presetImg;
 
             card.innerHTML = `
-                <!-- Left Image Portion -->
-                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Top Image Portion -->
+                <div class="h-40 w-full relative overflow-hidden flex-shrink-0 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                 </div>
-                <!-- Right Details Portion -->
-                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between self-stretch">
+                <!-- Bottom Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${evt.title}</h4>
-                            <span class="flex-shrink-0 text-[8.5px] text-forest-green dark:text-[#308A5E] font-bold bg-forest-green/10 dark:bg-forest-green/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${times.badgeDate}</span>
+                            <span class="flex-shrink-0 text-[8.5px] text-white font-bold bg-[#308A5E] dark:bg-[#308A5E] px-2 py-0.5 rounded-full uppercase tracking-wider">${times.badgeDate}</span>
                         </div>
-                        <p class="text-xs text-[#5C635E] dark:text-gray-400 line-clamp-1 mt-0.5">${evt.desc}</p>
+                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1 leading-relaxed">${evt.desc}</p>
                     </div>
 
-                    <div class="flex items-center justify-between gap-1.5 mt-1">
+                    <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
                             <!-- Host details with circular avatar bubble -->
                             <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${hostAvatar}" class="w-full h-full object-cover rounded-full"></div>
-                            <span class="text-[10px] text-black dark:text-white font-semibold truncate">${evt.host || 'Member'}</span>
+                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate">${evt.host || 'Member'}</span>
                         </div>
-                        <span class="text-[9px] text-gray-500 dark:text-gray-400 font-medium flex-shrink-0">${evt.type} · ${times.timeDisplay} · ${distanceDisplay}</span>
+                        <span class="text-[10.5px] text-black dark:text-white font-medium flex-shrink-0">${evt.type} · ${times.timeDisplay} · ${distanceDisplay}</span>
                     </div>
                 </div>
             `;
@@ -15606,7 +15616,7 @@ function renderVillageListView() {
 
     filteredListings.forEach(item => {
         const card = document.createElement('div');
-        card.className = "h-24 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-72 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail(item.id);
 
         const itemImages = item.image ? item.image.split('|||').filter(Boolean) : [];
@@ -15617,53 +15627,53 @@ function renderVillageListView() {
             const neighbor = state.neighbors[item.name];
             const isKarma = neighbor && neighbor.isKarma;
             card.innerHTML = `
-                <!-- Left Image Portion -->
-                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Top Image Portion -->
+                <div class="h-40 w-full relative overflow-hidden flex-shrink-0 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isKarma ? `<div class="absolute bottom-1 right-1 bg-[#EF4444] w-5 h-5 rounded-full flex items-center justify-center shadow-sm" style="border: 1px solid white;"><span class="material-symbols-outlined text-xs" style="color: white !important; font-variation-settings: 'FILL' 1 !important;">favorite</span></div>` : ''}
                 </div>
-                <!-- Right Details Portion -->
-                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between self-stretch">
+                <!-- Bottom Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${item.title}</h4>
-                            <span class="flex-shrink-0 text-[8.5px] text-[#D99036] dark:text-[#E2A04E] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${item.category || 'Offering'}</span>
+                            <span class="flex-shrink-0 text-[8.5px] text-white font-bold bg-[#308A5E] dark:bg-[#308A5E] px-2 py-0.5 rounded-full uppercase tracking-wider">${item.category || 'Offering'}</span>
                         </div>
-                        <p class="text-xs text-[#5C635E] dark:text-gray-400 line-clamp-1 mt-0.5">${item.desc}</p>
+                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1 leading-relaxed">${item.desc}</p>
                     </div>
-                    <div class="flex items-center justify-between gap-1.5 mt-1">
+                    <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
                             <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${item.avatar}" class="w-full h-full object-cover rounded-full"></div>
-                            <span class="text-[10px] text-black dark:text-white font-semibold truncate">${item.name}</span>
+                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate">${item.name}</span>
                         </div>
-                        <span class="text-[9px] text-gray-500 dark:text-gray-400 font-medium flex-shrink-0">${formatRadiusValue(item.distance)} away</span>
+                        <span class="text-[10.5px] text-black dark:text-white font-medium flex-shrink-0">${formatRadiusValue(item.distance)} away</span>
                     </div>
                 </div>
             `;
         } else {
             card.innerHTML = `
-                <!-- Left Image Portion -->
-                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Top Image Portion -->
+                <div class="h-40 w-full relative overflow-hidden flex-shrink-0 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                 </div>
-                <!-- Right Details Portion -->
-                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between self-stretch">
+                <!-- Bottom Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">
                                 ${item.title} 
                                 <span class="text-[9px] text-black dark:text-white font-bold bg-[#D99036]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
                             </h4>
-                            <span class="flex-shrink-0 text-[8.5px] text-[#D99036] dark:text-[#E2A04E] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${item.category || 'Offering'}</span>
+                            <span class="flex-shrink-0 text-[8.5px] text-white font-bold bg-[#308A5E] dark:bg-[#308A5E] px-2 py-0.5 rounded-full uppercase tracking-wider">${item.category || 'Offering'}</span>
                         </div>
-                        <p class="text-xs text-[#5C635E] dark:text-gray-400 line-clamp-1 mt-0.5">${item.desc}</p>
+                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1 leading-relaxed">${item.desc}</p>
                     </div>
-                    <div class="flex items-center justify-between gap-1.5 mt-1">
+                    <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
                             <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${item.avatar}" class="w-full h-full object-cover rounded-full"></div>
-                            <span class="text-[10px] text-black dark:text-white font-semibold truncate">${item.name}</span>
+                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate">${item.name}</span>
                         </div>
-                        <span class="text-[9px] text-gray-500 dark:text-gray-400 font-medium flex-shrink-0">Village Trusted · 0 km</span>
+                        <span class="text-[10.5px] text-black dark:text-white font-medium flex-shrink-0">Village Trusted · 0 km</span>
                     </div>
                 </div>
             `;
@@ -15789,7 +15799,7 @@ function renderNeedsBoardView() {
     filteredNeeds.forEach(need => {
         const card = document.createElement('div');
         const needId = need.id;
-        card.className = "h-24 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-72 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail('need_' + needId);
         
         const currentUser = state.currentUser || {};
@@ -15802,52 +15812,52 @@ function renderNeedsBoardView() {
 
         if (isUserNeed) {
             card.innerHTML = `
-                <!-- Left Image Portion -->
-                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Top Image Portion -->
+                <div class="h-40 w-full relative overflow-hidden flex-shrink-0 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                 </div>
-                <!-- Right Details Portion -->
-                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between self-stretch">
+                <!-- Bottom Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">
                                 ${need.needTitle} 
                                 <span class="text-[9px] text-black dark:text-white font-bold bg-[#D99036]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
                             </h4>
-                            <span class="flex-shrink-0 text-[8.5px] text-[#D99036] dark:text-[#E2A04E] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${need.category || 'Need'}</span>
+                            <span class="flex-shrink-0 text-[8.5px] text-white font-bold bg-[#308A5E] dark:bg-[#308A5E] px-2 py-0.5 rounded-full uppercase tracking-wider">${need.category || 'Need'}</span>
                         </div>
-                        <p class="text-xs text-[#5C635E] dark:text-gray-400 line-clamp-1 mt-0.5">${need.needDesc}</p>
+                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1 leading-relaxed">${need.needDesc}</p>
                     </div>
-                    <div class="flex items-center justify-between gap-1.5 mt-1">
+                    <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
                             <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${need.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
-                            <span class="text-[10px] text-black dark:text-white font-semibold truncate">${need.neighborName}</span>
+                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate">${need.neighborName}</span>
                         </div>
-                        <span class="text-[9px] text-gray-500 dark:text-gray-400 font-medium flex-shrink-0">Village Trusted · 0 km</span>
+                        <span class="text-[10.5px] text-black dark:text-white font-medium flex-shrink-0">Village Trusted · 0 km</span>
                     </div>
                 </div>
             `;
         } else {
             card.innerHTML = `
-                <!-- Left Image Portion -->
-                <div class="w-32 self-stretch flex-shrink-0 relative overflow-hidden border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Top Image Portion -->
+                <div class="h-40 w-full relative overflow-hidden flex-shrink-0 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                 </div>
-                <!-- Right Details Portion -->
-                <div class="p-3 pl-3 flex-grow min-w-0 flex flex-col justify-between self-stretch">
+                <!-- Bottom Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <h4 class="font-bold text-black dark:text-white truncate text-sm leading-tight">${need.needTitle}</h4>
-                            <span class="flex-shrink-0 text-[8.5px] text-[#D99036] dark:text-[#E2A04E] font-bold bg-[#D99036]/10 dark:bg-[#D99036]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">${need.category || 'Need'}</span>
+                            <span class="flex-shrink-0 text-[8.5px] text-white font-bold bg-[#308A5E] dark:bg-[#308A5E] px-2 py-0.5 rounded-full uppercase tracking-wider">${need.category || 'Need'}</span>
                         </div>
-                        <p class="text-xs text-[#5C635E] dark:text-gray-400 line-clamp-1 mt-0.5">${need.needDesc}</p>
+                        <p class="text-xs text-black dark:text-white line-clamp-2 mt-1 leading-relaxed">${need.needDesc}</p>
                     </div>
-                    <div class="flex items-center justify-between gap-1.5 mt-1">
+                    <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
                             <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${need.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
-                            <span class="text-[10px] text-black dark:text-white font-semibold truncate">${need.neighborName}</span>
+                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate">${need.neighborName}</span>
                         </div>
-                        <span class="text-[9px] text-gray-500 dark:text-gray-400 font-medium flex-shrink-0">${formatRadiusValue(need.distance)} away</span>
+                        <span class="text-[10.5px] text-black dark:text-white font-medium flex-shrink-0">${formatRadiusValue(need.distance)} away</span>
                     </div>
                 </div>
             `;
@@ -29105,7 +29115,7 @@ const initChatInputHeightObserver = () => {
 document.addEventListener('DOMContentLoaded', initChatInputHeightObserver);
 
 window.handleChatInputWrapperTouch = function(event, wrapper) {
-    if (event.target.closest('button') || event.target.closest('input[type="file"]')) {
+    if (event.target.closest('button') || event.target.closest('input[type="file"]') || event.target.tagName.toLowerCase() === 'input') {
         return;
     }
     const input = wrapper.querySelector('input[type="text"]');
