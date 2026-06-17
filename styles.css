@@ -4469,29 +4469,27 @@ body.keyboard-visible .native-app-env #chat-action-center.group-chat-action-cent
 .chat-pill-input-wrapper {
     width: calc(100% - 32px) !important;
     max-width: 370px !important;
-    background: rgba(255, 255, 255, 0.45) !important;
-    backdrop-filter: blur(24px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
     transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s !important;
 }
 
 html.dark .chat-pill-input-wrapper {
-    background: rgba(20, 28, 22, 0.45) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(26, 34, 28, 0.96) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
 .chat-pill-input-wrapper:focus-within {
     border-color: rgba(0, 0, 0, 0.3) !important;
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05), 0 8px 32px rgba(0, 0, 0, 0.06) !important;
-    background: rgba(255, 255, 255, 0.6) !important;
+    background: #ffffff !important;
 }
 
 html.dark .chat-pill-input-wrapper:focus-within {
-    border-color: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05), 0 8px 32px rgba(0, 0, 0, 0.06) !important;
-    background: rgba(20, 28, 22, 0.6) !important;
+    background: #1a221c !important;
 }
 
 
@@ -7697,6 +7695,7 @@ html.dark .list-card-description {
 }
 
 /* Absolute positioning styles for list search suggestions containers */
+#village-search-suggestions,
 #village-list-search-suggestions,
 #village-needs-search-suggestions,
 #village-events-search-suggestions {
@@ -7706,6 +7705,29 @@ html.dark .list-card-description {
     top: 48px !important;
     z-index: 3000 !important;
     width: calc(100% - 8px) !important;
+}
+
+/* Enforce uniform description spacing and font-sizes for offerings, needs, and events */
+#village-list-items p.list-card-description,
+#needs-board-list p.list-card-description,
+#village-events-list p.list-card-description,
+#events-list-container p.list-card-description {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    font-weight: 400 !important;
+    margin-top: 4px !important;
+    margin-bottom: 0 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 4 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    color: rgba(0, 0, 0, 0.7) !important;
+}
+html.dark #village-list-items p.list-card-description,
+html.dark #needs-board-list p.list-card-description,
+html.dark #village-events-list p.list-card-description,
+html.dark #events-list-container p.list-card-description {
+    color: rgba(255, 255, 255, 0.7) !important;
 }
 
 

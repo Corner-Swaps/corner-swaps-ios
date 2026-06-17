@@ -5647,29 +5647,27 @@ body.keyboard-visible .native-app-env #chat-action-center.group-chat-action-cent
 .chat-pill-input-wrapper {
     width: calc(100% - 32px) !important;
     max-width: 370px !important;
-    background: rgba(255, 255, 255, 0.45) !important;
-    backdrop-filter: blur(24px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
     transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s !important;
 }
 
 html.dark .chat-pill-input-wrapper {
-    background: rgba(20, 28, 22, 0.45) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(26, 34, 28, 0.96) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
 .chat-pill-input-wrapper:focus-within {
     border-color: rgba(0, 0, 0, 0.3) !important;
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05), 0 8px 32px rgba(0, 0, 0, 0.06) !important;
-    background: rgba(255, 255, 255, 0.6) !important;
+    background: #ffffff !important;
 }
 
 html.dark .chat-pill-input-wrapper:focus-within {
-    border-color: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05), 0 8px 32px rgba(0, 0, 0, 0.06) !important;
-    background: rgba(20, 28, 22, 0.6) !important;
+    background: #1a221c !important;
 }
 
 
@@ -8875,6 +8873,7 @@ html.dark .list-card-description {
 }
 
 /* Absolute positioning styles for list search suggestions containers */
+#village-search-suggestions,
 #village-list-search-suggestions,
 #village-needs-search-suggestions,
 #village-events-search-suggestions {
@@ -8884,6 +8883,29 @@ html.dark .list-card-description {
     top: 48px !important;
     z-index: 3000 !important;
     width: calc(100% - 8px) !important;
+}
+
+/* Enforce uniform description spacing and font-sizes for offerings, needs, and events */
+#village-list-items p.list-card-description,
+#needs-board-list p.list-card-description,
+#village-events-list p.list-card-description,
+#events-list-container p.list-card-description {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    font-weight: 400 !important;
+    margin-top: 4px !important;
+    margin-bottom: 0 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 4 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    color: rgba(0, 0, 0, 0.7) !important;
+}
+html.dark #village-list-items p.list-card-description,
+html.dark #needs-board-list p.list-card-description,
+html.dark #village-events-list p.list-card-description,
+html.dark #events-list-container p.list-card-description {
+    color: rgba(255, 255, 255, 0.7) !important;
 }
 </style>
     <!-- Tailwind Configuration (removed - runtime replaced with pre-compiled CSS) -->
@@ -9047,8 +9069,15 @@ html.dark .list-card-description {
                     <div class="relative w-full h-[280px] flex items-center justify-center">
                         <!-- Shuffling icons container -->
                         <div class="absolute inset-0 flex items-center justify-center" id="shuffle-wrapper">
-                            <div class="text-white w-[64px] h-[64px] flex items-center justify-center animate-shuffle" id="shuffle-icon-container">
-                                <!-- Material Symbols icon will be injected here -->
+                            <div class="relative w-[64px] h-[64px] flex items-center justify-center" id="shuffle-icon-container">
+                                <span class="material-symbols-outlined shuffle-icon icon-0" style="font-size: 64px !important; line-height: 1 !important; user-select: none !important; color: #ffffff !important;">restaurant</span>
+                                <span class="material-symbols-outlined shuffle-icon icon-1" style="font-size: 64px !important; line-height: 1 !important; user-select: none !important; color: #ffffff !important;">home</span>
+                                <span class="material-symbols-outlined shuffle-icon icon-2" style="font-size: 64px !important; line-height: 1 !important; user-select: none !important; color: #ffffff !important;">yard</span>
+                                <span class="material-symbols-outlined shuffle-icon icon-3" style="font-size: 64px !important; line-height: 1 !important; user-select: none !important; color: #ffffff !important;">school</span>
+                                <span class="material-symbols-outlined shuffle-icon icon-4" style="font-size: 64px !important; line-height: 1 !important; user-select: none !important; color: #ffffff !important;">handyman</span>
+                                <span class="material-symbols-outlined shuffle-icon icon-5" style="font-size: 64px !important; line-height: 1 !important; user-select: none !important; color: #ffffff !important;">palette</span>
+                                <span class="material-symbols-outlined shuffle-icon icon-6" style="font-size: 64px !important; line-height: 1 !important; user-select: none !important; color: #ffffff !important;">checkroom</span>
+                                <span class="material-symbols-outlined shuffle-icon icon-7" style="font-size: 64px !important; line-height: 1 !important; user-select: none !important; color: #ffffff !important;">sports_esports</span>
                             </div>
                         </div>
                         <!-- Final reveling logo (Vertical Premium Layout) -->
@@ -10038,7 +10067,7 @@ html.dark .list-card-description {
                                         <span class="material-symbols-outlined text-[16px]">chevron_right</span>
                                     </button>
                                 </div>
-                                <div id="village-search-suggestions" class="hidden fused-suggestions-box"></div>
+                                <div id="village-search-suggestions" class="hidden absolute left-1 right-1 top-[48px] z-[3000] fused-suggestions-box"></div>
                                 
                                 <!-- Top Segmented Control (Offerings, Needs, Events) -->
                                 <div id="village-segmented-control" class="relative mt-2.5 w-full h-10 flex items-center justify-between gap-2 select-none">
@@ -10248,7 +10277,7 @@ html.dark .list-card-description {
                             </div>
 
                             <!-- Pills Control (Offerings, Needs, Events) -->
-                            <div class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-0">
+                            <div id="village-list-segmented-control" class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-0">
                                 <button type="button" onclick="switchVillageSegment('list')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm">
                                     Offerings
                                 </button>
@@ -10275,7 +10304,7 @@ html.dark .list-card-description {
                                 </div>
                             </div>
                         </div>
-                        <div class="space-y-3" id="village-list-items">
+                        <div class="flex flex-col gap-4 pb-8" id="village-list-items">
                             <!-- Dynamic list of neighbors/offerings cards -->
                         </div>
                     </div>
@@ -10304,7 +10333,7 @@ html.dark .list-card-description {
                             </div>
 
                             <!-- Pills Control (Offerings, Needs, Events) -->
-                            <div class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-0">
+                            <div id="village-needs-segmented-control" class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-0">
                                 <button type="button" onclick="switchVillageSegment('list')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-gray-500 dark:text-gray-400">
                                     Offerings
                                 </button>
@@ -10331,7 +10360,7 @@ html.dark .list-card-description {
                                 </div>
                             </div>
                         </div>
-                        <div class="space-y-3" id="needs-board-list">
+                        <div class="flex flex-col gap-4 pb-8" id="needs-board-list">
                             <!-- Dynamic community requests cards -->
                         </div>
                     </div>
@@ -10360,7 +10389,7 @@ html.dark .list-card-description {
                             </div>
 
                             <!-- Pills Control (Offerings, Needs, Events) -->
-                            <div class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-0">
+                            <div id="village-events-segmented-control" class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-0">
                                 <button type="button" onclick="switchVillageSegment('list')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-gray-500 dark:text-gray-400">
                                     Offerings
                                 </button>
@@ -10386,7 +10415,7 @@ html.dark .list-card-description {
                                 </div>
                             </div>
                         </div>
-                        <div class="space-y-3" id="village-events-list">
+                        <div class="flex flex-col gap-4 pb-8" id="village-events-list">
                         </div>
                     </div>
 
@@ -10409,7 +10438,7 @@ html.dark .list-card-description {
                                 <span class="material-symbols-outlined text-sm">campaign</span> Post Announcement
                             </button>
                         </div>
-                        <div class="space-y-3 pb-8" id="village-bulletins-list">
+                        <div class="flex flex-col gap-4 pb-8" id="village-bulletins-list">
                             <!-- Dynamic bulletin notices cards -->
                         </div>
                     </div>
@@ -11004,10 +11033,10 @@ html.dark .list-card-description {
                         <div class="flex items-center justify-center w-full">
                             <input type="file" id="chat-photo-input" accept="image/*" class="hidden" onchange="handleSendChatPhoto(this)"/>
                             <input type="file" id="chat-camera-input" accept="image/*" capture="camera" class="hidden" onchange="handleSendChatPhoto(this)"/>
-                            <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[64px] rounded-full px-4 py-1" id="chat-input-wrapper-static" onpointerdown="window.handleChatInputWrapperTouch(event, this)">
+                            <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[64px] rounded-full px-4 py-1" id="chat-input-wrapper-static" onclick="window.handleChatInputWrapperClick(event, this)">
                                 <input class="flex-grow bg-transparent border-0 h-full py-0 px-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
                                 <div class="flex items-center gap-1.5 flex-shrink-0">
-                                    <button id="chat-offer-swap-pill-btn" class="w-[44px] h-[44px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onpointerdown="if(state.currentConversationId) { window.openSwapLifecycleModal('initiator', state.currentConversationId); event.preventDefault(); }" onclick="if(state.currentConversationId) { window.openSwapLifecycleModal('initiator', state.currentConversationId); }" title="Offer a Swap">
+                                    <button id="chat-offer-swap-pill-btn" class="w-[44px] h-[44px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onclick="if(state.currentConversationId) { window.openSwapLifecycleModal('initiator', state.currentConversationId); }" title="Offer a Swap">
                                         <span class="material-symbols-outlined text-[20px]">handshake</span>
                                     </button>
                                     <button id="chat-map-shortcut-btn" class="w-[44px] h-[44px] bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer hidden" onclick="if(state.currentConversationId) window.viewMeetupLocationOnMap(state.currentConversationId)" title="View Swap Map">
@@ -11060,7 +11089,7 @@ html.dark .list-card-description {
                     </div>
 
                     <!-- Event lists container -->
-                    <div class="space-y-4" id="events-list-container">
+                    <div class="flex flex-col gap-4 pb-8" id="events-list-container">
                         <!-- Populated dynamically with event cards -->
                     </div>
                 </section>
@@ -11238,83 +11267,8 @@ html.dark .list-card-description {
                 <!-- 11. OFFER VIEW (ACCORDION & VICINITY & WISH LIST) -->
                 <!-- ==================================================== -->
                 <section id="view-offer" class="screen-view flex-grow pb-24 overflow-hidden relative flex flex-col justify-start pt-0">
-                    <!-- Creative Dashboard Screen (similar to Profile section) -->
-                    <div id="creative-dashboard-screen" class="hidden w-full flex flex-col px-6 pb-6 text-center select-none">
-                        <!-- Header Summary (Similar to Profile Page) -->
-                        <section class="flex flex-col items-center mb-8 mt-4 select-none">
-                            <div class="text-center">
-                                <!-- Stats Badges Row -->
-                                <div class="flex items-center justify-center gap-5 mt-6 flex-wrap">
-                                    <!-- Active Offerings Stats -->
-                                    <div class="flex flex-col items-center justify-center w-28 h-28 rounded-3xl bg-[#dcfce7] dark:bg-[#064e3b] text-[#166534] dark:text-[#a7f3d0] border-2 border-[#86efac] dark:border-[#047857] shadow-[0_8px_0_0_#bbf7d0] dark:shadow-[0_8px_0_0_#065f46] hover:translate-y-[2px] hover:shadow-[0_6px_0_0_#bbf7d0] dark:hover:shadow-[0_6px_0_0_#065f46] active:translate-y-[6px] active:shadow-[0_2px_0_0_#bbf7d0] dark:active:shadow-[0_2px_0_0_#065f46] cursor-pointer transition-all select-none gap-1.5">
-                                        <span class="material-symbols-outlined text-3xl font-black">handyman</span>
-                                        <span id="creative-stat-offerings" class="text-xs font-bold text-center px-1 leading-tight">0 Offerings</span>
-                                    </div>
-                                    <!-- Active Needs Stats -->
-                                    <div class="flex flex-col items-center justify-center w-28 h-28 rounded-3xl bg-[#fee2e2] dark:bg-[#7f1d1d] text-[#991b1b] dark:text-[#fecaca] border-2 border-[#fca5a5] dark:border-[#b91c1c] shadow-[0_8px_0_0_#fecaca] dark:shadow-[0_8px_0_0_#991b1b] hover:translate-y-[2px] hover:shadow-[0_6px_0_0_#fecaca] dark:hover:shadow-[0_6px_0_0_#991b1b] active:translate-y-[6px] active:shadow-[0_2px_0_0_#fecaca] dark:active:shadow-[0_2px_0_0_#991b1b] cursor-pointer transition-all select-none gap-1.5">
-                                        <span class="material-symbols-outlined text-3xl font-black">shopping_basket</span>
-                                        <span id="creative-stat-needs" class="text-xs font-bold text-center px-1 leading-tight">0 Needs</span>
-                                    </div>
-                                    <!-- Hosted Events Stats -->
-                                    <div class="flex flex-col items-center justify-center w-28 h-28 rounded-3xl bg-[#fef9c3] dark:bg-[#713f12] text-[#854d0e] dark:text-[#fef08a] border-2 border-[#fde047] dark:border-[#a16207] shadow-[0_8px_0_0_#fef08a] dark:shadow-[0_8px_0_0_#854d0e] hover:translate-y-[2px] hover:shadow-[0_6px_0_0_#fef08a] dark:hover:shadow-[0_6px_0_0_#854d0e] active:translate-y-[6px] active:shadow-[0_2px_0_0_#fef08a] dark:active:shadow-[0_2px_0_0_#854d0e] cursor-pointer transition-all select-none gap-1.5">
-                                        <span class="material-symbols-outlined text-3xl font-black">event</span>
-                                        <span id="creative-stat-events" class="text-xs font-bold text-center px-1 leading-tight">0 Events</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        
-
-                        <!-- Listings Management Widgets -->
-                        
-                        <!-- Offerings Widget -->
-                        <section class="relative mb-6 bg-white dark:bg-[#18201a] p-6 rounded-2xl border border-outline-variant/30 shadow-sm flex-shrink-0 text-left">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center justify-between select-none w-full">
-                                <span class="flex items-center gap-1.5">
-                                    <span class="material-symbols-outlined text-sm">handyman</span> Offerings
-                                </span>
-                                <button onclick="selectOfferMode('offering')" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Add Offering">
-                                    <span class="material-symbols-outlined text-[15px] font-black">add</span>
-                                </button>
-                            </h3>
-                            <div class="space-y-3 animate-fade-in" id="creative-offerings-container">
-                                <!-- Dynamic offerings -->
-                            </div>
-                        </section>
-                        
-                        <!-- Needs Widget -->
-                        <section class="relative mb-6 bg-white dark:bg-[#18201a] p-6 rounded-2xl border border-outline-variant/30 shadow-sm flex-shrink-0 text-left">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center justify-between select-none w-full">
-                                <span class="flex items-center gap-1.5">
-                                    <span class="material-symbols-outlined text-sm">shopping_basket</span> Needs
-                                </span>
-                                <button onclick="selectOfferMode('need')" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Add Need">
-                                    <span class="material-symbols-outlined text-[15px] font-black">add</span>
-                                </button>
-                            </h3>
-                            <div class="space-y-3 animate-fade-in" id="creative-needs-container">
-                                <!-- Dynamic needs -->
-                            </div>
-                        </section>
-                        
-                        <!-- Hosted Events Widget -->
-                        <section class="relative mb-6 bg-white dark:bg-[#18201a] p-6 rounded-2xl border border-outline-variant/30 shadow-sm flex-shrink-0 text-left">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center justify-between select-none w-full">
-                                <span class="flex items-center gap-1.5">
-                                    <span class="material-symbols-outlined text-sm">event</span> My Hosted Events
-                                </span>
-                                <button onclick="selectOfferMode('event')" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Host Event">
-                                    <span class="material-symbols-outlined text-[15px] font-black">add</span>
-                                </button>
-                            </h3>
-                            <div class="space-y-3 animate-fade-in" id="creative-events-container">
-                                <!-- Dynamic events -->
-                            </div>
-                        </section>
-                    </div>
-
                     <!-- A. Listing Mode Selector Screen -->
-                    <div id="offer-type-selector-screen" class="hidden px-6 flex flex-col items-center justify-start gap-3.5 max-w-sm mx-auto text-center w-full py-4">
+                    <div id="offer-type-selector-screen" class="px-6 flex flex-col items-center justify-start gap-3.5 max-w-sm mx-auto text-center w-full pt-14 pb-4">
                         <div class="w-16 h-16 rounded-full bg-forest-green/10 dark:bg-emerald-500/10 flex items-center justify-center text-forest-green dark:text-emerald-400 mb-1">
                             <span class="material-symbols-outlined text-3xl text-forest-green dark:text-emerald-400">post_add</span>
                         </div>
@@ -11763,76 +11717,7 @@ html.dark .list-card-description {
                         <div id="platform-swaps-counter"></div>
                     </div>
 
-                    <!-- My Offerings section -->
-                    <section id="widget-my-offerings" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
-                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center justify-between select-none w-full">
-                            <span class="flex items-center gap-1.5">
-                                <span class="material-symbols-outlined text-sm">local_offer</span> My Offerings
-                            </span>
-                            <button onclick="showView('offer', 'offering')" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Add Offering">
-                                <span class="material-symbols-outlined text-[15px] font-black">add</span>
-                            </button>
-                        </h3>
-                        <div class="space-y-3" id="my-offerings-container">
-                            <!-- Dynamic offerings cards -->
-                        </div>
-                    </section>
 
-                    <!-- My Needs section -->
-                    <section id="widget-my-needs" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
-                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center justify-between select-none w-full">
-                            <span class="flex items-center gap-1.5">
-                                <span class="material-symbols-outlined text-sm">shopping_basket</span> My Needs
-                            </span>
-                            <button onclick="toggleAddNeedForm()" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Add Need">
-                                <span class="material-symbols-outlined text-[15px] font-black">add</span>
-                            </button>
-                        </h3>
-                        
-                        <!-- Inline Add Need Form -->
-                        <div id="add-need-form-container" class="hidden bg-warm-cream/10 dark:bg-black/20 p-3.5 rounded-xl border border-black/10 dark:border-white/10 mb-3 space-y-3 text-left">
-                            <input type="text" id="new-need-title" placeholder="What do you need? (e.g. Weed whacker, Sourdough starter)" class="w-full h-10 px-3 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl text-xs focus:border-forest-green focus:ring-0 outline-none text-black dark:text-white">
-                            <p id="new-need-title-error" class="hidden text-error font-bold text-[10px] text-left mt-0.5">Your listing contains prohibited language and violates our community guidelines.</p>
-                            <input type="text" id="new-need-desc" placeholder="Brief description..." class="w-full h-10 px-3 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl text-xs focus:border-forest-green focus:ring-0 outline-none text-black dark:text-white">
-                            <p id="new-need-desc-error" class="hidden text-error font-bold text-[10px] text-left mt-0.5">Your listing contains prohibited language and violates our community guidelines.</p>
-                            <select id="new-need-category" class="w-full h-10 px-3 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl text-xs focus:border-forest-green focus:ring-0 outline-none text-black dark:text-white">
-                                <option value="" disabled selected>Choose a category...</option>
-                                <option value="Food & Drink">Food & Drink</option>
-                                <option value="Home and Living">Home and Living</option>
-                                <option value="Garden & Outdoors">Garden & Outdoors</option>
-                                <option value="Skills & Education">Skills & Education</option>
-                                <option value="Handyman & Services">Handyman & Services</option>
-                                <option value="Creative & Art">Creative & Art</option>
-                                <option value="Health">Health</option>
-                                <option value="Clothing & Apparel">Clothing & Apparel</option>
-                                <option value="Books, Games, Entertainment">Books, Games, Entertainment</option>
-                                <option value="Kids and Maternity">Kids and Maternity</option>
-                                <option value="Other">Other</option>
-                            </select>
-                            <div class="flex gap-2">
-                                <button id="btn-save-need" class="w-full bg-black/[0.02] dark:bg-white/[0.02] border border-black/10 dark:border-white/10 text-forest-green dark:text-emerald-400 py-2 rounded-lg font-bold text-xs cursor-pointer active:scale-95 transition-all" onclick="handleAddNeedSubmit()">Save Need</button>
-                            </div>
-                        </div>
-
-                        <div class="space-y-3" id="my-needs-container">
-                            <!-- Dynamic user needs cards -->
-                        </div>
-                    </section>
-
-                    <!-- My Events section -->
-                    <section id="widget-my-events" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
-                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center justify-between select-none w-full">
-                            <span class="flex items-center gap-1.5">
-                                <span class="material-symbols-outlined text-sm">event_available</span> My Events
-                            </span>
-                            <button onclick="showView('create_event')" class="w-[34px] h-[34px] rounded-full bg-forest-green text-warm-cream flex items-center justify-center active:scale-95 transition-transform shadow-md cursor-pointer border-0 flex-shrink-0" title="Add Event">
-                                <span class="material-symbols-outlined text-[15px] font-black">add</span>
-                            </button>
-                        </h3>
-                        <div class="space-y-3" id="my-events-container">
-                            <!-- Dynamic user events cards -->
-                        </div>
-                    </section>
 
                     <!-- Unified Badges Section -->
                     <section id="widget-badges-section" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
@@ -22586,7 +22471,7 @@ function renderEventsList() {
             const hostAvatar = hostNeighbor ? hostNeighbor.avatar : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80';
             
             const card = document.createElement('div');
-            card.className = "h-56 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-row cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+            card.className = "h-[350px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
             
             card.onclick = () => {
                 openEventDetail(evt.id);
@@ -22604,20 +22489,20 @@ function renderEventsList() {
             const isFree = (evt.category && evt.category.toLowerCase() === 'gifts') || (evt.type && evt.type.toLowerCase() === 'gifts');
 
             card.innerHTML = `
-                <!-- Left Image Portion -->
-                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Top Image Portion -->
+                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Right Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
+                <!-- Bottom Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
                                 ${getCategoryIconHtml(evt.type || evt.category)}
                                 <h4 class="list-card-title truncate leading-tight">${evt.title}</h4>
                             </div>
-                            <span class="flex-shrink-0 text-[11px] text-[#308A5E] dark:text-[#34D399] font-bold tracking-wide ml-2">${formattedCategory}</span>
+                            <span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-[#308A5E] text-white uppercase tracking-wider text-[8.5px] font-bold ml-2">${formattedCategory}</span>
                         </div>
                         <p class="list-card-description">${evt.desc}</p>
                     </div>
@@ -26536,12 +26421,12 @@ function resetOfferFormToSelector() {
     const formWrapper = document.getElementById('offer-form-wrapper');
     const dashboard = document.getElementById('creative-dashboard-screen');
     
-    // Always show dashboard by default on close/reset to ensure we go back to Creative Dashboard first
+    // Always show selector screen directly
+    if (selectorScreen) {
+        selectorScreen.classList.remove('hidden');
+    }
     if (dashboard) {
-        dashboard.classList.remove('hidden');
-        if (selectorScreen) selectorScreen.classList.add('hidden');
-    } else {
-        if (selectorScreen) selectorScreen.classList.remove('hidden');
+        dashboard.classList.add('hidden');
     }
     if (formWrapper) formWrapper.classList.add('hidden');
 
@@ -28503,7 +28388,7 @@ function renderChatTradeDrawer(conv) {
                 <div class="flex items-center justify-center w-full">
                     <input type="file" id="chat-photo-input" accept="image/*" class="hidden" onchange="handleSendChatPhoto(this)"/>
                     <input type="file" id="chat-camera-input" accept="image/*" capture="camera" class="hidden" onchange="handleSendChatPhoto(this)"/>
-                    <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper-group" onpointerdown="window.handleChatInputWrapperTouch(event, this)">
+                    <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper-group" onclick="window.handleChatInputWrapperClick(event, this)">
                         <input class="flex-grow bg-transparent border-0 h-full py-0 px-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
                         <div class="flex items-center gap-1.5 flex-shrink-0">
                             ${hasMapViewLink ? `
@@ -28545,12 +28430,12 @@ function renderChatTradeDrawer(conv) {
                 <div class="flex items-center justify-center w-full">
                     <input type="file" id="chat-photo-input" accept="image/*" class="hidden" onchange="handleSendChatPhoto(this)"/>
                     <input type="file" id="chat-camera-input" accept="image/*" capture="camera" class="hidden" onchange="handleSendChatPhoto(this)"/>
-                    <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper" onpointerdown="window.handleChatInputWrapperTouch(event, this)">
+                    <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper" onclick="window.handleChatInputWrapperClick(event, this)">
                         <input class="flex-grow bg-transparent border-0 h-full py-0 px-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
                         <div class="flex items-center gap-1.5 flex-shrink-0">
                             ${isKarmaGift ? '' : `
                             ${status === 'accepted' || status === 'completed' ? '' : `
-                            <button id="chat-offer-swap-pill-btn" class="w-[38px] h-[38px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onpointerdown="window.openSwapLifecycleModal('initiator', '${conv.id}'); event.preventDefault();" onclick="window.openSwapLifecycleModal('initiator', '${conv.id}')" title="${conv.isRequest ? 'Propose Different Swap' : 'Offer a Swap'}">
+                            <button id="chat-offer-swap-pill-btn" class="w-[38px] h-[38px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onclick="window.openSwapLifecycleModal('initiator', '${conv.id}')" title="${conv.isRequest ? 'Propose Different Swap' : 'Offer a Swap'}">
                                 <span class="material-symbols-outlined text-[17px]">handshake</span>
                             </button>
                             `}
@@ -32001,7 +31886,7 @@ function renderVillageListView() {
 
     filteredListings.forEach(item => {
         const card = document.createElement('div');
-        card.className = "h-56 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-row cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-[350px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail(item.id);
 
         const itemImages = item.image ? item.image.split('|||').filter(Boolean) : [];
@@ -32016,20 +31901,20 @@ function renderVillageListView() {
             const isKarma = neighbor && neighbor.isKarma;
             const isFree = isKarma || (item.category && item.category.toLowerCase() === 'gifts');
             card.innerHTML = `
-                <!-- Left Image Portion -->
-                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Top Image Portion -->
+                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Right Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
+                <!-- Bottom Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
                                 ${getCategoryIconHtml(item.category)}
                                 <h4 class="list-card-title truncate leading-tight">${item.title}</h4>
                             </div>
-                            <span class="flex-shrink-0 text-[11px] text-[#308A5E] dark:text-[#34D399] font-bold tracking-wide ml-2">${formattedCategory}</span>
+                            <span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-[#308A5E] text-white uppercase tracking-wider text-[8.5px] font-bold ml-2">${formattedCategory}</span>
                         </div>
                         <p class="list-card-description">${item.desc}</p>
                     </div>
@@ -32045,13 +31930,13 @@ function renderVillageListView() {
         } else {
             const isFree = (item.category && item.category.toLowerCase() === 'gifts');
             card.innerHTML = `
-                <!-- Left Image Portion -->
-                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Top Image Portion -->
+                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Right Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
+                <!-- Bottom Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -32061,7 +31946,7 @@ function renderVillageListView() {
                                     <span class="text-[9px] text-[#D99036] dark:text-[#FBBF24] font-bold bg-[#D99036]/10 dark:bg-[#FBBF24]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
                                 </h4>
                             </div>
-                            <span class="flex-shrink-0 text-[11px] text-[#308A5E] dark:text-[#34D399] font-bold tracking-wide ml-2">${formattedCategory}</span>
+                            <span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-[#308A5E] text-white uppercase tracking-wider text-[8.5px] font-bold ml-2">${formattedCategory}</span>
                         </div>
                         <p class="list-card-description">${item.desc}</p>
                     </div>
@@ -32196,7 +32081,7 @@ function renderNeedsBoardView() {
     filteredNeeds.forEach(need => {
         const card = document.createElement('div');
         const needId = need.id;
-        card.className = "h-56 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-row cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-[350px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail('need_' + needId);
         
         const currentUser = state.currentUser || {};
@@ -32213,13 +32098,13 @@ function renderNeedsBoardView() {
 
         if (isUserNeed) {
             card.innerHTML = `
-                <!-- Left Image Portion -->
-                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Top Image Portion -->
+                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Right Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
+                <!-- Bottom Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -32229,7 +32114,7 @@ function renderNeedsBoardView() {
                                     <span class="text-[9px] text-[#D99036] dark:text-[#FBBF24] font-bold bg-[#D99036]/10 dark:bg-[#FBBF24]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
                                 </h4>
                             </div>
-                            <span class="flex-shrink-0 text-[11px] text-[#308A5E] dark:text-[#34D399] font-bold tracking-wide ml-2">${formattedCategory}</span>
+                            <span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-[#308A5E] text-white uppercase tracking-wider text-[8.5px] font-bold ml-2">${formattedCategory}</span>
                         </div>
                         <p class="list-card-description">${need.needDesc}</p>
                     </div>
@@ -32244,20 +32129,20 @@ function renderNeedsBoardView() {
             `;
         } else {
             card.innerHTML = `
-                <!-- Left Image Portion -->
-                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Top Image Portion -->
+                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Right Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
+                <!-- Bottom Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
                                 ${getCategoryIconHtml(need.category)}
                                 <h4 class="list-card-title truncate leading-tight">${need.needTitle}</h4>
                             </div>
-                            <span class="flex-shrink-0 text-[11px] text-[#308A5E] dark:text-[#34D399] font-bold tracking-wide ml-2">${formattedCategory}</span>
+                            <span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-[#308A5E] text-white uppercase tracking-wider text-[8.5px] font-bold ml-2">${formattedCategory}</span>
                         </div>
                         <p class="list-card-description">${need.needDesc}</p>
                     </div>
@@ -41231,6 +41116,24 @@ function syncVillageSearch(val) {
         mainInput.value = val;
     }
     
+    // Toggle segmented control pills visibility based on active search typing
+    const pillContainers = [
+        'village-segmented-control',
+        'village-list-segmented-control',
+        'village-needs-segmented-control',
+        'village-events-segmented-control'
+    ];
+    pillContainers.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            if (val.trim() !== "") {
+                el.classList.add('hidden');
+            } else {
+                el.classList.remove('hidden');
+            }
+        }
+    });
+    
     // Update other list-level searches to match
     const subInputs = [
         'village-list-search-input',
@@ -42186,7 +42089,7 @@ function goToCurrentIntelMatch() {
 }
 window.goToCurrentIntelMatch = goToCurrentIntelMatch;
 
-function adjustSearchSuggestionsVisibility(show) {
+function adjustSearchSuggestionsVisibility(show, immediate = false) {
     const allSuggestionsIds = [
         'village-search-suggestions',
         'village-list-search-suggestions',
@@ -42200,8 +42103,8 @@ function adjustSearchSuggestionsVisibility(show) {
     }
     
     const activeInfo = getActiveSuggestionsInfo();
-    const isMapView = activeInfo.input && activeInfo.input.id === 'village-search-input';
     const intelPill = document.getElementById('village-search-intel-pill');
+    if (intelPill) intelPill.classList.add('hidden');
     
     if (show) {
         // First hide others
@@ -42212,39 +42115,32 @@ function adjustSearchSuggestionsVisibility(show) {
             }
         });
         
-        if (isMapView && intelPill && window.currentIntelMatches && window.currentIntelMatches.length > 0) {
-            intelPill.classList.remove('hidden');
-            if (activeInfo.suggestions) {
-                activeInfo.suggestions.classList.add('hidden');
-            }
-            if (activeInfo.overlay) {
-                activeInfo.overlay.style.height = '92px';
-            }
-        } else {
-            if (intelPill) intelPill.classList.add('hidden');
-            if (activeInfo.suggestions) {
-                activeInfo.suggestions.classList.remove('hidden');
-                if (activeInfo.overlay) {
-                    const contentHeight = activeInfo.suggestions.scrollHeight;
-                    const targetHeight = Math.min(48 + contentHeight, 288);
-                    activeInfo.overlay.style.height = `${targetHeight}px`;
-                }
-            }
+        if (activeInfo.suggestions) {
+            activeInfo.suggestions.classList.remove('hidden');
+        }
+        if (activeInfo.overlay) {
+            activeInfo.overlay.style.height = 'auto';
         }
     } else {
         const mainOverlay = document.getElementById('village-search-bar-overlay');
         if (mainOverlay) {
-            mainOverlay.style.height = '48px';
+            mainOverlay.style.height = 'auto';
         }
-        if (intelPill) {
-            intelPill.classList.add('hidden');
-        }
-        window.searchSuggestionsTimeout = setTimeout(() => {
+        
+        const isEmpty = activeInfo.input ? activeInfo.input.value.trim() === "" : true;
+        if (immediate || isEmpty) {
             allSuggestionsIds.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('hidden');
             });
-        }, 300);
+        } else {
+            window.searchSuggestionsTimeout = setTimeout(() => {
+                allSuggestionsIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.add('hidden');
+                });
+            }, 300);
+        }
     }
 }
 window.adjustSearchSuggestionsVisibility = adjustSearchSuggestionsVisibility;
@@ -42265,7 +42161,7 @@ function updateSearchSuggestions(query) {
         }
         window.currentIntelMatches = [];
         window.currentIntelIndex = -1;
-        adjustSearchSuggestionsVisibility(false);
+        adjustSearchSuggestionsVisibility(false, true);
         return;
     }
 
@@ -42401,38 +42297,7 @@ function updateSearchSuggestions(query) {
         });
     }
 
-    if (isMapView && intelPill) {
-        container.classList.add('hidden');
-        container.innerHTML = "";
 
-        window.currentIntelMatches = [...exactMatches, ...similarMatches];
-        
-        if (window.currentIntelMatches.length === 0) {
-            window.currentIntelIndex = -1;
-            const titleEl = document.getElementById('intel-match-title');
-            const badgeEl = document.getElementById('intel-match-badge');
-            const indexEl = document.getElementById('intel-match-index');
-            const iconEl = document.getElementById('intel-match-icon');
-            const prevBtn = document.getElementById('btn-intel-prev');
-            const nextBtn = document.getElementById('btn-intel-next');
-            if (titleEl) titleEl.textContent = "No matching suggestions";
-            if (badgeEl) badgeEl.style.display = 'none';
-            if (indexEl) indexEl.textContent = "0 of 0";
-            if (iconEl) iconEl.textContent = "search_off";
-            if (prevBtn && nextBtn) {
-                prevBtn.style.opacity = '0.3';
-                prevBtn.style.pointerEvents = 'none';
-                nextBtn.style.opacity = '0.3';
-                nextBtn.style.pointerEvents = 'none';
-            }
-        } else {
-            window.currentIntelIndex = 0;
-            updateIntelPillUI(exactMatches.length, similarMatches.length);
-        }
-        intelPill.classList.remove('hidden');
-        adjustSearchSuggestionsVisibility(true);
-        return;
-    }
 
     if (exactMatches.length === 0 && similarMatches.length === 0) {
         container.innerHTML = `<div class="px-3 py-2.5 text-xs text-on-surface-variant text-center">No matching suggestions</div>`;
@@ -45860,7 +45725,7 @@ const initChatInputHeightObserver = () => {
 };
 document.addEventListener('DOMContentLoaded', initChatInputHeightObserver);
 
-window.handleChatInputWrapperTouch = function(event, wrapper) {
+window.handleChatInputWrapperClick = function(event, wrapper) {
     if (event.target.closest('button') || event.target.closest('input[type="file"]') || event.target.tagName.toLowerCase() === 'input') {
         return;
     }
@@ -46393,6 +46258,60 @@ function initSearchBehavior() {
             }
         });
     });
+
+    // Global listener to prevent clicking on listings when dismissing search/keyboard
+    const handleOutsideClick = (e) => {
+        const activeEl = document.activeElement;
+        if (!activeEl) return;
+
+        const searchInputIds = [
+            'village-search-input',
+            'village-list-search-input',
+            'village-needs-search-input',
+            'village-events-search-input',
+            'village-bulletins-search-input',
+            'chat-search-input'
+        ];
+
+        if (searchInputIds.includes(activeEl.id)) {
+            // Check if user clicked inside the active search input, its clear button, or its suggestions dropdown
+            const isClickOnInput = activeEl.contains(e.target) || e.target === activeEl;
+            
+            // Check clear buttons
+            const isClickOnClearBtn = e.target.closest('#btn-map-search-clear') ||
+                                      e.target.closest('#btn-list-search-clear') ||
+                                      e.target.closest('#btn-needs-search-clear') ||
+                                      e.target.closest('#btn-events-search-clear') ||
+                                      e.target.closest('#btn-bulletins-search-clear') ||
+                                      e.target.closest('#btn-clear-chat-search');
+
+            // Check suggestions containers
+            const suggestionsIds = [
+                'village-search-suggestions',
+                'village-list-search-suggestions',
+                'village-needs-search-suggestions',
+                'village-events-search-suggestions'
+            ];
+            const isClickOnSuggestions = suggestionsIds.some(id => {
+                const el = document.getElementById(id);
+                return el && (el.contains(e.target) || el === e.target);
+            });
+
+            // If clicked outside all of these, dismiss search and intercept click
+            if (!isClickOnInput && !isClickOnClearBtn && !isClickOnSuggestions) {
+                // Blur active input to pull down keyboard
+                activeEl.blur();
+                // Prevent list/listing click action from triggering
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }
+    };
+
+    // Use capturing phase (true) so we intercept events before they reach cards
+    document.addEventListener('touchstart', handleOutsideClick, { capture: true, passive: false });
+    document.addEventListener('mousedown', handleOutsideClick, { capture: true });
+    document.addEventListener('click', handleOutsideClick, { capture: true });
 }
 
 // Global function to clear search and exit search mode
@@ -46435,9 +46354,9 @@ function clearSearchInput(inputId) {
         }
     }
     
-    // Hide search suggestions
+    // Hide search suggestions immediately
     if (typeof adjustSearchSuggestionsVisibility === 'function') {
-        adjustSearchSuggestionsVisibility(false);
+        adjustSearchSuggestionsVisibility(false, true);
     }
     
     // Synchronize all search bars
@@ -46489,7 +46408,6 @@ function initKeyboardLayoutHandler() {
     };
 
     window.visualViewport.addEventListener('resize', handleViewportChange);
-    window.visualViewport.addEventListener('scroll', handleViewportChange);
     
     // Initial run
     handleViewportChange();

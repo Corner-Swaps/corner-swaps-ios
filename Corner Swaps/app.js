@@ -6207,7 +6207,7 @@ function renderEventsList() {
             const hostAvatar = hostNeighbor ? hostNeighbor.avatar : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80';
             
             const card = document.createElement('div');
-            card.className = "h-56 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-row cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+            card.className = "h-[350px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
             
             card.onclick = () => {
                 openEventDetail(evt.id);
@@ -6225,20 +6225,20 @@ function renderEventsList() {
             const isFree = (evt.category && evt.category.toLowerCase() === 'gifts') || (evt.type && evt.type.toLowerCase() === 'gifts');
 
             card.innerHTML = `
-                <!-- Left Image Portion -->
-                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Top Image Portion -->
+                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Right Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
+                <!-- Bottom Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
                                 ${getCategoryIconHtml(evt.type || evt.category)}
                                 <h4 class="list-card-title truncate leading-tight">${evt.title}</h4>
                             </div>
-                            <span class="flex-shrink-0 text-[11px] text-[#308A5E] dark:text-[#34D399] font-bold tracking-wide ml-2">${formattedCategory}</span>
+                            <span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-[#308A5E] text-white uppercase tracking-wider text-[8.5px] font-bold ml-2">${formattedCategory}</span>
                         </div>
                         <p class="list-card-description">${evt.desc}</p>
                     </div>
@@ -10157,12 +10157,12 @@ function resetOfferFormToSelector() {
     const formWrapper = document.getElementById('offer-form-wrapper');
     const dashboard = document.getElementById('creative-dashboard-screen');
     
-    // Always show dashboard by default on close/reset to ensure we go back to Creative Dashboard first
+    // Always show selector screen directly
+    if (selectorScreen) {
+        selectorScreen.classList.remove('hidden');
+    }
     if (dashboard) {
-        dashboard.classList.remove('hidden');
-        if (selectorScreen) selectorScreen.classList.add('hidden');
-    } else {
-        if (selectorScreen) selectorScreen.classList.remove('hidden');
+        dashboard.classList.add('hidden');
     }
     if (formWrapper) formWrapper.classList.add('hidden');
 
@@ -12124,7 +12124,7 @@ function renderChatTradeDrawer(conv) {
                 <div class="flex items-center justify-center w-full">
                     <input type="file" id="chat-photo-input" accept="image/*" class="hidden" onchange="handleSendChatPhoto(this)"/>
                     <input type="file" id="chat-camera-input" accept="image/*" capture="camera" class="hidden" onchange="handleSendChatPhoto(this)"/>
-                    <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper-group" onpointerdown="window.handleChatInputWrapperTouch(event, this)">
+                    <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper-group" onclick="window.handleChatInputWrapperClick(event, this)">
                         <input class="flex-grow bg-transparent border-0 h-full py-0 px-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
                         <div class="flex items-center gap-1.5 flex-shrink-0">
                             ${hasMapViewLink ? `
@@ -12166,12 +12166,12 @@ function renderChatTradeDrawer(conv) {
                 <div class="flex items-center justify-center w-full">
                     <input type="file" id="chat-photo-input" accept="image/*" class="hidden" onchange="handleSendChatPhoto(this)"/>
                     <input type="file" id="chat-camera-input" accept="image/*" capture="camera" class="hidden" onchange="handleSendChatPhoto(this)"/>
-                    <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper" onpointerdown="window.handleChatInputWrapperTouch(event, this)">
+                    <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper" onclick="window.handleChatInputWrapperClick(event, this)">
                         <input class="flex-grow bg-transparent border-0 h-full py-0 px-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
                         <div class="flex items-center gap-1.5 flex-shrink-0">
                             ${isKarmaGift ? '' : `
                             ${status === 'accepted' || status === 'completed' ? '' : `
-                            <button id="chat-offer-swap-pill-btn" class="w-[38px] h-[38px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onpointerdown="window.openSwapLifecycleModal('initiator', '${conv.id}'); event.preventDefault();" onclick="window.openSwapLifecycleModal('initiator', '${conv.id}')" title="${conv.isRequest ? 'Propose Different Swap' : 'Offer a Swap'}">
+                            <button id="chat-offer-swap-pill-btn" class="w-[38px] h-[38px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onclick="window.openSwapLifecycleModal('initiator', '${conv.id}')" title="${conv.isRequest ? 'Propose Different Swap' : 'Offer a Swap'}">
                                 <span class="material-symbols-outlined text-[17px]">handshake</span>
                             </button>
                             `}
@@ -15622,7 +15622,7 @@ function renderVillageListView() {
 
     filteredListings.forEach(item => {
         const card = document.createElement('div');
-        card.className = "h-56 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-row cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-[350px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail(item.id);
 
         const itemImages = item.image ? item.image.split('|||').filter(Boolean) : [];
@@ -15637,20 +15637,20 @@ function renderVillageListView() {
             const isKarma = neighbor && neighbor.isKarma;
             const isFree = isKarma || (item.category && item.category.toLowerCase() === 'gifts');
             card.innerHTML = `
-                <!-- Left Image Portion -->
-                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Top Image Portion -->
+                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Right Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
+                <!-- Bottom Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
                                 ${getCategoryIconHtml(item.category)}
                                 <h4 class="list-card-title truncate leading-tight">${item.title}</h4>
                             </div>
-                            <span class="flex-shrink-0 text-[11px] text-[#308A5E] dark:text-[#34D399] font-bold tracking-wide ml-2">${formattedCategory}</span>
+                            <span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-[#308A5E] text-white uppercase tracking-wider text-[8.5px] font-bold ml-2">${formattedCategory}</span>
                         </div>
                         <p class="list-card-description">${item.desc}</p>
                     </div>
@@ -15666,13 +15666,13 @@ function renderVillageListView() {
         } else {
             const isFree = (item.category && item.category.toLowerCase() === 'gifts');
             card.innerHTML = `
-                <!-- Left Image Portion -->
-                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Top Image Portion -->
+                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Right Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
+                <!-- Bottom Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -15682,7 +15682,7 @@ function renderVillageListView() {
                                     <span class="text-[9px] text-[#D99036] dark:text-[#FBBF24] font-bold bg-[#D99036]/10 dark:bg-[#FBBF24]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
                                 </h4>
                             </div>
-                            <span class="flex-shrink-0 text-[11px] text-[#308A5E] dark:text-[#34D399] font-bold tracking-wide ml-2">${formattedCategory}</span>
+                            <span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-[#308A5E] text-white uppercase tracking-wider text-[8.5px] font-bold ml-2">${formattedCategory}</span>
                         </div>
                         <p class="list-card-description">${item.desc}</p>
                     </div>
@@ -15817,7 +15817,7 @@ function renderNeedsBoardView() {
     filteredNeeds.forEach(need => {
         const card = document.createElement('div');
         const needId = need.id;
-        card.className = "h-56 bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-row cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "h-[350px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail('need_' + needId);
         
         const currentUser = state.currentUser || {};
@@ -15834,13 +15834,13 @@ function renderNeedsBoardView() {
 
         if (isUserNeed) {
             card.innerHTML = `
-                <!-- Left Image Portion -->
-                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Top Image Portion -->
+                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Right Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
+                <!-- Bottom Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -15850,7 +15850,7 @@ function renderNeedsBoardView() {
                                     <span class="text-[9px] text-[#D99036] dark:text-[#FBBF24] font-bold bg-[#D99036]/10 dark:bg-[#FBBF24]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
                                 </h4>
                             </div>
-                            <span class="flex-shrink-0 text-[11px] text-[#308A5E] dark:text-[#34D399] font-bold tracking-wide ml-2">${formattedCategory}</span>
+                            <span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-[#308A5E] text-white uppercase tracking-wider text-[8.5px] font-bold ml-2">${formattedCategory}</span>
                         </div>
                         <p class="list-card-description">${need.needDesc}</p>
                     </div>
@@ -15865,20 +15865,20 @@ function renderNeedsBoardView() {
             `;
         } else {
             card.innerHTML = `
-                <!-- Left Image Portion -->
-                <div class="h-full w-1/2 relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-r border-outline-variant/30 dark:border-outline-variant/15">
+                <!-- Top Image Portion -->
+                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
-                <!-- Right Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-1/2">
+                <!-- Bottom Details Portion -->
+                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
                                 ${getCategoryIconHtml(need.category)}
                                 <h4 class="list-card-title truncate leading-tight">${need.needTitle}</h4>
                             </div>
-                            <span class="flex-shrink-0 text-[11px] text-[#308A5E] dark:text-[#34D399] font-bold tracking-wide ml-2">${formattedCategory}</span>
+                            <span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-[#308A5E] text-white uppercase tracking-wider text-[8.5px] font-bold ml-2">${formattedCategory}</span>
                         </div>
                         <p class="list-card-description">${need.needDesc}</p>
                     </div>
@@ -24852,6 +24852,24 @@ function syncVillageSearch(val) {
         mainInput.value = val;
     }
     
+    // Toggle segmented control pills visibility based on active search typing
+    const pillContainers = [
+        'village-segmented-control',
+        'village-list-segmented-control',
+        'village-needs-segmented-control',
+        'village-events-segmented-control'
+    ];
+    pillContainers.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            if (val.trim() !== "") {
+                el.classList.add('hidden');
+            } else {
+                el.classList.remove('hidden');
+            }
+        }
+    });
+    
     // Update other list-level searches to match
     const subInputs = [
         'village-list-search-input',
@@ -25807,7 +25825,7 @@ function goToCurrentIntelMatch() {
 }
 window.goToCurrentIntelMatch = goToCurrentIntelMatch;
 
-function adjustSearchSuggestionsVisibility(show) {
+function adjustSearchSuggestionsVisibility(show, immediate = false) {
     const allSuggestionsIds = [
         'village-search-suggestions',
         'village-list-search-suggestions',
@@ -25821,8 +25839,8 @@ function adjustSearchSuggestionsVisibility(show) {
     }
     
     const activeInfo = getActiveSuggestionsInfo();
-    const isMapView = activeInfo.input && activeInfo.input.id === 'village-search-input';
     const intelPill = document.getElementById('village-search-intel-pill');
+    if (intelPill) intelPill.classList.add('hidden');
     
     if (show) {
         // First hide others
@@ -25833,39 +25851,32 @@ function adjustSearchSuggestionsVisibility(show) {
             }
         });
         
-        if (isMapView && intelPill && window.currentIntelMatches && window.currentIntelMatches.length > 0) {
-            intelPill.classList.remove('hidden');
-            if (activeInfo.suggestions) {
-                activeInfo.suggestions.classList.add('hidden');
-            }
-            if (activeInfo.overlay) {
-                activeInfo.overlay.style.height = '92px';
-            }
-        } else {
-            if (intelPill) intelPill.classList.add('hidden');
-            if (activeInfo.suggestions) {
-                activeInfo.suggestions.classList.remove('hidden');
-                if (activeInfo.overlay) {
-                    const contentHeight = activeInfo.suggestions.scrollHeight;
-                    const targetHeight = Math.min(48 + contentHeight, 288);
-                    activeInfo.overlay.style.height = `${targetHeight}px`;
-                }
-            }
+        if (activeInfo.suggestions) {
+            activeInfo.suggestions.classList.remove('hidden');
+        }
+        if (activeInfo.overlay) {
+            activeInfo.overlay.style.height = 'auto';
         }
     } else {
         const mainOverlay = document.getElementById('village-search-bar-overlay');
         if (mainOverlay) {
-            mainOverlay.style.height = '48px';
+            mainOverlay.style.height = 'auto';
         }
-        if (intelPill) {
-            intelPill.classList.add('hidden');
-        }
-        window.searchSuggestionsTimeout = setTimeout(() => {
+        
+        const isEmpty = activeInfo.input ? activeInfo.input.value.trim() === "" : true;
+        if (immediate || isEmpty) {
             allSuggestionsIds.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('hidden');
             });
-        }, 300);
+        } else {
+            window.searchSuggestionsTimeout = setTimeout(() => {
+                allSuggestionsIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.add('hidden');
+                });
+            }, 300);
+        }
     }
 }
 window.adjustSearchSuggestionsVisibility = adjustSearchSuggestionsVisibility;
@@ -25886,7 +25897,7 @@ function updateSearchSuggestions(query) {
         }
         window.currentIntelMatches = [];
         window.currentIntelIndex = -1;
-        adjustSearchSuggestionsVisibility(false);
+        adjustSearchSuggestionsVisibility(false, true);
         return;
     }
 
@@ -26022,38 +26033,7 @@ function updateSearchSuggestions(query) {
         });
     }
 
-    if (isMapView && intelPill) {
-        container.classList.add('hidden');
-        container.innerHTML = "";
 
-        window.currentIntelMatches = [...exactMatches, ...similarMatches];
-        
-        if (window.currentIntelMatches.length === 0) {
-            window.currentIntelIndex = -1;
-            const titleEl = document.getElementById('intel-match-title');
-            const badgeEl = document.getElementById('intel-match-badge');
-            const indexEl = document.getElementById('intel-match-index');
-            const iconEl = document.getElementById('intel-match-icon');
-            const prevBtn = document.getElementById('btn-intel-prev');
-            const nextBtn = document.getElementById('btn-intel-next');
-            if (titleEl) titleEl.textContent = "No matching suggestions";
-            if (badgeEl) badgeEl.style.display = 'none';
-            if (indexEl) indexEl.textContent = "0 of 0";
-            if (iconEl) iconEl.textContent = "search_off";
-            if (prevBtn && nextBtn) {
-                prevBtn.style.opacity = '0.3';
-                prevBtn.style.pointerEvents = 'none';
-                nextBtn.style.opacity = '0.3';
-                nextBtn.style.pointerEvents = 'none';
-            }
-        } else {
-            window.currentIntelIndex = 0;
-            updateIntelPillUI(exactMatches.length, similarMatches.length);
-        }
-        intelPill.classList.remove('hidden');
-        adjustSearchSuggestionsVisibility(true);
-        return;
-    }
 
     if (exactMatches.length === 0 && similarMatches.length === 0) {
         container.innerHTML = `<div class="px-3 py-2.5 text-xs text-on-surface-variant text-center">No matching suggestions</div>`;
@@ -29481,7 +29461,7 @@ const initChatInputHeightObserver = () => {
 };
 document.addEventListener('DOMContentLoaded', initChatInputHeightObserver);
 
-window.handleChatInputWrapperTouch = function(event, wrapper) {
+window.handleChatInputWrapperClick = function(event, wrapper) {
     if (event.target.closest('button') || event.target.closest('input[type="file"]') || event.target.tagName.toLowerCase() === 'input') {
         return;
     }
@@ -30014,6 +29994,60 @@ function initSearchBehavior() {
             }
         });
     });
+
+    // Global listener to prevent clicking on listings when dismissing search/keyboard
+    const handleOutsideClick = (e) => {
+        const activeEl = document.activeElement;
+        if (!activeEl) return;
+
+        const searchInputIds = [
+            'village-search-input',
+            'village-list-search-input',
+            'village-needs-search-input',
+            'village-events-search-input',
+            'village-bulletins-search-input',
+            'chat-search-input'
+        ];
+
+        if (searchInputIds.includes(activeEl.id)) {
+            // Check if user clicked inside the active search input, its clear button, or its suggestions dropdown
+            const isClickOnInput = activeEl.contains(e.target) || e.target === activeEl;
+            
+            // Check clear buttons
+            const isClickOnClearBtn = e.target.closest('#btn-map-search-clear') ||
+                                      e.target.closest('#btn-list-search-clear') ||
+                                      e.target.closest('#btn-needs-search-clear') ||
+                                      e.target.closest('#btn-events-search-clear') ||
+                                      e.target.closest('#btn-bulletins-search-clear') ||
+                                      e.target.closest('#btn-clear-chat-search');
+
+            // Check suggestions containers
+            const suggestionsIds = [
+                'village-search-suggestions',
+                'village-list-search-suggestions',
+                'village-needs-search-suggestions',
+                'village-events-search-suggestions'
+            ];
+            const isClickOnSuggestions = suggestionsIds.some(id => {
+                const el = document.getElementById(id);
+                return el && (el.contains(e.target) || el === e.target);
+            });
+
+            // If clicked outside all of these, dismiss search and intercept click
+            if (!isClickOnInput && !isClickOnClearBtn && !isClickOnSuggestions) {
+                // Blur active input to pull down keyboard
+                activeEl.blur();
+                // Prevent list/listing click action from triggering
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }
+    };
+
+    // Use capturing phase (true) so we intercept events before they reach cards
+    document.addEventListener('touchstart', handleOutsideClick, { capture: true, passive: false });
+    document.addEventListener('mousedown', handleOutsideClick, { capture: true });
+    document.addEventListener('click', handleOutsideClick, { capture: true });
 }
 
 // Global function to clear search and exit search mode
@@ -30056,9 +30090,9 @@ function clearSearchInput(inputId) {
         }
     }
     
-    // Hide search suggestions
+    // Hide search suggestions immediately
     if (typeof adjustSearchSuggestionsVisibility === 'function') {
-        adjustSearchSuggestionsVisibility(false);
+        adjustSearchSuggestionsVisibility(false, true);
     }
     
     // Synchronize all search bars
@@ -30110,7 +30144,6 @@ function initKeyboardLayoutHandler() {
     };
 
     window.visualViewport.addEventListener('resize', handleViewportChange);
-    window.visualViewport.addEventListener('scroll', handleViewportChange);
     
     // Initial run
     handleViewportChange();
