@@ -3777,6 +3777,14 @@ function showView(viewId, mode) {
         initLeafletMap();
         switchVillageSegment(currentVillageSegment);
         
+        // Force a delayed refresh to guarantee the map is fully loaded, markers plotted, and tiles aligned
+        setTimeout(() => {
+            if (leafletMap) {
+                leafletMap.invalidateSize();
+                switchVillageSegment(currentVillageSegment);
+            }
+        }, 500);
+
         // Repeated staggered calls to invalidateSize to ensure correct loading, safe for transition changes
         const checkAndInvalidate = () => {
             const mapEl = document.getElementById('map');
@@ -7036,6 +7044,21 @@ function initLeafletMap() {
         updateWhenIdle: false
     }).addTo(leafletMap);
 
+    // Setup ResizeObserver to automatically handle size changes smoothly (fixes simulator/notch size transitions)
+    try {
+        const resizeObserver = new ResizeObserver(() => {
+            if (leafletMap) {
+                leafletMap.invalidateSize();
+            }
+        });
+        const mapEl = document.getElementById('map');
+        if (mapEl) {
+            resizeObserver.observe(mapEl);
+        }
+    } catch (e) {
+        console.error("ResizeObserver not supported or failed:", e);
+    }
+
     leafletMap.on('click', (e) => {
         closeMapItemDetail();
         closeMapItemPeek();
@@ -9057,103 +9080,43 @@ function renderMapFilterCircles() {
     });
 
     const categoriesHtml = filteredCategories.map((cat, idx) => {
-        const delay = (idx + 1) * 0.025; // 25ms stagger per item
-        const animStyle = `transition-delay: ${delay}s !important; -webkit-transition-delay: ${delay}s !important;`;
+        const delay = idx * 0.02;
+        const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
+        
+        const isActive = state.activeMapFilters.includes(cat.name) || (cat.name === 'Clear Filter' && state.activeMapFilters.length === 0);
 
         return `
-            <div class="map-category-item flex items-center justify-start w-full select-none cursor-pointer active:scale-95 transition-transform shrink-0 relative" 
-                 data-category-name="${cat.name}" 
-                 onclick="toggleMapFilterCategory('${cat.name}', this)" 
+            <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-95 transition-transform" 
+                 onclick="selectMapCategoryFilter('${cat.name}', this)" 
                  title="${cat.displayName}"
-                 style="${animStyle} padding: 4px 8px !important;">
-                <!-- Circle element -->
-                <div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all duration-200 filter-category-circle flex-shrink-0 relative" 
-                     data-category="${cat.name}">
-                    <span class="material-symbols-outlined text-[13px]">${cat.icon}</span>
-                </div>
-                <span class="category-label text-[11px] font-bold ml-2.5 text-black dark:text-white">${cat.displayName}</span>
+                 style="${animStyle}">
+                <span class="material-symbols-outlined text-[14px]" style="color: ${cat.color} !important; opacity: ${isActive ? 1 : 0.75};">${cat.icon}</span>
+                <span>${cat.displayName}</span>
             </div>
         `;
     }).join('');
 
     dropdown.innerHTML = categoriesHtml;
-
-    // Apply styles to circles after rendering
-    dropdown.querySelectorAll('.filter-category-circle').forEach(circle => {
-        const catName = circle.getAttribute('data-category');
-        const cat = MAP_FILTER_CATEGORIES.find(c => c.name === catName);
-        const isActive = state.activeMapFilters.includes(catName);
-        if (cat) {
-            updateCategoryCircleStyle(circle, cat, isActive);
-        }
-    });
-    if (typeof renderLeftDrawerFilters === 'function') {
-        renderLeftDrawerFilters();
-    }
 }
 window.renderMapFilterCircles = renderMapFilterCircles;
 
-function toggleMapFilterCategory(categoryName, element) {
-    if (typeof playSound === 'function') playSound('click');
-    
-    // If info mode is active, display info popup and skip filtering logic
-    if (mapInfoModeActive) {
-        showMapCategoryInfo(categoryName);
-        return;
-    }
-    
-    if (!state.activeMapFilters) {
-        state.activeMapFilters = [];
-    }
-    
-    if (categoryName === "Clear Filter") {
-        state.activeMapFilters = [];
+window.selectMapCategoryFilter = function(categoryName, element) {
+    playSound('click');
+    if (categoryName === 'Clear Filter') {
         activeCategoryFilter = null;
-        
-        // Deactivate all circles
-        const dropdown = document.getElementById('map-category-dropdown');
-        if (dropdown) {
-            dropdown.querySelectorAll('.filter-category-circle').forEach(circle => {
-                const catName = circle.getAttribute('data-category');
-                const cat = MAP_FILTER_CATEGORIES.find(c => c.name === catName);
-                if (cat) {
-                    updateCategoryCircleStyle(circle, cat, false);
-                }
-            });
-        }
-        
-        applyMapFiltering();
-        updateCategoryTrayUI();
-        closeMapCategoryDropdown();
-        return;
-    }
-    
-    const index = state.activeMapFilters.indexOf(categoryName);
-    const circle = element.querySelector('.filter-category-circle');
-    const cat = MAP_FILTER_CATEGORIES.find(c => c.name === categoryName);
-    
-    if (index > -1) {
-        state.activeMapFilters.splice(index, 1);
-        if (circle && cat) {
-            updateCategoryCircleStyle(circle, cat, false);
-        }
+        state.activeMapFilters = [];
     } else {
-        state.activeMapFilters.push(categoryName);
-        if (circle && cat) {
-            updateCategoryCircleStyle(circle, cat, true);
-        }
+        activeCategoryFilter = (activeCategoryFilter === categoryName) ? null : categoryName;
+        state.activeMapFilters = activeCategoryFilter ? [activeCategoryFilter] : [];
     }
+    saveState();
     
-    if (state.activeMapFilters.length === 1) {
-        activeCategoryFilter = state.activeMapFilters[0];
-    } else {
-        activeCategoryFilter = null;
-    }
+    closeMapCategoryDropdown();
     
-    applyMapFiltering();
-    updateCategoryTrayUI();
-}
-window.toggleMapFilterCategory = toggleMapFilterCategory;
+    if (typeof applyMapFiltering === 'function') applyMapFiltering();
+    if (typeof updateCategoryTrayUI === 'function') updateCategoryTrayUI();
+};
+window.toggleMapFilterCategory = window.selectMapCategoryFilter;
 
 function renderListFilterCircles() {
     const dropdown = document.getElementById('list-category-dropdown');
@@ -9164,33 +9127,21 @@ function renderListFilterCircles() {
     const categoriesHtml = filteredCategories.map((cat, idx) => {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
+        
+        const isActive = (activeCategoryFilter === cat.name) || (cat.name === 'Clear Filter' && !activeCategoryFilter);
+        
         return `
-            <div class="flex items-center justify-start w-full select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-95 transition-transform" 
                  onclick="selectListCategoryFilter('${cat.name}', this)" 
                  title="${cat.displayName}"
-                 style="${animStyle} padding: 4px 8px !important;">
-                <div class="w-[26px] h-[26px] rounded-full flex items-center justify-center shadow-md transition-all duration-200 list-filter-category-circle flex-shrink-0" 
-                     data-category="${cat.name}">
-                    <span class="material-symbols-outlined text-[12px]">${cat.icon}</span>
-                </div>
-                <span class="category-label text-[11px] font-bold ml-2.5 text-black dark:text-white">${cat.displayName}</span>
+                 style="${animStyle}">
+                <span class="material-symbols-outlined text-[14px]" style="color: ${cat.color} !important; opacity: ${isActive ? 1 : 0.75};">${cat.icon}</span>
+                <span>${cat.displayName}</span>
             </div>
         `;
     }).join('');
 
     dropdown.innerHTML = categoriesHtml;
-
-    dropdown.querySelectorAll('.list-filter-category-circle').forEach(circle => {
-        const catName = circle.getAttribute('data-category');
-        const cat = MAP_FILTER_CATEGORIES.find(c => c.name === catName);
-        const isActive = (activeCategoryFilter === catName) || (catName === 'Clear Filter' && !activeCategoryFilter);
-        if (circle && cat) {
-            updateCategoryCircleStyle(circle, cat, isActive);
-        }
-    });
-    if (typeof renderLeftDrawerFilters === 'function') {
-        renderLeftDrawerFilters();
-    }
 }
 window.renderListFilterCircles = renderListFilterCircles;
 
@@ -9198,36 +9149,26 @@ function renderNeedsFilterCircles() {
     const dropdown = document.getElementById('needs-category-dropdown');
     if (!dropdown) return;
     
-    const categoriesHtml = MAP_FILTER_CATEGORIES.map((cat, idx) => {
+    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Event or Meetup');
+    
+    const categoriesHtml = filteredCategories.map((cat, idx) => {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
+        
+        const isActive = (activeCategoryFilter === cat.name) || (cat.name === 'Clear Filter' && !activeCategoryFilter);
+        
         return `
-            <div class="flex items-center justify-start w-full select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-95 transition-transform" 
                  onclick="selectNeedsCategoryFilter('${cat.name}', this)" 
                  title="${cat.displayName}"
-                 style="${animStyle} padding: 4px 8px !important;">
-                <div class="w-[26px] h-[26px] rounded-full flex items-center justify-center shadow-md transition-all duration-200 needs-filter-category-circle flex-shrink-0" 
-                     data-category="${cat.name}">
-                    <span class="material-symbols-outlined text-[12px]">${cat.icon}</span>
-                </div>
-                <span class="category-label text-[11px] font-bold ml-2.5 text-black dark:text-white">${cat.displayName}</span>
+                 style="${animStyle}">
+                <span class="material-symbols-outlined text-[14px]" style="color: ${cat.color} !important; opacity: ${isActive ? 1 : 0.75};">${cat.icon}</span>
+                <span>${cat.displayName}</span>
             </div>
         `;
     }).join('');
 
     dropdown.innerHTML = categoriesHtml;
-
-    dropdown.querySelectorAll('.needs-filter-category-circle').forEach(circle => {
-        const catName = circle.getAttribute('data-category');
-        const cat = MAP_FILTER_CATEGORIES.find(c => c.name === catName);
-        const isActive = (activeCategoryFilter === catName) || (catName === 'Clear Filter' && !activeCategoryFilter);
-        if (circle && cat) {
-            updateCategoryCircleStyle(circle, cat, isActive);
-        }
-    });
-    if (typeof renderLeftDrawerFilters === 'function') {
-        renderLeftDrawerFilters();
-    }
 }
 window.renderNeedsFilterCircles = renderNeedsFilterCircles;
 
@@ -9304,30 +9245,21 @@ function renderEventsFilterCircles() {
     const categoriesHtml = MAP_FILTER_CATEGORIES.map((cat, idx) => {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
+        
+        const isActive = (activeCategoryFilter === cat.name) || (cat.name === 'Clear Filter' && !activeCategoryFilter);
+        
         return `
-            <div class="flex items-center justify-start w-full select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-95 transition-transform" 
                  onclick="selectEventsCategoryFilter('${cat.name}', this)" 
                  title="${cat.displayName}"
-                 style="${animStyle} padding: 4px 8px !important;">
-                <div class="w-[26px] h-[26px] rounded-full flex items-center justify-center shadow-md transition-all duration-200 events-filter-category-circle flex-shrink-0" 
-                     data-category="${cat.name}">
-                    <span class="material-symbols-outlined text-[12px]">${cat.icon}</span>
-                </div>
-                <span class="category-label text-[11px] font-bold ml-2.5 text-black dark:text-white">${cat.displayName}</span>
+                 style="${animStyle}">
+                <span class="material-symbols-outlined text-[14px]" style="color: ${cat.color} !important; opacity: ${isActive ? 1 : 0.75};">${cat.icon}</span>
+                <span>${cat.displayName}</span>
             </div>
         `;
     }).join('');
 
     dropdown.innerHTML = categoriesHtml;
-
-    dropdown.querySelectorAll('.events-filter-category-circle').forEach(circle => {
-        const catName = circle.getAttribute('data-category');
-        const cat = MAP_FILTER_CATEGORIES.find(c => c.name === catName);
-        const isActive = (activeCategoryFilter === catName) || (catName === 'Clear Filter' && !activeCategoryFilter);
-        if (circle && cat) {
-            updateCategoryCircleStyle(circle, cat, isActive);
-        }
-    });
 }
 window.renderEventsFilterCircles = renderEventsFilterCircles;
 
