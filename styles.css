@@ -1,5 +1,9 @@
 /* Custom CSS for Barterland - Organic Modernism Theme */
 
+.hidden {
+    display: none !important;
+}
+
 /* Import Google Fonts (Loaded asynchronously via link tag in head to prevent render blocking) */
 /* @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap'); */
 
@@ -1978,7 +1982,7 @@ html.dark .chat-bubble-other {
 }
 .native-app-env #map-category-dropdown {
     top: calc(58px + env(safe-area-inset-top)) !important;
-    left: 32px !important;
+    left: 25px !important;
     right: auto !important;
     height: auto !important;
     max-height: calc(100% - 150px) !important;
@@ -2582,7 +2586,7 @@ html.dark .profile-avatar-no-ring {
     margin-bottom: 0 !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: flex-end !important;
+    justify-content: flex-start !important;
     will-change: transform, opacity;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
@@ -2600,7 +2604,7 @@ html.dark .profile-avatar-no-ring {
     margin-bottom: 0 !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: flex-end !important;
+    justify-content: flex-start !important;
 }
 
 #map-category-dropdown.expanded .map-category-item {
@@ -4470,24 +4474,24 @@ body.keyboard-visible .native-app-env #chat-action-center.group-chat-action-cent
     width: calc(100% - 32px) !important;
     max-width: 370px !important;
     background: rgba(255, 255, 255, 0.96) !important;
-    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    border: none !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
     transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s !important;
 }
 
 html.dark .chat-pill-input-wrapper {
     background: rgba(26, 34, 28, 0.96) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border: none !important;
 }
 
 .chat-pill-input-wrapper:focus-within {
-    border-color: rgba(0, 0, 0, 0.3) !important;
+    border: none !important;
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05), 0 8px 32px rgba(0, 0, 0, 0.06) !important;
     background: #ffffff !important;
 }
 
 html.dark .chat-pill-input-wrapper:focus-within {
-    border-color: rgba(255, 255, 255, 0.35) !important;
+    border: none !important;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05), 0 8px 32px rgba(0, 0, 0, 0.06) !important;
     background: #1a221c !important;
 }
@@ -5698,46 +5702,86 @@ html.dark .onboarding-card textarea::placeholder {
     color: #5e6f65 !important;
 }
 
-/* Position and align map category circles dropdown on the left to stack cleanly under top-left control buttons */
-#map-category-dropdown {
+/* Position and align map/list category circles dropdown on the left to stack cleanly under top-left control buttons */
+#map-category-dropdown,
+#list-category-dropdown,
+#needs-category-dropdown,
+#events-category-dropdown {
     position: absolute !important;
-    top: 58px !important;
-    left: 32px !important;
-    right: auto !important;
-    height: auto !important;
-    max-height: calc(100% - 150px) !important;
     display: none;
     flex-direction: column !important;
     align-items: flex-start !important;
-    gap: 4px !important;
+    gap: 3px !important;
     overflow-x: hidden !important;
     overflow-y: auto !important;
     white-space: nowrap !important;
-    background-color: transparent !important;
-    padding: 0 4px 60px 0 !important;
     z-index: 3000 !important;
     scrollbar-width: none !important;
+    box-sizing: border-box !important;
+    width: auto !important;
+    min-width: 170px !important;
+    max-width: 240px !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 16px !important;
+    padding: 8px 6px !important;
 }
-#map-category-dropdown::-webkit-scrollbar {
+
+html.dark #map-category-dropdown,
+html.dark #list-category-dropdown,
+html.dark #needs-category-dropdown,
+html.dark #events-category-dropdown {
+    background-color: rgba(24, 32, 26, 0.95) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+#map-category-dropdown::-webkit-scrollbar,
+#list-category-dropdown::-webkit-scrollbar,
+#needs-category-dropdown::-webkit-scrollbar,
+#events-category-dropdown::-webkit-scrollbar {
     display: none !important;
 }
 
-#map-category-dropdown.expanded {
+#map-category-dropdown.expanded,
+#list-category-dropdown:not(.hidden),
+#needs-category-dropdown:not(.hidden),
+#events-category-dropdown:not(.hidden) {
     display: flex !important;
 }
 
-#map-category-dropdown .map-category-item {
+#map-category-dropdown {
+    top: 58px !important;
+    left: 25px !important;
+    right: auto !important;
+    height: auto !important;
+    max-height: calc(100vh - 180px) !important;
+}
+
+#list-category-dropdown,
+#needs-category-dropdown,
+#events-category-dropdown {
+    top: 46px !important;
+    left: 0px !important;
+    right: auto !important;
+    height: auto !important;
+    max-height: calc(100vh - 180px) !important;
+}
+
+#map-category-dropdown .map-category-item,
+#list-category-dropdown > div,
+#needs-category-dropdown > div,
+#events-category-dropdown > div {
     display: flex !important;
     align-items: center !important;
-    flex-direction: row !important;
-    gap: 6px !important;
-    padding: 0 !important;
-    border-radius: 9999px !important;
+    justify-content: flex-start !important;
+    padding: 4px 8px !important;
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
     height: 32px !important;
     min-height: 32px !important;
+    width: 100% !important;
     opacity: 1 !important;
     transform: none !important;
     pointer-events: auto !important;
@@ -5747,7 +5791,10 @@ html.dark .onboarding-card textarea::placeholder {
     flex-shrink: 0 !important;
 }
 
-.dark #map-category-dropdown .map-category-item {
+.dark #map-category-dropdown .map-category-item,
+.dark #list-category-dropdown > div,
+.dark #needs-category-dropdown > div,
+.dark #events-category-dropdown > div {
     background-color: transparent !important;
     border-color: transparent !important;
 }
@@ -6505,35 +6552,61 @@ html.dark .location-icon-container {
 /* Base default styling (Medium screens: iPhone 12/13/14/15/16 Pro, height 701px to 860px) */
 #map-category-dropdown,
 #list-category-dropdown,
-#needs-category-dropdown {
-    gap: 4px !important;
+#needs-category-dropdown,
+#events-category-dropdown {
+    gap: 3px !important;
 }
 #map-category-dropdown .filter-category-circle,
 #map-category-dropdown .filter-category-info-circle,
 .list-filter-category-circle,
 .needs-filter-category-circle,
-#btn-segment-filter,
+.events-filter-category-circle,
 #btn-map-guide-trigger {
-    width: 28px !important;
-    height: 28px !important;
+    width: 26px !important;
+    height: 26px !important;
 }
 #map-category-dropdown .filter-category-circle span,
 #map-category-dropdown .filter-category-info-circle span,
 .list-filter-category-circle span,
 .needs-filter-category-circle span,
-#btn-segment-filter span,
+.events-filter-category-circle span,
 #btn-map-guide-trigger span {
-    font-size: 14px !important;
+    font-size: 12px !important;
 }
-#map-category-dropdown .category-label {
-    font-size: 9.5px !important;
-    padding: 3px 8px !important;
+#map-category-dropdown .category-label,
+#list-category-dropdown .category-label,
+#needs-category-dropdown .category-label,
+#events-category-dropdown .category-label {
+    display: inline-block !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    margin-left: 10px !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    pointer-events: auto !important;
+    border-radius: 0 !important;
+    background: none !important;
+}
+html.dark #map-category-dropdown .category-label,
+html.dark #list-category-dropdown .category-label,
+html.dark #needs-category-dropdown .category-label,
+html.dark #events-category-dropdown .category-label {
+    color: #ffffff !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    background: none !important;
 }
 
 /* Small Screens (e.g. iPhone SE / screen height <= 700px) */
 @media (max-height: 700px) {
     html:not(.show-simulator) #map-category-dropdown {
-        gap: 2.5px !important;
+        gap: 2px !important;
         top: 42px !important;
     }
     html:not(.show-simulator) .native-app-env #map-category-dropdown {
@@ -6541,44 +6614,44 @@ html.dark .location-icon-container {
     }
     html:not(.show-simulator) #map-category-dropdown .filter-category-circle,
     html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle,
-    html:not(.show-simulator) #btn-segment-filter,
+    .list-filter-category-circle,
+    .needs-filter-category-circle,
+    .events-filter-category-circle,
     html:not(.show-simulator) #btn-map-guide-trigger {
         width: 22px !important;
         height: 22px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .filter-category-circle span,
     html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle span,
-    html:not(.show-simulator) #btn-segment-filter span,
+    .list-filter-category-circle span,
+    .needs-filter-category-circle span,
+    .events-filter-category-circle span,
     html:not(.show-simulator) #btn-map-guide-trigger span {
         font-size: 11px !important;
-    }
-    html:not(.show-simulator) #map-category-dropdown .category-label {
-        font-size: 8px !important;
-        padding: 2px 6px !important;
     }
 }
 
 /* Large Screens (e.g. iPhone 16 Pro Max / screen height > 860px) */
 @media (min-height: 861px) {
     html:not(.show-simulator) #map-category-dropdown {
-        gap: 5.5px !important;
+        gap: 4px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .filter-category-circle,
     html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle,
-    html:not(.show-simulator) #btn-segment-filter,
+    .list-filter-category-circle,
+    .needs-filter-category-circle,
+    .events-filter-category-circle,
     html:not(.show-simulator) #btn-map-guide-trigger {
-        width: 32px !important;
-        height: 32px !important;
+        width: 28px !important;
+        height: 28px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .filter-category-circle span,
     html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle span,
-    html:not(.show-simulator) #btn-segment-filter span,
+    .list-filter-category-circle span,
+    .needs-filter-category-circle span,
+    .events-filter-category-circle span,
     html:not(.show-simulator) #btn-map-guide-trigger span {
-        font-size: 16px !important;
-    }
-    html:not(.show-simulator) #map-category-dropdown .category-label {
-        font-size: 10.5px !important;
-        padding: 3px 8px !important;
+        font-size: 13px !important;
     }
 }
 
@@ -6638,11 +6711,11 @@ html.dark .category-info-highlighted::after {
     transform: translateX(-50%) !important;
     width: calc(100% - 32px) !important;
     max-width: 370px !important;
-    gap: 18px !important;
-    height: 64px !important;
+    gap: 0px !important;
+    height: 56px !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
-    border-radius: 9999px !important;
+    border-radius: 32px !important;
     background: rgba(255, 255, 255, 0.45) !important;
     backdrop-filter: blur(24px) saturate(200%) !important;
     -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
@@ -6650,6 +6723,10 @@ html.dark .category-info-highlighted::after {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
     z-index: 5000 !important;
     display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    overflow: visible !important;
 }
 
 html.dark.native-app-env #global-navbar:not(.hidden) {
@@ -6833,11 +6910,11 @@ html.dark #view-profile_consent #consent-checkboxes-container span:not(.material
 
 /* Filter Dropdown horizontal alignment fix */
 .native-app-env #map-category-dropdown {
-    left: 32px !important;
+    left: 25px !important;
 }
 
 .native-app-env #map-category-dropdown .map-category-item {
-    padding-left: 0 !important;
+    padding-left: 4px !important;
 }
 
 
@@ -7196,7 +7273,6 @@ html.dark .fused-divider {
     display: flex !important;
 }
 
-/* Segment Filter Button inside capsule */
 #btn-segment-filter.fused-filter-btn {
     position: static !important;
     width: 28px !important;
@@ -7205,7 +7281,8 @@ html.dark .fused-divider {
     min-height: 28px !important;
     max-width: 28px !important;
     max-height: 28px !important;
-    margin-right: 6px !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
     box-shadow: none !important;
     border: none !important;
     background-color: rgba(0, 0, 0, 0.05) !important;
@@ -7213,6 +7290,16 @@ html.dark .fused-divider {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+}
+
+#btn-integrated-location {
+    margin-left: 4px !important;
+    margin-right: 0px !important;
+}
+
+#btn-integrated-quick-create {
+    margin-left: 4px !important;
+    margin-right: 0px !important;
 }
 
 html.dark #btn-segment-filter.fused-filter-btn {
@@ -7356,7 +7443,7 @@ html.dark .intel-title {
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    border-radius: 22px !important;
+    border-radius: 12px !important;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08) !important;
     padding: 10px 12px !important;
     max-height: 280px !important;
@@ -7618,6 +7705,15 @@ html.dark #view-create_group #group-friends-search::placeholder {
 
 
 /* Top Segmented Control & Sliding Pill Refactor */
+#village-segmented-control,
+#village-list-segmented-control,
+#village-needs-segmented-control,
+#village-events-segmented-control {
+    width: calc(100% - 12px) !important;
+    max-width: 450px !important;
+    margin-left: 6px !important;
+    margin-right: 6px !important;
+}
 #village-segmented-control {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
@@ -7732,40 +7828,235 @@ html.dark #events-list-container p.list-card-description {
 
 /* Enforce strict sizes for list card components (Offerings, Needs, Events) */
 .list-card-container {
-    height: 430px !important;
+    height: 410px !important;
     border: none !important;
 }
 .list-card-container:hover {
     border: none !important;
 }
 .list-card-image-wrapper {
-    height: 238px !important;
+    height: 243px !important;
     border-bottom: none !important;
 }
 .list-card-text-wrapper {
-    height: 192px !important;
+    height: 167px !important;
 }
 
-/* Sibling rules for the Quick Create Sheet based on the Global Navbar state */
-#global-navbar.hidden + #quick-create-sheet {
+/* Styling rules for the Quick Create Handle and navigation icons row */
+#navbar-icons-row {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    height: 56px !important; /* Full height of collapsed navbar for perfect centering */
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 18px !important;
+    flex-shrink: 0 !important;
+    z-index: 5100 !important;
+}
+
+#village-quick-create-dropdown {
+    top: 52px !important;
+}
+
+/* Quick Create Button & Dropdown Styles */
+#btn-integrated-quick-create {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    color: #308A5E !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+html.dark #btn-integrated-quick-create {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #4ade80 !important;
+}
+
+#btn-integrated-quick-create:active {
+    transform: scale(0.9) !important;
+}
+
+/* Quick Create List View Styles */
+.quick-create-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.quick-create-row {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding: 10px 12px !important;
+    border-radius: 9999px !important;
+    background: rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid rgba(0, 0, 0, 0.04) !important;
+    transition: all 0.2s ease-in-out !important;
+    cursor: pointer !important;
+    text-align: left !important;
+    margin: 0 !important;
+}
+
+html.dark .quick-create-row {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+.quick-create-row:active {
+    transform: scale(0.98) !important;
+}
+
+.quick-create-icon-circle {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-right: 12px !important;
+    flex-shrink: 0 !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05) !important;
+    transition: transform 0.2s ease-in-out !important;
+}
+
+.quick-create-row:hover .quick-create-icon-circle {
+    transform: scale(1.05) !important;
+}
+
+.quick-create-info {
+    flex-grow: 1 !important;
+    min-width: 0 !important;
+    padding-right: 8px !important;
+}
+
+.quick-create-title {
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    color: #111827 !important;
+    line-height: 1.25 !important;
+    margin: 0 !important;
+}
+
+html.dark .quick-create-title {
+    color: #ffffff !important;
+}
+
+.quick-create-desc {
+    font-size: 11px !important;
+    color: #6b7280 !important;
+    margin: 2px 0 0 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+html.dark .quick-create-desc {
+    color: #9ca3af !important;
+}
+
+.quick-create-chevron {
+    color: #9ca3af !important;
+    margin-left: auto !important;
+    margin-right: 2px !important;
+    flex-shrink: 0 !important;
+}
+
+html.dark .quick-create-chevron {
+    color: #4b5563 !important;
+}
+
+/* --- Start: Search Bar Fused Filter Button Styles --- */
+.fused-filter-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
+    color: #4b5563 !important;
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-radius: 50% !important;
+    border: none !important;
+    margin-left: 2px !important;
+    transition: all 0.2s ease !important;
+}
+
+html.dark .fused-filter-btn {
+    color: #9ca3af !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.fused-filter-btn.active-filter-circle {
+    background: rgba(48, 138, 94, 0.15) !important;
+    color: #308A5E !important;
+}
+
+html.dark .fused-filter-btn.active-filter-circle {
+    background: rgba(74, 222, 128, 0.15) !important;
+    color: #4ade80 !important;
+}
+/* --- End: Search Bar Fused Filter Button Styles --- */
+
+/* Remove borders/outlines on segmented controls */
+#village-segmented-control button,
+#village-list-segmented-control button,
+#village-needs-segmented-control button,
+#village-events-segmented-control button,
+#chat-segmented-control button {
+    border: none !important;
+    outline: none !important;
+}
+
+/* Category Filter Dropdown Horizontal Tray */
+.category-dropdown-tray {
+    position: absolute !important;
+    top: 98px !important;
+    left: 6px !important;
+    right: 6px !important;
+    width: calc(100% - 12px) !important;
+    max-width: 450px !important;
+    z-index: 3000 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 12px !important;
+    padding: 10px 14px !important;
+    border-radius: 12px !important;
+    background-color: rgba(255, 255, 255, 0.96) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+.category-dropdown-tray::-webkit-scrollbar {
+    display: none !important;
+}
+html.dark .category-dropdown-tray {
+    background-color: rgba(26, 34, 28, 0.96) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+.category-dropdown-tray.hidden {
     display: none !important;
 }
 
-#global-navbar.navbar-behind + #quick-create-sheet {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transform: translateX(-50%) translateY(32px) !important;
-}
-
-/* Hide when viewing the full screen offer page */
-#quick-create-sheet.hidden-by-view {
-    display: none !important;
-}
-
-/* Ensure the quick create sheet adapts to dark mode glassmorphism */
-html.dark #quick-create-sheet {
-    background: rgba(20, 28, 22, 0.75) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-}
 
 

@@ -1178,6 +1178,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
     <style>/* Custom CSS for Barterland - Organic Modernism Theme */
 /* Custom CSS for Barterland - Organic Modernism Theme */
 
+.hidden {
+    display: none !important;
+}
+
 /* Import Google Fonts (Loaded asynchronously via link tag in head to prevent render blocking) */
 /* @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap'); */
 
@@ -3156,7 +3160,7 @@ html.dark .chat-bubble-other {
 }
 .native-app-env #map-category-dropdown {
     top: calc(58px + env(safe-area-inset-top)) !important;
-    left: 32px !important;
+    left: 25px !important;
     right: auto !important;
     height: auto !important;
     max-height: calc(100% - 150px) !important;
@@ -3760,7 +3764,7 @@ html.dark .profile-avatar-no-ring {
     margin-bottom: 0 !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: flex-end !important;
+    justify-content: flex-start !important;
     will-change: transform, opacity;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
@@ -3778,7 +3782,7 @@ html.dark .profile-avatar-no-ring {
     margin-bottom: 0 !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: flex-end !important;
+    justify-content: flex-start !important;
 }
 
 #map-category-dropdown.expanded .map-category-item {
@@ -5648,24 +5652,24 @@ body.keyboard-visible .native-app-env #chat-action-center.group-chat-action-cent
     width: calc(100% - 32px) !important;
     max-width: 370px !important;
     background: rgba(255, 255, 255, 0.96) !important;
-    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    border: none !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
     transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s !important;
 }
 
 html.dark .chat-pill-input-wrapper {
     background: rgba(26, 34, 28, 0.96) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border: none !important;
 }
 
 .chat-pill-input-wrapper:focus-within {
-    border-color: rgba(0, 0, 0, 0.3) !important;
+    border: none !important;
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05), 0 8px 32px rgba(0, 0, 0, 0.06) !important;
     background: #ffffff !important;
 }
 
 html.dark .chat-pill-input-wrapper:focus-within {
-    border-color: rgba(255, 255, 255, 0.35) !important;
+    border: none !important;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05), 0 8px 32px rgba(0, 0, 0, 0.06) !important;
     background: #1a221c !important;
 }
@@ -6876,46 +6880,86 @@ html.dark .onboarding-card textarea::placeholder {
     color: #5e6f65 !important;
 }
 
-/* Position and align map category circles dropdown on the left to stack cleanly under top-left control buttons */
-#map-category-dropdown {
+/* Position and align map/list category circles dropdown on the left to stack cleanly under top-left control buttons */
+#map-category-dropdown,
+#list-category-dropdown,
+#needs-category-dropdown,
+#events-category-dropdown {
     position: absolute !important;
-    top: 58px !important;
-    left: 32px !important;
-    right: auto !important;
-    height: auto !important;
-    max-height: calc(100% - 150px) !important;
     display: none;
     flex-direction: column !important;
     align-items: flex-start !important;
-    gap: 4px !important;
+    gap: 3px !important;
     overflow-x: hidden !important;
     overflow-y: auto !important;
     white-space: nowrap !important;
-    background-color: transparent !important;
-    padding: 0 4px 60px 0 !important;
     z-index: 3000 !important;
     scrollbar-width: none !important;
+    box-sizing: border-box !important;
+    width: auto !important;
+    min-width: 170px !important;
+    max-width: 240px !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 16px !important;
+    padding: 8px 6px !important;
 }
-#map-category-dropdown::-webkit-scrollbar {
+
+html.dark #map-category-dropdown,
+html.dark #list-category-dropdown,
+html.dark #needs-category-dropdown,
+html.dark #events-category-dropdown {
+    background-color: rgba(24, 32, 26, 0.95) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+#map-category-dropdown::-webkit-scrollbar,
+#list-category-dropdown::-webkit-scrollbar,
+#needs-category-dropdown::-webkit-scrollbar,
+#events-category-dropdown::-webkit-scrollbar {
     display: none !important;
 }
 
-#map-category-dropdown.expanded {
+#map-category-dropdown.expanded,
+#list-category-dropdown:not(.hidden),
+#needs-category-dropdown:not(.hidden),
+#events-category-dropdown:not(.hidden) {
     display: flex !important;
 }
 
-#map-category-dropdown .map-category-item {
+#map-category-dropdown {
+    top: 58px !important;
+    left: 25px !important;
+    right: auto !important;
+    height: auto !important;
+    max-height: calc(100vh - 180px) !important;
+}
+
+#list-category-dropdown,
+#needs-category-dropdown,
+#events-category-dropdown {
+    top: 46px !important;
+    left: 0px !important;
+    right: auto !important;
+    height: auto !important;
+    max-height: calc(100vh - 180px) !important;
+}
+
+#map-category-dropdown .map-category-item,
+#list-category-dropdown > div,
+#needs-category-dropdown > div,
+#events-category-dropdown > div {
     display: flex !important;
     align-items: center !important;
-    flex-direction: row !important;
-    gap: 6px !important;
-    padding: 0 !important;
-    border-radius: 9999px !important;
+    justify-content: flex-start !important;
+    padding: 4px 8px !important;
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
     height: 32px !important;
     min-height: 32px !important;
+    width: 100% !important;
     opacity: 1 !important;
     transform: none !important;
     pointer-events: auto !important;
@@ -6925,7 +6969,10 @@ html.dark .onboarding-card textarea::placeholder {
     flex-shrink: 0 !important;
 }
 
-.dark #map-category-dropdown .map-category-item {
+.dark #map-category-dropdown .map-category-item,
+.dark #list-category-dropdown > div,
+.dark #needs-category-dropdown > div,
+.dark #events-category-dropdown > div {
     background-color: transparent !important;
     border-color: transparent !important;
 }
@@ -7683,35 +7730,61 @@ html.dark .location-icon-container {
 /* Base default styling (Medium screens: iPhone 12/13/14/15/16 Pro, height 701px to 860px) */
 #map-category-dropdown,
 #list-category-dropdown,
-#needs-category-dropdown {
-    gap: 4px !important;
+#needs-category-dropdown,
+#events-category-dropdown {
+    gap: 3px !important;
 }
 #map-category-dropdown .filter-category-circle,
 #map-category-dropdown .filter-category-info-circle,
 .list-filter-category-circle,
 .needs-filter-category-circle,
-#btn-segment-filter,
+.events-filter-category-circle,
 #btn-map-guide-trigger {
-    width: 28px !important;
-    height: 28px !important;
+    width: 26px !important;
+    height: 26px !important;
 }
 #map-category-dropdown .filter-category-circle span,
 #map-category-dropdown .filter-category-info-circle span,
 .list-filter-category-circle span,
 .needs-filter-category-circle span,
-#btn-segment-filter span,
+.events-filter-category-circle span,
 #btn-map-guide-trigger span {
-    font-size: 14px !important;
+    font-size: 12px !important;
 }
-#map-category-dropdown .category-label {
-    font-size: 9.5px !important;
-    padding: 3px 8px !important;
+#map-category-dropdown .category-label,
+#list-category-dropdown .category-label,
+#needs-category-dropdown .category-label,
+#events-category-dropdown .category-label {
+    display: inline-block !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    margin-left: 10px !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    pointer-events: auto !important;
+    border-radius: 0 !important;
+    background: none !important;
+}
+html.dark #map-category-dropdown .category-label,
+html.dark #list-category-dropdown .category-label,
+html.dark #needs-category-dropdown .category-label,
+html.dark #events-category-dropdown .category-label {
+    color: #ffffff !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    background: none !important;
 }
 
 /* Small Screens (e.g. iPhone SE / screen height <= 700px) */
 @media (max-height: 700px) {
     html:not(.show-simulator) #map-category-dropdown {
-        gap: 2.5px !important;
+        gap: 2px !important;
         top: 42px !important;
     }
     html:not(.show-simulator) .native-app-env #map-category-dropdown {
@@ -7719,44 +7792,44 @@ html.dark .location-icon-container {
     }
     html:not(.show-simulator) #map-category-dropdown .filter-category-circle,
     html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle,
-    html:not(.show-simulator) #btn-segment-filter,
+    .list-filter-category-circle,
+    .needs-filter-category-circle,
+    .events-filter-category-circle,
     html:not(.show-simulator) #btn-map-guide-trigger {
         width: 22px !important;
         height: 22px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .filter-category-circle span,
     html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle span,
-    html:not(.show-simulator) #btn-segment-filter span,
+    .list-filter-category-circle span,
+    .needs-filter-category-circle span,
+    .events-filter-category-circle span,
     html:not(.show-simulator) #btn-map-guide-trigger span {
         font-size: 11px !important;
-    }
-    html:not(.show-simulator) #map-category-dropdown .category-label {
-        font-size: 8px !important;
-        padding: 2px 6px !important;
     }
 }
 
 /* Large Screens (e.g. iPhone 16 Pro Max / screen height > 860px) */
 @media (min-height: 861px) {
     html:not(.show-simulator) #map-category-dropdown {
-        gap: 5.5px !important;
+        gap: 4px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .filter-category-circle,
     html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle,
-    html:not(.show-simulator) #btn-segment-filter,
+    .list-filter-category-circle,
+    .needs-filter-category-circle,
+    .events-filter-category-circle,
     html:not(.show-simulator) #btn-map-guide-trigger {
-        width: 32px !important;
-        height: 32px !important;
+        width: 28px !important;
+        height: 28px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .filter-category-circle span,
     html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle span,
-    html:not(.show-simulator) #btn-segment-filter span,
+    .list-filter-category-circle span,
+    .needs-filter-category-circle span,
+    .events-filter-category-circle span,
     html:not(.show-simulator) #btn-map-guide-trigger span {
-        font-size: 16px !important;
-    }
-    html:not(.show-simulator) #map-category-dropdown .category-label {
-        font-size: 10.5px !important;
-        padding: 3px 8px !important;
+        font-size: 13px !important;
     }
 }
 
@@ -7816,11 +7889,11 @@ html.dark .category-info-highlighted::after {
     transform: translateX(-50%) !important;
     width: calc(100% - 32px) !important;
     max-width: 370px !important;
-    gap: 18px !important;
-    height: 64px !important;
+    gap: 0px !important;
+    height: 56px !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
-    border-radius: 9999px !important;
+    border-radius: 32px !important;
     background: rgba(255, 255, 255, 0.45) !important;
     backdrop-filter: blur(24px) saturate(200%) !important;
     -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
@@ -7828,6 +7901,10 @@ html.dark .category-info-highlighted::after {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
     z-index: 5000 !important;
     display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    overflow: visible !important;
 }
 
 html.dark.native-app-env #global-navbar:not(.hidden) {
@@ -8011,11 +8088,11 @@ html.dark #view-profile_consent #consent-checkboxes-container span:not(.material
 
 /* Filter Dropdown horizontal alignment fix */
 .native-app-env #map-category-dropdown {
-    left: 32px !important;
+    left: 25px !important;
 }
 
 .native-app-env #map-category-dropdown .map-category-item {
-    padding-left: 0 !important;
+    padding-left: 4px !important;
 }
 
 
@@ -8374,7 +8451,6 @@ html.dark .fused-divider {
     display: flex !important;
 }
 
-/* Segment Filter Button inside capsule */
 #btn-segment-filter.fused-filter-btn {
     position: static !important;
     width: 28px !important;
@@ -8383,7 +8459,8 @@ html.dark .fused-divider {
     min-height: 28px !important;
     max-width: 28px !important;
     max-height: 28px !important;
-    margin-right: 6px !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
     box-shadow: none !important;
     border: none !important;
     background-color: rgba(0, 0, 0, 0.05) !important;
@@ -8391,6 +8468,16 @@ html.dark .fused-divider {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+}
+
+#btn-integrated-location {
+    margin-left: 4px !important;
+    margin-right: 0px !important;
+}
+
+#btn-integrated-quick-create {
+    margin-left: 4px !important;
+    margin-right: 0px !important;
 }
 
 html.dark #btn-segment-filter.fused-filter-btn {
@@ -8534,7 +8621,7 @@ html.dark .intel-title {
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    border-radius: 22px !important;
+    border-radius: 12px !important;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08) !important;
     padding: 10px 12px !important;
     max-height: 280px !important;
@@ -8796,6 +8883,15 @@ html.dark #view-create_group #group-friends-search::placeholder {
 
 
 /* Top Segmented Control & Sliding Pill Refactor */
+#village-segmented-control,
+#village-list-segmented-control,
+#village-needs-segmented-control,
+#village-events-segmented-control {
+    width: calc(100% - 12px) !important;
+    max-width: 450px !important;
+    margin-left: 6px !important;
+    margin-right: 6px !important;
+}
 #village-segmented-control {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
@@ -8910,40 +9006,234 @@ html.dark #events-list-container p.list-card-description {
 
 /* Enforce strict sizes for list card components (Offerings, Needs, Events) */
 .list-card-container {
-    height: 430px !important;
+    height: 410px !important;
     border: none !important;
 }
 .list-card-container:hover {
     border: none !important;
 }
 .list-card-image-wrapper {
-    height: 238px !important;
+    height: 243px !important;
     border-bottom: none !important;
 }
 .list-card-text-wrapper {
-    height: 192px !important;
+    height: 167px !important;
 }
 
-/* Sibling rules for the Quick Create Sheet based on the Global Navbar state */
-#global-navbar.hidden + #quick-create-sheet {
+/* Styling rules for the Quick Create Handle and navigation icons row */
+#navbar-icons-row {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    height: 56px !important; /* Full height of collapsed navbar for perfect centering */
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 18px !important;
+    flex-shrink: 0 !important;
+    z-index: 5100 !important;
+}
+
+#village-quick-create-dropdown {
+    top: 52px !important;
+}
+
+/* Quick Create Button & Dropdown Styles */
+#btn-integrated-quick-create {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    color: #308A5E !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+html.dark #btn-integrated-quick-create {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #4ade80 !important;
+}
+
+#btn-integrated-quick-create:active {
+    transform: scale(0.9) !important;
+}
+
+/* Quick Create List View Styles */
+.quick-create-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.quick-create-row {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding: 10px 12px !important;
+    border-radius: 9999px !important;
+    background: rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid rgba(0, 0, 0, 0.04) !important;
+    transition: all 0.2s ease-in-out !important;
+    cursor: pointer !important;
+    text-align: left !important;
+    margin: 0 !important;
+}
+
+html.dark .quick-create-row {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+.quick-create-row:active {
+    transform: scale(0.98) !important;
+}
+
+.quick-create-icon-circle {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-right: 12px !important;
+    flex-shrink: 0 !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05) !important;
+    transition: transform 0.2s ease-in-out !important;
+}
+
+.quick-create-row:hover .quick-create-icon-circle {
+    transform: scale(1.05) !important;
+}
+
+.quick-create-info {
+    flex-grow: 1 !important;
+    min-width: 0 !important;
+    padding-right: 8px !important;
+}
+
+.quick-create-title {
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    color: #111827 !important;
+    line-height: 1.25 !important;
+    margin: 0 !important;
+}
+
+html.dark .quick-create-title {
+    color: #ffffff !important;
+}
+
+.quick-create-desc {
+    font-size: 11px !important;
+    color: #6b7280 !important;
+    margin: 2px 0 0 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+html.dark .quick-create-desc {
+    color: #9ca3af !important;
+}
+
+.quick-create-chevron {
+    color: #9ca3af !important;
+    margin-left: auto !important;
+    margin-right: 2px !important;
+    flex-shrink: 0 !important;
+}
+
+html.dark .quick-create-chevron {
+    color: #4b5563 !important;
+}
+
+/* --- Start: Search Bar Fused Filter Button Styles --- */
+.fused-filter-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
+    color: #4b5563 !important;
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-radius: 50% !important;
+    border: none !important;
+    margin-left: 2px !important;
+    transition: all 0.2s ease !important;
+}
+
+html.dark .fused-filter-btn {
+    color: #9ca3af !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.fused-filter-btn.active-filter-circle {
+    background: rgba(48, 138, 94, 0.15) !important;
+    color: #308A5E !important;
+}
+
+html.dark .fused-filter-btn.active-filter-circle {
+    background: rgba(74, 222, 128, 0.15) !important;
+    color: #4ade80 !important;
+}
+/* --- End: Search Bar Fused Filter Button Styles --- */
+
+/* Remove borders/outlines on segmented controls */
+#village-segmented-control button,
+#village-list-segmented-control button,
+#village-needs-segmented-control button,
+#village-events-segmented-control button,
+#chat-segmented-control button {
+    border: none !important;
+    outline: none !important;
+}
+
+/* Category Filter Dropdown Horizontal Tray */
+.category-dropdown-tray {
+    position: absolute !important;
+    top: 98px !important;
+    left: 6px !important;
+    right: 6px !important;
+    width: calc(100% - 12px) !important;
+    max-width: 450px !important;
+    z-index: 3000 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 12px !important;
+    padding: 10px 14px !important;
+    border-radius: 12px !important;
+    background-color: rgba(255, 255, 255, 0.96) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+.category-dropdown-tray::-webkit-scrollbar {
     display: none !important;
 }
-
-#global-navbar.navbar-behind + #quick-create-sheet {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transform: translateX(-50%) translateY(32px) !important;
+html.dark .category-dropdown-tray {
+    background-color: rgba(26, 34, 28, 0.96) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* Hide when viewing the full screen offer page */
-#quick-create-sheet.hidden-by-view {
+.category-dropdown-tray.hidden {
     display: none !important;
-}
-
-/* Ensure the quick create sheet adapts to dark mode glassmorphism */
-html.dark #quick-create-sheet {
-    background: rgba(20, 28, 22, 0.75) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 </style>
     <!-- Tailwind Configuration (removed - runtime replaced with pre-compiled CSS) -->
@@ -10077,18 +10367,22 @@ html.dark #quick-create-sheet {
                             <!-- Fused Search & Filter Bar Container -->
                             <div id="village-search-bar-overlay" class="pointer-events-auto absolute z-[2000] flex flex-col items-stretch transition-all duration-300">
                                 <div class="fused-search-capsule select-none">
-                                    <button onclick="handleAddMapTap()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Add Listing" style="display: none !important; border: 0 !important; margin-left: 6px !important;">
+                                    <!-- Filter Button (tune) on the left of the location icon -->
+                                    <button id="btn-segment-filter" onclick="toggleMapCategoryDropdown()" class="fused-filter-btn active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter">
+                                        <span class="material-symbols-outlined text-[15px]" id="map-filter-icon">tune</span>
+                                    </button>
+                                    <button onclick="handleAddMapTap()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Add Listing" style="display: none !important; border: 0 !important; margin-left: 4px !important;">
                                         <span class="material-symbols-outlined text-[15px] font-black">add</span>
                                     </button>
-                                    <button id="btn-integrated-location" onclick="snapToUserNeighborhood()" class="fused-location-btn active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Snap to my location" style="margin-left: 6px !important;">
+                                    <button id="btn-integrated-location" onclick="snapToUserNeighborhood()" class="fused-location-btn active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Snap to my location">
                                         <span class="material-symbols-outlined text-[15px]">my_location</span>
+                                    </button>
+                                    <button id="btn-integrated-quick-create" onclick="toggleQuickCreateDropdown(event)" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
+                                        <span class="material-symbols-outlined text-[16px] font-bold">add</span>
                                     </button>
                                     <input type="text" id="village-search-input" oninput="applyMapFiltering();" placeholder="Search listings, events and offerings" class="fused-search-input">
                                     <button id="btn-map-search-clear" onclick="clearSearchInput('village-search-input')" class="hidden w-6 h-6 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 active:scale-90 transition-all text-black dark:text-white border-0 flex-shrink-0 ml-1 mr-1 shadow-sm" title="Clear Search">
                                         <span class="material-symbols-outlined text-[13px]">close</span>
-                                    </button>
-                                    <button id="btn-segment-filter" onclick="toggleCategoryTray()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter" style="display: none !important; border: 0 !important; margin-right: 6px !important;">
-                                        <span class="material-symbols-outlined text-[15px]" id="map-filter-icon">tune</span>
                                     </button>
                                 </div>
                                 <div id="village-search-intel-pill" class="hidden fused-intel-pill select-none">
@@ -10106,9 +10400,63 @@ html.dark #quick-create-sheet {
                                     </button>
                                 </div>
                                 <div id="village-search-suggestions" class="hidden absolute left-1 right-1 top-[48px] z-[3000] fused-suggestions-box"></div>
+                                <div id="village-quick-create-dropdown" class="hidden absolute left-1 right-1 top-[52px] z-[3000] fused-suggestions-box p-4" style="max-height: none !important; overflow: visible !important; box-sizing: border-box !important; margin-top: 0px !important;">
+                                    <div class="quick-create-list" style="margin: 0 !important; padding: 0 !important; gap: 8px !important;">
+                                        <!-- Offering Row -->
+                                        <button type="button" onclick="triggerQuickCreate('offering')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
+                                            <div class="quick-create-icon-circle" style="background-color: #308A5E !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
+                                                <span class="material-symbols-outlined text-[18px]">handyman</span>
+                                            </div>
+                                            <div class="quick-create-info">
+                                                <h4 class="quick-create-title" style="font-size: 13px !important;">Offering</h4>
+                                                <p class="quick-create-desc" style="font-size: 11px !important;">Share tools, skills, or food</p>
+                                            </div>
+                                            <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+                                        </button>
+ 
+                                        <!-- Need Row -->
+                                        <button type="button" onclick="triggerQuickCreate('need')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
+                                            <div class="quick-create-icon-circle" style="background-color: #f59e0b !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
+                                                <span class="material-symbols-outlined text-[18px]">shopping_basket</span>
+                                            </div>
+                                            <div class="quick-create-info">
+                                                <h4 class="quick-create-title" style="font-size: 13px !important;">Need</h4>
+                                                <p class="quick-create-desc" style="font-size: 11px !important;">Ask neighbors for items or help</p>
+                                            </div>
+                                            <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+                                        </button>
+ 
+                                        <!-- Event Row -->
+                                        <button type="button" onclick="triggerQuickCreate('event')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
+                                            <div class="quick-create-icon-circle" style="background-color: #8b5cf6 !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
+                                                <span class="material-symbols-outlined text-[18px]">festival</span>
+                                            </div>
+                                            <div class="quick-create-info">
+                                                <h4 class="quick-create-title" style="font-size: 13px !important;">Event</h4>
+                                                <p class="quick-create-desc" style="font-size: 11px !important;">Organize a gathering or swap meet</p>
+                                            </div>
+                                            <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+                                        </button>
+ 
+                                        <!-- Donation Row -->
+                                        <button type="button" onclick="triggerQuickCreate('donation')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
+                                            <div class="quick-create-icon-circle" style="background-color: #ec4899 !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
+                                                <span class="material-symbols-outlined text-[18px]">volunteer_activism</span>
+                                            </div>
+                                            <div class="quick-create-info">
+                                                <h4 class="quick-create-title" style="font-size: 13px !important;">Donation</h4>
+                                                <p class="quick-create-desc" style="font-size: 11px !important;">Gift items or support a local cause</p>
+                                            </div>
+                                            <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+                                        </button>
+                                    </div>
+                                    <div class="pt-2 text-center border-t border-black/5 dark:border-white/5 mt-2">
+                                        <p class="text-[10px] text-gray-500 dark:text-gray-400 font-medium leading-normal" style="margin: 0 !important;">Select a category above to post a new listing on the village map.</p>
+                                    </div>
+                                </div>
                                 
                                 <!-- Top Segmented Control (Offerings, Needs, Events) -->
-                                <div id="village-segmented-control" class="relative mt-2.5 w-full h-10 flex items-center justify-between gap-2 select-none">
+                                <div id="village-segmented-control" class="relative mt-2.5 h-10 flex items-center justify-between gap-2 select-none">
                                     <!-- Sliding background pill -->
                                     <div id="village-active-pill-bg" class="hidden absolute top-0.5 left-0.5 bottom-0.5 bg-white dark:bg-[#2d3a30] shadow rounded-[10px] transition-all duration-200" style="width: 0px; left: 0px;"></div>
                                     
@@ -10122,6 +10470,11 @@ html.dark #quick-create-sheet {
                                         Events
                                     </button>
                                 </div>
+                                
+                                <!-- Map Category Dropdown (now horizontal and below segmented control) -->
+                                <div id="map-category-dropdown" class="category-dropdown-tray hidden custom-scrollbar select-none animate-slide-down-fade">
+                                    <!-- Dynamically generated trailing list -->
+                                </div>
                             </div>
                              
                              <!-- Floating Map Controls — positioned on the right side -->
@@ -10130,8 +10483,6 @@ html.dark #quick-create-sheet {
                                  <button id="snap-to-neighborhood-btn" class="pointer-events-auto w-12 h-12 bg-blue-600 border-blue-600 hover:opacity-90 rounded-full flex items-center justify-center text-white active:scale-90 transition-all shadow-lg pulse-blue-light" onclick="snapToUserNeighborhood()" title="Snap back to neighborhood">
                                      <span class="material-symbols-outlined text-2xl font-bold">my_location</span>
                                  </button>
-
-
                              </div>
 
                              <!-- Invisible Close-on-Click Overlay (for category filter) -->
@@ -10145,11 +10496,6 @@ html.dark #quick-create-sheet {
 
                              <!-- Interactive Help Tooltip Card (legacy, hidden) -->
                              <div id="interactive-help-tooltip" class="hidden" style="pointer-events:none;"></div>
-
-                             <!-- Trailing vertical category circles (LEFT-aligned under filter button) -->
-                             <div id="map-category-dropdown" class="absolute top-[112px] left-[24px] z-[3000] flex flex-col items-start gap-2 max-h-[70vh] overflow-y-auto pr-6 pl-[0px] pt-2 pb-5 hidden custom-scrollbar select-none animate-slide-down-fade">
-                                 <!-- Dynamically generated trailing list -->
-                             </div>
 
                              <!-- Bottom Sheet Peek Card (Google Maps style) -->
                             <div id="map-peek-card" class="absolute bottom-20 left-4 right-4 z-[1000] bg-white dark:bg-[#18201a] border border-outline-variant/30 rounded-2xl shadow-xl flex items-center p-3 gap-3 transform translate-y-[150%] transition-all duration-300 pointer-events-none opacity-0 select-none">
@@ -10290,32 +10636,82 @@ html.dark #quick-create-sheet {
                             </div>
                         </div>
                     </div>
-
-                    <!-- SUB-VIEW 2: GRID LIST VIEW CONTAINER -->
+                     <!-- SUB-VIEW 2: GRID LIST VIEW CONTAINER -->
                     <div id="village-list-container" class="hidden absolute inset-0 z-10 overflow-y-auto pl-6 pr-20 pt-6 pb-24 custom-scrollbar bg-warm-cream dark:bg-[#18201a] flex flex-col gap-3">
                         <div class="mb-2 px-1 flex flex-col gap-2.5 flex-shrink-0 relative">
                             <!-- Fused Search Capsule with Add button and Filter button -->
                             <div class="fused-search-capsule select-none">
-                                <button onclick="showView('offer', 'offering')" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Add Offering" style="display: none !important; border: 0 !important; margin-left: 6px !important;">
-                                    <span class="material-symbols-outlined text-[15px] font-black">add</span>
+                                <button id="btn-list-filter" onclick="toggleListCategoryDropdown()" class="fused-filter-btn active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter">
+                                    <span class="material-symbols-outlined text-[15px]" id="list-filter-icon">tune</span>
+                                </button>
+                                <button id="btn-list-quick-create" onclick="toggleQuickCreateDropdown(event, 'list')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
+                                    <span class="material-symbols-outlined text-[16px] font-bold">add</span>
                                 </button>
                                 <input type="text" id="village-list-search-input" oninput="syncVillageSearch(this.value);" placeholder="Search listings, events and offerings" class="fused-search-input">
                                 <button id="btn-list-search-clear" onclick="clearSearchInput('village-list-search-input')" class="hidden w-6 h-6 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 active:scale-90 transition-all text-black dark:text-white border-0 flex-shrink-0 ml-1 mr-1 shadow-sm" title="Clear Search">
                                     <span class="material-symbols-outlined text-[13px]">close</span>
                                 </button>
-                                <button id="btn-list-filter" onclick="toggleListCategoryDropdown()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter" style="display: none !important; border: 0 !important; margin-right: 6px !important;">
-                                    <span class="material-symbols-outlined text-[15px]" id="list-filter-icon">tune</span>
-                                </button>
                             </div>
                             <div id="village-list-search-suggestions" class="hidden absolute left-1 right-1 top-[48px] z-[3000] fused-suggestions-box"></div>
 
-                            <!-- Offerings List Category Dropdown -->
-                            <div id="list-category-dropdown" class="absolute top-32 right-6 z-[3000] flex flex-col items-end gap-2.5 max-h-[50vh] overflow-y-auto pl-5 pr-4 pt-2 pb-5 hidden custom-scrollbar select-none bg-warm-cream/95 dark:bg-[#18201a]/95 backdrop-blur-md rounded-2xl border border-outline-variant/30 shadow-xl p-3 animate-slide-down-fade">
-                                <!-- Dynamically generated trailing list -->
+                            <!-- Offerings List Quick Create Dropdown -->
+                            <div id="list-quick-create-dropdown" class="hidden absolute left-1 right-1 top-[52px] z-[3000] fused-suggestions-box p-4" style="max-height: none !important; overflow: visible !important; box-sizing: border-box !important; margin-top: 0px !important;">
+                                <div class="quick-create-list" style="margin: 0 !important; padding: 0 !important; gap: 8px !important;">
+                                    <!-- Offering Row -->
+                                    <button type="button" onclick="triggerQuickCreate('offering')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
+                                        <div class="quick-create-icon-circle" style="background-color: #308A5E !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
+                                            <span class="material-symbols-outlined text-[18px]">handyman</span>
+                                        </div>
+                                        <div class="quick-create-info">
+                                            <h4 class="quick-create-title" style="font-size: 13px !important;">Offering</h4>
+                                            <p class="quick-create-desc" style="font-size: 11px !important;">Share tools, skills, or food</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+                                    </button>
+                                    
+                                    <!-- Need Row -->
+                                    <button type="button" onclick="triggerQuickCreate('need')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
+                                        <div class="quick-create-icon-circle" style="background-color: #f59e0b !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
+                                            <span class="material-symbols-outlined text-[18px]">shopping_basket</span>
+                                        </div>
+                                        <div class="quick-create-info">
+                                            <h4 class="quick-create-title" style="font-size: 13px !important;">Need</h4>
+                                            <p class="quick-create-desc" style="font-size: 11px !important;">Ask neighbors for items or help</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+                                    </button>
+                                    
+                                    <!-- Event Row -->
+                                    <button type="button" onclick="triggerQuickCreate('event')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
+                                        <div class="quick-create-icon-circle" style="background-color: #8b5cf6 !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
+                                            <span class="material-symbols-outlined text-[18px]">festival</span>
+                                        </div>
+                                        <div class="quick-create-info">
+                                            <h4 class="quick-create-title" style="font-size: 13px !important;">Event</h4>
+                                            <p class="quick-create-desc" style="font-size: 11px !important;">Organize a gathering or swap meet</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+                                    </button>
+                                    
+                                    <!-- Donation Row -->
+                                    <button type="button" onclick="triggerQuickCreate('donation')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
+                                        <div class="quick-create-icon-circle" style="background-color: #ec4899 !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
+                                            <span class="material-symbols-outlined text-[18px]">volunteer_activism</span>
+                                        </div>
+                                        <div class="quick-create-info">
+                                            <h4 class="quick-create-title" style="font-size: 13px !important;">Donation</h4>
+                                            <p class="quick-create-desc" style="font-size: 11px !important;">Gift items or support a local cause</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+                                    </button>
+                                </div>
+                                <div class="pt-2 text-center border-t border-black/5 dark:border-white/5 mt-2">
+                                    <p class="text-[10px] text-gray-500 dark:text-gray-400 font-medium leading-normal" style="margin: 0 !important;">Select a category above to post a new listing on the village map.</p>
+                                </div>
                             </div>
 
                             <!-- Pills Control (Offerings, Needs, Events) -->
-                            <div id="village-list-segmented-control" class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-0">
+                            <div id="village-list-segmented-control" class="relative h-10 flex items-center justify-between gap-2 select-none mt-0">
                                 <button type="button" onclick="switchVillageSegment('list')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm">
                                     Offerings
                                 </button>
@@ -10325,6 +10721,11 @@ html.dark #quick-create-sheet {
                                 <button type="button" onclick="switchVillageSegment('events')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-gray-500 dark:text-gray-400">
                                     Events
                                 </button>
+                            </div>
+
+                            <!-- Offerings List Category Dropdown (now horizontal and below segmented control) -->
+                            <div id="list-category-dropdown" class="category-dropdown-tray hidden custom-scrollbar select-none animate-slide-down-fade">
+                                <!-- Dynamically generated trailing list -->
                             </div>
 
                             <!-- Distance Range Filter Slider -->
@@ -10338,7 +10739,7 @@ html.dark #quick-create-sheet {
                                     <span>1 km</span>
                                     <span>5 km</span>
                                     <span>10 km</span>
-                                <span>20 km</span>
+                                    <span>20 km</span>
                                 </div>
                             </div>
                         </div>
@@ -10352,26 +10753,77 @@ html.dark #quick-create-sheet {
                         <div class="mb-2 px-1 flex flex-col gap-2.5 flex-shrink-0 relative">
                             <!-- Fused Search Capsule with Add button and Filter button -->
                             <div class="fused-search-capsule select-none">
-                                <button onclick="showView('offer', 'need')" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Add Need" style="display: none !important; border: 0 !important; margin-left: 6px !important;">
-                                    <span class="material-symbols-outlined text-[15px] font-black">add</span>
+                                <button id="btn-needs-filter" onclick="toggleNeedsCategoryDropdown()" class="fused-filter-btn active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter">
+                                    <span class="material-symbols-outlined text-[15px]" id="needs-filter-icon">tune</span>
+                                </button>
+                                <button id="btn-needs-quick-create" onclick="toggleQuickCreateDropdown(event, 'needs')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
+                                    <span class="material-symbols-outlined text-[16px] font-bold">add</span>
                                 </button>
                                 <input type="text" id="village-needs-search-input" oninput="syncVillageSearch(this.value);" placeholder="Search listings, events and offerings" class="fused-search-input">
                                 <button id="btn-needs-search-clear" onclick="clearSearchInput('village-needs-search-input')" class="hidden w-6 h-6 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 active:scale-90 transition-all text-black dark:text-white border-0 flex-shrink-0 ml-1 mr-1 shadow-sm" title="Clear Search">
                                     <span class="material-symbols-outlined text-[13px]">close</span>
                                 </button>
-                                <button id="btn-needs-filter" onclick="toggleNeedsCategoryDropdown()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter" style="display: none !important; border: 0 !important; margin-right: 6px !important;">
-                                    <span class="material-symbols-outlined text-[15px]" id="needs-filter-icon">tune</span>
-                                </button>
                             </div>
                             <div id="village-needs-search-suggestions" class="hidden absolute left-1 right-1 top-[48px] z-[3000] fused-suggestions-box"></div>
 
-                            <!-- Needs Board Category Dropdown -->
-                            <div id="needs-category-dropdown" class="absolute top-32 right-6 z-[3000] flex flex-col items-end gap-2.5 max-h-[50vh] overflow-y-auto pl-5 pr-4 pt-2 pb-5 hidden custom-scrollbar select-none bg-warm-cream/95 dark:bg-[#18201a]/95 backdrop-blur-md rounded-2xl border border-outline-variant/30 shadow-xl p-3 animate-slide-down-fade">
-                                <!-- Dynamically generated trailing list -->
+                            <!-- Needs List Quick Create Dropdown -->
+                            <div id="needs-quick-create-dropdown" class="hidden absolute left-1 right-1 top-[52px] z-[3000] fused-suggestions-box p-4" style="max-height: none !important; overflow: visible !important; box-sizing: border-box !important; margin-top: 0px !important;">
+                                <div class="quick-create-list" style="margin: 0 !important; padding: 0 !important; gap: 8px !important;">
+                                    <!-- Offering Row -->
+                                    <button type="button" onclick="triggerQuickCreate('offering')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
+                                        <div class="quick-create-icon-circle" style="background-color: #308A5E !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
+                                            <span class="material-symbols-outlined text-[18px]">handyman</span>
+                                        </div>
+                                        <div class="quick-create-info">
+                                            <h4 class="quick-create-title" style="font-size: 13px !important;">Offering</h4>
+                                            <p class="quick-create-desc" style="font-size: 11px !important;">Share tools, skills, or food</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+                                    </button>
+                                    
+                                    <!-- Need Row -->
+                                    <button type="button" onclick="triggerQuickCreate('need')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
+                                        <div class="quick-create-icon-circle" style="background-color: #f59e0b !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
+                                            <span class="material-symbols-outlined text-[18px]">shopping_basket</span>
+                                        </div>
+                                        <div class="quick-create-info">
+                                            <h4 class="quick-create-title" style="font-size: 13px !important;">Need</h4>
+                                            <p class="quick-create-desc" style="font-size: 11px !important;">Ask neighbors for items or help</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+                                    </button>
+                                    
+                                    <!-- Event Row -->
+                                    <button type="button" onclick="triggerQuickCreate('event')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
+                                        <div class="quick-create-icon-circle" style="background-color: #8b5cf6 !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
+                                            <span class="material-symbols-outlined text-[18px]">festival</span>
+                                        </div>
+                                        <div class="quick-create-info">
+                                            <h4 class="quick-create-title" style="font-size: 13px !important;">Event</h4>
+                                            <p class="quick-create-desc" style="font-size: 11px !important;">Organize a gathering or swap meet</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+                                    </button>
+                                    
+                                    <!-- Donation Row -->
+                                    <button type="button" onclick="triggerQuickCreate('donation')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
+                                        <div class="quick-create-icon-circle" style="background-color: #ec4899 !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
+                                            <span class="material-symbols-outlined text-[18px]">volunteer_activism</span>
+                                        </div>
+                                        <div class="quick-create-info">
+                                            <h4 class="quick-create-title" style="font-size: 13px !important;">Donation</h4>
+                                            <p class="quick-create-desc" style="font-size: 11px !important;">Gift items or support a local cause</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+                                    </button>
+                                </div>
+                                <div class="pt-2 text-center border-t border-black/5 dark:border-white/5 mt-2">
+                                    <p class="text-[10px] text-gray-500 dark:text-gray-400 font-medium leading-normal" style="margin: 0 !important;">Select a category above to post a new listing on the village map.</p>
+                                </div>
                             </div>
 
                             <!-- Pills Control (Offerings, Needs, Events) -->
-                            <div id="village-needs-segmented-control" class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-0">
+                            <div id="village-needs-segmented-control" class="relative h-10 flex items-center justify-between gap-2 select-none mt-0">
                                 <button type="button" onclick="switchVillageSegment('list')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-gray-500 dark:text-gray-400">
                                     Offerings
                                 </button>
@@ -10381,6 +10833,11 @@ html.dark #quick-create-sheet {
                                 <button type="button" onclick="switchVillageSegment('events')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-gray-500 dark:text-gray-400">
                                     Events
                                 </button>
+                            </div>
+
+                            <!-- Needs Board Category Dropdown (now horizontal and below segmented control) -->
+                            <div id="needs-category-dropdown" class="category-dropdown-tray hidden custom-scrollbar select-none animate-slide-down-fade">
+                                <!-- Dynamically generated trailing list -->
                             </div>
 
                             <!-- Distance Range Filter Slider -->
@@ -10408,26 +10865,77 @@ html.dark #quick-create-sheet {
                         <div class="mb-2 px-1 flex flex-col gap-2.5 flex-shrink-0 relative">
                             <!-- Fused Search Capsule with Add button and Filter button -->
                             <div class="fused-search-capsule select-none">
-                                <button onclick="showView('offer', 'event')" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Host Event" style="display: none !important; border: 0 !important; margin-left: 6px !important;">
-                                    <span class="material-symbols-outlined text-[15px] font-black">add</span>
+                                <button id="btn-events-filter" onclick="toggleEventsCategoryDropdown()" class="fused-filter-btn active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter">
+                                    <span class="material-symbols-outlined text-[15px]" id="events-filter-icon">tune</span>
+                                </button>
+                                <button id="btn-events-quick-create" onclick="toggleQuickCreateDropdown(event, 'events')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
+                                    <span class="material-symbols-outlined text-[16px] font-bold">add</span>
                                 </button>
                                 <input type="text" id="village-events-search-input" oninput="syncVillageSearch(this.value);" placeholder="Search listings, events and offerings" class="fused-search-input">
                                 <button id="btn-events-search-clear" onclick="clearSearchInput('village-events-search-input')" class="hidden w-6 h-6 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 active:scale-90 transition-all text-black dark:text-white border-0 flex-shrink-0 ml-1 mr-1 shadow-sm" title="Clear Search">
                                     <span class="material-symbols-outlined text-[13px]">close</span>
                                 </button>
-                                <button id="btn-events-filter" onclick="toggleEventsCategoryDropdown()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter" style="display: none !important; border: 0 !important; margin-right: 6px !important;">
-                                    <span class="material-symbols-outlined text-[15px]" id="events-filter-icon">tune</span>
-                                </button>
                             </div>
                             <div id="village-events-search-suggestions" class="hidden absolute left-1 right-1 top-[48px] z-[3000] fused-suggestions-box"></div>
 
-                            <!-- Events List Category Dropdown -->
-                            <div id="events-category-dropdown" class="absolute top-32 right-6 z-[3000] flex flex-col items-end gap-2.5 max-h-[50vh] overflow-y-auto pl-5 pr-4 pt-2 pb-5 hidden custom-scrollbar select-none bg-warm-cream/95 dark:bg-[#18201a]/95 backdrop-blur-md rounded-2xl border border-outline-variant/30 shadow-xl p-3 animate-slide-down-fade">
-                                <!-- Dynamically generated trailing list -->
+                            <!-- Events List Quick Create Dropdown -->
+                            <div id="events-quick-create-dropdown" class="hidden absolute left-1 right-1 top-[52px] z-[3000] fused-suggestions-box p-4" style="max-height: none !important; overflow: visible !important; box-sizing: border-box !important; margin-top: 0px !important;">
+                                <div class="quick-create-list" style="margin: 0 !important; padding: 0 !important; gap: 8px !important;">
+                                    <!-- Offering Row -->
+                                    <button type="button" onclick="triggerQuickCreate('offering')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
+                                        <div class="quick-create-icon-circle" style="background-color: #308A5E !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
+                                            <span class="material-symbols-outlined text-[18px]">handyman</span>
+                                        </div>
+                                        <div class="quick-create-info">
+                                            <h4 class="quick-create-title" style="font-size: 13px !important;">Offering</h4>
+                                            <p class="quick-create-desc" style="font-size: 11px !important;">Share tools, skills, or food</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+                                    </button>
+                                    
+                                    <!-- Need Row -->
+                                    <button type="button" onclick="triggerQuickCreate('need')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
+                                        <div class="quick-create-icon-circle" style="background-color: #f59e0b !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
+                                            <span class="material-symbols-outlined text-[18px]">shopping_basket</span>
+                                        </div>
+                                        <div class="quick-create-info">
+                                            <h4 class="quick-create-title" style="font-size: 13px !important;">Need</h4>
+                                            <p class="quick-create-desc" style="font-size: 11px !important;">Ask neighbors for items or help</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+                                    </button>
+                                    
+                                    <!-- Event Row -->
+                                    <button type="button" onclick="triggerQuickCreate('event')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
+                                        <div class="quick-create-icon-circle" style="background-color: #8b5cf6 !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
+                                            <span class="material-symbols-outlined text-[18px]">festival</span>
+                                        </div>
+                                        <div class="quick-create-info">
+                                            <h4 class="quick-create-title" style="font-size: 13px !important;">Event</h4>
+                                            <p class="quick-create-desc" style="font-size: 11px !important;">Organize a gathering or swap meet</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+                                    </button>
+                                    
+                                    <!-- Donation Row -->
+                                    <button type="button" onclick="triggerQuickCreate('donation')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
+                                        <div class="quick-create-icon-circle" style="background-color: #ec4899 !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
+                                            <span class="material-symbols-outlined text-[18px]">volunteer_activism</span>
+                                        </div>
+                                        <div class="quick-create-info">
+                                            <h4 class="quick-create-title" style="font-size: 13px !important;">Donation</h4>
+                                            <p class="quick-create-desc" style="font-size: 11px !important;">Gift items or support a local cause</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+                                    </button>
+                                </div>
+                                <div class="pt-2 text-center border-t border-black/5 dark:border-white/5 mt-2">
+                                    <p class="text-[10px] text-gray-500 dark:text-gray-400 font-medium leading-normal" style="margin: 0 !important;">Select a category above to post a new listing on the village map.</p>
+                                </div>
                             </div>
 
                             <!-- Pills Control (Offerings, Needs, Events) -->
-                            <div id="village-events-segmented-control" class="relative w-full h-10 flex items-center justify-between gap-2 select-none mt-0">
+                            <div id="village-events-segmented-control" class="relative h-10 flex items-center justify-between gap-2 select-none mt-0">
                                 <button type="button" onclick="switchVillageSegment('list')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-[#f0f0f0]/90 dark:bg-[#1f2922]/90 text-gray-500 dark:text-gray-400">
                                     Offerings
                                 </button>
@@ -10437,6 +10945,11 @@ html.dark #quick-create-sheet {
                                 <button type="button" onclick="switchVillageSegment('events')" class="relative flex-1 text-xs font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm">
                                     Events
                                 </button>
+                            </div>
+
+                            <!-- Events List Category Dropdown (now horizontal and below segmented control) -->
+                            <div id="events-category-dropdown" class="category-dropdown-tray hidden custom-scrollbar select-none animate-slide-down-fade">
+                                <!-- Dynamically generated trailing list -->
                             </div>
                             <!-- Distance Range Filter Slider -->
                             <div class="flex flex-col gap-1.5 bg-forest-green/5 dark:bg-black/20 p-3 rounded-2xl border border-outline-variant/20 flex-shrink-0 mt-2 select-none">
@@ -10727,7 +11240,6 @@ html.dark #quick-create-sheet {
                 <div class="menu-sub-button-wrapper">
                     <div class="flex items-center gap-1.5">
                         <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Offerings Map</span>
-                        <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-map" onclick="showVillageHelpPopup('btn-segment-map',event)">?</button>
                     </div>
                     <button id="btn-segment-map" onclick="switchVillageSegment('map')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gray-600 border-gray-600 text-white pulse-gray-light dark:bg-gray-700 dark:border-gray-700 dark:text-white scale-110 z-20 active:scale-95 transition-all cursor-pointer" title="Offerings Map">
                         <span class="material-symbols-outlined text-[24px]">map</span>
@@ -10738,7 +11250,6 @@ html.dark #quick-create-sheet {
                 <div class="menu-sub-button-wrapper">
                     <div class="flex items-center gap-1.5">
                         <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Needs Map</span>
-                        <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-needs-map" onclick="showVillageHelpPopup('btn-segment-needs-map',event)">?</button>
                     </div>
                     <button id="btn-segment-needs-map" onclick="switchVillageSegment('needs_map')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gray-600 border-gray-600 text-white pulse-gray-light dark:bg-gray-700 dark:border-gray-700 dark:text-white active:scale-95 transition-all cursor-pointer" title="Needs Map">
                         <span class="material-symbols-outlined text-[24px]">shopping_basket</span>
@@ -10749,7 +11260,6 @@ html.dark #quick-create-sheet {
                 <div class="menu-sub-button-wrapper">
                     <div class="flex items-center gap-1.5">
                         <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Events Map</span>
-                        <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-events-map" onclick="showVillageHelpPopup('btn-segment-events-map',event)">?</button>
                     </div>
                     <button id="btn-segment-events-map" onclick="switchVillageSegment('events_map')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gray-600 border-gray-600 text-white pulse-gray-light dark:bg-gray-700 dark:border-gray-700 dark:text-white active:scale-95 transition-all cursor-pointer" title="Events Map">
                         <span class="material-symbols-outlined text-[24px]">event</span>
@@ -10760,7 +11270,6 @@ html.dark #quick-create-sheet {
                 <div class="menu-sub-button-wrapper">
                     <div class="flex items-center gap-1.5">
                         <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Offerings List</span>
-                        <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-list" onclick="showVillageHelpPopup('btn-segment-list',event)">?</button>
                     </div>
                     <button id="btn-segment-list" onclick="switchVillageSegment('list')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gray-600 border-gray-600 text-white pulse-gray-light dark:bg-gray-700 dark:border-gray-700 dark:text-white active:scale-95 transition-all cursor-pointer" title="Offerings List">
                         <span class="material-symbols-outlined text-[24px]">view_list</span>
@@ -10771,7 +11280,6 @@ html.dark #quick-create-sheet {
                 <div class="menu-sub-button-wrapper">
                     <div class="flex items-center gap-1.5">
                         <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Needs List</span>
-                        <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-needs" onclick="showVillageHelpPopup('btn-segment-needs',event)">?</button>
                     </div>
                     <button id="btn-segment-needs" onclick="switchVillageSegment('needs')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gray-600 border-gray-600 text-white pulse-gray-light dark:bg-gray-700 dark:border-gray-700 dark:text-white active:scale-95 transition-all cursor-pointer" title="Needs List">
                         <span class="material-symbols-outlined text-[24px]">shopping_basket</span>
@@ -10782,7 +11290,6 @@ html.dark #quick-create-sheet {
                 <div class="menu-sub-button-wrapper">
                     <div class="flex items-center gap-1.5">
                         <span class="menu-sub-button-label font-bold text-black dark:text-[#308A5E] select-none">Events List</span>
-                        <button class="seg-help-btn hidden w-5 h-5 rounded-full bg-forest-green text-white flex items-center justify-center text-[10px] font-black border-0 cursor-pointer flex-shrink-0 shadow-md active:scale-90 transition-transform" data-seg-help="btn-segment-events" onclick="showVillageHelpPopup('btn-segment-events',event)">?</button>
                     </div>
                     <button id="btn-segment-events" onclick="switchVillageSegment('events')" class="menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gray-600 border-gray-600 text-white pulse-gray-light dark:bg-gray-700 dark:border-gray-700 dark:text-white active:scale-95 transition-all cursor-pointer" title="Events List">
                         <span class="material-symbols-outlined text-[24px]">event</span>
@@ -16168,77 +16675,36 @@ html.dark #quick-create-sheet {
 
                 <!-- GLOBAL BOTTOM NAVIGATION BAR -->
                 <!-- ==================================================== -->
-                <nav id="global-navbar" class="hidden absolute bottom-0 left-0 w-full z-[5000] flex flex-row justify-center items-center gap-1 bg-white border-t border-outline-variant/20 h-16 shadow-[0_-4px_20px_rgba(48,138,94,0.02)]">
-                    <div class="w-14 flex flex-col items-center justify-center cursor-pointer" data-nav="profile_settings" onclick="handleNavbarTap('profile_settings')">
-                        <div class="nav-icon-wrapper flex items-center justify-center w-11 h-9 rounded-full transition-all duration-300">
-                            <span class="material-symbols-outlined text-[28px]">account_circle</span>
+                <nav id="global-navbar" class="hidden absolute bottom-0 left-0 w-full z-[5000] flex flex-col justify-center items-center bg-white border-t border-outline-variant/20 h-16 shadow-[0_-4px_20px_rgba(48,138,94,0.02)]">
+                    <!-- Icons Row -->
+                    <div id="navbar-icons-row" class="w-full flex flex-row justify-center items-center gap-1 h-12 shrink-0 transition-all duration-300">
+                        <div class="w-14 flex flex-col items-center justify-center cursor-pointer" data-nav="profile_settings" onclick="handleNavbarTap('profile_settings')">
+                            <div class="nav-icon-wrapper flex items-center justify-center w-11 h-9 rounded-full transition-all duration-300">
+                                <span class="material-symbols-outlined text-[28px]">account_circle</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="w-14 flex flex-col items-center justify-center cursor-pointer" data-nav="offer" onclick="handleNavbarTap('offer')">
-                        <div class="nav-icon-wrapper flex items-center justify-center w-11 h-9 rounded-full transition-all duration-300">
-                            <span class="material-symbols-outlined text-[28px]">add_circle</span>
+
+                        <div class="w-14 flex flex-col items-center justify-center cursor-pointer" data-nav="chat_hub" onclick="handleNavbarTap('chat_hub')">
+                            <div class="nav-icon-wrapper relative flex items-center justify-center w-11 h-9 rounded-full transition-all duration-300">
+                                <span id="chat-icon-symbol" class="material-symbols-outlined text-[28px] transition-all duration-300">chat_bubble</span>
+                                <span id="chat-notification-badge" class="absolute top-0.5 right-1.5 chat-badge-circle hidden"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="w-14 flex flex-col items-center justify-center cursor-pointer" data-nav="chat_hub" onclick="handleNavbarTap('chat_hub')">
-                        <div class="nav-icon-wrapper relative flex items-center justify-center w-11 h-9 rounded-full transition-all duration-300">
-                            <span id="chat-icon-symbol" class="material-symbols-outlined text-[28px] transition-all duration-300">chat_bubble</span>
-                            <span id="chat-notification-badge" class="absolute top-0.5 right-1.5 chat-badge-circle hidden"></span>
+                        <div class="w-14 flex flex-col items-center justify-center cursor-pointer" data-nav="village_map" onclick="handleNavbarTap('village_map')">
+                            <div class="nav-icon-wrapper flex items-center justify-center w-11 h-9 rounded-full transition-all duration-300">
+                                <span class="material-symbols-outlined text-[28px]">map</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="w-14 flex flex-col items-center justify-center cursor-pointer" data-nav="village_map" onclick="handleNavbarTap('village_map')">
-                        <div class="nav-icon-wrapper flex items-center justify-center w-11 h-9 rounded-full transition-all duration-300">
-                            <span class="material-symbols-outlined text-[28px]">map</span>
-                        </div>
-                    </div>
-                    <div class="w-14 flex flex-col items-center justify-center cursor-pointer" data-nav="village_list" onclick="handleNavbarTap('village_list')">
-                        <div class="nav-icon-wrapper flex items-center justify-center w-11 h-9 rounded-full transition-all duration-300">
-                            <span class="material-symbols-outlined text-[28px]">format_list_bulleted</span>
+                        <div class="w-14 flex flex-col items-center justify-center cursor-pointer" data-nav="village_list" onclick="handleNavbarTap('village_list')">
+                            <div class="nav-icon-wrapper flex items-center justify-center w-11 h-9 rounded-full transition-all duration-300">
+                                <span class="material-symbols-outlined text-[28px]">format_list_bulleted</span>
+                            </div>
                         </div>
                     </div>
                 </nav>
 
-                <!-- SLIDE-UP BOTTOM SHEET FOR CREATING LISTINGS -->
-                <div id="quick-create-sheet" class="absolute left-1/2 -translate-x-1/2 w-[calc(100%-32px)] max-w-[370px] bg-white/75 dark:bg-[#141c16]/75 border border-outline-variant/35 dark:border-outline-variant/15 rounded-3xl shadow-[0_-8px_32px_rgba(0,0,0,0.06)] z-[4900] transition-all duration-300 ease-out select-none flex flex-col overflow-hidden backdrop-blur-[24px] saturate-[200%] -webkit-backdrop-filter: blur(24px) saturate(200%)" style="bottom: 74px; height: 36px; transform: translateX(-50%) translateY(0px);">
-                    <!-- Grab Handle (Line) -->
-                    <div id="quick-create-drag-handle" class="w-full flex justify-center items-center py-3 cursor-grab active:cursor-grabbing shrink-0">
-                        <div class="w-12 h-1 rounded-full bg-forest-green/20 dark:bg-warm-cream/20 hover:bg-forest-green/40 dark:hover:bg-warm-cream/40 transition-colors"></div>
-                    </div>
-                    
-                    <!-- Inner Content (Hidden when minimized, shown when pulled up) -->
-                    <div id="quick-create-content" class="flex-grow w-full px-4 pb-5 flex flex-col justify-start gap-4 opacity-0 transition-opacity duration-300 overflow-hidden pointer-events-none">
-                        <div class="text-center">
-                            <h3 class="font-headline font-bold text-sm text-black dark:text-white">Quick Share</h3>
-                            <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5">What would you like to list in the village today?</p>
-                        </div>
-                        
-                        <!-- Grid of Quick Options -->
-                        <div class="grid grid-cols-3 gap-2 flex-grow">
-                            <!-- Offering Option -->
-                            <button type="button" onclick="triggerQuickCreate('offering')" class="flex flex-col items-center justify-center p-2.5 bg-forest-green/5 dark:bg-emerald-500/5 hover:bg-forest-green/10 dark:hover:bg-emerald-500/10 border border-forest-green/10 dark:border-emerald-500/10 rounded-2xl transition-all cursor-pointer active:scale-95 text-center group">
-                                <div class="w-10 h-10 rounded-full bg-forest-green text-white flex items-center justify-center mb-1.5 shadow-sm group-hover:scale-105 transition-transform">
-                                    <span class="material-symbols-outlined text-lg">handyman</span>
-                                </div>
-                                <span class="font-bold text-[10px] text-forest-green dark:text-emerald-400">Offering</span>
-                            </button>
-                            
-                            <!-- Need Option -->
-                            <button type="button" onclick="triggerQuickCreate('need')" class="flex flex-col items-center justify-center p-2.5 bg-forest-green/5 dark:bg-emerald-500/5 hover:bg-forest-green/10 dark:hover:bg-emerald-500/10 border border-forest-green/10 dark:border-emerald-500/10 rounded-2xl transition-all cursor-pointer active:scale-95 text-center group">
-                                <div class="w-10 h-10 rounded-full bg-forest-green text-white flex items-center justify-center mb-1.5 shadow-sm group-hover:scale-105 transition-transform">
-                                    <span class="material-symbols-outlined text-lg">shopping_basket</span>
-                                </div>
-                                <span class="font-bold text-[10px] text-forest-green dark:text-emerald-400">Need</span>
-                            </button>
-                            
-                            <!-- Event Option -->
-                            <button type="button" onclick="triggerQuickCreate('event')" class="flex flex-col items-center justify-center p-2.5 bg-forest-green/5 dark:bg-emerald-500/5 hover:bg-forest-green/10 dark:hover:bg-emerald-500/10 border border-forest-green/10 dark:border-emerald-500/10 rounded-2xl transition-all cursor-pointer active:scale-95 text-center group">
-                                <div class="w-10 h-10 rounded-full bg-forest-green text-white flex items-center justify-center mb-1.5 shadow-sm group-hover:scale-105 transition-transform">
-                                    <span class="material-symbols-outlined text-lg">festival</span>
-                                </div>
-                                <span class="font-bold text-[10px] text-forest-green dark:text-emerald-400">Event</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <!-- Safe Area Detector for JS calculations -->
+                <div id="safe-area-detector" style="position: absolute; bottom: 0; height: env(safe-area-inset-bottom); pointer-events: none; visibility: hidden; z-index: -1;"></div>
 
                 <!-- Mock Phone home indicator bar -->
                 <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-28 h-1 bg-forest-green/20 rounded-full z-[6000] pointer-events-none hidden sm:block"></div>
@@ -19718,6 +20184,10 @@ function showView(viewId, mode) {
         if (earlyStyle) earlyStyle.remove();
     }
     collapseVillageMenu();
+    if (viewId !== 'village') {
+        if (typeof closeMapCategoryDropdown === 'function') closeMapCategoryDropdown();
+        if (typeof closeAllListDropdowns === 'function') closeAllListDropdowns();
+    }
     
     const isNative = window.isNativeApp === true || document.documentElement.classList.contains('native-app-env') || (document.body && document.body.classList.contains('native-app'));
     console.log("[NATIVE CHECK] isNative:", isNative, "documentElement classes:", document.documentElement.className, "body classes:", document.body ? document.body.className : "no body");
@@ -20659,7 +21129,11 @@ function startAppInitialization() {
                             updateVillageViewFromState();
                         }
                     } else {
-                        showView('welcome');
+                        if (typeof handleDevAutoLogin === 'function') {
+                            handleDevAutoLogin();
+                        } else {
+                            showView('welcome');
+                        }
                     }
                 }
             } catch (e) {
@@ -21505,6 +21979,60 @@ window.handleDevAutoLogin = function() {
     if (headerText) headerText.innerText = `Welcome back, ${state.currentUser.firstName}!`;
 
     if (window.syncUserNavbarInfo) window.syncUserNavbarInfo();
+    setTimeout(() => {
+        console.log("LOG: [DEV TEST] Automatically switching to list view");
+        if (typeof switchVillageSegment === 'function') {
+            switchVillageSegment('list');
+        }
+        setTimeout(() => {
+            console.log("LOG: [DEV TEST] Running DOM diagnostics...");
+            const views = document.querySelectorAll('.screen-view');
+            views.forEach(v => {
+                console.log(`LOG: [DEV TEST] View ID: ${v.id}, active: ${v.classList.contains('active')}, display: ${v.style.display}, offsetHeight: ${v.offsetHeight}, opacity: ${window.getComputedStyle(v).opacity}`);
+            });
+            const listContainer = document.getElementById('village-list-container');
+            if (listContainer) {
+                console.log(`LOG: [DEV TEST] listContainer display: ${listContainer.style.display}, classList: ${listContainer.className}, offsetHeight: ${listContainer.offsetHeight}, opacity: ${window.getComputedStyle(listContainer).opacity}`);
+                
+                const searchCapsule = listContainer.querySelector('.fused-search-capsule');
+                if (searchCapsule) {
+                    console.log(`LOG: [DEV TEST] searchCapsule offsetHeight: ${searchCapsule.offsetHeight}, display: ${window.getComputedStyle(searchCapsule).display}, opacity: ${window.getComputedStyle(searchCapsule).opacity}, visibility: ${window.getComputedStyle(searchCapsule).visibility}`);
+                }
+                const segmentedControl = listContainer.querySelector('#village-list-segmented-control');
+                if (segmentedControl) {
+                    console.log(`LOG: [DEV TEST] segmentedControl offsetHeight: ${segmentedControl.offsetHeight}, display: ${window.getComputedStyle(segmentedControl).display}`);
+                }
+                const items = listContainer.querySelector('#village-list-items');
+                if (items) {
+                    const itemsStyle = window.getComputedStyle(items);
+                    console.log(`LOG: [DEV TEST] village-list-items child count: ${items.children.length}, display: ${itemsStyle.display}, height: ${items.offsetHeight}, opacity: ${itemsStyle.opacity}`);
+                    if (items.children.length > 0) {
+                        const firstChild = items.children[0];
+                        const childStyle = window.getComputedStyle(firstChild);
+                        console.log(`LOG: [DEV TEST] First child tag: ${firstChild.tagName}, class: ${firstChild.className}, display: ${childStyle.display}, height: ${firstChild.offsetHeight}, opacity: ${childStyle.opacity}, visibility: ${childStyle.visibility}, text: ${firstChild.textContent.trim().substring(0, 50)}`);
+                    }
+                }
+            }
+            const wrapper = document.getElementById('village-subviews-wrapper');
+            if (wrapper) {
+                console.log(`LOG: [DEV TEST] wrapper display: ${window.getComputedStyle(wrapper).display}, offsetHeight: ${wrapper.offsetHeight}`);
+            }
+            
+            const allElements = document.querySelectorAll('*');
+            allElements.forEach(el => {
+                const style = window.getComputedStyle(el);
+                if ((style.position === 'absolute' || style.position === 'fixed') && 
+                    el.offsetHeight > 500 && el.offsetWidth > 300 && 
+                    style.display !== 'none' && style.visibility !== 'hidden' && parseFloat(style.opacity) > 0) {
+                    const parent = el.parentElement;
+                    const parentId = parent ? parent.id : 'none';
+                    const parentClass = parent ? parent.className : 'none';
+                    const parentDisplay = parent ? window.getComputedStyle(parent).display : 'none';
+                    console.log(`LOG: [DEV TEST] Covering Element: tag=${el.tagName}, id=${el.id}, class=${el.className}, z-index=${style.zIndex}, bg=${style.backgroundColor}, parentId=${parentId}, parentClass=${parentClass}, parentDisplay=${parentDisplay}`);
+                }
+            });
+        }, 1000);
+    }, 1500);
 };
 
 function handleLogout() {
@@ -23701,7 +24229,8 @@ function openMapItemDetail(idOrName) {
         }
     }
 
-    document.getElementById('map-detail-location').innerText = `Village · ${location} · ${dist.toFixed(1)} km away`;
+    const distText = (typeof dist === 'number' && !isNaN(dist)) ? dist.toFixed(1) : '0.0';
+    document.getElementById('map-detail-location').innerText = `Village · ${location} · ${distText} km away`;
     
     const sub = getSubcategoryForListing(title, category);
     const catSubEl = document.getElementById('map-detail-category-subcategory');
@@ -25151,72 +25680,7 @@ function handleMapFilterOverlayClick(e) {
 window.handleMapFilterOverlayClick = handleMapFilterOverlayClick;
 
 function toggleCategoryTray() {
-    playSound('click');
-    collapseVillageMenu();
-    if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map' && currentVillageSegment !== 'events_map') {
-        switchVillageSegment('map');
-    }
-    
-    const overlay = document.getElementById('map-filter-overlay');
-    const dropdown = document.getElementById('map-category-dropdown');
-    const filterIcon = document.getElementById('map-filter-icon');
-    const floatingContainer = document.getElementById('village-segment-floating-buttons');
-    const filterBtn = document.getElementById('btn-segment-filter');
-    
-    if (overlay && dropdown) {
-        const isOpening = overlay.classList.contains('hidden');
-        
-        if (isOpening) {
-            // Reset info mode on open
-            mapInfoModeActive = false;
-            
-            renderMapFilterCircles();
-            overlay.classList.remove('hidden');
-            dropdown.classList.remove('hidden');
-            dropdown.classList.add('expanded');
-            
-            // Force layout recalculation
-            overlay.offsetHeight;
-            
-            overlay.classList.remove('opacity-0');
-            overlay.classList.add('opacity-100');
-            
-            if (filterIcon) {
-                filterIcon.classList.add('rotate-filter-active');
-                filterIcon.innerText = 'close';
-            }
-            
-            if (filterBtn) {
-                filterBtn.classList.add('active-filter-circle');
-            }
-            
-            if (floatingContainer) {
-                floatingContainer.classList.add('floating-buttons-hidden');
-            }
-        } else {
-            // Reset info mode on close
-            mapInfoModeActive = false;
-            
-            overlay.classList.remove('opacity-100');
-            overlay.classList.add('opacity-0');
-            
-            if (filterIcon) {
-                filterIcon.classList.remove('rotate-filter-active');
-                filterIcon.innerText = 'tune';
-            }
-            
-            if (filterBtn) {
-                filterBtn.classList.remove('active-filter-circle');
-            }
-            
-            overlay.classList.add('hidden');
-            dropdown.classList.add('hidden');
-            dropdown.classList.remove('expanded');
-            if (floatingContainer) {
-                floatingContainer.classList.remove('floating-buttons-hidden');
-            }
-        }
-    }
+    toggleMapCategoryDropdown();
 }
 
 const MAP_FILTER_CATEGORIES = [
@@ -25387,32 +25851,6 @@ function renderMapFilterCircles() {
     if (!state.activeMapFilters) {
         state.activeMapFilters = [];
     }
-    
-    const showLabels = true;
-
-    // Render the Info row
-    const infoCircleBg = mapInfoModeActive ? '#308A5E' : '#4b5563';
-    const infoAnimStyle = `transition-delay: 0s !important; -webkit-transition-delay: 0s !important;`;
-    const isDark = document.documentElement.classList.contains('dark');
-    const gapColor = isDark ? '#141c16' : '#ffffff';
-    const infoCircleActiveShadow = mapInfoModeActive ? `box-shadow: 0 0 0 2px ${gapColor}, 0 0 0 4px #308A5E, 0 8px 16px rgba(0,0,0,0.35) !important;` : 'box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15) !important;';
-    
-    const infoRowHtml = `
-        <div class="map-category-item flex items-center gap-1.5 select-none cursor-pointer active:scale-95 transition-transform shrink-0 relative" 
-             data-category-name="Info" 
-             onclick="toggleMapInfoMode()" 
-             style="${infoAnimStyle}">
-            <!-- Circle element -->
-            <div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all duration-200 flex-shrink-0 relative filter-category-info-circle"
-                 style="background-color: ${infoCircleBg} !important; color: #FFFFFF !important; ${infoCircleActiveShadow} transform: ${mapInfoModeActive ? 'scale(1.1)' : 'scale(1.0)'} !important; opacity: ${mapInfoModeActive ? '1' : '0.65'} !important;">
-                <span class="material-symbols-outlined text-[13px]">help</span>
-            </div>
-            <!-- Label to the right -->
-            <span class="category-label text-[10px] font-bold select-none leading-none">
-                Info
-            </span>
-        </div>
-    `;
 
     const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => {
         if (currentVillageSegment === 'map' && c.name === 'Event or Meetup') {
@@ -25424,34 +25862,24 @@ function renderMapFilterCircles() {
     const categoriesHtml = filteredCategories.map((cat, idx) => {
         const delay = (idx + 1) * 0.025; // 25ms stagger per item
         const animStyle = `transition-delay: ${delay}s !important; -webkit-transition-delay: ${delay}s !important;`;
-        
-        // If info mode is active, display a pulsating ? badge overlay on each category circle (except Clear Filter)
-        const infoBadgeHtml = (mapInfoModeActive && cat.name !== "Clear Filter") ? `
-            <div class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-amber-500 text-white rounded-full flex items-center justify-center border border-white dark:border-[#141c16] shadow-sm animate-pulse z-10">
-                <span class="text-[8px] font-extrabold font-mono">?</span>
-            </div>
-        ` : '';
 
         return `
-            <div class="map-category-item flex items-center gap-1.5 select-none cursor-pointer active:scale-95 transition-transform shrink-0 relative" 
+            <div class="map-category-item flex items-center justify-start w-full select-none cursor-pointer active:scale-95 transition-transform shrink-0 relative" 
                  data-category-name="${cat.name}" 
                  onclick="toggleMapFilterCategory('${cat.name}', this)" 
-                 style="${animStyle}">
+                 title="${cat.displayName}"
+                 style="${animStyle} padding: 4px 8px !important;">
                 <!-- Circle element -->
                 <div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all duration-200 filter-category-circle flex-shrink-0 relative" 
                      data-category="${cat.name}">
                     <span class="material-symbols-outlined text-[13px]">${cat.icon}</span>
-                    ${infoBadgeHtml}
                 </div>
-                <!-- Label to the right -->
-                <span class="category-label text-[10px] font-bold select-none leading-none">
-                    ${cat.displayName}
-                </span>
+                <span class="category-label text-[11px] font-bold ml-2.5 text-black dark:text-white">${cat.displayName}</span>
             </div>
         `;
     }).join('');
 
-    dropdown.innerHTML = infoRowHtml + categoriesHtml;
+    dropdown.innerHTML = categoriesHtml;
 
     // Apply styles to circles after rendering
     dropdown.querySelectorAll('.filter-category-circle').forEach(circle => {
@@ -25462,6 +25890,9 @@ function renderMapFilterCircles() {
             updateCategoryCircleStyle(circle, cat, isActive);
         }
     });
+    if (typeof renderLeftDrawerFilters === 'function') {
+        renderLeftDrawerFilters();
+    }
 }
 window.renderMapFilterCircles = renderMapFilterCircles;
 
@@ -25527,76 +25958,6 @@ function toggleMapFilterCategory(categoryName, element) {
 }
 window.toggleMapFilterCategory = toggleMapFilterCategory;
 
-window.toggleListCategoryDropdown = function() {
-    playSound('click');
-    const dropdown = document.getElementById('list-category-dropdown');
-    if (!dropdown) return;
-    const isHidden = dropdown.classList.contains('hidden');
-    
-    // Close other dropdowns if open
-    const needsDropdown = document.getElementById('needs-category-dropdown');
-    if (needsDropdown) needsDropdown.classList.add('hidden');
-    const eventsDropdown = document.getElementById('events-category-dropdown');
-    if (eventsDropdown) eventsDropdown.classList.add('hidden');
-    
-    const filterIcon = document.getElementById('list-filter-icon');
-    const filterBtn = document.getElementById('btn-list-filter');
-    
-    if (isHidden) {
-        renderListFilterCircles();
-        dropdown.classList.remove('hidden');
-        if (filterIcon) {
-            filterIcon.innerText = 'close';
-        }
-        if (filterBtn) {
-            filterBtn.classList.add('active-filter-circle');
-        }
-    } else {
-        dropdown.classList.add('hidden');
-        if (filterIcon) {
-            filterIcon.innerText = 'tune';
-        }
-        if (filterBtn) {
-            filterBtn.classList.remove('active-filter-circle');
-        }
-    }
-};
-
-window.toggleNeedsCategoryDropdown = function() {
-    playSound('click');
-    const dropdown = document.getElementById('needs-category-dropdown');
-    if (!dropdown) return;
-    const isHidden = dropdown.classList.contains('hidden');
-    
-    // Close other dropdowns if open
-    const listDropdown = document.getElementById('list-category-dropdown');
-    if (listDropdown) listDropdown.classList.add('hidden');
-    const eventsDropdown = document.getElementById('events-category-dropdown');
-    if (eventsDropdown) eventsDropdown.classList.add('hidden');
-    
-    const filterIcon = document.getElementById('needs-filter-icon');
-    const filterBtn = document.getElementById('btn-needs-filter');
-    
-    if (isHidden) {
-        renderNeedsFilterCircles();
-        dropdown.classList.remove('hidden');
-        if (filterIcon) {
-            filterIcon.innerText = 'close';
-        }
-        if (filterBtn) {
-            filterBtn.classList.add('active-filter-circle');
-        }
-    } else {
-        dropdown.classList.add('hidden');
-        if (filterIcon) {
-            filterIcon.innerText = 'tune';
-        }
-        if (filterBtn) {
-            filterBtn.classList.remove('active-filter-circle');
-        }
-    }
-};
-
 function renderListFilterCircles() {
     const dropdown = document.getElementById('list-category-dropdown');
     if (!dropdown) return;
@@ -25607,16 +25968,15 @@ function renderListFilterCircles() {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         return `
-            <div class="flex items-center justify-end gap-1 select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="flex items-center justify-start w-full select-none cursor-pointer group active:scale-95 transition-transform" 
                  onclick="selectListCategoryFilter('${cat.name}', this)" 
-                 style="${animStyle}">
-                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none">
-                    ${cat.displayName}
-                </span>
-                <div class="w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 list-filter-category-circle flex-shrink-0" 
+                 title="${cat.displayName}"
+                 style="${animStyle} padding: 4px 8px !important;">
+                <div class="w-[26px] h-[26px] rounded-full flex items-center justify-center shadow-md transition-all duration-200 list-filter-category-circle flex-shrink-0" 
                      data-category="${cat.name}">
-                    <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
+                    <span class="material-symbols-outlined text-[12px]">${cat.icon}</span>
                 </div>
+                <span class="category-label text-[11px] font-bold ml-2.5 text-black dark:text-white">${cat.displayName}</span>
             </div>
         `;
     }).join('');
@@ -25631,6 +25991,9 @@ function renderListFilterCircles() {
             updateCategoryCircleStyle(circle, cat, isActive);
         }
     });
+    if (typeof renderLeftDrawerFilters === 'function') {
+        renderLeftDrawerFilters();
+    }
 }
 window.renderListFilterCircles = renderListFilterCircles;
 
@@ -25642,16 +26005,15 @@ function renderNeedsFilterCircles() {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         return `
-            <div class="flex items-center justify-end gap-1 select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="flex items-center justify-start w-full select-none cursor-pointer group active:scale-95 transition-transform" 
                  onclick="selectNeedsCategoryFilter('${cat.name}', this)" 
-                 style="${animStyle}">
-                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none">
-                    ${cat.displayName}
-                </span>
-                <div class="w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 needs-filter-category-circle flex-shrink-0" 
+                 title="${cat.displayName}"
+                 style="${animStyle} padding: 4px 8px !important;">
+                <div class="w-[26px] h-[26px] rounded-full flex items-center justify-center shadow-md transition-all duration-200 needs-filter-category-circle flex-shrink-0" 
                      data-category="${cat.name}">
-                    <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
+                    <span class="material-symbols-outlined text-[12px]">${cat.icon}</span>
                 </div>
+                <span class="category-label text-[11px] font-bold ml-2.5 text-black dark:text-white">${cat.displayName}</span>
             </div>
         `;
     }).join('');
@@ -25666,6 +26028,9 @@ function renderNeedsFilterCircles() {
             updateCategoryCircleStyle(circle, cat, isActive);
         }
     });
+    if (typeof renderLeftDrawerFilters === 'function') {
+        renderLeftDrawerFilters();
+    }
 }
 window.renderNeedsFilterCircles = renderNeedsFilterCircles;
 
@@ -25713,41 +26078,6 @@ window.selectNeedsCategoryFilter = function(categoryName, element) {
     renderNeedsBoardView();
 };
 
-window.toggleEventsCategoryDropdown = function() {
-    playSound('click');
-    const dropdown = document.getElementById('events-category-dropdown');
-    if (!dropdown) return;
-    const isHidden = dropdown.classList.contains('hidden');
-    
-    // Close other dropdowns if open
-    const listDropdown = document.getElementById('list-category-dropdown');
-    if (listDropdown) listDropdown.classList.add('hidden');
-    const needsDropdown = document.getElementById('needs-category-dropdown');
-    if (needsDropdown) needsDropdown.classList.add('hidden');
-    
-    const filterIcon = document.getElementById('events-filter-icon');
-    const filterBtn = document.getElementById('btn-events-filter');
-    
-    if (isHidden) {
-        renderEventsFilterCircles();
-        dropdown.classList.remove('hidden');
-        if (filterIcon) {
-            filterIcon.innerText = 'close';
-        }
-        if (filterBtn) {
-            filterBtn.classList.add('active-filter-circle');
-        }
-    } else {
-        dropdown.classList.add('hidden');
-        if (filterIcon) {
-            filterIcon.innerText = 'tune';
-        }
-        if (filterBtn) {
-            filterBtn.classList.remove('active-filter-circle');
-        }
-    }
-};
-
 window.selectEventsCategoryFilter = function(categoryName, element) {
     playSound('click');
     if (categoryName === 'Clear Filter') {
@@ -25778,16 +26108,15 @@ function renderEventsFilterCircles() {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         return `
-            <div class="flex items-center justify-end gap-1 select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="flex items-center justify-start w-full select-none cursor-pointer group active:scale-95 transition-transform" 
                  onclick="selectEventsCategoryFilter('${cat.name}', this)" 
-                 style="${animStyle}">
-                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none">
-                    ${cat.displayName}
-                </span>
-                <div class="w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 events-filter-category-circle flex-shrink-0" 
+                 title="${cat.displayName}"
+                 style="${animStyle} padding: 4px 8px !important;">
+                <div class="w-[26px] h-[26px] rounded-full flex items-center justify-center shadow-md transition-all duration-200 events-filter-category-circle flex-shrink-0" 
                      data-category="${cat.name}">
-                    <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
+                    <span class="material-symbols-outlined text-[12px]">${cat.icon}</span>
                 </div>
+                <span class="category-label text-[11px] font-bold ml-2.5 text-black dark:text-white">${cat.displayName}</span>
             </div>
         `;
     }).join('');
@@ -26354,6 +26683,8 @@ function resetOfferValidationState() {
             submitBtn.innerText = "Host Event";
         } else if (state.currentOfferMode === 'need') {
             submitBtn.innerText = "List Need";
+        } else if (state.currentOfferMode === 'donation') {
+            submitBtn.innerText = "List Donation";
         } else {
             submitBtn.innerText = "List Offer";
         }
@@ -26444,6 +26775,33 @@ function selectOfferMode(mode) {
             if (descInputEl) descInputEl.placeholder = "please describe your need";
 
             // Reset Karma check state and wishlist inputs for Need Listing mode
+            const karmaCheckbox = document.getElementById('karma-checkbox');
+            if (karmaCheckbox) {
+                karmaCheckbox.checked = false;
+                giftKarmaActive = false;
+                const wishlistInput = document.getElementById('offer-wishlist-input');
+                const unifiedCard = document.getElementById('karma-unified-card');
+                if (wishlistInput && unifiedCard) {
+                    wishlistInput.value = "";
+                    wishlistInput.disabled = false;
+                    wishlistInput.classList.remove('bg-gray-100/55', 'dark:bg-emerald-950/10', 'opacity-85');
+                    unifiedCard.classList.add('border-outline-variant/30');
+                    unifiedCard.classList.remove('border-[#308A5E]', 'bg-[#308A5E]/5', 'dark:bg-emerald-950/15');
+                }
+                const subPanel = document.getElementById('karma-animation-sub-panel');
+                if (subPanel) {
+                    subPanel.classList.add('hidden');
+                }
+            }
+        } else if (mode === 'donation') {
+            if (titleLabel) titleLabel.innerText = "What are you donating today?";
+            if (categoryHeader) categoryHeader.innerText = "Select Category";
+            if (descLabel) descLabel.innerText = "Describe donation";
+            if (submitBtn) submitBtn.innerText = "List Donation";
+            if (karmaSection) karmaSection.classList.add('hidden');
+            if (descInputEl) descInputEl.placeholder = "Describe what you are donating. Details build trust...";
+
+            // Reset Karma check state and wishlist inputs for Donation mode
             const karmaCheckbox = document.getElementById('karma-checkbox');
             if (karmaCheckbox) {
                 karmaCheckbox.checked = false;
@@ -26876,7 +27234,13 @@ function handleAddOffering(e) {
     const submitBtn = document.getElementById('btn-list-offering');
     if (submitBtn) {
         submitBtn.className = "w-full bg-forest-green text-warm-cream py-4 rounded-xl font-bold active:scale-[0.98] transition-transform text-xs shadow-md mt-8 mb-2";
-        submitBtn.innerText = "List Offer";
+        if (state.currentOfferMode === 'need') {
+            submitBtn.innerText = "List Need";
+        } else if (state.currentOfferMode === 'donation') {
+            submitBtn.innerText = "List Donation";
+        } else {
+            submitBtn.innerText = "List Offer";
+        }
     }
 
     offerFormValidated = true;
@@ -26999,7 +27363,8 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
         radius: radiusVal,
         meetupRadius: meetupRadius,
         duration: duration,
-        locationPref: locationPref
+        locationPref: locationPref,
+        type: state.currentOfferMode || 'offering'
     };
 
     state.userOfferings.push(newOffer);
@@ -27082,10 +27447,16 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
     saveState();
     playSound('success');
     let successMsg = "";
-    if (giftKarmaActive) {
-        successMsg = "New offering successfully listed! Thank you for sharing! 🌿";
+    if (state.currentOfferMode === 'need') {
+        successMsg = "New need successfully listed on the village map! 🌿";
+    } else if (state.currentOfferMode === 'donation') {
+        successMsg = "New donation successfully listed on the village map! 🌿";
     } else {
-        successMsg = "New offering successfully listed on the village map! 🌿";
+        if (giftKarmaActive) {
+            successMsg = "New offering successfully listed! Thank you for sharing! 🌿";
+        } else {
+            successMsg = "New offering successfully listed on the village map! 🌿";
+        }
     }
     runTagMatchingAlgorithm(newOffer, true);
     if (typeof openListingSuccessModal === 'function') {
@@ -31498,6 +31869,15 @@ function switchVillageSegment(type) {
     if (typeof updateTopSegmentedControlUI === 'function') {
         updateTopSegmentedControlUI(state.activeCategory);
     }
+    if (type === 'map' || type === 'needs_map' || type === 'gifts_map' || type === 'events_map') {
+        if (typeof renderMapFilterCircles === 'function') renderMapFilterCircles();
+    } else if (type === 'list') {
+        if (typeof renderListFilterCircles === 'function') renderListFilterCircles();
+    } else if (type === 'needs') {
+        if (typeof renderNeedsFilterCircles === 'function') renderNeedsFilterCircles();
+    } else if (type === 'events') {
+        if (typeof renderEventsFilterCircles === 'function') renderEventsFilterCircles();
+    }
 
     const overlay = document.getElementById('map-detail-overlay');
     const eventOverlay = document.getElementById('map-event-detail-overlay');
@@ -31624,12 +32004,66 @@ function switchVillageSegment(type) {
         btnGifts.className = `${baseBtnClass} bg-rose-600 border-rose-600 text-white pulse-rose-light ${type === 'gifts_map' ? 'scale-110 ring-4 ring-rose-300 dark:ring-rose-800 z-20' : ''}`;
     }
 
+    let targetView = 'map';
     if (type === 'map' || type === 'needs_map' || type === 'gifts_map' || type === 'events_map') {
-        mapContainer.classList.remove('hidden');
-        listContainer.classList.add('hidden');
-        needsContainer.classList.add('hidden');
-        if (eventsContainer) eventsContainer.classList.add('hidden');
-        if (bulletinsContainer) bulletinsContainer.classList.add('hidden');
+        targetView = 'map';
+    } else if (type === 'list') {
+        targetView = 'list';
+    } else if (type === 'needs') {
+        targetView = 'needs';
+    } else if (type === 'events') {
+        targetView = 'events';
+    } else if (type === 'bulletins') {
+        targetView = 'bulletins';
+    }
+
+    if (mapContainer) {
+        if (targetView === 'map') {
+            mapContainer.classList.remove('hidden');
+            mapContainer.style.setProperty('display', 'block', 'important');
+        } else {
+            mapContainer.classList.add('hidden');
+            mapContainer.style.setProperty('display', 'none', 'important');
+        }
+    }
+    if (listContainer) {
+        if (targetView === 'list') {
+            listContainer.classList.remove('hidden');
+            listContainer.style.setProperty('display', 'flex', 'important');
+        } else {
+            listContainer.classList.add('hidden');
+            listContainer.style.setProperty('display', 'none', 'important');
+        }
+    }
+    if (needsContainer) {
+        if (targetView === 'needs') {
+            needsContainer.classList.remove('hidden');
+            needsContainer.style.setProperty('display', 'flex', 'important');
+        } else {
+            needsContainer.classList.add('hidden');
+            needsContainer.style.setProperty('display', 'none', 'important');
+        }
+    }
+    if (eventsContainer) {
+        if (targetView === 'events') {
+            eventsContainer.classList.remove('hidden');
+            eventsContainer.style.setProperty('display', 'flex', 'important');
+        } else {
+            eventsContainer.classList.add('hidden');
+            eventsContainer.style.setProperty('display', 'none', 'important');
+        }
+    }
+    if (bulletinsContainer) {
+        if (targetView === 'bulletins') {
+            bulletinsContainer.classList.remove('hidden');
+            bulletinsContainer.style.setProperty('display', 'flex', 'important');
+        } else {
+            bulletinsContainer.classList.add('hidden');
+            bulletinsContainer.style.setProperty('display', 'none', 'important');
+        }
+    }
+
+    if (targetView === 'map') {
         if (leafletMap) {
             setTimeout(() => {
                 const mapEl = document.getElementById('map');
@@ -31648,33 +32082,13 @@ function switchVillageSegment(type) {
             plotMapMarkersOnly();
             applyMapFiltering();
         }
-    } else if (type === 'list') {
-        mapContainer.classList.add('hidden');
-        listContainer.classList.remove('hidden');
-        needsContainer.classList.add('hidden');
-        if (eventsContainer) eventsContainer.classList.add('hidden');
-        if (bulletinsContainer) bulletinsContainer.classList.add('hidden');
+    } else if (targetView === 'list') {
         renderVillageListView();
-    } else if (type === 'needs') {
-        mapContainer.classList.add('hidden');
-        listContainer.classList.add('hidden');
-        needsContainer.classList.remove('hidden');
-        if (eventsContainer) eventsContainer.classList.add('hidden');
-        if (bulletinsContainer) bulletinsContainer.classList.add('hidden');
+    } else if (targetView === 'needs') {
         renderNeedsBoardView();
-    } else if (type === 'events') {
-        mapContainer.classList.add('hidden');
-        listContainer.classList.add('hidden');
-        needsContainer.classList.add('hidden');
-        if (eventsContainer) eventsContainer.classList.remove('hidden');
-        if (bulletinsContainer) bulletinsContainer.classList.add('hidden');
+    } else if (targetView === 'events') {
         renderEventsList();
-    } else if (type === 'bulletins') {
-        mapContainer.classList.add('hidden');
-        listContainer.classList.add('hidden');
-        needsContainer.classList.add('hidden');
-        if (eventsContainer) eventsContainer.classList.add('hidden');
-        if (bulletinsContainer) bulletinsContainer.classList.remove('hidden');
+    } else if (targetView === 'bulletins') {
         renderBulletinsList();
     }
 }
@@ -38816,8 +39230,8 @@ window.handleAddMapTap = function() {
 window.snapToUserNeighborhood = function() {
     if (state.adminAuthenticated) {
         if (leafletMap) {
-            const lat = (state.currentUser && state.currentUser.lat) ? state.currentUser.lat : 49.2608;
-            const lng = (state.currentUser && state.currentUser.lng) ? state.currentUser.lng : -123.1368;
+            const lat = parseFloat((state.currentUser && state.currentUser.lat) ? state.currentUser.lat : 49.2608);
+            const lng = parseFloat((state.currentUser && state.currentUser.lng) ? state.currentUser.lng : -123.1368);
             leafletMap.setView([lat, lng], 15, { animate: true });
         }
         return;
@@ -38842,14 +39256,16 @@ window.snapToUserNeighborhood = function() {
             btn.classList.add('bg-blue-600', 'border-blue-600', 'hover:bg-blue-700');
         }
         if (leafletMap) {
-            leafletMap.setView([state.currentUser.lat, state.currentUser.lng], 15, { animate: true });
+            const lat = parseFloat(state.currentUser.lat);
+            const lng = parseFloat(state.currentUser.lng);
+            leafletMap.setView([lat, lng], 15, { animate: true });
         }
     } else {
         // Try getting browser geolocation directly
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
+                const lat = parseFloat(position.coords.latitude);
+                const lng = parseFloat(position.coords.longitude);
                 if (!state.currentUser) state.currentUser = {};
                 state.currentUser.lat = lat;
                 state.currentUser.lng = lng;
@@ -39008,8 +39424,8 @@ window.grantLocationConsent = function(mode) {
 };
 
 function applyFinalCoords(lat, lng, mode) {
-    let finalLat = lat;
-    let finalLng = lng;
+    let finalLat = parseFloat(lat);
+    let finalLng = parseFloat(lng);
     
     // Obfuscation fuzzing formula: only apply to approximate mode
     if (mode === 'approximate') {
@@ -39017,8 +39433,8 @@ function applyFinalCoords(lat, lng, mode) {
         const multiplier = radius / 250;
         const latOffset = (Math.random() * 0.0016 + 0.0012) * (Math.random() > 0.5 ? 1 : -1) * multiplier;
         const lngOffset = (Math.random() * 0.0022 + 0.0016) * (Math.random() > 0.5 ? 1 : -1) * multiplier;
-        finalLat = lat + latOffset;
-        finalLng = lng + lngOffset;
+        finalLat = parseFloat(lat) + latOffset;
+        finalLng = parseFloat(lng) + lngOffset;
     }
     
     state.currentUser.lat = finalLat;
@@ -46381,13 +46797,10 @@ function initSearchBehavior() {
                 return el && (el.contains(e.target) || el === e.target);
             });
 
-            // If clicked outside all of these, dismiss search and intercept click
+            // If clicked outside all of these, dismiss search and allow click/touchstart through
             if (!isClickOnInput && !isClickOnClearBtn && !isClickOnSuggestions) {
                 // Blur active input to pull down keyboard
                 activeEl.blur();
-                // Prevent list/listing click action from triggering
-                e.preventDefault();
-                e.stopPropagation();
             }
         }
     };
@@ -46510,117 +46923,269 @@ if (document.readyState === 'complete' || document.readyState === 'interactive')
 }
 
 function initQuickCreateSheet() {
-    const sheet = document.getElementById('quick-create-sheet');
-    const handle = document.getElementById('quick-create-drag-handle');
-    const content = document.getElementById('quick-create-content');
-    if (!sheet || !handle || !content) return;
+    const sheet = document.getElementById('global-navbar');
+    if (!sheet) return;
 
-    let startY = 0;
-    let startHeight = 36;
-    let isDragging = false;
-    let hasMoved = false;
+    // Fixed height for static navbar capsule
+    const STATIC_HEIGHT = 56;
 
-    // Constants
-    const MIN_HEIGHT = 36;
-    const MAX_HEIGHT = 180;
-
-    function setSheetHeight(h) {
-        sheet.style.height = `${h}px`;
-        // Interpolate opacity of inner content: 0 at 36px, 1 at 120px+
-        const opacity = Math.max(0, Math.min(1, (h - MIN_HEIGHT) / (120 - MIN_HEIGHT)));
-        content.style.opacity = opacity;
-        if (h > 100) {
-            content.classList.remove('pointer-events-none');
-        } else {
-            content.classList.add('pointer-events-none');
-        }
-    }
-
-    function onPointerDown(e) {
-        isDragging = true;
-        hasMoved = false;
-        startY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
-        startHeight = parseInt(sheet.style.height || MIN_HEIGHT);
-        sheet.style.transition = 'none'; // Disable transition for real-time drag tracking
-        handle.style.cursor = 'grabbing';
-    }
-
-    function onPointerMove(e) {
-        if (!isDragging) return;
-        const currentY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
-        const dy = startY - currentY;
-        let targetHeight = startHeight + dy;
+    function setSheetHeight() {
+        sheet.style.setProperty('height', `${STATIC_HEIGHT}px`, 'important');
         
-        // Clamp height
-        if (targetHeight < MIN_HEIGHT) targetHeight = MIN_HEIGHT;
-        if (targetHeight > MAX_HEIGHT) targetHeight = MAX_HEIGHT;
-
-        if (Math.abs(dy) > 5) {
-            hasMoved = true;
-            if (e.cancelable) e.preventDefault();
-        }
-
-        setSheetHeight(targetHeight);
-    }
-
-    function onPointerUp() {
-        if (!isDragging) return;
-        isDragging = false;
-        sheet.style.transition = 'height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease'; // spring animation
-        handle.style.cursor = 'grab';
-
-        const currentHeight = parseInt(sheet.style.height || MIN_HEIGHT);
+        // Calculate bottom offset to avoid WebKit calc() custom property bugs
+        const isNative = document.documentElement.classList.contains('native-app-env');
+        const detector = document.getElementById('safe-area-detector');
+        const safeArea = (isNative && detector) ? detector.offsetHeight : 0;
+        const collapsedBottom = 2 + safeArea;
         
-        if (hasMoved) {
-            if (currentHeight > 100) {
-                setSheetHeight(MAX_HEIGHT);
-                sheet.classList.add('expanded');
-            } else {
-                setSheetHeight(MIN_HEIGHT);
-                sheet.classList.remove('expanded');
-            }
-        } else {
-            // Tap behavior: Toggle open/closed
-            if (currentHeight > MIN_HEIGHT) {
-                setSheetHeight(MIN_HEIGHT);
-                sheet.classList.remove('expanded');
-            } else {
-                setSheetHeight(MAX_HEIGHT);
-                sheet.classList.add('expanded');
-            }
-        }
+        // Keep bottom margin floating and static so it sits nicely above safe area
+        sheet.style.setProperty('bottom', `${collapsedBottom}px`, 'important');
+
+        // Fixed Width: Never expand the section wider than the initial floating capsule size
+        const screenWidth = window.innerWidth;
+        const pillWidth = Math.min(370, screenWidth - 32);
+        sheet.style.setProperty('width', `${pillWidth}px`, 'important');
+        sheet.style.setProperty('max-width', '370px', 'important');
+
+        // Keep corners fully rounded to preserve the "floating card" aesthetic
+        sheet.style.setProperty('border-radius', '28px', 'important');
+
+        const isDark = document.documentElement.classList.contains('dark');
+        const bgAlpha = 0.45;
+        const borderAlpha = 0.35;
+        const shadowAlpha = 0.06;
+        const blurAmount = 24;
+        const saturateAmount = 200;
+
+        sheet.style.setProperty('background', isDark ? `rgba(20, 28, 22, ${bgAlpha})` : `rgba(255, 255, 255, ${bgAlpha})`, 'important');
+        sheet.style.setProperty('border-color', isDark ? `rgba(255, 255, 255, ${borderAlpha})` : `rgba(0, 0, 0, ${borderAlpha})`, 'important');
+        sheet.style.setProperty('box-shadow', `0 -8px 32px rgba(0, 0, 0, ${shadowAlpha})`, 'important');
+        sheet.style.setProperty('backdrop-filter', `blur(${blurAmount}px) saturate(${saturateAmount}%)`, 'important');
+        sheet.style.setProperty('-webkit-backdrop-filter', `blur(${blurAmount}px) saturate(${saturateAmount}%)`, 'important');
     }
+    
+    window.updateQuickCreateSheetHeight = function(h) {
+        // Noop to prevent other code trying to expand the sheet
+        setSheetHeight();
+    };
 
-    // Touch events
-    handle.addEventListener('touchstart', onPointerDown, { passive: true });
-    window.addEventListener('touchmove', onPointerMove, { passive: false });
-    window.addEventListener('touchend', onPointerUp);
+    // Observe when native-app-env class is dynamically added on documentElement by native app wrapper
+    const observer = new MutationObserver(() => {
+        setSheetHeight();
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
-    // Mouse events (Desktop fallback)
-    handle.addEventListener('mousedown', onPointerDown);
-    window.addEventListener('mousemove', onPointerMove);
-    window.addEventListener('mouseup', onPointerUp);
+    // Fallback load event listener to ensure safe area inset dimensions have been parsed and applied
+    window.addEventListener('load', () => {
+        setSheetHeight();
+    });
+
+    setSheetHeight();
 }
+
+window.toggleQuickCreateDropdown = function(event, type) {
+    if (event) event.stopPropagation();
+    
+    let dropdownId = 'village-quick-create-dropdown';
+    if (type === 'list') dropdownId = 'list-quick-create-dropdown';
+    else if (type === 'needs') dropdownId = 'needs-quick-create-dropdown';
+    else if (type === 'events') dropdownId = 'events-quick-create-dropdown';
+    
+    const dropdown = document.getElementById(dropdownId);
+    if (!dropdown) return;
+    
+    const isHidden = dropdown.classList.contains('hidden');
+    
+    // Close all other quick-create dropdowns first
+    ['village-quick-create-dropdown', 'list-quick-create-dropdown', 'needs-quick-create-dropdown', 'events-quick-create-dropdown'].forEach(id => {
+        if (id !== dropdownId) {
+            const other = document.getElementById(id);
+            if (other) other.classList.add('hidden');
+        }
+    });
+    
+    // Close other overlays (like search suggestions if any)
+    const suggestions = document.getElementById('fused-search-suggestions');
+    if (suggestions) suggestions.classList.add('hidden');
+    const listSuggestions = document.getElementById('village-list-search-suggestions');
+    if (listSuggestions) listSuggestions.classList.add('hidden');
+    const needsSuggestions = document.getElementById('village-needs-search-suggestions');
+    if (needsSuggestions) needsSuggestions.classList.add('hidden');
+    const eventsSuggestions = document.getElementById('village-events-search-suggestions');
+    if (eventsSuggestions) eventsSuggestions.classList.add('hidden');
+    
+    if (isHidden) {
+        dropdown.classList.remove('hidden');
+        if (typeof playSound === 'function') playSound('click');
+        window.triggerHapticFeedback('light');
+    } else {
+        dropdown.classList.add('hidden');
+    }
+};
+
+document.addEventListener('click', function(e) {
+    const dropdowns = [
+        { id: 'village-quick-create-dropdown', btnId: 'btn-integrated-quick-create' },
+        { id: 'list-quick-create-dropdown', btnId: 'btn-list-quick-create' },
+        { id: 'needs-quick-create-dropdown', btnId: 'btn-needs-quick-create' },
+        { id: 'events-quick-create-dropdown', btnId: 'btn-events-quick-create' }
+    ];
+    
+    dropdowns.forEach(item => {
+        const dropdown = document.getElementById(item.id);
+        const plusBtn = document.getElementById(item.btnId);
+        if (dropdown && !dropdown.classList.contains('hidden')) {
+            if (!dropdown.contains(e.target) && (!plusBtn || !plusBtn.contains(e.target))) {
+                dropdown.classList.add('hidden');
+            }
+        }
+    });
+});
 
 window.triggerQuickCreate = function(mode) {
     if (typeof playSound === 'function') playSound('click');
     window.triggerHapticFeedback('medium');
     
-    // Minimize the sheet first
-    const sheet = document.getElementById('quick-create-sheet');
-    const content = document.getElementById('quick-create-content');
-    if (sheet && content) {
-        sheet.style.transition = 'height 0.3s ease';
-        sheet.style.height = '36px';
-        content.style.opacity = 0;
-        content.classList.add('pointer-events-none');
-        sheet.classList.remove('expanded');
-    }
+    // Close all quick-create dropdowns
+    ['village-quick-create-dropdown', 'list-quick-create-dropdown', 'needs-quick-create-dropdown', 'events-quick-create-dropdown'].forEach(id => {
+        const dropdown = document.getElementById(id);
+        if (dropdown) {
+            dropdown.classList.add('hidden');
+        }
+    });
 
     // Launch full listing creation form
     showView('offer');
     selectOfferMode(mode);
 };
+
+/* --- Start: Compact Filter Category Dropdowns Logic --- */
+function closeAllListDropdowns() {
+    ['list-category-dropdown', 'needs-category-dropdown', 'events-category-dropdown'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
+    
+    const listBtn = document.getElementById('btn-list-filter');
+    if (listBtn) listBtn.classList.remove('active-filter-circle');
+    const needsBtn = document.getElementById('btn-needs-filter');
+    if (needsBtn) needsBtn.classList.remove('active-filter-circle');
+    const eventsBtn = document.getElementById('btn-events-filter');
+    if (eventsBtn) eventsBtn.classList.remove('active-filter-circle');
+}
+window.closeAllListDropdowns = closeAllListDropdowns;
+
+window.toggleMapCategoryDropdown = function() {
+    const dropdown = document.getElementById('map-category-dropdown');
+    const overlay = document.getElementById('map-filter-overlay');
+    const filterIcon = document.getElementById('map-filter-icon');
+    const filterBtn = document.getElementById('btn-segment-filter');
+    const floatingContainer = document.getElementById('village-segment-floating-buttons');
+    if (!dropdown) return;
+    
+    playSound('click');
+    const isHidden = dropdown.classList.contains('hidden');
+    
+    if (isHidden) {
+        closeAllListDropdowns();
+        
+        if (overlay) {
+            overlay.classList.remove('hidden');
+            setTimeout(() => {
+                overlay.classList.remove('opacity-0');
+                overlay.classList.add('opacity-100');
+            }, 10);
+        }
+        dropdown.classList.remove('hidden');
+        dropdown.classList.add('expanded');
+        if (filterIcon) {
+            filterIcon.innerText = 'close';
+            filterIcon.classList.add('rotate-filter-active');
+        }
+        if (filterBtn) {
+            filterBtn.classList.add('active-filter-circle');
+        }
+        if (floatingContainer) {
+            floatingContainer.classList.add('floating-buttons-hidden');
+        }
+        renderMapFilterCircles();
+    } else {
+        mapInfoModeActive = false;
+        if (overlay) {
+            overlay.classList.remove('opacity-100');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.classList.add('hidden'), 300);
+        }
+        dropdown.classList.add('hidden');
+        dropdown.classList.remove('expanded');
+        if (filterIcon) {
+            filterIcon.classList.remove('rotate-filter-active');
+            filterIcon.innerText = 'tune';
+        }
+        if (filterBtn) {
+            filterBtn.classList.remove('active-filter-circle');
+        }
+        if (floatingContainer) {
+            floatingContainer.classList.remove('floating-buttons-hidden');
+        }
+    }
+};
+
+window.toggleListCategoryDropdown = function() {
+    const dropdown = document.getElementById('list-category-dropdown');
+    const filterBtn = document.getElementById('btn-list-filter');
+    if (!dropdown) return;
+    
+    playSound('click');
+    const isHidden = dropdown.classList.contains('hidden');
+    closeAllListDropdowns();
+    closeMapCategoryDropdown();
+    
+    if (isHidden) {
+        dropdown.classList.remove('hidden');
+        if (filterBtn) filterBtn.classList.add('active-filter-circle');
+        renderListFilterCircles();
+    }
+};
+
+window.toggleNeedsCategoryDropdown = function() {
+    const dropdown = document.getElementById('needs-category-dropdown');
+    const filterBtn = document.getElementById('btn-needs-filter');
+    if (!dropdown) return;
+    
+    playSound('click');
+    const isHidden = dropdown.classList.contains('hidden');
+    closeAllListDropdowns();
+    closeMapCategoryDropdown();
+    
+    if (isHidden) {
+        dropdown.classList.remove('hidden');
+        if (filterBtn) filterBtn.classList.add('active-filter-circle');
+        renderNeedsFilterCircles();
+    }
+};
+
+window.toggleEventsCategoryDropdown = function() {
+    const dropdown = document.getElementById('events-category-dropdown');
+    const filterBtn = document.getElementById('btn-events-filter');
+    if (!dropdown) return;
+    
+    playSound('click');
+    const isHidden = dropdown.classList.contains('hidden');
+    closeAllListDropdowns();
+    closeMapCategoryDropdown();
+    
+    if (isHidden) {
+        dropdown.classList.remove('hidden');
+        if (filterBtn) filterBtn.classList.add('active-filter-circle');
+        renderEventsFilterCircles();
+    }
+};
+
+window.toggleCategoryTray = function() {
+    window.toggleMapCategoryDropdown();
+};
+/* --- End: Compact Filter Category Dropdowns Logic --- */
 
 // Global scope ends
 </script>

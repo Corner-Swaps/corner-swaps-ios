@@ -3382,6 +3382,10 @@ function showView(viewId, mode) {
         if (earlyStyle) earlyStyle.remove();
     }
     collapseVillageMenu();
+    if (viewId !== 'village') {
+        if (typeof closeMapCategoryDropdown === 'function') closeMapCategoryDropdown();
+        if (typeof closeAllListDropdowns === 'function') closeAllListDropdowns();
+    }
     
     const isNative = window.isNativeApp === true || document.documentElement.classList.contains('native-app-env') || (document.body && document.body.classList.contains('native-app'));
     console.log("[NATIVE CHECK] isNative:", isNative, "documentElement classes:", document.documentElement.className, "body classes:", document.body ? document.body.className : "no body");
@@ -4323,7 +4327,11 @@ function startAppInitialization() {
                             updateVillageViewFromState();
                         }
                     } else {
-                        showView('welcome');
+                        if (typeof handleDevAutoLogin === 'function') {
+                            handleDevAutoLogin();
+                        } else {
+                            showView('welcome');
+                        }
                     }
                 }
             } catch (e) {
@@ -5169,6 +5177,60 @@ window.handleDevAutoLogin = function() {
     if (headerText) headerText.innerText = `Welcome back, ${state.currentUser.firstName}!`;
 
     if (window.syncUserNavbarInfo) window.syncUserNavbarInfo();
+    setTimeout(() => {
+        console.log("LOG: [DEV TEST] Automatically switching to list view");
+        if (typeof switchVillageSegment === 'function') {
+            switchVillageSegment('list');
+        }
+        setTimeout(() => {
+            console.log("LOG: [DEV TEST] Running DOM diagnostics...");
+            const views = document.querySelectorAll('.screen-view');
+            views.forEach(v => {
+                console.log(`LOG: [DEV TEST] View ID: ${v.id}, active: ${v.classList.contains('active')}, display: ${v.style.display}, offsetHeight: ${v.offsetHeight}, opacity: ${window.getComputedStyle(v).opacity}`);
+            });
+            const listContainer = document.getElementById('village-list-container');
+            if (listContainer) {
+                console.log(`LOG: [DEV TEST] listContainer display: ${listContainer.style.display}, classList: ${listContainer.className}, offsetHeight: ${listContainer.offsetHeight}, opacity: ${window.getComputedStyle(listContainer).opacity}`);
+                
+                const searchCapsule = listContainer.querySelector('.fused-search-capsule');
+                if (searchCapsule) {
+                    console.log(`LOG: [DEV TEST] searchCapsule offsetHeight: ${searchCapsule.offsetHeight}, display: ${window.getComputedStyle(searchCapsule).display}, opacity: ${window.getComputedStyle(searchCapsule).opacity}, visibility: ${window.getComputedStyle(searchCapsule).visibility}`);
+                }
+                const segmentedControl = listContainer.querySelector('#village-list-segmented-control');
+                if (segmentedControl) {
+                    console.log(`LOG: [DEV TEST] segmentedControl offsetHeight: ${segmentedControl.offsetHeight}, display: ${window.getComputedStyle(segmentedControl).display}`);
+                }
+                const items = listContainer.querySelector('#village-list-items');
+                if (items) {
+                    const itemsStyle = window.getComputedStyle(items);
+                    console.log(`LOG: [DEV TEST] village-list-items child count: ${items.children.length}, display: ${itemsStyle.display}, height: ${items.offsetHeight}, opacity: ${itemsStyle.opacity}`);
+                    if (items.children.length > 0) {
+                        const firstChild = items.children[0];
+                        const childStyle = window.getComputedStyle(firstChild);
+                        console.log(`LOG: [DEV TEST] First child tag: ${firstChild.tagName}, class: ${firstChild.className}, display: ${childStyle.display}, height: ${firstChild.offsetHeight}, opacity: ${childStyle.opacity}, visibility: ${childStyle.visibility}, text: ${firstChild.textContent.trim().substring(0, 50)}`);
+                    }
+                }
+            }
+            const wrapper = document.getElementById('village-subviews-wrapper');
+            if (wrapper) {
+                console.log(`LOG: [DEV TEST] wrapper display: ${window.getComputedStyle(wrapper).display}, offsetHeight: ${wrapper.offsetHeight}`);
+            }
+            
+            const allElements = document.querySelectorAll('*');
+            allElements.forEach(el => {
+                const style = window.getComputedStyle(el);
+                if ((style.position === 'absolute' || style.position === 'fixed') && 
+                    el.offsetHeight > 500 && el.offsetWidth > 300 && 
+                    style.display !== 'none' && style.visibility !== 'hidden' && parseFloat(style.opacity) > 0) {
+                    const parent = el.parentElement;
+                    const parentId = parent ? parent.id : 'none';
+                    const parentClass = parent ? parent.className : 'none';
+                    const parentDisplay = parent ? window.getComputedStyle(parent).display : 'none';
+                    console.log(`LOG: [DEV TEST] Covering Element: tag=${el.tagName}, id=${el.id}, class=${el.className}, z-index=${style.zIndex}, bg=${style.backgroundColor}, parentId=${parentId}, parentClass=${parentClass}, parentDisplay=${parentDisplay}`);
+                }
+            });
+        }, 1000);
+    }, 1500);
 };
 
 function handleLogout() {
@@ -7365,7 +7427,8 @@ function openMapItemDetail(idOrName) {
         }
     }
 
-    document.getElementById('map-detail-location').innerText = `Village · ${location} · ${dist.toFixed(1)} km away`;
+    const distText = (typeof dist === 'number' && !isNaN(dist)) ? dist.toFixed(1) : '0.0';
+    document.getElementById('map-detail-location').innerText = `Village · ${location} · ${distText} km away`;
     
     const sub = getSubcategoryForListing(title, category);
     const catSubEl = document.getElementById('map-detail-category-subcategory');
@@ -8815,72 +8878,7 @@ function handleMapFilterOverlayClick(e) {
 window.handleMapFilterOverlayClick = handleMapFilterOverlayClick;
 
 function toggleCategoryTray() {
-    playSound('click');
-    collapseVillageMenu();
-    if (currentVillageSegment !== 'map' && currentVillageSegment !== 'needs_map' && currentVillageSegment !== 'gifts_map' && currentVillageSegment !== 'events_map') {
-        switchVillageSegment('map');
-    }
-    
-    const overlay = document.getElementById('map-filter-overlay');
-    const dropdown = document.getElementById('map-category-dropdown');
-    const filterIcon = document.getElementById('map-filter-icon');
-    const floatingContainer = document.getElementById('village-segment-floating-buttons');
-    const filterBtn = document.getElementById('btn-segment-filter');
-    
-    if (overlay && dropdown) {
-        const isOpening = overlay.classList.contains('hidden');
-        
-        if (isOpening) {
-            // Reset info mode on open
-            mapInfoModeActive = false;
-            
-            renderMapFilterCircles();
-            overlay.classList.remove('hidden');
-            dropdown.classList.remove('hidden');
-            dropdown.classList.add('expanded');
-            
-            // Force layout recalculation
-            overlay.offsetHeight;
-            
-            overlay.classList.remove('opacity-0');
-            overlay.classList.add('opacity-100');
-            
-            if (filterIcon) {
-                filterIcon.classList.add('rotate-filter-active');
-                filterIcon.innerText = 'close';
-            }
-            
-            if (filterBtn) {
-                filterBtn.classList.add('active-filter-circle');
-            }
-            
-            if (floatingContainer) {
-                floatingContainer.classList.add('floating-buttons-hidden');
-            }
-        } else {
-            // Reset info mode on close
-            mapInfoModeActive = false;
-            
-            overlay.classList.remove('opacity-100');
-            overlay.classList.add('opacity-0');
-            
-            if (filterIcon) {
-                filterIcon.classList.remove('rotate-filter-active');
-                filterIcon.innerText = 'tune';
-            }
-            
-            if (filterBtn) {
-                filterBtn.classList.remove('active-filter-circle');
-            }
-            
-            overlay.classList.add('hidden');
-            dropdown.classList.add('hidden');
-            dropdown.classList.remove('expanded');
-            if (floatingContainer) {
-                floatingContainer.classList.remove('floating-buttons-hidden');
-            }
-        }
-    }
+    toggleMapCategoryDropdown();
 }
 
 const MAP_FILTER_CATEGORIES = [
@@ -9051,32 +9049,6 @@ function renderMapFilterCircles() {
     if (!state.activeMapFilters) {
         state.activeMapFilters = [];
     }
-    
-    const showLabels = true;
-
-    // Render the Info row
-    const infoCircleBg = mapInfoModeActive ? '#308A5E' : '#4b5563';
-    const infoAnimStyle = `transition-delay: 0s !important; -webkit-transition-delay: 0s !important;`;
-    const isDark = document.documentElement.classList.contains('dark');
-    const gapColor = isDark ? '#141c16' : '#ffffff';
-    const infoCircleActiveShadow = mapInfoModeActive ? `box-shadow: 0 0 0 2px ${gapColor}, 0 0 0 4px #308A5E, 0 8px 16px rgba(0,0,0,0.35) !important;` : 'box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15) !important;';
-    
-    const infoRowHtml = `
-        <div class="map-category-item flex items-center gap-1.5 select-none cursor-pointer active:scale-95 transition-transform shrink-0 relative" 
-             data-category-name="Info" 
-             onclick="toggleMapInfoMode()" 
-             style="${infoAnimStyle}">
-            <!-- Circle element -->
-            <div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all duration-200 flex-shrink-0 relative filter-category-info-circle"
-                 style="background-color: ${infoCircleBg} !important; color: #FFFFFF !important; ${infoCircleActiveShadow} transform: ${mapInfoModeActive ? 'scale(1.1)' : 'scale(1.0)'} !important; opacity: ${mapInfoModeActive ? '1' : '0.65'} !important;">
-                <span class="material-symbols-outlined text-[13px]">help</span>
-            </div>
-            <!-- Label to the right -->
-            <span class="category-label text-[10px] font-bold select-none leading-none">
-                Info
-            </span>
-        </div>
-    `;
 
     const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => {
         if (currentVillageSegment === 'map' && c.name === 'Event or Meetup') {
@@ -9088,34 +9060,24 @@ function renderMapFilterCircles() {
     const categoriesHtml = filteredCategories.map((cat, idx) => {
         const delay = (idx + 1) * 0.025; // 25ms stagger per item
         const animStyle = `transition-delay: ${delay}s !important; -webkit-transition-delay: ${delay}s !important;`;
-        
-        // If info mode is active, display a pulsating ? badge overlay on each category circle (except Clear Filter)
-        const infoBadgeHtml = (mapInfoModeActive && cat.name !== "Clear Filter") ? `
-            <div class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-amber-500 text-white rounded-full flex items-center justify-center border border-white dark:border-[#141c16] shadow-sm animate-pulse z-10">
-                <span class="text-[8px] font-extrabold font-mono">?</span>
-            </div>
-        ` : '';
 
         return `
-            <div class="map-category-item flex items-center gap-1.5 select-none cursor-pointer active:scale-95 transition-transform shrink-0 relative" 
+            <div class="map-category-item flex items-center justify-start w-full select-none cursor-pointer active:scale-95 transition-transform shrink-0 relative" 
                  data-category-name="${cat.name}" 
                  onclick="toggleMapFilterCategory('${cat.name}', this)" 
-                 style="${animStyle}">
+                 title="${cat.displayName}"
+                 style="${animStyle} padding: 4px 8px !important;">
                 <!-- Circle element -->
                 <div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all duration-200 filter-category-circle flex-shrink-0 relative" 
                      data-category="${cat.name}">
                     <span class="material-symbols-outlined text-[13px]">${cat.icon}</span>
-                    ${infoBadgeHtml}
                 </div>
-                <!-- Label to the right -->
-                <span class="category-label text-[10px] font-bold select-none leading-none">
-                    ${cat.displayName}
-                </span>
+                <span class="category-label text-[11px] font-bold ml-2.5 text-black dark:text-white">${cat.displayName}</span>
             </div>
         `;
     }).join('');
 
-    dropdown.innerHTML = infoRowHtml + categoriesHtml;
+    dropdown.innerHTML = categoriesHtml;
 
     // Apply styles to circles after rendering
     dropdown.querySelectorAll('.filter-category-circle').forEach(circle => {
@@ -9126,6 +9088,9 @@ function renderMapFilterCircles() {
             updateCategoryCircleStyle(circle, cat, isActive);
         }
     });
+    if (typeof renderLeftDrawerFilters === 'function') {
+        renderLeftDrawerFilters();
+    }
 }
 window.renderMapFilterCircles = renderMapFilterCircles;
 
@@ -9191,76 +9156,6 @@ function toggleMapFilterCategory(categoryName, element) {
 }
 window.toggleMapFilterCategory = toggleMapFilterCategory;
 
-window.toggleListCategoryDropdown = function() {
-    playSound('click');
-    const dropdown = document.getElementById('list-category-dropdown');
-    if (!dropdown) return;
-    const isHidden = dropdown.classList.contains('hidden');
-    
-    // Close other dropdowns if open
-    const needsDropdown = document.getElementById('needs-category-dropdown');
-    if (needsDropdown) needsDropdown.classList.add('hidden');
-    const eventsDropdown = document.getElementById('events-category-dropdown');
-    if (eventsDropdown) eventsDropdown.classList.add('hidden');
-    
-    const filterIcon = document.getElementById('list-filter-icon');
-    const filterBtn = document.getElementById('btn-list-filter');
-    
-    if (isHidden) {
-        renderListFilterCircles();
-        dropdown.classList.remove('hidden');
-        if (filterIcon) {
-            filterIcon.innerText = 'close';
-        }
-        if (filterBtn) {
-            filterBtn.classList.add('active-filter-circle');
-        }
-    } else {
-        dropdown.classList.add('hidden');
-        if (filterIcon) {
-            filterIcon.innerText = 'tune';
-        }
-        if (filterBtn) {
-            filterBtn.classList.remove('active-filter-circle');
-        }
-    }
-};
-
-window.toggleNeedsCategoryDropdown = function() {
-    playSound('click');
-    const dropdown = document.getElementById('needs-category-dropdown');
-    if (!dropdown) return;
-    const isHidden = dropdown.classList.contains('hidden');
-    
-    // Close other dropdowns if open
-    const listDropdown = document.getElementById('list-category-dropdown');
-    if (listDropdown) listDropdown.classList.add('hidden');
-    const eventsDropdown = document.getElementById('events-category-dropdown');
-    if (eventsDropdown) eventsDropdown.classList.add('hidden');
-    
-    const filterIcon = document.getElementById('needs-filter-icon');
-    const filterBtn = document.getElementById('btn-needs-filter');
-    
-    if (isHidden) {
-        renderNeedsFilterCircles();
-        dropdown.classList.remove('hidden');
-        if (filterIcon) {
-            filterIcon.innerText = 'close';
-        }
-        if (filterBtn) {
-            filterBtn.classList.add('active-filter-circle');
-        }
-    } else {
-        dropdown.classList.add('hidden');
-        if (filterIcon) {
-            filterIcon.innerText = 'tune';
-        }
-        if (filterBtn) {
-            filterBtn.classList.remove('active-filter-circle');
-        }
-    }
-};
-
 function renderListFilterCircles() {
     const dropdown = document.getElementById('list-category-dropdown');
     if (!dropdown) return;
@@ -9271,16 +9166,15 @@ function renderListFilterCircles() {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         return `
-            <div class="flex items-center justify-end gap-1 select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="flex items-center justify-start w-full select-none cursor-pointer group active:scale-95 transition-transform" 
                  onclick="selectListCategoryFilter('${cat.name}', this)" 
-                 style="${animStyle}">
-                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none">
-                    ${cat.displayName}
-                </span>
-                <div class="w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 list-filter-category-circle flex-shrink-0" 
+                 title="${cat.displayName}"
+                 style="${animStyle} padding: 4px 8px !important;">
+                <div class="w-[26px] h-[26px] rounded-full flex items-center justify-center shadow-md transition-all duration-200 list-filter-category-circle flex-shrink-0" 
                      data-category="${cat.name}">
-                    <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
+                    <span class="material-symbols-outlined text-[12px]">${cat.icon}</span>
                 </div>
+                <span class="category-label text-[11px] font-bold ml-2.5 text-black dark:text-white">${cat.displayName}</span>
             </div>
         `;
     }).join('');
@@ -9295,6 +9189,9 @@ function renderListFilterCircles() {
             updateCategoryCircleStyle(circle, cat, isActive);
         }
     });
+    if (typeof renderLeftDrawerFilters === 'function') {
+        renderLeftDrawerFilters();
+    }
 }
 window.renderListFilterCircles = renderListFilterCircles;
 
@@ -9306,16 +9203,15 @@ function renderNeedsFilterCircles() {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         return `
-            <div class="flex items-center justify-end gap-1 select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="flex items-center justify-start w-full select-none cursor-pointer group active:scale-95 transition-transform" 
                  onclick="selectNeedsCategoryFilter('${cat.name}', this)" 
-                 style="${animStyle}">
-                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none">
-                    ${cat.displayName}
-                </span>
-                <div class="w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 needs-filter-category-circle flex-shrink-0" 
+                 title="${cat.displayName}"
+                 style="${animStyle} padding: 4px 8px !important;">
+                <div class="w-[26px] h-[26px] rounded-full flex items-center justify-center shadow-md transition-all duration-200 needs-filter-category-circle flex-shrink-0" 
                      data-category="${cat.name}">
-                    <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
+                    <span class="material-symbols-outlined text-[12px]">${cat.icon}</span>
                 </div>
+                <span class="category-label text-[11px] font-bold ml-2.5 text-black dark:text-white">${cat.displayName}</span>
             </div>
         `;
     }).join('');
@@ -9330,6 +9226,9 @@ function renderNeedsFilterCircles() {
             updateCategoryCircleStyle(circle, cat, isActive);
         }
     });
+    if (typeof renderLeftDrawerFilters === 'function') {
+        renderLeftDrawerFilters();
+    }
 }
 window.renderNeedsFilterCircles = renderNeedsFilterCircles;
 
@@ -9377,41 +9276,6 @@ window.selectNeedsCategoryFilter = function(categoryName, element) {
     renderNeedsBoardView();
 };
 
-window.toggleEventsCategoryDropdown = function() {
-    playSound('click');
-    const dropdown = document.getElementById('events-category-dropdown');
-    if (!dropdown) return;
-    const isHidden = dropdown.classList.contains('hidden');
-    
-    // Close other dropdowns if open
-    const listDropdown = document.getElementById('list-category-dropdown');
-    if (listDropdown) listDropdown.classList.add('hidden');
-    const needsDropdown = document.getElementById('needs-category-dropdown');
-    if (needsDropdown) needsDropdown.classList.add('hidden');
-    
-    const filterIcon = document.getElementById('events-filter-icon');
-    const filterBtn = document.getElementById('btn-events-filter');
-    
-    if (isHidden) {
-        renderEventsFilterCircles();
-        dropdown.classList.remove('hidden');
-        if (filterIcon) {
-            filterIcon.innerText = 'close';
-        }
-        if (filterBtn) {
-            filterBtn.classList.add('active-filter-circle');
-        }
-    } else {
-        dropdown.classList.add('hidden');
-        if (filterIcon) {
-            filterIcon.innerText = 'tune';
-        }
-        if (filterBtn) {
-            filterBtn.classList.remove('active-filter-circle');
-        }
-    }
-};
-
 window.selectEventsCategoryFilter = function(categoryName, element) {
     playSound('click');
     if (categoryName === 'Clear Filter') {
@@ -9442,16 +9306,15 @@ function renderEventsFilterCircles() {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         return `
-            <div class="flex items-center justify-end gap-1 select-none cursor-pointer group active:scale-95 transition-transform" 
+            <div class="flex items-center justify-start w-full select-none cursor-pointer group active:scale-95 transition-transform" 
                  onclick="selectEventsCategoryFilter('${cat.name}', this)" 
-                 style="${animStyle}">
-                <span class="category-label text-[13px] font-bold text-black dark:text-[#308A5E] select-none leading-none">
-                    ${cat.displayName}
-                </span>
-                <div class="w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 events-filter-category-circle flex-shrink-0" 
+                 title="${cat.displayName}"
+                 style="${animStyle} padding: 4px 8px !important;">
+                <div class="w-[26px] h-[26px] rounded-full flex items-center justify-center shadow-md transition-all duration-200 events-filter-category-circle flex-shrink-0" 
                      data-category="${cat.name}">
-                    <span class="material-symbols-outlined text-[18px]">${cat.icon}</span>
+                    <span class="material-symbols-outlined text-[12px]">${cat.icon}</span>
                 </div>
+                <span class="category-label text-[11px] font-bold ml-2.5 text-black dark:text-white">${cat.displayName}</span>
             </div>
         `;
     }).join('');
@@ -10018,6 +9881,8 @@ function resetOfferValidationState() {
             submitBtn.innerText = "Host Event";
         } else if (state.currentOfferMode === 'need') {
             submitBtn.innerText = "List Need";
+        } else if (state.currentOfferMode === 'donation') {
+            submitBtn.innerText = "List Donation";
         } else {
             submitBtn.innerText = "List Offer";
         }
@@ -10108,6 +9973,33 @@ function selectOfferMode(mode) {
             if (descInputEl) descInputEl.placeholder = "please describe your need";
 
             // Reset Karma check state and wishlist inputs for Need Listing mode
+            const karmaCheckbox = document.getElementById('karma-checkbox');
+            if (karmaCheckbox) {
+                karmaCheckbox.checked = false;
+                giftKarmaActive = false;
+                const wishlistInput = document.getElementById('offer-wishlist-input');
+                const unifiedCard = document.getElementById('karma-unified-card');
+                if (wishlistInput && unifiedCard) {
+                    wishlistInput.value = "";
+                    wishlistInput.disabled = false;
+                    wishlistInput.classList.remove('bg-gray-100/55', 'dark:bg-emerald-950/10', 'opacity-85');
+                    unifiedCard.classList.add('border-outline-variant/30');
+                    unifiedCard.classList.remove('border-[#308A5E]', 'bg-[#308A5E]/5', 'dark:bg-emerald-950/15');
+                }
+                const subPanel = document.getElementById('karma-animation-sub-panel');
+                if (subPanel) {
+                    subPanel.classList.add('hidden');
+                }
+            }
+        } else if (mode === 'donation') {
+            if (titleLabel) titleLabel.innerText = "What are you donating today?";
+            if (categoryHeader) categoryHeader.innerText = "Select Category";
+            if (descLabel) descLabel.innerText = "Describe donation";
+            if (submitBtn) submitBtn.innerText = "List Donation";
+            if (karmaSection) karmaSection.classList.add('hidden');
+            if (descInputEl) descInputEl.placeholder = "Describe what you are donating. Details build trust...";
+
+            // Reset Karma check state and wishlist inputs for Donation mode
             const karmaCheckbox = document.getElementById('karma-checkbox');
             if (karmaCheckbox) {
                 karmaCheckbox.checked = false;
@@ -10540,7 +10432,13 @@ function handleAddOffering(e) {
     const submitBtn = document.getElementById('btn-list-offering');
     if (submitBtn) {
         submitBtn.className = "w-full bg-forest-green text-warm-cream py-4 rounded-xl font-bold active:scale-[0.98] transition-transform text-xs shadow-md mt-8 mb-2";
-        submitBtn.innerText = "List Offer";
+        if (state.currentOfferMode === 'need') {
+            submitBtn.innerText = "List Need";
+        } else if (state.currentOfferMode === 'donation') {
+            submitBtn.innerText = "List Donation";
+        } else {
+            submitBtn.innerText = "List Offer";
+        }
     }
 
     offerFormValidated = true;
@@ -10663,7 +10561,8 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
         radius: radiusVal,
         meetupRadius: meetupRadius,
         duration: duration,
-        locationPref: locationPref
+        locationPref: locationPref,
+        type: state.currentOfferMode || 'offering'
     };
 
     state.userOfferings.push(newOffer);
@@ -10746,10 +10645,16 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
     saveState();
     playSound('success');
     let successMsg = "";
-    if (giftKarmaActive) {
-        successMsg = "New offering successfully listed! Thank you for sharing! 🌿";
+    if (state.currentOfferMode === 'need') {
+        successMsg = "New need successfully listed on the village map! 🌿";
+    } else if (state.currentOfferMode === 'donation') {
+        successMsg = "New donation successfully listed on the village map! 🌿";
     } else {
-        successMsg = "New offering successfully listed on the village map! 🌿";
+        if (giftKarmaActive) {
+            successMsg = "New offering successfully listed! Thank you for sharing! 🌿";
+        } else {
+            successMsg = "New offering successfully listed on the village map! 🌿";
+        }
     }
     runTagMatchingAlgorithm(newOffer, true);
     if (typeof openListingSuccessModal === 'function') {
@@ -15162,6 +15067,15 @@ function switchVillageSegment(type) {
     if (typeof updateTopSegmentedControlUI === 'function') {
         updateTopSegmentedControlUI(state.activeCategory);
     }
+    if (type === 'map' || type === 'needs_map' || type === 'gifts_map' || type === 'events_map') {
+        if (typeof renderMapFilterCircles === 'function') renderMapFilterCircles();
+    } else if (type === 'list') {
+        if (typeof renderListFilterCircles === 'function') renderListFilterCircles();
+    } else if (type === 'needs') {
+        if (typeof renderNeedsFilterCircles === 'function') renderNeedsFilterCircles();
+    } else if (type === 'events') {
+        if (typeof renderEventsFilterCircles === 'function') renderEventsFilterCircles();
+    }
 
     const overlay = document.getElementById('map-detail-overlay');
     const eventOverlay = document.getElementById('map-event-detail-overlay');
@@ -15288,12 +15202,66 @@ function switchVillageSegment(type) {
         btnGifts.className = `${baseBtnClass} bg-rose-600 border-rose-600 text-white pulse-rose-light ${type === 'gifts_map' ? 'scale-110 ring-4 ring-rose-300 dark:ring-rose-800 z-20' : ''}`;
     }
 
+    let targetView = 'map';
     if (type === 'map' || type === 'needs_map' || type === 'gifts_map' || type === 'events_map') {
-        mapContainer.classList.remove('hidden');
-        listContainer.classList.add('hidden');
-        needsContainer.classList.add('hidden');
-        if (eventsContainer) eventsContainer.classList.add('hidden');
-        if (bulletinsContainer) bulletinsContainer.classList.add('hidden');
+        targetView = 'map';
+    } else if (type === 'list') {
+        targetView = 'list';
+    } else if (type === 'needs') {
+        targetView = 'needs';
+    } else if (type === 'events') {
+        targetView = 'events';
+    } else if (type === 'bulletins') {
+        targetView = 'bulletins';
+    }
+
+    if (mapContainer) {
+        if (targetView === 'map') {
+            mapContainer.classList.remove('hidden');
+            mapContainer.style.setProperty('display', 'block', 'important');
+        } else {
+            mapContainer.classList.add('hidden');
+            mapContainer.style.setProperty('display', 'none', 'important');
+        }
+    }
+    if (listContainer) {
+        if (targetView === 'list') {
+            listContainer.classList.remove('hidden');
+            listContainer.style.setProperty('display', 'flex', 'important');
+        } else {
+            listContainer.classList.add('hidden');
+            listContainer.style.setProperty('display', 'none', 'important');
+        }
+    }
+    if (needsContainer) {
+        if (targetView === 'needs') {
+            needsContainer.classList.remove('hidden');
+            needsContainer.style.setProperty('display', 'flex', 'important');
+        } else {
+            needsContainer.classList.add('hidden');
+            needsContainer.style.setProperty('display', 'none', 'important');
+        }
+    }
+    if (eventsContainer) {
+        if (targetView === 'events') {
+            eventsContainer.classList.remove('hidden');
+            eventsContainer.style.setProperty('display', 'flex', 'important');
+        } else {
+            eventsContainer.classList.add('hidden');
+            eventsContainer.style.setProperty('display', 'none', 'important');
+        }
+    }
+    if (bulletinsContainer) {
+        if (targetView === 'bulletins') {
+            bulletinsContainer.classList.remove('hidden');
+            bulletinsContainer.style.setProperty('display', 'flex', 'important');
+        } else {
+            bulletinsContainer.classList.add('hidden');
+            bulletinsContainer.style.setProperty('display', 'none', 'important');
+        }
+    }
+
+    if (targetView === 'map') {
         if (leafletMap) {
             setTimeout(() => {
                 const mapEl = document.getElementById('map');
@@ -15312,33 +15280,13 @@ function switchVillageSegment(type) {
             plotMapMarkersOnly();
             applyMapFiltering();
         }
-    } else if (type === 'list') {
-        mapContainer.classList.add('hidden');
-        listContainer.classList.remove('hidden');
-        needsContainer.classList.add('hidden');
-        if (eventsContainer) eventsContainer.classList.add('hidden');
-        if (bulletinsContainer) bulletinsContainer.classList.add('hidden');
+    } else if (targetView === 'list') {
         renderVillageListView();
-    } else if (type === 'needs') {
-        mapContainer.classList.add('hidden');
-        listContainer.classList.add('hidden');
-        needsContainer.classList.remove('hidden');
-        if (eventsContainer) eventsContainer.classList.add('hidden');
-        if (bulletinsContainer) bulletinsContainer.classList.add('hidden');
+    } else if (targetView === 'needs') {
         renderNeedsBoardView();
-    } else if (type === 'events') {
-        mapContainer.classList.add('hidden');
-        listContainer.classList.add('hidden');
-        needsContainer.classList.add('hidden');
-        if (eventsContainer) eventsContainer.classList.remove('hidden');
-        if (bulletinsContainer) bulletinsContainer.classList.add('hidden');
+    } else if (targetView === 'events') {
         renderEventsList();
-    } else if (type === 'bulletins') {
-        mapContainer.classList.add('hidden');
-        listContainer.classList.add('hidden');
-        needsContainer.classList.add('hidden');
-        if (eventsContainer) eventsContainer.classList.add('hidden');
-        if (bulletinsContainer) bulletinsContainer.classList.remove('hidden');
+    } else if (targetView === 'bulletins') {
         renderBulletinsList();
     }
 }
@@ -22480,8 +22428,8 @@ window.handleAddMapTap = function() {
 window.snapToUserNeighborhood = function() {
     if (state.adminAuthenticated) {
         if (leafletMap) {
-            const lat = (state.currentUser && state.currentUser.lat) ? state.currentUser.lat : 49.2608;
-            const lng = (state.currentUser && state.currentUser.lng) ? state.currentUser.lng : -123.1368;
+            const lat = parseFloat((state.currentUser && state.currentUser.lat) ? state.currentUser.lat : 49.2608);
+            const lng = parseFloat((state.currentUser && state.currentUser.lng) ? state.currentUser.lng : -123.1368);
             leafletMap.setView([lat, lng], 15, { animate: true });
         }
         return;
@@ -22506,14 +22454,16 @@ window.snapToUserNeighborhood = function() {
             btn.classList.add('bg-blue-600', 'border-blue-600', 'hover:bg-blue-700');
         }
         if (leafletMap) {
-            leafletMap.setView([state.currentUser.lat, state.currentUser.lng], 15, { animate: true });
+            const lat = parseFloat(state.currentUser.lat);
+            const lng = parseFloat(state.currentUser.lng);
+            leafletMap.setView([lat, lng], 15, { animate: true });
         }
     } else {
         // Try getting browser geolocation directly
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
+                const lat = parseFloat(position.coords.latitude);
+                const lng = parseFloat(position.coords.longitude);
                 if (!state.currentUser) state.currentUser = {};
                 state.currentUser.lat = lat;
                 state.currentUser.lng = lng;
@@ -22672,8 +22622,8 @@ window.grantLocationConsent = function(mode) {
 };
 
 function applyFinalCoords(lat, lng, mode) {
-    let finalLat = lat;
-    let finalLng = lng;
+    let finalLat = parseFloat(lat);
+    let finalLng = parseFloat(lng);
     
     // Obfuscation fuzzing formula: only apply to approximate mode
     if (mode === 'approximate') {
@@ -22681,8 +22631,8 @@ function applyFinalCoords(lat, lng, mode) {
         const multiplier = radius / 250;
         const latOffset = (Math.random() * 0.0016 + 0.0012) * (Math.random() > 0.5 ? 1 : -1) * multiplier;
         const lngOffset = (Math.random() * 0.0022 + 0.0016) * (Math.random() > 0.5 ? 1 : -1) * multiplier;
-        finalLat = lat + latOffset;
-        finalLng = lng + lngOffset;
+        finalLat = parseFloat(lat) + latOffset;
+        finalLng = parseFloat(lng) + lngOffset;
     }
     
     state.currentUser.lat = finalLat;
@@ -30045,13 +29995,10 @@ function initSearchBehavior() {
                 return el && (el.contains(e.target) || el === e.target);
             });
 
-            // If clicked outside all of these, dismiss search and intercept click
+            // If clicked outside all of these, dismiss search and allow click/touchstart through
             if (!isClickOnInput && !isClickOnClearBtn && !isClickOnSuggestions) {
                 // Blur active input to pull down keyboard
                 activeEl.blur();
-                // Prevent list/listing click action from triggering
-                e.preventDefault();
-                e.stopPropagation();
             }
         }
     };
@@ -30174,117 +30121,268 @@ if (document.readyState === 'complete' || document.readyState === 'interactive')
 }
 
 function initQuickCreateSheet() {
-    const sheet = document.getElementById('quick-create-sheet');
-    const handle = document.getElementById('quick-create-drag-handle');
-    const content = document.getElementById('quick-create-content');
-    if (!sheet || !handle || !content) return;
+    const sheet = document.getElementById('global-navbar');
+    if (!sheet) return;
 
-    let startY = 0;
-    let startHeight = 36;
-    let isDragging = false;
-    let hasMoved = false;
+    // Fixed height for static navbar capsule
+    const STATIC_HEIGHT = 56;
 
-    // Constants
-    const MIN_HEIGHT = 36;
-    const MAX_HEIGHT = 180;
-
-    function setSheetHeight(h) {
-        sheet.style.height = `${h}px`;
-        // Interpolate opacity of inner content: 0 at 36px, 1 at 120px+
-        const opacity = Math.max(0, Math.min(1, (h - MIN_HEIGHT) / (120 - MIN_HEIGHT)));
-        content.style.opacity = opacity;
-        if (h > 100) {
-            content.classList.remove('pointer-events-none');
-        } else {
-            content.classList.add('pointer-events-none');
-        }
-    }
-
-    function onPointerDown(e) {
-        isDragging = true;
-        hasMoved = false;
-        startY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
-        startHeight = parseInt(sheet.style.height || MIN_HEIGHT);
-        sheet.style.transition = 'none'; // Disable transition for real-time drag tracking
-        handle.style.cursor = 'grabbing';
-    }
-
-    function onPointerMove(e) {
-        if (!isDragging) return;
-        const currentY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
-        const dy = startY - currentY;
-        let targetHeight = startHeight + dy;
+    function setSheetHeight() {
+        sheet.style.setProperty('height', `${STATIC_HEIGHT}px`, 'important');
         
-        // Clamp height
-        if (targetHeight < MIN_HEIGHT) targetHeight = MIN_HEIGHT;
-        if (targetHeight > MAX_HEIGHT) targetHeight = MAX_HEIGHT;
-
-        if (Math.abs(dy) > 5) {
-            hasMoved = true;
-            if (e.cancelable) e.preventDefault();
-        }
-
-        setSheetHeight(targetHeight);
-    }
-
-    function onPointerUp() {
-        if (!isDragging) return;
-        isDragging = false;
-        sheet.style.transition = 'height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease'; // spring animation
-        handle.style.cursor = 'grab';
-
-        const currentHeight = parseInt(sheet.style.height || MIN_HEIGHT);
+        // Calculate bottom offset to avoid WebKit calc() custom property bugs
+        const isNative = document.documentElement.classList.contains('native-app-env');
+        const detector = document.getElementById('safe-area-detector');
+        const safeArea = (isNative && detector) ? detector.offsetHeight : 0;
+        const collapsedBottom = 2 + safeArea;
         
-        if (hasMoved) {
-            if (currentHeight > 100) {
-                setSheetHeight(MAX_HEIGHT);
-                sheet.classList.add('expanded');
-            } else {
-                setSheetHeight(MIN_HEIGHT);
-                sheet.classList.remove('expanded');
-            }
-        } else {
-            // Tap behavior: Toggle open/closed
-            if (currentHeight > MIN_HEIGHT) {
-                setSheetHeight(MIN_HEIGHT);
-                sheet.classList.remove('expanded');
-            } else {
-                setSheetHeight(MAX_HEIGHT);
-                sheet.classList.add('expanded');
-            }
-        }
+        // Keep bottom margin floating and static so it sits nicely above safe area
+        sheet.style.setProperty('bottom', `${collapsedBottom}px`, 'important');
+
+        // Fixed Width: Never expand the section wider than the initial floating capsule size
+        const screenWidth = window.innerWidth;
+        const pillWidth = Math.min(370, screenWidth - 32);
+        sheet.style.setProperty('width', `${pillWidth}px`, 'important');
+        sheet.style.setProperty('max-width', '370px', 'important');
+
+        // Keep corners fully rounded to preserve the "floating card" aesthetic
+        sheet.style.setProperty('border-radius', '28px', 'important');
+
+        const isDark = document.documentElement.classList.contains('dark');
+        const bgAlpha = 0.45;
+        const borderAlpha = 0.35;
+        const shadowAlpha = 0.06;
+        const blurAmount = 24;
+        const saturateAmount = 200;
+
+        sheet.style.setProperty('background', isDark ? `rgba(20, 28, 22, ${bgAlpha})` : `rgba(255, 255, 255, ${bgAlpha})`, 'important');
+        sheet.style.setProperty('border-color', isDark ? `rgba(255, 255, 255, ${borderAlpha})` : `rgba(0, 0, 0, ${borderAlpha})`, 'important');
+        sheet.style.setProperty('box-shadow', `0 -8px 32px rgba(0, 0, 0, ${shadowAlpha})`, 'important');
+        sheet.style.setProperty('backdrop-filter', `blur(${blurAmount}px) saturate(${saturateAmount}%)`, 'important');
+        sheet.style.setProperty('-webkit-backdrop-filter', `blur(${blurAmount}px) saturate(${saturateAmount}%)`, 'important');
     }
+    
+    window.updateQuickCreateSheetHeight = function(h) {
+        // Noop to prevent other code trying to expand the sheet
+        setSheetHeight();
+    };
 
-    // Touch events
-    handle.addEventListener('touchstart', onPointerDown, { passive: true });
-    window.addEventListener('touchmove', onPointerMove, { passive: false });
-    window.addEventListener('touchend', onPointerUp);
+    // Observe when native-app-env class is dynamically added on documentElement by native app wrapper
+    const observer = new MutationObserver(() => {
+        setSheetHeight();
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
-    // Mouse events (Desktop fallback)
-    handle.addEventListener('mousedown', onPointerDown);
-    window.addEventListener('mousemove', onPointerMove);
-    window.addEventListener('mouseup', onPointerUp);
+    // Fallback load event listener to ensure safe area inset dimensions have been parsed and applied
+    window.addEventListener('load', () => {
+        setSheetHeight();
+    });
+
+    setSheetHeight();
 }
+
+window.toggleQuickCreateDropdown = function(event, type) {
+    if (event) event.stopPropagation();
+    
+    let dropdownId = 'village-quick-create-dropdown';
+    if (type === 'list') dropdownId = 'list-quick-create-dropdown';
+    else if (type === 'needs') dropdownId = 'needs-quick-create-dropdown';
+    else if (type === 'events') dropdownId = 'events-quick-create-dropdown';
+    
+    const dropdown = document.getElementById(dropdownId);
+    if (!dropdown) return;
+    
+    const isHidden = dropdown.classList.contains('hidden');
+    
+    // Close all other quick-create dropdowns first
+    ['village-quick-create-dropdown', 'list-quick-create-dropdown', 'needs-quick-create-dropdown', 'events-quick-create-dropdown'].forEach(id => {
+        if (id !== dropdownId) {
+            const other = document.getElementById(id);
+            if (other) other.classList.add('hidden');
+        }
+    });
+    
+    // Close other overlays (like search suggestions if any)
+    const suggestions = document.getElementById('fused-search-suggestions');
+    if (suggestions) suggestions.classList.add('hidden');
+    const listSuggestions = document.getElementById('village-list-search-suggestions');
+    if (listSuggestions) listSuggestions.classList.add('hidden');
+    const needsSuggestions = document.getElementById('village-needs-search-suggestions');
+    if (needsSuggestions) needsSuggestions.classList.add('hidden');
+    const eventsSuggestions = document.getElementById('village-events-search-suggestions');
+    if (eventsSuggestions) eventsSuggestions.classList.add('hidden');
+    
+    if (isHidden) {
+        dropdown.classList.remove('hidden');
+        if (typeof playSound === 'function') playSound('click');
+        window.triggerHapticFeedback('light');
+    } else {
+        dropdown.classList.add('hidden');
+    }
+};
+
+document.addEventListener('click', function(e) {
+    const dropdowns = [
+        { id: 'village-quick-create-dropdown', btnId: 'btn-integrated-quick-create' },
+        { id: 'list-quick-create-dropdown', btnId: 'btn-list-quick-create' },
+        { id: 'needs-quick-create-dropdown', btnId: 'btn-needs-quick-create' },
+        { id: 'events-quick-create-dropdown', btnId: 'btn-events-quick-create' }
+    ];
+    
+    dropdowns.forEach(item => {
+        const dropdown = document.getElementById(item.id);
+        const plusBtn = document.getElementById(item.btnId);
+        if (dropdown && !dropdown.classList.contains('hidden')) {
+            if (!dropdown.contains(e.target) && (!plusBtn || !plusBtn.contains(e.target))) {
+                dropdown.classList.add('hidden');
+            }
+        }
+    });
+});
 
 window.triggerQuickCreate = function(mode) {
     if (typeof playSound === 'function') playSound('click');
     window.triggerHapticFeedback('medium');
     
-    // Minimize the sheet first
-    const sheet = document.getElementById('quick-create-sheet');
-    const content = document.getElementById('quick-create-content');
-    if (sheet && content) {
-        sheet.style.transition = 'height 0.3s ease';
-        sheet.style.height = '36px';
-        content.style.opacity = 0;
-        content.classList.add('pointer-events-none');
-        sheet.classList.remove('expanded');
-    }
+    // Close all quick-create dropdowns
+    ['village-quick-create-dropdown', 'list-quick-create-dropdown', 'needs-quick-create-dropdown', 'events-quick-create-dropdown'].forEach(id => {
+        const dropdown = document.getElementById(id);
+        if (dropdown) {
+            dropdown.classList.add('hidden');
+        }
+    });
 
     // Launch full listing creation form
     showView('offer');
     selectOfferMode(mode);
 };
 
-// Global scope ends
+/* --- Start: Compact Filter Category Dropdowns Logic --- */
+function closeAllListDropdowns() {
+    ['list-category-dropdown', 'needs-category-dropdown', 'events-category-dropdown'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
+    
+    const listBtn = document.getElementById('btn-list-filter');
+    if (listBtn) listBtn.classList.remove('active-filter-circle');
+    const needsBtn = document.getElementById('btn-needs-filter');
+    if (needsBtn) needsBtn.classList.remove('active-filter-circle');
+    const eventsBtn = document.getElementById('btn-events-filter');
+    if (eventsBtn) eventsBtn.classList.remove('active-filter-circle');
+}
+window.closeAllListDropdowns = closeAllListDropdowns;
 
+window.toggleMapCategoryDropdown = function() {
+    const dropdown = document.getElementById('map-category-dropdown');
+    const overlay = document.getElementById('map-filter-overlay');
+    const filterIcon = document.getElementById('map-filter-icon');
+    const filterBtn = document.getElementById('btn-segment-filter');
+    const floatingContainer = document.getElementById('village-segment-floating-buttons');
+    if (!dropdown) return;
+    
+    playSound('click');
+    const isHidden = dropdown.classList.contains('hidden');
+    
+    if (isHidden) {
+        closeAllListDropdowns();
+        
+        if (overlay) {
+            overlay.classList.remove('hidden');
+            setTimeout(() => {
+                overlay.classList.remove('opacity-0');
+                overlay.classList.add('opacity-100');
+            }, 10);
+        }
+        dropdown.classList.remove('hidden');
+        dropdown.classList.add('expanded');
+        if (filterIcon) {
+            filterIcon.innerText = 'close';
+            filterIcon.classList.add('rotate-filter-active');
+        }
+        if (filterBtn) {
+            filterBtn.classList.add('active-filter-circle');
+        }
+        if (floatingContainer) {
+            floatingContainer.classList.add('floating-buttons-hidden');
+        }
+        renderMapFilterCircles();
+    } else {
+        mapInfoModeActive = false;
+        if (overlay) {
+            overlay.classList.remove('opacity-100');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.classList.add('hidden'), 300);
+        }
+        dropdown.classList.add('hidden');
+        dropdown.classList.remove('expanded');
+        if (filterIcon) {
+            filterIcon.classList.remove('rotate-filter-active');
+            filterIcon.innerText = 'tune';
+        }
+        if (filterBtn) {
+            filterBtn.classList.remove('active-filter-circle');
+        }
+        if (floatingContainer) {
+            floatingContainer.classList.remove('floating-buttons-hidden');
+        }
+    }
+};
+
+window.toggleListCategoryDropdown = function() {
+    const dropdown = document.getElementById('list-category-dropdown');
+    const filterBtn = document.getElementById('btn-list-filter');
+    if (!dropdown) return;
+    
+    playSound('click');
+    const isHidden = dropdown.classList.contains('hidden');
+    closeAllListDropdowns();
+    closeMapCategoryDropdown();
+    
+    if (isHidden) {
+        dropdown.classList.remove('hidden');
+        if (filterBtn) filterBtn.classList.add('active-filter-circle');
+        renderListFilterCircles();
+    }
+};
+
+window.toggleNeedsCategoryDropdown = function() {
+    const dropdown = document.getElementById('needs-category-dropdown');
+    const filterBtn = document.getElementById('btn-needs-filter');
+    if (!dropdown) return;
+    
+    playSound('click');
+    const isHidden = dropdown.classList.contains('hidden');
+    closeAllListDropdowns();
+    closeMapCategoryDropdown();
+    
+    if (isHidden) {
+        dropdown.classList.remove('hidden');
+        if (filterBtn) filterBtn.classList.add('active-filter-circle');
+        renderNeedsFilterCircles();
+    }
+};
+
+window.toggleEventsCategoryDropdown = function() {
+    const dropdown = document.getElementById('events-category-dropdown');
+    const filterBtn = document.getElementById('btn-events-filter');
+    if (!dropdown) return;
+    
+    playSound('click');
+    const isHidden = dropdown.classList.contains('hidden');
+    closeAllListDropdowns();
+    closeMapCategoryDropdown();
+    
+    if (isHidden) {
+        dropdown.classList.remove('hidden');
+        if (filterBtn) filterBtn.classList.add('active-filter-circle');
+        renderEventsFilterCircles();
+    }
+};
+
+window.toggleCategoryTray = function() {
+    window.toggleMapCategoryDropdown();
+};
+/* --- End: Compact Filter Category Dropdowns Logic --- */
+
+// Global scope ends
