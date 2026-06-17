@@ -1980,13 +1980,7 @@ html.dark .chat-bubble-other {
 .native-app-env #view-village:has(#map-peek-card.active) #floating-map-controls {
     bottom: calc(230px + env(safe-area-inset-bottom)) !important;
 }
-.native-app-env #map-category-dropdown {
-    top: calc(58px + env(safe-area-inset-top)) !important;
-    left: 25px !important;
-    right: auto !important;
-    height: auto !important;
-    max-height: calc(100% - 150px) !important;
-}
+/* native-app-env map-category-dropdown override removed */
 .native-app-env #active-filter-banner {
     top: calc(4.5rem + env(safe-area-inset-top)) !important;
 }
@@ -5702,102 +5696,7 @@ html.dark .onboarding-card textarea::placeholder {
     color: #5e6f65 !important;
 }
 
-/* Position and align map/list category circles dropdown on the left to stack cleanly under top-left control buttons */
-#map-category-dropdown,
-#list-category-dropdown,
-#needs-category-dropdown,
-#events-category-dropdown {
-    position: absolute !important;
-    display: none;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 3px !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    white-space: nowrap !important;
-    z-index: 3000 !important;
-    scrollbar-width: none !important;
-    box-sizing: border-box !important;
-    width: auto !important;
-    min-width: 170px !important;
-    max-width: 240px !important;
-    background-color: rgba(255, 255, 255, 0.95) !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-    border-radius: 16px !important;
-    padding: 8px 6px !important;
-}
-
-html.dark #map-category-dropdown,
-html.dark #list-category-dropdown,
-html.dark #needs-category-dropdown,
-html.dark #events-category-dropdown {
-    background-color: rgba(24, 32, 26, 0.95) !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-#map-category-dropdown::-webkit-scrollbar,
-#list-category-dropdown::-webkit-scrollbar,
-#needs-category-dropdown::-webkit-scrollbar,
-#events-category-dropdown::-webkit-scrollbar {
-    display: none !important;
-}
-
-#map-category-dropdown.expanded,
-#list-category-dropdown:not(.hidden),
-#needs-category-dropdown:not(.hidden),
-#events-category-dropdown:not(.hidden) {
-    display: flex !important;
-}
-
-#map-category-dropdown {
-    top: 58px !important;
-    left: 25px !important;
-    right: auto !important;
-    height: auto !important;
-    max-height: calc(100vh - 180px) !important;
-}
-
-#list-category-dropdown,
-#needs-category-dropdown,
-#events-category-dropdown {
-    top: 46px !important;
-    left: 0px !important;
-    right: auto !important;
-    height: auto !important;
-    max-height: calc(100vh - 180px) !important;
-}
-
-#map-category-dropdown .map-category-item,
-#list-category-dropdown > div,
-#needs-category-dropdown > div,
-#events-category-dropdown > div {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    padding: 4px 8px !important;
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    height: 32px !important;
-    min-height: 32px !important;
-    width: 100% !important;
-    opacity: 1 !important;
-    transform: none !important;
-    pointer-events: auto !important;
-    margin: 0 !important;
-    overflow: visible !important;
-    transition: all 0.2s ease !important;
-    flex-shrink: 0 !important;
-}
-
-.dark #map-category-dropdown .map-category-item,
-.dark #list-category-dropdown > div,
-.dark #needs-category-dropdown > div,
-.dark #events-category-dropdown > div {
-    background-color: transparent !important;
-    border-color: transparent !important;
-}
+/* Category filter dropdown overrides removed to stack under search capsules in 4-column grid style */
 
 
 /* ==================================================== */
@@ -5973,10 +5872,7 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
 .iphone16-mode #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
     bottom: 286px !important;
 }
-
-.iphone16-mode #map-category-dropdown {
-    top: 68px !important;
-}
+/* iphone16-mode map-category-dropdown override removed */
 
 /* Ensure onboarding screens are padded too */
 .iphone16-mode #view-profile_consent,
@@ -6908,14 +6804,7 @@ html.dark #view-profile_consent #consent-checkboxes-container span:not(.material
     padding: 0 !important;
 }
 
-/* Filter Dropdown horizontal alignment fix */
-.native-app-env #map-category-dropdown {
-    left: 25px !important;
-}
-
-.native-app-env #map-category-dropdown .map-category-item {
-    padding-left: 4px !important;
-}
+/* Native filter dropdown alignment overrides removed */
 
 
 /* Standardized safe area top padding for native environment */
@@ -7292,7 +7181,10 @@ html.dark .fused-divider {
     justify-content: center !important;
 }
 
-#btn-integrated-location {
+#btn-integrated-location,
+#btn-list-quick-create,
+#btn-needs-quick-create,
+#btn-events-quick-create {
     margin-left: 4px !important;
     margin-right: 0px !important;
 }
@@ -7443,7 +7335,7 @@ html.dark .intel-title {
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    border-radius: 12px !important;
+    border-radius: 24px !important;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08) !important;
     padding: 10px 12px !important;
     max-height: 280px !important;
@@ -7863,7 +7755,10 @@ html.dark #events-list-container p.list-card-description {
 }
 
 /* Quick Create Button & Dropdown Styles */
-#btn-integrated-quick-create {
+#btn-integrated-quick-create,
+#btn-list-quick-create,
+#btn-needs-quick-create,
+#btn-events-quick-create {
     width: 28px !important;
     height: 28px !important;
     border-radius: 50% !important;
@@ -7875,12 +7770,18 @@ html.dark #events-list-container p.list-card-description {
     transition: all 0.2s ease-in-out !important;
 }
 
-html.dark #btn-integrated-quick-create {
+html.dark #btn-integrated-quick-create,
+html.dark #btn-list-quick-create,
+html.dark #btn-needs-quick-create,
+html.dark #btn-events-quick-create {
     background-color: rgba(255, 255, 255, 0.1) !important;
     color: #4ade80 !important;
 }
 
-#btn-integrated-quick-create:active {
+#btn-integrated-quick-create:active,
+#btn-list-quick-create:active,
+#btn-needs-quick-create:active,
+#btn-events-quick-create:active {
     transform: scale(0.9) !important;
 }
 

@@ -8972,7 +8972,7 @@ function updateCategoryCircleStyle(circle, cat, isActive) {
     if (!circle || !cat) return;
     
     // Find the corresponding category-label element in the same row
-    const parentRow = circle.closest('.map-category-item');
+    const parentRow = circle.closest('.map-category-item') || circle.parentElement;
     const label = parentRow ? parentRow.querySelector('.category-label') : null;
     
     if (mapInfoModeActive && cat.name !== 'Clear Filter') {
@@ -9006,12 +9006,11 @@ function updateCategoryCircleStyle(circle, cat, isActive) {
             animation: none !important;
         `;
         
-        // Label styling: Highlight the text in the same color as the icon, and turn the text white
+        // Label styling: Highlight the text in the same color as the icon, no solid background
         if (label) {
             label.style.cssText = `
-                background-color: ${cat.color} !important;
-                color: #FFFFFF !important;
-                border-color: ${cat.color} !important;
+                color: ${cat.color} !important;
+                font-weight: 800 !important;
             `;
         }
     } else {
@@ -9026,7 +9025,7 @@ function updateCategoryCircleStyle(circle, cat, isActive) {
             animation: none !important;
         `;
         
-        // Label styling when inactive: Revert to default classes (regular background, regular text color)
+        // Label styling when inactive: Revert to default classes (regular text color)
         if (label) {
             label.style.cssText = '';
         }
