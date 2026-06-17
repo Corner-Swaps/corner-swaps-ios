@@ -6710,16 +6710,16 @@ html.dark .category-tray, html.dark .category-list-overlay {
 #chat-message-feed::after {
     content: '' !important;
     display: block !important;
-    height: calc(var(--chat-input-height, 140px) + 16px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 140px) + 14px + var(--keyboard-offset, 0px)) !important;
     flex-shrink: 0 !important;
     pointer-events: none !important;
 }
 
 .native-app-env #chat-message-feed::after {
-    height: calc(var(--chat-input-height, 140px) + 16px + var(--keyboard-offset, 0px) + env(safe-area-inset-bottom, 0px)) !important;
+    height: calc(var(--chat-input-height, 140px) + 14px + var(--keyboard-offset, 0px) + env(safe-area-inset-bottom, 0px)) !important;
 }
 body.keyboard-visible .native-app-env #chat-message-feed::after {
-    height: calc(var(--chat-input-height, 140px) + 16px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 140px) + 14px + var(--keyboard-offset, 0px)) !important;
 }
 
 /* Custom Chat Section Font & Size Consistency */
@@ -7728,6 +7728,44 @@ html.dark #needs-board-list p.list-card-description,
 html.dark #village-events-list p.list-card-description,
 html.dark #events-list-container p.list-card-description {
     color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Enforce strict sizes for list card components (Offerings, Needs, Events) */
+.list-card-container {
+    height: 430px !important;
+    border: none !important;
+}
+.list-card-container:hover {
+    border: none !important;
+}
+.list-card-image-wrapper {
+    height: 238px !important;
+    border-bottom: none !important;
+}
+.list-card-text-wrapper {
+    height: 192px !important;
+}
+
+/* Sibling rules for the Quick Create Sheet based on the Global Navbar state */
+#global-navbar.hidden + #quick-create-sheet {
+    display: none !important;
+}
+
+#global-navbar.navbar-behind + #quick-create-sheet {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateX(-50%) translateY(32px) !important;
+}
+
+/* Hide when viewing the full screen offer page */
+#quick-create-sheet.hidden-by-view {
+    display: none !important;
+}
+
+/* Ensure the quick create sheet adapts to dark mode glassmorphism */
+html.dark #quick-create-sheet {
+    background: rgba(20, 28, 22, 0.75) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
 

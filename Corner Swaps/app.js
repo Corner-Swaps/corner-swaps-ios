@@ -3697,6 +3697,15 @@ function showView(viewId, mode) {
         if (navBar) navBar.classList.add('hidden');
     }
 
+    const quickCreateSheet = document.getElementById('quick-create-sheet');
+    if (quickCreateSheet) {
+        if (viewId === 'offer') {
+            quickCreateSheet.classList.add('hidden-by-view');
+        } else {
+            quickCreateSheet.classList.remove('hidden-by-view');
+        }
+    }
+
     if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'events_hub', 'create_event', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'create_bulletin', 'create_group'].includes(viewId) || viewId.startsWith('chat_detail')) {
         if (desktopNavBar) {
             desktopNavBar.classList.remove('hidden');
@@ -6207,7 +6216,7 @@ function renderEventsList() {
             const hostAvatar = hostNeighbor ? hostNeighbor.avatar : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80';
             
             const card = document.createElement('div');
-            card.className = "h-[350px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+            card.className = "list-card-container bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
             
             card.onclick = () => {
                 openEventDetail(evt.id);
@@ -6226,12 +6235,12 @@ function renderEventsList() {
 
             card.innerHTML = `
                 <!-- Top Image Portion -->
-                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="list-card-image-wrapper w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
                 <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
+                <div class="list-card-text-wrapper p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -10144,8 +10153,11 @@ function selectOfferMode(mode) {
     if (viewOffer) {
         viewOffer.classList.remove('justify-center');
         viewOffer.classList.add('justify-start');
-        viewOffer.style.overflowY = 'auto';
-        viewOffer.scrollTop = 0;
+        viewOffer.style.overflowY = 'hidden';
+    }
+    const scrollContainer = document.getElementById('offer-form-scroll-container');
+    if (scrollContainer) {
+        scrollContainer.scrollTop = 0;
     }
     updateEventPhotoPlaceholder();
 }
@@ -15622,7 +15634,7 @@ function renderVillageListView() {
 
     filteredListings.forEach(item => {
         const card = document.createElement('div');
-        card.className = "h-[350px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "list-card-container bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail(item.id);
 
         const itemImages = item.image ? item.image.split('|||').filter(Boolean) : [];
@@ -15638,12 +15650,12 @@ function renderVillageListView() {
             const isFree = isKarma || (item.category && item.category.toLowerCase() === 'gifts');
             card.innerHTML = `
                 <!-- Top Image Portion -->
-                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="list-card-image-wrapper w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
                 <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
+                <div class="list-card-text-wrapper p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -15667,12 +15679,12 @@ function renderVillageListView() {
             const isFree = (item.category && item.category.toLowerCase() === 'gifts');
             card.innerHTML = `
                 <!-- Top Image Portion -->
-                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="list-card-image-wrapper w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
                 <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
+                <div class="list-card-text-wrapper p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -15817,7 +15829,7 @@ function renderNeedsBoardView() {
     filteredNeeds.forEach(need => {
         const card = document.createElement('div');
         const needId = need.id;
-        card.className = "h-[350px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "list-card-container bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail('need_' + needId);
         
         const currentUser = state.currentUser || {};
@@ -15835,12 +15847,12 @@ function renderNeedsBoardView() {
         if (isUserNeed) {
             card.innerHTML = `
                 <!-- Top Image Portion -->
-                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="list-card-image-wrapper w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
                 <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
+                <div class="list-card-text-wrapper p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -15866,12 +15878,12 @@ function renderNeedsBoardView() {
         } else {
             card.innerHTML = `
                 <!-- Top Image Portion -->
-                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="list-card-image-wrapper w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
                 <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
+                <div class="list-card-text-wrapper p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -30153,11 +30165,126 @@ function initKeyboardLayoutHandler() {
 document.addEventListener('DOMContentLoaded', () => {
     initSearchBehavior();
     initKeyboardLayoutHandler();
+    initQuickCreateSheet();
 });
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
     initSearchBehavior();
     initKeyboardLayoutHandler();
+    initQuickCreateSheet();
 }
+
+function initQuickCreateSheet() {
+    const sheet = document.getElementById('quick-create-sheet');
+    const handle = document.getElementById('quick-create-drag-handle');
+    const content = document.getElementById('quick-create-content');
+    if (!sheet || !handle || !content) return;
+
+    let startY = 0;
+    let startHeight = 36;
+    let isDragging = false;
+    let hasMoved = false;
+
+    // Constants
+    const MIN_HEIGHT = 36;
+    const MAX_HEIGHT = 180;
+
+    function setSheetHeight(h) {
+        sheet.style.height = `${h}px`;
+        // Interpolate opacity of inner content: 0 at 36px, 1 at 120px+
+        const opacity = Math.max(0, Math.min(1, (h - MIN_HEIGHT) / (120 - MIN_HEIGHT)));
+        content.style.opacity = opacity;
+        if (h > 100) {
+            content.classList.remove('pointer-events-none');
+        } else {
+            content.classList.add('pointer-events-none');
+        }
+    }
+
+    function onPointerDown(e) {
+        isDragging = true;
+        hasMoved = false;
+        startY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+        startHeight = parseInt(sheet.style.height || MIN_HEIGHT);
+        sheet.style.transition = 'none'; // Disable transition for real-time drag tracking
+        handle.style.cursor = 'grabbing';
+    }
+
+    function onPointerMove(e) {
+        if (!isDragging) return;
+        const currentY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+        const dy = startY - currentY;
+        let targetHeight = startHeight + dy;
+        
+        // Clamp height
+        if (targetHeight < MIN_HEIGHT) targetHeight = MIN_HEIGHT;
+        if (targetHeight > MAX_HEIGHT) targetHeight = MAX_HEIGHT;
+
+        if (Math.abs(dy) > 5) {
+            hasMoved = true;
+            if (e.cancelable) e.preventDefault();
+        }
+
+        setSheetHeight(targetHeight);
+    }
+
+    function onPointerUp() {
+        if (!isDragging) return;
+        isDragging = false;
+        sheet.style.transition = 'height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease'; // spring animation
+        handle.style.cursor = 'grab';
+
+        const currentHeight = parseInt(sheet.style.height || MIN_HEIGHT);
+        
+        if (hasMoved) {
+            if (currentHeight > 100) {
+                setSheetHeight(MAX_HEIGHT);
+                sheet.classList.add('expanded');
+            } else {
+                setSheetHeight(MIN_HEIGHT);
+                sheet.classList.remove('expanded');
+            }
+        } else {
+            // Tap behavior: Toggle open/closed
+            if (currentHeight > MIN_HEIGHT) {
+                setSheetHeight(MIN_HEIGHT);
+                sheet.classList.remove('expanded');
+            } else {
+                setSheetHeight(MAX_HEIGHT);
+                sheet.classList.add('expanded');
+            }
+        }
+    }
+
+    // Touch events
+    handle.addEventListener('touchstart', onPointerDown, { passive: true });
+    window.addEventListener('touchmove', onPointerMove, { passive: false });
+    window.addEventListener('touchend', onPointerUp);
+
+    // Mouse events (Desktop fallback)
+    handle.addEventListener('mousedown', onPointerDown);
+    window.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('mouseup', onPointerUp);
+}
+
+window.triggerQuickCreate = function(mode) {
+    if (typeof playSound === 'function') playSound('click');
+    window.triggerHapticFeedback('medium');
+    
+    // Minimize the sheet first
+    const sheet = document.getElementById('quick-create-sheet');
+    const content = document.getElementById('quick-create-content');
+    if (sheet && content) {
+        sheet.style.transition = 'height 0.3s ease';
+        sheet.style.height = '36px';
+        content.style.opacity = 0;
+        content.classList.add('pointer-events-none');
+        sheet.classList.remove('expanded');
+    }
+
+    // Launch full listing creation form
+    showView('offer');
+    selectOfferMode(mode);
+};
 
 // Global scope ends
 

@@ -7888,16 +7888,16 @@ html.dark .category-tray, html.dark .category-list-overlay {
 #chat-message-feed::after {
     content: '' !important;
     display: block !important;
-    height: calc(var(--chat-input-height, 140px) + 16px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 140px) + 14px + var(--keyboard-offset, 0px)) !important;
     flex-shrink: 0 !important;
     pointer-events: none !important;
 }
 
 .native-app-env #chat-message-feed::after {
-    height: calc(var(--chat-input-height, 140px) + 16px + var(--keyboard-offset, 0px) + env(safe-area-inset-bottom, 0px)) !important;
+    height: calc(var(--chat-input-height, 140px) + 14px + var(--keyboard-offset, 0px) + env(safe-area-inset-bottom, 0px)) !important;
 }
 body.keyboard-visible .native-app-env #chat-message-feed::after {
-    height: calc(var(--chat-input-height, 140px) + 16px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 140px) + 14px + var(--keyboard-offset, 0px)) !important;
 }
 
 /* Custom Chat Section Font & Size Consistency */
@@ -8906,6 +8906,44 @@ html.dark #needs-board-list p.list-card-description,
 html.dark #village-events-list p.list-card-description,
 html.dark #events-list-container p.list-card-description {
     color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Enforce strict sizes for list card components (Offerings, Needs, Events) */
+.list-card-container {
+    height: 430px !important;
+    border: none !important;
+}
+.list-card-container:hover {
+    border: none !important;
+}
+.list-card-image-wrapper {
+    height: 238px !important;
+    border-bottom: none !important;
+}
+.list-card-text-wrapper {
+    height: 192px !important;
+}
+
+/* Sibling rules for the Quick Create Sheet based on the Global Navbar state */
+#global-navbar.hidden + #quick-create-sheet {
+    display: none !important;
+}
+
+#global-navbar.navbar-behind + #quick-create-sheet {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateX(-50%) translateY(32px) !important;
+}
+
+/* Hide when viewing the full screen offer page */
+#quick-create-sheet.hidden-by-view {
+    display: none !important;
+}
+
+/* Ensure the quick create sheet adapts to dark mode glassmorphism */
+html.dark #quick-create-sheet {
+    background: rgba(20, 28, 22, 0.75) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 </style>
     <!-- Tailwind Configuration (removed - runtime replaced with pre-compiled CSS) -->
@@ -11318,23 +11356,14 @@ html.dark #events-list-container p.list-card-description {
 
                     <!-- B. Unified Form Wrapper (hidden initially) -->
                     <div id="offer-form-wrapper" class="hidden h-full overflow-hidden relative pb-0 w-full flex flex-col">
-                        <!-- Sticky Header Bar -->
-                        <div id="offer-form-header" class="w-full flex items-center justify-center px-4 bg-[#ecebeb] dark:bg-[#202020] border-b-0 z-10 shrink-0 select-none" style="height: 56px !important;">
-                            <!-- Deleted back arrow as requested -->
-                            <span class="text-sm font-bold text-black dark:text-white font-headline">Create Listing</span>
-                        </div>
-
-                        <!-- Scrollable Form Container -->
-                        <div id="offer-form-scroll-container" class="flex-grow overflow-y-auto w-full" style="-webkit-overflow-scrolling: touch;">
-
-                        <!-- 1. Hero Image area with three photo uploader slots -->
-                        <section class="photo-hero w-full relative overflow-hidden flex flex-col justify-center items-center border-b border-outline-variant/30 flex-shrink-0 bg-[#ecebeb] dark:bg-[#202020] px-4 pt-5 pb-5" id="offer-photo-hero">
+                        <!-- sticky/fixed header: Hero Image area with three photo uploader slots -->
+                        <section class="photo-hero w-full relative overflow-hidden flex flex-col justify-center items-center border-b border-outline-variant/30 flex-shrink-0 bg-[#ecebeb] dark:bg-[#202020] px-4 pt-5 pb-5 animate-fade-in" id="offer-photo-hero">
                             <div class="flex flex-col items-center w-full">
-                                <div class="flex justify-center items-center gap-2 flex-wrap">
+                                <div class="flex justify-between items-center w-full max-w-[340px] mx-auto">
                                     <!-- Slot 0 (Primary) -->
-                                    <div class="relative w-[115px] h-[115px] rounded-2xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(0)">
+                                    <div class="relative w-[100px] h-[100px] rounded-2xl bg-white border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(0)">
                                         <div id="offer-photo-placeholder-0" class="w-full h-full flex items-center justify-center">
-                                            <span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-[42px] group-hover:scale-110 transition-transform">add_a_photo</span>
+                                            <span class="material-symbols-outlined text-black text-[36px]" style="color: #000000 !important; font-size: 36px !important;">add_a_photo</span>
                                         </div>
                                         <img id="offer-photo-preview-0" class="w-full h-full object-cover hidden">
                                         <button id="offer-photo-remove-0" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferPhotoSlot(0)">
@@ -11344,9 +11373,9 @@ html.dark #events-list-container p.list-card-description {
                                     </div>
 
                                     <!-- Slot 1 (Optional) -->
-                                    <div class="relative w-[115px] h-[115px] rounded-2xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(1)">
+                                    <div class="relative w-[100px] h-[100px] rounded-2xl bg-white border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(1)">
                                         <div id="offer-photo-placeholder-1" class="w-full h-full flex items-center justify-center">
-                                            <span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-[42px] group-hover:scale-110 transition-transform">add_a_photo</span>
+                                            <span class="material-symbols-outlined text-black text-[36px]" style="color: #000000 !important; font-size: 36px !important;">add_a_photo</span>
                                         </div>
                                         <img id="offer-photo-preview-1" class="w-full h-full object-cover hidden">
                                         <button id="offer-photo-remove-1" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferPhotoSlot(1)">
@@ -11356,12 +11385,12 @@ html.dark #events-list-container p.list-card-description {
                                     </div>
 
                                     <!-- Slot 2 (Icon Selector) -->
-                                    <div class="relative w-[115px] h-[115px] rounded-2xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="openIconSelectorModal()">
+                                    <div class="relative w-[100px] h-[100px] rounded-2xl bg-white border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="openIconSelectorModal()">
                                         <div id="offer-icon-placeholder" class="w-full h-full flex items-center justify-center">
-                                            <span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-[42px] group-hover:scale-110 transition-transform">interests</span>
+                                            <span class="material-symbols-outlined text-black text-[36px]" style="color: #000000 !important; font-size: 36px !important;">interests</span>
                                         </div>
-                                        <div id="offer-icon-selected-display" class="w-full h-full flex items-center justify-center hidden bg-forest-green/5 dark:bg-emerald-400/5">
-                                            <span id="offer-selected-icon-symbol" class="material-symbols-outlined text-[48px] text-forest-green dark:text-emerald-400" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <div id="offer-icon-selected-display" class="w-full h-full flex items-center justify-center hidden bg-black/5">
+                                            <span id="offer-selected-icon-symbol" class="material-symbols-outlined text-[36px] text-black" style="font-variation-settings: 'FILL' 1; color: #000000 !important; font-size: 36px !important;">star</span>
                                         </div>
                                         <button id="offer-icon-remove" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferIcon()">
                                             <span class="material-symbols-outlined text-[10px] font-bold">close</span>
@@ -11370,6 +11399,9 @@ html.dark #events-list-container p.list-card-description {
                                 </div>
                             </div>
                         </section>
+
+                        <!-- Scrollable Form Container -->
+                        <div id="offer-form-scroll-container" class="flex-grow overflow-y-auto w-full" style="-webkit-overflow-scrolling: touch;">
 
                     <div class="px-6 py-6 space-y-4 w-full mx-auto">
                         <!-- 2. Stylized Title input -->
@@ -11620,11 +11652,8 @@ html.dark #events-list-container p.list-card-description {
                             </label>
                         </div>
 
-                        <div class="flex gap-3 mt-3 mb-2">
-                            <button type="button" class="w-1/3 h-12 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-black dark:text-white font-bold text-xs rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center border border-black/10 dark:border-white/10 cursor-pointer text-center" onclick="resetOfferFormToSelector()">
-                                Cancel
-                            </button>
-                            <button id="btn-list-offering" class="w-2/3 h-12 bg-forest-green text-warm-cream font-bold text-xs rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center shadow-md border-0 cursor-pointer text-center" onclick="handleAddOffering(event)">
+                        <div class="flex mt-3 mb-2">
+                            <button id="btn-list-offering" class="w-full h-12 bg-forest-green text-warm-cream font-bold text-xs rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center shadow-md border-0 cursor-pointer text-center" onclick="handleAddOffering(event)">
                                 List Offer
                             </button>
                         </div>
@@ -16168,6 +16197,49 @@ html.dark #events-list-container p.list-card-description {
                     </div>
                 </nav>
 
+                <!-- SLIDE-UP BOTTOM SHEET FOR CREATING LISTINGS -->
+                <div id="quick-create-sheet" class="absolute left-1/2 -translate-x-1/2 w-[calc(100%-32px)] max-w-[370px] bg-white/75 dark:bg-[#141c16]/75 border border-outline-variant/35 dark:border-outline-variant/15 rounded-3xl shadow-[0_-8px_32px_rgba(0,0,0,0.06)] z-[4900] transition-all duration-300 ease-out select-none flex flex-col overflow-hidden backdrop-blur-[24px] saturate-[200%] -webkit-backdrop-filter: blur(24px) saturate(200%)" style="bottom: 74px; height: 36px; transform: translateX(-50%) translateY(0px);">
+                    <!-- Grab Handle (Line) -->
+                    <div id="quick-create-drag-handle" class="w-full flex justify-center items-center py-3 cursor-grab active:cursor-grabbing shrink-0">
+                        <div class="w-12 h-1 rounded-full bg-forest-green/20 dark:bg-warm-cream/20 hover:bg-forest-green/40 dark:hover:bg-warm-cream/40 transition-colors"></div>
+                    </div>
+                    
+                    <!-- Inner Content (Hidden when minimized, shown when pulled up) -->
+                    <div id="quick-create-content" class="flex-grow w-full px-4 pb-5 flex flex-col justify-start gap-4 opacity-0 transition-opacity duration-300 overflow-hidden pointer-events-none">
+                        <div class="text-center">
+                            <h3 class="font-headline font-bold text-sm text-black dark:text-white">Quick Share</h3>
+                            <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5">What would you like to list in the village today?</p>
+                        </div>
+                        
+                        <!-- Grid of Quick Options -->
+                        <div class="grid grid-cols-3 gap-2 flex-grow">
+                            <!-- Offering Option -->
+                            <button type="button" onclick="triggerQuickCreate('offering')" class="flex flex-col items-center justify-center p-2.5 bg-forest-green/5 dark:bg-emerald-500/5 hover:bg-forest-green/10 dark:hover:bg-emerald-500/10 border border-forest-green/10 dark:border-emerald-500/10 rounded-2xl transition-all cursor-pointer active:scale-95 text-center group">
+                                <div class="w-10 h-10 rounded-full bg-forest-green text-white flex items-center justify-center mb-1.5 shadow-sm group-hover:scale-105 transition-transform">
+                                    <span class="material-symbols-outlined text-lg">handyman</span>
+                                </div>
+                                <span class="font-bold text-[10px] text-forest-green dark:text-emerald-400">Offering</span>
+                            </button>
+                            
+                            <!-- Need Option -->
+                            <button type="button" onclick="triggerQuickCreate('need')" class="flex flex-col items-center justify-center p-2.5 bg-forest-green/5 dark:bg-emerald-500/5 hover:bg-forest-green/10 dark:hover:bg-emerald-500/10 border border-forest-green/10 dark:border-emerald-500/10 rounded-2xl transition-all cursor-pointer active:scale-95 text-center group">
+                                <div class="w-10 h-10 rounded-full bg-forest-green text-white flex items-center justify-center mb-1.5 shadow-sm group-hover:scale-105 transition-transform">
+                                    <span class="material-symbols-outlined text-lg">shopping_basket</span>
+                                </div>
+                                <span class="font-bold text-[10px] text-forest-green dark:text-emerald-400">Need</span>
+                            </button>
+                            
+                            <!-- Event Option -->
+                            <button type="button" onclick="triggerQuickCreate('event')" class="flex flex-col items-center justify-center p-2.5 bg-forest-green/5 dark:bg-emerald-500/5 hover:bg-forest-green/10 dark:hover:bg-emerald-500/10 border border-forest-green/10 dark:border-emerald-500/10 rounded-2xl transition-all cursor-pointer active:scale-95 text-center group">
+                                <div class="w-10 h-10 rounded-full bg-forest-green text-white flex items-center justify-center mb-1.5 shadow-sm group-hover:scale-105 transition-transform">
+                                    <span class="material-symbols-outlined text-lg">festival</span>
+                                </div>
+                                <span class="font-bold text-[10px] text-forest-green dark:text-emerald-400">Event</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Mock Phone home indicator bar -->
                 <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-28 h-1 bg-forest-green/20 rounded-full z-[6000] pointer-events-none hidden sm:block"></div>
 
@@ -19961,6 +20033,15 @@ function showView(viewId, mode) {
         if (navBar) navBar.classList.add('hidden');
     }
 
+    const quickCreateSheet = document.getElementById('quick-create-sheet');
+    if (quickCreateSheet) {
+        if (viewId === 'offer') {
+            quickCreateSheet.classList.add('hidden-by-view');
+        } else {
+            quickCreateSheet.classList.remove('hidden-by-view');
+        }
+    }
+
     if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'events_hub', 'create_event', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'create_bulletin', 'create_group'].includes(viewId) || viewId.startsWith('chat_detail')) {
         if (desktopNavBar) {
             desktopNavBar.classList.remove('hidden');
@@ -22471,7 +22552,7 @@ function renderEventsList() {
             const hostAvatar = hostNeighbor ? hostNeighbor.avatar : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80';
             
             const card = document.createElement('div');
-            card.className = "h-[350px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+            card.className = "list-card-container bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
             
             card.onclick = () => {
                 openEventDetail(evt.id);
@@ -22490,12 +22571,12 @@ function renderEventsList() {
 
             card.innerHTML = `
                 <!-- Top Image Portion -->
-                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="list-card-image-wrapper w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
                 <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
+                <div class="list-card-text-wrapper p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -26408,8 +26489,11 @@ function selectOfferMode(mode) {
     if (viewOffer) {
         viewOffer.classList.remove('justify-center');
         viewOffer.classList.add('justify-start');
-        viewOffer.style.overflowY = 'auto';
-        viewOffer.scrollTop = 0;
+        viewOffer.style.overflowY = 'hidden';
+    }
+    const scrollContainer = document.getElementById('offer-form-scroll-container');
+    if (scrollContainer) {
+        scrollContainer.scrollTop = 0;
     }
     updateEventPhotoPlaceholder();
 }
@@ -31886,7 +31970,7 @@ function renderVillageListView() {
 
     filteredListings.forEach(item => {
         const card = document.createElement('div');
-        card.className = "h-[350px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "list-card-container bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail(item.id);
 
         const itemImages = item.image ? item.image.split('|||').filter(Boolean) : [];
@@ -31902,12 +31986,12 @@ function renderVillageListView() {
             const isFree = isKarma || (item.category && item.category.toLowerCase() === 'gifts');
             card.innerHTML = `
                 <!-- Top Image Portion -->
-                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="list-card-image-wrapper w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
                 <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
+                <div class="list-card-text-wrapper p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -31931,12 +32015,12 @@ function renderVillageListView() {
             const isFree = (item.category && item.category.toLowerCase() === 'gifts');
             card.innerHTML = `
                 <!-- Top Image Portion -->
-                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="list-card-image-wrapper w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
                 <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
+                <div class="list-card-text-wrapper p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -32081,7 +32165,7 @@ function renderNeedsBoardView() {
     filteredNeeds.forEach(need => {
         const card = document.createElement('div');
         const needId = need.id;
-        card.className = "h-[350px] bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+        card.className = "list-card-container bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
         card.onclick = () => openMapItemDetail('need_' + needId);
         
         const currentUser = state.currentUser || {};
@@ -32099,12 +32183,12 @@ function renderNeedsBoardView() {
         if (isUserNeed) {
             card.innerHTML = `
                 <!-- Top Image Portion -->
-                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="list-card-image-wrapper w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
                 <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
+                <div class="list-card-text-wrapper p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -32130,12 +32214,12 @@ function renderNeedsBoardView() {
         } else {
             card.innerHTML = `
                 <!-- Top Image Portion -->
-                <div class="h-44 w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                <div class="list-card-image-wrapper w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
                     <img src="${img1}" class="w-full h-full object-cover">
                     ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
                 </div>
                 <!-- Bottom Details Portion -->
-                <div class="p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
+                <div class="list-card-text-wrapper p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
@@ -46417,11 +46501,126 @@ function initKeyboardLayoutHandler() {
 document.addEventListener('DOMContentLoaded', () => {
     initSearchBehavior();
     initKeyboardLayoutHandler();
+    initQuickCreateSheet();
 });
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
     initSearchBehavior();
     initKeyboardLayoutHandler();
+    initQuickCreateSheet();
 }
+
+function initQuickCreateSheet() {
+    const sheet = document.getElementById('quick-create-sheet');
+    const handle = document.getElementById('quick-create-drag-handle');
+    const content = document.getElementById('quick-create-content');
+    if (!sheet || !handle || !content) return;
+
+    let startY = 0;
+    let startHeight = 36;
+    let isDragging = false;
+    let hasMoved = false;
+
+    // Constants
+    const MIN_HEIGHT = 36;
+    const MAX_HEIGHT = 180;
+
+    function setSheetHeight(h) {
+        sheet.style.height = `${h}px`;
+        // Interpolate opacity of inner content: 0 at 36px, 1 at 120px+
+        const opacity = Math.max(0, Math.min(1, (h - MIN_HEIGHT) / (120 - MIN_HEIGHT)));
+        content.style.opacity = opacity;
+        if (h > 100) {
+            content.classList.remove('pointer-events-none');
+        } else {
+            content.classList.add('pointer-events-none');
+        }
+    }
+
+    function onPointerDown(e) {
+        isDragging = true;
+        hasMoved = false;
+        startY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+        startHeight = parseInt(sheet.style.height || MIN_HEIGHT);
+        sheet.style.transition = 'none'; // Disable transition for real-time drag tracking
+        handle.style.cursor = 'grabbing';
+    }
+
+    function onPointerMove(e) {
+        if (!isDragging) return;
+        const currentY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+        const dy = startY - currentY;
+        let targetHeight = startHeight + dy;
+        
+        // Clamp height
+        if (targetHeight < MIN_HEIGHT) targetHeight = MIN_HEIGHT;
+        if (targetHeight > MAX_HEIGHT) targetHeight = MAX_HEIGHT;
+
+        if (Math.abs(dy) > 5) {
+            hasMoved = true;
+            if (e.cancelable) e.preventDefault();
+        }
+
+        setSheetHeight(targetHeight);
+    }
+
+    function onPointerUp() {
+        if (!isDragging) return;
+        isDragging = false;
+        sheet.style.transition = 'height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease'; // spring animation
+        handle.style.cursor = 'grab';
+
+        const currentHeight = parseInt(sheet.style.height || MIN_HEIGHT);
+        
+        if (hasMoved) {
+            if (currentHeight > 100) {
+                setSheetHeight(MAX_HEIGHT);
+                sheet.classList.add('expanded');
+            } else {
+                setSheetHeight(MIN_HEIGHT);
+                sheet.classList.remove('expanded');
+            }
+        } else {
+            // Tap behavior: Toggle open/closed
+            if (currentHeight > MIN_HEIGHT) {
+                setSheetHeight(MIN_HEIGHT);
+                sheet.classList.remove('expanded');
+            } else {
+                setSheetHeight(MAX_HEIGHT);
+                sheet.classList.add('expanded');
+            }
+        }
+    }
+
+    // Touch events
+    handle.addEventListener('touchstart', onPointerDown, { passive: true });
+    window.addEventListener('touchmove', onPointerMove, { passive: false });
+    window.addEventListener('touchend', onPointerUp);
+
+    // Mouse events (Desktop fallback)
+    handle.addEventListener('mousedown', onPointerDown);
+    window.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('mouseup', onPointerUp);
+}
+
+window.triggerQuickCreate = function(mode) {
+    if (typeof playSound === 'function') playSound('click');
+    window.triggerHapticFeedback('medium');
+    
+    // Minimize the sheet first
+    const sheet = document.getElementById('quick-create-sheet');
+    const content = document.getElementById('quick-create-content');
+    if (sheet && content) {
+        sheet.style.transition = 'height 0.3s ease';
+        sheet.style.height = '36px';
+        content.style.opacity = 0;
+        content.classList.add('pointer-events-none');
+        sheet.classList.remove('expanded');
+    }
+
+    // Launch full listing creation form
+    showView('offer');
+    selectOfferMode(mode);
+};
 
 // Global scope ends
 </script>
