@@ -7750,8 +7750,16 @@ html.dark #events-list-container p.list-card-description {
     z-index: 5100 !important;
 }
 
-#village-quick-create-dropdown {
+#village-quick-create-dropdown,
+#list-quick-create-dropdown,
+#needs-quick-create-dropdown,
+#events-quick-create-dropdown {
+    position: absolute !important;
+    left: 4px !important;
+    right: 4px !important;
     top: 52px !important;
+    z-index: 3000 !important;
+    width: calc(100% - 8px) !important;
 }
 
 /* Quick Create Button & Dropdown Styles */
@@ -7938,11 +7946,11 @@ html.dark .fused-filter-btn.active-filter-circle {
     gap: 12px !important;
     padding: 10px 14px !important;
     border-radius: 12px !important;
-    background-color: rgba(255, 255, 255, 0.96) !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     -ms-overflow-style: none !important;
     scrollbar-width: none !important;
 }
@@ -7950,9 +7958,9 @@ html.dark .fused-filter-btn.active-filter-circle {
     display: none !important;
 }
 html.dark .category-dropdown-tray {
-    background-color: rgba(26, 34, 28, 0.96) !important;
-    border-color: rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .category-dropdown-tray.hidden {
@@ -7972,31 +7980,52 @@ html.dark .category-dropdown-tray {
     font-weight: 700 !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
-    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
     flex-shrink: 0 !important;
     box-sizing: border-box !important;
-    background-color: rgba(240, 240, 240, 0.9) !important;
-    color: #6b7280 !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
 }
 
 html.dark .category-filter-pill {
-    border-color: rgba(255, 255, 255, 0.05) !important;
-    background-color: rgba(31, 41, 34, 0.9) !important;
-    color: #9ca3af !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    background-color: #232d26 !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
 }
 
 .category-filter-pill.active-pill {
-    background-color: #ffffff !important;
-    color: #000000 !important;
-    border-color: rgba(0, 0, 0, 0.05) !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    border-color: #308A5E !important;
+    box-shadow: 0 4px 12px rgba(48, 138, 94, 0.2) !important;
+}
+
+.category-filter-pill.active-pill span {
+    color: inherit !important;
 }
 
 html.dark .category-filter-pill.active-pill {
-    background-color: #2d3a30 !important;
-    color: #ffffff !important;
-    border-color: rgba(255, 255, 255, 0.05) !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+    background-color: #4ade80 !important;
+    color: #18201a !important;
+    border-color: #4ade80 !important;
+    box-shadow: 0 4px 12px rgba(74, 222, 128, 0.2) !important;
+}
+
+/* Custom Overrides for List Category Filter Dropdowns to Push Content Down */
+#list-category-dropdown,
+#needs-category-dropdown,
+#events-category-dropdown {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    margin-top: 8px !important;
+    box-shadow: none !important;
+    margin-bottom: 8px !important;
+    padding-left: 0 !important; /* ALIGN FIRST PILL WITH THE LEFT SIDE OF SEGMENTED CONTROL */
 }
 
 

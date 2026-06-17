@@ -6256,8 +6256,8 @@ function renderEventsList() {
             if (evt.distance > maxRadius) return false;
 
             // Category filter check
-            if (activeCategoryFilter) {
-                const matchesCategory = isCategoryMatchHelper(evt.type, activeCategoryFilter) || isCategoryMatchHelper(evt.category, activeCategoryFilter);
+            if (state.activeMapFilters && state.activeMapFilters.length > 0) {
+                const matchesCategory = state.activeMapFilters.some(filter => isCategoryMatchHelper(evt.type, filter) || isCategoryMatchHelper(evt.category, filter));
                 if (!matchesCategory) return false;
             }
 
@@ -8890,6 +8890,18 @@ function closeMapCategoryDropdown() {
             floatingContainer.classList.remove('floating-buttons-hidden');
         }
     }
+
+    // Clear filters on exit/close
+    if ((state && state.activeMapFilters && state.activeMapFilters.length > 0) || activeCategoryFilter) {
+        state.activeMapFilters = [];
+        activeCategoryFilter = null;
+        saveState();
+        if (typeof applyMapFiltering === 'function') applyMapFiltering();
+        if (typeof updateCategoryTrayUI === 'function') updateCategoryTrayUI();
+        if (typeof renderVillageListView === 'function') renderVillageListView();
+        if (typeof renderNeedsBoardView === 'function') renderNeedsBoardView();
+        if (typeof renderEventsList === 'function') renderEventsList();
+    }
 }
 window.closeMapCategoryDropdown = closeMapCategoryDropdown;
 
@@ -9073,6 +9085,7 @@ function renderMapFilterCircles() {
     }
 
     const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => {
+        if (c.name === 'Clear Filter') return false;
         if (currentVillageSegment === 'map' && c.name === 'Event or Meetup') {
             return false;
         }
@@ -9083,14 +9096,14 @@ function renderMapFilterCircles() {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         
-        const isActive = state.activeMapFilters.includes(cat.name) || (cat.name === 'Clear Filter' && state.activeMapFilters.length === 0);
+        const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
 
         return `
             <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-95 transition-transform" 
                  onclick="selectMapCategoryFilter('${cat.name}', this)" 
                  title="${cat.displayName}"
                  style="${animStyle}">
-                <span class="material-symbols-outlined text-[14px]" style="color: ${cat.color} !important; opacity: ${isActive ? 1 : 0.75};">${cat.icon}</span>
+                <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
                 <span>${cat.displayName}</span>
             </div>
         `;
@@ -9102,16 +9115,19 @@ window.renderMapFilterCircles = renderMapFilterCircles;
 
 window.selectMapCategoryFilter = function(categoryName, element) {
     playSound('click');
-    if (categoryName === 'Clear Filter') {
-        activeCategoryFilter = null;
+    if (!state.activeMapFilters) {
         state.activeMapFilters = [];
-    } else {
-        activeCategoryFilter = (activeCategoryFilter === categoryName) ? null : categoryName;
-        state.activeMapFilters = activeCategoryFilter ? [activeCategoryFilter] : [];
     }
+    const idx = state.activeMapFilters.indexOf(categoryName);
+    if (idx > -1) {
+        state.activeMapFilters.splice(idx, 1);
+    } else {
+        state.activeMapFilters.push(categoryName);
+    }
+    activeCategoryFilter = state.activeMapFilters.length > 0 ? state.activeMapFilters[0] : null;
     saveState();
     
-    closeMapCategoryDropdown();
+    renderMapFilterCircles();
     
     if (typeof applyMapFiltering === 'function') applyMapFiltering();
     if (typeof updateCategoryTrayUI === 'function') updateCategoryTrayUI();
@@ -9122,20 +9138,20 @@ function renderListFilterCircles() {
     const dropdown = document.getElementById('list-category-dropdown');
     if (!dropdown) return;
     
-    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Event or Meetup');
+    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Event or Meetup' && c.name !== 'Clear Filter');
     
     const categoriesHtml = filteredCategories.map((cat, idx) => {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         
-        const isActive = (activeCategoryFilter === cat.name) || (cat.name === 'Clear Filter' && !activeCategoryFilter);
+        const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
         
         return `
             <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-95 transition-transform" 
                  onclick="selectListCategoryFilter('${cat.name}', this)" 
                  title="${cat.displayName}"
                  style="${animStyle}">
-                <span class="material-symbols-outlined text-[14px]" style="color: ${cat.color} !important; opacity: ${isActive ? 1 : 0.75};">${cat.icon}</span>
+                <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
                 <span>${cat.displayName}</span>
             </div>
         `;
@@ -9149,20 +9165,20 @@ function renderNeedsFilterCircles() {
     const dropdown = document.getElementById('needs-category-dropdown');
     if (!dropdown) return;
     
-    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Event or Meetup');
+    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Event or Meetup' && c.name !== 'Clear Filter');
     
     const categoriesHtml = filteredCategories.map((cat, idx) => {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         
-        const isActive = (activeCategoryFilter === cat.name) || (cat.name === 'Clear Filter' && !activeCategoryFilter);
+        const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
         
         return `
             <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-95 transition-transform" 
                  onclick="selectNeedsCategoryFilter('${cat.name}', this)" 
                  title="${cat.displayName}"
                  style="${animStyle}">
-                <span class="material-symbols-outlined text-[14px]" style="color: ${cat.color} !important; opacity: ${isActive ? 1 : 0.75};">${cat.icon}</span>
+                <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
                 <span>${cat.displayName}</span>
             </div>
         `;
@@ -9174,21 +9190,19 @@ window.renderNeedsFilterCircles = renderNeedsFilterCircles;
 
 window.selectListCategoryFilter = function(categoryName, element) {
     playSound('click');
-    if (categoryName === 'Clear Filter') {
-        activeCategoryFilter = null;
+    if (!state.activeMapFilters) {
         state.activeMapFilters = [];
-    } else {
-        activeCategoryFilter = (activeCategoryFilter === categoryName) ? null : categoryName;
-        state.activeMapFilters = activeCategoryFilter ? [activeCategoryFilter] : [];
     }
+    const idx = state.activeMapFilters.indexOf(categoryName);
+    if (idx > -1) {
+        state.activeMapFilters.splice(idx, 1);
+    } else {
+        state.activeMapFilters.push(categoryName);
+    }
+    activeCategoryFilter = state.activeMapFilters.length > 0 ? state.activeMapFilters[0] : null;
     saveState();
     
-    const dropdown = document.getElementById('list-category-dropdown');
-    if (dropdown) dropdown.classList.add('hidden');
-    const filterIcon = document.getElementById('list-filter-icon');
-    if (filterIcon) filterIcon.innerText = 'tune';
-    const filterBtn = document.getElementById('btn-list-filter');
-    if (filterBtn) filterBtn.classList.remove('active-filter-circle');
+    renderListFilterCircles();
     
     if (typeof applyMapFiltering === 'function') applyMapFiltering();
     renderVillageListView();
@@ -9196,21 +9210,19 @@ window.selectListCategoryFilter = function(categoryName, element) {
 
 window.selectNeedsCategoryFilter = function(categoryName, element) {
     playSound('click');
-    if (categoryName === 'Clear Filter') {
-        activeCategoryFilter = null;
+    if (!state.activeMapFilters) {
         state.activeMapFilters = [];
-    } else {
-        activeCategoryFilter = (activeCategoryFilter === categoryName) ? null : categoryName;
-        state.activeMapFilters = activeCategoryFilter ? [activeCategoryFilter] : [];
     }
+    const idx = state.activeMapFilters.indexOf(categoryName);
+    if (idx > -1) {
+        state.activeMapFilters.splice(idx, 1);
+    } else {
+        state.activeMapFilters.push(categoryName);
+    }
+    activeCategoryFilter = state.activeMapFilters.length > 0 ? state.activeMapFilters[0] : null;
     saveState();
     
-    const dropdown = document.getElementById('needs-category-dropdown');
-    if (dropdown) dropdown.classList.add('hidden');
-    const filterIcon = document.getElementById('needs-filter-icon');
-    if (filterIcon) filterIcon.innerText = 'tune';
-    const filterBtn = document.getElementById('btn-needs-filter');
-    if (filterBtn) filterBtn.classList.remove('active-filter-circle');
+    renderNeedsFilterCircles();
     
     if (typeof applyMapFiltering === 'function') applyMapFiltering();
     renderNeedsBoardView();
@@ -9218,21 +9230,19 @@ window.selectNeedsCategoryFilter = function(categoryName, element) {
 
 window.selectEventsCategoryFilter = function(categoryName, element) {
     playSound('click');
-    if (categoryName === 'Clear Filter') {
-        activeCategoryFilter = null;
+    if (!state.activeMapFilters) {
         state.activeMapFilters = [];
-    } else {
-        activeCategoryFilter = (activeCategoryFilter === categoryName) ? null : categoryName;
-        state.activeMapFilters = activeCategoryFilter ? [activeCategoryFilter] : [];
     }
+    const idx = state.activeMapFilters.indexOf(categoryName);
+    if (idx > -1) {
+        state.activeMapFilters.splice(idx, 1);
+    } else {
+        state.activeMapFilters.push(categoryName);
+    }
+    activeCategoryFilter = state.activeMapFilters.length > 0 ? state.activeMapFilters[0] : null;
     saveState();
     
-    const dropdown = document.getElementById('events-category-dropdown');
-    if (dropdown) dropdown.classList.add('hidden');
-    const filterIcon = document.getElementById('events-filter-icon');
-    if (filterIcon) filterIcon.innerText = 'tune';
-    const filterBtn = document.getElementById('btn-events-filter');
-    if (filterBtn) filterBtn.classList.remove('active-filter-circle');
+    renderEventsFilterCircles();
     
     if (typeof applyMapFiltering === 'function') applyMapFiltering();
     renderEventsList();
@@ -9242,18 +9252,20 @@ function renderEventsFilterCircles() {
     const dropdown = document.getElementById('events-category-dropdown');
     if (!dropdown) return;
     
-    const categoriesHtml = MAP_FILTER_CATEGORIES.map((cat, idx) => {
+    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Clear Filter');
+    
+    const categoriesHtml = filteredCategories.map((cat, idx) => {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         
-        const isActive = (activeCategoryFilter === cat.name) || (cat.name === 'Clear Filter' && !activeCategoryFilter);
+        const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
         
         return `
             <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-95 transition-transform" 
                  onclick="selectEventsCategoryFilter('${cat.name}', this)" 
                  title="${cat.displayName}"
                  style="${animStyle}">
-                <span class="material-symbols-outlined text-[14px]" style="color: ${cat.color} !important; opacity: ${isActive ? 1 : 0.75};">${cat.icon}</span>
+                <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
                 <span>${cat.displayName}</span>
             </div>
         `;
@@ -15471,17 +15483,19 @@ function renderVillageListView() {
         const matchesSearch = fuzzySearchMatch(query, item.name, item.title, item.desc, item.category);
                               
         let matchesCategory = false;
-        if (!activeCategoryFilter) {
+        if (!state.activeMapFilters || state.activeMapFilters.length === 0) {
             matchesCategory = true;
-        } else if (activeCategoryFilter === 'Karma Swap') {
-            if (item.type === 'neighbor') {
-                const neighbor = state.neighbors[item.id];
-                matchesCategory = !!(neighbor && neighbor.isKarma);
-            } else {
-                matchesCategory = false;
-            }
         } else {
-            matchesCategory = isCategoryMatchHelper(item.category, activeCategoryFilter);
+            matchesCategory = state.activeMapFilters.some(filter => {
+                if (filter === 'Karma Swap') {
+                    if (item.type === 'neighbor') {
+                        const neighbor = state.neighbors[item.id];
+                        return !!(neighbor && neighbor.isKarma);
+                    }
+                    return false;
+                }
+                return isCategoryMatchHelper(item.category, filter);
+            });
         }
         
         const matchesRadius = item.distance <= maxRadius;
@@ -15676,7 +15690,7 @@ function renderNeedsBoardView() {
     let filteredNeeds = needsPool.filter(need => {
         const matchesSearch = fuzzySearchMatch(query, need.neighborName, need.needTitle, need.needDesc, need.category);
                               
-        const matchesCategory = !activeCategoryFilter || isCategoryMatchHelper(need.category, activeCategoryFilter);
+        const matchesCategory = !state.activeMapFilters || state.activeMapFilters.length === 0 || state.activeMapFilters.some(filter => isCategoryMatchHelper(need.category, filter));
         
         const matchesRadius = need.distance <= maxRadius;
         
@@ -17080,6 +17094,22 @@ document.addEventListener('click', (e) => {
             closeMapCategoryDropdown();
         }
     }
+
+    // Close list category dropdowns on click outside
+    const listDropdowns = [
+        { id: 'list-category-dropdown', btnId: 'btn-list-filter' },
+        { id: 'needs-category-dropdown', btnId: 'btn-needs-filter' },
+        { id: 'events-category-dropdown', btnId: 'btn-events-filter' }
+    ];
+    listDropdowns.forEach(item => {
+        const listDropdown = document.getElementById(item.id);
+        const listFilterBtn = document.getElementById(item.btnId);
+        if (listDropdown && !listDropdown.classList.contains('hidden') && listFilterBtn) {
+            if (!listDropdown.contains(e.target) && !listFilterBtn.contains(e.target)) {
+                closeAllListDropdowns();
+            }
+        }
+    });
 });
 
 // Sync mood on startup
@@ -30201,6 +30231,17 @@ function closeAllListDropdowns() {
     if (needsBtn) needsBtn.classList.remove('active-filter-circle');
     const eventsBtn = document.getElementById('btn-events-filter');
     if (eventsBtn) eventsBtn.classList.remove('active-filter-circle');
+
+    // Clear filters on exit/close
+    if ((state && state.activeMapFilters && state.activeMapFilters.length > 0) || activeCategoryFilter) {
+        state.activeMapFilters = [];
+        activeCategoryFilter = null;
+        saveState();
+        if (typeof applyMapFiltering === 'function') applyMapFiltering();
+        if (typeof renderVillageListView === 'function') renderVillageListView();
+        if (typeof renderNeedsBoardView === 'function') renderNeedsBoardView();
+        if (typeof renderEventsList === 'function') renderEventsList();
+    }
 }
 window.closeAllListDropdowns = closeAllListDropdowns;
 
