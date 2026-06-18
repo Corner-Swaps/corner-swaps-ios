@@ -1274,6 +1274,7 @@ function escapeHTML(str) {
 
 function formatMessageTime(timeStr) {
     if (!timeStr) return '';
+    timeStr = String(timeStr);
     const baseDate = new Date('2026-06-01T21:30:00');
     if (timeStr.toLowerCase() === 'yesterday') {
         const d = new Date(baseDate);
@@ -1993,13 +1994,20 @@ function loadState() {
             needsSave = true;
         } else {
             try {
-                state = JSON.parse(saved);
+                state = JSON.parse(saved) || JSON.parse(INITIAL_STATE_STRING) || {};
             } catch (e) {
                 console.error("Error parsing saved state", e);
                 safeLocalStorage.removeItem('barterland_state');
                 safeLocalStorage.removeItem('barterland_state_sig');
-                state = JSON.parse(INITIAL_STATE_STRING);
+                state = JSON.parse(INITIAL_STATE_STRING) || {};
             }
+        }
+    }
+    if (!state || Object.keys(state).length === 0) {
+        try {
+            state = JSON.parse(INITIAL_STATE_STRING) || {};
+        } catch (e) {
+            state = {};
         }
     }
 
@@ -3351,6 +3359,13 @@ function autoDismissAllModals() {
 
 // Routing Engine
 function showView(viewId, mode) {
+    if (!state) {
+        try {
+            state = JSON.parse(INITIAL_STATE_STRING) || {};
+        } catch(e) {
+            state = {};
+        }
+    }
     autoDismissAllModals();
     if (viewId === 'home') {
         viewId = 'village';
@@ -3358,6 +3373,15 @@ function showView(viewId, mode) {
     const oldViewId = (state && state.currentView) ? state.currentView : null;
     const disableTransition = window.isAppStartup;
     
+    // Save scroll position of profile settings if we are leaving it for one of the four sub-views
+    if (oldViewId === 'profile_settings' && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve'].includes(viewId)) {
+        const scrollContainer = document.getElementById('profile-settings-scroll-container');
+        if (scrollContainer) {
+            window.savedProfileScrollTop = scrollContainer.scrollTop;
+            console.log("[Scroll Save] Saved profile settings scroll position:", window.savedProfileScrollTop);
+        }
+    }
+
     // If already on the view, handle double-tap behavior (scroll to top smoothly)
     if (state && state.currentView === viewId && !window.isAppStartup) {
         if (viewId === 'profile_settings') {
@@ -3441,7 +3465,7 @@ function showView(viewId, mode) {
     }
 
     // EULA Enforcement: Block access to app hubs unless EULA is agreed
-    const mainAppViews = ['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'settings_detail', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'create_bulletin', 'create_group', 'blocked_users'];
+    const mainAppViews = ['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'settings_detail', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'help_improve', 'create_bulletin', 'create_group', 'blocked_users'];
     if (mainAppViews.includes(viewId) || viewId.startsWith('chat_detail')) {
         if (!state.currentUser && !state.isGuest) {
             viewId = 'welcome';
@@ -3561,12 +3585,22 @@ function showView(viewId, mode) {
                 incomingEl.classList.remove('active');
                 outgoingEl.classList.remove('active');
                 
+                // Clear any leftover animation classes just in case
+                const animClasses = [
+                    'slide-push-enter', 'slide-push-enter-active',
+                    'slide-push-exit', 'slide-push-exit-active',
+                    'slide-pop-enter', 'slide-pop-enter-active',
+                    'slide-pop-exit', 'slide-pop-exit-active'
+                ];
+                incomingEl.classList.remove(...animClasses);
+                outgoingEl.classList.remove(...animClasses);
+
                 if (isPushTransition) {
-                    incomingEl.className = 'screen-view slide-push-enter';
-                    outgoingEl.className = 'screen-view slide-push-exit';
+                    incomingEl.classList.add('slide-push-enter');
+                    outgoingEl.classList.add('slide-push-exit');
                 } else {
-                    incomingEl.className = 'screen-view slide-pop-enter';
-                    outgoingEl.className = 'screen-view slide-pop-exit';
+                    incomingEl.classList.add('slide-pop-enter');
+                    outgoingEl.classList.add('slide-pop-exit');
                 }
                 
                 incomingEl.style.display = 'flex';
@@ -3586,8 +3620,10 @@ function showView(viewId, mode) {
                 
                 setTimeout(() => {
                     // Reset to standard states after completion
-                    incomingEl.className = 'screen-view active';
-                    outgoingEl.className = 'screen-view';
+                    incomingEl.classList.remove(...animClasses);
+                    incomingEl.classList.add('active');
+                    
+                    outgoingEl.classList.remove(...animClasses);
                     outgoingEl.style.display = 'none';
                 }, 350);
             }
@@ -3597,8 +3633,21 @@ function showView(viewId, mode) {
                 activeView.classList.add('no-transition');
                 activeView.classList.add('active');
                 if (viewId === 'profile_settings') {
-                    const scrollContainer = document.getElementById('profile-settings-scroll-container');
-                    if (scrollContainer) scrollContainer.scrollTop = 0;
+                    // Do not reset scroll for profile settings automatically
+                    if (oldViewId && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve'].includes(oldViewId)) {
+                        const scrollContainer = document.getElementById('profile-settings-scroll-container');
+                        if (scrollContainer) {
+                            setTimeout(() => {
+                                if (window.savedProfileScrollTop !== undefined) {
+                                    scrollContainer.scrollTop = window.savedProfileScrollTop;
+                                    console.log("[Scroll Restore] Restored profile settings scroll position:", window.savedProfileScrollTop);
+                                } else {
+                                    scrollContainer.scrollTop = scrollContainer.scrollHeight;
+                                    console.log("[Scroll Restore] Fallback to bottom of profile settings");
+                                }
+                            }, 50);
+                        }
+                    }
                 } else {
                     activeView.scrollTop = 0;
                 }
@@ -3608,8 +3657,21 @@ function showView(viewId, mode) {
             } else {
                 setTimeout(() => activeView.classList.add('active'), 20);
                 if (viewId === 'profile_settings') {
-                    const scrollContainer = document.getElementById('profile-settings-scroll-container');
-                    if (scrollContainer) scrollContainer.scrollTop = 0;
+                    // Do not reset scroll for profile settings automatically
+                    if (oldViewId && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve'].includes(oldViewId)) {
+                        const scrollContainer = document.getElementById('profile-settings-scroll-container');
+                        if (scrollContainer) {
+                            setTimeout(() => {
+                                if (window.savedProfileScrollTop !== undefined) {
+                                    scrollContainer.scrollTop = window.savedProfileScrollTop;
+                                    console.log("[Scroll Restore] Restored profile settings scroll position:", window.savedProfileScrollTop);
+                                } else {
+                                    scrollContainer.scrollTop = scrollContainer.scrollHeight;
+                                    console.log("[Scroll Restore] Fallback to bottom of profile settings");
+                                }
+                            }, 50);
+                        }
+                    }
                 } else {
                     activeView.scrollTop = 0;
                 }
@@ -3688,7 +3750,7 @@ function showView(viewId, mode) {
     const headerBar = document.getElementById('phone-header-bar');
     const desktopNavBar = document.getElementById('desktop-navbar');
 
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId)) {
+    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId)) {
         if (navBar) {
             if (state.meetupMapMode) {
                 navBar.classList.add('hidden');
@@ -3710,7 +3772,7 @@ function showView(viewId, mode) {
         }
     }
 
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'events_hub', 'create_event', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'create_bulletin', 'create_group'].includes(viewId) || viewId.startsWith('chat_detail')) {
+    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'events_hub', 'create_event', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'help_improve', 'create_bulletin', 'create_group'].includes(viewId) || viewId.startsWith('chat_detail')) {
         if (desktopNavBar) {
             desktopNavBar.classList.remove('hidden');
             if (window.syncUserNavbarInfo) window.syncUserNavbarInfo();
@@ -3720,14 +3782,16 @@ function showView(viewId, mode) {
     }
 
     // Always keep status bar visible once loading is complete
-    if (viewId !== 'loading-screen') {
-        headerBar.classList.remove('hidden');
-    } else {
-        headerBar.classList.add('hidden');
+    if (headerBar) {
+        if (viewId !== 'loading-screen') {
+            headerBar.classList.remove('hidden');
+        } else {
+            headerBar.classList.add('hidden');
+        }
     }
 
     // Play button click chime
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'adjust_homepage', 'event_detail', 'definitions', 'neighborhood_tips'].includes(viewId)) {
+    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'adjust_homepage', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve'].includes(viewId)) {
         playSound('click');
     }
 
@@ -4215,13 +4279,76 @@ window.handleHomeFeedbackSubmit = function(event) {
     renderAdminPanel();
 };
 
+window.handleHelpImproveFeedbackSubmit = function(event) {
+    if (event) event.preventDefault();
+    const input = document.getElementById('help-improve-suggestion-input');
+    if (!input) return;
+    const val = input.value.trim();
+    if (!val) return;
+    
+    if (!state.suggestions) state.suggestions = [];
+    state.suggestions.push({
+        id: 'suggest-' + Date.now(),
+        type: 'feedback',
+        text: val,
+        time: new Date().toLocaleString()
+    });
+    saveState();
+    
+    input.value = "";
+    openProfileStatExplanation('feedback-submitted');
+    if (typeof playSound === 'function') playSound('success');
+};
+
+window.handleHelpImproveBugSubmit = function(event) {
+    if (event) event.preventDefault();
+    const input = document.getElementById('help-improve-bug-input');
+    if (!input) return;
+    const val = input.value.trim();
+    if (!val) return;
+    
+    if (!state.suggestions) state.suggestions = [];
+    state.suggestions.push({
+        id: 'bug-' + Date.now(),
+        type: 'bug',
+        text: val,
+        time: new Date().toLocaleString()
+    });
+    saveState();
+    
+    input.value = "";
+    openProfileStatExplanation('bug-submitted');
+    if (typeof playSound === 'function') playSound('success');
+};
+
+window.handleHelpImproveFeatureSubmit = function(event) {
+    if (event) event.preventDefault();
+    const input = document.getElementById('help-improve-feature-input');
+    if (!input) return;
+    const val = input.value.trim();
+    if (!val) return;
+    
+    if (!state.suggestions) state.suggestions = [];
+    state.suggestions.push({
+        id: 'feature-' + Date.now(),
+        type: 'feature',
+        text: val,
+        time: new Date().toLocaleString()
+    });
+    saveState();
+    
+    input.value = "";
+    openProfileStatExplanation('feature-submitted');
+    if (typeof playSound === 'function') playSound('success');
+};
+
 function updateNavBarIcons(activeViewId) {
     let highlightViewId = activeViewId;
     if (['event_detail', 'events_hub', 'create_event', 'create_bulletin', 'create_group'].includes(activeViewId)) {
         highlightViewId = (state.activeViewMode === 'list') ? 'village_list' : 'village_map';
     } else if (activeViewId === 'village') {
         highlightViewId = (state.activeViewMode === 'list') ? 'village_list' : 'village_map';
-    } else if (['settings_detail', 'adjust_homepage', 'definitions', 'neighborhood_tips'].includes(activeViewId)) {
+    } else if (['settings_detail', 'adjust_homepage', 'definitions', 'neighborhood_tips', 'help_improve'].includes(activeViewId)) {
         highlightViewId = 'profile_settings';
     }
 
@@ -4355,25 +4482,21 @@ function startAppInitialization() {
                 const brandLogo = document.getElementById('final-logo');
                 if (brandLogo) {
                     brandLogo.style.animation = 'none';
-                    brandLogo.style.transition = 'opacity 0.25s ease-out, transform 0.25s ease-out';
+                    brandLogo.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
                     brandLogo.style.opacity = '0';
                     brandLogo.style.transform = 'scale(0.95)';
                 }
                 setTimeout(() => {
-                    loadingScreen.style.transition = 'opacity 0.4s ease-in-out';
-                    loadingScreen.style.opacity = '0';
-                    setTimeout(() => {
-                        loadingScreen.classList.add('hidden');
-                        loadingScreen.classList.remove('fading-out');
-                        window.isAppStartup = false;
-                        if (leafletMap) {
-                            leafletMap.invalidateSize();
-                            setTimeout(() => { if (leafletMap) leafletMap.invalidateSize(); }, 50);
-                            setTimeout(() => { if (leafletMap) leafletMap.invalidateSize(); }, 150);
-                            setTimeout(() => { if (leafletMap) leafletMap.invalidateSize(); }, 400);
-                        }
-                    }, 400);
-                }, isTestMode ? 5 : 250);
+                    loadingScreen.classList.add('hidden');
+                    loadingScreen.classList.remove('fading-out');
+                    window.isAppStartup = false;
+                    if (leafletMap) {
+                        leafletMap.invalidateSize();
+                        setTimeout(() => { if (leafletMap) leafletMap.invalidateSize(); }, 50);
+                        setTimeout(() => { if (leafletMap) leafletMap.invalidateSize(); }, 150);
+                        setTimeout(() => { if (leafletMap) leafletMap.invalidateSize(); }, 400);
+                    }
+                }, 500);
             }
         }
     }, isTestMode ? 50 : 2100);
@@ -5151,6 +5274,16 @@ function handleSignIn(e) {
 }
 
 window.handleDevAutoLogin = function() {
+    if (typeof state === 'undefined' || !state) {
+        try {
+            state = JSON.parse(INITIAL_STATE_STRING) || {};
+        } catch (e) {
+            state = {};
+        }
+    }
+    if (!state.suspendedUsers) {
+        state.suspendedUsers = [];
+    }
     if (state.suspendedUsers && (state.suspendedUsers.includes('Lily Kaufmann') || state.suspendedUsers.includes('Lily') || state.suspendedUsers.includes('lily@community.com'))) {
         alert("Your account has been suspended for repeated unreliability (5 no-show strikes). Please contact support.");
         return;
@@ -5186,9 +5319,9 @@ window.handleDevAutoLogin = function() {
 
     if (window.syncUserNavbarInfo) window.syncUserNavbarInfo();
     setTimeout(() => {
-        console.log("LOG: [DEV TEST] Automatically switching to list view");
+        console.log("LOG: [DEV TEST] Automatically switching to map view");
         if (typeof switchVillageSegment === 'function') {
-            switchVillageSegment('list');
+            switchVillageSegment('map');
         }
         setTimeout(() => {
             console.log("LOG: [DEV TEST] Running DOM diagnostics...");
@@ -6187,10 +6320,15 @@ function getEventPresetImage(type) {
 }
 
 function renderEventsList() {
-    const radiusVal = state.stats.radius || 5;
+    const radiusVal = (state.stats && state.stats.radius !== undefined) ? state.stats.radius : 5;
     const eventsSlider = document.getElementById('village-events-distance-slider');
     const eventsLabel = document.getElementById('village-events-distance-display');
-    if (eventsSlider) eventsSlider.value = radiusKmToIndex(radiusVal);
+    if (eventsSlider) {
+        if (radiusVal <= 1) eventsSlider.value = 0;
+        else if (radiusVal <= 5) eventsSlider.value = 1;
+        else if (radiusVal <= 10) eventsSlider.value = 2;
+        else eventsSlider.value = 3;
+    }
     if (eventsLabel) eventsLabel.innerText = formatRadiusValue(radiusVal);
 
     const containers = [
@@ -6220,7 +6358,14 @@ function renderEventsList() {
             return;
         }
 
-        const maxRadius = eventsSlider ? radiusIndexToKm(eventsSlider.value) : radiusVal;
+        let maxRadius = radiusVal;
+        if (eventsSlider) {
+            const idx = parseInt(eventsSlider.value);
+            if (idx === 0) maxRadius = 1;
+            else if (idx === 1) maxRadius = 5;
+            else if (idx === 2) maxRadius = 10;
+            else if (idx === 3) maxRadius = 20;
+        }
         let userLat = 49.2827;
         let userLng = -123.1207;
         if (state.currentUser && state.currentUser.lat && state.currentUser.lng) {
@@ -6285,11 +6430,16 @@ function renderEventsList() {
             const hostNeighbor = state.neighbors[evt.host];
             const hostAvatar = hostNeighbor ? hostNeighbor.avatar : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80';
             
+            const isCurrentlyExpanded = window.activeExpandedCardId === 'evt_' + evt.id;
             const card = document.createElement('div');
-            card.className = "list-card-container bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
+            card.setAttribute('data-id', evt.id);
+            card.className = "list-card-container bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden" + (isCurrentlyExpanded ? " expanded" : "");
             
-            card.onclick = () => {
-                openEventDetail(evt.id);
+            card.onclick = (e) => {
+                if (e.target.closest('button') || e.target.closest('a') || e.target.closest('.profile-avatar-ring') || e.target.closest('.profile-avatar-no-ring') || e.target.closest('.inline-save-btn')) {
+                    return;
+                }
+                window.toggleListCardExpand(card, 'event', 'evt_' + evt.id);
             };
 
             const isUserHost = evt.host === 'me' || evt.host === 'Lily Kaufmann' || (state.currentUser && evt.host === (state.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`));
@@ -6302,6 +6452,28 @@ function renderEventsList() {
             const rawCategory = evt.type || evt.category || 'Event';
             const formattedCategory = rawCategory.replace(/\b\w/g, c => c.toUpperCase());
             const isFree = (evt.category && evt.category.toLowerCase() === 'gifts') || (evt.type && evt.type.toLowerCase() === 'gifts');
+
+            if (!evt.rsvps) {
+                evt.rsvps = ['Sarah Chen', 'David Kim'];
+            }
+            const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
+            const isUserRsvped = evt.rsvps.includes(currentUser);
+            const rsvpsCount = evt.rsvps.length;
+
+            let rsvpAvatarsHtml = '';
+            evt.rsvps.forEach(name => {
+                let avatarUrl = RSVP_AVATARS[name] || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80&auto=format&fit=crop';
+                if (state.currentUser && (name === currentUser || name === state.currentUser.displayName || name === (state.currentUser.firstName + ' ' + state.currentUser.lastName).trim())) {
+                    if (state.currentUser.avatar) {
+                        avatarUrl = state.currentUser.avatar;
+                    }
+                }
+                rsvpAvatarsHtml += `
+                    <div class="profile-avatar-no-ring inline-block h-7 w-7 flex-shrink-0 border border-white dark:border-[#18201a] rounded-full overflow-hidden">
+                        <img class="w-full h-full object-cover rounded-full" src="${avatarUrl}" title="${name}" alt="${name}">
+                    </div>
+                `;
+            });
 
             card.innerHTML = `
                 <!-- Top Image Portion -->
@@ -6317,7 +6489,6 @@ function renderEventsList() {
                                 ${getCategoryIconHtml(evt.type || evt.category)}
                                 <h4 class="list-card-title truncate leading-tight">${evt.title}</h4>
                             </div>
-                            <span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-[#308A5E] text-white uppercase tracking-wider text-[8.5px] font-bold ml-2">${formattedCategory}</span>
                         </div>
                         <p class="list-card-description">${evt.desc}</p>
                     </div>
@@ -6325,10 +6496,74 @@ function renderEventsList() {
                     <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
                             <!-- Host details with circular avatar bubble -->
-                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${hostAvatar}" class="w-full h-full object-cover rounded-full"></div>
-                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate">${evt.host || 'Member'}</span>
+                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0" onclick="event.stopPropagation(); ${isUserHost ? "showView('profile_settings')" : `openNeighborProfileModal('${evt.host}')`}"><img src="${hostAvatar}" class="w-full h-full object-cover rounded-full"></div>
+                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate" onclick="event.stopPropagation(); ${isUserHost ? "showView('profile_settings')" : `openNeighborProfileModal('${evt.host}')`}">${evt.host || 'Member'}</span>
                         </div>
                         <span class="text-[10.5px] text-black dark:text-white font-medium flex-shrink-0">${times.timeDisplay} · ${distanceDisplay}</span>
+                    </div>
+                </div>
+                <!-- Expandable wrapper -->
+                <div class="list-card-expandable ${isCurrentlyExpanded ? 'expanded' : ''}">
+                    <div class="list-card-expandable-content bg-white dark:bg-[#18201a] px-4 pb-6 space-y-4 border-t border-outline-variant/10 text-xs text-black dark:text-white pt-3">
+                        <div class="space-y-3">
+                            <!-- Date & Time -->
+                            <div class="flex items-start gap-2.5">
+                                <span class="material-symbols-outlined text-amber-500 dark:text-amber-400 text-lg mt-0.5">schedule</span>
+                                <div>
+                                    <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Date & Time</h5>
+                                    <p class="mt-0.5">${times.fullDisplay}</p>
+                                </div>
+                            </div>
+                            <!-- Location/Neighbourhood -->
+                            <div class="flex items-start gap-2.5">
+                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg mt-0.5">location_on</span>
+                                <div>
+                                    <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Neighbourhood</h5>
+                                    <p class="mt-0.5">${evt.location} · ${distanceDisplay}</p>
+                            </div>
+                            
+                            <!-- Attendees -->
+                            <div>
+                                <div class="flex justify-between items-center mb-1.5">
+                                    <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Attendees</h5>
+                                    <span class="text-[10px] font-medium text-outline">${rsvpsCount} ${rsvpsCount === 1 ? 'neighbor is' : 'neighbors are'} going</span>
+                                </div>
+                                <div class="flex gap-1.5 overflow-hidden py-1">
+                                    ${rsvpAvatarsHtml}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Actions Row -->
+                        <div class="flex flex-col gap-2 pt-1.5 bg-white dark:bg-[#18201a] rounded-b-2xl">
+                            ${isUserHost ? `
+                                <button class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase" onclick="event.stopPropagation(); showView('profile_settings');">
+                                    <span class="material-symbols-outlined text-xs">person</span> view profile
+                                </button>
+                            ` : `
+                                <!-- RSVP Button -->
+                                <button class="w-full py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 lowercase ${isUserRsvped ? 'bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90' : 'bg-white border border-black/20 text-black hover:bg-black/5 dark:bg-[#18201a] dark:border-white/20 dark:text-white dark:hover:bg-white/5'}" onclick="event.stopPropagation(); state.activeEventId = '${evt.id}'; window.activeExpandedCardId = 'evt_${evt.id}'; handleEventRSVPToggle();">
+                                    <span class="material-symbols-outlined text-xs">${isUserRsvped ? 'cancel' : 'check_circle'}</span>
+                                    ${isUserRsvped ? 'cancel rsvp' : 'rsvp to event'}
+                                </button>
+                                
+                                <!-- Save Button -->
+                                <button class="inline-save-btn w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase ${state.savedEvents && state.savedEvents.includes(evt.id) ? 'bg-black/10 dark:bg-white/10' : ''}" onclick="window.handleInlineSaveEvent(event, '${evt.id}')">
+                                    <span class="material-symbols-outlined text-xs inline-save-icon" style="font-variation-settings: 'FILL' ${state.savedEvents && state.savedEvents.includes(evt.id) ? '1' : '0'};">bookmark</span>
+                                    <span class="inline-save-text">${state.savedEvents && state.savedEvents.includes(evt.id) ? 'saved to profile' : 'save event'}</span>
+                                </button>
+                                
+                                <!-- View Host Profile Button -->
+                                <button class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase" onclick="event.stopPropagation(); openNeighborProfileModal('${evt.host}');">
+                                    <span class="material-symbols-outlined text-xs">person</span> view host profile
+                                </button>
+                                
+                                <!-- Report Button -->
+                                <button class="w-full bg-transparent text-error border border-error/20 py-1.5 rounded-lg font-bold flex items-center justify-center gap-1.5 active:scale-[0.98] transition-transform text-[10px] tracking-wide hover:bg-red-50 lowercase" onclick="event.stopPropagation(); openReportModal('event', '${evt.id}');">
+                                    <span class="material-symbols-outlined text-xs">flag</span> report event
+                                </button>
+                            `}
+                        </div>
                     </div>
                 </div>
             `;
@@ -6474,7 +6709,8 @@ window.openBulletinDetailModal = function(id) {
         messageBtn.onclick = (e) => {
             e.stopPropagation();
             closeBulletinDetailModal();
-            if (authorName === state.user.name) {
+            const currentUserName = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
+            if (authorName === currentUserName) {
                 alert("This is your own bulletin!");
                 return;
             }
@@ -6673,6 +6909,7 @@ function getCategoryColor(category) {
     if (!category) return '#546E7A'; // Default gray for other (non-green)
     const catLower = category.toLowerCase();
     if (catLower.includes('karma')) return '#f59e0b';
+    if (catLower.includes('donation')) return '#ec4899';
     
     // Find matching category in MAP_FILTER_CATEGORIES
     const match = MAP_FILTER_CATEGORIES.find(c => {
@@ -6711,6 +6948,7 @@ function getCategoryIcon(category) {
     if (!category) return 'handshake';
     const cat = category.toLowerCase();
     if (cat.includes('karma')) return 'favorite';
+    if (cat.includes('donation')) return 'volunteer_activism';
     if (cat.includes('food') || cat.includes('drink')) return 'restaurant';
     if (cat.includes('home') || cat.includes('living')) return 'home';
     if (cat.includes('garden') || cat.includes('outdoor')) return 'yard';
@@ -7675,10 +7913,10 @@ function openMapItemDetail(idOrName) {
     }
     document.getElementById('map-detail-overlay').classList.add('active');
     
-    // Keep the tab bar visible but initially hidden behind
+    // Keep the tab bar visible
     const navbar = document.getElementById('global-navbar');
     if (navbar) {
-        navbar.classList.add('navbar-behind');
+        navbar.classList.remove('navbar-behind');
     }
     setTimeout(() => {
         if (typeof updateDetailNavbarState === 'function') updateDetailNavbarState();
@@ -7702,6 +7940,100 @@ function openMapItemDetail(idOrName) {
     const blueBtn = document.getElementById('snap-to-neighborhood-btn');
     if (blueBtn) blueBtn.style.display = 'none';
 }
+
+window.activeExpandedCardId = null;
+
+window.toggleListCardExpand = function(cardElement, itemType, itemId) {
+    const expandable = cardElement.querySelector('.list-card-expandable');
+    if (!expandable) return;
+
+    const isExpanded = cardElement.classList.contains('expanded');
+    
+    // Collapse any currently expanded card in this list container
+    const listInner = cardElement.parentElement;
+    if (listInner) {
+        const otherExpandedCards = listInner.querySelectorAll('.list-card-container.expanded');
+        otherExpandedCards.forEach(otherCard => {
+            if (otherCard !== cardElement) {
+                otherCard.classList.remove('expanded');
+                const otherExpandable = otherCard.querySelector('.list-card-expandable');
+                if (otherExpandable) {
+                    otherExpandable.classList.remove('expanded');
+                }
+            }
+        });
+    }
+
+    if (isExpanded) {
+        playSound('click');
+        cardElement.classList.remove('expanded');
+        expandable.classList.remove('expanded');
+        window.activeExpandedCardId = null;
+    } else {
+        playSound('click');
+        cardElement.classList.add('expanded');
+        expandable.classList.add('expanded');
+        window.activeExpandedCardId = itemId;
+    }
+};
+
+window.handleInlineSaveListing = function(e, idOrName) {
+    if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+    toggleSaveListing(idOrName);
+    const card = document.querySelector(`[data-id="${idOrName}"]`);
+    if (card) {
+        const saveIcon = card.querySelector('.inline-save-icon');
+        const saveText = card.querySelector('.inline-save-text');
+        const saveBtn = card.querySelector('.inline-save-btn');
+        const isSaved = state.savedListings && state.savedListings.includes(idOrName);
+        if (saveBtn) {
+            if (isSaved) {
+                if (saveIcon) {
+                    saveIcon.innerText = 'bookmark';
+                    saveIcon.style.fontVariationSettings = "'FILL' 1";
+                }
+                if (saveText) saveText.innerText = 'saved to profile';
+                saveBtn.classList.add('bg-black/10', 'dark:bg-white/10');
+            } else {
+                if (saveIcon) {
+                    saveIcon.innerText = 'bookmark';
+                    saveIcon.style.fontVariationSettings = "'FILL' 0";
+                }
+                if (saveText) saveText.innerText = 'save listing';
+                saveBtn.classList.remove('bg-black/10', 'dark:bg-white/10');
+            }
+        }
+    }
+};
+
+window.handleInlineSaveEvent = function(e, eventId) {
+    if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+    toggleSaveEvent(eventId);
+    const card = document.querySelector(`[data-id="${eventId}"]`);
+    if (card) {
+        const saveIcon = card.querySelector('.inline-save-icon');
+        const saveText = card.querySelector('.inline-save-text');
+        const saveBtn = card.querySelector('.inline-save-btn');
+        const isSaved = state.savedEvents && state.savedEvents.includes(eventId);
+        if (saveBtn) {
+            if (isSaved) {
+                if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 1";
+                if (saveText) saveText.innerText = 'saved to profile';
+                saveBtn.classList.add('bg-black/10', 'dark:bg-white/10');
+            } else {
+                if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 0";
+                if (saveText) saveText.innerText = 'save event';
+                saveBtn.classList.remove('bg-black/10', 'dark:bg-white/10');
+            }
+        }
+    }
+};
 
 function closeMapItemDetail() {
     // Save scroll positions before hiding
@@ -8930,6 +9262,7 @@ const MAP_FILTER_CATEGORIES = [
     { name: "Books, Games, Entertainment", displayName: "Books", icon: "sports_esports", color: "#5C6BC0", rgb: "92,107,192" },
     { name: "Kids and Maternity", displayName: "Kids", icon: "stroller", color: "#F06292", rgb: "240,98,146" },
     { name: "Language or Info Exchange", displayName: "Language", icon: "translate", color: "#00ACC1", rgb: "0,172,193" },
+    { name: "Donation", displayName: "Donation", icon: "volunteer_activism", color: "#ec4899", rgb: "236,72,153" },
     { name: "Clear Filter", displayName: "Clear", icon: "filter_alt_off", color: "#546E7A", rgb: "84,110,122" }
 ];
 
@@ -8949,6 +9282,7 @@ const MAP_CATEGORY_DESCRIPTIONS = {
     "Books, Games, Entertainment": "Share or borrow books, board games, video games, musical instruments, and media.",
     "Kids and Maternity": "Baby gear, toys, children's clothes, parenting advice, or local playdate coordination.",
     "Language or Info Exchange": "Language learning, local tips, neighborhood recommendations, and informational chats.",
+    "Donation": "Donate items, offer support, or support local causes and projects within the neighborhood.",
     "Clear Filter": "Reset all active category filters to see all nearby pins on the map."
 };
 
@@ -9099,12 +9433,16 @@ function renderMapFilterCircles() {
         const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
 
         return `
-            <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-95 transition-transform" 
-                 onclick="selectMapCategoryFilter('${cat.name}', this)" 
+            <div class="category-filter-row ${isActive ? 'active-row' : ''} active:scale-[0.98] transition-transform" 
+                 onclick="selectMapCategoryFilter('${cat.name}', this, event)" 
                  title="${cat.displayName}"
                  style="${animStyle}">
-                <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
-                <span>${cat.displayName}</span>
+                <div class="category-icon-bubble">
+                    <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
+                </div>
+                <div class="category-title-pill">
+                    <span>${cat.displayName}</span>
+                </div>
             </div>
         `;
     }).join('');
@@ -9113,7 +9451,8 @@ function renderMapFilterCircles() {
 }
 window.renderMapFilterCircles = renderMapFilterCircles;
 
-window.selectMapCategoryFilter = function(categoryName, element) {
+window.selectMapCategoryFilter = function(categoryName, element, event) {
+    if (event) event.stopPropagation();
     playSound('click');
     if (!state.activeMapFilters) {
         state.activeMapFilters = [];
@@ -9147,12 +9486,16 @@ function renderListFilterCircles() {
         const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
         
         return `
-            <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-95 transition-transform" 
-                 onclick="selectListCategoryFilter('${cat.name}', this)" 
+            <div class="category-filter-row ${isActive ? 'active-row' : ''} active:scale-[0.98] transition-transform" 
+                 onclick="selectListCategoryFilter('${cat.name}', this, event)" 
                  title="${cat.displayName}"
                  style="${animStyle}">
-                <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
-                <span>${cat.displayName}</span>
+                <div class="category-icon-bubble">
+                    <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
+                </div>
+                <div class="category-title-pill">
+                    <span>${cat.displayName}</span>
+                </div>
             </div>
         `;
     }).join('');
@@ -9174,12 +9517,16 @@ function renderNeedsFilterCircles() {
         const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
         
         return `
-            <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-95 transition-transform" 
-                 onclick="selectNeedsCategoryFilter('${cat.name}', this)" 
+            <div class="category-filter-row ${isActive ? 'active-row' : ''} active:scale-[0.98] transition-transform" 
+                 onclick="selectNeedsCategoryFilter('${cat.name}', this, event)" 
                  title="${cat.displayName}"
                  style="${animStyle}">
-                <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
-                <span>${cat.displayName}</span>
+                <div class="category-icon-bubble">
+                    <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
+                </div>
+                <div class="category-title-pill">
+                    <span>${cat.displayName}</span>
+                </div>
             </div>
         `;
     }).join('');
@@ -9188,7 +9535,8 @@ function renderNeedsFilterCircles() {
 }
 window.renderNeedsFilterCircles = renderNeedsFilterCircles;
 
-window.selectListCategoryFilter = function(categoryName, element) {
+window.selectListCategoryFilter = function(categoryName, element, event) {
+    if (event) event.stopPropagation();
     playSound('click');
     if (!state.activeMapFilters) {
         state.activeMapFilters = [];
@@ -9208,7 +9556,8 @@ window.selectListCategoryFilter = function(categoryName, element) {
     renderVillageListView();
 };
 
-window.selectNeedsCategoryFilter = function(categoryName, element) {
+window.selectNeedsCategoryFilter = function(categoryName, element, event) {
+    if (event) event.stopPropagation();
     playSound('click');
     if (!state.activeMapFilters) {
         state.activeMapFilters = [];
@@ -9228,7 +9577,8 @@ window.selectNeedsCategoryFilter = function(categoryName, element) {
     renderNeedsBoardView();
 };
 
-window.selectEventsCategoryFilter = function(categoryName, element) {
+window.selectEventsCategoryFilter = function(categoryName, element, event) {
+    if (event) event.stopPropagation();
     playSound('click');
     if (!state.activeMapFilters) {
         state.activeMapFilters = [];
@@ -9261,12 +9611,16 @@ function renderEventsFilterCircles() {
         const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
         
         return `
-            <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-95 transition-transform" 
-                 onclick="selectEventsCategoryFilter('${cat.name}', this)" 
+            <div class="category-filter-row ${isActive ? 'active-row' : ''} active:scale-[0.98] transition-transform" 
+                 onclick="selectEventsCategoryFilter('${cat.name}', this, event)" 
                  title="${cat.displayName}"
                  style="${animStyle}">
-                <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
-                <span>${cat.displayName}</span>
+                <div class="category-icon-bubble">
+                    <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
+                </div>
+                <div class="category-title-pill">
+                    <span>${cat.displayName}</span>
+                </div>
             </div>
         `;
     }).join('');
@@ -10930,7 +11284,7 @@ function renderConversationsList() {
                             ${conv.isPinned ? '<span class="material-symbols-outlined text-[14px] text-amber-500 font-bold" style="font-variation-settings: \'FILL\' 1;">keep</span>' : ''}
                         </h3>
                     </div>
-                    <p class="text-xs truncate leading-relaxed ${isVerified ? 'text-black dark:text-white font-black' : (isUnreadCard ? 'text-black dark:text-white font-semibold' : 'text-outline')}">${checkmarkPrefix}${lastMsgText}</p>
+                    <p class="text-[10px] text-outline dark:text-warm-cream/50 font-medium truncate leading-relaxed normal-case">${checkmarkPrefix}${lastMsgText}</p>
                     <div class="flex items-center gap-2 text-[10px] text-outline dark:text-warm-cream/50 mt-0.5">
                         <span class="font-medium">${lastMsgTime || 'Yesterday'}</span>
                         ${badge ? `
@@ -11459,7 +11813,10 @@ function renderChatDetail(conv) {
         }
         chatHeaderName.innerHTML = nameHTML;
     }
-    document.getElementById('chat-header-avatar').src = avatarUrl;
+    const headerAvatar = document.getElementById('chat-header-avatar');
+    if (headerAvatar) {
+        headerAvatar.src = avatarUrl;
+    }
     const ratingEl = document.getElementById('chat-header-rating');
     if (ratingEl) {
         ratingEl.innerText = ratingText;
@@ -11528,6 +11885,7 @@ function renderChatDetail(conv) {
     }
 
     const feed = document.getElementById('chat-message-feed');
+    if (!feed) return;
     feed.innerHTML = "";
 
     // Insert a flex-grow spacer to push messages to the bottom
@@ -11713,11 +12071,13 @@ function renderChatDetail(conv) {
                     offeredTitle = match[1];
                     requestedTitle = match[2];
                     
-                    const myOff = state.userOfferOfferings = state.userOfferings.find(o => o.title.toLowerCase() === offeredTitle.toLowerCase());
+                    const myOff = (state.userOfferings && offeredTitle) ? state.userOfferings.find(o => o && o.title && o.title.toLowerCase() === offeredTitle.toLowerCase()) : null;
                     if (myOff) {
+                        state.userOfferOfferings = myOff;
                         offeredId = myOff.id;
                         offeredImg = myOff.image || PLACEHOLDER_IMAGE;
                     } else {
+                        state.userOfferOfferings = null;
                         offeredImg = getItemImageByTitle(offeredTitle);
                     }
                     
@@ -11740,9 +12100,8 @@ function renderChatDetail(conv) {
                     msgDiv.innerHTML = `
                         <div class="flex flex-col items-end max-w-[78%]">
                             <!-- Bubble: Side-by-Side Swap Proposal -->
-                            <div id="msg-bubble-${index}" class="chat-bubble-hover py-3 px-3.5 rounded-3xl rounded-tr-none shadow-md cursor-pointer select-none transition-all duration-200 w-[280px] text-left flex flex-col gap-2.5 bg-white dark:bg-[#18201a] border-2 border-emerald-500/80 dark:border-emerald-500/60" onclick="window.viewSwapOfferOnMap('${offeredId}', '${requestedId}', 'mine'); event.stopPropagation();">
+                            <div id="msg-bubble-${index}" class="chat-bubble-hover py-3 px-3.5 rounded-3xl rounded-tr-none shadow-md cursor-pointer select-none transition-all duration-200 w-[280px] text-left flex flex-col gap-2.5 bg-white dark:bg-[#18201a] border border-black/10 dark:border-white/10" onclick="window.viewSwapOfferOnMap('${offeredId}', '${requestedId}', 'mine'); event.stopPropagation();">
                                 <div class="flex items-center gap-1.5 border-b border-black/10 dark:border-white/10 pb-1.5">
-                                    <span class="material-symbols-outlined text-[14px] font-bold text-black dark:text-white">swap_horiz</span>
                                     <span class="text-[9px] uppercase tracking-wider font-extrabold text-black dark:text-white">Proposed Swap</span>
                                 </div>
                                 <div class="flex items-center justify-between gap-2.5">
@@ -11770,7 +12129,7 @@ function renderChatDetail(conv) {
                                 <!-- Status Pill at the bottom -->
                                 <div class="mt-1 flex justify-center">
                                     <div class="px-3 py-1.5 rounded-full text-[10px] font-bold text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none">
-                                        ${conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'
+                                        ${(conv.negotiation && (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'))
                                             ? 'Agreement Confirmed! ⚡'
                                             : `${escapeHTML(conv.neighborName)} to agree?`}
                                     </div>
@@ -11834,9 +12193,8 @@ function renderChatDetail(conv) {
                         <div class="flex flex-col items-start max-w-[78%]">
                             ${senderLabel}
                             <!-- Bubble: Side-by-Side Swap Proposal -->
-                            <div id="msg-bubble-${index}" class="chat-bubble-hover py-3 px-3.5 rounded-3xl rounded-tr-none shadow-md cursor-pointer select-none transition-all duration-200 w-[280px] text-left flex flex-col gap-2.5 bg-white dark:bg-[#18201a] border-2 border-emerald-500/80 dark:border-emerald-500/60" onclick="window.openSwapLifecycleModal('receiver', '${conv.id}'); event.stopPropagation();">
+                            <div id="msg-bubble-${index}" class="chat-bubble-hover py-3 px-3.5 rounded-3xl rounded-tr-none shadow-md cursor-pointer select-none transition-all duration-200 w-[280px] text-left flex flex-col gap-2.5 bg-white dark:bg-[#18201a] border border-black/10 dark:border-white/10" onclick="window.openSwapLifecycleModal('receiver', '${conv.id}'); event.stopPropagation();">
                                 <div class="flex items-center gap-1.5 border-b border-black/10 dark:border-white/10 pb-1.5">
-                                    <span class="material-symbols-outlined text-[14px] font-bold text-black dark:text-white">swap_horiz</span>
                                     <span class="text-[9px] uppercase tracking-wider font-extrabold text-black dark:text-white">Proposed Swap</span>
                                 </div>
                                 <div class="flex items-center justify-between gap-2.5">
@@ -11864,7 +12222,7 @@ function renderChatDetail(conv) {
                                 <!-- Status Pill at the bottom -->
                                 <div class="mt-1 flex justify-center">
                                     <div class="px-3 py-1.5 rounded-full text-[10px] font-bold text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none">
-                                        ${conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'
+                                        ${(conv.negotiation && (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'))
                                             ? 'Agreement Confirmed! ⚡'
                                             : 'You to agree?'}
                                     </div>
@@ -15319,40 +15677,27 @@ function getDistanceFromUser(neighbor) {
     return getDistance(userLat, userLng, coords[0], coords[1]);
 }
 
-const radiusScale = [1, 5, 10, 20];
 function radiusIndexToKm(index) {
-    const idx = parseInt(index);
-    if (isNaN(idx) || idx < 0 || idx >= radiusScale.length) return 5;
-    return radiusScale[idx];
+    const val = parseFloat(index);
+    return isNaN(val) ? 5 : val / 1000;
 }
 function radiusKmToIndex(km) {
-    const kmVal = parseFloat(km);
-    if (isNaN(kmVal)) return 1; // Default to index 1 (5 km)
-    let closestIdx = 1;
-    let minDiff = Infinity;
-    for (let i = 0; i < radiusScale.length; i++) {
-        const diff = Math.abs(radiusScale[i] - kmVal);
-        if (diff < minDiff) {
-            minDiff = diff;
-            closestIdx = i;
-        }
-    }
-    return closestIdx;
+    const val = parseFloat(km);
+    return isNaN(val) ? 5000 : val * 1000;
 }
 window.radiusIndexToKm = radiusIndexToKm;
 window.radiusKmToIndex = radiusKmToIndex;
 
 function formatRadiusValue(kmVal) {
     const val = parseFloat(kmVal);
-    if (val <= 0.25) {
-        const feet = Math.round((val * 3280.84) / 100) * 100;
-        if (feet < 200) return "200 feet";
-        return `${feet} feet`;
+    if (isNaN(val)) return "5 km";
+    if (val < 1) {
+        return `${Math.round(val * 1000)} m`;
     } else {
         if (val % 1 === 0) {
             return `${val} km`;
         }
-        return `${val.toFixed(1)} km`;
+        return `${parseFloat(val.toFixed(2))} km`;
     }
 }
 window.formatRadiusValue = formatRadiusValue;
@@ -15404,10 +15749,15 @@ function renderVillageListView() {
     if (!container) return;
 
     // Sync slider and label
-    const radiusVal = state.stats.radius || 5;
+    const radiusVal = (state.stats && state.stats.radius !== undefined) ? state.stats.radius : 5;
     const listSlider = document.getElementById('village-list-distance-slider');
     const listLabel = document.getElementById('village-list-distance-display');
-    if (listSlider) listSlider.value = radiusKmToIndex(radiusVal);
+    if (listSlider) {
+        if (radiusVal <= 1) listSlider.value = 0;
+        else if (radiusVal <= 5) listSlider.value = 1;
+        else if (radiusVal <= 10) listSlider.value = 2;
+        else listSlider.value = 3;
+    }
     if (listLabel) listLabel.innerText = formatRadiusValue(radiusVal);
 
     const listInner = document.getElementById('village-list-items');
@@ -15432,7 +15782,14 @@ function renderVillageListView() {
         });
     }
 
-    const maxRadius = listSlider ? radiusIndexToKm(listSlider.value) : (state.stats.radius || 5);
+    let maxRadius = radiusVal;
+    if (listSlider) {
+        const idx = parseInt(listSlider.value);
+        if (idx === 0) maxRadius = 1;
+        else if (idx === 1) maxRadius = 5;
+        else if (idx === 2) maxRadius = 10;
+        else if (idx === 3) maxRadius = 20;
+    }
 
     // Pool neighbor listings and user listings together
     let listingsPool = [];
@@ -15526,9 +15883,17 @@ function renderVillageListView() {
     }
 
     filteredListings.forEach(item => {
+        const isCurrentlyExpanded = window.activeExpandedCardId === item.id;
         const card = document.createElement('div');
-        card.className = "list-card-container bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
-        card.onclick = () => openMapItemDetail(item.id);
+        card.setAttribute('data-id', item.id);
+        card.className = "list-card-container bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden" + (isCurrentlyExpanded ? " expanded" : "");
+        
+        card.onclick = (e) => {
+            if (e.target.closest('button') || e.target.closest('a') || e.target.closest('.profile-avatar-ring') || e.target.closest('.profile-avatar-no-ring') || e.target.closest('.inline-save-btn')) {
+                return;
+            }
+            window.toggleListCardExpand(card, 'offering', item.id);
+        };
 
         const itemImages = item.image ? item.image.split('|||').filter(Boolean) : [];
         const presetImg = getCategoryPresetImage(item.category || 'garden');
@@ -15555,16 +15920,49 @@ function renderVillageListView() {
                                 ${getCategoryIconHtml(item.category)}
                                 <h4 class="list-card-title truncate leading-tight">${item.title}</h4>
                             </div>
-                            <span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-[#308A5E] text-white uppercase tracking-wider text-[8.5px] font-bold ml-2">${formattedCategory}</span>
                         </div>
                         <p class="list-card-description">${item.desc}</p>
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
-                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${item.avatar}" class="w-full h-full object-cover rounded-full"></div>
-                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate">${item.name}</span>
+                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0" onclick="event.stopPropagation(); openNeighborProfileModal('${item.name}')"><img src="${item.avatar}" class="w-full h-full object-cover rounded-full"></div>
+                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate" onclick="event.stopPropagation(); openNeighborProfileModal('${item.name}')">${item.name}</span>
                         </div>
                         <span class="text-[10.5px] text-black dark:text-white font-medium flex-shrink-0">${formatRadiusValue(item.distance)} away</span>
+                    </div>
+                </div>
+                <!-- Expandable wrapper -->
+                <div class="list-card-expandable ${isCurrentlyExpanded ? 'expanded' : ''}">
+                    <div class="list-card-expandable-content bg-white dark:bg-[#18201a] px-4 pb-6 space-y-4 border-t border-outline-variant/10 text-xs text-black dark:text-white pt-3">
+                        <div class="space-y-3">
+                            <!-- Neighbourhood -->
+                            <div class="flex items-start gap-2.5">
+                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg mt-0.5">location_on</span>
+                                <div>
+                                    <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Neighbourhood</h5>
+                                    <p class="mt-0.5">${item.location} · ${formatRadiusValue(item.distance)} away</p>
+                            </div>
+                        </div>
+                        <!-- Actions Row -->
+                        <div class="flex flex-col gap-2 pt-1.5 bg-white dark:bg-[#18201a] rounded-b-2xl">
+                            <button class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase" onclick="event.stopPropagation(); startChatConversation('${item.name}');">
+                                <span class="material-symbols-outlined text-xs">${neighbor && neighbor.isKarma ? 'volunteer_activism' : 'handshake'}</span>
+                                ${neighbor && neighbor.isKarma ? 'free gift request' : "let's swap"}
+                            </button>
+                            
+                            <button class="inline-save-btn w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase ${state.savedListings && state.savedListings.includes(item.id) ? 'bg-black/10 dark:bg-white/10' : ''}" onclick="window.handleInlineSaveListing(event, '${item.id}')">
+                                <span class="material-symbols-outlined text-xs inline-save-icon" style="font-variation-settings: 'FILL' ${state.savedListings && state.savedListings.includes(item.id) ? '1' : '0'};">bookmark</span>
+                                <span class="inline-save-text">${state.savedListings && state.savedListings.includes(item.id) ? 'saved to profile' : 'save listing'}</span>
+                            </button>
+                            
+                            <button class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase" onclick="event.stopPropagation(); openNeighborProfileModal('${item.name}');">
+                                <span class="material-symbols-outlined text-xs">person</span> view account
+                            </button>
+                            
+                            <button class="w-full bg-transparent text-error border border-error/20 py-1.5 rounded-lg font-bold flex items-center justify-center gap-1.5 active:scale-[0.98] transition-transform text-[10px] tracking-wide hover:bg-red-50 lowercase" onclick="event.stopPropagation(); openReportModal('post', '${item.id}');">
+                                <span class="material-symbols-outlined text-xs">flag</span> report listing
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
@@ -15587,16 +15985,35 @@ function renderVillageListView() {
                                     <span class="text-[9px] text-[#D99036] dark:text-[#FBBF24] font-bold bg-[#D99036]/10 dark:bg-[#FBBF24]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
                                 </h4>
                             </div>
-                            <span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-[#308A5E] text-white uppercase tracking-wider text-[8.5px] font-bold ml-2">${formattedCategory}</span>
                         </div>
                         <p class="list-card-description">${item.desc}</p>
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
-                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${item.avatar}" class="w-full h-full object-cover rounded-full"></div>
-                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate">${item.name}</span>
+                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0" onclick="event.stopPropagation(); showView('profile_settings');"><img src="${item.avatar}" class="w-full h-full object-cover rounded-full"></div>
+                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate" onclick="event.stopPropagation(); showView('profile_settings');">${item.name}</span>
                         </div>
                         <span class="text-[10.5px] text-black dark:text-white font-medium flex-shrink-0">Village Trusted · 0 km</span>
+                    </div>
+                </div>
+                <!-- Expandable wrapper -->
+                <div class="list-card-expandable ${isCurrentlyExpanded ? 'expanded' : ''}">
+                    <div class="list-card-expandable-content bg-white dark:bg-[#18201a] px-4 pb-6 space-y-4 border-t border-outline-variant/10 text-xs text-black dark:text-white pt-3">
+                        <div class="space-y-3">
+                            <!-- Neighbourhood -->
+                            <div class="flex items-start gap-2.5">
+                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg mt-0.5">location_on</span>
+                                <div>
+                                    <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Neighbourhood</h5>
+                                    <p class="mt-0.5">${item.location || (state.currentUser ? state.currentUser.location : 'Oakwood Village')} · 0.0 km away</p>
+                            </div>
+                        </div>
+                        <!-- Actions Row -->
+                        <div class="flex flex-col gap-2 pt-1.5 bg-white dark:bg-[#18201a] rounded-b-2xl">
+                            <button class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase" onclick="event.stopPropagation(); showView('profile_settings');">
+                                <span class="material-symbols-outlined text-xs">person</span> view profile
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
@@ -15612,10 +16029,15 @@ function renderNeedsBoardView() {
     listContainer.innerHTML = "";
 
     // Sync slider and label
-    const radiusVal = state.stats.radius || 5;
+    const radiusVal = (state.stats && state.stats.radius !== undefined) ? state.stats.radius : 5;
     const needsSlider = document.getElementById('village-needs-distance-slider');
     const needsLabel = document.getElementById('village-needs-distance-display');
-    if (needsSlider) needsSlider.value = radiusKmToIndex(radiusVal);
+    if (needsSlider) {
+        if (radiusVal <= 1) needsSlider.value = 0;
+        else if (radiusVal <= 5) needsSlider.value = 1;
+        else if (radiusVal <= 10) needsSlider.value = 2;
+        else needsSlider.value = 3;
+    }
     if (needsLabel) needsLabel.innerText = formatRadiusValue(radiusVal);
 
     const searchInput = document.getElementById('village-needs-search-input') || document.getElementById('village-search-input'); // Synced text input
@@ -15636,7 +16058,14 @@ function renderNeedsBoardView() {
         });
     }
 
-    const maxRadius = needsSlider ? radiusIndexToKm(needsSlider.value) : (state.stats.radius || 5);
+    let maxRadius = radiusVal;
+    if (needsSlider) {
+        const idx = parseInt(needsSlider.value);
+        if (idx === 0) maxRadius = 1;
+        else if (idx === 1) maxRadius = 5;
+        else if (idx === 2) maxRadius = 10;
+        else if (idx === 3) maxRadius = 20;
+    }
 
     let needsPool = [];
 
@@ -15720,10 +16149,18 @@ function renderNeedsBoardView() {
     }
 
     filteredNeeds.forEach(need => {
+        const isCurrentlyExpanded = window.activeExpandedCardId === 'need_' + need.id;
         const card = document.createElement('div');
         const needId = need.id;
-        card.className = "list-card-container bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden";
-        card.onclick = () => openMapItemDetail('need_' + needId);
+        card.setAttribute('data-id', 'need_' + need.id);
+        card.className = "list-card-container bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden" + (isCurrentlyExpanded ? " expanded" : "");
+        
+        card.onclick = (e) => {
+            if (e.target.closest('button') || e.target.closest('a') || e.target.closest('.profile-avatar-ring') || e.target.closest('.profile-avatar-no-ring') || e.target.closest('.inline-save-btn')) {
+                return;
+            }
+            window.toggleListCardExpand(card, 'need', 'need_' + need.id);
+        };
         
         const currentUser = state.currentUser || {};
         const displayName = currentUser.displayName || `${currentUser.firstName || 'Lily'} ${currentUser.lastName || 'Kaufmann'}`;
@@ -15755,16 +16192,35 @@ function renderNeedsBoardView() {
                                     <span class="text-[9px] text-[#D99036] dark:text-[#FBBF24] font-bold bg-[#D99036]/10 dark:bg-[#FBBF24]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
                                 </h4>
                             </div>
-                            <span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-[#308A5E] text-white uppercase tracking-wider text-[8.5px] font-bold ml-2">${formattedCategory}</span>
                         </div>
                         <p class="list-card-description">${need.needDesc}</p>
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
-                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${need.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
-                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate">${need.neighborName}</span>
+                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0" onclick="event.stopPropagation(); showView('profile_settings');"><img src="${need.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
+                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate" onclick="event.stopPropagation(); showView('profile_settings');">${need.neighborName}</span>
                         </div>
                         <span class="text-[10.5px] text-black dark:text-white font-medium flex-shrink-0">Village Trusted · 0 km</span>
+                    </div>
+                </div>
+                <!-- Expandable wrapper -->
+                <div class="list-card-expandable ${isCurrentlyExpanded ? 'expanded' : ''}">
+                    <div class="list-card-expandable-content bg-white dark:bg-[#18201a] px-4 pb-6 space-y-4 border-t border-outline-variant/10 text-xs text-black dark:text-white pt-3">
+                        <div class="space-y-3">
+                            <!-- Neighbourhood -->
+                            <div class="flex items-start gap-2.5">
+                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg mt-0.5">location_on</span>
+                                <div>
+                                    <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Neighbourhood</h5>
+                                    <p class="mt-0.5">${need.location || 'Oakwood Village'} · 0.0 km away</p>
+                            </div>
+                        </div>
+                        <!-- Actions Row -->
+                        <div class="flex flex-col gap-2 pt-1.5 bg-white dark:bg-[#18201a] rounded-b-2xl">
+                            <button class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase" onclick="event.stopPropagation(); showView('profile_settings');">
+                                <span class="material-symbols-outlined text-xs">person</span> view profile
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
@@ -15783,16 +16239,48 @@ function renderNeedsBoardView() {
                                 ${getCategoryIconHtml(need.category)}
                                 <h4 class="list-card-title truncate leading-tight">${need.needTitle}</h4>
                             </div>
-                            <span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-[#308A5E] text-white uppercase tracking-wider text-[8.5px] font-bold ml-2">${formattedCategory}</span>
                         </div>
                         <p class="list-card-description">${need.needDesc}</p>
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
-                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0"><img src="${need.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
-                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate">${need.neighborName}</span>
+                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0" onclick="event.stopPropagation(); openNeighborProfileModal('${need.neighborName}')"><img src="${need.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
+                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate" onclick="event.stopPropagation(); openNeighborProfileModal('${need.neighborName}')">${need.neighborName}</span>
                         </div>
                         <span class="text-[10.5px] text-black dark:text-white font-medium flex-shrink-0">${formatRadiusValue(need.distance)} away</span>
+                    </div>
+                </div>
+                <!-- Expandable wrapper -->
+                <div class="list-card-expandable ${isCurrentlyExpanded ? 'expanded' : ''}">
+                    <div class="list-card-expandable-content bg-white dark:bg-[#18201a] px-4 pb-6 space-y-4 border-t border-outline-variant/10 text-xs text-black dark:text-white pt-3">
+                        <div class="space-y-3">
+                            <!-- Neighbourhood -->
+                            <div class="flex items-start gap-2.5">
+                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg mt-0.5">location_on</span>
+                                <div>
+                                    <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Neighbourhood</h5>
+                                    <p class="mt-0.5">${need.location || 'Oakwood Village'} · ${need.distance.toFixed(1)} km away</p>
+                            </div>
+                        </div>
+                        <!-- Actions Row -->
+                        <div class="flex flex-col gap-2 pt-1.5 bg-white dark:bg-[#18201a] rounded-b-2xl">
+                            <button class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase" onclick="event.stopPropagation(); window.handleOfferToSwapNeed('${need.id}');">
+                                <span class="material-symbols-outlined text-xs">handshake</span> i can help
+                            </button>
+                            
+                            <button class="inline-save-btn w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase ${state.savedListings && state.savedListings.includes('need_' + need.id) ? 'bg-black/10 dark:bg-white/10' : ''}" onclick="window.handleInlineSaveListing(event, 'need_${need.id}')">
+                                <span class="material-symbols-outlined text-xs inline-save-icon" style="font-variation-settings: 'FILL' ${state.savedListings && state.savedListings.includes('need_' + need.id) ? '1' : '0'};">bookmark</span>
+                                <span class="inline-save-text">${state.savedListings && state.savedListings.includes('need_' + need.id) ? 'saved to profile' : 'save listing'}</span>
+                            </button>
+                            
+                            <button class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase" onclick="event.stopPropagation(); openNeighborProfileModal('${need.neighborName}');">
+                                <span class="material-symbols-outlined text-xs">person</span> view account
+                            </button>
+                            
+                            <button class="w-full bg-transparent text-error border border-error/20 py-1.5 rounded-lg font-bold flex items-center justify-center gap-1.5 active:scale-[0.98] transition-transform text-[10px] tracking-wide hover:bg-red-50 lowercase" onclick="event.stopPropagation(); openReportModal('post', 'need_${need.id}');">
+                                <span class="material-symbols-outlined text-xs">flag</span> report listing
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
@@ -16732,6 +17220,7 @@ const initMapAndInputs = () => {
     setupScrollToTop('view-adjust_homepage');
     setupScrollToTop('view-definitions');
     setupScrollToTop('view-neighborhood_tips');
+    setupScrollToTop('view-help_improve');
 
     // Stop touch/mouse/pointer/wheel events from bubbling from details overlays and profile modals to Leaflet or document level handlers
     const overlayContainers = [
@@ -16764,42 +17253,9 @@ const initMapAndInputs = () => {
     
     // Setup dynamic scroll listener for bottom navbar reveal
     window.updateDetailNavbarState = function() {
-        const overlay = document.getElementById('map-detail-overlay');
-        const eventOverlay = document.getElementById('map-event-detail-overlay');
-        const isItemActive = overlay && overlay.classList.contains('active');
-        const isEventActive = eventOverlay && eventOverlay.classList.contains('active');
-
         const navbar = document.getElementById('global-navbar');
-        if (!navbar) return;
-
-        let scrolledPast = false;
-        if (isItemActive) {
-            const container = document.getElementById('map-detail-scroll-container');
-            const reportBtn = document.getElementById('map-detail-report-btn');
-            if (container) {
-                const isShort = container.scrollHeight <= container.clientHeight + 10;
-                const isBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 20;
-                let isBtnPast = false;
-                if (reportBtn && reportBtn.style.display !== 'none' && !reportBtn.classList.contains('hidden')) {
-                    const containerRect = container.getBoundingClientRect();
-                    const btnRect = reportBtn.getBoundingClientRect();
-                    isBtnPast = (btnRect.bottom <= containerRect.bottom + 10);
-                } else {
-                    isBtnPast = isBottom || isShort;
-                }
-                scrolledPast = isShort || isBottom || isBtnPast;
-            }
-        } else if (isEventActive) {
-            scrolledPast = true;
-        } else {
+        if (navbar) {
             navbar.classList.remove('navbar-behind');
-            return;
-        }
-
-        if (scrolledPast) {
-            navbar.classList.remove('navbar-behind');
-        } else {
-            navbar.classList.add('navbar-behind');
         }
     };
 
@@ -17553,7 +18009,7 @@ function applyMapFiltering() {
     if (!leafletMap) return;
     if (state.meetupMapMode) return;
 
-    const maxRadius = state.stats.radius || 5;
+    const maxRadius = (state.stats && state.stats.radius !== undefined) ? state.stats.radius : 5;
     let userLat = 49.2827;
     let userLng = -123.1207;
     if (state.currentUser && state.currentUser.lat && state.currentUser.lng) {
@@ -17821,7 +18277,7 @@ function getItemImageByTitle(title) {
     }
     
     if (state && state.userOfferings) {
-        const userOffer = state.userOfferings.find(o => o.title.toLowerCase().includes(cleanTitle) || cleanTitle.includes(o.title.toLowerCase()));
+        const userOffer = state.userOfferings.find(o => o && o.title && (o.title.toLowerCase().includes(cleanTitle) || cleanTitle.includes(o.title.toLowerCase())));
         if (userOffer && userOffer.image) return userOffer.image;
     }
     
@@ -18209,6 +18665,9 @@ function getCategoryIconHtml(category) {
 function getCategoryPresetImage(category) {
     if (!category) return 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=60&w=400&auto=format&fit=crop';
     const c = category.toLowerCase();
+    if (c.includes('donation')) {
+        return 'https://images.unsplash.com/photo-1532629345422-7515f3d16bb8?q=60&w=400&auto=format&fit=crop';
+    }
     if (c.includes('food') || c.includes('drink') || c.includes('baking') || c.includes('produce') || c.includes('ferment')) {
         return 'https://images.unsplash.com/photo-1597362925123-77861d3fbac7?q=60&w=400&auto=format&fit=crop';
     }
@@ -19962,20 +20421,25 @@ function openAddNeedPage() {
 window.openAddNeedPage = openAddNeedPage;
 
 function updateVillageListDistanceFilter(val) {
-    const idx = parseInt(val);
-    const kmVal = radiusIndexToKm(idx);
+    const sliderIdx = parseInt(val);
+    let kmVal = 5;
+    if (sliderIdx === 0) kmVal = 1;
+    else if (sliderIdx === 1) kmVal = 5;
+    else if (sliderIdx === 2) kmVal = 10;
+    else if (sliderIdx === 3) kmVal = 20;
+
     if (!state.stats) state.stats = {};
     state.stats.radius = kmVal;
     saveState();
     
     // Sync other sliders & displays
     const needsSlider = document.getElementById('village-needs-distance-slider');
-    if (needsSlider) needsSlider.value = idx;
+    if (needsSlider) needsSlider.value = sliderIdx;
     const needsDisplay = document.getElementById('village-needs-distance-display');
     if (needsDisplay) needsDisplay.innerText = formatRadiusValue(kmVal);
 
     const eventsSlider = document.getElementById('village-events-distance-slider');
-    if (eventsSlider) eventsSlider.value = idx;
+    if (eventsSlider) eventsSlider.value = sliderIdx;
     const eventsDisplay = document.getElementById('village-events-distance-display');
     if (eventsDisplay) eventsDisplay.innerText = formatRadiusValue(kmVal);
     
@@ -19990,20 +20454,25 @@ function updateVillageListDistanceFilter(val) {
 window.updateVillageListDistanceFilter = updateVillageListDistanceFilter;
 
 function updateVillageNeedsDistanceFilter(val) {
-    const idx = parseInt(val);
-    const kmVal = radiusIndexToKm(idx);
+    const sliderIdx = parseInt(val);
+    let kmVal = 5;
+    if (sliderIdx === 0) kmVal = 1;
+    else if (sliderIdx === 1) kmVal = 5;
+    else if (sliderIdx === 2) kmVal = 10;
+    else if (sliderIdx === 3) kmVal = 20;
+
     if (!state.stats) state.stats = {};
     state.stats.radius = kmVal;
     saveState();
     
     // Sync other sliders & displays
     const listSlider = document.getElementById('village-list-distance-slider');
-    if (listSlider) listSlider.value = idx;
+    if (listSlider) listSlider.value = sliderIdx;
     const listDisplay = document.getElementById('village-list-distance-display');
     if (listDisplay) listDisplay.innerText = formatRadiusValue(kmVal);
 
     const eventsSlider = document.getElementById('village-events-distance-slider');
-    if (eventsSlider) eventsSlider.value = idx;
+    if (eventsSlider) eventsSlider.value = sliderIdx;
     const eventsDisplay = document.getElementById('village-events-distance-display');
     if (eventsDisplay) eventsDisplay.innerText = formatRadiusValue(kmVal);
     
@@ -20018,20 +20487,25 @@ function updateVillageNeedsDistanceFilter(val) {
 window.updateVillageNeedsDistanceFilter = updateVillageNeedsDistanceFilter;
 
 function updateVillageEventsDistanceFilter(val) {
-    const idx = parseInt(val);
-    const kmVal = radiusIndexToKm(idx);
+    const sliderIdx = parseInt(val);
+    let kmVal = 5;
+    if (sliderIdx === 0) kmVal = 1;
+    else if (sliderIdx === 1) kmVal = 5;
+    else if (sliderIdx === 2) kmVal = 10;
+    else if (sliderIdx === 3) kmVal = 20;
+
     if (!state.stats) state.stats = {};
     state.stats.radius = kmVal;
     saveState();
     
     // Sync other sliders & displays
     const listSlider = document.getElementById('village-list-distance-slider');
-    if (listSlider) listSlider.value = idx;
+    if (listSlider) listSlider.value = sliderIdx;
     const listDisplay = document.getElementById('village-list-distance-display');
     if (listDisplay) listDisplay.innerText = formatRadiusValue(kmVal);
 
     const needsSlider = document.getElementById('village-needs-distance-slider');
-    if (needsSlider) needsSlider.value = idx;
+    if (needsSlider) needsSlider.value = sliderIdx;
     const needsDisplay = document.getElementById('village-needs-distance-display');
     if (needsDisplay) needsDisplay.innerText = formatRadiusValue(kmVal);
     
@@ -24386,9 +24860,9 @@ window.switchChatSegment = function(type, muteSound = false) {
     const updateBtnStyle = (btn, btnType) => {
         if (!btn) return;
         if (type === btnType) {
-            btn.className = "relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm";
+            btn.className = "relative flex-1 text-[13.5px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm";
         } else {
-            btn.className = "relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-transparent rounded-xl bg-transparent text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5";
+            btn.className = "relative flex-1 text-[13.5px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-transparent rounded-xl bg-transparent text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5";
         }
     };
 
@@ -25848,7 +26322,8 @@ function updateSearchSuggestions(query) {
                     lat: offer.lat,
                     lng: offer.lng,
                     type: 'user_offer',
-                    badge: 'Offering (You)'
+                    badge: 'Offer',
+                    category: offer.category
                 });
             }
         });
@@ -25868,7 +26343,8 @@ function updateSearchSuggestions(query) {
                         lat: neighbor.lat,
                         lng: neighbor.lng,
                         type: 'offer',
-                        badge: 'Offering'
+                        badge: 'Offer',
+                        category: neighbor.category
                     });
                 }
             }
@@ -25905,7 +26381,8 @@ function updateSearchSuggestions(query) {
                     lat: lat || 49.2827,
                     lng: lng || -123.1207,
                     type: 'need',
-                    badge: 'Need'
+                    badge: 'Need',
+                    category: need.category
                 });
             }
         });
@@ -25924,7 +26401,8 @@ function updateSearchSuggestions(query) {
                         lat: evt.lat,
                         lng: evt.lng,
                         type: 'event',
-                        badge: 'Event'
+                        badge: 'Event',
+                        category: 'Event or Meetup'
                     });
                 }
             }
@@ -25947,16 +26425,16 @@ function updateSearchSuggestions(query) {
     if (isMusicalQuery(q)) {
         exactMatches.unshift({
             id: 'special_music_card',
-            title: '🎵 Explore Community Music Swaps',
+            title: 'Explore Community Music Swaps',
             subtitle: `View music instruments, lessons, and gear for "${query}"`,
             icon: 'music_note',
             lat: null,
             lng: null,
-            badge: 'Music Swap'
+            type: 'special_music_card',
+            badge: 'Music',
+            category: 'Books, Games, Entertainment'
         });
     }
-
-
 
     if (exactMatches.length === 0 && similarMatches.length === 0) {
         container.innerHTML = `<div class="px-3 py-2.5 text-xs text-on-surface-variant text-center">No matching suggestions</div>`;
@@ -25970,6 +26448,19 @@ function updateSearchSuggestions(query) {
         const escaped = queryStr.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
         const regex = new RegExp(`(${escaped})`, 'gi');
         return title.replace(regex, `<span class="search-highlight">$1</span>`);
+    }
+
+    // Hex to RGBA helper for subtle badge/icon wrapper backgrounds
+    function hexToRgba(hex, alpha) {
+        if (!hex) return 'rgba(0,0,0,0.05)';
+        hex = hex.replace('#', '');
+        if (hex.length === 3) {
+            hex = hex.split('').map(char => char + char).join('');
+        }
+        const r = parseInt(hex.substring(0, 2), 16);
+        const g = parseInt(hex.substring(2, 4), 16);
+        const b = parseInt(hex.substring(4, 6), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
 
     container.innerHTML = "";
@@ -25991,15 +26482,34 @@ function updateSearchSuggestions(query) {
                     selectSearchSuggestion(item.id, item.title, item.lat, item.lng);
                 }
             };
+            
+            const iconColor = getCategoryColor(item.category) || '#308A5E';
+            const bgLight = hexToRgba(iconColor, 0.08);
+            const isDark = document.documentElement.classList.contains('dark');
+            const typeBg = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+            const typeColor = isDark ? '#a4a9a0' : '#4b5563';
+            
+            let typeIcon = 'local_offer';
+            if (item.badge === 'Need') {
+                typeIcon = 'help_outline';
+            } else if (item.badge === 'Event') {
+                typeIcon = 'event';
+            } else if (item.badge === 'Music') {
+                typeIcon = 'music_note';
+            }
+
             div.innerHTML = `
-                <div class="fused-suggestion-icon-wrapper">
-                    <span class="material-symbols-outlined text-base">${item.icon}</span>
+                <div class="fused-suggestion-icon-wrapper" style="background-color: ${bgLight} !important; margin-right: 6px !important;">
+                    <span class="material-symbols-outlined text-[18px]" style="color: ${iconColor} !important;">${item.icon}</span>
+                </div>
+                <div class="fused-suggestion-type-icon-wrapper" style="width: 24px !important; height: 24px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin-right: 12px !important; flex-shrink: 0 !important; background-color: ${typeBg} !important;">
+                    <span class="material-symbols-outlined text-[14px]" style="color: ${typeColor} !important;">${typeIcon}</span>
                 </div>
                 <div class="fused-suggestion-info">
                     <div class="fused-suggestion-title">${highlightQuery(item.title, query)}</div>
                     <div class="fused-suggestion-subtitle">${item.subtitle}</div>
                 </div>
-                <span class="fused-suggestion-type-badge">${item.badge}</span>
+                <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
             `;
             container.appendChild(div);
         });
@@ -26018,15 +26528,34 @@ function updateSearchSuggestions(query) {
             div.onclick = () => {
                 selectSearchSuggestion(item.id, item.title, item.lat, item.lng);
             };
+            
+            const iconColor = getCategoryColor(item.category) || '#308A5E';
+            const bgLight = hexToRgba(iconColor, 0.08);
+            const isDark = document.documentElement.classList.contains('dark');
+            const typeBg = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+            const typeColor = isDark ? '#a4a9a0' : '#4b5563';
+            
+            let typeIcon = 'local_offer';
+            if (item.badge === 'Need') {
+                typeIcon = 'help_outline';
+            } else if (item.badge === 'Event') {
+                typeIcon = 'event';
+            } else if (item.badge === 'Music') {
+                typeIcon = 'music_note';
+            }
+
             div.innerHTML = `
-                <div class="fused-suggestion-icon-wrapper">
-                    <span class="material-symbols-outlined text-base">${item.icon}</span>
+                <div class="fused-suggestion-icon-wrapper" style="background-color: ${bgLight} !important; margin-right: 6px !important;">
+                    <span class="material-symbols-outlined text-[18px]" style="color: ${iconColor} !important;">${item.icon}</span>
+                </div>
+                <div class="fused-suggestion-type-icon-wrapper" style="width: 24px !important; height: 24px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin-right: 12px !important; flex-shrink: 0 !important; background-color: ${typeBg} !important;">
+                    <span class="material-symbols-outlined text-[14px]" style="color: ${typeColor} !important;">${typeIcon}</span>
                 </div>
                 <div class="fused-suggestion-info">
                     <div class="fused-suggestion-title">${highlightQuery(item.title, query)}</div>
                     <div class="fused-suggestion-subtitle">${item.subtitle}</div>
                 </div>
-                <span class="fused-suggestion-type-badge">${item.badge}</span>
+                <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
             `;
             container.appendChild(div);
         });
@@ -26381,6 +26910,10 @@ function toggleVillageMenu() {
         return;
     }
     if (state.currentView === 'neighborhood_tips') {
+        showView('profile_settings');
+        return;
+    }
+    if (state.currentView === 'help_improve') {
         showView('profile_settings');
         return;
     }
@@ -26910,6 +27443,13 @@ window.handleGuestPromptRegister = function() {
 
 window.enterGuestMode = function() {
     playSound('click');
+    if (typeof state === 'undefined' || !state) {
+        try {
+            state = JSON.parse(INITIAL_STATE_STRING) || {};
+        } catch (e) {
+            state = {};
+        }
+    }
     state.isGuest = true;
     state.neighbourhood = "Oakwood Village Community";
     state.neighborhoodSelected = true;
@@ -28617,6 +29157,40 @@ function openProfileStatExplanation(type) {
         iconEl.style.color = '#ffffff';
         titleEl.innerText = "Feedback Sent";
         descEl.innerText = "Thank you! Your feedback has been sent to our design team.";
+    } else if (type === 'bug-submitted') {
+        if (overlay) {
+            overlay.className = "absolute inset-0 bg-[#060b08]/40 dark:bg-black/60 backdrop-blur-md";
+        }
+        if (card) {
+            card.className = "relative bg-white dark:bg-[#18201a] border border-outline-variant/30 rounded-3xl p-6 shadow-2xl max-w-xs w-full text-center flex flex-col items-center animate-slide-up";
+        }
+        if (btnContainer) {
+            btnContainer.classList.add('hidden');
+        }
+        
+        iconContainer.className = "w-16 h-16 rounded-full bg-rose-600 flex items-center justify-center text-white mb-4";
+        iconEl.innerText = "bug_report";
+        iconEl.style.fontVariationSettings = "'FILL' 1";
+        iconEl.style.color = '#ffffff';
+        titleEl.innerText = "Bug Report Sent";
+        descEl.innerText = "Thank you! We have logged this bug report and will look into it.";
+    } else if (type === 'feature-submitted') {
+        if (overlay) {
+            overlay.className = "absolute inset-0 bg-[#060b08]/40 dark:bg-black/60 backdrop-blur-md";
+        }
+        if (card) {
+            card.className = "relative bg-white dark:bg-[#18201a] border border-outline-variant/30 rounded-3xl p-6 shadow-2xl max-w-xs w-full text-center flex flex-col items-center animate-slide-up";
+        }
+        if (btnContainer) {
+            btnContainer.classList.add('hidden');
+        }
+        
+        iconContainer.className = "w-16 h-16 rounded-full bg-amber-600 flex items-center justify-center text-white mb-4";
+        iconEl.innerText = "featured_play_list";
+        iconEl.style.fontVariationSettings = "'FILL' 1";
+        iconEl.style.color = '#ffffff';
+        titleEl.innerText = "Feature Pitch Sent";
+        descEl.innerText = "Awesome! Your feature suggestion has been sent to our product team.";
     } else if (type === 'location') {
         if (overlay) {
             overlay.className = "absolute inset-0 bg-[#060b08]/40 dark:bg-black/60 backdrop-blur-md";
@@ -28712,7 +29286,7 @@ window.openItemDetailsByTitle = function(title, neighborName) {
     }
     // 1. Check user offerings
     if (state && state.userOfferings) {
-        const userOffer = state.userOfferings.find(o => o.title.toLowerCase().includes(cleanTitle) || cleanTitle.includes(o.title.toLowerCase()));
+        const userOffer = state.userOfferings.find(o => o && o.title && (o.title.toLowerCase().includes(cleanTitle) || cleanTitle.includes(o.title.toLowerCase())));
         if (userOffer) {
             openMapItemDetail(userOffer.id);
             return;
@@ -29857,6 +30431,9 @@ function initSearchBehavior() {
 
         // On Focus (Tapped search bar)
         input.addEventListener('focus', () => {
+            closeAllListDropdowns();
+            closeMapCategoryDropdown();
+            closeAllQuickCreateDropdowns();
             // Hide bottom navbar
             const navbar = document.getElementById('global-navbar');
             if (navbar) {
@@ -30038,7 +30615,10 @@ function initKeyboardLayoutHandler() {
             prevOffset = offset;
         }
 
-        const isVisible = offset > 10;
+        // Support both viewport resize height differences and focused input tags (for SwiftUI webview keyboard avoidance resizing)
+        const isFocused = document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA');
+        const isVisible = (offset > 10) || isFocused;
+        
         if (isVisible !== prevKeyboardVisible) {
             if (isVisible) {
                 document.body.classList.add('keyboard-visible');
@@ -30064,6 +30644,16 @@ function initKeyboardLayoutHandler() {
     };
 
     window.visualViewport.addEventListener('resize', handleViewportChange);
+    
+    // Add event listeners for focusin/focusout to catch keyboard state transitions instantly
+    document.addEventListener('focusin', () => {
+        setTimeout(handleViewportChange, 50);
+        setTimeout(handleViewportChange, 150);
+    });
+    document.addEventListener('focusout', () => {
+        setTimeout(handleViewportChange, 50);
+        setTimeout(handleViewportChange, 150);
+    });
     
     // Initial run
     handleViewportChange();
@@ -30142,6 +30732,49 @@ function initQuickCreateSheet() {
     setSheetHeight();
 }
 
+window.closeAllQuickCreateDropdowns = function() {
+    ['village-quick-create-dropdown', 'list-quick-create-dropdown', 'needs-quick-create-dropdown', 'events-quick-create-dropdown'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
+};
+
+window.deactivateSearchMode = function() {
+    const searchInputIds = [
+        'village-search-input',
+        'village-list-search-input',
+        'village-needs-search-input',
+        'village-events-search-input'
+    ];
+    searchInputIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && document.activeElement === el) {
+            el.blur();
+        }
+    });
+
+    const suggestionIds = [
+        'village-search-suggestions',
+        'village-list-search-suggestions',
+        'village-needs-search-suggestions',
+        'village-events-search-suggestions',
+        'fused-search-suggestions'
+    ];
+    suggestionIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
+
+    const navbar = document.getElementById('global-navbar');
+    if (navbar) {
+        navbar.classList.remove('hidden');
+    }
+    const floatingContainer = document.getElementById('village-segment-floating-buttons');
+    if (floatingContainer && state.currentView === 'village') {
+        floatingContainer.style.display = 'flex';
+    }
+};
+
 window.toggleQuickCreateDropdown = function(event, type) {
     if (event) event.stopPropagation();
     
@@ -30174,6 +30807,9 @@ window.toggleQuickCreateDropdown = function(event, type) {
     if (eventsSuggestions) eventsSuggestions.classList.add('hidden');
     
     if (isHidden) {
+        closeAllListDropdowns();
+        closeMapCategoryDropdown();
+        deactivateSearchMode();
         dropdown.classList.remove('hidden');
         if (typeof playSound === 'function') playSound('click');
         window.triggerHapticFeedback('light');
@@ -30231,17 +30867,6 @@ function closeAllListDropdowns() {
     if (needsBtn) needsBtn.classList.remove('active-filter-circle');
     const eventsBtn = document.getElementById('btn-events-filter');
     if (eventsBtn) eventsBtn.classList.remove('active-filter-circle');
-
-    // Clear filters on exit/close
-    if ((state && state.activeMapFilters && state.activeMapFilters.length > 0) || activeCategoryFilter) {
-        state.activeMapFilters = [];
-        activeCategoryFilter = null;
-        saveState();
-        if (typeof applyMapFiltering === 'function') applyMapFiltering();
-        if (typeof renderVillageListView === 'function') renderVillageListView();
-        if (typeof renderNeedsBoardView === 'function') renderNeedsBoardView();
-        if (typeof renderEventsList === 'function') renderEventsList();
-    }
 }
 window.closeAllListDropdowns = closeAllListDropdowns;
 
@@ -30312,6 +30937,8 @@ window.toggleListCategoryDropdown = function() {
     closeMapCategoryDropdown();
     
     if (isHidden) {
+        closeAllQuickCreateDropdowns();
+        deactivateSearchMode();
         dropdown.classList.remove('hidden');
         if (filterBtn) filterBtn.classList.add('active-filter-circle');
         renderListFilterCircles();
@@ -30329,6 +30956,8 @@ window.toggleNeedsCategoryDropdown = function() {
     closeMapCategoryDropdown();
     
     if (isHidden) {
+        closeAllQuickCreateDropdowns();
+        deactivateSearchMode();
         dropdown.classList.remove('hidden');
         if (filterBtn) filterBtn.classList.add('active-filter-circle');
         renderNeedsFilterCircles();
@@ -30346,6 +30975,8 @@ window.toggleEventsCategoryDropdown = function() {
     closeMapCategoryDropdown();
     
     if (isHidden) {
+        closeAllQuickCreateDropdowns();
+        deactivateSearchMode();
         dropdown.classList.remove('hidden');
         if (filterBtn) filterBtn.classList.add('active-filter-circle');
         renderEventsFilterCircles();

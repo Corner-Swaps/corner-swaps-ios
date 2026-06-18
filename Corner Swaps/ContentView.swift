@@ -284,7 +284,7 @@ struct ContentView: View {
             } else if let url = webURL {
                 WebView(fileURL: url, initError: $initError)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .ignoresSafeArea()
+                    .ignoresSafeArea(.container, edges: .all)
             } else {
                 VStack {
                     ProgressView()

@@ -857,7 +857,7 @@ html.dark #phone-header-bar {
 
 html.dark #global-navbar {
     background-color: #141c16 !important;
-    border-top-color: rgba(130, 185, 149, 0.15) !important;
+    border-top-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 html.dark #global-navbar .text-forest-green {
@@ -995,7 +995,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
     flex-grow: 1 !important;
     min-height: 0 !important;
     overscroll-behavior: contain !important;
-    padding-bottom: calc(66px + env(safe-area-inset-bottom) + 12px) !important;
+    padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important;
 }
 .detail-overlay .overflow-y-auto::-webkit-scrollbar,
 .detail-overlay .custom-scrollbar::-webkit-scrollbar {
@@ -1119,6 +1119,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
 .native-app-env #view-chat_hub,
 .native-app-env #view-chat_detail,
 .native-app-env #view-definitions,
+.native-app-env #view-help_improve,
 .native-app-env #view-settings_detail,
 .native-app-env #view-blocked_users,
 .native-app-env #view-profile_settings {
@@ -1127,6 +1128,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
 
 .native-app-env #view-chat_hub,
 .native-app-env #view-definitions,
+.native-app-env #view-help_improve,
 .native-app-env #view-settings_detail,
 .native-app-env #view-blocked_users {
     padding-bottom: calc(3.8rem + env(safe-area-inset-bottom)) !important;
@@ -2484,6 +2486,7 @@ html.dark .profile-avatar-no-ring {
 }
 
 #view-definitions,
+#view-help_improve,
 #view-adjust_homepage {
     overflow-y: auto !important;
     height: 100% !important;
@@ -2947,6 +2950,7 @@ html.dark #btn-segment-filter.has-active-filter {
     body:not(.show-simulator):not(.native-app) #view-adjust_homepage,
     body:not(.show-simulator):not(.native-app) #view-admin_panel,
     body:not(.show-simulator):not(.native-app) #view-definitions,
+    body:not(.show-simulator):not(.native-app) #view-help_improve,
     body:not(.show-simulator):not(.native-app) #view-create_bulletin,
     body:not(.show-simulator):not(.native-app) #view-create_group {
         padding-top: 80px !important;
@@ -2964,6 +2968,7 @@ html.dark #btn-segment-filter.has-active-filter {
     body:not(.show-simulator):not(.native-app) #view-adjust_homepage,
     body:not(.show-simulator):not(.native-app) #view-admin_panel,
     body:not(.show-simulator):not(.native-app) #view-definitions,
+    body:not(.show-simulator):not(.native-app) #view-help_improve,
     body:not(.show-simulator):not(.native-app) #view-create_bulletin,
     body:not(.show-simulator):not(.native-app) #view-create_group {
         max-width: 800px !important;
@@ -2982,6 +2987,7 @@ html.dark #btn-segment-filter.has-active-filter {
     html.dark body:not(.show-simulator):not(.native-app) #view-adjust_homepage,
     html.dark body:not(.show-simulator):not(.native-app) #view-admin_panel,
     html.dark body:not(.show-simulator):not(.native-app) #view-definitions,
+    html.dark body:not(.show-simulator):not(.native-app) #view-help_improve,
     html.dark body:not(.show-simulator):not(.native-app) #view-create_bulletin,
     html.dark body:not(.show-simulator):not(.native-app) #view-create_group {
         background-color: #101612 !important;
@@ -3474,7 +3480,8 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 #widget-account-actions h3,
 #neighbor-profile-modal section h3,
 #view-settings_detail h3,
-#view-definitions h3 {
+#view-definitions h3,
+#view-help_improve h3 {
     font-family: 'Outfit', sans-serif !important;
     font-size: 14px !important;
     font-weight: 700 !important;
@@ -3572,6 +3579,8 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 #view-settings_detail span:not(.material-symbols-outlined),
 #view-definitions p,
 #view-definitions span:not(.material-symbols-outlined),
+#view-help_improve p,
+#view-help_improve span:not(.material-symbols-outlined),
 #widget-suggestion-box p {
     font-family: 'Outfit', sans-serif !important;
     font-size: 14px !important;
@@ -3715,6 +3724,7 @@ html:not(.dark) #neighbor-profile-modal button.bg-forest-green * {
 #karma-unified-card,
 .offer-category-btn:not(.bg-forest-green),
 #view-definitions div.border-outline-variant\/30,
+#view-help_improve div.border-outline-variant\/30,
 #view-blocked_users div.border-outline-variant\/30,
 #chat-threads-active > div,
 #chat-threads-requests > div,
@@ -3776,6 +3786,7 @@ html:not(.dark) #neighbor-profile-modal button.bg-forest-green * {
 .dark #karma-unified-card,
 .dark .offer-category-btn:not(.bg-forest-green),
 .dark #view-definitions div.border-outline-variant\/30,
+.dark #view-help_improve div.border-outline-variant\/30,
 .dark #view-blocked_users div.border-outline-variant\/30,
 .dark #chat-threads-active > div,
 .dark #chat-threads-requests > div,
@@ -3849,8 +3860,8 @@ html:not(.dark) #neighbor-profile-modal button.bg-forest-green * {
 /* Chat bubble paragraphs alignment (Style 3 profile offerings matching) */
 .app-container .chat-bubble-me p, .app-container .chat-bubble-other p {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 14.5px !important;
-    font-weight: 700 !important;
+    font-size: 15.5px !important;
+    font-weight: 400 !important;
 }
 
 .admin-message-bubble {
@@ -3860,8 +3871,8 @@ html:not(.dark) #neighbor-profile-modal button.bg-forest-green * {
 
 .app-container .admin-message-bubble, .app-container .admin-message-bubble p {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 14.5px !important;
-    font-weight: 700 !important;
+    font-size: 15.5px !important;
+    font-weight: 400 !important;
 }
 
 
@@ -4585,10 +4596,12 @@ html.dark #view-blocked_users :not(button):not(button *):not(.material-symbols-o
     color: #ffffff !important;
 }
 
-html:not(.dark) #view-definitions :not(button):not(button *):not(.material-symbols-outlined) {
+html:not(.dark) #view-definitions :not(button):not(button *):not(.material-symbols-outlined),
+html:not(.dark) #view-help_improve :not(button):not(button *):not(.material-symbols-outlined) {
     color: #000000 !important;
 }
-html.dark #view-definitions :not(button):not(button *):not(.material-symbols-outlined) {
+html.dark #view-definitions :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #view-help_improve :not(button):not(button *):not(.material-symbols-outlined) {
     color: #ffffff !important;
 }
 
@@ -4598,17 +4611,22 @@ html.dark #view-definitions :not(button):not(button *):not(.material-symbols-out
 
 /* Ensure placeholder texts in settings inputs remain a readable muted gray instead of solid black/white */
 #view-settings_detail input::placeholder,
-#view-settings_detail textarea::placeholder {
+#view-settings_detail textarea::placeholder,
+#view-help_improve input::placeholder,
+#view-help_improve textarea::placeholder {
     color: #9ca3af !important;
 }
 .dark #view-settings_detail input::placeholder,
-.dark #view-settings_detail textarea::placeholder {
+.dark #view-settings_detail textarea::placeholder,
+.dark #view-help_improve input::placeholder,
+.dark #view-help_improve textarea::placeholder {
     color: #6b7280 !important;
 }
 
 /* Settings and Definitions Typography & Layout Unification */
 #view-settings_detail p,
-#view-definitions p {
+#view-definitions p,
+#view-help_improve p {
     font-family: 'Outfit', sans-serif !important;
     font-size: 14px !important;
     font-weight: 400 !important;
@@ -6450,7 +6468,7 @@ html.dark .location-icon-container {
 #list-category-dropdown,
 #needs-category-dropdown,
 #events-category-dropdown {
-    gap: 3px !important;
+    gap: 8px !important;
 }
 #map-category-dropdown .filter-category-circle,
 #map-category-dropdown .filter-category-info-circle,
@@ -6502,7 +6520,7 @@ html.dark #events-category-dropdown .category-label {
 /* Small Screens (e.g. iPhone SE / screen height <= 700px) */
 @media (max-height: 700px) {
     html:not(.show-simulator) #map-category-dropdown {
-        gap: 2px !important;
+        gap: 6px !important;
         top: 42px !important;
     }
     html:not(.show-simulator) .native-app-env #map-category-dropdown {
@@ -6530,7 +6548,7 @@ html.dark #events-category-dropdown .category-label {
 /* Large Screens (e.g. iPhone 16 Pro Max / screen height > 860px) */
 @media (min-height: 861px) {
     html:not(.show-simulator) #map-category-dropdown {
-        gap: 4px !important;
+        gap: 10px !important;
     }
     html:not(.show-simulator) #map-category-dropdown .filter-category-circle,
     html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle,
@@ -6615,7 +6633,7 @@ html.dark .category-info-highlighted::after {
     background: rgba(255, 255, 255, 0.45) !important;
     backdrop-filter: blur(24px) saturate(200%) !important;
     -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    border: none !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
     z-index: 5000 !important;
     display: flex !important;
@@ -6627,7 +6645,7 @@ html.dark .category-info-highlighted::after {
 
 html.dark.native-app-env #global-navbar:not(.hidden) {
     background: rgba(20, 28, 22, 0.45) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border: none !important;
 }
 
 /* Category Tray / List Overlay - Opaque background to prevent disorientation */
@@ -6711,8 +6729,23 @@ body.keyboard-visible .native-app-env #chat-message-feed::after {
 .app-container .chat-bubble-other,
 .app-container .admin-message-bubble {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 14.5px !important;
-    font-weight: 700 !important;
+    font-size: 15.5px !important;
+    font-weight: 400 !important;
+}
+
+/* Swap Proposal Bubble Typography */
+#chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"],
+#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] {
+    font-family: 'Outfit', sans-serif !important;
+}
+
+#chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"] div:not(.material-symbols-outlined),
+#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] div:not(.material-symbols-outlined),
+#chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"] span:not(.material-symbols-outlined),
+#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] span:not(.material-symbols-outlined) {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 13px !important; /* Keep UI labels relatively smaller so they don't break layout, but regular weight! */
+    font-weight: 400 !important;
 }
 
 /* Onboarding & Settings Input Fields Styling to Match Chat Size and Font */
@@ -6743,20 +6776,21 @@ textarea::placeholder {
 
 /* Smoothly transition the navbar when it is hidden behind card */
 #global-navbar {
+    border-top-color: rgba(0, 0, 0, 0.08) !important;
     transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease !important;
 }
 
 #global-navbar.navbar-behind {
-    opacity: 0 !important;
-    pointer-events: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
 }
 
 body.show-simulator #global-navbar.navbar-behind {
-    transform: translateY(24px) !important;
+    transform: none !important;
 }
 
 .native-app-env #global-navbar.navbar-behind {
-    transform: translateX(-50%) translateY(24px) !important;
+    transform: translateX(-50%) !important;
 }
 
 /* ==================================================== */
@@ -7330,12 +7364,12 @@ html.dark .intel-title {
 
 /* Suggestions Box overlay style */
 .fused-suggestions-box {
-    margin-top: 8px !important;
+    margin-top: 0px !important;
     background-color: rgba(255, 255, 255, 0.96) !important;
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    border-radius: 24px !important;
+    border-radius: 12px !important;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08) !important;
     padding: 10px 12px !important;
     max-height: 280px !important;
@@ -7367,11 +7401,11 @@ html.dark .fused-suggestions-box::-webkit-scrollbar-thumb {
 
 /* Suggestion UI Items & Groups */
 .suggestion-section-title {
-    font-size: 9px !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.08em !important;
-    padding: 6px 8px 4px 8px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    padding: 8px 8px 4px 8px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
@@ -7418,84 +7452,95 @@ html.dark .similar .suggestion-badge-count {
 .fused-suggestion-item {
     display: flex !important;
     align-items: center !important;
-    gap: 10px !important;
-    padding: 8px 10px !important;
-    border-radius: 14px !important;
+    width: 100% !important;
+    padding: 10px 12px !important;
+    border-radius: 9999px !important;
+    background: rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid rgba(0, 0, 0, 0.04) !important;
+    transition: all 0.2s ease-in-out !important;
     cursor: pointer !important;
-    transition: all 0.2s ease !important;
-    margin-bottom: 2px !important;
+    text-align: left !important;
+    margin-bottom: 6px !important;
 }
 
 .fused-suggestion-item:hover {
-    background-color: rgba(48, 138, 94, 0.06) !important;
+    background-color: rgba(0, 0, 0, 0.06) !important;
+}
+html.dark .fused-suggestion-item {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-color: rgba(255, 255, 255, 0.04) !important;
 }
 html.dark .fused-suggestion-item:hover {
-    background-color: rgba(255, 255, 255, 0.04) !important;
+    background-color: rgba(255, 255, 255, 0.08) !important;
 }
 .fused-suggestion-item:active {
-    transform: scale(0.985) !important;
+    transform: scale(0.98) !important;
 }
 
 .fused-suggestion-icon-wrapper {
-    width: 26px !important;
-    height: 26px !important;
+    width: 36px !important;
+    height: 36px !important;
     border-radius: 50% !important;
-    background-color: rgba(48, 138, 94, 0.08) !important;
-    color: #308a5e !important;
+    color: inherit !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    margin-right: 12px !important;
     flex-shrink: 0 !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05) !important;
+    transition: transform 0.2s ease-in-out !important;
 }
 html.dark .fused-suggestion-icon-wrapper {
-    background-color: rgba(255, 255, 255, 0.08) !important;
-    color: #a0cfa5 !important;
+    background-color: transparent !important;
+}
+
+.fused-suggestion-item:hover .fused-suggestion-icon-wrapper {
+    transform: scale(1.05) !important;
 }
 
 .fused-suggestion-info {
     flex-grow: 1 !important;
-    min-w: 0 !important;
+    min-width: 0 !important;
+    padding-right: 8px !important;
 }
 
 .fused-suggestion-title {
-    font-size: 11px !important;
     font-weight: 700 !important;
+    font-size: 13px !important;
     color: #111827 !important;
+    line-height: 1.25 !important;
+    margin: 0 !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-    line-height: 1.3 !important;
 }
 html.dark .fused-suggestion-title {
-    color: #f3f4f6 !important;
+    color: #ffffff !important;
 }
 
 .fused-suggestion-subtitle {
-    font-size: 9px !important;
+    font-size: 11px !important;
     color: #6b7280 !important;
+    margin: 2px 0 0 0 !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-    margin-top: 1px !important;
 }
 html.dark .fused-suggestion-subtitle {
     color: #9ca3af !important;
 }
 
 .fused-suggestion-type-badge {
-    font-size: 8px !important;
-    font-weight: 800 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
-    padding: 2px 6px !important;
+    font-size: 8.5px !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    padding: 2.5px 6.5px !important;
     border-radius: 6px !important;
-    background-color: rgba(0, 0, 0, 0.04) !important;
-    color: #4b5563 !important;
     flex-shrink: 0 !important;
 }
 html.dark .fused-suggestion-type-badge {
-    background-color: rgba(255, 255, 255, 0.08) !important;
-    color: #9ca3af !important;
+    background-color: transparent !important;
 }
 
 /* Highlighting matching text */
@@ -7601,19 +7646,49 @@ html.dark #view-create_group #group-friends-search::placeholder {
 #village-list-segmented-control,
 #village-needs-segmented-control,
 #village-events-segmented-control {
-    width: calc(100% - 12px) !important;
-    max-width: 450px !important;
-    margin-left: 6px !important;
-    margin-right: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background-color: transparent !important;
+    background: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    height: 42px !important; /* Matches search pill height */
+    box-shadow: none !important;
+    transition: all 0.3s ease !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    gap: 8px !important; /* Separate pills with a gap */
 }
-#village-segmented-control {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+html.dark #village-segmented-control,
+html.dark #village-list-segmented-control,
+html.dark #village-needs-segmented-control,
+html.dark #village-events-segmented-control {
+    background-color: transparent !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
-.dark #village-segmented-control {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
+
 #village-active-pill-bg {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    display: none !important;
+}
+
+/* Align Map Category Dropdown with the new wider segmented control */
+#map-category-dropdown {
+    top: 92px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
 /* Meetup Safety Guidelines modal header styles */
@@ -7672,7 +7747,7 @@ html.dark .list-card-title {
     color: rgba(0, 0, 0, 0.7) !important;
     line-height: 1.5 !important;
     margin-top: 4px !important;
-    margin-bottom: 0 !important;
+    margin-bottom: 8px !important;
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
@@ -7690,7 +7765,8 @@ html.dark .list-card-description {
     position: absolute !important;
     left: 4px !important;
     right: 4px !important;
-    top: 48px !important;
+    top: 42px !important;
+    margin-top: 0px !important;
     z-index: 3000 !important;
     width: calc(100% - 8px) !important;
 }
@@ -7704,9 +7780,9 @@ html.dark .list-card-description {
     line-height: 1.5 !important;
     font-weight: 400 !important;
     margin-top: 4px !important;
-    margin-bottom: 0 !important;
+    margin-bottom: 8px !important;
     display: -webkit-box !important;
-    -webkit-line-clamp: 4 !important;
+    -webkit-line-clamp: 3 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
     color: rgba(0, 0, 0, 0.7) !important;
@@ -7720,18 +7796,19 @@ html.dark #events-list-container p.list-card-description {
 
 /* Enforce strict sizes for list card components (Offerings, Needs, Events) */
 .list-card-container {
-    height: 410px !important;
+    height: 375px !important;
     border: none !important;
 }
 .list-card-container:hover {
     border: none !important;
 }
 .list-card-image-wrapper {
-    height: 243px !important;
+    height: 230px !important;
     border-bottom: none !important;
 }
 .list-card-text-wrapper {
-    height: 167px !important;
+    height: 145px !important;
+    padding: 16px 16px 20px 16px !important;
 }
 
 /* Styling rules for the Quick Create Handle and navigation icons row */
@@ -7757,7 +7834,7 @@ html.dark #events-list-container p.list-card-description {
     position: absolute !important;
     left: 4px !important;
     right: 4px !important;
-    top: 52px !important;
+    top: 42px !important;
     z-index: 3000 !important;
     width: calc(100% - 8px) !important;
 }
@@ -7920,11 +7997,62 @@ html.dark .fused-filter-btn.active-filter-circle {
 }
 /* --- End: Search Bar Fused Filter Button Styles --- */
 
-/* Remove borders/outlines on segmented controls */
+/* Remove borders/outlines on segmented controls and style buttons */
 #village-segmented-control button,
 #village-list-segmented-control button,
 #village-needs-segmented-control button,
-#village-events-segmented-control button,
+#village-events-segmented-control button {
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    outline: none !important;
+    background-color: rgba(255, 255, 255, 0.8) !important; /* Individual white background for inactive pills */
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    color: #71766f !important; /* Medium green-gray text */
+    height: 100% !important;
+    border-radius: 9999px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.dark #village-segmented-control button,
+html.dark #village-list-segmented-control button,
+html.dark #village-needs-segmented-control button,
+html.dark #village-events-segmented-control button {
+    background-color: rgba(24, 32, 26, 0.8) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #9ca3af !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Active buttons styling */
+#village-segmented-control button.bg-white,
+#village-list-segmented-control button.bg-white,
+#village-needs-segmented-control button.bg-white,
+#village-events-segmented-control button.bg-white {
+    background-color: #ffffff !important;
+    color: #1a1c18 !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    font-weight: 800 !important;
+}
+
+html.dark #village-segmented-control button[class*="dark:bg-[#2d3a30]"],
+html.dark #village-list-segmented-control button[class*="dark:bg-[#2d3a30]"],
+html.dark #village-needs-segmented-control button[class*="dark:bg-[#2d3a30]"],
+html.dark #village-events-segmented-control button[class*="dark:bg-[#2d3a30]"],
+html.dark #village-segmented-control button.bg-white,
+html.dark #village-list-segmented-control button.bg-white,
+html.dark #village-needs-segmented-control button.bg-white,
+html.dark #village-events-segmented-control button.bg-white {
+    background-color: #2d3a30 !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+    font-weight: 800 !important;
+}
+
 #chat-segmented-control button {
     border: none !important;
     outline: none !important;
@@ -7940,10 +8068,8 @@ html.dark .fused-filter-btn.active-filter-circle {
     max-width: 450px !important;
     z-index: 3000 !important;
     display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
-    gap: 12px !important;
+    flex-direction: column !important;
+    gap: 8px !important;
     padding: 10px 14px !important;
     border-radius: 12px !important;
     background-color: transparent !important;
@@ -7951,11 +8077,24 @@ html.dark .fused-filter-btn.active-filter-circle {
     box-shadow: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    -ms-overflow-style: none !important;
-    scrollbar-width: none !important;
+    max-height: 290px !important;
+    overflow-y: auto !important;
+    -ms-overflow-style: auto !important;
+    scrollbar-width: thin !important;
 }
 .category-dropdown-tray::-webkit-scrollbar {
-    display: none !important;
+    width: 6px !important;
+    display: block !important;
+}
+.category-dropdown-tray::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+.category-dropdown-tray::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1) !important;
+    border-radius: 9999px !important;
+}
+html.dark .category-dropdown-tray::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15) !important;
 }
 html.dark .category-dropdown-tray {
     background-color: transparent !important;
@@ -7967,50 +8106,81 @@ html.dark .category-dropdown-tray {
     display: none !important;
 }
 
-/* Category Filter Pill Styles */
-.category-filter-pill {
-    display: inline-flex !important;
+/* Category Filter Row Styles */
+.category-filter-row {
+    display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
-    gap: 6px !important;
-    height: 38px !important;
-    padding: 0 14px !important;
-    border-radius: 12px !important;
-    font-size: 11px !important;
-    font-weight: 700 !important;
+    gap: 10px !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    flex-shrink: 0 !important;
-    box-sizing: border-box !important;
-    background-color: #ffffff !important;
-    color: #000000 !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+    width: 100% !important;
 }
 
-html.dark .category-filter-pill {
-    border-color: rgba(255, 255, 255, 0.08) !important;
-    background-color: #232d26 !important;
+/* Gray bubble around the icon */
+.category-icon-bubble {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid rgba(0, 0, 0, 0.04) !important;
+    transition: all 0.2s ease !important;
+    flex-shrink: 0 !important;
+}
+
+html.dark .category-icon-bubble {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Active state of the icon bubble */
+.category-filter-row.active-row .category-icon-bubble {
+    background-color: #308A5E !important;
+    border-color: #308A5E !important;
+    box-shadow: 0 0 8px rgba(48, 138, 94, 0.3) !important;
+}
+.category-filter-row.active-row .category-icon-bubble span {
     color: #ffffff !important;
+}
+
+/* White pill wrapper around the title only */
+.category-title-pill {
+    display: inline-flex !important;
+    align-items: center !important;
+    height: 32px !important;
+    padding: 0 14px !important;
+    border-radius: 9999px !important;
+    background-color: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+    color: #374151 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    font-family: 'Outfit', sans-serif !important;
+    transition: all 0.2s ease !important;
+}
+
+html.dark .category-title-pill {
+    background-color: #1b261f !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #e5e7eb !important;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
 }
 
-.category-filter-pill.active-pill {
-    background-color: #308A5E !important;
-    color: #ffffff !important;
+/* Active state of the title pill */
+.category-filter-row.active-row .category-title-pill {
     border-color: #308A5E !important;
-    box-shadow: 0 4px 12px rgba(48, 138, 94, 0.2) !important;
+    box-shadow: 0 0 8px rgba(48, 138, 94, 0.2) !important;
+    color: #308A5E !important;
+    font-weight: 800 !important;
 }
 
-.category-filter-pill.active-pill span {
-    color: inherit !important;
-}
-
-html.dark .category-filter-pill.active-pill {
-    background-color: #4ade80 !important;
-    color: #18201a !important;
+html.dark .category-filter-row.active-row .category-title-pill {
     border-color: #4ade80 !important;
-    box-shadow: 0 4px 12px rgba(74, 222, 128, 0.2) !important;
+    color: #4ade80 !important;
+    box-shadow: 0 0 8px rgba(74, 222, 128, 0.2) !important;
 }
 
 /* Custom Overrides for List Category Filter Dropdowns to Push Content Down */
@@ -8027,6 +8197,137 @@ html.dark .category-filter-pill.active-pill {
     margin-bottom: 8px !important;
     padding-left: 0 !important; /* ALIGN FIRST PILL WITH THE LEFT SIDE OF SEGMENTED CONTROL */
 }
+
+/* Hardware-accelerated Transitions for Smooth App Startup */
+#shuffle-wrapper {
+    transition: opacity 0.4s ease-in-out !important;
+    will-change: opacity;
+}
+#loading-screen {
+    transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    will-change: opacity;
+}
+#loading-screen.fading-out {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Inline collapsible details for list cards */
+.list-card-container.expanded {
+    height: auto !important;
+}
+
+.list-card-container.expanded .list-card-text-wrapper {
+    height: auto !important;
+}
+
+.list-card-container.expanded .list-card-description {
+    -webkit-line-clamp: unset !important;
+    display: block !important;
+}
+
+.list-card-chevron {
+    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.list-card-container.expanded .list-card-chevron {
+    transform: rotate(180deg);
+}
+
+.list-card-expandable {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.list-card-expandable.expanded {
+    grid-template-rows: 1fr;
+}
+
+.list-card-expandable-content {
+    overflow: hidden;
+}
+
+/* ==================================================== */
+/* UNIFIED CHAT SECTION TYPOGRAPHY (15.5px & 13px) */
+/* ==================================================== */
+
+/* Chat Hub Thread list card texts */
+.chat-card-slider-content h3,
+.chat-card-slider-content h3 span,
+.chat-card-slider-content p,
+.chat-card-slider-content .text-xs {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15.5px !important;
+}
+
+/* Chat Hub Thread list card metadata, timestamps, and inline buttons */
+.chat-card-slider-content .font-medium,
+.chat-card-slider-content .flex.items-center.gap-2 span,
+.chat-card-slider-content .flex.items-center.gap-2 div,
+.chat-card-slider-content .chat-badge-inline,
+.chat-card-slider-content button {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 13px !important;
+}
+
+/* Active Chat Detail Header User Name & Status Info */
+#chat-header-name,
+#chat-header-name span {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15.5px !important;
+}
+
+#chat-header-single-status-label,
+#chat-header-rating,
+#chat-header-expiry-val,
+#chat-header-expiry-container span {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 13px !important;
+}
+
+/* Chat Input Field & Placeholder Text */
+#chat-text-input,
+#chat-text-input::placeholder {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15.5px !important;
+}
+
+/* Chat Message Bubbles, Admin Bubbles & Inline Paragraphs */
+.app-container .chat-bubble-me,
+.app-container .chat-bubble-me p,
+.app-container .chat-bubble-other,
+.app-container .chat-bubble-other p,
+.app-container .admin-message-bubble,
+.app-container .admin-message-bubble p,
+.app-container .chat-bubble-me .text-sm,
+.app-container .chat-bubble-other .text-sm {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15.5px !important;
+}
+
+/* Swap Proposal & Action Cards inside Message Feed */
+#chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"] div,
+#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] div,
+#chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"] span,
+#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] span {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 13px !important;
+}
+
+/* Swap Journey Stepper & Drawer Header Labels */
+#chat-info-bar-container,
+#chat-info-bar-container span,
+#chat-info-bar-container div,
+#chat-trade-drawer,
+#chat-trade-drawer span,
+#chat-trade-drawer div {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 13px !important;
+}
+
+
+
 
 
 
