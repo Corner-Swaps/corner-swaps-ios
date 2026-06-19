@@ -3182,7 +3182,7 @@ function getExpirationBadgeDetails(conv) {
         return {
             bgClass: 'bg-[#D97706]',
             textClass: 'text-[#D97706] dark:text-amber-500 animate-pulse',
-            icon: 'error_outline',
+            icon: 'schedule',
             label: label,
             title: `${label} remaining - expiring soon!`
         };
@@ -3194,7 +3194,11 @@ function updateTriggerIconState(iconEl, isX) {
     if (!iconEl) return;
     iconEl.classList.add('material-symbols-outlined');
     if (isX) {
-        iconEl.innerHTML = 'close';
+        if (iconEl.id === 'chat-segment-trigger-icon' && state && state.currentView && state.currentView.startsWith('chat_detail')) {
+            iconEl.innerHTML = 'apps';
+        } else {
+            iconEl.innerHTML = 'close';
+        }
     } else {
         if (iconEl.id === 'chat-segment-trigger-icon') {
             iconEl.innerHTML = 'apps';
@@ -3359,13 +3363,14 @@ function autoDismissAllModals() {
 
 // Routing Engine
 function showView(viewId, mode) {
-    if (!state) {
-        try {
-            state = JSON.parse(INITIAL_STATE_STRING) || {};
-        } catch(e) {
-            state = {};
+    try {
+        if (!state) {
+            try {
+                state = JSON.parse(INITIAL_STATE_STRING) || {};
+            } catch(e) {
+                state = {};
+            }
         }
-    }
     autoDismissAllModals();
     if (viewId === 'home') {
         viewId = 'village';
@@ -3529,14 +3534,9 @@ function showView(viewId, mode) {
     const chatFloatingContainer = document.getElementById('chat-segment-floating-buttons');
     const chatTriggerIcon = document.getElementById('chat-segment-trigger-icon');
     if (chatFloatingContainer) {
-        if (viewId === 'chat_hub' || viewId.startsWith('chat_detail')) {
+        if (viewId === 'chat_hub') {
             chatFloatingContainer.style.display = 'flex';
-            if (viewId.startsWith('chat_detail')) {
-                collapseChatMenu();
-                if (chatTriggerIcon) updateTriggerIconState(chatTriggerIcon, true);
-            } else {
-                if (chatTriggerIcon) updateTriggerIconState(chatTriggerIcon, false);
-            }
+            if (chatTriggerIcon) updateTriggerIconState(chatTriggerIcon, false);
         } else {
             chatFloatingContainer.style.display = 'none';
             collapseChatMenu();
@@ -3549,7 +3549,7 @@ function showView(viewId, mode) {
     const isPushTransition = (viewId === 'chat_detail' && oldViewId && oldViewId !== 'chat_detail');
     const isPopTransition = (oldViewId === 'chat_detail' && viewId && viewId !== 'chat_detail');
     const isSplitScreen = !isNative && !document.body.classList.contains('show-simulator');
-    const shouldUseSlideTransition = (isPushTransition || isPopTransition) && !isSplitScreen;
+    const shouldUseSlideTransition = false;
 
     if (!shouldUseSlideTransition) {
         // Hide all views instantly for normal non-slide navigation transitions
@@ -3619,12 +3619,33 @@ function showView(viewId, mode) {
                 }
                 
                 setTimeout(() => {
+                    // Lock visibility to prevent blank flash on iOS Safari.
+                    // On iOS, a paint can occur between classList.remove() and classList.add(),
+                    // briefly showing the base screen-view styles (display:none, opacity:0),
+                    // which triggers the active class CSS transition from invisible → visible.
+                    incomingEl.style.display = 'flex';
+                    incomingEl.style.opacity = '1';
+                    incomingEl.classList.add('no-transition'); // suppress CSS transitions
+                    
                     // Reset to standard states after completion
                     incomingEl.classList.remove(...animClasses);
                     incomingEl.classList.add('active');
                     
                     outgoingEl.classList.remove(...animClasses);
                     outgoingEl.style.display = 'none';
+                    
+                    // After browser commits final state, restore normal transitions
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            incomingEl.classList.remove('no-transition');
+                            incomingEl.style.opacity = '';
+                            // Scroll message feed to bottom after transition completes
+                            if (viewId === 'chat_detail') {
+                                const feed = document.getElementById('chat-message-feed');
+                                if (feed) feed.scrollTop = feed.scrollHeight;
+                            }
+                        });
+                    });
                 }, 350);
             }
         } else {
@@ -3978,6 +3999,10 @@ function showView(viewId, mode) {
                 dashboardContainer.classList.add('hidden');
             }
         }
+    }
+    } catch (err) {
+        alert("CRASH in showView: " + err.message + "\n" + err.stack);
+        console.error("CRASH in showView: ", err);
     }
 }
 
@@ -6320,15 +6345,11 @@ function getEventPresetImage(type) {
 }
 
 function renderEventsList() {
-    const radiusVal = (state.stats && state.stats.radius !== undefined) ? state.stats.radius : 5;
-    const eventsSlider = document.getElementById('village-events-distance-slider');
+    // Sync label only — do not reset slider.value to avoid interrupting user drag
+    let radiusVal = (state.stats && state.stats.radius !== undefined) ? state.stats.radius : 5;
+    if (radiusVal > 5) radiusVal = 5;
+    if (radiusVal < 0.5) radiusVal = 0.5;
     const eventsLabel = document.getElementById('village-events-distance-display');
-    if (eventsSlider) {
-        if (radiusVal <= 1) eventsSlider.value = 0;
-        else if (radiusVal <= 5) eventsSlider.value = 1;
-        else if (radiusVal <= 10) eventsSlider.value = 2;
-        else eventsSlider.value = 3;
-    }
     if (eventsLabel) eventsLabel.innerText = formatRadiusValue(radiusVal);
 
     const containers = [
@@ -6359,13 +6380,6 @@ function renderEventsList() {
         }
 
         let maxRadius = radiusVal;
-        if (eventsSlider) {
-            const idx = parseInt(eventsSlider.value);
-            if (idx === 0) maxRadius = 1;
-            else if (idx === 1) maxRadius = 5;
-            else if (idx === 2) maxRadius = 10;
-            else if (idx === 3) maxRadius = 20;
-        }
         let userLat = 49.2827;
         let userLng = -123.1207;
         if (state.currentUser && state.currentUser.lat && state.currentUser.lng) {
@@ -6392,6 +6406,15 @@ function renderEventsList() {
         });
 
         const filteredEvents = eventsWithDistance.filter(evt => {
+            const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
+            const isUserEvent = evt.host === 'me' || 
+                                evt.host === 'Lily Kaufmann' || 
+                                evt.host === 'Lily Kaufmann (You)' ||
+                                evt.host.includes('(You)') ||
+                                evt.host === currentUser ||
+                                (state.currentUser && (evt.host === state.currentUser.displayName || evt.host === `${state.currentUser.firstName} ${state.currentUser.lastName}`));
+            if (isUserEvent) return false;
+
             if (state.blockedUsers && state.blockedUsers.includes(evt.host)) return false;
             if (state.suspendedUsers && state.suspendedUsers.includes(evt.host)) return false;
             const hostObj = state.neighbors[evt.host];
@@ -7786,48 +7809,76 @@ function openMapItemDetail(idOrName) {
     const chatBtn = document.getElementById('map-detail-chat-btn');
     const saveBtn = document.getElementById('map-detail-save-btn');
     const profileBtn = document.getElementById('map-detail-profile-btn');
+    const blockBtn = document.getElementById('map-detail-block-btn');
     const reportBtn = document.getElementById('map-detail-report-btn');
     
     // Save button state update
     if (saveBtn) {
-        if (isUserOffer || isUserNeed) {
-            saveBtn.classList.add('hidden');
-        } else {
-            saveBtn.classList.remove('hidden');
-            const saveIcon = document.getElementById('map-detail-save-icon');
-            const saveText = document.getElementById('map-detail-save-text');
-            const isSaved = state.savedListings && state.savedListings.includes(idOrName);
-            if (isSaved) {
-                if (saveIcon) {
-                    saveIcon.innerText = 'bookmark';
-                    saveIcon.style.fontVariationSettings = "'FILL' 1";
-                }
-                if (saveText) saveText.innerText = 'saved to profile';
-                saveBtn.classList.add('bg-black/10', 'dark:bg-white/10');
-            } else {
-                if (saveIcon) {
-                    saveIcon.innerText = 'bookmark';
-                    saveIcon.style.fontVariationSettings = "'FILL' 0";
-                }
-                if (saveText) saveText.innerText = 'save listing';
-                saveBtn.classList.remove('bg-black/10', 'dark:bg-white/10');
+        saveBtn.classList.remove('hidden');
+        const saveIcon = document.getElementById('map-detail-save-icon');
+        const saveText = document.getElementById('map-detail-save-text');
+        const isSaved = state.savedListings && state.savedListings.includes(idOrName);
+        if (isSaved) {
+            if (saveIcon) {
+                saveIcon.innerText = 'bookmark';
+                saveIcon.style.fontVariationSettings = "'FILL' 1";
             }
-            const handleSaveClick = (e) => {
+            if (saveText) saveText.innerText = 'saved to profile';
+            saveBtn.classList.add('bg-black/10', 'dark:bg-white/10');
+        } else {
+            if (saveIcon) {
+                saveIcon.innerText = 'bookmark';
+                saveIcon.style.fontVariationSettings = "'FILL' 0";
+            }
+            if (saveText) saveText.innerText = 'save listing';
+            saveBtn.classList.remove('bg-black/10', 'dark:bg-white/10');
+        }
+        saveBtn.onclick = (e) => {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            toggleSaveListing(idOrName);
+        };
+    }
+
+    if (chatBtn) {
+        chatBtn.classList.remove('hidden');
+        if (idOrName.startsWith('need_')) {
+            chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs">handshake</span> I can help`;
+            const needId = idOrName.replace('need_', '');
+            chatBtn.onclick = (e) => {
                 if (e) {
                     e.preventDefault();
                     e.stopPropagation();
                 }
-                toggleSaveListing(idOrName);
+                state.chatBackReferrer = { type: 'map_detail', id: idOrName };
+                closeMapItemDetail();
+                handleOfferToSwapNeed(needId);
             };
-            saveBtn.onclick = handleSaveClick;
+        } else {
+            const neighbor = state.neighbors ? state.neighbors[idOrName] : null;
+            if (neighbor && neighbor.isKarma) {
+                chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs">volunteer_activism</span> free gift request`;
+            } else {
+                chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs">handshake</span> lets swap`;
+            }
+            chatBtn.onclick = (e) => {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                state.chatBackReferrer = { type: 'map_detail', id: idOrName };
+                closeMapItemDetail();
+                startChatConversation(authorName);
+            };
         }
     }
 
-    if (isUserOffer || isUserNeed) {
-        if (chatBtn) chatBtn.classList.add('hidden');
-        if (profileBtn) {
+    if (profileBtn) {
+        if (isUserOffer || isUserNeed) {
             profileBtn.innerHTML = `<span class="material-symbols-outlined text-xs">person</span> view profile`;
-            const handleProfileClick = (e) => {
+            profileBtn.onclick = (e) => {
                 if (e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -7837,47 +7888,9 @@ function openMapItemDetail(idOrName) {
                 closeMapItemDetail();
                 showView('profile_settings');
             };
-            profileBtn.onclick = handleProfileClick;
-        }
-        if (reportBtn) reportBtn.classList.add('hidden');
-    } else {
-        if (chatBtn) {
-            chatBtn.classList.remove('hidden');
-            if (idOrName.startsWith('need_')) {
-                chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs">handshake</span> I can help`;
-                const needId = idOrName.replace('need_', '');
-                const handleChatClick = (e) => {
-                    if (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
-                    state.chatBackReferrer = { type: 'map_detail', id: idOrName };
-                    closeMapItemDetail();
-                    handleOfferToSwapNeed(needId);
-                };
-                chatBtn.onclick = handleChatClick;
-            } else {
-                const neighbor = state.neighbors[idOrName];
-                if (neighbor && neighbor.isKarma) {
-                    chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs">volunteer_activism</span> free gift request`;
-                } else {
-                    chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs">handshake</span> lets swap`;
-                }
-                const handleChatClick = (e) => {
-                    if (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
-                    state.chatBackReferrer = { type: 'map_detail', id: idOrName };
-                    closeMapItemDetail();
-                    startChatConversation(authorName);
-                };
-                chatBtn.onclick = handleChatClick;
-            }
-        }
-        if (profileBtn) {
+        } else {
             profileBtn.innerHTML = `<span class="material-symbols-outlined text-xs">person</span> view account`;
-            const handleProfileClick = (e) => {
+            profileBtn.onclick = (e) => {
                 if (e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -7886,20 +7899,38 @@ function openMapItemDetail(idOrName) {
                 state.lastActiveMapPinId = currentMapDetailId;
                 handleMapDetailAuthorClick();
             };
-            profileBtn.onclick = handleProfileClick;
         }
-        if (reportBtn) {
-            reportBtn.classList.remove('hidden');
-            reportBtn.innerHTML = `<span class="material-symbols-outlined text-xs">flag</span> report listing`;
-            const handleReportClick = (e) => {
-                if (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
+    }
+
+    if (blockBtn) {
+        blockBtn.classList.remove('hidden');
+        blockBtn.innerHTML = `<span class="material-symbols-outlined text-xs">block</span> block user`;
+        blockBtn.onclick = (e) => {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            const blockName = authorName.replace(' (You)', '');
+            showBlockUserConfirmModal(
+                `Are you sure you want to block ${blockName}? You will no longer see their listings, map pins, or messages.`,
+                () => {
+                    blockNeighbor(blockName);
+                    closeMapItemDetail();
                 }
-                handleReportUserFromDetail();
-            };
-            reportBtn.onclick = handleReportClick;
-        }
+            );
+        };
+    }
+
+    if (reportBtn) {
+        reportBtn.classList.remove('hidden');
+        reportBtn.innerHTML = `<span class="material-symbols-outlined text-xs">flag</span> report listing`;
+        reportBtn.onclick = (e) => {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            handleReportUserFromDetail();
+        };
     }
 
     const scrollContainer = document.getElementById('map-detail-scroll-container');
@@ -8290,23 +8321,16 @@ function openMapEventDetail(eventId) {
 
     const reportBtn = document.getElementById('map-event-detail-report-btn');
     if (reportBtn) {
-        const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
-        const isHost = (event.host === currentUser || event.host.toLowerCase() === 'you' || event.host.toLowerCase().includes('lily kaufmann') || event.host.toLowerCase().includes(currentUser.toLowerCase()));
-        if (isHost) {
-            reportBtn.style.display = 'none';
-            reportBtn.classList.add('hidden');
-        } else {
-            reportBtn.style.display = 'flex';
-            reportBtn.classList.remove('hidden');
-            const handleReportClick = (e) => {
-                if (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                handleReportMapEventFromDetail();
-            };
-            reportBtn.onclick = handleReportClick;
-        }
+        reportBtn.style.display = 'flex';
+        reportBtn.classList.remove('hidden');
+        const handleReportClick = (e) => {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            handleReportMapEventFromDetail();
+        };
+        reportBtn.onclick = handleReportClick;
     }
     
     playSound('click');
@@ -8363,21 +8387,16 @@ function renderMapEventRSVPs(event) {
     const isUserRsvped = event.rsvps.includes(currentUser);
     const isHost = (event.host === currentUser || event.host.toLowerCase() === 'you' || event.host.toLowerCase().includes('lily kaufmann') || event.host.toLowerCase().includes(currentUser.toLowerCase()));
 
-    if (isHost) {
-        rsvpBtn.style.display = 'none';
-        rsvpBtn.classList.add('hidden');
-    } else {
-        rsvpBtn.style.display = '';
-        rsvpBtn.classList.remove('hidden');
-        rsvpBtn.className = "w-full py-2.5 rounded-xl font-bold text-[11px] active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 transition-all";
+    rsvpBtn.style.display = '';
+    rsvpBtn.classList.remove('hidden');
+    rsvpBtn.className = "w-full py-2.5 rounded-xl font-bold text-[11px] active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 transition-all";
 
-        if (isUserRsvped) {
-            rsvpBtn.classList.add('bg-black', 'text-white', 'hover:bg-black/90', 'dark:bg-white', 'dark:text-black', 'dark:hover:bg-white/90');
-            rsvpBtn.innerHTML = '<span class="material-symbols-outlined text-xs">cancel</span> cancel rsvp';
-        } else {
-            rsvpBtn.classList.add('bg-white', 'border', 'border-black/20', 'text-black', 'hover:bg-black/5', 'dark:bg-[#18201a]', 'dark:border-white/20', 'dark:text-white', 'dark:hover:bg-white/5');
-            rsvpBtn.innerHTML = '<span class="material-symbols-outlined text-xs">check_circle</span> rsvp to event';
-        }
+    if (isUserRsvped) {
+        rsvpBtn.classList.add('bg-black', 'text-white', 'hover:bg-black/90', 'dark:bg-white', 'dark:text-black', 'dark:hover:bg-white/90');
+        rsvpBtn.innerHTML = '<span class="material-symbols-outlined text-xs">cancel</span> cancel rsvp';
+    } else {
+        rsvpBtn.classList.add('bg-white', 'border', 'border-black/20', 'text-black', 'hover:bg-black/5', 'dark:bg-[#18201a]', 'dark:border-white/20', 'dark:text-white', 'dark:hover:bg-white/5');
+        rsvpBtn.innerHTML = '<span class="material-symbols-outlined text-xs">check_circle</span> rsvp to event';
     }
 
     const count = event.rsvps.length;
@@ -9194,7 +9213,6 @@ function animateCategoryDropdownOut(callback) {
 window.animateCategoryDropdownOut = animateCategoryDropdownOut;
 
 function closeMapCategoryDropdown() {
-    const overlay = document.getElementById('map-filter-overlay');
     const dropdown = document.getElementById('map-category-dropdown');
     const filterIcon = document.getElementById('map-filter-icon');
     const floatingContainer = document.getElementById('village-segment-floating-buttons');
@@ -9203,9 +9221,7 @@ function closeMapCategoryDropdown() {
     // Reset info mode on close
     mapInfoModeActive = false;
     
-    if (overlay && !overlay.classList.contains('hidden')) {
-        overlay.classList.remove('opacity-100');
-        overlay.classList.add('opacity-0');
+    if (dropdown && !dropdown.classList.contains('hidden')) {
         if (filterIcon) {
             filterIcon.classList.remove('rotate-filter-active');
             filterIcon.innerText = 'tune';
@@ -9213,26 +9229,11 @@ function closeMapCategoryDropdown() {
         if (filterBtn) {
             filterBtn.classList.remove('active-filter-circle');
         }
-        overlay.classList.add('hidden');
-        if (dropdown) {
-            dropdown.classList.add('hidden');
-            dropdown.classList.remove('expanded');
-        }
+        dropdown.classList.add('hidden');
+        dropdown.classList.remove('expanded');
         if (floatingContainer) {
             floatingContainer.classList.remove('floating-buttons-hidden');
         }
-    }
-
-    // Clear filters on exit/close
-    if ((state && state.activeMapFilters && state.activeMapFilters.length > 0) || activeCategoryFilter) {
-        state.activeMapFilters = [];
-        activeCategoryFilter = null;
-        saveState();
-        if (typeof applyMapFiltering === 'function') applyMapFiltering();
-        if (typeof updateCategoryTrayUI === 'function') updateCategoryTrayUI();
-        if (typeof renderVillageListView === 'function') renderVillageListView();
-        if (typeof renderNeedsBoardView === 'function') renderNeedsBoardView();
-        if (typeof renderEventsList === 'function') renderEventsList();
     }
 }
 window.closeMapCategoryDropdown = closeMapCategoryDropdown;
@@ -9418,29 +9419,29 @@ function renderMapFilterCircles() {
         state.activeMapFilters = [];
     }
 
-    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => {
-        if (c.name === 'Clear Filter') return false;
-        if (currentVillageSegment === 'map' && c.name === 'Event or Meetup') {
-            return false;
-        }
-        return true;
-    });
+    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Clear Filter');
 
     const categoriesHtml = filteredCategories.map((cat, idx) => {
-        const delay = idx * 0.02;
-        const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
-        
         const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
+        
+        const bubbleStyle = isActive 
+            ? `background-color: ${cat.color} !important; border-color: ${cat.color} !important; box-shadow: 0 0 8px rgba(${cat.rgb}, 0.3) !important;`
+            : '';
+        const iconStyle = isActive
+            ? `color: #ffffff !important;`
+            : `color: ${cat.color} !important;`;
+        const pillStyle = isActive 
+            ? `border-color: ${cat.color} !important; box-shadow: 0 0 8px rgba(${cat.rgb}, 0.2) !important; color: ${cat.color} !important; font-weight: 800 !important;`
+            : '';
 
         return `
-            <div class="category-filter-row ${isActive ? 'active-row' : ''} active:scale-[0.98] transition-transform" 
+            <div class="category-filter-row ${isActive ? 'active-row' : ''}" 
                  onclick="selectMapCategoryFilter('${cat.name}', this, event)" 
-                 title="${cat.displayName}"
-                 style="${animStyle}">
-                <div class="category-icon-bubble">
-                    <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
+                 title="${cat.displayName}">
+                <div class="category-icon-bubble" style="${bubbleStyle}">
+                    <span class="material-symbols-outlined text-[14px]" style="${iconStyle}">${cat.icon}</span>
                 </div>
-                <div class="category-title-pill">
+                <div class="category-title-pill" style="${pillStyle}">
                     <span>${cat.displayName}</span>
                 </div>
             </div>
@@ -9477,7 +9478,7 @@ function renderListFilterCircles() {
     const dropdown = document.getElementById('list-category-dropdown');
     if (!dropdown) return;
     
-    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Event or Meetup' && c.name !== 'Clear Filter');
+    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Clear Filter');
     
     const categoriesHtml = filteredCategories.map((cat, idx) => {
         const delay = idx * 0.02;
@@ -9486,16 +9487,12 @@ function renderListFilterCircles() {
         const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
         
         return `
-            <div class="category-filter-row ${isActive ? 'active-row' : ''} active:scale-[0.98] transition-transform" 
+            <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-[0.98] transition-transform" 
                  onclick="selectListCategoryFilter('${cat.name}', this, event)" 
                  title="${cat.displayName}"
                  style="${animStyle}">
-                <div class="category-icon-bubble">
-                    <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
-                </div>
-                <div class="category-title-pill">
-                    <span>${cat.displayName}</span>
-                </div>
+                <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
+                <span>${cat.displayName}</span>
             </div>
         `;
     }).join('');
@@ -9508,7 +9505,7 @@ function renderNeedsFilterCircles() {
     const dropdown = document.getElementById('needs-category-dropdown');
     if (!dropdown) return;
     
-    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Event or Meetup' && c.name !== 'Clear Filter');
+    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Clear Filter');
     
     const categoriesHtml = filteredCategories.map((cat, idx) => {
         const delay = idx * 0.02;
@@ -9517,16 +9514,12 @@ function renderNeedsFilterCircles() {
         const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
         
         return `
-            <div class="category-filter-row ${isActive ? 'active-row' : ''} active:scale-[0.98] transition-transform" 
+            <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-[0.98] transition-transform" 
                  onclick="selectNeedsCategoryFilter('${cat.name}', this, event)" 
                  title="${cat.displayName}"
                  style="${animStyle}">
-                <div class="category-icon-bubble">
-                    <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
-                </div>
-                <div class="category-title-pill">
-                    <span>${cat.displayName}</span>
-                </div>
+                <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
+                <span>${cat.displayName}</span>
             </div>
         `;
     }).join('');
@@ -9611,16 +9604,12 @@ function renderEventsFilterCircles() {
         const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
         
         return `
-            <div class="category-filter-row ${isActive ? 'active-row' : ''} active:scale-[0.98] transition-transform" 
+            <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-[0.98] transition-transform" 
                  onclick="selectEventsCategoryFilter('${cat.name}', this, event)" 
                  title="${cat.displayName}"
                  style="${animStyle}">
-                <div class="category-icon-bubble">
-                    <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
-                </div>
-                <div class="category-title-pill">
-                    <span>${cat.displayName}</span>
-                </div>
+                <span class="material-symbols-outlined text-[14px]" ${isActive ? '' : `style="color: ${cat.color} !important;"`}>${cat.icon}</span>
+                <span>${cat.displayName}</span>
             </div>
         `;
     }).join('');
@@ -11065,8 +11054,8 @@ function renderConversationsList() {
                 `;
             } else if (segment === 'active' || segment === 'requests') {
                 rightHtml = `
-                    <button onclick="showChatAutoDeleteInfo()" class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" title="Auto-Delete Info">
-                        <span class="material-symbols-outlined text-[17px]">info</span>
+                    <button onclick="showChatAutoDeleteInfo()" class="w-10 h-10 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" title="Auto-Delete Info">
+                        <span class="material-symbols-outlined text-[20px]">info</span>
                     </button>
                 `;
             }
@@ -11079,7 +11068,7 @@ function renderConversationsList() {
         if (!conv.isGroup) {
             if (state.blockedUsers && state.blockedUsers.includes(conv.neighborName)) return;
             if (state.suspendedUsers && state.suspendedUsers.includes(conv.neighborName)) return;
-            const neighborObj = state.neighbors[conv.neighborName];
+            const neighborObj = state.neighbors ? state.neighbors[conv.neighborName] : null;
             if (neighborObj && neighborObj.suspended) return;
         }
 
@@ -11156,7 +11145,7 @@ function renderConversationsList() {
             if (conv.isGroup) {
                 avatarUrl = conv.avatar || "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=60&w=80&auto=format&fit=crop";
             } else {
-                neighbor = state.neighbors[conv.neighborName];
+                neighbor = state.neighbors ? state.neighbors[conv.neighborName] : null;
                 avatarUrl = neighbor ? neighbor.avatar : "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop";
             }
 
@@ -11261,7 +11250,15 @@ function renderConversationsList() {
             card.className = `chat-card-slider-content group flex items-start gap-4 py-3.5 px-6 ${bgClass} cursor-pointer transition-transform duration-200 relative z-10 bg-white dark:bg-[#18201a]`;
             card.style.transform = "translateX(0px)";
             card.onclick = (e) => {
-                if (card.style.transform && card.style.transform !== 'translateX(0px)') {
+                let transformX = 0;
+                const transform = card.style.transform;
+                if (transform) {
+                    const match = transform.match(/translateX\(([-\d.]+)px\)/) || transform.match(/translateX\(([-\d.]+)\)/);
+                    if (match) {
+                        transformX = parseFloat(match[1]);
+                    }
+                }
+                if (Math.abs(transformX) > 5) {
                     e.stopPropagation();
                     closeSwipeCard(card);
                 } else {
@@ -11348,6 +11345,8 @@ function setupChatSwipeGestures(sliderEl, convId) {
     let isVerticalSwipe = false;
     const dragThreshold = 10;
 
+    let hasMoved = false;
+
     const startDrag = (clientX, clientY) => {
         if (openSwipeCard && openSwipeCard !== sliderEl) {
             closeSwipeCard(openSwipeCard);
@@ -11357,6 +11356,7 @@ function setupChatSwipeGestures(sliderEl, convId) {
         startY = clientY;
         isDragging = true;
         isVerticalSwipe = false;
+        hasMoved = false;
 
         const transformMatrix = window.getComputedStyle(sliderEl).transform;
         if (transformMatrix && transformMatrix !== 'none') {
@@ -11374,6 +11374,10 @@ function setupChatSwipeGestures(sliderEl, convId) {
 
         const diffX = clientX - startX;
         const diffY = clientY - startY;
+
+        if (Math.abs(diffX) > 5 || Math.abs(diffY) > 5) {
+            hasMoved = true;
+        }
 
         if (!isVerticalSwipe) {
             if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > dragThreshold) {
@@ -11395,6 +11399,9 @@ function setupChatSwipeGestures(sliderEl, convId) {
                 newX = maxTranslate;
             }
             sliderEl.style.transform = `translateX(${newX}px)`;
+            if (newX < -10) {
+                openSwipeCard = sliderEl;
+            }
         }
     };
 
@@ -11403,6 +11410,15 @@ function setupChatSwipeGestures(sliderEl, convId) {
         isDragging = false;
 
         sliderEl.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+        
+        if (!hasMoved) {
+            if (Math.abs(currentTranslateX) > 5) {
+                closeSwipeCard(sliderEl);
+            } else {
+                startChatConversation(convId);
+            }
+            return;
+        }
         
         const transformMatrix = window.getComputedStyle(sliderEl).transform;
         let finalX = 0;
@@ -11669,105 +11685,130 @@ window.handleConfirmSwapChoice = function(isCompleted) {
 window.closeConfirmSwapModal = closeConfirmSwapModal;
 
 function startChatConversation(convIdOrNeighborName) {
-    if (state.isGuest) {
-        openGuestPromptModal();
-        return;
-    }
-    let conv = state.conversations.find(c => c.id === convIdOrNeighborName || c.neighborName === convIdOrNeighborName);
-    
-    const targetName = conv ? conv.neighborName : convIdOrNeighborName;
-    if (state.blockedUsers && state.blockedUsers.includes(targetName)) {
-        alert("You have blocked this neighbor. Unblock them in settings to resume conversation.");
-        return;
-    }
-    if (state.suspendedUsers && state.suspendedUsers.includes(targetName)) {
-        alert("This neighbor's account has been suspended.");
-        return;
-    }
-
-    if (!conv) {
-        const neighborName = convIdOrNeighborName;
-        const neighbor = state.neighbors[neighborName];
-        const isKarma = neighbor && neighbor.isKarma;
+    try {
+        if (state.isGuest) {
+            openGuestPromptModal();
+            return;
+        }
+        let conv = state.conversations.find(c => c.id === convIdOrNeighborName || c.neighborName === convIdOrNeighborName);
         
-        let initialText = `Hello! I noticed you were looking at my "${neighbor ? neighbor.offerTitle : ''}". Are you open to a trade?`;
-        if (isKarma) {
-            initialText = `Hello! I noticed you were looking at my "${neighbor.offerTitle}". Would you like to have it as a free gift?`;
+        // Prevent double load triggers within 300ms
+        if (conv) {
+            if (window.lastLoadedConvId === conv.id && Date.now() - window.lastLoadedConvTime < 300) {
+                return;
+            }
+            window.lastLoadedConvId = conv.id;
+            window.lastLoadedConvTime = Date.now();
         }
         
-        conv = {
-            id: neighborName.toLowerCase().replace(/\s+/g, '-'),
-            neighborName: neighborName,
-            unread: false,
-            timeLeft: '48 hours left',
-            messages: [
-                { sender: neighborName, text: initialText, time: '10:00 AM' }
-            ],
-            negotiation: {
-                status: 'none',
-                offeredItem: null,
-                requestedItem: neighbor ? neighbor.offerTitle : null
+        const targetName = conv ? conv.neighborName : convIdOrNeighborName;
+        if (state.blockedUsers && state.blockedUsers.includes(targetName)) {
+            alert("You have blocked this neighbor. Unblock them in settings to resume conversation.");
+            return;
+        }
+        if (state.suspendedUsers && state.suspendedUsers.includes(targetName)) {
+            alert("This neighbor's account has been suspended.");
+            return;
+        }
+
+        if (!conv) {
+            const neighborName = convIdOrNeighborName;
+            const neighbor = state.neighbors ? state.neighbors[neighborName] : null;
+            const isKarma = neighbor && neighbor.isKarma;
+            
+            let initialText = `Hello! I noticed you were looking at my "${neighbor ? neighbor.offerTitle : ''}". Are you open to a trade?`;
+            if (isKarma) {
+                initialText = `Hello! I noticed you were looking at my "${neighbor.offerTitle}". Would you like to have it as a free gift?`;
             }
-        };
-        state.conversations.unshift(conv);
-        saveState();
-    } else {
-        const neighbor = state.neighbors[conv.neighborName];
-        if (neighbor && neighbor.isKarma) {
-            if (conv.messages && conv.messages.length > 0 && conv.messages[0].sender === conv.neighborName) {
-                if (conv.messages[0].text.includes("Are you open to a trade?")) {
-                    conv.messages[0].text = `Hello! I noticed you were looking at my "${neighbor.offerTitle}". Would you like to have it as a free gift?`;
-                    saveState();
+            
+            conv = {
+                id: neighborName.toLowerCase().replace(/\s+/g, '-'),
+                neighborName: neighborName,
+                unread: false,
+                timeLeft: '48 hours left',
+                messages: [
+                    { sender: neighborName, text: initialText, time: '10:00 AM' }
+                ],
+                negotiation: {
+                    status: 'none',
+                    offeredItem: null,
+                    requestedItem: neighbor ? neighbor.offerTitle : null
+                }
+            };
+            state.conversations.unshift(conv);
+            saveState();
+        } else {
+            const neighbor = state.neighbors ? state.neighbors[conv.neighborName] : null;
+            if (neighbor && neighbor.isKarma) {
+                if (conv.messages && conv.messages.length > 0 && conv.messages[0].sender === conv.neighborName) {
+                    if (conv.messages[0].text.includes("Are you open to a trade?")) {
+                        conv.messages[0].text = `Hello! I noticed you were looking at my "${neighbor.offerTitle}". Would you like to have it as a free gift?`;
+                        saveState();
+                    }
                 }
             }
         }
-    }
 
-    conv.unread = false;
-    conv.unreadCount = 0;
-    saveState();
-    state.currentConversationId = conv.id;
-    
-    renderChatDetail(conv);
-    updateChatNotificationBadge();
-    showView('chat_detail');
+        conv.unread = false;
+        conv.unreadCount = 0;
+        saveState();
+        state.currentConversationId = conv.id;
+        
+        renderChatDetail(conv);
+        updateChatNotificationBadge();
+        showView('chat_detail');
+    } catch (err) {
+        alert("CRASH in startChatConversation: " + err.message + "\n" + err.stack);
+        console.error("CRASH in startChatConversation: ", err);
+    }
 }
 
 function renderChatDetail(conv) {
-    if (typeof window.closeStatusDropdownMenu === 'function') window.closeStatusDropdownMenu();
-    if (typeof window.closeConfirmationsDropdownMenu === 'function') window.closeConfirmationsDropdownMenu();
+    try {
+        if (!conv) return;
+        if (typeof window.closeStatusDropdownMenu === 'function') window.closeStatusDropdownMenu();
+        if (typeof window.closeConfirmationsDropdownMenu === 'function') window.closeConfirmationsDropdownMenu();
 
-    // Dynamically update the header bar themed vertical pill and uppercase title text
-    const detailBarEl = document.getElementById('chat-detail-title-bar');
-    const detailTitleEl = document.getElementById('chat-detail-title-text');
-    if (detailBarEl && detailTitleEl) {
-        let activeColor = '#7c3aed'; // default Read (violet-600)
-        let displayTitle = 'Read';
-        const segment = state.currentChatSegment || 'active';
-        if (segment === 'requests') {
-            activeColor = '#2563eb'; // blue-600
-            displayTitle = 'Unread';
-        } else if (segment === 'active') {
-            activeColor = '#7c3aed'; // violet-600
-            displayTitle = 'Read';
-        } else if (segment === 'groups') {
-            activeColor = '#059669'; // emerald-600
-            displayTitle = 'Group Chats';
-        } else if (segment === 'reviews') {
-            activeColor = '#ef4444'; // red-600
-            displayTitle = 'Reviews';
-        } else if (segment === 'swaps') {
-            activeColor = '#ea580c'; // orange-600
-            displayTitle = 'Successful Swaps';
-        } else if (segment === 'old') {
-            activeColor = '#308A5E'; // forest-green
-            displayTitle = 'Archived Chats';
+        // Show avatar and name wrappers, hide category title wrapper
+        const avatarContainer = document.getElementById('chat-header-avatar-container');
+        const nameContainer = document.getElementById('chat-header-name-container');
+        if (avatarContainer) avatarContainer.classList.remove('hidden');
+        if (nameContainer) nameContainer.classList.remove('hidden');
+
+        // Dynamically update the header bar themed vertical pill and uppercase title text
+        const detailBarEl = document.getElementById('chat-detail-title-bar');
+        const detailTitleEl = document.getElementById('chat-detail-title-text');
+        if (detailBarEl) detailBarEl.classList.add('hidden');
+        if (detailTitleEl) detailTitleEl.classList.add('hidden');
+        if (detailBarEl && detailTitleEl) {
+            let activeColor = '#7c3aed'; // default Read (violet-600)
+            let displayTitle = 'Read';
+            const segment = state.currentChatSegment || 'active';
+            if (segment === 'requests') {
+                activeColor = '#2563eb'; // blue-600
+                displayTitle = 'Unread';
+            } else if (segment === 'active') {
+                activeColor = '#7c3aed'; // violet-600
+                displayTitle = 'Read';
+            } else if (segment === 'groups') {
+                activeColor = '#059669'; // emerald-600
+                displayTitle = 'Group Chats';
+            } else if (segment === 'reviews') {
+                activeColor = '#ef4444'; // red-600
+                displayTitle = 'Reviews';
+            } else if (segment === 'swaps') {
+                activeColor = '#ea580c'; // orange-600
+                displayTitle = 'Successful Swaps';
+            } else if (segment === 'old') {
+                activeColor = '#308A5E'; // forest-green
+                displayTitle = 'Archived Chats';
+            }
+            detailTitleEl.innerText = displayTitle;
+            detailTitleEl.style.setProperty('color', activeColor, 'important');
+            detailTitleEl.classList.add('hidden');
+            detailBarEl.className = 'w-[8px] h-[22px] rounded-full flex-shrink-0 hidden';
+            detailBarEl.style.setProperty('background-color', activeColor, 'important');
         }
-        detailTitleEl.innerText = displayTitle;
-        detailTitleEl.style.setProperty('color', activeColor, 'important');
-        detailBarEl.className = 'w-[8px] h-[22px] rounded-full flex-shrink-0';
-        detailBarEl.style.setProperty('background-color', activeColor, 'important');
-    }
 
     // Toggle the auto-delete banner based on group status
     const banner = document.getElementById('chat-detail-auto-delete-banner');
@@ -11790,7 +11831,7 @@ function renderChatDetail(conv) {
         const membersCount = (conv.groupMembers ? conv.groupMembers.length : 0) + 1;
         ratingText = `Group Chat · ${membersCount} Members`;
     } else {
-        const neighbor = state.neighbors[conv.neighborName];
+        const neighbor = state.neighbors ? state.neighbors[conv.neighborName] : null;
         avatarUrl = neighbor ? neighbor.avatar : "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop";
         ratingText = "";
     }
@@ -11799,7 +11840,7 @@ function renderChatDetail(conv) {
     if (chatHeaderName) {
         let nameHTML = escapeHTML(conv.neighborName);
         if (!conv.isGroup) {
-            const neighbor = state.neighbors[conv.neighborName];
+            const neighbor = state.neighbors ? state.neighbors[conv.neighborName] : null;
             if (neighbor) {
                 const nCompleted = neighbor.completedSwaps !== undefined ? neighbor.completedSwaps : Math.floor((neighbor.vouches || 0) * 1.5);
                 const nStrikes = neighbor.strikes || 0;
@@ -11858,7 +11899,7 @@ function renderChatDetail(conv) {
         }
     } else {
         if (groupSettingsBtn) groupSettingsBtn.classList.add('hidden');
-        const status = getBarterItemStatus(conv.neighborName);
+        const status = getBarterItemStatus(conv.neighborName) || "Available";
         
         // Update single dot and label in header
         const singleDot = document.getElementById('chat-header-single-dot');
@@ -11869,10 +11910,10 @@ function renderChatDetail(conv) {
         }
         
         // Update status dropdown details
-        const neighbor = state.neighbors[conv.neighborName];
+        const neighbor = state.neighbors ? state.neighbors[conv.neighborName] : null;
         const statusLabel = document.getElementById('chat-dropdown-status-label');
         if (statusLabel) {
-            statusLabel.innerText = status.charAt(0).toUpperCase() + status.slice(1);
+            statusLabel.innerText = status ? (status.charAt(0).toUpperCase() + status.slice(1)) : "Available";
         }
         const dropVouches = document.getElementById('chat-dropdown-vouches');
         if (dropVouches) {
@@ -12081,7 +12122,7 @@ function renderChatDetail(conv) {
                         offeredImg = getItemImageByTitle(offeredTitle);
                     }
                     
-                    const neighbor = state.neighbors[conv.neighborName];
+                    const neighbor = state.neighbors ? state.neighbors[conv.neighborName] : null;
                     if (neighbor) {
                         requestedId = conv.neighborName;
                         requestedImg = neighbor.offerImg || PLACEHOLDER_IMAGE;
@@ -12153,8 +12194,8 @@ function renderChatDetail(conv) {
                                 <span class="text-xs font-bold text-warm-cream">${msg.isLiveLocation ? 'My Live Location' : 'Suggested Meeting Spot'}</span>
                             </div>
                             <div class="p-2 bg-white/10 rounded-xl border border-white/10">
-                                <p class="font-bold text-warm-cream text-[11px]">${escapeHTML(msg.locationData.name)}</p>
-                                <p class="text-[9.5px] text-warm-cream/80">${escapeHTML(msg.locationData.address)}</p>
+                                <p class="font-bold text-warm-cream text-[11px]">${escapeHTML(msg.locationData ? msg.locationData.name : '')}</p>
+                                <p class="text-[9.5px] text-warm-cream/80">${escapeHTML(msg.locationData ? msg.locationData.address : '')}</p>
                             </div>
                         </div>`;
                     } else if (msg.isKarmaSwapRequest) {
@@ -12245,8 +12286,8 @@ function renderChatDetail(conv) {
                                 <span class="text-xs font-bold text-forest-green">${msg.isLiveLocation ? 'My Live Location' : 'Suggested Meeting Spot'}</span>
                             </div>
                             <div class="p-2 bg-forest-green/5 rounded-xl border border-outline-variant/10">
-                                <p class="font-bold text-forest-green text-[11px]">${escapeHTML(msg.locationData.name)}</p>
-                                <p class="text-[9.5px] text-on-surface-variant">${escapeHTML(msg.locationData.address)}</p>
+                                <p class="font-bold text-forest-green text-[11px]">${escapeHTML(msg.locationData ? msg.locationData.name : '')}</p>
+                                <p class="text-[9.5px] text-on-surface-variant">${escapeHTML(msg.locationData ? msg.locationData.address : '')}</p>
                             </div>
                         </div>`;
                     } else if (msg.isKarmaSwapRequest) {
@@ -12287,9 +12328,13 @@ function renderChatDetail(conv) {
     setTimeout(() => {
         feed.scrollTop = feed.scrollHeight;
     }, 50);
-    setTimeout(() => {
-        feed.scrollTop = feed.scrollHeight;
-    }, 150);
+        setTimeout(() => {
+            feed.scrollTop = feed.scrollHeight;
+        }, 150);
+    } catch (err) {
+        alert("CRASH in renderChatDetail: " + err.message + "\n" + err.stack);
+        console.error("CRASH in renderChatDetail: ", err);
+    }
 }
 
 window.toggleChatTradeDrawer = function() {
@@ -12324,7 +12369,7 @@ function renderChatTradeDrawer(conv) {
 
     if (!barContainer || !drawer || !detailsContainer) return;
 
-    const neighbor = conv.isGroup ? null : state.neighbors[conv.neighborName];
+    const neighbor = conv.isGroup ? null : (state.neighbors ? state.neighbors[conv.neighborName] : null);
     const isKarmaGift = neighbor && neighbor.isKarma;
     const status = conv.negotiation ? conv.negotiation.status : 'none';
     const isComplete = status === 'completed';
@@ -12716,7 +12761,7 @@ function renderChatTradeDrawer(conv) {
     }
 
     let warningHtml = '';
-    const neighborObj = state.neighbors[conv.neighborName];
+    const neighborObj = state.neighbors ? state.neighbors[conv.neighborName] : null;
     if (neighborObj) {
         const nCompleted = neighborObj.completedSwaps !== undefined ? neighborObj.completedSwaps : Math.floor((neighborObj.vouches || 0) * 1.5);
         const nStrikes = neighborObj.strikes || 0;
@@ -13719,7 +13764,7 @@ function handleCompleteTrade() {
     
     // Increment neighbor vouches if it is a Karma swap
     if (conv.negotiation.isKarmaSwap) {
-        const neighbor = state.neighbors[conv.neighborName];
+        const neighbor = state.neighbors ? state.neighbors[conv.neighborName] : null;
         if (neighbor) {
             neighbor.vouches = (neighbor.vouches || 0) + 1;
         }
@@ -14511,7 +14556,7 @@ function renderProfileSettings() {
         }
 
         displayedTrades.forEach(conv => {
-            const neighbor = state.neighbors[conv.neighborName];
+            const neighbor = state.neighbors ? state.neighbors[conv.neighborName] : null;
             if (!neighbor) return;
 
             const card = document.createElement('div');
@@ -15748,16 +15793,11 @@ function renderVillageListView() {
     const container = document.getElementById('village-list-container');
     if (!container) return;
 
-    // Sync slider and label
-    const radiusVal = (state.stats && state.stats.radius !== undefined) ? state.stats.radius : 5;
-    const listSlider = document.getElementById('village-list-distance-slider');
+    // Sync label only — do not reset slider.value to avoid interrupting user drag
+    let radiusVal = (state.stats && state.stats.radius !== undefined) ? state.stats.radius : 5;
+    if (radiusVal > 5) radiusVal = 5;
+    if (radiusVal < 0.5) radiusVal = 0.5;
     const listLabel = document.getElementById('village-list-distance-display');
-    if (listSlider) {
-        if (radiusVal <= 1) listSlider.value = 0;
-        else if (radiusVal <= 5) listSlider.value = 1;
-        else if (radiusVal <= 10) listSlider.value = 2;
-        else listSlider.value = 3;
-    }
     if (listLabel) listLabel.innerText = formatRadiusValue(radiusVal);
 
     const listInner = document.getElementById('village-list-items');
@@ -15783,13 +15823,6 @@ function renderVillageListView() {
     }
 
     let maxRadius = radiusVal;
-    if (listSlider) {
-        const idx = parseInt(listSlider.value);
-        if (idx === 0) maxRadius = 1;
-        else if (idx === 1) maxRadius = 5;
-        else if (idx === 2) maxRadius = 10;
-        else if (idx === 3) maxRadius = 20;
-    }
 
     // Pool neighbor listings and user listings together
     let listingsPool = [];
@@ -15797,10 +15830,20 @@ function renderVillageListView() {
     Object.keys(state.neighbors).forEach(name => {
         const neighbor = state.neighbors[name];
         if (!neighbor) return;
-        if (getBarterItemStatus(name) !== 'Available') return;
+        if (getBarterItemStatus(name) === 'Traded') return;
         if (state.blockedUsers && state.blockedUsers.includes(name)) return;
         if (state.suspendedUsers && state.suspendedUsers.includes(name)) return;
         if (neighbor.suspended || neighbor.shadowBanned) return;
+
+        const currentUser = state.currentUser || {};
+        const displayName = currentUser.displayName || `${currentUser.firstName || 'Lily'} ${currentUser.lastName || 'Kaufmann'}`;
+        const isUserOffering = name === displayName || 
+                               name === 'Lily Kaufmann' || 
+                               name === 'Lily Kaufmann (You)' ||
+                               name.includes('(You)') ||
+                               name === 'me' ||
+                               (state.currentUser && (name === state.currentUser.displayName || name === `${state.currentUser.firstName} ${state.currentUser.lastName}`));
+        if (isUserOffering) return;
 
         const distance = getDistanceFromUser(neighbor);
 
@@ -15815,23 +15858,6 @@ function renderVillageListView() {
             category: neighbor.category,
             distance: distance,
             createdAt: neighbor.createdAt || 0 // fallback
-        });
-    });
-
-    state.userOfferings.forEach(offer => {
-        if (getBarterItemStatus(offer.id) !== 'Available') return;
-        
-        listingsPool.push({
-            type: 'user',
-            id: offer.id,
-            name: state.currentUser ? state.currentUser.firstName : 'Lily',
-            title: offer.title,
-            desc: offer.desc,
-            image: offer.image || PLACEHOLDER_IMAGE,
-            avatar: state.currentUser ? state.currentUser.avatar : DEFAULT_AVATAR,
-            category: offer.category,
-            distance: 0.0, // user is at 0 km
-            createdAt: offer.createdAt || parseFloat(offer.id.replace('offer-', '')) || Date.now()
         });
     });
 
@@ -16028,16 +16054,11 @@ function renderNeedsBoardView() {
     if (!listContainer) return;
     listContainer.innerHTML = "";
 
-    // Sync slider and label
-    const radiusVal = (state.stats && state.stats.radius !== undefined) ? state.stats.radius : 5;
-    const needsSlider = document.getElementById('village-needs-distance-slider');
+    // Sync label only — do not reset slider.value to avoid interrupting user drag
+    let radiusVal = (state.stats && state.stats.radius !== undefined) ? state.stats.radius : 5;
+    if (radiusVal > 5) radiusVal = 5;
+    if (radiusVal < 0.5) radiusVal = 0.5;
     const needsLabel = document.getElementById('village-needs-distance-display');
-    if (needsSlider) {
-        if (radiusVal <= 1) needsSlider.value = 0;
-        else if (radiusVal <= 5) needsSlider.value = 1;
-        else if (radiusVal <= 10) needsSlider.value = 2;
-        else needsSlider.value = 3;
-    }
     if (needsLabel) needsLabel.innerText = formatRadiusValue(radiusVal);
 
     const searchInput = document.getElementById('village-needs-search-input') || document.getElementById('village-search-input'); // Synced text input
@@ -16059,13 +16080,6 @@ function renderNeedsBoardView() {
     }
 
     let maxRadius = radiusVal;
-    if (needsSlider) {
-        const idx = parseInt(needsSlider.value);
-        if (idx === 0) maxRadius = 1;
-        else if (idx === 1) maxRadius = 5;
-        else if (idx === 2) maxRadius = 10;
-        else if (idx === 3) maxRadius = 20;
-    }
 
     let needsPool = [];
 
@@ -16074,6 +16088,16 @@ function renderNeedsBoardView() {
         if (state.suspendedUsers && state.suspendedUsers.includes(need.neighborName)) return;
         const neighborObj = state.neighbors[need.neighborName];
         if (neighborObj && (neighborObj.suspended || neighborObj.shadowBanned)) return;
+
+        const currentUser = state.currentUser || {};
+        const displayName = currentUser.displayName || `${currentUser.firstName || 'Lily'} ${currentUser.lastName || 'Kaufmann'}`;
+        const isUserNeed = need.neighborName === displayName || 
+                           need.neighborName === 'Lily Kaufmann' || 
+                           need.neighborName === 'Lily Kaufmann (You)' ||
+                           need.neighborName.includes('(You)') ||
+                           need.neighborName === 'me' ||
+                           (state.currentUser && (need.neighborName === state.currentUser.displayName || need.neighborName === `${state.currentUser.firstName} ${state.currentUser.lastName}`));
+        if (isUserNeed) return;
 
         // Find coordinates of target neighbor or custom coordinates
         let coords = [49.2827, -123.1207];
@@ -17169,9 +17193,24 @@ function handleMuteAllNotifications(checked) {
 }
 
 function adjustSimulatorScale(val) {
-    document.documentElement.style.setProperty('--simulator-scale', val);
+    let scaleVal = val;
+    if (val === 'auto') {
+        const availableHeight = window.innerHeight;
+        const availableWidth = window.innerWidth;
+        const scaleH = (availableHeight - 40) / 880;
+        const scaleW = (availableWidth - 40) / 420;
+        scaleVal = Math.min(1.0, Math.max(0.4, Math.min(scaleH, scaleW))).toFixed(2);
+    }
+    document.documentElement.style.setProperty('--simulator-scale', scaleVal);
     safeLocalStorage.setItem('barterland_simulator_scale', val);
 }
+
+window.addEventListener('resize', () => {
+    const savedScale = safeLocalStorage.getItem('barterland_simulator_scale') || '0.75';
+    if (savedScale === 'auto') {
+        adjustSimulatorScale('auto');
+    }
+});
 
 // Map Searching/Filtering dynamic hooks
 const initMapAndInputs = () => {
@@ -17193,6 +17232,15 @@ const initMapAndInputs = () => {
             e.preventDefault();
             e.stopPropagation();
             toggleCategoryTray();
+            return;
+        }
+
+        // Close map category dropdown on click outside (capture phase captures it before Leaflet stops propagation)
+        const dropdown = document.getElementById('map-category-dropdown');
+        if (dropdown && !dropdown.classList.contains('hidden')) {
+            if (!dropdown.contains(e.target)) {
+                closeMapCategoryDropdown();
+            }
         }
     }, true); // Capture phase is critical to run before Leaflet stops propagation!
 
@@ -18477,7 +18525,7 @@ function closeSafetyHelpGuideModal() {
     const chatIcon = document.getElementById('chat-segment-trigger-icon');
     if (chatIcon) {
         if (state.currentView && state.currentView.startsWith('chat_detail')) {
-            updateTriggerIconState(chatIcon, true);
+            updateTriggerIconState(chatIcon, false);
         } else {
             updateTriggerIconState(chatIcon, false);
         }
@@ -18822,7 +18870,7 @@ function plotMapMarkersOnly() {
                 if (!coords) return;
                 const lat = coords.lat;
                 const lng = coords.lng;
-                if (getBarterItemStatus(name) !== 'Available') return; // Filter out pending/non-available listings
+                if (getBarterItemStatus(name) === 'Traded') return; // Filter out traded listings
                 if (state.blockedUsers && state.blockedUsers.includes(name)) return;
                 if (state.suspendedUsers && state.suspendedUsers.includes(name)) return;
                 if (neighbor.suspended) return;
@@ -18860,7 +18908,7 @@ function plotMapMarkersOnly() {
         // Only plot user offerings on the regular offerings map (gifts_map displays neighbor free gifts)
         if (currentVillageSegment === 'map') {
             state.userOfferings.forEach(offer => {
-                if (getBarterItemStatus(offer.id) !== 'Available') return; // Filter out pending/non-available listings
+                if (getBarterItemStatus(offer.id) === 'Traded') return; // Filter out traded listings
                 if (state.currentUser && state.currentUser.shadowBanned) return; // Skip if self is shadow-banned
                 
                 const coords = validateCoords(offer.lat, offer.lng);
@@ -20226,7 +20274,7 @@ window.renderAdminListings = function() {
     // Add user offerings
     if (state.userOfferings) {
         state.userOfferings.forEach(off => {
-            if (getBarterItemStatus(off.id) === 'Available') {
+            if (getBarterItemStatus(off.id) !== 'Traded') {
                 items.push({
                     id: off.id,
                     title: off.title,
@@ -20242,7 +20290,7 @@ window.renderAdminListings = function() {
     // Add neighbor offerings
     Object.keys(state.neighbors).forEach(name => {
         const n = state.neighbors[name];
-        if (n && n.offerTitle && getBarterItemStatus(name) === 'Available' && (!state.suspendedUsers || !state.suspendedUsers.includes(name))) {
+        if (n && n.offerTitle && getBarterItemStatus(name) !== 'Traded' && (!state.suspendedUsers || !state.suspendedUsers.includes(name))) {
             items.push({
                 id: name,
                 title: n.offerTitle,
@@ -20421,25 +20469,19 @@ function openAddNeedPage() {
 window.openAddNeedPage = openAddNeedPage;
 
 function updateVillageListDistanceFilter(val) {
-    const sliderIdx = parseInt(val);
-    let kmVal = 5;
-    if (sliderIdx === 0) kmVal = 1;
-    else if (sliderIdx === 1) kmVal = 5;
-    else if (sliderIdx === 2) kmVal = 10;
-    else if (sliderIdx === 3) kmVal = 20;
-
+    const kmVal = parseFloat(val);
     if (!state.stats) state.stats = {};
     state.stats.radius = kmVal;
     saveState();
     
     // Sync other sliders & displays
     const needsSlider = document.getElementById('village-needs-distance-slider');
-    if (needsSlider) needsSlider.value = sliderIdx;
+    if (needsSlider) needsSlider.value = kmVal;
     const needsDisplay = document.getElementById('village-needs-distance-display');
     if (needsDisplay) needsDisplay.innerText = formatRadiusValue(kmVal);
 
     const eventsSlider = document.getElementById('village-events-distance-slider');
-    if (eventsSlider) eventsSlider.value = sliderIdx;
+    if (eventsSlider) eventsSlider.value = kmVal;
     const eventsDisplay = document.getElementById('village-events-distance-display');
     if (eventsDisplay) eventsDisplay.innerText = formatRadiusValue(kmVal);
     
@@ -20454,25 +20496,19 @@ function updateVillageListDistanceFilter(val) {
 window.updateVillageListDistanceFilter = updateVillageListDistanceFilter;
 
 function updateVillageNeedsDistanceFilter(val) {
-    const sliderIdx = parseInt(val);
-    let kmVal = 5;
-    if (sliderIdx === 0) kmVal = 1;
-    else if (sliderIdx === 1) kmVal = 5;
-    else if (sliderIdx === 2) kmVal = 10;
-    else if (sliderIdx === 3) kmVal = 20;
-
+    const kmVal = parseFloat(val);
     if (!state.stats) state.stats = {};
     state.stats.radius = kmVal;
     saveState();
     
     // Sync other sliders & displays
     const listSlider = document.getElementById('village-list-distance-slider');
-    if (listSlider) listSlider.value = sliderIdx;
+    if (listSlider) listSlider.value = kmVal;
     const listDisplay = document.getElementById('village-list-distance-display');
     if (listDisplay) listDisplay.innerText = formatRadiusValue(kmVal);
 
     const eventsSlider = document.getElementById('village-events-distance-slider');
-    if (eventsSlider) eventsSlider.value = sliderIdx;
+    if (eventsSlider) eventsSlider.value = kmVal;
     const eventsDisplay = document.getElementById('village-events-distance-display');
     if (eventsDisplay) eventsDisplay.innerText = formatRadiusValue(kmVal);
     
@@ -20487,25 +20523,19 @@ function updateVillageNeedsDistanceFilter(val) {
 window.updateVillageNeedsDistanceFilter = updateVillageNeedsDistanceFilter;
 
 function updateVillageEventsDistanceFilter(val) {
-    const sliderIdx = parseInt(val);
-    let kmVal = 5;
-    if (sliderIdx === 0) kmVal = 1;
-    else if (sliderIdx === 1) kmVal = 5;
-    else if (sliderIdx === 2) kmVal = 10;
-    else if (sliderIdx === 3) kmVal = 20;
-
+    const kmVal = parseFloat(val);
     if (!state.stats) state.stats = {};
     state.stats.radius = kmVal;
     saveState();
     
     // Sync other sliders & displays
     const listSlider = document.getElementById('village-list-distance-slider');
-    if (listSlider) listSlider.value = sliderIdx;
+    if (listSlider) listSlider.value = kmVal;
     const listDisplay = document.getElementById('village-list-distance-display');
     if (listDisplay) listDisplay.innerText = formatRadiusValue(kmVal);
 
     const needsSlider = document.getElementById('village-needs-distance-slider');
-    if (needsSlider) needsSlider.value = sliderIdx;
+    if (needsSlider) needsSlider.value = kmVal;
     const needsDisplay = document.getElementById('village-needs-distance-display');
     if (needsDisplay) needsDisplay.innerText = formatRadiusValue(kmVal);
     
@@ -21829,22 +21859,11 @@ function openEventDetail(eventId) {
 
     const reportBtn = document.getElementById('event-detail-report-btn');
     if (reportBtn) {
-        const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
-        const isHost = (event.host === currentUser || event.host.toLowerCase() === 'you' || event.host.toLowerCase().includes('lily kaufmann') || event.host.toLowerCase().includes(currentUser.toLowerCase()));
-        if (isHost) {
-            reportBtn.style.display = 'none';
-            reportBtn.classList.add('hidden');
-            if (reportBtn.parentElement) {
-                reportBtn.parentElement.style.display = 'none';
-                reportBtn.parentElement.classList.add('hidden');
-            }
-        } else {
-            reportBtn.style.display = 'flex';
-            reportBtn.classList.remove('hidden');
-            if (reportBtn.parentElement) {
-                reportBtn.parentElement.style.display = '';
-                reportBtn.parentElement.classList.remove('hidden');
-            }
+        reportBtn.style.display = 'flex';
+        reportBtn.classList.remove('hidden');
+        if (reportBtn.parentElement) {
+            reportBtn.parentElement.style.display = '';
+            reportBtn.parentElement.classList.remove('hidden');
         }
     }
 
@@ -21910,21 +21929,16 @@ function renderEventRSVPs(event) {
     const isUserRsvped = event.rsvps.includes(currentUser);
     const isHost = (event.host === currentUser || event.host.toLowerCase() === 'you' || event.host.toLowerCase().includes('lily kaufmann') || event.host.toLowerCase().includes(currentUser.toLowerCase()));
 
-    if (isHost) {
-        rsvpBtn.style.display = 'none';
-        rsvpBtn.classList.add('hidden');
-    } else {
-        rsvpBtn.style.display = '';
-        rsvpBtn.classList.remove('hidden');
-        rsvpBtn.className = "w-full py-2.5 rounded-xl font-bold text-[11px] active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 transition-all";
+    rsvpBtn.style.display = '';
+    rsvpBtn.classList.remove('hidden');
+    rsvpBtn.className = "w-full py-2.5 rounded-xl font-bold text-[11px] active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 transition-all";
 
-        if (isUserRsvped) {
-            rsvpBtn.classList.add('bg-black', 'text-white', 'hover:bg-black/90', 'dark:bg-white', 'dark:text-black', 'dark:hover:bg-white/90');
-            rsvpBtn.innerHTML = '<span class="material-symbols-outlined text-xs">cancel</span> cancel rsvp';
-        } else {
-            rsvpBtn.classList.add('bg-white', 'border', 'border-black/20', 'text-black', 'hover:bg-black/5', 'dark:bg-[#18201a]', 'dark:border-white/20', 'dark:text-white', 'dark:hover:bg-white/5');
-            rsvpBtn.innerHTML = '<span class="material-symbols-outlined text-xs">check_circle</span> rsvp to event';
-        }
+    if (isUserRsvped) {
+        rsvpBtn.classList.add('bg-black', 'text-white', 'hover:bg-black/90', 'dark:bg-white', 'dark:text-black', 'dark:hover:bg-white/90');
+        rsvpBtn.innerHTML = '<span class="material-symbols-outlined text-xs">cancel</span> cancel rsvp';
+    } else {
+        rsvpBtn.classList.add('bg-white', 'border', 'border-black/20', 'text-black', 'hover:bg-black/5', 'dark:bg-[#18201a]', 'dark:border-white/20', 'dark:text-white', 'dark:hover:bg-white/5');
+        rsvpBtn.innerHTML = '<span class="material-symbols-outlined text-xs">check_circle</span> rsvp to event';
     }
 
     const count = event.rsvps.length;
@@ -26249,6 +26263,18 @@ function adjustSearchSuggestionsVisibility(show, immediate = false) {
         });
         
         if (activeInfo.suggestions) {
+            let controlId = 'village-segmented-control';
+            if (activeInfo.suggestions.id === 'village-list-search-suggestions') controlId = 'village-list-segmented-control';
+            else if (activeInfo.suggestions.id === 'village-needs-search-suggestions') controlId = 'village-needs-segmented-control';
+            else if (activeInfo.suggestions.id === 'village-events-search-suggestions') controlId = 'village-events-segmented-control';
+            
+            const control = document.getElementById(controlId);
+            if (control && activeInfo.suggestions.parentElement) {
+                const parentRect = activeInfo.suggestions.parentElement.getBoundingClientRect();
+                const controlRect = control.getBoundingClientRect();
+                const topOffset = controlRect.top - parentRect.top;
+                activeInfo.suggestions.style.top = `${topOffset}px`;
+            }
             activeInfo.suggestions.classList.remove('hidden');
         }
         if (activeInfo.overlay) {
@@ -26288,13 +26314,75 @@ function updateSearchSuggestions(query) {
 
     const q = query.toLowerCase().trim();
     if (!q) {
-        container.innerHTML = "";
+        const isDark = document.documentElement.classList.contains('dark');
+        const bgLight = 'rgba(48, 138, 94, 0.08)';
+        const typeBg = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+        const typeColor = isDark ? '#a4a9a0' : '#4b5563';
+        
+        container.innerHTML = `
+            <div class="suggestion-section-title" style="margin-top: 0 !important;"><span>Suggested Searches</span></div>
+            <div class="fused-suggestion-item" onclick="selectSearchSuggestion('', 'Tools', null, null)">
+                <div class="fused-suggestion-icon-wrapper" style="background-color: ${bgLight} !important; margin-right: 6px !important;">
+                    <span class="material-symbols-outlined text-[18px]" style="color: #308A5E !important;">handyman</span>
+                </div>
+                <div class="fused-suggestion-type-icon-wrapper" style="width: 24px !important; height: 24px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin-right: 12px !important; flex-shrink: 0 !important; background-color: ${typeBg} !important;">
+                    <span class="material-symbols-outlined text-[14px]" style="color: ${typeColor} !important;">search</span>
+                </div>
+                <div class="fused-suggestion-info">
+                    <div class="fused-suggestion-title">Tools & Handyman</div>
+                    <div class="fused-suggestion-subtitle">Search for shared tools or repair help</div>
+                </div>
+                <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+            </div>
+            
+            <div class="fused-suggestion-item" onclick="selectSearchSuggestion('', 'Food', null, null)">
+                <div class="fused-suggestion-icon-wrapper" style="background-color: ${bgLight} !important; margin-right: 6px !important;">
+                    <span class="material-symbols-outlined text-[18px]" style="color: #308A5E !important;">restaurant</span>
+                </div>
+                <div class="fused-suggestion-type-icon-wrapper" style="width: 24px !important; height: 24px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin-right: 12px !important; flex-shrink: 0 !important; background-color: ${typeBg} !important;">
+                    <span class="material-symbols-outlined text-[14px]" style="color: ${typeColor} !important;">search</span>
+                </div>
+                <div class="fused-suggestion-info">
+                    <div class="fused-suggestion-title">Food & Cooking</div>
+                    <div class="fused-suggestion-subtitle">Search for food shares, recipes, or kitchen items</div>
+                </div>
+                <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+            </div>
+
+            <div class="fused-suggestion-item" onclick="selectSearchSuggestion('', 'Skills', null, null)">
+                <div class="fused-suggestion-icon-wrapper" style="background-color: ${bgLight} !important; margin-right: 6px !important;">
+                    <span class="material-symbols-outlined text-[18px]" style="color: #308A5E !important;">school</span>
+                </div>
+                <div class="fused-suggestion-type-icon-wrapper" style="width: 24px !important; height: 24px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin-right: 12px !important; flex-shrink: 0 !important; background-color: ${typeBg} !important;">
+                    <span class="material-symbols-outlined text-[14px]" style="color: ${typeColor} !important;">search</span>
+                </div>
+                <div class="fused-suggestion-info">
+                    <div class="fused-suggestion-title">Skills & Learning</div>
+                    <div class="fused-suggestion-subtitle">Search for language tutors, classes, or mentoring</div>
+                </div>
+                <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+            </div>
+
+            <div class="fused-suggestion-item" onclick="selectSearchSuggestion('', 'Garden', null, null)">
+                <div class="fused-suggestion-icon-wrapper" style="background-color: ${bgLight} !important; margin-right: 6px !important;">
+                    <span class="material-symbols-outlined text-[18px]" style="color: #308A5E !important;">yard</span>
+                </div>
+                <div class="fused-suggestion-type-icon-wrapper" style="width: 24px !important; height: 24px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin-right: 12px !important; flex-shrink: 0 !important; background-color: ${typeBg} !important;">
+                    <span class="material-symbols-outlined text-[14px]" style="color: ${typeColor} !important;">search</span>
+                </div>
+                <div class="fused-suggestion-info">
+                    <div class="fused-suggestion-title">Garden & Yard</div>
+                    <div class="fused-suggestion-subtitle">Search for seeds, plant sharing, or garden help</div>
+                </div>
+                <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
+            </div>
+        `;
         if (intelPill) {
             intelPill.classList.add('hidden');
         }
         window.currentIntelMatches = [];
         window.currentIntelIndex = -1;
-        adjustSearchSuggestionsVisibility(false, true);
+        adjustSearchSuggestionsVisibility(true);
         return;
     }
 
@@ -26312,7 +26400,7 @@ function updateSearchSuggestions(query) {
     // 1. User Offerings
     if (state.userOfferings) {
         state.userOfferings.forEach(offer => {
-            if (typeof getBarterItemStatus === 'function' && getBarterItemStatus(offer.id) !== 'Available') return;
+            if (typeof getBarterItemStatus === 'function' && getBarterItemStatus(offer.id) === 'Traded') return;
             if (fuzzySearchMatch(q, offer.title, offer.desc || '', offer.category || '')) {
                 allItems.push({
                     id: offer.id,
@@ -28373,8 +28461,8 @@ function renderBadgesList(containerId, targetName) {
     if (!container) return;
     container.innerHTML = "";
     
-    // Layout as boxes side-by-side taking up the space
-    container.className = "flex flex-row gap-3 py-2 w-full justify-between items-stretch select-none";
+    // Layout as boxes side-by-side taking up the space, allowing horizontal scrolling
+    container.className = "flex flex-row gap-2 py-2 w-full justify-start items-stretch select-none overflow-x-auto scrollbar-none scroll-smooth";
 
     const isSelf = (containerId === 'user-badges-container' || targetName === 'Lily Kaufmann' || targetName === 'Lily' || (state.currentUser && targetName === (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`)));
     
@@ -29356,8 +29444,8 @@ function renderReviewsList() {
         headerBarEl.className = 'w-[8px] h-[22px] rounded-full flex-shrink-0';
         headerBarEl.style.setProperty('background-color', activeColor, 'important');
         headerRightEl.innerHTML = `
-            <button onclick="showChatAutoDeleteInfo()" class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" title="Auto-Delete Info">
-                <span class="material-symbols-outlined text-[17px]">info</span>
+            <button onclick="showChatAutoDeleteInfo()" class="w-10 h-10 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" title="Auto-Delete Info">
+                <span class="material-symbols-outlined text-[20px]">info</span>
             </button>
         `;
     }
@@ -29395,7 +29483,15 @@ function renderReviewsList() {
         card.style.transform = "translateX(0px)";
         
         card.onclick = (e) => {
-            if (card.style.transform && card.style.transform !== 'translateX(0px)') {
+            let transformX = 0;
+            const transform = card.style.transform;
+            if (transform) {
+                const match = transform.match(/translateX\(([-\d.]+)px\)/) || transform.match(/translateX\(([-\d.]+)\)/);
+                if (match) {
+                    transformX = parseFloat(match[1]);
+                }
+            }
+            if (Math.abs(transformX) > 5) {
                 e.stopPropagation();
                 closeSwipeCard(card);
             } else {
@@ -29446,6 +29542,8 @@ function setupReviewSwipeGestures(sliderEl, reviewId) {
     let isVerticalSwipe = false;
     const dragThreshold = 10;
 
+    let hasMoved = false;
+
     const startDrag = (clientX, clientY) => {
         if (openSwipeCard && openSwipeCard !== sliderEl) {
             closeSwipeCard(openSwipeCard);
@@ -29455,6 +29553,7 @@ function setupReviewSwipeGestures(sliderEl, reviewId) {
         startY = clientY;
         isDragging = true;
         isVerticalSwipe = false;
+        hasMoved = false;
 
         const transformMatrix = window.getComputedStyle(sliderEl).transform;
         if (transformMatrix && transformMatrix !== 'none') {
@@ -29472,6 +29571,10 @@ function setupReviewSwipeGestures(sliderEl, reviewId) {
 
         const diffX = clientX - startX;
         const diffY = clientY - startY;
+
+        if (Math.abs(diffX) > 5 || Math.abs(diffY) > 5) {
+            hasMoved = true;
+        }
 
         if (!isVerticalSwipe) {
             if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > dragThreshold) {
@@ -29493,6 +29596,9 @@ function setupReviewSwipeGestures(sliderEl, reviewId) {
                 newX = maxTranslate;
             }
             sliderEl.style.transform = `translateX(${newX}px)`;
+            if (newX < -10) {
+                openSwipeCard = sliderEl;
+            }
         }
     };
 
@@ -29501,6 +29607,15 @@ function setupReviewSwipeGestures(sliderEl, reviewId) {
         isDragging = false;
 
         sliderEl.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+        
+        if (!hasMoved) {
+            if (Math.abs(currentTranslateX) > 5) {
+                closeSwipeCard(sliderEl);
+            } else {
+                window.openNeighborReviewModal(reviewId);
+            }
+            return;
+        }
         
         const transformMatrix = window.getComputedStyle(sliderEl).transform;
         let finalX = 0;
@@ -30383,31 +30498,44 @@ function handleCategorySegmentTap(category) {
 window.handleCategorySegmentTap = handleCategorySegmentTap;
 
 function updateTopSegmentedControlUI(category) {
-    const pill = document.getElementById('village-active-pill-bg');
-    const btnOfferings = document.getElementById('btn-segment-tab-offerings');
-    const btnNeeds = document.getElementById('btn-segment-tab-needs');
-    const btnEvents = document.getElementById('btn-segment-tab-events');
-    
-    let targetBtn = null;
-    if (category === 'offerings') targetBtn = btnOfferings;
-    else if (category === 'needs') targetBtn = btnNeeds;
-    else if (category === 'events') targetBtn = btnEvents;
-    
-    if (pill && targetBtn) {
-        pill.style.width = `${targetBtn.offsetWidth}px`;
-        pill.style.left = `${targetBtn.offsetLeft}px`;
-    }
-    
-    const btns = [btnOfferings, btnNeeds, btnEvents];
-    btns.forEach(btn => {
-        if (!btn) return;
-        const btnCategory = btn.getAttribute('data-category');
-        if (btnCategory === category) {
-            btn.classList.remove('text-gray-500', 'dark:text-gray-400', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2922]/90');
-            btn.classList.add('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#2d3a30]', 'shadow-sm');
-        } else {
-            btn.classList.remove('text-black', 'dark:text-white', 'bg-white', 'dark:bg-[#2d3a30]', 'shadow-sm');
-            btn.classList.add('text-gray-500', 'dark:text-gray-400', 'bg-[#f0f0f0]/90', 'dark:bg-[#1f2922]/90');
+    const controls = [
+        { containerId: 'village-segmented-control', pillId: 'village-active-pill-bg' },
+        { containerId: 'village-list-segmented-control', pillId: 'village-list-active-pill-bg' },
+        { containerId: 'village-needs-segmented-control', pillId: 'village-needs-active-pill-bg' },
+        { containerId: 'village-events-segmented-control', pillId: 'village-events-active-pill-bg' }
+    ];
+
+    controls.forEach(ctrl => {
+        const container = document.getElementById(ctrl.containerId);
+        const pill = document.getElementById(ctrl.pillId);
+        if (!container || !pill) return;
+
+        const targetBtn = container.querySelector(`button[data-category="${category}"]`);
+        const btns = container.querySelectorAll('button[data-category]');
+
+        // Use 'active-tab' class — the CSS uses this with !important color overrides
+        btns.forEach(btn => {
+            if (btn === targetBtn) {
+                btn.classList.add('active-tab');
+            } else {
+                btn.classList.remove('active-tab');
+            }
+        });
+
+        // Position the sliding pill
+        if (targetBtn) {
+            const updatePosition = () => {
+                if (targetBtn.offsetWidth > 0) {
+                    pill.style.width = `${targetBtn.offsetWidth}px`;
+                    pill.style.left = `${targetBtn.offsetLeft}px`;
+                }
+            };
+            // Run immediately
+            updatePosition();
+            // Also schedule on next ticks in case layout properties are updating
+            requestAnimationFrame(updatePosition);
+            setTimeout(updatePosition, 50);
+            setTimeout(updatePosition, 150);
         }
     });
 }
@@ -30452,14 +30580,14 @@ function initSearchBehavior() {
                     clearBtn.classList.add('hidden');
                 }
             }
-            // Trigger suggestions if there is text in the search input
+            // Trigger suggestions on search input focus
             const suggestionInputIds = [
                 'village-search-input',
                 'village-list-search-input',
                 'village-needs-search-input',
                 'village-events-search-input'
             ];
-            if (suggestionInputIds.includes(inputId) && input.value.trim()) {
+            if (suggestionInputIds.includes(inputId)) {
                 updateSearchSuggestions(input.value);
             }
         });
@@ -30479,6 +30607,9 @@ function initSearchBehavior() {
                     if (!state.meetupMapMode) {
                         floatingContainer.style.display = 'flex';
                     }
+                }
+                if (typeof adjustSearchSuggestionsVisibility === 'function') {
+                    adjustSearchSuggestionsVisibility(false, true);
                 }
             }, 200);
         });
@@ -30683,21 +30814,30 @@ function initQuickCreateSheet() {
         
         // Calculate bottom offset to avoid WebKit calc() custom property bugs
         const isNative = document.documentElement.classList.contains('native-app-env');
+        const isSimulator = document.body && document.body.classList.contains('show-simulator');
         const detector = document.getElementById('safe-area-detector');
         const safeArea = (isNative && detector) ? detector.offsetHeight : 0;
-        const collapsedBottom = 2 + safeArea;
+        
+        let collapsedBottom;
+        if (isNative) {
+            collapsedBottom = Math.max(20, 12 + safeArea);
+        } else if (isSimulator) {
+            collapsedBottom = 20;
+        } else {
+            collapsedBottom = 20;
+        }
         
         // Keep bottom margin floating and static so it sits nicely above safe area
         sheet.style.setProperty('bottom', `${collapsedBottom}px`, 'important');
 
         // Fixed Width: Never expand the section wider than the initial floating capsule size
         const screenWidth = window.innerWidth;
-        const pillWidth = Math.min(370, screenWidth - 32);
+        const pillWidth = Math.min(380, screenWidth - 48);
         sheet.style.setProperty('width', `${pillWidth}px`, 'important');
-        sheet.style.setProperty('max-width', '370px', 'important');
+        sheet.style.setProperty('max-width', '380px', 'important');
 
         // Keep corners fully rounded to preserve the "floating card" aesthetic
-        sheet.style.setProperty('border-radius', '28px', 'important');
+        sheet.style.setProperty('border-radius', '32px', 'important');
 
         const isDark = document.documentElement.classList.contains('dark');
         const bgAlpha = 0.45;
@@ -30810,6 +30950,20 @@ window.toggleQuickCreateDropdown = function(event, type) {
         closeAllListDropdowns();
         closeMapCategoryDropdown();
         deactivateSearchMode();
+        
+        let controlId = 'village-segmented-control';
+        if (type === 'list') controlId = 'village-list-segmented-control';
+        else if (type === 'needs') controlId = 'village-needs-segmented-control';
+        else if (type === 'events') controlId = 'village-events-segmented-control';
+        
+        const control = document.getElementById(controlId);
+        if (control && dropdown.parentElement) {
+            const parentRect = dropdown.parentElement.getBoundingClientRect();
+            const controlRect = control.getBoundingClientRect();
+            const topOffset = controlRect.top - parentRect.top;
+            dropdown.style.top = `${topOffset}px`;
+        }
+        
         dropdown.classList.remove('hidden');
         if (typeof playSound === 'function') playSound('click');
         window.triggerHapticFeedback('light');
@@ -30872,7 +31026,6 @@ window.closeAllListDropdowns = closeAllListDropdowns;
 
 window.toggleMapCategoryDropdown = function() {
     const dropdown = document.getElementById('map-category-dropdown');
-    const overlay = document.getElementById('map-filter-overlay');
     const filterIcon = document.getElementById('map-filter-icon');
     const filterBtn = document.getElementById('btn-segment-filter');
     const floatingContainer = document.getElementById('village-segment-floating-buttons');
@@ -30884,13 +31037,6 @@ window.toggleMapCategoryDropdown = function() {
     if (isHidden) {
         closeAllListDropdowns();
         
-        if (overlay) {
-            overlay.classList.remove('hidden');
-            setTimeout(() => {
-                overlay.classList.remove('opacity-0');
-                overlay.classList.add('opacity-100');
-            }, 10);
-        }
         dropdown.classList.remove('hidden');
         dropdown.classList.add('expanded');
         if (filterIcon) {
@@ -30906,11 +31052,6 @@ window.toggleMapCategoryDropdown = function() {
         renderMapFilterCircles();
     } else {
         mapInfoModeActive = false;
-        if (overlay) {
-            overlay.classList.remove('opacity-100');
-            overlay.classList.add('opacity-0');
-            setTimeout(() => overlay.classList.add('hidden'), 300);
-        }
         dropdown.classList.add('hidden');
         dropdown.classList.remove('expanded');
         if (filterIcon) {

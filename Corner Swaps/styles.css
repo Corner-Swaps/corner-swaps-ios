@@ -41,7 +41,7 @@
     /* Centralized simulator/component layout size tokens */
     --dynamic-island-width: 95px;
     --pulse-ring-size: 260px;
-    --badge-item-width: 106px;
+    --badge-item-width: 92px;
     
     /* Centralized shadow tokens */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -184,11 +184,36 @@ body.show-simulator .screen-view.active {
 /* 8. Global navbar stays pinned to bottom of app-container (absolute within position:relative container) */
 body.show-simulator #global-navbar {
     position: absolute !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    flex-shrink: 0 !important;
+    bottom: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 48px) !important;
+    max-width: 380px !important;
+    height: 56px !important;
+    border-radius: 32px !important;
+    background: rgba(255, 255, 255, 0.45) !important;
+    backdrop-filter: blur(24px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
+    border: none !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
     z-index: 5000 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    overflow: visible !important;
+}
+
+body.show-simulator #navbar-icons-row {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    height: 100% !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-evenly !important;
+    align-items: center !important;
 }
 
 /* 9. Anything with position:fixed must become position:absolute inside simulator */
@@ -709,6 +734,50 @@ html.dark ::-webkit-scrollbar-thumb:hover {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+/* Distance Range Filter Slider */
+.distance-filter-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px; /* thicker track */
+    background: #e2e8f0; /* light gray track by default */
+    border-radius: 9999px;
+    outline: none;
+    margin: 8px 0;
+    transition: background-color 0.2s ease;
+}
+html.dark .distance-filter-slider {
+    background: #2d3748;
+}
+.distance-filter-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background: #308A5E; /* forest-green */
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+    border: 2px solid #ffffff;
+    transition: transform 0.1s ease;
+}
+.distance-filter-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    background: #308A5E;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+    border: 2px solid #ffffff;
+    transition: transform 0.1s ease;
+}
+.distance-filter-slider::-webkit-slider-thumb:active {
+    transform: scale(1.2);
+}
+.distance-filter-slider::-moz-range-thumb:active {
+    transform: scale(1.2);
+}
+
 /* Hero Section */
 .photo-hero {
     height: 270px;
@@ -856,8 +925,8 @@ html.dark #phone-header-bar {
 }
 
 html.dark #global-navbar {
-    background-color: #141c16 !important;
-    border-top-color: rgba(255, 255, 255, 0.1) !important;
+    background: rgba(20, 28, 22, 0.45) !important;
+    border: none !important;
 }
 
 html.dark #global-navbar .text-forest-green {
@@ -1082,13 +1151,15 @@ html.dark #phone-header-bar .material-symbols-outlined {
 }
 
 .native-app-env #global-navbar {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: calc(3.8rem + env(safe-area-inset-bottom)) !important;
-    padding-top: 0.75rem !important;
-    padding-bottom: env(safe-area-inset-bottom) !important;
+    position: absolute !important;
+    bottom: 24px !important;
+    bottom: max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 32px) !important;
+    max-width: 370px !important;
+    height: 56px !important;
+    border-radius: 32px !important;
     z-index: 5000 !important;
 }
 
@@ -1121,8 +1192,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
 .native-app-env #view-definitions,
 .native-app-env #view-help_improve,
 .native-app-env #view-settings_detail,
-.native-app-env #view-blocked_users,
-.native-app-env #view-profile_settings {
+.native-app-env #view-blocked_users {
     padding-top: calc(0.6rem + env(safe-area-inset-top)) !important;
 }
 
@@ -1135,12 +1205,14 @@ html.dark #phone-header-bar .material-symbols-outlined {
 }
 
 .native-app-env #view-profile_settings {
+    padding-top: 0 !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
     padding-bottom: 0 !important;
 }
 .native-app-env #profile-settings-scroll-container {
-    padding-bottom: calc(84px + env(safe-area-inset-bottom)) !important;
+    padding-top: calc(64px + env(safe-area-inset-top)) !important;
+    padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
 }
 
 .native-app-env #view-village {
@@ -2543,26 +2615,60 @@ html.dark .profile-avatar-no-ring {
     overflow: visible !important;
 }
 
-#btn-segment-filter.active-filter-circle {
-    background-color: #4F46E5 !important;
+#btn-segment-filter.active-filter-circle,
+.fused-filter-btn.active-filter-circle {
+    background-color: #308A5E !important;
     color: #ffffff !important;
-    border-color: #4F46E5 !important;
+    border-color: transparent !important;
     border-radius: 50% !important;
     z-index: 1002 !important;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
     transform: scale(1.0) !important;
 }
 
-.dark #btn-segment-filter.active-filter-circle {
-    background-color: #6366F1 !important;
+#btn-segment-filter.active-filter-circle span,
+.fused-filter-btn.active-filter-circle span {
     color: #ffffff !important;
-    border-color: #6366F1 !important;
+}
+
+.dark #btn-segment-filter.active-filter-circle,
+html.dark #btn-segment-filter.active-filter-circle,
+.dark .fused-filter-btn.active-filter-circle,
+html.dark .fused-filter-btn.active-filter-circle {
+    background-color: #4ade80 !important;
+    color: #18201a !important;
+    border-color: transparent !important;
     border-radius: 50% !important;
 }
 
+.dark #btn-segment-filter.active-filter-circle span,
+html.dark #btn-segment-filter.active-filter-circle span,
+.dark .fused-filter-btn.active-filter-circle span,
+html.dark .fused-filter-btn.active-filter-circle span {
+    color: #18201a !important;
+}
+
 #map-filter-icon {
-    display: inline-block;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    width: auto !important;
+    height: auto !important;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-icon-bubble span,
+.fused-filter-btn span {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    text-align: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .floating-buttons-hidden {
@@ -2624,18 +2730,32 @@ html.dark .profile-avatar-no-ring {
     overflow: visible !important;
 }
 
-#btn-segment-filter.has-active-filter {
-    background-color: #4F46E5 !important;
+#btn-segment-filter.has-active-filter,
+.fused-filter-btn.has-active-filter {
+    background-color: #308A5E !important;
     color: #ffffff !important;
-    border-color: #4F46E5 !important;
-    box-shadow: 0 0 0 2px var(--warm-cream), 0 0 0 4px #4F46E5, 0 10px 15px -3px rgba(0, 0, 0, 0.3) !important;
+    border-color: transparent !important;
+    box-shadow: 0 0 0 2px var(--warm-cream), 0 0 0 4px rgba(48, 138, 94, 0.2), 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
 }
-html.dark #btn-segment-filter.has-active-filter {
-    background-color: #6366F1 !important;
+
+#btn-segment-filter.has-active-filter span,
+.fused-filter-btn.has-active-filter span {
     color: #ffffff !important;
-    border-color: #6366F1 !important;
-    box-shadow: 0 0 0 2px #101612, 0 0 0 4px #6366F1, 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
 }
+
+html.dark #btn-segment-filter.has-active-filter,
+html.dark .fused-filter-btn.has-active-filter {
+    background-color: #4ade80 !important;
+    color: #18201a !important;
+    border-color: transparent !important;
+    box-shadow: 0 0 0 2px #101612, 0 0 0 4px rgba(74, 222, 128, 0.2), 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark #btn-segment-filter.has-active-filter span,
+html.dark .fused-filter-btn.has-active-filter span {
+    color: #18201a !important;
+}
+
 
 /* Disable all pulsing/flashing animations on buttons, pins, and status nodes */
 .animate-precise-pulse-ring,
@@ -4476,8 +4596,8 @@ body.keyboard-visible .native-app-env #chat-action-center.group-chat-action-cent
 
 /* Glassmorphic Chat Input Pill (matching #global-navbar) */
 .chat-pill-input-wrapper {
-    width: calc(100% - 32px) !important;
-    max-width: 370px !important;
+    width: calc(100% - 48px) !important;
+    max-width: 380px !important;
     background: rgba(255, 255, 255, 0.96) !important;
     border: none !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
@@ -6521,10 +6641,6 @@ html.dark #events-category-dropdown .category-label {
 @media (max-height: 700px) {
     html:not(.show-simulator) #map-category-dropdown {
         gap: 6px !important;
-        top: 42px !important;
-    }
-    html:not(.show-simulator) .native-app-env #map-category-dropdown {
-        top: calc(32px + env(safe-area-inset-top)) !important;
     }
     html:not(.show-simulator) #map-category-dropdown .filter-category-circle,
     html:not(.show-simulator) #map-category-dropdown .filter-category-info-circle,
@@ -6620,7 +6736,8 @@ html.dark .category-info-highlighted::after {
 
 .native-app-env #global-navbar:not(.hidden) {
     position: absolute !important;
-    bottom: calc(2px + env(safe-area-inset-bottom)) !important;
+    bottom: 24px !important;
+    bottom: max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 32px) !important;
@@ -6637,8 +6754,8 @@ html.dark .category-info-highlighted::after {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
     z-index: 5000 !important;
     display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
+    flex-direction: row !important;
+    justify-content: center !important;
     align-items: center !important;
     overflow: visible !important;
 }
@@ -7241,14 +7358,22 @@ html.dark #btn-segment-filter.fused-filter-btn:hover {
 }
 
 #btn-segment-filter.fused-filter-btn.active-filter-circle {
-    background-color: #308A5E !important; /* Unified brand green color instead of indigo */
+    background-color: #308A5E !important;
     color: #ffffff !important;
     border-radius: 50% !important;
 }
 
+#btn-segment-filter.fused-filter-btn.active-filter-circle span {
+    color: #ffffff !important;
+}
+
 html.dark #btn-segment-filter.fused-filter-btn.active-filter-circle {
-    background-color: #82b995 !important;
-    color: #111814 !important;
+    background-color: #4ade80 !important;
+    color: #18201a !important;
+}
+
+html.dark #btn-segment-filter.fused-filter-btn.active-filter-circle span {
+    color: #18201a !important;
 }
 
 /* Fused Clear Search Button */
@@ -7365,11 +7490,9 @@ html.dark .intel-title {
 /* Suggestions Box overlay style */
 .fused-suggestions-box {
     margin-top: 0px !important;
-    background-color: rgba(255, 255, 255, 0.96) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
+    background-color: #ffffff !important;
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    border-radius: 12px !important;
+    border-radius: 24px !important;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08) !important;
     padding: 10px 12px !important;
     max-height: 280px !important;
@@ -7379,7 +7502,7 @@ html.dark .intel-title {
 }
 
 html.dark .fused-suggestions-box {
-    background-color: rgba(26, 34, 28, 0.96) !important;
+    background-color: #121815 !important;
     border-color: rgba(255, 255, 255, 0.08) !important;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4) !important;
 }
@@ -7649,47 +7772,41 @@ html.dark #view-create_group #group-friends-search::placeholder {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
+    background: transparent !important;
     background-color: transparent !important;
-    background: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
     border: none !important;
     border-radius: 0 !important;
     padding: 0 !important;
-    height: 42px !important; /* Matches search pill height */
+    height: 42px !important;
     box-shadow: none !important;
     transition: all 0.3s ease !important;
     width: 100% !important;
-    max-width: none !important;
+    max-width: 100% !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
-    gap: 8px !important; /* Separate pills with a gap */
+    gap: 8px !important;
+    position: relative !important;
 }
 
 html.dark #village-segmented-control,
 html.dark #village-list-segmented-control,
 html.dark #village-needs-segmented-control,
 html.dark #village-events-segmented-control {
+    background: transparent !important;
     background-color: transparent !important;
-    background: none !important;
     border: none !important;
     box-shadow: none !important;
 }
 
-#village-active-pill-bg {
+#village-active-pill-bg,
+#village-list-active-pill-bg,
+#village-needs-active-pill-bg,
+#village-events-active-pill-bg {
     display: none !important;
 }
 
-/* Align Map Category Dropdown with the new wider segmented control */
-#map-category-dropdown {
-    top: 92px !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    max-width: none !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
+
+/* Align Map Category Dropdown with the new wider segmented control (handled by relative overrides below) */
 
 /* Meetup Safety Guidelines modal header styles */
 #meetup-safety-title {
@@ -7742,7 +7859,7 @@ html.dark .list-card-title {
 /* Standardized typography for list card descriptions */
 .list-card-description {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 12px !important;
+    font-size: 15.5px !important;
     font-weight: 400 !important;
     color: rgba(0, 0, 0, 0.7) !important;
     line-height: 1.5 !important;
@@ -7763,12 +7880,12 @@ html.dark .list-card-description {
 #village-needs-search-suggestions,
 #village-events-search-suggestions {
     position: absolute !important;
-    left: 4px !important;
-    right: 4px !important;
-    top: 42px !important;
-    margin-top: 0px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    top: 52px !important;
     z-index: 3000 !important;
-    width: calc(100% - 8px) !important;
+    border-radius: 24px !important;
 }
 
 /* Enforce uniform description spacing and font-sizes for offerings, needs, and events */
@@ -7776,7 +7893,7 @@ html.dark .list-card-description {
 #needs-board-list p.list-card-description,
 #village-events-list p.list-card-description,
 #events-list-container p.list-card-description {
-    font-size: 12px !important;
+    font-size: 15.5px !important;
     line-height: 1.5 !important;
     font-weight: 400 !important;
     margin-top: 4px !important;
@@ -7798,6 +7915,10 @@ html.dark #events-list-container p.list-card-description {
 .list-card-container {
     height: 375px !important;
     border: none !important;
+    background-color: #ffffff !important;
+}
+html.dark .list-card-container {
+    background-color: #18201a !important;
 }
 .list-card-container:hover {
     border: none !important;
@@ -7809,6 +7930,10 @@ html.dark #events-list-container p.list-card-description {
 .list-card-text-wrapper {
     height: 145px !important;
     padding: 16px 16px 20px 16px !important;
+    background-color: #ffffff !important;
+}
+html.dark .list-card-text-wrapper {
+    background-color: #18201a !important;
 }
 
 /* Styling rules for the Quick Create Handle and navigation icons row */
@@ -7832,11 +7957,12 @@ html.dark #events-list-container p.list-card-description {
 #needs-quick-create-dropdown,
 #events-quick-create-dropdown {
     position: absolute !important;
-    left: 4px !important;
-    right: 4px !important;
-    top: 42px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    top: 52px !important;
     z-index: 3000 !important;
-    width: calc(100% - 8px) !important;
+    border-radius: 24px !important;
 }
 
 /* Quick Create Button & Dropdown Styles */
@@ -7987,13 +8113,21 @@ html.dark .fused-filter-btn {
 }
 
 .fused-filter-btn.active-filter-circle {
-    background: rgba(48, 138, 94, 0.15) !important;
-    color: #308A5E !important;
+    background: #308A5E !important;
+    color: #ffffff !important;
+}
+
+.fused-filter-btn.active-filter-circle span {
+    color: #ffffff !important;
 }
 
 html.dark .fused-filter-btn.active-filter-circle {
-    background: rgba(74, 222, 128, 0.15) !important;
-    color: #4ade80 !important;
+    background: #4ade80 !important;
+    color: #18201a !important;
+}
+
+html.dark .fused-filter-btn.active-filter-circle span {
+    color: #18201a !important;
 }
 /* --- End: Search Bar Fused Filter Button Styles --- */
 
@@ -8004,53 +8138,55 @@ html.dark .fused-filter-btn.active-filter-circle {
 #village-events-segmented-control button {
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
     outline: none !important;
-    background-color: rgba(255, 255, 255, 0.8) !important; /* Individual white background for inactive pills */
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
+    background-color: rgba(255, 255, 255, 0.45) !important;
+    background: rgba(255, 255, 255, 0.45) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
     color: #71766f !important; /* Medium green-gray text */
     height: 100% !important;
     border-radius: 9999px !important;
-    font-size: 11px !important;
+    font-size: 11.5px !important;
     font-weight: 700 !important;
     transition: all 0.2s ease !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+    z-index: 10 !important;
 }
 
 html.dark #village-segmented-control button,
 html.dark #village-list-segmented-control button,
 html.dark #village-needs-segmented-control button,
 html.dark #village-events-segmented-control button {
-    background-color: rgba(24, 32, 26, 0.8) !important;
-    border-color: rgba(255, 255, 255, 0.08) !important;
+    background-color: rgba(30, 37, 32, 0.45) !important;
+    background: rgba(30, 37, 32, 0.45) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
     color: #9ca3af !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
 }
 
-/* Active buttons styling */
-#village-segmented-control button.bg-white,
-#village-list-segmented-control button.bg-white,
-#village-needs-segmented-control button.bg-white,
-#village-events-segmented-control button.bg-white {
-    background-color: #ffffff !important;
-    color: #1a1c18 !important;
-    border-color: rgba(0, 0, 0, 0.12) !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+/* Active buttons styling styling text color only */
+#village-segmented-control button.active-tab,
+#village-list-segmented-control button.active-tab,
+#village-needs-segmented-control button.active-tab,
+#village-events-segmented-control button.active-tab {
+    background-color: transparent !important;
+    background: transparent !important;
+    border-color: #308a5e !important;
+    color: #308a5e !important;
     font-weight: 800 !important;
+    box-shadow: 0 4px 10px rgba(48, 138, 94, 0.1) !important;
 }
 
-html.dark #village-segmented-control button[class*="dark:bg-[#2d3a30]"],
-html.dark #village-list-segmented-control button[class*="dark:bg-[#2d3a30]"],
-html.dark #village-needs-segmented-control button[class*="dark:bg-[#2d3a30]"],
-html.dark #village-events-segmented-control button[class*="dark:bg-[#2d3a30]"],
-html.dark #village-segmented-control button.bg-white,
-html.dark #village-list-segmented-control button.bg-white,
-html.dark #village-needs-segmented-control button.bg-white,
-html.dark #village-events-segmented-control button.bg-white {
-    background-color: #2d3a30 !important;
-    color: #ffffff !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+html.dark #village-segmented-control button.active-tab,
+html.dark #village-list-segmented-control button.active-tab,
+html.dark #village-needs-segmented-control button.active-tab,
+html.dark #village-events-segmented-control button.active-tab {
+    background-color: transparent !important;
+    background: transparent !important;
+    border-color: #4ade80 !important;
+    color: #4ade80 !important;
     font-weight: 800 !important;
+    box-shadow: 0 4px 10px rgba(74, 222, 128, 0.1) !important;
 }
 
 #chat-segmented-control button {
@@ -8077,8 +8213,8 @@ html.dark #village-events-segmented-control button.bg-white {
     box-shadow: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    max-height: 290px !important;
-    overflow-y: auto !important;
+    max-height: none !important;
+    overflow-y: visible !important;
     -ms-overflow-style: auto !important;
     scrollbar-width: thin !important;
 }
@@ -8137,12 +8273,12 @@ html.dark .category-icon-bubble {
 
 /* Active state of the icon bubble */
 .category-filter-row.active-row .category-icon-bubble {
-    background-color: #308A5E !important;
-    border-color: #308A5E !important;
-    box-shadow: 0 0 8px rgba(48, 138, 94, 0.3) !important;
+    /* background-color: #308A5E !important; */
+    /* border-color: #308A5E !important; */
+    /* box-shadow: 0 0 8px rgba(48, 138, 94, 0.3) !important; */
 }
 .category-filter-row.active-row .category-icon-bubble span {
-    color: #ffffff !important;
+    /* color: #ffffff !important; */
 }
 
 /* White pill wrapper around the title only */
@@ -8152,7 +8288,7 @@ html.dark .category-icon-bubble {
     height: 32px !important;
     padding: 0 14px !important;
     border-radius: 9999px !important;
-    background-color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.45) !important;
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
     color: #374151 !important;
@@ -8160,30 +8296,50 @@ html.dark .category-icon-bubble {
     font-weight: 700 !important;
     font-family: 'Outfit', sans-serif !important;
     transition: all 0.2s ease !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
 }
 
 html.dark .category-title-pill {
-    background-color: #1b261f !important;
+    background-color: rgba(27, 38, 31, 0.45) !important;
     border-color: rgba(255, 255, 255, 0.08) !important;
     color: #e5e7eb !important;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
 }
 
 /* Active state of the title pill */
 .category-filter-row.active-row .category-title-pill {
-    border-color: #308A5E !important;
-    box-shadow: 0 0 8px rgba(48, 138, 94, 0.2) !important;
-    color: #308A5E !important;
-    font-weight: 800 !important;
+    background-color: transparent !important;
+    background: transparent !important;
 }
 
 html.dark .category-filter-row.active-row .category-title-pill {
-    border-color: #4ade80 !important;
-    color: #4ade80 !important;
-    box-shadow: 0 0 8px rgba(74, 222, 128, 0.2) !important;
+    background-color: transparent !important;
+    background: transparent !important;
 }
 
-/* Custom Overrides for List Category Filter Dropdowns to Push Content Down */
+/* Custom Overrides for List & Map Category Filter Dropdowns to Push Content Down */
+#map-category-dropdown {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    margin-top: 6px !important;
+    margin-bottom: 8px !important;
+    padding-left: 8px !important;
+    display: none !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    box-shadow: none !important;
+}
+
+#map-category-dropdown.expanded {
+    display: flex !important;
+}
+
 #list-category-dropdown,
 #needs-category-dropdown,
 #events-category-dropdown {
@@ -8193,9 +8349,84 @@ html.dark .category-filter-row.active-row .category-title-pill {
     right: auto !important;
     width: 100% !important;
     margin-top: 8px !important;
-    box-shadow: none !important;
     margin-bottom: 8px !important;
-    padding-left: 0 !important; /* ALIGN FIRST PILL WITH THE LEFT SIDE OF SEGMENTED CONTROL */
+    padding-left: 0 !important;
+    display: none !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 8px !important;
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+    box-shadow: none !important;
+}
+
+#list-category-dropdown:not(.hidden),
+#needs-category-dropdown:not(.hidden),
+#events-category-dropdown:not(.hidden) {
+    display: flex !important;
+}
+
+#list-category-dropdown::-webkit-scrollbar,
+#needs-category-dropdown::-webkit-scrollbar,
+#events-category-dropdown::-webkit-scrollbar {
+    display: none !important;
+}
+
+/* Category Filter Pill Styles */
+.category-filter-pill {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    height: 34px !important;
+    padding: 0 14px !important;
+    border-radius: 9999px !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    font-family: 'Outfit', sans-serif !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+    background-color: rgba(255, 255, 255, 0.45) !important;
+    color: #374151 !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+}
+
+html.dark .category-filter-pill {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    background-color: rgba(30, 37, 32, 0.45) !important;
+    color: #e5e7eb !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+}
+
+.category-filter-pill.active-pill {
+    background-color: transparent !important;
+    background: transparent !important;
+    color: #308A5E !important;
+    border-color: #308A5E !important;
+    border-width: 1.5px !important;
+    box-shadow: 0 4px 12px rgba(48, 138, 94, 0.1) !important;
+}
+
+.category-filter-pill.active-pill span {
+    color: inherit !important;
+}
+
+html.dark .category-filter-pill.active-pill {
+    background-color: transparent !important;
+    background: transparent !important;
+    color: #4ade80 !important;
+    border-color: #4ade80 !important;
+    border-width: 1.5px !important;
+    box-shadow: 0 4px 12px rgba(74, 222, 128, 0.1) !important;
 }
 
 /* Hardware-accelerated Transitions for Smooth App Startup */
@@ -8221,7 +8452,11 @@ html.dark .category-filter-row.active-row .category-title-pill {
     height: auto !important;
 }
 
-.list-card-container.expanded .list-card-description {
+.list-card-container.expanded .list-card-description,
+#village-list-items .list-card-container.expanded p.list-card-description,
+#needs-board-list .list-card-container.expanded p.list-card-description,
+#village-events-list .list-card-container.expanded p.list-card-description,
+#events-list-container .list-card-container.expanded p.list-card-description {
     -webkit-line-clamp: unset !important;
     display: block !important;
 }
@@ -8245,7 +8480,12 @@ html.dark .category-filter-row.active-row .category-title-pill {
 }
 
 .list-card-expandable-content {
+    min-height: 0;
     overflow: hidden;
+    background-color: #ffffff !important;
+}
+html.dark .list-card-expandable-content {
+    background-color: #18201a !important;
 }
 
 /* ==================================================== */
@@ -8326,8 +8566,59 @@ html.dark .category-filter-row.active-row .category-title-pill {
     font-size: 13px !important;
 }
 
+/* Sticky Segmented Control Wrapper for List views */
+.sticky-segmented-control-wrapper {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 50 !important;
+    background-color: var(--warm-cream) !important;
+    padding-top: 0.6rem !important; /* Matches container padding-top */
+    margin-top: calc(2px - 0.6rem) !important; /* Align exactly to Map's segmented control (52px top content offset) */
+    padding-bottom: 0px !important;
+    margin-bottom: 0px !important;
+}
 
+.native-app-env .sticky-segmented-control-wrapper {
+    padding-top: calc(0.6rem + env(safe-area-inset-top)) !important;
+    margin-top: calc(2px - 0.6rem - env(safe-area-inset-top)) !important;
+}
 
+html.dark .sticky-segmented-control-wrapper {
+    background-color: #18201a !important; /* Matches dark mode container background */
+}
 
+/* Custom typography adjustments: Make popup buttons match the detail popup description/location style (15.5px, Outfit font, regular weight/thickness) */
+.app-container #map-detail-overlay button,
+.app-container #map-event-detail-overlay button,
+.app-container #view-event_detail button,
+.app-container #neighbor-profile-modal button {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15.5px !important;
+    font-weight: 400 !important;
+}
 
+/* Also align material symbols (icons) inside these buttons to match the new text size */
+.app-container #map-detail-overlay button .material-symbols-outlined,
+.app-container #map-event-detail-overlay button .material-symbols-outlined,
+.app-container #view-event_detail button .material-symbols-outlined,
+.app-container #neighbor-profile-modal button .material-symbols-outlined {
+    font-size: 15.5px !important;
+}
+
+/* Ensure close/back button inside the chat details screen is visible */
+#chat-close-btn {
+    display: flex !important;
+    width: 40px !important;
+    height: 40px !important;
+}
+#chat-close-btn span {
+    font-size: 20px !important;
+}
+
+/* Specificity overrides to hide chat detail Read/Unread title and bar when hidden class is added */
+#chat-detail-title-bar.hidden,
+#chat-detail-title-text.hidden,
+.app-container .app-screen-header-title.hidden {
+    display: none !important;
+}
 
