@@ -790,11 +790,11 @@ html.dark .distance-filter-slider {
 }
 
 #offer-photo-hero {
-    height: 240px !important;
+    height: 260px !important;
 }
 
 #group-photo-hero {
-    height: 290px !important;
+    height: 260px !important;
 }
 
 .photo-hero.has-image {
@@ -1570,7 +1570,7 @@ select::-ms-expand {
 
 .native-app-env #offer-photo-hero {
     padding-top: 1.5rem !important;
-    height: 240px !important;
+    height: 260px !important;
 }
 
 #offer-form-header {
@@ -3999,7 +3999,7 @@ html:not(.dark) #neighbor-profile-modal button.bg-forest-green * {
 /* Chat input typography and color alignment with chat bubbles */
 #chat-text-input {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 15px !important;
+    font-size: 16px !important;
     font-weight: 400 !important;
     color: #000000 !important;
     height: 100% !important;
@@ -4176,7 +4176,6 @@ html.dark #offer-type-selector-screen button .rounded-full .material-symbols-out
 #view-offer #offer-wishlist-input,
 #view-offer .offer-category-btn:not(.bg-forest-green),
 #view-offer #karma-unified-card:not(.border-\[\#308A5E\]),
-#view-offer #offer-photo-hero .relative,
 #view-offer button[onclick="openMeetupLocationPicker()"],
 #view-offer #meetup-map-status,
 #subcategory-modal button.sub-opt-btn:not(.bg-forest-green),
@@ -4192,8 +4191,7 @@ html.dark #offer-type-selector-screen button .rounded-full .material-symbols-out
 #view-create_group #group-name-input,
 #view-create_group #group-desc-input,
 #view-create_group #group-friends-search,
-#view-create_group .friend-select-btn,
-#group-photo-hero .relative {
+#view-create_group .friend-select-btn {
     background-color: #f3f4f6 !important;
     border: 1px solid rgba(0, 0, 0, 0.15) !important;
 }
@@ -4218,7 +4216,6 @@ html.dark #offer-type-selector-screen button .rounded-full .material-symbols-out
 .dark #view-offer #offer-wishlist-input,
 .dark #view-offer .offer-category-btn:not(.bg-forest-green),
 .dark #view-offer #karma-unified-card:not(.border-\[\#308A5E\]),
-.dark #view-offer #offer-photo-hero .relative,
 .dark #view-offer button[onclick="openMeetupLocationPicker()"],
 .dark #view-offer #meetup-map-status,
 .dark #subcategory-modal button.sub-opt-btn:not(.bg-forest-green),
@@ -4234,10 +4231,34 @@ html.dark #offer-type-selector-screen button .rounded-full .material-symbols-out
 .dark #view-create_group #group-name-input,
 .dark #view-create_group #group-desc-input,
 .dark #view-create_group #group-friends-search,
-.dark #view-create_group .friend-select-btn,
-.dark #group-photo-hero .relative {
+.dark #view-create_group .friend-select-btn {
     background-color: #1b261f !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Premium styled uploader slots (boxes with dashed borders and hover animations) */
+#view-offer #offer-photo-hero .relative,
+#group-photo-hero .relative {
+    background-color: #ffffff !important;
+    border: 1.5px dashed rgba(0, 0, 0, 0.2) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+    transition: all 0.2s ease !important;
+}
+#view-offer #offer-photo-hero .relative:hover,
+#group-photo-hero .relative:hover {
+    border-color: #000000 !important;
+    background-color: rgba(0, 0, 0, 0.02) !important;
+}
+.dark #view-offer #offer-photo-hero .relative,
+.dark #group-photo-hero .relative {
+    background-color: #1b261f !important;
+    border: 1.5px dashed rgba(255, 255, 255, 0.25) !important;
+}
+.dark #view-offer #offer-photo-hero .relative:hover,
+.dark #group-photo-hero .relative:hover {
+    border-color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.02) !important;
 }
 
 .dark #view-offer .offer-category-btn:not(.bg-forest-green):hover,
@@ -4248,16 +4269,28 @@ html.dark #offer-type-selector-screen button .rounded-full .material-symbols-out
     border-color: rgba(255, 255, 255, 0.25) !important;
 }
 
-/* Force camera icons in the uploader slots to be black in light mode, white in dark mode, and make them thinner */
+/* Force camera icons in the uploader slots to be black in light mode, white in dark mode, centered, and thin */
 html:not(.dark) #offer-photo-hero .material-symbols-outlined,
 html:not(.dark) #group-photo-hero .material-symbols-outlined {
     color: #000000 !important;
-    font-variation-settings: 'wght' 200, 'FILL' 0, 'grad' 0, 'opsz' 24 !important;
+    font-variation-settings: 'wght' 300, 'FILL' 0, 'grad' 0, 'opsz' 24 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 html.dark #offer-photo-hero .material-symbols-outlined,
 html.dark #group-photo-hero .material-symbols-outlined {
     color: #ffffff !important;
-    font-variation-settings: 'wght' 200, 'FILL' 0, 'grad' 0, 'opsz' 24 !important;
+    font-variation-settings: 'wght' 300, 'FILL' 0, 'grad' 0, 'opsz' 24 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 /* Make photo hero labels (Primary/Optional) much smaller, matching reference text size */
@@ -4542,9 +4575,10 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 }
 
 /* Outer Chat Action Center container - glassmorphism, transparent, positioned low */
-#chat-action-center {
+#chat-action-center,
+#chat-action-center.group-chat-action-center {
     position: absolute !important;
-    bottom: var(--keyboard-offset, 0px) !important;
+    bottom: calc(76px + var(--keyboard-offset, 0px)) !important;
     left: 0px !important;
     right: 0px !important;
     width: 100% !important;
@@ -4559,9 +4593,19 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
     padding-right: 0px !important;
     padding-bottom: 8px !important;
 }
-.native-app-env #chat-action-center {
+body.keyboard-visible #chat-action-center,
+body.keyboard-visible #chat-action-center.group-chat-action-center {
     bottom: var(--keyboard-offset, 0px) !important;
+}
+.native-app-env #chat-action-center,
+.native-app-env #chat-action-center.group-chat-action-center {
+    bottom: calc(max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) + 56px + var(--keyboard-offset, 0px)) !important;
     padding-bottom: calc(2px + env(safe-area-inset-bottom)) !important;
+}
+body.keyboard-visible .native-app-env #chat-action-center,
+body.keyboard-visible .native-app-env #chat-action-center.group-chat-action-center {
+    bottom: var(--keyboard-offset, 0px) !important;
+    padding-bottom: 2px !important;
 }
 html.dark #chat-action-center {
     border: none !important;
@@ -4569,29 +4613,6 @@ html.dark #chat-action-center {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     box-shadow: none !important;
-}
-
-#chat-action-center.group-chat-action-center {
-    bottom: var(--keyboard-offset, 0px) !important;
-    left: 0px !important;
-    right: 0px !important;
-    width: 100% !important;
-    border-radius: 0 !important;
-    padding-bottom: 8px !important;
-    border: none !important;
-    background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    box-shadow: none !important;
-}
-.native-app-env #chat-action-center.group-chat-action-center {
-    bottom: var(--keyboard-offset, 0px) !important;
-    padding-bottom: calc(2px + env(safe-area-inset-bottom)) !important;
-}
-
-body.keyboard-visible .native-app-env #chat-action-center,
-body.keyboard-visible .native-app-env #chat-action-center.group-chat-action-center {
-    padding-bottom: 2px !important;
 }
 
 /* Glassmorphic Chat Input Pill (matching #global-navbar) */
@@ -6818,14 +6839,19 @@ html.dark .category-tray, html.dark .category-list-overlay {
 #chat-message-feed::after {
     content: '' !important;
     display: block !important;
-    height: calc(var(--chat-input-height, 140px) + 14px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 140px) + 14px + 76px + var(--keyboard-offset, 0px)) !important;
     flex-shrink: 0 !important;
     pointer-events: none !important;
 }
 
-.native-app-env #chat-message-feed::after {
-    height: calc(var(--chat-input-height, 140px) + 14px + var(--keyboard-offset, 0px) + env(safe-area-inset-bottom, 0px)) !important;
+body.keyboard-visible #chat-message-feed::after {
+    height: calc(var(--chat-input-height, 140px) + 14px + var(--keyboard-offset, 0px)) !important;
 }
+
+.native-app-env #chat-message-feed::after {
+    height: calc(var(--chat-input-height, 140px) + 14px + max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) + 56px + var(--keyboard-offset, 0px)) !important;
+}
+
 body.keyboard-visible .native-app-env #chat-message-feed::after {
     height: calc(var(--chat-input-height, 140px) + 14px + var(--keyboard-offset, 0px)) !important;
 }
@@ -7866,7 +7892,7 @@ html.dark .list-card-title {
     margin-top: 4px !important;
     margin-bottom: 8px !important;
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -7899,7 +7925,7 @@ html.dark .list-card-description {
     margin-top: 4px !important;
     margin-bottom: 8px !important;
     display: -webkit-box !important;
-    -webkit-line-clamp: 3 !important;
+    -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
     color: rgba(0, 0, 0, 0.7) !important;
@@ -8530,7 +8556,7 @@ html.dark .list-card-expandable-content {
 #chat-text-input,
 #chat-text-input::placeholder {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 15.5px !important;
+    font-size: 16px !important;
 }
 
 /* Chat Message Bubbles, Admin Bubbles & Inline Paragraphs */

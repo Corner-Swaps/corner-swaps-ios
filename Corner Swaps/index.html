@@ -1968,11 +1968,11 @@ html.dark .distance-filter-slider {
 }
 
 #offer-photo-hero {
-    height: 240px !important;
+    height: 260px !important;
 }
 
 #group-photo-hero {
-    height: 290px !important;
+    height: 260px !important;
 }
 
 .photo-hero.has-image {
@@ -2748,7 +2748,7 @@ select::-ms-expand {
 
 .native-app-env #offer-photo-hero {
     padding-top: 1.5rem !important;
-    height: 240px !important;
+    height: 260px !important;
 }
 
 #offer-form-header {
@@ -5177,7 +5177,7 @@ html:not(.dark) #neighbor-profile-modal button.bg-forest-green * {
 /* Chat input typography and color alignment with chat bubbles */
 #chat-text-input {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 15px !important;
+    font-size: 16px !important;
     font-weight: 400 !important;
     color: #000000 !important;
     height: 100% !important;
@@ -5354,7 +5354,6 @@ html.dark #offer-type-selector-screen button .rounded-full .material-symbols-out
 #view-offer #offer-wishlist-input,
 #view-offer .offer-category-btn:not(.bg-forest-green),
 #view-offer #karma-unified-card:not(.border-\[\#308A5E\]),
-#view-offer #offer-photo-hero .relative,
 #view-offer button[onclick="openMeetupLocationPicker()"],
 #view-offer #meetup-map-status,
 #subcategory-modal button.sub-opt-btn:not(.bg-forest-green),
@@ -5370,8 +5369,7 @@ html.dark #offer-type-selector-screen button .rounded-full .material-symbols-out
 #view-create_group #group-name-input,
 #view-create_group #group-desc-input,
 #view-create_group #group-friends-search,
-#view-create_group .friend-select-btn,
-#group-photo-hero .relative {
+#view-create_group .friend-select-btn {
     background-color: #f3f4f6 !important;
     border: 1px solid rgba(0, 0, 0, 0.15) !important;
 }
@@ -5396,7 +5394,6 @@ html.dark #offer-type-selector-screen button .rounded-full .material-symbols-out
 .dark #view-offer #offer-wishlist-input,
 .dark #view-offer .offer-category-btn:not(.bg-forest-green),
 .dark #view-offer #karma-unified-card:not(.border-\[\#308A5E\]),
-.dark #view-offer #offer-photo-hero .relative,
 .dark #view-offer button[onclick="openMeetupLocationPicker()"],
 .dark #view-offer #meetup-map-status,
 .dark #subcategory-modal button.sub-opt-btn:not(.bg-forest-green),
@@ -5412,10 +5409,34 @@ html.dark #offer-type-selector-screen button .rounded-full .material-symbols-out
 .dark #view-create_group #group-name-input,
 .dark #view-create_group #group-desc-input,
 .dark #view-create_group #group-friends-search,
-.dark #view-create_group .friend-select-btn,
-.dark #group-photo-hero .relative {
+.dark #view-create_group .friend-select-btn {
     background-color: #1b261f !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Premium styled uploader slots (boxes with dashed borders and hover animations) */
+#view-offer #offer-photo-hero .relative,
+#group-photo-hero .relative {
+    background-color: #ffffff !important;
+    border: 1.5px dashed rgba(0, 0, 0, 0.2) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+    transition: all 0.2s ease !important;
+}
+#view-offer #offer-photo-hero .relative:hover,
+#group-photo-hero .relative:hover {
+    border-color: #000000 !important;
+    background-color: rgba(0, 0, 0, 0.02) !important;
+}
+.dark #view-offer #offer-photo-hero .relative,
+.dark #group-photo-hero .relative {
+    background-color: #1b261f !important;
+    border: 1.5px dashed rgba(255, 255, 255, 0.25) !important;
+}
+.dark #view-offer #offer-photo-hero .relative:hover,
+.dark #group-photo-hero .relative:hover {
+    border-color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.02) !important;
 }
 
 .dark #view-offer .offer-category-btn:not(.bg-forest-green):hover,
@@ -5426,16 +5447,28 @@ html.dark #offer-type-selector-screen button .rounded-full .material-symbols-out
     border-color: rgba(255, 255, 255, 0.25) !important;
 }
 
-/* Force camera icons in the uploader slots to be black in light mode, white in dark mode, and make them thinner */
+/* Force camera icons in the uploader slots to be black in light mode, white in dark mode, centered, and thin */
 html:not(.dark) #offer-photo-hero .material-symbols-outlined,
 html:not(.dark) #group-photo-hero .material-symbols-outlined {
     color: #000000 !important;
-    font-variation-settings: 'wght' 200, 'FILL' 0, 'grad' 0, 'opsz' 24 !important;
+    font-variation-settings: 'wght' 300, 'FILL' 0, 'grad' 0, 'opsz' 24 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 html.dark #offer-photo-hero .material-symbols-outlined,
 html.dark #group-photo-hero .material-symbols-outlined {
     color: #ffffff !important;
-    font-variation-settings: 'wght' 200, 'FILL' 0, 'grad' 0, 'opsz' 24 !important;
+    font-variation-settings: 'wght' 300, 'FILL' 0, 'grad' 0, 'opsz' 24 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 /* Make photo hero labels (Primary/Optional) much smaller, matching reference text size */
@@ -5720,9 +5753,10 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 }
 
 /* Outer Chat Action Center container - glassmorphism, transparent, positioned low */
-#chat-action-center {
+#chat-action-center,
+#chat-action-center.group-chat-action-center {
     position: absolute !important;
-    bottom: var(--keyboard-offset, 0px) !important;
+    bottom: calc(76px + var(--keyboard-offset, 0px)) !important;
     left: 0px !important;
     right: 0px !important;
     width: 100% !important;
@@ -5737,9 +5771,19 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
     padding-right: 0px !important;
     padding-bottom: 8px !important;
 }
-.native-app-env #chat-action-center {
+body.keyboard-visible #chat-action-center,
+body.keyboard-visible #chat-action-center.group-chat-action-center {
     bottom: var(--keyboard-offset, 0px) !important;
+}
+.native-app-env #chat-action-center,
+.native-app-env #chat-action-center.group-chat-action-center {
+    bottom: calc(max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) + 56px + var(--keyboard-offset, 0px)) !important;
     padding-bottom: calc(2px + env(safe-area-inset-bottom)) !important;
+}
+body.keyboard-visible .native-app-env #chat-action-center,
+body.keyboard-visible .native-app-env #chat-action-center.group-chat-action-center {
+    bottom: var(--keyboard-offset, 0px) !important;
+    padding-bottom: 2px !important;
 }
 html.dark #chat-action-center {
     border: none !important;
@@ -5747,29 +5791,6 @@ html.dark #chat-action-center {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     box-shadow: none !important;
-}
-
-#chat-action-center.group-chat-action-center {
-    bottom: var(--keyboard-offset, 0px) !important;
-    left: 0px !important;
-    right: 0px !important;
-    width: 100% !important;
-    border-radius: 0 !important;
-    padding-bottom: 8px !important;
-    border: none !important;
-    background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    box-shadow: none !important;
-}
-.native-app-env #chat-action-center.group-chat-action-center {
-    bottom: var(--keyboard-offset, 0px) !important;
-    padding-bottom: calc(2px + env(safe-area-inset-bottom)) !important;
-}
-
-body.keyboard-visible .native-app-env #chat-action-center,
-body.keyboard-visible .native-app-env #chat-action-center.group-chat-action-center {
-    padding-bottom: 2px !important;
 }
 
 /* Glassmorphic Chat Input Pill (matching #global-navbar) */
@@ -7996,14 +8017,19 @@ html.dark .category-tray, html.dark .category-list-overlay {
 #chat-message-feed::after {
     content: '' !important;
     display: block !important;
-    height: calc(var(--chat-input-height, 140px) + 14px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 140px) + 14px + 76px + var(--keyboard-offset, 0px)) !important;
     flex-shrink: 0 !important;
     pointer-events: none !important;
 }
 
-.native-app-env #chat-message-feed::after {
-    height: calc(var(--chat-input-height, 140px) + 14px + var(--keyboard-offset, 0px) + env(safe-area-inset-bottom, 0px)) !important;
+body.keyboard-visible #chat-message-feed::after {
+    height: calc(var(--chat-input-height, 140px) + 14px + var(--keyboard-offset, 0px)) !important;
 }
+
+.native-app-env #chat-message-feed::after {
+    height: calc(var(--chat-input-height, 140px) + 14px + max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) + 56px + var(--keyboard-offset, 0px)) !important;
+}
+
 body.keyboard-visible .native-app-env #chat-message-feed::after {
     height: calc(var(--chat-input-height, 140px) + 14px + var(--keyboard-offset, 0px)) !important;
 }
@@ -9044,7 +9070,7 @@ html.dark .list-card-title {
     margin-top: 4px !important;
     margin-bottom: 8px !important;
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -9077,7 +9103,7 @@ html.dark .list-card-description {
     margin-top: 4px !important;
     margin-bottom: 8px !important;
     display: -webkit-box !important;
-    -webkit-line-clamp: 3 !important;
+    -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
     color: rgba(0, 0, 0, 0.7) !important;
@@ -9708,7 +9734,7 @@ html.dark .list-card-expandable-content {
 #chat-text-input,
 #chat-text-input::placeholder {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 15.5px !important;
+    font-size: 16px !important;
 }
 
 /* Chat Message Bubbles, Admin Bubbles & Inline Paragraphs */
@@ -11188,7 +11214,7 @@ html.dark .sticky-segmented-control-wrapper {
                         </div>
                     </div>
                      <!-- SUB-VIEW 2: GRID LIST VIEW CONTAINER -->
-                    <div id="village-list-container" class="hidden absolute inset-0 z-10 overflow-y-auto pl-6 pr-6 pt-6 pb-24 custom-scrollbar bg-warm-cream dark:bg-[#18201a] flex flex-col gap-3">
+                    <div id="village-list-container" class="hidden absolute inset-0 z-10 overflow-y-auto pl-6 pr-6 pt-6 pb-24 scrollbar-none bg-warm-cream dark:bg-[#18201a] flex flex-col gap-3">
                         <div class="mb-0 px-0 flex flex-col gap-2.5 flex-shrink-0 relative z-[60]">
                             <!-- Fused Search Capsule with Add button -->
                             <div class="fused-search-capsule select-none">
@@ -11291,7 +11317,7 @@ html.dark .sticky-segmented-control-wrapper {
                     </div>
 
                     <!-- SUB-VIEW 3: COMMUNITY NEEDS BOARD CONTAINER -->
-                    <div id="village-needs-container" class="hidden absolute inset-0 z-10 overflow-y-auto pl-6 pr-6 pt-6 pb-24 custom-scrollbar bg-warm-cream dark:bg-[#18201a] flex flex-col gap-3">
+                    <div id="village-needs-container" class="hidden absolute inset-0 z-10 overflow-y-auto pl-6 pr-6 pt-6 pb-24 scrollbar-none bg-warm-cream dark:bg-[#18201a] flex flex-col gap-3">
                         <div class="mb-0 px-0 flex flex-col gap-2.5 flex-shrink-0 relative z-[60]">
                             <!-- Fused Search Capsule with Add button -->
                             <div class="fused-search-capsule select-none">
@@ -11394,7 +11420,7 @@ html.dark .sticky-segmented-control-wrapper {
                     </div>
 
                     <!-- SUB-VIEW 4: COMMUNITY EVENTS CONTAINER -->
-                    <div id="village-events-container" class="hidden absolute inset-0 z-10 overflow-y-auto pl-6 pr-6 pt-6 pb-24 custom-scrollbar bg-warm-cream dark:bg-[#18201a] flex flex-col gap-3">
+                    <div id="village-events-container" class="hidden absolute inset-0 z-10 overflow-y-auto pl-6 pr-6 pt-6 pb-24 scrollbar-none bg-warm-cream dark:bg-[#18201a] flex flex-col gap-3">
                         <div class="mb-0 px-0 flex flex-col gap-2.5 flex-shrink-0 relative z-[60]">
                             <!-- Fused Search Capsule with Add button -->
                             <div class="fused-search-capsule select-none">
@@ -11494,7 +11520,7 @@ html.dark .sticky-segmented-control-wrapper {
                     </div>
 
                     <!-- SUB-VIEW 5: VILLAGE BULLETIN BOARD CONTAINER -->
-                    <div id="village-bulletins-container" class="hidden absolute inset-0 z-10 overflow-y-auto pl-6 pr-20 pt-6 pb-24 custom-scrollbar bg-warm-cream flex flex-col gap-3">
+                    <div id="village-bulletins-container" class="hidden absolute inset-0 z-10 overflow-y-auto pl-6 pr-6 pt-6 pb-24 scrollbar-none bg-warm-cream flex flex-col gap-3">
                         <div class="mb-4 px-1 flex flex-col gap-3 flex-shrink-0">
                             <div>
                                 <h3 class="font-headline text-[28px] font-black text-forest-green uppercase tracking-wider mb-1">Village Bulletins</h3>
@@ -12339,7 +12365,7 @@ html.dark .sticky-segmented-control-wrapper {
                 <section id="view-offer" class="screen-view flex-grow pb-24 overflow-hidden relative flex flex-col justify-start pt-0">
                     <!-- A. Listing Mode Selector Screen -->
                     <div id="offer-type-selector-screen" class="px-6 flex flex-col items-center justify-start gap-3.5 max-w-sm mx-auto text-center w-full pt-14 pb-4">
-                        <div class="w-16 h-16 rounded-full bg-forest-green/10 dark:bg-emerald-500/10 flex items-center justify-center text-forest-green dark:text-emerald-400 mb-1">
+                        <div class="w-16 h-16 rounded-2xl bg-forest-green/10 dark:bg-emerald-500/10 flex items-center justify-center text-forest-green dark:text-emerald-400 mb-1 shadow-sm">
                             <span class="material-symbols-outlined text-3xl text-forest-green dark:text-emerald-400">post_add</span>
                         </div>
                         <h2 class="font-headline text-2xl font-bold text-black dark:text-white leading-tight">What would you like to list today?</h2>
@@ -12350,8 +12376,8 @@ html.dark .sticky-segmented-control-wrapper {
                             <!-- Offering Card -->
                             <button type="button" onclick="selectOfferMode('offering')" class="w-full py-3.5 px-4 bg-white dark:bg-[#18201a] border border-outline-variant/40 dark:border-outline-variant/15 rounded-2xl hover:border-forest-green hover:bg-forest-green/5 text-center active:scale-[0.98] transition-all shadow-sm group">
                                 <div class="flex flex-col items-center gap-1.5 mb-1.5">
-                                    <div class="w-7 h-7 rounded-full bg-forest-green text-white flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-sm">handyman</span>
+                                    <div class="w-12 h-12 rounded-xl bg-forest-green/10 dark:bg-emerald-500/10 text-forest-green dark:text-emerald-400 flex items-center justify-center mb-1.5 shadow-sm">
+                                        <span class="material-symbols-outlined text-2xl">redeem</span>
                                     </div>
                                     <span class="font-headline font-bold text-xs text-forest-green dark:text-emerald-400">Add an Offering</span>
                                 </div>
@@ -12362,8 +12388,8 @@ html.dark .sticky-segmented-control-wrapper {
                             <!-- Need Card -->
                             <button type="button" onclick="selectOfferMode('need')" class="w-full py-3.5 px-4 bg-white dark:bg-[#18201a] border border-outline-variant/40 dark:border-outline-variant/15 rounded-2xl hover:border-forest-green hover:bg-forest-green/5 text-center active:scale-[0.98] transition-all shadow-sm group">
                                 <div class="flex flex-col items-center gap-1.5 mb-1.5">
-                                    <div class="w-7 h-7 rounded-full bg-forest-green text-white flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-sm">shopping_basket</span>
+                                    <div class="w-12 h-12 rounded-xl bg-forest-green/10 dark:bg-emerald-500/10 text-forest-green dark:text-emerald-400 flex items-center justify-center mb-1.5 shadow-sm">
+                                        <span class="material-symbols-outlined text-2xl">help_center</span>
                                     </div>
                                     <span class="font-headline font-bold text-xs text-forest-green dark:text-emerald-400">Add a Need</span>
                                 </div>
@@ -12374,8 +12400,8 @@ html.dark .sticky-segmented-control-wrapper {
                             <!-- Event Card -->
                             <button type="button" onclick="selectOfferMode('event')" class="w-full py-3.5 px-4 bg-white dark:bg-[#18201a] border border-outline-variant/40 dark:border-outline-variant/15 rounded-2xl hover:border-forest-green hover:bg-forest-green/5 text-center active:scale-[0.98] transition-all shadow-sm group">
                                 <div class="flex flex-col items-center gap-1.5 mb-1.5">
-                                    <div class="w-7 h-7 rounded-full bg-forest-green text-white flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-sm">festival</span>
+                                    <div class="w-12 h-12 rounded-xl bg-forest-green/10 dark:bg-emerald-500/10 text-forest-green dark:text-emerald-400 flex items-center justify-center mb-1.5 shadow-sm">
+                                        <span class="material-symbols-outlined text-2xl">celebration</span>
                                     </div>
                                     <span class="font-headline font-bold text-xs text-forest-green dark:text-emerald-400">Add an Event</span>
                                 </div>
@@ -12389,13 +12415,13 @@ html.dark .sticky-segmented-control-wrapper {
                     <!-- B. Unified Form Wrapper (hidden initially) -->
                     <div id="offer-form-wrapper" class="hidden h-full overflow-hidden relative pb-0 w-full flex flex-col">
                         <!-- sticky/fixed header: Hero Image area with three photo uploader slots -->
-                        <section class="photo-hero w-full relative overflow-hidden flex flex-col justify-center items-center border-b border-outline-variant/30 flex-shrink-0 bg-[#ecebeb] dark:bg-[#202020] px-4 pt-5 pb-5 animate-fade-in" id="offer-photo-hero">
+                        <section class="photo-hero w-full relative overflow-hidden flex flex-col justify-center items-center border-b border-outline-variant/30 flex-shrink-0 bg-[#fcfbf9] dark:bg-[#18201a] px-4 pt-5 pb-5 animate-fade-in" id="offer-photo-hero">
                             <div class="flex flex-col items-center w-full">
                                 <div class="flex justify-between items-center w-full max-w-[340px] mx-auto">
                                     <!-- Slot 0 (Primary) -->
                                     <div class="relative w-[100px] h-[100px] rounded-2xl bg-white border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(0)">
                                         <div id="offer-photo-placeholder-0" class="w-full h-full flex items-center justify-center">
-                                            <span class="material-symbols-outlined text-black text-[36px]" style="color: #000000 !important; font-size: 36px !important;">add_a_photo</span>
+                                            <span class="material-symbols-outlined text-black dark:text-white text-[32px] flex items-center justify-center w-full h-full" style="font-size: 32px !important;">add_a_photo</span>
                                         </div>
                                         <img id="offer-photo-preview-0" class="w-full h-full object-cover hidden">
                                         <button id="offer-photo-remove-0" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferPhotoSlot(0)">
@@ -12407,7 +12433,7 @@ html.dark .sticky-segmented-control-wrapper {
                                     <!-- Slot 1 (Optional) -->
                                     <div class="relative w-[100px] h-[100px] rounded-2xl bg-white border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(1)">
                                         <div id="offer-photo-placeholder-1" class="w-full h-full flex items-center justify-center">
-                                            <span class="material-symbols-outlined text-black text-[36px]" style="color: #000000 !important; font-size: 36px !important;">add_a_photo</span>
+                                            <span class="material-symbols-outlined text-black dark:text-white text-[32px] flex items-center justify-center w-full h-full" style="font-size: 32px !important;">add_a_photo</span>
                                         </div>
                                         <img id="offer-photo-preview-1" class="w-full h-full object-cover hidden">
                                         <button id="offer-photo-remove-1" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferPhotoSlot(1)">
@@ -12419,10 +12445,10 @@ html.dark .sticky-segmented-control-wrapper {
                                     <!-- Slot 2 (Icon Selector) -->
                                     <div class="relative w-[100px] h-[100px] rounded-2xl bg-white border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="openIconSelectorModal()">
                                         <div id="offer-icon-placeholder" class="w-full h-full flex items-center justify-center">
-                                            <span class="material-symbols-outlined text-black text-[36px]" style="color: #000000 !important; font-size: 36px !important;">interests</span>
+                                            <span class="material-symbols-outlined text-black dark:text-white text-[32px] flex items-center justify-center w-full h-full" style="font-size: 32px !important;">interests</span>
                                         </div>
                                         <div id="offer-icon-selected-display" class="w-full h-full flex items-center justify-center hidden bg-black/5">
-                                            <span id="offer-selected-icon-symbol" class="material-symbols-outlined text-[36px] text-black" style="font-variation-settings: 'FILL' 1; color: #000000 !important; font-size: 36px !important;">star</span>
+                                            <span id="offer-selected-icon-symbol" class="material-symbols-outlined text-[32px] text-black dark:text-white flex items-center justify-center w-full h-full" style="font-variation-settings: 'FILL' 1; font-size: 32px !important;">star</span>
                                         </div>
                                         <button id="offer-icon-remove" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferIcon()">
                                             <span class="material-symbols-outlined text-[10px] font-bold">close</span>
@@ -12684,7 +12710,7 @@ html.dark .sticky-segmented-control-wrapper {
                             </label>
                         </div>
 
-                        <div class="flex mt-3 mb-2">
+                        <div class="flex mt-1 mb-2">
                             <button id="btn-list-offering" class="w-full h-12 bg-forest-green text-warm-cream font-bold text-xs rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center shadow-md border-0 cursor-pointer text-center" onclick="handleAddOffering(event)">
                                 List Offer
                             </button>
@@ -16407,7 +16433,7 @@ html.dark .sticky-segmented-control-wrapper {
                         <div class="flex flex-col items-center w-full">
                             <div class="relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="document.getElementById('group-avatar-file').click()">
                                 <div id="group-photo-placeholder" class="flex items-center justify-center p-2">
-                                    <span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-2xl group-hover:scale-110 transition-transform">add_a_photo</span>
+                                    <span class="material-symbols-outlined text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">add_a_photo</span>
                                 </div>
                                 <img id="group-photo-preview" class="w-full h-full object-cover hidden">
                                 <button id="group-photo-remove" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeGroupPhoto()">
@@ -19428,9 +19454,7 @@ function loadState() {
     if (!state.activeCategory) {
         state.activeCategory = 'offerings';
     }
-    if (!state.activeViewMode) {
-        state.activeViewMode = 'map';
-    }
+    state.activeViewMode = 'map';
     if (ensureFriendsList()) {
         needsSave = true;
     }
@@ -22388,7 +22412,7 @@ function updateEventPhotoPlaceholder() {
     if (state.currentOfferMode === 'event' && eventType && !dataUrl) {
         const details = getEventIconDetails(eventType);
         
-        parent.className = "relative w-[100px] h-[100px] rounded-xl flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:opacity-90 active:scale-95 transition-all shadow-sm group event-stock-thumbnail";
+        parent.className = "relative w-[100px] h-[100px] rounded-2xl flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:opacity-90 active:scale-95 transition-all shadow-sm group event-stock-thumbnail";
         parent.style.setProperty('--bg-light', details.bgColor);
         parent.style.setProperty('--bg-dark', details.darkBgColor);
         parent.style.setProperty('--color-light', details.color);
@@ -22398,7 +22422,7 @@ function updateEventPhotoPlaceholder() {
         placeholder.innerHTML = `<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">${details.icon}</span>`;
         if (preview) preview.classList.add('hidden');
     } else {
-        parent.className = "relative w-[100px] h-[100px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group";
+        parent.className = "relative w-[100px] h-[100px] rounded-2xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group";
         parent.style.removeProperty('--bg-light');
         parent.style.removeProperty('--bg-dark');
         parent.style.removeProperty('--color-light');
@@ -22406,7 +22430,7 @@ function updateEventPhotoPlaceholder() {
         parent.style.borderColor = '';
         parent.style.backgroundColor = '';
         
-        placeholder.innerHTML = `<span class="material-symbols-outlined text-forest-green dark:text-emerald-400 text-3xl group-hover:scale-110 transition-transform">add_a_photo</span>`;
+        placeholder.innerHTML = `<span class="material-symbols-outlined text-black dark:text-white text-3xl group-hover:scale-110 transition-transform">add_a_photo</span>`;
     }
 }
 window.updateEventPhotoPlaceholder = updateEventPhotoPlaceholder;
