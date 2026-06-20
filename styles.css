@@ -184,7 +184,7 @@ body.show-simulator .screen-view.active {
 /* 8. Global navbar stays pinned to bottom of app-container (absolute within position:relative container) */
 body.show-simulator #global-navbar {
     position: absolute !important;
-    bottom: 20px !important;
+    bottom: 12px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 48px) !important;
@@ -1152,8 +1152,8 @@ html.dark #phone-header-bar .material-symbols-outlined {
 
 .native-app-env #global-navbar {
     position: absolute !important;
-    bottom: 24px !important;
-    bottom: max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) !important;
+    bottom: 12px !important;
+    bottom: max(12px, calc(4px + env(safe-area-inset-bottom, 34px))) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 32px) !important;
@@ -1211,8 +1211,11 @@ html.dark #phone-header-bar .material-symbols-outlined {
     padding-bottom: 0 !important;
 }
 .native-app-env #profile-settings-scroll-container {
-    padding-top: calc(64px + env(safe-area-inset-top)) !important;
+    padding-top: calc(1rem + env(safe-area-inset-top)) !important;
     padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
+}
+.native-app-env #profile-settings-scroll-container.has-header {
+    padding-top: calc(64px + env(safe-area-inset-top)) !important;
 }
 
 .native-app-env #view-village {
@@ -1262,8 +1265,8 @@ html.dark #neighbor-profile-modal {
 }
 
 .native-app-env #neighbor-profile-scroll-container {
-    padding-top: calc(3.5rem + env(safe-area-inset-top)) !important;
-    padding-bottom: calc(3rem + env(safe-area-inset-bottom)) !important;
+    padding-top: calc(1rem + env(safe-area-inset-top)) !important;
+    padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
 }
 
 /* Safe area padding for category tray and list overlays in iOS native view */
@@ -1568,9 +1571,12 @@ select::-ms-expand {
     box-sizing: border-box !important;
 }
 
-.native-app-env #offer-photo-hero {
-    padding-top: 1.5rem !important;
-    height: 260px !important;
+.native-app-env #offer-photo-hero,
+.native-app-env #group-photo-hero {
+    padding-top: calc(3rem + env(safe-area-inset-top)) !important;
+    padding-bottom: 2rem !important;
+    height: calc(270px + env(safe-area-inset-top)) !important;
+    justify-content: flex-end !important;
 }
 
 #offer-form-header {
@@ -2026,17 +2032,17 @@ html.dark .chat-bubble-other {
 }
 
 #meetup-map-footer {
-    bottom: 24px !important;
+    bottom: 82px !important;
     right: 24px !important;
     top: auto !important;
 }
 #view-village:has(#map-peek-card.active) #meetup-map-footer {
-    bottom: 172px !important;
+    bottom: 230px !important;
 }
 
 #meetup-close-btn {
     top: 16px !important;
-    right: 24px !important;
+    left: 20px !important;
 }
 
 /* iOS Native App safe area positioning overrides */
@@ -2068,16 +2074,17 @@ html.dark .chat-bubble-other {
 }
 
 .native-app-env #meetup-map-footer {
-    bottom: calc(24px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(82px + env(safe-area-inset-bottom)) !important;
     right: 24px !important;
     top: auto !important;
 }
 .native-app-env #view-village:has(#map-peek-card.active) #meetup-map-footer {
-    bottom: calc(172px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(230px + env(safe-area-inset-bottom)) !important;
 }
 
 .native-app-env #meetup-close-btn {
     top: calc(16px + env(safe-area-inset-top)) !important;
+    left: 20px !important;
 }
 
 
@@ -2095,7 +2102,7 @@ html.dark .chat-bubble-other {
 .native-app-env #village-needs-container,
 .native-app-env #village-events-container,
 .native-app-env #village-bulletins-container {
-    padding-top: 0.6rem !important;
+    padding-top: calc(0.6rem + env(safe-area-inset-top)) !important;
     padding-bottom: calc(120px + env(safe-area-inset-bottom)) !important;
 }
 
@@ -4572,7 +4579,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 #chat-action-center,
 #chat-action-center.group-chat-action-center {
     position: absolute !important;
-    bottom: calc(76px + var(--keyboard-offset, 0px)) !important;
+    bottom: calc(8px + var(--keyboard-offset, 0px)) !important;
     left: 0px !important;
     right: 0px !important;
     width: 100% !important;
@@ -4589,12 +4596,12 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 }
 .native-app-env #chat-action-center,
 .native-app-env #chat-action-center.group-chat-action-center {
-    bottom: calc(max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) + 56px + var(--keyboard-offset, 0px)) !important;
-    padding-bottom: calc(2px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(var(--keyboard-offset, 0px)) !important;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom, 20px)) !important;
 }
 body.keyboard-visible .native-app-env #chat-action-center,
 body.keyboard-visible .native-app-env #chat-action-center.group-chat-action-center {
-    padding-bottom: 2px !important;
+    padding-bottom: 8px !important;
 }
 html.dark #chat-action-center {
     border: none !important;
@@ -6746,8 +6753,8 @@ html.dark .category-info-highlighted::after {
 
 .native-app-env #global-navbar:not(.hidden) {
     position: absolute !important;
-    bottom: 24px !important;
-    bottom: max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) !important;
+    bottom: 12px !important;
+    bottom: max(12px, calc(4px + env(safe-area-inset-bottom, 34px))) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 32px) !important;
@@ -6828,13 +6835,13 @@ html.dark .category-tray, html.dark .category-list-overlay {
 #chat-message-feed::after {
     content: '' !important;
     display: block !important;
-    height: calc(var(--chat-input-height, 140px) + 50px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 80px) + 8px + var(--keyboard-offset, 0px)) !important;
     flex-shrink: 0 !important;
     pointer-events: none !important;
 }
 
 .native-app-env #chat-message-feed::after {
-    height: calc(var(--chat-input-height, 140px) + max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) + 30px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 80px) + 8px + var(--keyboard-offset, 0px)) !important;
 }
 
 /* Custom Chat Section Font & Size Consistency */
@@ -7205,14 +7212,15 @@ html.dark input:checked + .switch-slider:before {
 /* Fused Search & Filter Bar Container */
 #village-search-bar-overlay {
     position: absolute !important;
-    left: 24px !important;
+    left: 20px !important;
     z-index: 2000 !important;
     display: flex !important;
     flex-direction: column !important;
-    width: calc(100% - 48px) !important;
+    width: calc(100% - 40px) !important;
     max-width: 480px !important;
     transition: all 0.3s ease !important;
 }
+
 #village-search-bar-overlay.hidden {
     display: none !important;
 }
@@ -7237,6 +7245,15 @@ html.dark .fused-search-capsule {
     background-color: rgba(24, 32, 26, 0.92) !important;
     border-color: rgba(255, 255, 255, 0.1) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+#village-list-container .fused-search-capsule,
+#village-needs-container .fused-search-capsule,
+#village-events-container .fused-search-capsule,
+html.dark #village-list-container .fused-search-capsule,
+html.dark #village-needs-container .fused-search-capsule,
+html.dark #village-events-container .fused-search-capsule {
+    box-shadow: none !important;
 }
 
 /* Capsule Search Input */
@@ -7822,38 +7839,180 @@ html.dark #village-events-segmented-control {
 /* Align Map Category Dropdown with the new wider segmented control (handled by relative overrides below) */
 
 /* Meetup Safety Guidelines modal header styles */
-#meetup-safety-title {
-    font-size: 17px !important; /* Larger title */
-    font-weight: 850 !important; /* Font weight black */
-    color: #000000 !important; /* Explicitly black */
-}
-html.dark #meetup-safety-title {
-    color: #ffffff !important; /* White in dark mode */
-}
-#meetup-safety-subtitle {
-    font-size: 13px !important; /* Larger subtext/subject */
-    color: #000000 !important; /* Explicitly black */
-}
-html.dark #meetup-safety-subtitle {
-    color: rgba(255, 255, 255, 0.8) !important; /* White/warm cream in dark mode */
+#meetup-safety-title,
+#meetup-safety-title *,
+#offer-swap-container h3,
+#offer-swap-container h3 *,
+.popup-modal-title,
+.popup-modal-title *,
+#did-you-swap-title,
+#confirm-swap-container h2,
+#decline-container h2,
+#meetup-picker-modal h3,
+#meetup-picker-modal h3 * {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 17px !important;
+    font-weight: 750 !important;
+    color: #000000 !important;
 }
 
-/* Offer Swap modal header styling */
-#offer-swap-container h3 {
-    font-size: 17px !important; /* Make title larger */
-    font-weight: 850 !important; /* Bold/Black font weight */
-    color: #000000 !important; /* Make it black */
+html.dark #meetup-safety-title,
+html.dark #meetup-safety-title *,
+html.dark #offer-swap-container h3,
+html.dark #offer-swap-container h3 *,
+html.dark .popup-modal-title,
+html.dark .popup-modal-title *,
+html.dark #did-you-swap-title,
+html.dark #confirm-swap-container h2,
+html.dark #decline-container h2,
+html.dark #meetup-picker-modal h3,
+html.dark #meetup-picker-modal h3 *,
+html.dark #barter-container h2,
+html.dark #neighbor-review-modal h3,
+html.dark #confirm-swap-rating-modal h3,
+html.dark #chat-qr-handshake-modal h3 {
+    color: #ffffff !important;
 }
-html.dark #offer-swap-container h3 {
-    color: #ffffff !important; /* White in dark mode */
+
+/* Standardized typography for descriptions, categories, and inputs in swap / meetup modals to match map detail overlays */
+#offer-swap-modal :not(button):not(button *):not(.material-symbols-outlined),
+#did-you-swap-modal :not(button):not(button *):not(.material-symbols-outlined),
+#confirm-swap-modal :not(button):not(button *):not(.material-symbols-outlined),
+#decline-modal :not(button):not(button *):not(.material-symbols-outlined),
+#meeting-spot-modal :not(button):not(button *):not(.material-symbols-outlined),
+#meetup-picker-modal :not(button):not(button *):not(.material-symbols-outlined),
+#barter-modal :not(button):not(button *):not(.material-symbols-outlined),
+#neighbor-review-modal :not(button):not(button *):not(.material-symbols-outlined),
+#confirm-swap-rating-modal :not(button):not(button *):not(.material-symbols-outlined),
+#chat-qr-handshake-modal :not(button):not(button *):not(.material-symbols-outlined) {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15.5px !important;
+    color: #000000 !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
 }
-#offer-swap-container p.text-on-surface-variant {
-    font-size: 13px !important; /* Make subtext/subtitle larger */
-    color: #000000 !important; /* Make it black */
+
+html.dark #offer-swap-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #did-you-swap-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #confirm-swap-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #decline-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #meeting-spot-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #meetup-picker-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #barter-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #neighbor-review-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #confirm-swap-rating-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #chat-qr-handshake-modal :not(button):not(button *):not(.material-symbols-outlined) {
+    color: #ffffff !important;
 }
-html.dark #offer-swap-container p.text-on-surface-variant {
-    color: rgba(255, 255, 255, 0.8) !important; /* White/warm cream in dark mode */
+
+/* Ensure strong, bold elements and labels are correctly weighted */
+#offer-swap-modal strong,
+#did-you-swap-modal strong,
+#confirm-swap-modal strong,
+#decline-modal strong,
+#meeting-spot-modal strong,
+#meetup-picker-modal strong,
+#barter-modal strong,
+#neighbor-review-modal strong,
+#confirm-swap-rating-modal strong,
+#chat-qr-handshake-modal strong,
+#offer-swap-modal label,
+#did-you-swap-modal label,
+#confirm-swap-modal label,
+#decline-modal label,
+#meeting-spot-modal label,
+#meetup-picker-modal label,
+#barter-modal label,
+#neighbor-review-modal label,
+#confirm-swap-rating-modal label,
+#chat-qr-handshake-modal label,
+#offer-swap-modal .font-bold,
+#did-you-swap-modal .font-bold,
+#meeting-spot-modal .font-bold,
+#meetup-picker-modal .font-bold,
+#barter-modal .font-bold,
+#neighbor-review-modal .font-bold,
+#confirm-swap-rating-modal .font-bold,
+#chat-qr-handshake-modal .font-bold,
+#offer-swap-modal .font-extrabold,
+#did-you-swap-modal .font-extrabold,
+#meeting-spot-modal .font-extrabold,
+#meetup-picker-modal .font-extrabold,
+#barter-modal .font-extrabold,
+#neighbor-review-modal .font-extrabold,
+#confirm-swap-rating-modal .font-extrabold,
+#chat-qr-handshake-modal .font-extrabold,
+#offer-swap-modal .font-black,
+#did-you-swap-modal .font-black,
+#meeting-spot-modal .font-black,
+#meetup-picker-modal .font-black,
+#barter-modal .font-black,
+#neighbor-review-modal .font-black,
+#confirm-swap-rating-modal .font-black,
+#chat-qr-handshake-modal .font-black,
+#lifecycle-offerings-scroller button div.text-xs,
+.meeting-spot-card h4,
+#selected-spot-name {
+    font-weight: 700 !important;
 }
+
+/* Subtitles, subtext, address details should be regular weight */
+#meetup-safety-subtitle,
+#offer-swap-container p.text-on-surface-variant,
+.popup-modal-desc,
+#selected-spot-address,
+#selected-spot-safety,
+.meeting-spot-card p,
+#meetup-picker-modal p,
+#barter-modal p,
+#neighbor-review-modal p,
+#confirm-swap-rating-modal p,
+#chat-qr-handshake-modal p {
+    font-weight: 400 !important;
+    opacity: 0.85 !important;
+}
+
+/* Inputs should also use Outfit 15.5px */
+#lifecycle-custom-text,
+#did-you-swap-input-item,
+#meeting-spot-datetime,
+#custom-spot-name,
+#custom-spot-address,
+#meetup-picker-neighborhood,
+#custom-offer-input {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15.5px !important;
+    font-weight: 400 !important;
+}
+
+/* Consistent button and icon styling inside swap / meetup modals */
+#offer-swap-modal button,
+#did-you-swap-modal button,
+#confirm-swap-modal button,
+#decline-modal button,
+#meeting-spot-modal button,
+#meetup-picker-modal button,
+#barter-modal button,
+#neighbor-review-modal button,
+#confirm-swap-rating-modal button,
+#chat-qr-handshake-modal button {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15.5px !important;
+}
+
+#offer-swap-modal .material-symbols-outlined,
+#did-you-swap-modal .material-symbols-outlined,
+#confirm-swap-modal .material-symbols-outlined,
+#decline-modal .material-symbols-outlined,
+#meeting-spot-modal .material-symbols-outlined,
+#meetup-picker-modal .material-symbols-outlined,
+#barter-modal .material-symbols-outlined,
+#neighbor-review-modal .material-symbols-outlined,
+#confirm-swap-rating-modal .material-symbols-outlined,
+#chat-qr-handshake-modal .material-symbols-outlined {
+    font-size: 15.5px !important;
+}
+
 
 /* Standardized typography for list card titles */
 .list-card-title {
@@ -8591,10 +8750,6 @@ html.dark .list-card-expandable-content {
     margin-bottom: 0px !important;
 }
 
-.native-app-env .sticky-segmented-control-wrapper {
-    padding-top: calc(0.6rem + env(safe-area-inset-top)) !important;
-    margin-top: calc(2px - 0.6rem - env(safe-area-inset-top)) !important;
-}
 
 html.dark .sticky-segmented-control-wrapper {
     background-color: #18201a !important; /* Matches dark mode container background */
@@ -8634,4 +8789,136 @@ html.dark .sticky-segmented-control-wrapper {
 .app-container .app-screen-header-title.hidden {
     display: none !important;
 }
+
+/* Popup Modal Typography Standardization */
+.popup-modal-title {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+    color: #101612 !important;
+}
+html.dark .popup-modal-title {
+    color: #ffffff !important;
+}
+
+.popup-modal-desc {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: #4b5563 !important;
+}
+html.dark .popup-modal-desc {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Welcome Screen Premium Buttons */
+.welcome-buttons-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+}
+
+.btn-welcome-signin,
+.btn-welcome-register,
+.btn-welcome-admin {
+    width: 100% !important;
+    height: 56px !important;
+    border-radius: 16px !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15.5px !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    outline: none !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+}
+
+.btn-welcome-signin:active,
+.btn-welcome-register:active,
+.btn-welcome-admin:active {
+    transform: scale(0.98) !important;
+}
+
+/* Sign In Button: Premium Solid Forest Green */
+.btn-welcome-signin,
+.btn-welcome-register,
+.btn-welcome-admin {
+    background-color: #ffffff !important;
+    color: #308A5E !important;
+    border: 2px solid #308A5E !important;
+    box-shadow: none !important;
+}
+.btn-welcome-signin:hover,
+.btn-welcome-register:hover,
+.btn-welcome-admin:hover {
+    background-color: rgba(48, 138, 94, 0.05) !important;
+    color: #256d4a !important;
+    border-color: #256d4a !important;
+}
+.btn-welcome-signin .material-symbols-outlined,
+.btn-welcome-register .material-symbols-outlined,
+.btn-welcome-admin .material-symbols-outlined {
+    color: #308A5E !important;
+    font-variation-settings: 'FILL' 1 !important;
+    font-size: 18px !important;
+}
+.btn-welcome-signin:hover .material-symbols-outlined,
+.btn-welcome-register:hover .material-symbols-outlined,
+.btn-welcome-admin:hover .material-symbols-outlined {
+    color: #256d4a !important;
+}
+
+/* Force dark mode welcome screen buttons to also have white background and green text/borders */
+html.dark .btn-welcome-signin,
+html.dark .btn-welcome-register,
+html.dark .btn-welcome-admin {
+    background-color: #ffffff !important;
+    color: #308A5E !important;
+    border-color: #308A5E !important;
+}
+html.dark .btn-welcome-signin:hover,
+html.dark .btn-welcome-register:hover,
+html.dark .btn-welcome-admin:hover {
+    background-color: rgba(48, 138, 94, 0.05) !important;
+    color: #256d4a !important;
+    border-color: #256d4a !important;
+}
+html.dark .btn-welcome-signin .material-symbols-outlined,
+html.dark .btn-welcome-register .material-symbols-outlined,
+html.dark .btn-welcome-admin .material-symbols-outlined {
+    color: #308A5E !important;
+}
+
+/* Force Welcome screen to have a clean centered layout, white background, and dark text in all modes */
+#view-welcome {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+}
+html.dark #view-welcome {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+}
+#view-welcome h1.onboarding-title {
+    color: #000000 !important;
+}
+html.dark #view-welcome h1.onboarding-title {
+    color: #000000 !important;
+}
+#view-welcome .material-symbols-outlined:not(.btn-welcome-signin *):not(.btn-welcome-register *):not(.btn-welcome-admin *) {
+    color: #308A5E !important; /* Top icon badge green */
+}
+
+
 

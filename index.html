@@ -1362,7 +1362,7 @@ body.show-simulator .screen-view.active {
 /* 8. Global navbar stays pinned to bottom of app-container (absolute within position:relative container) */
 body.show-simulator #global-navbar {
     position: absolute !important;
-    bottom: 20px !important;
+    bottom: 12px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 48px) !important;
@@ -2330,8 +2330,8 @@ html.dark #phone-header-bar .material-symbols-outlined {
 
 .native-app-env #global-navbar {
     position: absolute !important;
-    bottom: 24px !important;
-    bottom: max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) !important;
+    bottom: 12px !important;
+    bottom: max(12px, calc(4px + env(safe-area-inset-bottom, 34px))) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 32px) !important;
@@ -2389,8 +2389,11 @@ html.dark #phone-header-bar .material-symbols-outlined {
     padding-bottom: 0 !important;
 }
 .native-app-env #profile-settings-scroll-container {
-    padding-top: calc(64px + env(safe-area-inset-top)) !important;
+    padding-top: calc(1rem + env(safe-area-inset-top)) !important;
     padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
+}
+.native-app-env #profile-settings-scroll-container.has-header {
+    padding-top: calc(64px + env(safe-area-inset-top)) !important;
 }
 
 .native-app-env #view-village {
@@ -2440,8 +2443,8 @@ html.dark #neighbor-profile-modal {
 }
 
 .native-app-env #neighbor-profile-scroll-container {
-    padding-top: calc(3.5rem + env(safe-area-inset-top)) !important;
-    padding-bottom: calc(3rem + env(safe-area-inset-bottom)) !important;
+    padding-top: calc(1rem + env(safe-area-inset-top)) !important;
+    padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
 }
 
 /* Safe area padding for category tray and list overlays in iOS native view */
@@ -2746,9 +2749,12 @@ select::-ms-expand {
     box-sizing: border-box !important;
 }
 
-.native-app-env #offer-photo-hero {
-    padding-top: 1.5rem !important;
-    height: 260px !important;
+.native-app-env #offer-photo-hero,
+.native-app-env #group-photo-hero {
+    padding-top: calc(3rem + env(safe-area-inset-top)) !important;
+    padding-bottom: 2rem !important;
+    height: calc(270px + env(safe-area-inset-top)) !important;
+    justify-content: flex-end !important;
 }
 
 #offer-form-header {
@@ -3204,17 +3210,17 @@ html.dark .chat-bubble-other {
 }
 
 #meetup-map-footer {
-    bottom: 24px !important;
+    bottom: 82px !important;
     right: 24px !important;
     top: auto !important;
 }
 #view-village:has(#map-peek-card.active) #meetup-map-footer {
-    bottom: 172px !important;
+    bottom: 230px !important;
 }
 
 #meetup-close-btn {
     top: 16px !important;
-    right: 24px !important;
+    left: 20px !important;
 }
 
 /* iOS Native App safe area positioning overrides */
@@ -3246,16 +3252,17 @@ html.dark .chat-bubble-other {
 }
 
 .native-app-env #meetup-map-footer {
-    bottom: calc(24px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(82px + env(safe-area-inset-bottom)) !important;
     right: 24px !important;
     top: auto !important;
 }
 .native-app-env #view-village:has(#map-peek-card.active) #meetup-map-footer {
-    bottom: calc(172px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(230px + env(safe-area-inset-bottom)) !important;
 }
 
 .native-app-env #meetup-close-btn {
     top: calc(16px + env(safe-area-inset-top)) !important;
+    left: 20px !important;
 }
 
 
@@ -3273,7 +3280,7 @@ html.dark .chat-bubble-other {
 .native-app-env #village-needs-container,
 .native-app-env #village-events-container,
 .native-app-env #village-bulletins-container {
-    padding-top: 0.6rem !important;
+    padding-top: calc(0.6rem + env(safe-area-inset-top)) !important;
     padding-bottom: calc(120px + env(safe-area-inset-bottom)) !important;
 }
 
@@ -5750,7 +5757,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 #chat-action-center,
 #chat-action-center.group-chat-action-center {
     position: absolute !important;
-    bottom: calc(76px + var(--keyboard-offset, 0px)) !important;
+    bottom: calc(8px + var(--keyboard-offset, 0px)) !important;
     left: 0px !important;
     right: 0px !important;
     width: 100% !important;
@@ -5767,12 +5774,12 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 }
 .native-app-env #chat-action-center,
 .native-app-env #chat-action-center.group-chat-action-center {
-    bottom: calc(max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) + 56px + var(--keyboard-offset, 0px)) !important;
-    padding-bottom: calc(2px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(var(--keyboard-offset, 0px)) !important;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom, 20px)) !important;
 }
 body.keyboard-visible .native-app-env #chat-action-center,
 body.keyboard-visible .native-app-env #chat-action-center.group-chat-action-center {
-    padding-bottom: 2px !important;
+    padding-bottom: 8px !important;
 }
 html.dark #chat-action-center {
     border: none !important;
@@ -7924,8 +7931,8 @@ html.dark .category-info-highlighted::after {
 
 .native-app-env #global-navbar:not(.hidden) {
     position: absolute !important;
-    bottom: 24px !important;
-    bottom: max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) !important;
+    bottom: 12px !important;
+    bottom: max(12px, calc(4px + env(safe-area-inset-bottom, 34px))) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 32px) !important;
@@ -8006,13 +8013,13 @@ html.dark .category-tray, html.dark .category-list-overlay {
 #chat-message-feed::after {
     content: '' !important;
     display: block !important;
-    height: calc(var(--chat-input-height, 140px) + 50px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 80px) + 8px + var(--keyboard-offset, 0px)) !important;
     flex-shrink: 0 !important;
     pointer-events: none !important;
 }
 
 .native-app-env #chat-message-feed::after {
-    height: calc(var(--chat-input-height, 140px) + max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) + 30px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 80px) + 8px + var(--keyboard-offset, 0px)) !important;
 }
 
 /* Custom Chat Section Font & Size Consistency */
@@ -8383,14 +8390,15 @@ html.dark input:checked + .switch-slider:before {
 /* Fused Search & Filter Bar Container */
 #village-search-bar-overlay {
     position: absolute !important;
-    left: 24px !important;
+    left: 20px !important;
     z-index: 2000 !important;
     display: flex !important;
     flex-direction: column !important;
-    width: calc(100% - 48px) !important;
+    width: calc(100% - 40px) !important;
     max-width: 480px !important;
     transition: all 0.3s ease !important;
 }
+
 #village-search-bar-overlay.hidden {
     display: none !important;
 }
@@ -8415,6 +8423,15 @@ html.dark .fused-search-capsule {
     background-color: rgba(24, 32, 26, 0.92) !important;
     border-color: rgba(255, 255, 255, 0.1) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+#village-list-container .fused-search-capsule,
+#village-needs-container .fused-search-capsule,
+#village-events-container .fused-search-capsule,
+html.dark #village-list-container .fused-search-capsule,
+html.dark #village-needs-container .fused-search-capsule,
+html.dark #village-events-container .fused-search-capsule {
+    box-shadow: none !important;
 }
 
 /* Capsule Search Input */
@@ -9000,38 +9017,180 @@ html.dark #village-events-segmented-control {
 /* Align Map Category Dropdown with the new wider segmented control (handled by relative overrides below) */
 
 /* Meetup Safety Guidelines modal header styles */
-#meetup-safety-title {
-    font-size: 17px !important; /* Larger title */
-    font-weight: 850 !important; /* Font weight black */
-    color: #000000 !important; /* Explicitly black */
-}
-html.dark #meetup-safety-title {
-    color: #ffffff !important; /* White in dark mode */
-}
-#meetup-safety-subtitle {
-    font-size: 13px !important; /* Larger subtext/subject */
-    color: #000000 !important; /* Explicitly black */
-}
-html.dark #meetup-safety-subtitle {
-    color: rgba(255, 255, 255, 0.8) !important; /* White/warm cream in dark mode */
+#meetup-safety-title,
+#meetup-safety-title *,
+#offer-swap-container h3,
+#offer-swap-container h3 *,
+.popup-modal-title,
+.popup-modal-title *,
+#did-you-swap-title,
+#confirm-swap-container h2,
+#decline-container h2,
+#meetup-picker-modal h3,
+#meetup-picker-modal h3 * {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 17px !important;
+    font-weight: 750 !important;
+    color: #000000 !important;
 }
 
-/* Offer Swap modal header styling */
-#offer-swap-container h3 {
-    font-size: 17px !important; /* Make title larger */
-    font-weight: 850 !important; /* Bold/Black font weight */
-    color: #000000 !important; /* Make it black */
+html.dark #meetup-safety-title,
+html.dark #meetup-safety-title *,
+html.dark #offer-swap-container h3,
+html.dark #offer-swap-container h3 *,
+html.dark .popup-modal-title,
+html.dark .popup-modal-title *,
+html.dark #did-you-swap-title,
+html.dark #confirm-swap-container h2,
+html.dark #decline-container h2,
+html.dark #meetup-picker-modal h3,
+html.dark #meetup-picker-modal h3 *,
+html.dark #barter-container h2,
+html.dark #neighbor-review-modal h3,
+html.dark #confirm-swap-rating-modal h3,
+html.dark #chat-qr-handshake-modal h3 {
+    color: #ffffff !important;
 }
-html.dark #offer-swap-container h3 {
-    color: #ffffff !important; /* White in dark mode */
+
+/* Standardized typography for descriptions, categories, and inputs in swap / meetup modals to match map detail overlays */
+#offer-swap-modal :not(button):not(button *):not(.material-symbols-outlined),
+#did-you-swap-modal :not(button):not(button *):not(.material-symbols-outlined),
+#confirm-swap-modal :not(button):not(button *):not(.material-symbols-outlined),
+#decline-modal :not(button):not(button *):not(.material-symbols-outlined),
+#meeting-spot-modal :not(button):not(button *):not(.material-symbols-outlined),
+#meetup-picker-modal :not(button):not(button *):not(.material-symbols-outlined),
+#barter-modal :not(button):not(button *):not(.material-symbols-outlined),
+#neighbor-review-modal :not(button):not(button *):not(.material-symbols-outlined),
+#confirm-swap-rating-modal :not(button):not(button *):not(.material-symbols-outlined),
+#chat-qr-handshake-modal :not(button):not(button *):not(.material-symbols-outlined) {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15.5px !important;
+    color: #000000 !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
 }
-#offer-swap-container p.text-on-surface-variant {
-    font-size: 13px !important; /* Make subtext/subtitle larger */
-    color: #000000 !important; /* Make it black */
+
+html.dark #offer-swap-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #did-you-swap-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #confirm-swap-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #decline-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #meeting-spot-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #meetup-picker-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #barter-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #neighbor-review-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #confirm-swap-rating-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #chat-qr-handshake-modal :not(button):not(button *):not(.material-symbols-outlined) {
+    color: #ffffff !important;
 }
-html.dark #offer-swap-container p.text-on-surface-variant {
-    color: rgba(255, 255, 255, 0.8) !important; /* White/warm cream in dark mode */
+
+/* Ensure strong, bold elements and labels are correctly weighted */
+#offer-swap-modal strong,
+#did-you-swap-modal strong,
+#confirm-swap-modal strong,
+#decline-modal strong,
+#meeting-spot-modal strong,
+#meetup-picker-modal strong,
+#barter-modal strong,
+#neighbor-review-modal strong,
+#confirm-swap-rating-modal strong,
+#chat-qr-handshake-modal strong,
+#offer-swap-modal label,
+#did-you-swap-modal label,
+#confirm-swap-modal label,
+#decline-modal label,
+#meeting-spot-modal label,
+#meetup-picker-modal label,
+#barter-modal label,
+#neighbor-review-modal label,
+#confirm-swap-rating-modal label,
+#chat-qr-handshake-modal label,
+#offer-swap-modal .font-bold,
+#did-you-swap-modal .font-bold,
+#meeting-spot-modal .font-bold,
+#meetup-picker-modal .font-bold,
+#barter-modal .font-bold,
+#neighbor-review-modal .font-bold,
+#confirm-swap-rating-modal .font-bold,
+#chat-qr-handshake-modal .font-bold,
+#offer-swap-modal .font-extrabold,
+#did-you-swap-modal .font-extrabold,
+#meeting-spot-modal .font-extrabold,
+#meetup-picker-modal .font-extrabold,
+#barter-modal .font-extrabold,
+#neighbor-review-modal .font-extrabold,
+#confirm-swap-rating-modal .font-extrabold,
+#chat-qr-handshake-modal .font-extrabold,
+#offer-swap-modal .font-black,
+#did-you-swap-modal .font-black,
+#meeting-spot-modal .font-black,
+#meetup-picker-modal .font-black,
+#barter-modal .font-black,
+#neighbor-review-modal .font-black,
+#confirm-swap-rating-modal .font-black,
+#chat-qr-handshake-modal .font-black,
+#lifecycle-offerings-scroller button div.text-xs,
+.meeting-spot-card h4,
+#selected-spot-name {
+    font-weight: 700 !important;
 }
+
+/* Subtitles, subtext, address details should be regular weight */
+#meetup-safety-subtitle,
+#offer-swap-container p.text-on-surface-variant,
+.popup-modal-desc,
+#selected-spot-address,
+#selected-spot-safety,
+.meeting-spot-card p,
+#meetup-picker-modal p,
+#barter-modal p,
+#neighbor-review-modal p,
+#confirm-swap-rating-modal p,
+#chat-qr-handshake-modal p {
+    font-weight: 400 !important;
+    opacity: 0.85 !important;
+}
+
+/* Inputs should also use Outfit 15.5px */
+#lifecycle-custom-text,
+#did-you-swap-input-item,
+#meeting-spot-datetime,
+#custom-spot-name,
+#custom-spot-address,
+#meetup-picker-neighborhood,
+#custom-offer-input {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15.5px !important;
+    font-weight: 400 !important;
+}
+
+/* Consistent button and icon styling inside swap / meetup modals */
+#offer-swap-modal button,
+#did-you-swap-modal button,
+#confirm-swap-modal button,
+#decline-modal button,
+#meeting-spot-modal button,
+#meetup-picker-modal button,
+#barter-modal button,
+#neighbor-review-modal button,
+#confirm-swap-rating-modal button,
+#chat-qr-handshake-modal button {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15.5px !important;
+}
+
+#offer-swap-modal .material-symbols-outlined,
+#did-you-swap-modal .material-symbols-outlined,
+#confirm-swap-modal .material-symbols-outlined,
+#decline-modal .material-symbols-outlined,
+#meeting-spot-modal .material-symbols-outlined,
+#meetup-picker-modal .material-symbols-outlined,
+#barter-modal .material-symbols-outlined,
+#neighbor-review-modal .material-symbols-outlined,
+#confirm-swap-rating-modal .material-symbols-outlined,
+#chat-qr-handshake-modal .material-symbols-outlined {
+    font-size: 15.5px !important;
+}
+
 
 /* Standardized typography for list card titles */
 .list-card-title {
@@ -9769,10 +9928,6 @@ html.dark .list-card-expandable-content {
     margin-bottom: 0px !important;
 }
 
-.native-app-env .sticky-segmented-control-wrapper {
-    padding-top: calc(0.6rem + env(safe-area-inset-top)) !important;
-    margin-top: calc(2px - 0.6rem - env(safe-area-inset-top)) !important;
-}
 
 html.dark .sticky-segmented-control-wrapper {
     background-color: #18201a !important; /* Matches dark mode container background */
@@ -9811,6 +9966,136 @@ html.dark .sticky-segmented-control-wrapper {
 #chat-detail-title-text.hidden,
 .app-container .app-screen-header-title.hidden {
     display: none !important;
+}
+
+/* Popup Modal Typography Standardization */
+.popup-modal-title {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+    color: #101612 !important;
+}
+html.dark .popup-modal-title {
+    color: #ffffff !important;
+}
+
+.popup-modal-desc {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: #4b5563 !important;
+}
+html.dark .popup-modal-desc {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Welcome Screen Premium Buttons */
+.welcome-buttons-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+}
+
+.btn-welcome-signin,
+.btn-welcome-register,
+.btn-welcome-admin {
+    width: 100% !important;
+    height: 56px !important;
+    border-radius: 16px !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15.5px !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    outline: none !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+}
+
+.btn-welcome-signin:active,
+.btn-welcome-register:active,
+.btn-welcome-admin:active {
+    transform: scale(0.98) !important;
+}
+
+/* Sign In Button: Premium Solid Forest Green */
+.btn-welcome-signin,
+.btn-welcome-register,
+.btn-welcome-admin {
+    background-color: #ffffff !important;
+    color: #308A5E !important;
+    border: 2px solid #308A5E !important;
+    box-shadow: none !important;
+}
+.btn-welcome-signin:hover,
+.btn-welcome-register:hover,
+.btn-welcome-admin:hover {
+    background-color: rgba(48, 138, 94, 0.05) !important;
+    color: #256d4a !important;
+    border-color: #256d4a !important;
+}
+.btn-welcome-signin .material-symbols-outlined,
+.btn-welcome-register .material-symbols-outlined,
+.btn-welcome-admin .material-symbols-outlined {
+    color: #308A5E !important;
+    font-variation-settings: 'FILL' 1 !important;
+    font-size: 18px !important;
+}
+.btn-welcome-signin:hover .material-symbols-outlined,
+.btn-welcome-register:hover .material-symbols-outlined,
+.btn-welcome-admin:hover .material-symbols-outlined {
+    color: #256d4a !important;
+}
+
+/* Force dark mode welcome screen buttons to also have white background and green text/borders */
+html.dark .btn-welcome-signin,
+html.dark .btn-welcome-register,
+html.dark .btn-welcome-admin {
+    background-color: #ffffff !important;
+    color: #308A5E !important;
+    border-color: #308A5E !important;
+}
+html.dark .btn-welcome-signin:hover,
+html.dark .btn-welcome-register:hover,
+html.dark .btn-welcome-admin:hover {
+    background-color: rgba(48, 138, 94, 0.05) !important;
+    color: #256d4a !important;
+    border-color: #256d4a !important;
+}
+html.dark .btn-welcome-signin .material-symbols-outlined,
+html.dark .btn-welcome-register .material-symbols-outlined,
+html.dark .btn-welcome-admin .material-symbols-outlined {
+    color: #308A5E !important;
+}
+
+/* Force Welcome screen to have a clean centered layout, white background, and dark text in all modes */
+#view-welcome {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+}
+html.dark #view-welcome {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+}
+#view-welcome h1.onboarding-title {
+    color: #000000 !important;
+}
+html.dark #view-welcome h1.onboarding-title {
+    color: #000000 !important;
+}
+#view-welcome .material-symbols-outlined:not(.btn-welcome-signin *):not(.btn-welcome-register *):not(.btn-welcome-admin *) {
+    color: #308A5E !important; /* Top icon badge green */
 }
 </style>
     <!-- Tailwind Configuration (removed - runtime replaced with pre-compiled CSS) -->
@@ -10062,45 +10347,39 @@ html.dark .sticky-segmented-control-wrapper {
                 <!-- ==================================================== -->
                 <!-- 2. WELCOME / ONBOARDING CAROUSEL -->
                 <!-- ==================================================== -->
-                <section id="view-welcome" class="screen-view flex-grow flex flex-col justify-start py-8 px-6 text-center overflow-y-auto h-full relative">
-                    <!-- Top Icon badge -->
-                    <div class="flex justify-center mt-16 mb-2">
-                        <span class="material-symbols-outlined text-[42px] text-forest-green" style="font-variation-settings: 'FILL' 1;">diversity_3</span>
+                <section id="view-welcome" class="screen-view flex-grow flex flex-col justify-center py-8 px-6 text-center overflow-y-auto h-full relative">
+                    <!-- Icon at the very top -->
+                    <div class="flex justify-center mb-6 flex-shrink-0">
+                        <div class="relative w-20 h-20 rounded-3xl bg-forest-green/10 dark:bg-[#308A5E]/10 flex items-center justify-center text-forest-green dark:text-[#308A5E] shadow-sm animate-pulse-slow border border-forest-green/20 dark:border-[#308A5E]/20">
+                            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-forest-green/10 to-transparent opacity-50"></div>
+                            <span class="material-symbols-outlined text-4xl font-bold" style="font-variation-settings: 'FILL' 1;">diversity_3</span>
+                        </div>
                     </div>
 
                     <!-- Bold Capitalized Title -->
-                    <h1 class="onboarding-title">
-                        Your Neighborhood Reimagined
+                    <h1 class="onboarding-title mb-2">
+                        Neighborhood Reimagined
                     </h1>
 
-                    <!-- Vertically Stacked Card Buttons -->
-                    <div class="flex flex-col gap-4 w-full max-w-sm mx-auto mb-8 mt-32">
-                        <!-- Create Account Card -->
-                        <div onclick="showView('create_account')" class="cursor-pointer border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 flex flex-col items-center text-center shadow-sm hover:border-forest-green hover:shadow active:scale-[0.98] transition-all relative w-full">
-                            <div class="w-9 h-9 rounded-full bg-forest-green flex items-center justify-center text-white mb-2 shadow-sm">
-                                <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">person_add</span>
-                            </div>
-                            <div class="font-headline font-bold text-sm text-forest-green mb-1">Create Account</div>
-                            <div class="text-[11px] text-on-surface-variant leading-relaxed max-w-[260px]">Register in four simple steps to start swapping and sharing with your village.</div>
-                        </div>
+                    <!-- Vertically Stacked Premium Buttons -->
+                    <div class="welcome-buttons-container w-full max-w-sm mx-auto mb-8">
+                        <!-- Button 1: Sign In -->
+                        <button onclick="showView('sign_in')" class="btn-welcome-signin">
+                            <span class="material-symbols-outlined">login</span>
+                            Sign In
+                        </button>
 
-                        <!-- Sign In Card -->
-                        <div onclick="showView('sign_in')" class="cursor-pointer border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 flex flex-col items-center text-center shadow-sm hover:border-forest-green hover:shadow active:scale-[0.98] transition-all relative w-full">
-                            <div class="w-9 h-9 rounded-full bg-forest-green flex items-center justify-center text-white mb-2 shadow-sm">
-                                <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">login</span>
-                            </div>
-                            <div class="font-headline font-bold text-sm text-forest-green mb-1">Sign In</div>
-                            <div class="text-[11px] text-on-surface-variant leading-relaxed max-w-[260px]">Log back into your neighborhood account to see updates and messages.</div>
-                        </div>
+                        <!-- Button 2: Register New Account -->
+                        <button onclick="showView('create_account')" class="btn-welcome-register">
+                            <span class="material-symbols-outlined">person_add</span>
+                            Register New Account
+                        </button>
 
-                        <!-- Admin Access Card -->
-                        <div onclick="handleDevAutoLogin()" class="cursor-pointer border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 flex flex-col items-center text-center shadow-sm hover:border-forest-green hover:shadow active:scale-[0.98] transition-all relative w-full">
-                            <div class="w-9 h-9 rounded-full bg-forest-green flex items-center justify-center text-white mb-2 shadow-sm">
-                                <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
-                            </div>
-                            <div class="font-headline font-bold text-sm text-forest-green mb-1">Admin Access</div>
-                            <div class="text-[11px] text-on-surface-variant leading-relaxed max-w-[260px]">Directly enter the app with full administrative privileges and menus.</div>
-                        </div>
+                        <!-- Button 3: Admin Access -->
+                        <button onclick="handleDevAutoLogin()" class="btn-welcome-admin">
+                            <span class="material-symbols-outlined">admin_panel_settings</span>
+                            Admin Access
+                        </button>
                     </div>
 
                     <!-- Hidden dummy elements to satisfy existing carousel javascript selectors if called -->
@@ -10161,9 +10440,18 @@ html.dark .sticky-segmented-control-wrapper {
                 </section>
 
                 <section id="view-create_account" class="screen-view flex-grow flex flex-col justify-start items-center pt-3 pb-4 px-6 overflow-y-auto relative">
-                    <!-- Top Icon badge -->
-                    <div class="flex justify-center mb-2">
-                        <span class="material-symbols-outlined text-[42px] text-forest-green" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+                    <!-- Animated SVG Profile Setup Illustration -->
+                    <div class="flex justify-center mt-6 mb-4 flex-shrink-0">
+                        <svg class="w-32 h-32 text-forest-green animate-[pulse_6s_ease-in-out_infinite]" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="80" cy="80" r="70" fill="#308A5E" fill-opacity="0.05" />
+                            <circle cx="80" cy="80" r="60" stroke="#308A5E" stroke-opacity="0.1" stroke-width="2" stroke-dasharray="4 4" class="animate-[spin_40s_linear_infinite]" />
+                            <g transform="translate(80, 75)">
+                                <circle cx="0" cy="-15" r="18" fill="#308A5E" stroke="#FFFFFF" stroke-width="2" />
+                                <path d="M-30,25 C-30,5 -15,5 0,5 C15,5 30,5 30,25" stroke="#308A5E" stroke-width="6" stroke-linecap="round" fill="none" />
+                                <circle cx="22" cy="18" r="8" fill="#256d4a" stroke="#FFFFFF" stroke-width="1.5" />
+                                <text x="22" y="21" font-family="Material Symbols Outlined" font-size="7" fill="#FFFFFF" text-anchor="middle">add</text>
+                            </g>
+                        </svg>
                     </div>
 
                     <!-- Bold Capitalized Title -->
@@ -10173,7 +10461,7 @@ html.dark .sticky-segmented-control-wrapper {
 
                     <!-- Description word sentence -->
                     <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
-                        Fill in your name, display name, and credentials to set up your profile.
+                        Set up your name, display name, and credentials to establish your presence in the neighborhood.
                     </p>
 
                     <!-- White Card Wrapper for Form -->
@@ -10266,9 +10554,33 @@ html.dark .sticky-segmented-control-wrapper {
                 </section>
 
                 <section id="view-create_account_social" class="screen-view flex-grow flex flex-col justify-center items-center py-8 px-6 overflow-y-auto relative hidden">
-                    <!-- Top Icon badge -->
-                    <div class="flex justify-center mb-2">
-                        <span class="material-symbols-outlined text-[42px] text-black" style="font-variation-settings: 'FILL' 1;">share</span>
+                    <!-- Animated SVG Social Link Illustration -->
+                    <div class="flex justify-center mt-6 mb-4 flex-shrink-0">
+                        <svg class="w-32 h-32 text-forest-green" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="80" cy="80" r="70" fill="#308A5E" fill-opacity="0.05" />
+                            <!-- Rotating outer orbit -->
+                            <circle cx="80" cy="80" r="55" stroke="#308A5E" stroke-opacity="0.15" stroke-width="1.5" stroke-dasharray="6 6" class="animate-[spin_30s_linear_infinite]" />
+                            <!-- Connected nodes -->
+                            <line x1="50" y1="80" x2="80" y2="50" stroke="#308A5E" stroke-width="1.5" stroke-opacity="0.4" />
+                            <line x1="80" y1="50" x2="110" y2="80" stroke="#308A5E" stroke-width="1.5" stroke-opacity="0.4" />
+                            <line x1="110" y1="80" x2="80" y2="110" stroke="#308A5E" stroke-width="1.5" stroke-opacity="0.4" />
+                            <line x1="80" y1="110" x2="50" y2="80" stroke="#308A5E" stroke-width="1.5" stroke-opacity="0.4" />
+                            
+                            <circle cx="80" cy="80" r="16" fill="#308A5E" />
+                            <text x="80" y="85" font-family="Material Symbols Outlined" font-size="14" fill="#FFFFFF" text-anchor="middle">verified_user</text>
+                            
+                            <circle cx="50" cy="80" r="12" fill="#308A5E" fill-opacity="0.9" />
+                            <text x="50" y="84" font-family="Material Symbols Outlined" font-size="10" fill="#FFFFFF" text-anchor="middle">camera_alt</text>
+                            
+                            <circle cx="80" cy="50" r="12" fill="#308A5E" fill-opacity="0.9" />
+                            <text x="80" y="54" font-family="Material Symbols Outlined" font-size="10" fill="#FFFFFF" text-anchor="middle">thumb_up</text>
+                            
+                            <circle cx="110" cy="80" r="12" fill="#308A5E" fill-opacity="0.9" />
+                            <text x="110" y="84" font-family="Material Symbols Outlined" font-size="10" fill="#FFFFFF" text-anchor="middle">tag</text>
+                            
+                            <circle cx="80" cy="110" r="12" fill="#308A5E" fill-opacity="0.9" />
+                            <text x="80" y="114" font-family="Material Symbols Outlined" font-size="10" fill="#FFFFFF" text-anchor="middle">share</text>
+                        </svg>
                     </div>
 
                     <!-- Bold Capitalized Title -->
@@ -10282,48 +10594,40 @@ html.dark .sticky-segmented-control-wrapper {
                     </p>
 
                     <!-- White Card Wrapper for Form -->
-                    <div class="w-full max-w-sm mx-auto border border-outline-variant/30 bg-white rounded-2xl p-5 shadow-sm mb-6">
+                    <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
 
                         <form class="space-y-4" onsubmit="handleSignUp(event)">
                             <div class="space-y-3">
                                 <!-- Instagram Input Container -->
                                 <div id="su-social-input-instagram-container" class="space-y-1">
-                                    <label class="text-[10px] font-semibold uppercase tracking-wider text-black/80 ml-1 block" for="su-instagram">Instagram Handle</label>
+                                    <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-instagram">Instagram Handle</label>
                                     <div class="relative group">
-                                        <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-black transition-colors">
-                                            <svg class="w-4 h-4 text-black/75 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                                            </svg>
+                                        <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
+                                            <span class="material-symbols-outlined text-[18px]">camera_alt</span>
                                         </span>
-                                        <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-black focus:ring-0 outline-none text-xs" id="su-instagram" placeholder="e.g. @username" type="text" />
+                                        <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="su-instagram" placeholder="e.g. @username" type="text" />
                                     </div>
                                 </div>
 
                                 <!-- Facebook Input Container -->
                                 <div id="su-social-input-facebook-container" class="space-y-1">
-                                    <label class="text-[10px] font-semibold uppercase tracking-wider text-black/80 ml-1 block" for="su-facebook">Facebook Profile</label>
+                                    <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-facebook">Facebook Profile</label>
                                     <div class="relative group">
-                                        <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-black transition-colors">
-                                            <svg class="w-4 h-4 text-black/75 transition-colors" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/>
-                                            </svg>
+                                        <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
+                                            <span class="material-symbols-outlined text-[18px]">thumb_up</span>
                                         </span>
-                                        <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-black focus:ring-0 outline-none text-xs" id="su-facebook" placeholder="e.g. username" type="text" />
+                                        <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="su-facebook" placeholder="e.g. username" type="text" />
                                     </div>
                                 </div>
 
                                 <!-- TikTok Input Container -->
                                 <div id="su-social-input-tiktok-container" class="space-y-1">
-                                    <label class="text-[10px] font-semibold uppercase tracking-wider text-black/80 ml-1 block" for="su-tiktok">TikTok Handle</label>
+                                    <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="su-tiktok">TikTok Handle</label>
                                     <div class="relative group">
-                                        <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-black transition-colors">
-                                            <svg class="w-4 h-4 text-black/75 transition-colors" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.86-.74-3.95-1.72-.1.08-.21.17-.21.29v5.73c.02 2.12-.6 4.38-2.22 5.86-1.58 1.48-3.9 2.09-5.99 1.83-2.16-.24-4.23-1.63-5.18-3.62-.97-1.99-.92-4.49.19-6.39 1.1-1.9 3.24-3.15 5.46-3.15.15 0 .3 0 .45.02v4.03c-.63-.08-1.28-.05-1.88.17-1.09.39-1.95 1.39-2.09 2.56-.17 1.39.53 2.87 1.8 3.42 1.25.56 2.86.3 3.86-.59.78-.69 1.08-1.79 1.05-2.82V.02z"/>
-                                            </svg>
+                                        <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
+                                            <span class="material-symbols-outlined text-[18px]">tag</span>
                                         </span>
-                                        <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-black focus:ring-0 outline-none text-xs" id="su-tiktok" placeholder="e.g. @username" type="text" />
+                                        <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="su-tiktok" placeholder="e.g. @username" type="text" />
                                     </div>
                                 </div>
                             </div>
@@ -10913,6 +11217,238 @@ html.dark .sticky-segmented-control-wrapper {
                 </section>
 
                 <!-- ==================================================== -->
+                <!-- 7.6. EXPRESS ONBOARDING STEP 1 -->
+                <!-- ==================================================== -->
+                <section id="view-express_signup" class="screen-view flex-grow flex flex-col justify-start items-center pt-3 pb-4 px-6 overflow-y-auto relative hidden">
+                    <div class="w-full max-w-sm mx-auto flex items-center justify-between mt-2">
+                        <button class="p-2 hover:bg-forest-green/5 rounded-full" onclick="showView('welcome')">
+                            <span class="material-symbols-outlined text-forest-green">arrow_back</span>
+                        </button>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Step 1 of 2</span>
+                        <div class="w-8"></div>
+                    </div>
+
+                    <!-- Animated and styled SVG illustration of sharing/swapping: Paper airplane over neighborhood grid -->
+                    <div class="flex justify-center mt-4 mb-2 flex-shrink-0">
+                        <svg class="w-32 h-32 text-forest-green" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Background soft glowing grid -->
+                            <rect x="20" y="50" width="160" height="100" rx="12" fill="#308A5E" fill-opacity="0.05" />
+                            <line x1="60" y1="50" x2="60" y2="150" stroke="#308A5E" stroke-opacity="0.1" stroke-width="1.5" stroke-dasharray="4 4" />
+                            <line x1="100" y1="50" x2="100" y2="150" stroke="#308A5E" stroke-opacity="0.1" stroke-width="1.5" stroke-dasharray="4 4" />
+                            <line x1="140" y1="50" x2="140" y2="150" stroke="#308A5E" stroke-opacity="0.1" stroke-width="1.5" stroke-dasharray="4 4" />
+                            <line x1="20" y1="80" x2="180" y2="80" stroke="#308A5E" stroke-opacity="0.1" stroke-width="1.5" stroke-dasharray="4 4" />
+                            <line x1="20" y1="120" x2="180" y2="120" stroke="#308A5E" stroke-opacity="0.1" stroke-width="1.5" stroke-dasharray="4 4" />
+                            
+                            <!-- Stylized local pins/houses -->
+                            <circle cx="60" cy="80" r="6" fill="#308A5E" fill-opacity="0.25" />
+                            <circle cx="140" cy="120" r="6" fill="#308A5E" fill-opacity="0.25" />
+                            <circle cx="100" cy="100" r="8" fill="#308A5E" fill-opacity="0.4" />
+                            
+                            <!-- Curved flying trail -->
+                            <path d="M40 140 Q 80 70, 150 70" stroke="#308A5E" stroke-opacity="0.4" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4" />
+                            
+                            <!-- Paper Airplane -->
+                            <g transform="translate(150, 70) rotate(-15)">
+                                <path d="M-15 0 L15 -5 L-5 5 Z" fill="#308A5E" />
+                                <path d="M-15 0 L5 2 L-5 5 Z" fill="#256d4a" />
+                                <path d="M-5 5 L-5 10 L0 6 Z" fill="#1b4f35" />
+                            </g>
+                            
+                            <!-- Heart in the middle of community -->
+                            <text x="100" y="105" font-family="Material Symbols Outlined" font-size="12" fill="#FFFFFF" text-anchor="middle">favorite</text>
+                        </svg>
+                    </div>
+
+                    <h1 class="onboarding-title">
+                        Create Your Local Profile
+                    </h1>
+
+                    <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
+                        Fill out your credentials, choose your neighborhood community, and sign the neighborhood pact to begin.
+                    </p>
+
+                    <!-- White Card Wrapper for Form -->
+                    <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
+                        <form class="space-y-4" onsubmit="handleExpressSignupStep1(event)">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="space-y-1">
+                                    <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="express-first-name">First Name</label>
+                                    <div class="relative group">
+                                        <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
+                                            <span class="material-symbols-outlined text-[18px]">badge</span>
+                                        </span>
+                                        <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="express-first-name" placeholder="First Name" type="text" required/>
+                                    </div>
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="express-display-name">Display Name</label>
+                                    <div class="relative group">
+                                        <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
+                                            <span class="material-symbols-outlined text-[18px]">face</span>
+                                        </span>
+                                        <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="express-display-name" placeholder="Public Name" type="text" required/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="express-email">Email Address</label>
+                                <div class="relative group">
+                                    <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
+                                        <span class="material-symbols-outlined text-[18px]">alternate_email</span>
+                                    </span>
+                                    <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-sm" id="express-email" placeholder="your@email.com" type="email" required/>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="express-password">Password</label>
+                                <div class="relative group">
+                                    <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
+                                        <span class="material-symbols-outlined text-[18px]">vpn_key</span>
+                                    </span>
+                                    <input class="w-full h-11 pl-11 pr-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-sm" id="express-password" placeholder="Min. 8 characters" type="password" required/>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1 text-left">
+                                <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="express-location-select">Your Neighborhood</label>
+                                <div class="relative group">
+                                    <span class="absolute inset-y-0 left-4 flex items-center text-outline pointer-events-none group-focus-within:text-forest-green transition-colors">
+                                        <span class="material-symbols-outlined text-[18px]">map</span>
+                                    </span>
+                                    <select class="w-full h-11 pl-11 pr-8 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs text-forest-green font-semibold" id="express-location-select" onchange="handleExpressNeighborhoodChange(this.value)">
+                                        <option value="" disabled selected>Select neighborhood...</option>
+                                        <option value="Downtown Vancouver">Downtown</option>
+                                        <option value="Kitsilano">Kitsilano</option>
+                                        <option value="Commercial Drive">Commercial Drive</option>
+                                        <option value="Mount Pleasant">Mount Pleasant</option>
+                                        <option value="West End">West End</option>
+                                        <option value="Yaletown">Yaletown</option>
+                                        <option value="Gastown">Gastown</option>
+                                        <option value="Kerrisdale">Kerrisdale</option>
+                                        <option value="Fairview">Fairview</option>
+                                        <option value="East Vancouver">East Vancouver</option>
+                                        <option value="custom">Other / Custom Neighborhood...</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Custom entry text box, shown only if 'custom' is selected -->
+                            <div class="space-y-1 text-left hidden" id="express-custom-location-container">
+                                <label class="text-[10px] font-semibold uppercase tracking-wider text-forest-green/80 ml-1 block" for="express-custom-location">Custom Neighborhood Name</label>
+                                <input class="w-full h-11 px-4 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="express-custom-location" placeholder="Type your neighborhood name..." type="text"/>
+                            </div>
+
+                            <div class="bg-forest-green/5 border border-forest-green/10 p-3.5 rounded-xl space-y-2 mt-2 text-left">
+                                <p class="font-bold text-forest-green flex items-center gap-1.5 uppercase tracking-wide text-[9px] mb-1">
+                                    <span class="material-symbols-outlined text-xs">handshake</span> Neighborhood Compact & Safety Terms
+                                </p>
+                                <label class="flex items-start gap-3 cursor-pointer select-none">
+                                    <div class="checkbox-wrapper mt-0.5">
+                                        <input type="checkbox" id="express-consent-check" onchange="toggleExpressSubmitButton()"/>
+                                        <div class="custom-check-box">
+                                            <span class="material-symbols-outlined select-none pointer-events-none">check</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] text-on-surface-variant font-normal leading-tight">
+                                        I accept the <span class="text-forest-green font-bold underline" onclick="window.openExpressPolicyModal(event, 'conduct')">Community Charter</span>, 
+                                        <span class="text-forest-green font-bold underline" onclick="window.openExpressPolicyModal(event, 'safety')">Safety Standards</span>, 
+                                        <span class="text-forest-green font-bold underline" onclick="window.openExpressPolicyModal(event, 'liability')">Disclaimer of Liability</span>, 
+                                        and <span class="text-forest-green font-bold underline" onclick="window.openExpressPolicyModal(event, 'privacy')">Privacy Terms</span>. I verify that I am at least 18 years old.
+                                    </span>
+                                </label>
+                            </div>
+
+                            <button class="w-full h-12 bg-forest-green/45 text-white font-bold text-sm rounded-xl cursor-not-allowed transition-colors flex items-center justify-center mt-4 shadow-sm" id="express-step1-submit" disabled type="submit">
+                                Continue to First Share →
+                            </button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- ==================================================== -->
+                <!-- 7.7. EXPRESS ONBOARDING STEP 2 -->
+                <!-- ==================================================== -->
+                <section id="view-express_signup_step2" class="screen-view flex-grow flex flex-col justify-start items-center pt-3 pb-4 px-6 overflow-y-auto relative hidden">
+                    <div class="w-full max-w-sm mx-auto flex items-center justify-between mt-2">
+                        <button class="p-2 hover:bg-forest-green/5 rounded-full" onclick="showView('express_signup')">
+                            <span class="material-symbols-outlined text-forest-green">arrow_back</span>
+                        </button>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Step 2 of 2</span>
+                        <div class="w-8"></div>
+                    </div>
+
+                    <div class="flex justify-center mt-6 mb-2">
+                        <span class="material-symbols-outlined text-[64px] text-forest-green" style="font-variation-settings: 'FILL' 1;">post_add</span>
+                    </div>
+
+                    <h2 class="onboarding-title">Create Your First Post</h2>
+                    <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
+                        Unlocks trust early by leading with a gift or asking for help. You can also skip this and post later.
+                    </p>
+
+                    <div class="grid grid-cols-3 gap-1.5 p-1 bg-black/5 dark:bg-white/5 rounded-xl mb-4 w-full max-w-sm mx-auto">
+                        <button type="button" id="express-post-tab-offering" onclick="setExpressPostType('offering')" class="p-2.5 bg-forest-green text-white border border-forest-green rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all select-none">
+                            Offering
+                        </button>
+                        <button type="button" id="express-post-tab-need" onclick="setExpressPostType('need')" class="p-2.5 bg-white border border-outline-variant/30 text-forest-green rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all select-none">
+                            Request
+                        </button>
+                        <button type="button" id="express-post-tab-skip" onclick="setExpressPostType('skip')" class="p-2.5 bg-white border border-outline-variant/30 text-forest-green rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all select-none">
+                            Skip Post
+                        </button>
+                    </div>
+
+                    <!-- Conditional Listing Form Fields -->
+                    <div id="express-post-form-container" class="space-y-4 w-full max-w-sm mx-auto border border-outline-variant/30 bg-white rounded-2xl p-5 shadow-sm mb-6 text-left">
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-semibold uppercase tracking-wider text-black/80 dark:text-white/80 ml-1 block" for="express-post-title">Title</label>
+                            <input class="w-full h-11 px-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs" id="express-post-title" placeholder="e.g. Extra sourdough loaf, Math tutoring..." type="text"/>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-semibold uppercase tracking-wider text-black/80 dark:text-white/80 ml-1 block" for="express-post-category">Category</label>
+                            <select class="w-full h-11 px-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs text-forest-green font-semibold" id="express-post-category">
+                                <option value="Food & Drink" selected>Food & Drink</option>
+                                <option value="Home, Living & Gear">Home, Living & Gear</option>
+                                <option value="Garden & Outdoors">Garden & Outdoors</option>
+                                <option value="Skills & Education">Skills & Education</option>
+                                <option value="Handyman & Services">Handyman & Services</option>
+                                <option value="Creative & Art">Creative & Art</option>
+                                <option value="Health">Health</option>
+                                <option value="Clothing & Apparel">Clothing & Apparel</option>
+                                <option value="Kids, Puzzles & Books">Kids, Puzzles & Books</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-semibold uppercase tracking-wider text-black/80 dark:text-white/80 ml-1 block" for="express-post-desc">Description</label>
+                            <textarea class="w-full h-20 p-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs resize-none" id="express-post-desc" placeholder="Describe what you are offering or requesting..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="w-full max-w-sm mx-auto">
+                        <button onclick="handleExpressSignupSubmit()" class="w-full h-14 bg-forest-green text-warm-cream font-bold text-base rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center shadow-sm" id="express-submit-btn">
+                            Complete Express Entry
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Express Policy Modal -->
+                <div id="express-policy-modal" class="hidden fixed inset-0 z-[6000] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+                    <div class="bg-white dark:bg-[#18201a] border border-[rgba(48,138,94,0.15)] rounded-2xl p-5 shadow-2xl max-w-md w-full flex flex-col max-h-[80vh]">
+                        <h3 class="font-headline font-bold text-base text-forest-green mb-2 uppercase tracking-wide" id="express-policy-title">Policy Title</h3>
+                        <div class="text-xs text-on-surface-variant leading-relaxed overflow-y-auto mb-4 pr-1 custom-scrollbar text-left font-medium select-none" id="express-policy-body">
+                            Policy contents...
+                        </div>
+                        <button onclick="window.closeExpressPolicyModal()" class="w-full h-11 bg-forest-green text-white font-bold text-sm rounded-xl active:scale-[0.98] transition-all">
+                            Close Policy
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ==================================================== -->
                 <!-- 8. IMMERSIVE VILLAGE MAP VIEW -->
                 <section id="view-village" class="screen-view flex-grow h-full flex flex-col relative overflow-hidden">
                     <!-- Wrapper for absolute-positioned containers to prevent subpixel gap lines -->
@@ -10920,24 +11456,12 @@ html.dark .sticky-segmented-control-wrapper {
                         <div id="village-map-container" class="absolute inset-0 z-0">
                             <div id="map" class="w-full h-full"></div>
 
-                            <!-- Top Right Close Button for Meetup Map Mode -->
-                            <button id="meetup-close-btn" onclick="window.exitMeetupMapMode()" class="hidden absolute top-4 right-6 z-[3000] w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm">
-                                <span class="material-symbols-outlined text-[17px]">close</span>
-                            </button>
-
                             <!-- Bottom Back to Chat Button for Meetup Map Mode -->
                             <div id="meetup-map-footer" class="hidden absolute bottom-12 right-6 z-[3000] flex flex-col-reverse items-end transition-all duration-300">
                                 <!-- Location Button (always visible below the close/X button) -->
                                 <div class="flex items-center justify-end">
                                     <button id="meetup-snap-btn" class="w-12 h-12 bg-blue-600 border-blue-600 dark:bg-blue-600 dark:border-blue-600 hover:opacity-90 rounded-full flex items-center justify-center text-white active:scale-90 transition-all shadow-lg transition-all duration-300 pulse-blue-light" onclick="snapToUserNeighborhood()" title="Snap back to neighborhood">
                                         <span class="material-symbols-outlined text-2xl font-bold">my_location</span>
-                                    </button>
-                                </div>
-                                
-                                <!-- Back to Chat Button (visually above location button, space separated) -->
-                                <div class="flex items-center justify-end mb-2.5">
-                                    <button class="w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-[#1a1c18] dark:bg-[#1a1c18] border border-white/10 active:scale-90 transition-all cursor-pointer text-white" onclick="window.exitMeetupMapMode()" title="Back to Chat">
-                                        <span class="material-symbols-outlined text-[24px]">close</span>
                                     </button>
                                 </div>
                             </div>
@@ -12401,57 +12925,51 @@ html.dark .sticky-segmented-control-wrapper {
 
                     <!-- B. Unified Form Wrapper (hidden initially) -->
                     <div id="offer-form-wrapper" class="hidden h-full overflow-hidden relative pb-0 w-full flex flex-col">
-                        <!-- Exit/Close button matching the Group creation page style -->
-                        <button id="offer-close-btn" class="absolute top-8 right-6 z-[100] w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="resetOfferFormToSelector()" title="Close and Exit">
-                            <span class="material-symbols-outlined text-[17px]">close</span>
-                        </button>
-
-                        <!-- sticky/fixed header: Hero Image area with three photo uploader slots -->
-                        <section class="photo-hero w-full relative overflow-hidden flex flex-col justify-center items-center border-b border-outline-variant/30 flex-shrink-0 bg-[#ecebeb] dark:bg-[#202020] px-4 pt-14 pb-5 animate-fade-in" id="offer-photo-hero">
-                            <div class="flex flex-col items-center w-full">
-                                <div class="flex justify-between items-center w-full max-w-[300px] mx-auto">
-                                    <!-- Slot 0 (Primary) -->
-                                    <div class="relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(0)">
-                                        <div id="offer-photo-placeholder-0" class="flex items-center justify-center p-2">
-                                            <span class="material-symbols-outlined text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">add_a_photo</span>
-                                        </div>
-                                        <img id="offer-photo-preview-0" class="w-full h-full object-cover hidden">
-                                        <button id="offer-photo-remove-0" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferPhotoSlot(0)">
-                                            <span class="material-symbols-outlined text-[10px] font-bold">close</span>
-                                        </button>
-                                        <input type="file" id="offer-photo-input-0" accept="image/*" class="hidden" onchange="handleOfferPhotoSlotUpload(this, 0)">
-                                    </div>
-
-                                    <!-- Slot 1 (Optional) -->
-                                    <div class="relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(1)">
-                                        <div id="offer-photo-placeholder-1" class="flex items-center justify-center p-2">
-                                            <span class="material-symbols-outlined text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">add_a_photo</span>
-                                        </div>
-                                        <img id="offer-photo-preview-1" class="w-full h-full object-cover hidden">
-                                        <button id="offer-photo-remove-1" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferPhotoSlot(1)">
-                                            <span class="material-symbols-outlined text-[10px] font-bold">close</span>
-                                        </button>
-                                        <input type="file" id="offer-photo-input-1" accept="image/*" class="hidden" onchange="handleOfferPhotoSlotUpload(this, 1)">
-                                    </div>
-
-                                    <!-- Slot 2 (Icon Selector) -->
-                                    <div class="relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="openIconSelectorModal()">
-                                        <div id="offer-icon-placeholder" class="flex items-center justify-center p-2">
-                                            <span class="material-symbols-outlined text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">interests</span>
-                                        </div>
-                                        <div id="offer-icon-selected-display" class="w-full h-full flex items-center justify-center hidden bg-black/5">
-                                            <span id="offer-selected-icon-symbol" class="material-symbols-outlined text-2xl text-black dark:text-white flex items-center justify-center w-full h-full" style="font-variation-settings: 'FILL' 1;">interests</span>
-                                        </div>
-                                        <button id="offer-icon-remove" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferIcon()">
-                                            <span class="material-symbols-outlined text-[10px] font-bold">close</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-
                         <!-- Scrollable Form Container -->
                         <div id="offer-form-scroll-container" class="flex-grow overflow-y-auto w-full" style="-webkit-overflow-scrolling: touch;">
+                            <!-- sticky/fixed header: Hero Image area with three photo uploader slots -->
+                            <section class="photo-hero w-full relative overflow-hidden flex flex-col justify-center items-center border-b border-outline-variant/30 flex-shrink-0 bg-[#ecebeb] dark:bg-[#202020] px-4 pt-14 pb-5 animate-fade-in" id="offer-photo-hero">
+                                <div class="flex flex-col items-center w-full">
+                                    <div class="flex justify-center gap-1 items-center w-full max-w-[300px] mx-auto">
+                                        <!-- Slot 0 (Primary) -->
+                                        <div class="relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(0)">
+                                            <div id="offer-photo-placeholder-0" class="flex items-center justify-center p-2">
+                                                <span class="material-symbols-outlined text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">add_a_photo</span>
+                                            </div>
+                                            <img id="offer-photo-preview-0" class="w-full h-full object-cover hidden">
+                                            <button id="offer-photo-remove-0" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferPhotoSlot(0)">
+                                                <span class="material-symbols-outlined text-[10px] font-bold">close</span>
+                                            </button>
+                                            <input type="file" id="offer-photo-input-0" accept="image/*" class="hidden" onchange="handleOfferPhotoSlotUpload(this, 0)">
+                                        </div>
+
+                                        <!-- Slot 1 (Optional) -->
+                                        <div class="relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(1)">
+                                            <div id="offer-photo-placeholder-1" class="flex items-center justify-center p-2">
+                                                <span class="material-symbols-outlined text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">add_a_photo</span>
+                                            </div>
+                                            <img id="offer-photo-preview-1" class="w-full h-full object-cover hidden">
+                                            <button id="offer-photo-remove-1" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferPhotoSlot(1)">
+                                                <span class="material-symbols-outlined text-[10px] font-bold">close</span>
+                                            </button>
+                                            <input type="file" id="offer-photo-input-1" accept="image/*" class="hidden" onchange="handleOfferPhotoSlotUpload(this, 1)">
+                                        </div>
+
+                                        <!-- Slot 2 (Icon Selector) -->
+                                        <div class="relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="openIconSelectorModal()">
+                                            <div id="offer-icon-placeholder" class="flex items-center justify-center p-2">
+                                                <span class="material-symbols-outlined text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">interests</span>
+                                            </div>
+                                            <div id="offer-icon-selected-display" class="w-full h-full flex items-center justify-center hidden bg-black/5">
+                                                <span id="offer-selected-icon-symbol" class="material-symbols-outlined text-2xl text-black dark:text-white flex items-center justify-center w-full h-full" style="font-variation-settings: 'FILL' 1;">interests</span>
+                                            </div>
+                                            <button id="offer-icon-remove" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferIcon()">
+                                                <span class="material-symbols-outlined text-[10px] font-bold">close</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
 
                     <div class="px-6 py-6 space-y-4 w-full mx-auto">
                         <!-- 2. Stylized Title input -->
@@ -12702,7 +13220,7 @@ html.dark .sticky-segmented-control-wrapper {
                             </label>
                         </div>
 
-                        <div class="flex mt-1 mb-2">
+                        <div class="flex mb-2" style="margin-top: 0.5rem !important;">
                             <button id="btn-list-offering" class="w-full h-12 bg-forest-green text-warm-cream font-bold text-xs rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center shadow-md border-0 cursor-pointer text-center" onclick="handleAddOffering(event)">
                                 List Offer
                             </button>
@@ -13018,8 +13536,8 @@ html.dark .sticky-segmented-control-wrapper {
                         <button class="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm z-50" onclick="closeStatusExplanation()">
                             <span class="material-symbols-outlined text-[17px]">close</span>
                         </button>
-                        <h3 class="font-headline text-lg font-bold text-forest-green mb-4">Swap Status Guide</h3>
-                        <p class="text-xs text-on-surface-variant mb-6 leading-relaxed">
+                        <h3 class="popup-modal-title mb-4">Swap Status Guide</h3>
+                        <p class="popup-modal-desc mb-6">
                             These status indicators show the availability of the offering or request:
                         </p>
                         <div class="space-y-4 text-left">
@@ -13400,14 +13918,14 @@ html.dark .sticky-segmented-control-wrapper {
                     <div class="relative bg-white dark:bg-[#18201a] w-full max-w-[600px] rounded-t-3xl shadow-2xl p-6 transform transition-transform duration-300 translate-y-full" id="confirm-swap-container">
                         <div class="w-10 h-1 bg-outline-variant/50 rounded-full mx-auto mb-6"></div>
                         <div class="flex items-center justify-between mb-4">
-                            <h2 class="font-headline text-lg font-bold text-forest-green dark:text-warm-cream">Confirm Swap Status</h2>
+                            <h2 class="popup-modal-title">Confirm Swap Status</h2>
                             <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeConfirmSwapModal()">
                                 <span class="material-symbols-outlined text-[17px]">close</span>
                             </button>
                         </div>
                         
                         <div class="space-y-4 text-center pb-4">
-                            <p class="text-xs text-on-surface-variant dark:text-warm-cream/80 leading-normal">
+                            <p class="popup-modal-desc leading-normal">
                                 You must confirm whether this swap was completed before you can delete the chat.
                             </p>
                             
@@ -14713,19 +15231,6 @@ html.dark .sticky-segmented-control-wrapper {
                             </button>
                         </div>
 
-                        <!-- Demo & Restart Onboarding Box -->
-                        <div class="bg-amber-50 dark:bg-amber-900/10 p-4 rounded-xl border border-amber-200 dark:border-amber-500/30 shadow-sm flex-shrink-0 mb-4 space-y-2">
-                            <h3 class="text-[10px] font-bold text-amber-700 dark:text-amber-400 uppercase tracking-widest mb-1.5 flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-amber-500">restart_alt</span> Demo &amp; Onboarding
-                            </h3>
-                            <p class="text-[10px] text-amber-700/80 dark:text-amber-300/70 leading-relaxed mb-3">
-                                Restart the full onboarding experience to re-select your neighbourhood, and add offerings, needs &amp; events from scratch.
-                            </p>
-                            <button class="w-full h-12 bg-amber-400 hover:bg-amber-500 text-white font-bold text-xs rounded-xl active:scale-[0.98] transition-all text-left px-4 flex items-center justify-between cursor-pointer shadow-sm" onclick="restartOnboarding()">
-                                Restart Onboarding
-                                <span class="material-symbols-outlined text-sm">restart_alt</span>
-                            </button>
-                        </div>
 
                         <!-- Exit / Logout Box -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-2">
@@ -16116,8 +16621,8 @@ html.dark .sticky-segmented-control-wrapper {
                         
                         <!-- Header -->
                         <div class="flex flex-col items-center justify-center mb-4">
-                            <h3 id="meetup-safety-title" class="text-sm font-bold text-black dark:text-white leading-tight text-center">Exchange Safety Guidelines</h3>
-                            <p id="meetup-safety-subtitle" class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5 text-center">Community guidelines for arranging a meetup!</p>
+                            <h3 id="meetup-safety-title" class="popup-modal-title text-center mb-1">Exchange Safety Guidelines</h3>
+                            <p id="meetup-safety-subtitle" class="popup-modal-desc text-center mt-0.5">Community guidelines for arranging a meetup!</p>
                         </div>
                         
                         <!-- Scrollable Content -->
@@ -16233,13 +16738,10 @@ html.dark .sticky-segmented-control-wrapper {
 
                 <!-- Privacy & Data Notice has been removed per user request -->
 
-                <!-- NEIGHBOR PROFILE MODAL -->
-                <div id="neighbor-profile-modal" class="hidden absolute inset-0 z-[6000] flex flex-col bg-white dark:bg-[#101612] select-none animate-fade-in pt-4">
-                    <button id="neighbor-profile-close-btn" class="absolute top-8 right-6 z-[100] w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeNeighborProfileModal()" title="Close">
-                        <span class="material-symbols-outlined text-[17px]">close</span>
-                    </button>
+                <div id="neighbor-profile-modal" class="hidden absolute inset-0 z-[4000] flex flex-col bg-white dark:bg-[#101612] select-none animate-fade-in pt-4">
 
-                    <div id="neighbor-profile-scroll-container" class="relative flex-grow overflow-y-auto min-h-0 px-6 pb-3 custom-scrollbar" style="-webkit-overflow-scrolling: touch; overscroll-behavior: contain;">
+
+                    <div id="neighbor-profile-scroll-container" class="relative flex-grow overflow-y-auto min-h-0 px-6 pt-16 pb-20 custom-scrollbar" style="-webkit-overflow-scrolling: touch; overscroll-behavior: contain;">
                         <!-- Neighbor Profile Header Summary -->
                         <section class="flex flex-col items-center mb-6 mt-4 select-none w-full">
                             <!-- Round avatar container -->
@@ -16755,9 +17257,9 @@ html.dark .sticky-segmented-control-wrapper {
                               <span id="stat-explanation-icon" class="material-symbols-outlined text-3xl">favorite</span>
                           </div>
                           <!-- Title -->
-                          <h3 id="stat-explanation-title" class="font-headline text-lg font-bold text-forest-green dark:text-[#308A5E] mb-2 leading-tight">Karma Points</h3>
+                          <h3 id="stat-explanation-title" class="popup-modal-title mb-2">Karma Points</h3>
                           <!-- Description -->
-                          <p id="stat-explanation-desc" class="text-[13.5px] text-black dark:text-warm-cream/90 mb-6 leading-relaxed">
+                          <p id="stat-explanation-desc" class="popup-modal-desc mb-6">
                               Explanation text.
                           </p>
                           <!-- Close Button (hidden by default; shown only for certain stat types) -->
@@ -16777,8 +17279,8 @@ html.dark .sticky-segmented-control-wrapper {
                         <div id="map-cat-info-popup-icon-container" class="w-16 h-16 rounded-full flex items-center justify-center mt-2 mb-3 shadow-sm text-white">
                             <span id="map-cat-info-popup-icon" class="material-symbols-outlined text-3xl">info</span>
                         </div>
-                        <h3 id="map-cat-info-popup-title" class="font-headline text-lg font-bold text-forest-green dark:text-emerald-400 mb-2">Category Info</h3>
-                        <p id="map-cat-info-popup-desc" class="text-xs text-black dark:text-warm-cream/80 mb-6 leading-relaxed text-left">
+                        <h3 id="map-cat-info-popup-title" class="popup-modal-title mb-2">Category Info</h3>
+                        <p id="map-cat-info-popup-desc" class="popup-modal-desc mb-6 text-left">
                             Description of the category.
                         </p>
                         <button class="w-full h-11 bg-forest-green text-warm-cream dark:bg-[#308A5E] dark:text-[#101612] font-bold text-xs rounded-xl active:scale-95 transition-transform shadow-md cursor-pointer border-none" onclick="closeMapCategoryInfoPopup()">Got it</button>
@@ -20604,6 +21106,9 @@ window.updateTriggerIconState = updateTriggerIconState;
 
 function handleNavbarTap(viewId) {
     state.profileReferrer = null;
+    state.meetupMapMode = false;
+    state.meetupMapCoords = null;
+    state.meetupMapName = null;
     // Close all modal overlays, detail panels, and global floating dialogs
     if (typeof closeSafetyHelpGuideModal === 'function') {
         closeSafetyHelpGuideModal();
@@ -20764,7 +21269,12 @@ function showView(viewId, mode) {
                 state = {};
             }
         }
-    autoDismissAllModals();
+        if (viewId !== 'village') {
+            state.meetupMapMode = false;
+            state.meetupMapCoords = null;
+            state.meetupMapName = null;
+        }
+        autoDismissAllModals();
     if (viewId === 'home') {
         viewId = 'village';
     }
@@ -20942,7 +21452,7 @@ function showView(viewId, mode) {
     const isPushTransition = (viewId === 'chat_detail' && oldViewId && oldViewId !== 'chat_detail');
     const isPopTransition = (oldViewId === 'chat_detail' && viewId && viewId !== 'chat_detail');
     const isSplitScreen = !isNative && !document.body.classList.contains('show-simulator');
-    const shouldUseSlideTransition = false;
+    const shouldUseSlideTransition = (isPushTransition || isPopTransition) && !isSplitScreen;
 
     if (!shouldUseSlideTransition) {
         // Hide all views instantly for normal non-slide navigation transitions
@@ -21113,11 +21623,14 @@ function showView(viewId, mode) {
         // Toggle profile settings close header visibility
         if (viewId === 'profile_settings') {
             const profileHeader = document.getElementById('profile-settings-header');
+            const scrollContainer = document.getElementById('profile-settings-scroll-container');
             if (profileHeader) {
                 if (state.profileReferrer === 'map') {
                     profileHeader.classList.remove('hidden');
+                    if (scrollContainer) scrollContainer.classList.add('has-header');
                 } else {
                     profileHeader.classList.add('hidden');
+                    if (scrollContainer) scrollContainer.classList.remove('has-header');
                 }
             }
         }
@@ -21164,13 +21677,9 @@ function showView(viewId, mode) {
     const headerBar = document.getElementById('phone-header-bar');
     const desktopNavBar = document.getElementById('desktop-navbar');
 
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId) || viewId.startsWith('chat_detail')) {
+    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId)) {
         if (navBar) {
-            if (state.meetupMapMode) {
-                navBar.classList.add('hidden');
-            } else {
-                navBar.classList.remove('hidden');
-            }
+            navBar.classList.remove('hidden');
         }
         updateNavBarIcons(viewId);
     } else {
@@ -23619,6 +24128,264 @@ window.skipOnboardingCustomListing = function() {
 window.skipOnboardingLocation = function() {
     if (typeof playSound === 'function') playSound('click');
     showView('create_account_safe_spots');
+};
+
+// ====================================================
+// EXPRESS ONBOARDING HANDLERS (OPTION 2)
+// ====================================================
+
+window.tempExpressUser = null;
+window.expressPostType = 'offering';
+
+window.handleExpressNeighborhoodChange = function(value) {
+    const customContainer = document.getElementById('express-custom-location-container');
+    if (customContainer) {
+        if (value === 'custom') {
+            customContainer.classList.remove('hidden');
+            const input = document.getElementById('express-custom-location');
+            if (input) input.required = true;
+        } else {
+            customContainer.classList.add('hidden');
+            const input = document.getElementById('express-custom-location');
+            if (input) input.required = false;
+        }
+    }
+};
+
+window.toggleExpressSubmitButton = function() {
+    const consentCheck = document.getElementById('express-consent-check');
+    const submitBtn = document.getElementById('express-step1-submit');
+    if (consentCheck && submitBtn) {
+        const consentChecked = consentCheck.checked;
+        if (consentChecked) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('bg-forest-green/45', 'cursor-not-allowed');
+            submitBtn.classList.add('bg-forest-green');
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.classList.remove('bg-forest-green');
+            submitBtn.classList.add('bg-forest-green/45', 'cursor-not-allowed');
+        }
+    }
+};
+
+window.openExpressPolicyModal = function(e, type) {
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    const modal = document.getElementById('express-policy-modal');
+    const titleEl = document.getElementById('express-policy-title');
+    const bodyEl = document.getElementById('express-policy-body');
+    
+    if (!modal || !titleEl || !bodyEl) return;
+    
+    let title = "";
+    let body = "";
+    
+    if (type === 'conduct') {
+        title = "Code of Conduct";
+        body = "Corner Swaps is built on trust, respect, and mutual aid. Members are expected to be kind, respectful, and reliable when arranging swaps. Repeated no-shows (5 strikes), harassment, commercial listings, or spamming will lead to immediate account suspension.";
+    } else if (type === 'safety') {
+        title = "Safety Rules";
+        body = "Always arrange exchanges in safe, public, and well-lit locations (such as local parks, cafes, or community centers). Only share cross-streets or general vicinities; never share your exact home address or apartment number. Trust your instincts and report suspicious behavior.";
+    } else if (type === 'liability') {
+        title = "Liability Disclaimer";
+        body = "Corner Swaps acts solely as a passive facilitator to connect community members. We do not inspect, verify, or guarantee the safety, legality, quality, or existence of any listings, items, or skills exchanged. By using this platform, you explicitly acknowledge and agree that all exchanges are conducted entirely at your own risk. You hereby release Corner Swaps and its affiliates from any and all liability, claims, disputes, damages, or losses arising from or in connection with user exchanges, transactions, or communications.";
+    } else if (type === 'privacy') {
+        title = "Privacy Policy";
+        body = "We collect basic account details (name, email) and location information (neighborhood or neighborhood center) to connect you with other users. We do not sell your personal data. You can delete your account at any time in Account Settings.";
+    }
+    
+    titleEl.textContent = title;
+    bodyEl.textContent = body;
+    modal.classList.remove('hidden');
+};
+
+window.closeExpressPolicyModal = function() {
+    const modal = document.getElementById('express-policy-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
+};
+
+window.handleExpressSignupStep1 = function(event) {
+    if (event) event.preventDefault();
+    
+    const firstName = document.getElementById('express-first-name').value.trim();
+    const displayName = document.getElementById('express-display-name').value.trim();
+    const email = document.getElementById('express-email').value.trim();
+    const password = document.getElementById('express-password').value.trim();
+    const locationSelect = document.getElementById('express-location-select').value;
+    const customLocation = document.getElementById('express-custom-location').value.trim();
+    const consentCheck = document.getElementById('express-consent-check');
+    const consentChecked = consentCheck ? consentCheck.checked : false;
+    
+    if (!firstName || !displayName || !email || !password || !locationSelect) {
+        alert("Please fill in all required fields.");
+        return;
+    }
+    
+    if (locationSelect === 'custom' && !customLocation) {
+        alert("Please type your neighborhood name.");
+        return;
+    }
+    
+    if (password.length < 8) {
+        alert("Password must be at least 8 characters.");
+        return;
+    }
+    
+    if (!consentChecked) {
+        alert("You must agree to the policies to proceed.");
+        return;
+    }
+    
+    if (state.suspendedUsers && (state.suspendedUsers.includes(displayName) || state.suspendedUsers.includes(email))) {
+        alert("Your account has been suspended for repeated unreliability (5 no-show strikes). Please contact support.");
+        return;
+    }
+    
+    let resolvedLocation = locationSelect;
+    let resolvedLat = 49.2608;
+    let resolvedLng = -123.1368;
+    
+    if (locationSelect === 'custom') {
+        resolvedLocation = customLocation;
+    } else {
+        const coords = NEIGHBORHOOD_COORDS[locationSelect];
+        if (coords) {
+            resolvedLat = coords.lat;
+            resolvedLng = coords.lng;
+        }
+    }
+    
+    window.tempExpressUser = {
+        firstName: firstName,
+        lastName: '',
+        displayName: displayName,
+        email: email,
+        password: password,
+        location: resolvedLocation,
+        lat: resolvedLat,
+        lng: resolvedLng
+    };
+    
+    if (typeof playSound === 'function') playSound('click');
+    showView('express_signup_step2');
+    window.setExpressPostType('offering');
+};
+
+window.setExpressPostType = function(type) {
+    if (typeof playSound === 'function') playSound('click');
+    window.expressPostType = type;
+    
+    const tabs = ['offering', 'need', 'skip'];
+    tabs.forEach(t => {
+        const btn = document.getElementById(`express-post-tab-${t}`);
+        if (btn) {
+            if (t === type) {
+                btn.className = "p-2.5 bg-forest-green text-white border border-forest-green rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all select-none";
+            } else {
+                btn.className = "p-2.5 bg-white border border-outline-variant/30 text-forest-green rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all select-none";
+            }
+        }
+    });
+    
+    const formContainer = document.getElementById('express-post-form-container');
+    if (formContainer) {
+        if (type === 'skip') {
+            formContainer.classList.add('hidden');
+        } else {
+            formContainer.classList.remove('hidden');
+        }
+    }
+};
+
+window.handleExpressSignupSubmit = function() {
+    if (!window.tempExpressUser) {
+        alert("Sign up details missing. Please restart registration.");
+        showView('welcome');
+        return;
+    }
+    
+    const postType = window.expressPostType || 'offering';
+    let hasListing = false;
+    let listingTitle = "";
+    let listingDesc = "";
+    let listingCategory = "Other";
+    
+    if (postType !== 'skip') {
+        listingTitle = document.getElementById('express-post-title').value.trim();
+        listingDesc = document.getElementById('express-post-desc').value.trim();
+        const catSelect = document.getElementById('express-post-category');
+        listingCategory = catSelect ? catSelect.value : "Other";
+        
+        if (!listingTitle || !listingDesc) {
+            alert("Please enter a title and description for your post, or choose 'Skip Post'.");
+            return;
+        }
+        
+        if (typeof checkSafetyPolicy === 'function' && (checkSafetyPolicy(listingTitle) || checkSafetyPolicy(listingDesc))) {
+            showSafetyContentViolation();
+            return;
+        }
+        if (typeof checkCashlessPolicy === 'function' && (checkCashlessPolicy(listingTitle) || checkCashlessPolicy(listingDesc))) {
+            showSafetyMoneyWarning();
+            return;
+        }
+        
+        hasListing = true;
+    }
+    
+    state.currentUser = {
+        firstName: window.tempExpressUser.firstName,
+        lastName: window.tempExpressUser.lastName,
+        displayName: window.tempExpressUser.displayName,
+        email: window.tempExpressUser.email,
+        avatar: DEFAULT_AVATAR,
+        location: window.tempExpressUser.location,
+        lat: window.tempExpressUser.lat,
+        lng: window.tempExpressUser.lng,
+        skills: [],
+        needs: []
+    };
+    state.isGuest = false;
+    
+    if (hasListing) {
+        const id = postType + '-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        if (postType === 'offering') {
+            state.userOfferings.push({
+                id: id,
+                title: listingTitle,
+                category: listingCategory,
+                desc: listingDesc,
+                icon: 'info',
+                image: null,
+                lat: window.tempExpressUser.lat,
+                lng: window.tempExpressUser.lng
+            });
+        } else if (postType === 'need') {
+            if (!state.userNeeds) state.userNeeds = [];
+            state.userNeeds.push({
+                id: id,
+                title: listingTitle,
+                category: listingCategory,
+                desc: listingDesc,
+                icon: 'info',
+                lat: window.tempExpressUser.lat,
+                lng: window.tempExpressUser.lng
+            });
+        }
+    }
+    
+    saveState();
+    window.tempExpressUser = null;
+    
+    if (typeof playSound === 'function') playSound('click');
+    showView('village');
+    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
+    if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
 };
 window.goToMapFromCelebration = goToMapFromCelebration;
 
@@ -27557,7 +28324,7 @@ function resetOfferValidationState() {
     
     if (submitBtn) {
         submitBtn.classList.remove('hidden');
-        submitBtn.className = "w-full bg-forest-green text-warm-cream py-4 rounded-xl font-bold active:scale-[0.98] transition-transform text-xs shadow-md mt-8 mb-2";
+        submitBtn.className = "w-full bg-forest-green text-warm-cream py-4 rounded-xl font-bold active:scale-[0.98] transition-transform text-xs shadow-md mt-4 mb-2";
         if (state.currentOfferMode === 'event') {
             submitBtn.innerText = "Host Event";
         } else if (state.currentOfferMode === 'need') {
@@ -28112,7 +28879,7 @@ function handleAddOffering(e) {
     // Reset button style
     const submitBtn = document.getElementById('btn-list-offering');
     if (submitBtn) {
-        submitBtn.className = "w-full bg-forest-green text-warm-cream py-4 rounded-xl font-bold active:scale-[0.98] transition-transform text-xs shadow-md mt-8 mb-2";
+        submitBtn.className = "w-full bg-forest-green text-warm-cream py-4 rounded-xl font-bold active:scale-[0.98] transition-transform text-xs shadow-md mt-4 mb-2";
         if (state.currentOfferMode === 'need') {
             submitBtn.innerText = "List Need";
         } else if (state.currentOfferMode === 'donation') {
@@ -29538,7 +30305,7 @@ function renderChatDetail(conv) {
                             <!-- Bubble: Side-by-Side Swap Proposal -->
                             <div id="msg-bubble-${index}" class="chat-bubble-hover py-3 px-3.5 rounded-3xl rounded-tr-none shadow-md cursor-pointer select-none transition-all duration-200 w-[280px] text-left flex flex-col gap-2.5 bg-white dark:bg-[#18201a] border border-black/10 dark:border-white/10" onclick="window.viewSwapOfferOnMap('${offeredId}', '${requestedId}', 'mine'); event.stopPropagation();">
                                 <div class="flex items-center gap-1.5 border-b border-black/10 dark:border-white/10 pb-1.5">
-                                    <span class="text-[9px] uppercase tracking-wider font-extrabold text-black dark:text-white">Proposed Swap</span>
+                                    <span class="popup-modal-title">Proposed Swap</span>
                                 </div>
                                 <div class="flex items-center justify-between gap-2.5">
                                     <!-- Left: Give -->
@@ -29546,11 +30313,11 @@ function renderChatDetail(conv) {
                                         <div class="w-full aspect-square rounded-xl overflow-hidden relative border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5">
                                             <img src="${leftImg}" class="w-full h-full object-cover">
                                         </div>
-                                        <div class="text-[9px] font-black text-black dark:text-white uppercase tracking-widest mt-1.5">GIVE</div>
+                                        <div class="popup-modal-desc font-bold text-center mt-1.5">GIVE</div>
                                     </div>
                                     
                                     <!-- Center Plus Sign -->
-                                    <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm font-bold text-base">
+                                    <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm font-bold text-base" style="font-family: 'Outfit', sans-serif;">
                                         +
                                     </div>
                                     
@@ -29559,12 +30326,12 @@ function renderChatDetail(conv) {
                                         <div class="w-full aspect-square rounded-xl overflow-hidden relative border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5">
                                             <img src="${rightImg}" class="w-full h-full object-cover">
                                         </div>
-                                        <div class="text-[9px] font-black text-amber-600 dark:text-amber-500 uppercase tracking-widest mt-1.5">GET</div>
+                                        <div class="popup-modal-desc font-bold text-amber-600 dark:text-amber-500 text-center mt-1.5">GET</div>
                                     </div>
                                 </div>
                                 <!-- Status Pill at the bottom -->
                                 <div class="mt-1 flex justify-center">
-                                    <div class="px-3 py-1.5 rounded-full text-[10px] font-bold text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none">
+                                    <div class="px-3 py-1.5 rounded-full text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none popup-modal-desc font-bold">
                                         ${(conv.negotiation && (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'))
                                             ? 'Agreement Confirmed! ⚡'
                                             : `${escapeHTML(conv.neighborName)} to agree?`}
@@ -29631,7 +30398,7 @@ function renderChatDetail(conv) {
                             <!-- Bubble: Side-by-Side Swap Proposal -->
                             <div id="msg-bubble-${index}" class="chat-bubble-hover py-3 px-3.5 rounded-3xl rounded-tr-none shadow-md cursor-pointer select-none transition-all duration-200 w-[280px] text-left flex flex-col gap-2.5 bg-white dark:bg-[#18201a] border border-black/10 dark:border-white/10" onclick="window.openSwapLifecycleModal('receiver', '${conv.id}'); event.stopPropagation();">
                                 <div class="flex items-center gap-1.5 border-b border-black/10 dark:border-white/10 pb-1.5">
-                                    <span class="text-[9px] uppercase tracking-wider font-extrabold text-black dark:text-white">Proposed Swap</span>
+                                    <span class="popup-modal-title">Proposed Swap</span>
                                 </div>
                                 <div class="flex items-center justify-between gap-2.5">
                                     <!-- Left: Get (what I get) -->
@@ -29639,11 +30406,11 @@ function renderChatDetail(conv) {
                                         <div class="w-full aspect-square rounded-xl overflow-hidden relative border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5">
                                             <img src="${leftImg}" class="w-full h-full object-cover">
                                         </div>
-                                        <div class="text-[9px] font-black text-black dark:text-white uppercase tracking-widest mt-1.5">GET</div>
+                                        <div class="popup-modal-desc font-bold text-center mt-1.5">GET</div>
                                     </div>
                                     
                                     <!-- Center Plus Sign -->
-                                    <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm font-bold text-base">
+                                    <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm font-bold text-base" style="font-family: 'Outfit', sans-serif;">
                                         +
                                     </div>
                                     
@@ -29652,12 +30419,12 @@ function renderChatDetail(conv) {
                                         <div class="w-full aspect-square rounded-xl overflow-hidden relative border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5">
                                             <img src="${rightImg}" class="w-full h-full object-cover">
                                         </div>
-                                        <div class="text-[9px] font-black text-amber-600 dark:text-amber-500 uppercase tracking-widest mt-1.5">GIVE</div>
+                                        <div class="popup-modal-desc font-bold text-amber-600 dark:text-amber-500 text-center mt-1.5">GIVE</div>
                                     </div>
                                 </div>
                                 <!-- Status Pill at the bottom -->
                                 <div class="mt-1 flex justify-center">
-                                    <div class="px-3 py-1.5 rounded-full text-[10px] font-bold text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none">
+                                    <div class="px-3 py-1.5 rounded-full text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none popup-modal-desc font-bold">
                                         ${(conv.negotiation && (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'))
                                             ? 'Agreement Confirmed! ⚡'
                                             : 'You to agree?'}
@@ -32836,7 +33603,7 @@ function switchVillageSegment(type) {
         if (floatingContainer) floatingContainer.style.display = 'none';
         if (blueBtn) blueBtn.style.display = 'none';
         if (searchBar) searchBar.classList.add('hidden');
-        if (meetupFooter) meetupFooter.classList.add('hidden');
+        if (meetupFooter) meetupFooter.classList.remove('hidden');
         if (mapControls) {
             mapControls.classList.add('hidden');
             mapControls.style.display = 'none';
@@ -47498,8 +48265,8 @@ window.openSwapLifecycleModal = function(role, conversationId) {
         // Render Initiator View (Propose swap)
         container.innerHTML = `
             <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
-                <h3 class="text-sm font-bold text-black dark:text-white leading-tight text-center">Offer a Swap</h3>
-                <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5 text-center">Propose an item to swap or ask for a Karma request.</p>
+                <h3 class="popup-modal-title text-center mb-1">Offer a Swap</h3>
+                <p class="popup-modal-desc text-center">Propose an item to swap or ask for a Karma request.</p>
             </div>
             
             <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 max-h-[70vh]">
@@ -47623,8 +48390,8 @@ window.openSwapLifecycleModal = function(role, conversationId) {
         if (isKarma) {
             container.innerHTML = `
                 <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
-                    <h3 class="text-sm font-bold text-black dark:text-white leading-tight text-center">Review Karma Request</h3>
-                    <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5 text-center">Requested by ${escapeHTML(conv.neighborName)}</p>
+                    <h3 class="popup-modal-title text-center mb-1">Review Karma Request</h3>
+                    <p class="popup-modal-desc text-center">Requested by ${escapeHTML(conv.neighborName)}</p>
                 </div>
                 
                 <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 max-h-[70vh] items-center text-center">
@@ -47633,8 +48400,8 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                     </div>
                     
                     <div class="flex flex-col items-center gap-2 shrink-0">
-                        <h4 class="text-sm font-bold text-black dark:text-white">Karma Swap Request</h4>
-                        <p class="text-[11px] text-on-surface-variant dark:text-warm-cream/80 max-w-[90%] leading-relaxed">
+                        <h4 class="popup-modal-title text-center mb-1">Karma Swap Request</h4>
+                        <p class="popup-modal-desc text-center max-w-[90%]">
                             Your neighbor ${escapeHTML(conv.neighborName)} wants your <strong class="text-forest-green">"${escapeHTML(requestedTitle)}"</strong> but doesn't have an item to trade right now. 
                             They are proposing a Karma Swap. By helping them out, you will receive <span class="text-amber-500 font-extrabold">+50 Karma Points</span>!
                         </p>
@@ -47650,8 +48417,8 @@ window.openSwapLifecycleModal = function(role, conversationId) {
         } else {
             container.innerHTML = `
                 <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
-                    <h3 class="text-sm font-bold text-black dark:text-white leading-tight text-center">Review Swap Proposal</h3>
-                    <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5 text-center">Offered by ${escapeHTML(conv.neighborName)}</p>
+                    <h3 class="popup-modal-title text-center mb-1">Review Swap Proposal</h3>
+                    <p class="popup-modal-desc text-center">Offered by ${escapeHTML(conv.neighborName)}</p>
                 </div>
                 
                 <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 max-h-[70vh]">

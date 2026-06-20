@@ -3209,6 +3209,9 @@ window.updateTriggerIconState = updateTriggerIconState;
 
 function handleNavbarTap(viewId) {
     state.profileReferrer = null;
+    state.meetupMapMode = false;
+    state.meetupMapCoords = null;
+    state.meetupMapName = null;
     // Close all modal overlays, detail panels, and global floating dialogs
     if (typeof closeSafetyHelpGuideModal === 'function') {
         closeSafetyHelpGuideModal();
@@ -3369,7 +3372,12 @@ function showView(viewId, mode) {
                 state = {};
             }
         }
-    autoDismissAllModals();
+        if (viewId !== 'village') {
+            state.meetupMapMode = false;
+            state.meetupMapCoords = null;
+            state.meetupMapName = null;
+        }
+        autoDismissAllModals();
     if (viewId === 'home') {
         viewId = 'village';
     }
@@ -3547,7 +3555,7 @@ function showView(viewId, mode) {
     const isPushTransition = (viewId === 'chat_detail' && oldViewId && oldViewId !== 'chat_detail');
     const isPopTransition = (oldViewId === 'chat_detail' && viewId && viewId !== 'chat_detail');
     const isSplitScreen = !isNative && !document.body.classList.contains('show-simulator');
-    const shouldUseSlideTransition = false;
+    const shouldUseSlideTransition = (isPushTransition || isPopTransition) && !isSplitScreen;
 
     if (!shouldUseSlideTransition) {
         // Hide all views instantly for normal non-slide navigation transitions
@@ -3718,11 +3726,14 @@ function showView(viewId, mode) {
         // Toggle profile settings close header visibility
         if (viewId === 'profile_settings') {
             const profileHeader = document.getElementById('profile-settings-header');
+            const scrollContainer = document.getElementById('profile-settings-scroll-container');
             if (profileHeader) {
                 if (state.profileReferrer === 'map') {
                     profileHeader.classList.remove('hidden');
+                    if (scrollContainer) scrollContainer.classList.add('has-header');
                 } else {
                     profileHeader.classList.add('hidden');
+                    if (scrollContainer) scrollContainer.classList.remove('has-header');
                 }
             }
         }
@@ -3769,13 +3780,9 @@ function showView(viewId, mode) {
     const headerBar = document.getElementById('phone-header-bar');
     const desktopNavBar = document.getElementById('desktop-navbar');
 
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId) || viewId.startsWith('chat_detail')) {
+    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId)) {
         if (navBar) {
-            if (state.meetupMapMode) {
-                navBar.classList.add('hidden');
-            } else {
-                navBar.classList.remove('hidden');
-            }
+            navBar.classList.remove('hidden');
         }
         updateNavBarIcons(viewId);
     } else {
@@ -6224,6 +6231,264 @@ window.skipOnboardingCustomListing = function() {
 window.skipOnboardingLocation = function() {
     if (typeof playSound === 'function') playSound('click');
     showView('create_account_safe_spots');
+};
+
+// ====================================================
+// EXPRESS ONBOARDING HANDLERS (OPTION 2)
+// ====================================================
+
+window.tempExpressUser = null;
+window.expressPostType = 'offering';
+
+window.handleExpressNeighborhoodChange = function(value) {
+    const customContainer = document.getElementById('express-custom-location-container');
+    if (customContainer) {
+        if (value === 'custom') {
+            customContainer.classList.remove('hidden');
+            const input = document.getElementById('express-custom-location');
+            if (input) input.required = true;
+        } else {
+            customContainer.classList.add('hidden');
+            const input = document.getElementById('express-custom-location');
+            if (input) input.required = false;
+        }
+    }
+};
+
+window.toggleExpressSubmitButton = function() {
+    const consentCheck = document.getElementById('express-consent-check');
+    const submitBtn = document.getElementById('express-step1-submit');
+    if (consentCheck && submitBtn) {
+        const consentChecked = consentCheck.checked;
+        if (consentChecked) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('bg-forest-green/45', 'cursor-not-allowed');
+            submitBtn.classList.add('bg-forest-green');
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.classList.remove('bg-forest-green');
+            submitBtn.classList.add('bg-forest-green/45', 'cursor-not-allowed');
+        }
+    }
+};
+
+window.openExpressPolicyModal = function(e, type) {
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    const modal = document.getElementById('express-policy-modal');
+    const titleEl = document.getElementById('express-policy-title');
+    const bodyEl = document.getElementById('express-policy-body');
+    
+    if (!modal || !titleEl || !bodyEl) return;
+    
+    let title = "";
+    let body = "";
+    
+    if (type === 'conduct') {
+        title = "Code of Conduct";
+        body = "Corner Swaps is built on trust, respect, and mutual aid. Members are expected to be kind, respectful, and reliable when arranging swaps. Repeated no-shows (5 strikes), harassment, commercial listings, or spamming will lead to immediate account suspension.";
+    } else if (type === 'safety') {
+        title = "Safety Rules";
+        body = "Always arrange exchanges in safe, public, and well-lit locations (such as local parks, cafes, or community centers). Only share cross-streets or general vicinities; never share your exact home address or apartment number. Trust your instincts and report suspicious behavior.";
+    } else if (type === 'liability') {
+        title = "Liability Disclaimer";
+        body = "Corner Swaps acts solely as a passive facilitator to connect community members. We do not inspect, verify, or guarantee the safety, legality, quality, or existence of any listings, items, or skills exchanged. By using this platform, you explicitly acknowledge and agree that all exchanges are conducted entirely at your own risk. You hereby release Corner Swaps and its affiliates from any and all liability, claims, disputes, damages, or losses arising from or in connection with user exchanges, transactions, or communications.";
+    } else if (type === 'privacy') {
+        title = "Privacy Policy";
+        body = "We collect basic account details (name, email) and location information (neighborhood or neighborhood center) to connect you with other users. We do not sell your personal data. You can delete your account at any time in Account Settings.";
+    }
+    
+    titleEl.textContent = title;
+    bodyEl.textContent = body;
+    modal.classList.remove('hidden');
+};
+
+window.closeExpressPolicyModal = function() {
+    const modal = document.getElementById('express-policy-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
+};
+
+window.handleExpressSignupStep1 = function(event) {
+    if (event) event.preventDefault();
+    
+    const firstName = document.getElementById('express-first-name').value.trim();
+    const displayName = document.getElementById('express-display-name').value.trim();
+    const email = document.getElementById('express-email').value.trim();
+    const password = document.getElementById('express-password').value.trim();
+    const locationSelect = document.getElementById('express-location-select').value;
+    const customLocation = document.getElementById('express-custom-location').value.trim();
+    const consentCheck = document.getElementById('express-consent-check');
+    const consentChecked = consentCheck ? consentCheck.checked : false;
+    
+    if (!firstName || !displayName || !email || !password || !locationSelect) {
+        alert("Please fill in all required fields.");
+        return;
+    }
+    
+    if (locationSelect === 'custom' && !customLocation) {
+        alert("Please type your neighborhood name.");
+        return;
+    }
+    
+    if (password.length < 8) {
+        alert("Password must be at least 8 characters.");
+        return;
+    }
+    
+    if (!consentChecked) {
+        alert("You must agree to the policies to proceed.");
+        return;
+    }
+    
+    if (state.suspendedUsers && (state.suspendedUsers.includes(displayName) || state.suspendedUsers.includes(email))) {
+        alert("Your account has been suspended for repeated unreliability (5 no-show strikes). Please contact support.");
+        return;
+    }
+    
+    let resolvedLocation = locationSelect;
+    let resolvedLat = 49.2608;
+    let resolvedLng = -123.1368;
+    
+    if (locationSelect === 'custom') {
+        resolvedLocation = customLocation;
+    } else {
+        const coords = NEIGHBORHOOD_COORDS[locationSelect];
+        if (coords) {
+            resolvedLat = coords.lat;
+            resolvedLng = coords.lng;
+        }
+    }
+    
+    window.tempExpressUser = {
+        firstName: firstName,
+        lastName: '',
+        displayName: displayName,
+        email: email,
+        password: password,
+        location: resolvedLocation,
+        lat: resolvedLat,
+        lng: resolvedLng
+    };
+    
+    if (typeof playSound === 'function') playSound('click');
+    showView('express_signup_step2');
+    window.setExpressPostType('offering');
+};
+
+window.setExpressPostType = function(type) {
+    if (typeof playSound === 'function') playSound('click');
+    window.expressPostType = type;
+    
+    const tabs = ['offering', 'need', 'skip'];
+    tabs.forEach(t => {
+        const btn = document.getElementById(`express-post-tab-${t}`);
+        if (btn) {
+            if (t === type) {
+                btn.className = "p-2.5 bg-forest-green text-white border border-forest-green rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all select-none";
+            } else {
+                btn.className = "p-2.5 bg-white border border-outline-variant/30 text-forest-green rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all select-none";
+            }
+        }
+    });
+    
+    const formContainer = document.getElementById('express-post-form-container');
+    if (formContainer) {
+        if (type === 'skip') {
+            formContainer.classList.add('hidden');
+        } else {
+            formContainer.classList.remove('hidden');
+        }
+    }
+};
+
+window.handleExpressSignupSubmit = function() {
+    if (!window.tempExpressUser) {
+        alert("Sign up details missing. Please restart registration.");
+        showView('welcome');
+        return;
+    }
+    
+    const postType = window.expressPostType || 'offering';
+    let hasListing = false;
+    let listingTitle = "";
+    let listingDesc = "";
+    let listingCategory = "Other";
+    
+    if (postType !== 'skip') {
+        listingTitle = document.getElementById('express-post-title').value.trim();
+        listingDesc = document.getElementById('express-post-desc').value.trim();
+        const catSelect = document.getElementById('express-post-category');
+        listingCategory = catSelect ? catSelect.value : "Other";
+        
+        if (!listingTitle || !listingDesc) {
+            alert("Please enter a title and description for your post, or choose 'Skip Post'.");
+            return;
+        }
+        
+        if (typeof checkSafetyPolicy === 'function' && (checkSafetyPolicy(listingTitle) || checkSafetyPolicy(listingDesc))) {
+            showSafetyContentViolation();
+            return;
+        }
+        if (typeof checkCashlessPolicy === 'function' && (checkCashlessPolicy(listingTitle) || checkCashlessPolicy(listingDesc))) {
+            showSafetyMoneyWarning();
+            return;
+        }
+        
+        hasListing = true;
+    }
+    
+    state.currentUser = {
+        firstName: window.tempExpressUser.firstName,
+        lastName: window.tempExpressUser.lastName,
+        displayName: window.tempExpressUser.displayName,
+        email: window.tempExpressUser.email,
+        avatar: DEFAULT_AVATAR,
+        location: window.tempExpressUser.location,
+        lat: window.tempExpressUser.lat,
+        lng: window.tempExpressUser.lng,
+        skills: [],
+        needs: []
+    };
+    state.isGuest = false;
+    
+    if (hasListing) {
+        const id = postType + '-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        if (postType === 'offering') {
+            state.userOfferings.push({
+                id: id,
+                title: listingTitle,
+                category: listingCategory,
+                desc: listingDesc,
+                icon: 'info',
+                image: null,
+                lat: window.tempExpressUser.lat,
+                lng: window.tempExpressUser.lng
+            });
+        } else if (postType === 'need') {
+            if (!state.userNeeds) state.userNeeds = [];
+            state.userNeeds.push({
+                id: id,
+                title: listingTitle,
+                category: listingCategory,
+                desc: listingDesc,
+                icon: 'info',
+                lat: window.tempExpressUser.lat,
+                lng: window.tempExpressUser.lng
+            });
+        }
+    }
+    
+    saveState();
+    window.tempExpressUser = null;
+    
+    if (typeof playSound === 'function') playSound('click');
+    showView('village');
+    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
+    if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
 };
 window.goToMapFromCelebration = goToMapFromCelebration;
 
@@ -10162,7 +10427,7 @@ function resetOfferValidationState() {
     
     if (submitBtn) {
         submitBtn.classList.remove('hidden');
-        submitBtn.className = "w-full bg-forest-green text-warm-cream py-4 rounded-xl font-bold active:scale-[0.98] transition-transform text-xs shadow-md mt-8 mb-2";
+        submitBtn.className = "w-full bg-forest-green text-warm-cream py-4 rounded-xl font-bold active:scale-[0.98] transition-transform text-xs shadow-md mt-4 mb-2";
         if (state.currentOfferMode === 'event') {
             submitBtn.innerText = "Host Event";
         } else if (state.currentOfferMode === 'need') {
@@ -10717,7 +10982,7 @@ function handleAddOffering(e) {
     // Reset button style
     const submitBtn = document.getElementById('btn-list-offering');
     if (submitBtn) {
-        submitBtn.className = "w-full bg-forest-green text-warm-cream py-4 rounded-xl font-bold active:scale-[0.98] transition-transform text-xs shadow-md mt-8 mb-2";
+        submitBtn.className = "w-full bg-forest-green text-warm-cream py-4 rounded-xl font-bold active:scale-[0.98] transition-transform text-xs shadow-md mt-4 mb-2";
         if (state.currentOfferMode === 'need') {
             submitBtn.innerText = "List Need";
         } else if (state.currentOfferMode === 'donation') {
@@ -12143,7 +12408,7 @@ function renderChatDetail(conv) {
                             <!-- Bubble: Side-by-Side Swap Proposal -->
                             <div id="msg-bubble-${index}" class="chat-bubble-hover py-3 px-3.5 rounded-3xl rounded-tr-none shadow-md cursor-pointer select-none transition-all duration-200 w-[280px] text-left flex flex-col gap-2.5 bg-white dark:bg-[#18201a] border border-black/10 dark:border-white/10" onclick="window.viewSwapOfferOnMap('${offeredId}', '${requestedId}', 'mine'); event.stopPropagation();">
                                 <div class="flex items-center gap-1.5 border-b border-black/10 dark:border-white/10 pb-1.5">
-                                    <span class="text-[9px] uppercase tracking-wider font-extrabold text-black dark:text-white">Proposed Swap</span>
+                                    <span class="popup-modal-title">Proposed Swap</span>
                                 </div>
                                 <div class="flex items-center justify-between gap-2.5">
                                     <!-- Left: Give -->
@@ -12151,11 +12416,11 @@ function renderChatDetail(conv) {
                                         <div class="w-full aspect-square rounded-xl overflow-hidden relative border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5">
                                             <img src="${leftImg}" class="w-full h-full object-cover">
                                         </div>
-                                        <div class="text-[9px] font-black text-black dark:text-white uppercase tracking-widest mt-1.5">GIVE</div>
+                                        <div class="popup-modal-desc font-bold text-center mt-1.5">GIVE</div>
                                     </div>
                                     
                                     <!-- Center Plus Sign -->
-                                    <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm font-bold text-base">
+                                    <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm font-bold text-base" style="font-family: 'Outfit', sans-serif;">
                                         +
                                     </div>
                                     
@@ -12164,12 +12429,12 @@ function renderChatDetail(conv) {
                                         <div class="w-full aspect-square rounded-xl overflow-hidden relative border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5">
                                             <img src="${rightImg}" class="w-full h-full object-cover">
                                         </div>
-                                        <div class="text-[9px] font-black text-amber-600 dark:text-amber-500 uppercase tracking-widest mt-1.5">GET</div>
+                                        <div class="popup-modal-desc font-bold text-amber-600 dark:text-amber-500 text-center mt-1.5">GET</div>
                                     </div>
                                 </div>
                                 <!-- Status Pill at the bottom -->
                                 <div class="mt-1 flex justify-center">
-                                    <div class="px-3 py-1.5 rounded-full text-[10px] font-bold text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none">
+                                    <div class="px-3 py-1.5 rounded-full text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none popup-modal-desc font-bold">
                                         ${(conv.negotiation && (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'))
                                             ? 'Agreement Confirmed! ⚡'
                                             : `${escapeHTML(conv.neighborName)} to agree?`}
@@ -12236,7 +12501,7 @@ function renderChatDetail(conv) {
                             <!-- Bubble: Side-by-Side Swap Proposal -->
                             <div id="msg-bubble-${index}" class="chat-bubble-hover py-3 px-3.5 rounded-3xl rounded-tr-none shadow-md cursor-pointer select-none transition-all duration-200 w-[280px] text-left flex flex-col gap-2.5 bg-white dark:bg-[#18201a] border border-black/10 dark:border-white/10" onclick="window.openSwapLifecycleModal('receiver', '${conv.id}'); event.stopPropagation();">
                                 <div class="flex items-center gap-1.5 border-b border-black/10 dark:border-white/10 pb-1.5">
-                                    <span class="text-[9px] uppercase tracking-wider font-extrabold text-black dark:text-white">Proposed Swap</span>
+                                    <span class="popup-modal-title">Proposed Swap</span>
                                 </div>
                                 <div class="flex items-center justify-between gap-2.5">
                                     <!-- Left: Get (what I get) -->
@@ -12244,11 +12509,11 @@ function renderChatDetail(conv) {
                                         <div class="w-full aspect-square rounded-xl overflow-hidden relative border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5">
                                             <img src="${leftImg}" class="w-full h-full object-cover">
                                         </div>
-                                        <div class="text-[9px] font-black text-black dark:text-white uppercase tracking-widest mt-1.5">GET</div>
+                                        <div class="popup-modal-desc font-bold text-center mt-1.5">GET</div>
                                     </div>
                                     
                                     <!-- Center Plus Sign -->
-                                    <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm font-bold text-base">
+                                    <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm font-bold text-base" style="font-family: 'Outfit', sans-serif;">
                                         +
                                     </div>
                                     
@@ -12257,12 +12522,12 @@ function renderChatDetail(conv) {
                                         <div class="w-full aspect-square rounded-xl overflow-hidden relative border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5">
                                             <img src="${rightImg}" class="w-full h-full object-cover">
                                         </div>
-                                        <div class="text-[9px] font-black text-amber-600 dark:text-amber-500 uppercase tracking-widest mt-1.5">GIVE</div>
+                                        <div class="popup-modal-desc font-bold text-amber-600 dark:text-amber-500 text-center mt-1.5">GIVE</div>
                                     </div>
                                 </div>
                                 <!-- Status Pill at the bottom -->
                                 <div class="mt-1 flex justify-center">
-                                    <div class="px-3 py-1.5 rounded-full text-[10px] font-bold text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none">
+                                    <div class="px-3 py-1.5 rounded-full text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none popup-modal-desc font-bold">
                                         ${(conv.negotiation && (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'))
                                             ? 'Agreement Confirmed! ⚡'
                                             : 'You to agree?'}
@@ -15441,7 +15706,7 @@ function switchVillageSegment(type) {
         if (floatingContainer) floatingContainer.style.display = 'none';
         if (blueBtn) blueBtn.style.display = 'none';
         if (searchBar) searchBar.classList.add('hidden');
-        if (meetupFooter) meetupFooter.classList.add('hidden');
+        if (meetupFooter) meetupFooter.classList.remove('hidden');
         if (mapControls) {
             mapControls.classList.add('hidden');
             mapControls.style.display = 'none';
@@ -30103,8 +30368,8 @@ window.openSwapLifecycleModal = function(role, conversationId) {
         // Render Initiator View (Propose swap)
         container.innerHTML = `
             <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
-                <h3 class="text-sm font-bold text-black dark:text-white leading-tight text-center">Offer a Swap</h3>
-                <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5 text-center">Propose an item to swap or ask for a Karma request.</p>
+                <h3 class="popup-modal-title text-center mb-1">Offer a Swap</h3>
+                <p class="popup-modal-desc text-center">Propose an item to swap or ask for a Karma request.</p>
             </div>
             
             <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 max-h-[70vh]">
@@ -30228,8 +30493,8 @@ window.openSwapLifecycleModal = function(role, conversationId) {
         if (isKarma) {
             container.innerHTML = `
                 <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
-                    <h3 class="text-sm font-bold text-black dark:text-white leading-tight text-center">Review Karma Request</h3>
-                    <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5 text-center">Requested by ${escapeHTML(conv.neighborName)}</p>
+                    <h3 class="popup-modal-title text-center mb-1">Review Karma Request</h3>
+                    <p class="popup-modal-desc text-center">Requested by ${escapeHTML(conv.neighborName)}</p>
                 </div>
                 
                 <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 max-h-[70vh] items-center text-center">
@@ -30238,8 +30503,8 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                     </div>
                     
                     <div class="flex flex-col items-center gap-2 shrink-0">
-                        <h4 class="text-sm font-bold text-black dark:text-white">Karma Swap Request</h4>
-                        <p class="text-[11px] text-on-surface-variant dark:text-warm-cream/80 max-w-[90%] leading-relaxed">
+                        <h4 class="popup-modal-title text-center mb-1">Karma Swap Request</h4>
+                        <p class="popup-modal-desc text-center max-w-[90%]">
                             Your neighbor ${escapeHTML(conv.neighborName)} wants your <strong class="text-forest-green">"${escapeHTML(requestedTitle)}"</strong> but doesn't have an item to trade right now. 
                             They are proposing a Karma Swap. By helping them out, you will receive <span class="text-amber-500 font-extrabold">+50 Karma Points</span>!
                         </p>
@@ -30255,8 +30520,8 @@ window.openSwapLifecycleModal = function(role, conversationId) {
         } else {
             container.innerHTML = `
                 <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
-                    <h3 class="text-sm font-bold text-black dark:text-white leading-tight text-center">Review Swap Proposal</h3>
-                    <p class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 mt-0.5 text-center">Offered by ${escapeHTML(conv.neighborName)}</p>
+                    <h3 class="popup-modal-title text-center mb-1">Review Swap Proposal</h3>
+                    <p class="popup-modal-desc text-center">Offered by ${escapeHTML(conv.neighborName)}</p>
                 </div>
                 
                 <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 max-h-[70vh]">
