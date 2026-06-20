@@ -3769,7 +3769,7 @@ function showView(viewId, mode) {
     const headerBar = document.getElementById('phone-header-bar');
     const desktopNavBar = document.getElementById('desktop-navbar');
 
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId)) {
+    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId) || viewId.startsWith('chat_detail')) {
         if (navBar) {
             if (state.meetupMapMode) {
                 navBar.classList.add('hidden');
@@ -4373,6 +4373,8 @@ function updateNavBarIcons(activeViewId) {
         highlightViewId = (state.activeViewMode === 'list') ? 'village_list' : 'village_map';
     } else if (['settings_detail', 'adjust_homepage', 'definitions', 'neighborhood_tips', 'help_improve'].includes(activeViewId)) {
         highlightViewId = 'profile_settings';
+    } else if (activeViewId === 'chat_detail' || activeViewId.startsWith('chat_detail')) {
+        highlightViewId = 'chat_hub';
     }
 
     const isDarkMode = document.documentElement.classList.contains('dark');
@@ -5009,17 +5011,17 @@ function updateEventPhotoPlaceholder() {
     if (state.currentOfferMode === 'event' && eventType && !dataUrl) {
         const details = getEventIconDetails(eventType);
         
-        parent.className = "relative w-[100px] h-[100px] rounded-2xl flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:opacity-90 active:scale-95 transition-all shadow-sm group event-stock-thumbnail";
+        parent.className = "relative w-[84px] h-[84px] rounded-xl flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:opacity-90 active:scale-95 transition-all shadow-sm group event-stock-thumbnail";
         parent.style.setProperty('--bg-light', details.bgColor);
         parent.style.setProperty('--bg-dark', details.darkBgColor);
         parent.style.setProperty('--color-light', details.color);
         parent.style.setProperty('--color-dark', details.darkColor);
         parent.style.borderColor = 'transparent';
         
-        placeholder.innerHTML = `<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">${details.icon}</span>`;
+        placeholder.innerHTML = `<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">${details.icon}</span>`;
         if (preview) preview.classList.add('hidden');
     } else {
-        parent.className = "relative w-[100px] h-[100px] rounded-2xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group";
+        parent.className = "relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group";
         parent.style.removeProperty('--bg-light');
         parent.style.removeProperty('--bg-dark');
         parent.style.removeProperty('--color-light');
@@ -5027,7 +5029,7 @@ function updateEventPhotoPlaceholder() {
         parent.style.borderColor = '';
         parent.style.backgroundColor = '';
         
-        placeholder.innerHTML = `<span class="material-symbols-outlined text-black dark:text-white text-3xl group-hover:scale-110 transition-transform">add_a_photo</span>`;
+        placeholder.innerHTML = `<span class="material-symbols-outlined text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">add_a_photo</span>`;
     }
 }
 window.updateEventPhotoPlaceholder = updateEventPhotoPlaceholder;

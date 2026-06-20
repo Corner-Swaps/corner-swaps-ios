@@ -1164,7 +1164,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
 }
 
 .native-app-env .screen-view {
-    padding-top: calc(2rem + env(safe-area-inset-top)) !important;
+    padding-top: env(safe-area-inset-top) !important;
     padding-bottom: calc(6rem + env(safe-area-inset-bottom)) !important;
 }
 .native-app-env .screen-view.active {
@@ -2095,7 +2095,7 @@ html.dark .chat-bubble-other {
 .native-app-env #village-needs-container,
 .native-app-env #village-events-container,
 .native-app-env #village-bulletins-container {
-    padding-top: calc(0.6rem + env(safe-area-inset-top)) !important;
+    padding-top: 0.6rem !important;
     padding-bottom: calc(120px + env(safe-area-inset-bottom)) !important;
 }
 
@@ -3686,10 +3686,6 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 #profile-saved-events-container p span:not(.material-symbols-outlined),
 #neighbor-profile-reviews p,
 #neighbor-profile-reviews p span:not(.material-symbols-outlined),
-#village-events-list p,
-#events-list-container p,
-#village-events-list p span:not(.material-symbols-outlined),
-#events-list-container p span:not(.material-symbols-outlined),
 #neighbor-badges-container p,
 #neighbor-badges-container span:not(.material-symbols-outlined),
 #widget-home-tips div[id$="-body"],
@@ -3723,9 +3719,7 @@ html.dark .badge-theme-green.premium-badge-unlocked {
 #profile-upcoming-events-container p span:not(.material-symbols-outlined),
 #neighbor-profile-upcoming-events-container p span:not(.material-symbols-outlined),
 #profile-saved-events-container p span:not(.material-symbols-outlined),
-#neighbor-profile-reviews p span:not(.material-symbols-outlined),
-#village-events-list p span:not(.material-symbols-outlined),
-#events-list-container p span:not(.material-symbols-outlined) {
+#neighbor-profile-reviews p span:not(.material-symbols-outlined) {
     font-weight: 600 !important;
 }
 
@@ -4593,10 +4587,6 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
     padding-right: 0px !important;
     padding-bottom: 8px !important;
 }
-body.keyboard-visible #chat-action-center,
-body.keyboard-visible #chat-action-center.group-chat-action-center {
-    bottom: var(--keyboard-offset, 0px) !important;
-}
 .native-app-env #chat-action-center,
 .native-app-env #chat-action-center.group-chat-action-center {
     bottom: calc(max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) + 56px + var(--keyboard-offset, 0px)) !important;
@@ -4604,7 +4594,6 @@ body.keyboard-visible #chat-action-center.group-chat-action-center {
 }
 body.keyboard-visible .native-app-env #chat-action-center,
 body.keyboard-visible .native-app-env #chat-action-center.group-chat-action-center {
-    bottom: var(--keyboard-offset, 0px) !important;
     padding-bottom: 2px !important;
 }
 html.dark #chat-action-center {
@@ -6839,21 +6828,13 @@ html.dark .category-tray, html.dark .category-list-overlay {
 #chat-message-feed::after {
     content: '' !important;
     display: block !important;
-    height: calc(var(--chat-input-height, 140px) + 14px + 76px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 140px) + 50px + var(--keyboard-offset, 0px)) !important;
     flex-shrink: 0 !important;
     pointer-events: none !important;
 }
 
-body.keyboard-visible #chat-message-feed::after {
-    height: calc(var(--chat-input-height, 140px) + 14px + var(--keyboard-offset, 0px)) !important;
-}
-
 .native-app-env #chat-message-feed::after {
-    height: calc(var(--chat-input-height, 140px) + 14px + max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) + 56px + var(--keyboard-offset, 0px)) !important;
-}
-
-body.keyboard-visible .native-app-env #chat-message-feed::after {
-    height: calc(var(--chat-input-height, 140px) + 14px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 140px) + max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) + 30px + var(--keyboard-offset, 0px)) !important;
 }
 
 /* Custom Chat Section Font & Size Consistency */
@@ -6923,7 +6904,10 @@ textarea::placeholder {
     transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease !important;
 }
 body.keyboard-visible #global-navbar {
-    display: none !important;
+    bottom: calc(20px + var(--keyboard-offset, 0px)) !important;
+}
+body.keyboard-visible .native-app-env #global-navbar {
+    bottom: calc(max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) + var(--keyboard-offset, 0px)) !important;
 }
 
 #global-navbar.navbar-behind {
@@ -8203,7 +8187,7 @@ html.dark #village-events-segmented-control button {
     border-color: rgba(0, 0, 0, 0.08) !important;
     color: #308a5e !important;
     font-weight: 800 !important;
-    box-shadow: 0 4px 10px rgba(48, 138, 94, 0.05) !important;
+    box-shadow: none !important;
 }
 
 html.dark #village-segmented-control button.active-tab,
@@ -8215,7 +8199,7 @@ html.dark #village-events-segmented-control button.active-tab {
     border-color: rgba(255, 255, 255, 0.08) !important;
     color: #4ade80 !important;
     font-weight: 800 !important;
-    box-shadow: 0 4px 10px rgba(74, 222, 128, 0.05) !important;
+    box-shadow: none !important;
 }
 
 #chat-segmented-control button {
