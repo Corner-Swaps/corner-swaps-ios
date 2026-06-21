@@ -2754,7 +2754,7 @@ select::-ms-expand {
     padding-top: calc(3rem + env(safe-area-inset-top)) !important;
     padding-bottom: 2rem !important;
     height: calc(270px + env(safe-area-inset-top)) !important;
-    justify-content: flex-end !important;
+    justify-content: center !important;
 }
 
 #offer-form-header {
@@ -5757,7 +5757,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 #chat-action-center,
 #chat-action-center.group-chat-action-center {
     position: absolute !important;
-    bottom: calc(8px + var(--keyboard-offset, 0px)) !important;
+    bottom: calc(56px + 8px + var(--keyboard-offset, 0px)) !important;
     left: 0px !important;
     right: 0px !important;
     width: 100% !important;
@@ -5774,8 +5774,8 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 }
 .native-app-env #chat-action-center,
 .native-app-env #chat-action-center.group-chat-action-center {
-    bottom: calc(var(--keyboard-offset, 0px)) !important;
-    padding-bottom: calc(8px + env(safe-area-inset-bottom, 20px)) !important;
+    bottom: calc(56px + env(safe-area-inset-bottom, 20px) + var(--keyboard-offset, 0px)) !important;
+    padding-bottom: 8px !important;
 }
 body.keyboard-visible .native-app-env #chat-action-center,
 body.keyboard-visible .native-app-env #chat-action-center.group-chat-action-center {
@@ -6886,8 +6886,6 @@ html.dark #view-set_up_profile h1 {
 #view-sign_in button[onclick*="create_account"],
 #view-create_account button[type="submit"],
 #view-create_account_social button[type="submit"],
-#consent-continue-btn,
-#btn-onboarding-location-permission,
 #btn-onboarding-safespots-confirm,
 #view-profile_step_1 button[type="submit"],
 #view-lead_giving button,
@@ -6911,11 +6909,9 @@ html.dark #view-set_up_profile h1 {
 #view-sign_in button[onclick*="create_account"] *,
 #view-create_account button[type="submit"] *,
 #view-create_account_social button[type="submit"] *,
-#consent-continue-btn *,
-#btn-onboarding-location-permission *,
 #btn-onboarding-safespots-confirm *,
 #view-profile_step_1 button[type="submit"] *,
-#view-lead_giving button *,
+#view-lead_giving button * ,
 #view-profile_step_2 button[onclick*="handleProfileStep2"] *,
 #view-profile_step_3 button[onclick*="handleProfileStep3"] *,
 #view-profile_step_custom_listing button[onclick*="skipOnboardingCustomListing"] *,
@@ -6930,8 +6926,6 @@ html.dark #view-sign_in button[type="submit"],
 html.dark #view-sign_in button[onclick*="create_account"],
 html.dark #view-create_account button[type="submit"],
 html.dark #view-create_account_social button[type="submit"],
-html.dark #consent-continue-btn,
-html.dark #btn-onboarding-location-permission,
 html.dark #btn-onboarding-safespots-confirm,
 html.dark #view-profile_step_1 button[type="submit"],
 html.dark #view-lead_giving button,
@@ -7222,7 +7216,7 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
     width: 1.25rem;
     height: 1.25rem;
     border: 1.5px solid rgba(0, 0, 0, 0.23);
-    border-radius: 6px;
+    border-radius: 0px !important;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -7242,7 +7236,7 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
 .checkbox-wrapper .custom-check-box {
     width: 100%;
     height: 100%;
-    border-radius: 4px;
+    border-radius: 0px !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -7647,24 +7641,23 @@ html.dark #view-welcome button[onclick*="handleDevAutoLogin"] {
 /* Secondary Autofill Buttons in Onboarding */
 #btn-autofill-register,
 #btn-autofill-register-social {
-    background-color: rgba(34, 197, 94, 0.06) !important;
-    border: 1px solid rgba(34, 197, 94, 0.18) !important;
-    color: #16a34a !important;
+    background-color: #22C55E !important;
+    border: none !important;
+    color: #ffffff !important;
     border-radius: 16px !important;
     font-weight: 700 !important;
     height: 54px !important;
-    box-shadow: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
     transition: all 0.25s ease !important;
 }
 html.dark #btn-autofill-register,
 html.dark #btn-autofill-register-social {
-    background-color: rgba(34, 197, 94, 0.08) !important;
-    border-color: rgba(34, 197, 94, 0.25) !important;
-    color: #4ade80 !important;
+    background-color: #22C55E !important;
+    color: #ffffff !important;
 }
 #btn-autofill-register:active,
 #btn-autofill-register-social:active {
-    background-color: rgba(34, 197, 94, 0.15) !important;
+    background-color: #16a34a !important;
 }
 
 /* Back navigation button design */
@@ -8013,13 +8006,13 @@ html.dark .category-tray, html.dark .category-list-overlay {
 #chat-message-feed::after {
     content: '' !important;
     display: block !important;
-    height: calc(var(--chat-input-height, 80px) + 8px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 80px) + 56px + 8px + var(--keyboard-offset, 0px)) !important;
     flex-shrink: 0 !important;
     pointer-events: none !important;
 }
 
 .native-app-env #chat-message-feed::after {
-    height: calc(var(--chat-input-height, 80px) + 8px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 80px) + 56px + env(safe-area-inset-bottom, 20px) + var(--keyboard-offset, 0px)) !important;
 }
 
 /* Custom Chat Section Font & Size Consistency */
@@ -8157,7 +8150,6 @@ html.dark #view-profile_consent #consent-checkboxes-container span:not(.material
 
 
 /* Standardized safe area top padding for native environment */
-.native-app-env #view-profile_settings,
 .native-app-env #view-adjust_homepage,
 .native-app-env #view-settings_detail,
 .native-app-env #view-create_event,
@@ -9500,6 +9492,12 @@ html.dark .fused-filter-btn.active-filter-circle span {
     transition: all 0.2s ease !important;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
     z-index: 10 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 1 !important;
 }
 
 html.dark #village-segmented-control button,
@@ -10078,15 +10076,17 @@ html.dark .btn-welcome-admin .material-symbols-outlined {
 #view-welcome {
     background: #ffffff !important;
     background-color: #ffffff !important;
+}
+html.dark #view-welcome {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+}
+#view-welcome.active {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
     text-align: center !important;
-}
-html.dark #view-welcome {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
 }
 #view-welcome h1.onboarding-title {
     color: #000000 !important;
@@ -10096,6 +10096,73 @@ html.dark #view-welcome h1.onboarding-title {
 }
 #view-welcome .material-symbols-outlined:not(.btn-welcome-signin *):not(.btn-welcome-register *):not(.btn-welcome-admin *) {
     color: #308A5E !important; /* Top icon badge green */
+}
+
+/* Custom styling for Safe Space Consent button to override global onboarding white button styles */
+#consent-continue-btn {
+    background-color: var(--forest-green) !important;
+    color: var(--warm-cream) !important;
+    border: none !important;
+    transition: all 0.2s ease !important;
+}
+#consent-continue-btn:disabled {
+    background-color: rgba(48, 138, 94, 0.45) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    border: none !important;
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+}
+#consent-continue-btn:active,
+#consent-continue-btn:focus,
+#consent-continue-btn.active-glow {
+    background-color: #22c55e !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 18px rgba(34, 197, 94, 0.85) !important;
+    border: none !important;
+}
+html.dark #consent-continue-btn {
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+html.dark #consent-continue-btn:disabled {
+    background-color: rgba(48, 138, 94, 0.3) !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+}
+html.dark #consent-continue-btn:active,
+html.dark #consent-continue-btn:focus,
+html.dark #consent-continue-btn.active-glow {
+    background-color: #22c55e !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 18px rgba(34, 197, 94, 0.85) !important;
+}
+
+/* Custom styling for Location Permission button to override global onboarding white button styles */
+#btn-onboarding-location-permission {
+    background-color: var(--forest-green) !important;
+    color: #ffffff !important;
+    border: none !important;
+    transition: all 0.2s ease !important;
+}
+#btn-onboarding-location-permission:active,
+#btn-onboarding-location-permission:focus,
+#btn-onboarding-location-permission.active-glow {
+    background-color: #22c55e !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 18px rgba(34, 197, 94, 0.85) !important;
+    border: none !important;
+}
+html.dark #btn-onboarding-location-permission {
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+html.dark #btn-onboarding-location-permission:active,
+html.dark #btn-onboarding-location-permission:focus,
+html.dark #btn-onboarding-location-permission.active-glow {
+    background-color: #22c55e !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 18px rgba(34, 197, 94, 0.85) !important;
 }
 </style>
     <!-- Tailwind Configuration (removed - runtime replaced with pre-compiled CSS) -->
@@ -10440,19 +10507,7 @@ html.dark #view-welcome h1.onboarding-title {
                 </section>
 
                 <section id="view-create_account" class="screen-view flex-grow flex flex-col justify-start items-center pt-3 pb-4 px-6 overflow-y-auto relative">
-                    <!-- Animated SVG Profile Setup Illustration -->
-                    <div class="flex justify-center mt-6 mb-4 flex-shrink-0">
-                        <svg class="w-32 h-32 text-forest-green animate-[pulse_6s_ease-in-out_infinite]" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="80" cy="80" r="70" fill="#308A5E" fill-opacity="0.05" />
-                            <circle cx="80" cy="80" r="60" stroke="#308A5E" stroke-opacity="0.1" stroke-width="2" stroke-dasharray="4 4" class="animate-[spin_40s_linear_infinite]" />
-                            <g transform="translate(80, 75)">
-                                <circle cx="0" cy="-15" r="18" fill="#308A5E" stroke="#FFFFFF" stroke-width="2" />
-                                <path d="M-30,25 C-30,5 -15,5 0,5 C15,5 30,5 30,25" stroke="#308A5E" stroke-width="6" stroke-linecap="round" fill="none" />
-                                <circle cx="22" cy="18" r="8" fill="#256d4a" stroke="#FFFFFF" stroke-width="1.5" />
-                                <text x="22" y="21" font-family="Material Symbols Outlined" font-size="7" fill="#FFFFFF" text-anchor="middle">add</text>
-                            </g>
-                        </svg>
-                    </div>
+
 
                     <!-- Bold Capitalized Title -->
                     <h1 class="onboarding-title">
@@ -10554,44 +10609,10 @@ html.dark #view-welcome h1.onboarding-title {
                 </section>
 
                 <section id="view-create_account_social" class="screen-view flex-grow flex flex-col justify-center items-center py-8 px-6 overflow-y-auto relative hidden">
-                    <!-- Animated SVG Social Link Illustration -->
-                    <div class="flex justify-center mt-6 mb-4 flex-shrink-0">
-                        <svg class="w-32 h-32 text-forest-green" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="80" cy="80" r="70" fill="#308A5E" fill-opacity="0.05" />
-                            <!-- Rotating outer orbit -->
-                            <circle cx="80" cy="80" r="55" stroke="#308A5E" stroke-opacity="0.15" stroke-width="1.5" stroke-dasharray="6 6" class="animate-[spin_30s_linear_infinite]" />
-                            <!-- Connected nodes -->
-                            <line x1="50" y1="80" x2="80" y2="50" stroke="#308A5E" stroke-width="1.5" stroke-opacity="0.4" />
-                            <line x1="80" y1="50" x2="110" y2="80" stroke="#308A5E" stroke-width="1.5" stroke-opacity="0.4" />
-                            <line x1="110" y1="80" x2="80" y2="110" stroke="#308A5E" stroke-width="1.5" stroke-opacity="0.4" />
-                            <line x1="80" y1="110" x2="50" y2="80" stroke="#308A5E" stroke-width="1.5" stroke-opacity="0.4" />
-                            
-                            <circle cx="80" cy="80" r="16" fill="#308A5E" />
-                            <text x="80" y="85" font-family="Material Symbols Outlined" font-size="14" fill="#FFFFFF" text-anchor="middle">verified_user</text>
-                            
-                            <circle cx="50" cy="80" r="12" fill="#308A5E" fill-opacity="0.9" />
-                            <text x="50" y="84" font-family="Material Symbols Outlined" font-size="10" fill="#FFFFFF" text-anchor="middle">camera_alt</text>
-                            
-                            <circle cx="80" cy="50" r="12" fill="#308A5E" fill-opacity="0.9" />
-                            <text x="80" y="54" font-family="Material Symbols Outlined" font-size="10" fill="#FFFFFF" text-anchor="middle">thumb_up</text>
-                            
-                            <circle cx="110" cy="80" r="12" fill="#308A5E" fill-opacity="0.9" />
-                            <text x="110" y="84" font-family="Material Symbols Outlined" font-size="10" fill="#FFFFFF" text-anchor="middle">tag</text>
-                            
-                            <circle cx="80" cy="110" r="12" fill="#308A5E" fill-opacity="0.9" />
-                            <text x="80" y="114" font-family="Material Symbols Outlined" font-size="10" fill="#FFFFFF" text-anchor="middle">share</text>
-                        </svg>
-                    </div>
-
                     <!-- Bold Capitalized Title -->
                     <h1 class="onboarding-title">
                         Build Community Trust
                     </h1>
-
-                    <!-- Description word sentence -->
-                    <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
-                        Link your accounts to verify your identity. This step is optional.
-                    </p>
 
                     <!-- White Card Wrapper for Form -->
                     <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
@@ -10650,20 +10671,10 @@ html.dark #view-welcome h1.onboarding-title {
                     <!-- Spacer to bring content down slightly -->
                     <div class="h-8 flex-shrink-0"></div>
 
-                    <!-- Top Icon badge -->
-                    <div class="flex justify-center mb-2">
-                        <span class="material-symbols-outlined text-[42px] text-forest-green" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
-                    </div>
-
                     <!-- Bold Capitalized Title -->
-                    <h1 class="onboarding-title">
+                    <h1 class="onboarding-title" style="margin-bottom: 24px !important;">
                         Our Safe Space Agreement
                     </h1>
-
-                    <!-- Description word sentence -->
-                    <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
-                        Please review our zero-tolerance guidelines to keep our neighborhood safe and welcoming.
-                    </p>
 
                     <!-- White Card Wrapper for Form -->
                     <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
@@ -10674,8 +10685,8 @@ html.dark #view-welcome h1.onboarding-title {
                             <div class="border-b border-outline-variant/10 pb-3 EULA-accordion-item">
                                 <div class="flex items-center justify-between cursor-pointer py-1" onclick="toggleEulaAccordion(this)">
                                     <div class="flex items-center gap-3 font-semibold text-slate-800 dark:text-slate-200">
-                                        <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center flex-shrink-0">
-                                            <span class="material-symbols-outlined text-base text-amber-500 font-bold" style="font-variation-settings: 'FILL' 1;">handshake</span>
+                                        <div class="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center flex-shrink-0">
+                                            <span class="material-symbols-outlined text-base text-white font-bold" style="font-variation-settings: 'FILL' 1;">handshake</span>
                                         </div>
                                         <span>1. Code of Conduct</span>
                                     </div>
@@ -10692,8 +10703,8 @@ html.dark #view-welcome h1.onboarding-title {
                             <div class="border-b border-outline-variant/10 py-3 EULA-accordion-item">
                                 <div class="flex items-center justify-between cursor-pointer py-1" onclick="toggleEulaAccordion(this)">
                                     <div class="flex items-center gap-3 font-semibold text-slate-800 dark:text-slate-200">
-                                        <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                                            <span class="material-symbols-outlined text-base text-blue-500 font-bold" style="font-variation-settings: 'FILL' 1;">home</span>
+                                        <div class="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center flex-shrink-0">
+                                            <span class="material-symbols-outlined text-base text-white font-bold" style="font-variation-settings: 'FILL' 1;">home</span>
                                         </div>
                                         <span>2. Exchange Safety</span>
                                     </div>
@@ -10710,8 +10721,8 @@ html.dark #view-welcome h1.onboarding-title {
                             <div class="border-b border-outline-variant/10 py-3 EULA-accordion-item">
                                 <div class="flex items-center justify-between cursor-pointer py-1" onclick="toggleEulaAccordion(this)">
                                     <div class="flex items-center gap-3 font-semibold text-slate-800 dark:text-slate-200">
-                                        <div class="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center flex-shrink-0">
-                                            <span class="material-symbols-outlined text-base text-red-500 font-bold" style="font-variation-settings: 'FILL' 1;">gavel</span>
+                                        <div class="w-8 h-8 rounded-lg bg-red-500 flex items-center justify-center flex-shrink-0">
+                                            <span class="material-symbols-outlined text-base text-white font-bold" style="font-variation-settings: 'FILL' 1;">gavel</span>
                                         </div>
                                         <span>3. Liability Disclaimer</span>
                                     </div>
@@ -10728,8 +10739,8 @@ html.dark #view-welcome h1.onboarding-title {
                             <div class="py-3 EULA-accordion-item">
                                 <div class="flex items-center justify-between cursor-pointer py-1" onclick="toggleEulaAccordion(this)">
                                     <div class="flex items-center gap-3 font-semibold text-slate-800 dark:text-slate-200">
-                                        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-                                            <span class="material-symbols-outlined text-base text-emerald-500 font-bold" style="font-variation-settings: 'FILL' 1;">security</span>
+                                        <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center flex-shrink-0">
+                                            <span class="material-symbols-outlined text-base text-white font-bold" style="font-variation-settings: 'FILL' 1;">security</span>
                                         </div>
                                         <span>4. Privacy Policy</span>
                                     </div>
@@ -10793,20 +10804,10 @@ html.dark #view-welcome h1.onboarding-title {
                 <!-- 4.5. ONBOARDING LOCATION PERMISSIONS CHOICE -->
                 <!-- ==================================================== -->
                 <section id="view-profile_location_permission" class="screen-view flex-grow flex flex-col justify-center items-center py-6 px-6">
-                    <!-- Top Icon badge -->
-                    <div class="flex justify-center mb-2">
-                        <span class="material-symbols-outlined text-[42px] text-forest-green" style="font-variation-settings: 'FILL' 1;">location_on</span>
-                    </div>
-
                     <!-- Bold Capitalized Title -->
-                    <h1 class="onboarding-title">
+                    <h1 class="onboarding-title" style="margin-bottom: 24px !important;">
                         Anchor Your Place
                     </h1>
-
-                    <!-- Description word sentence -->
-                    <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
-                        Corner Swaps uses your location to connect you with nearby neighbors.
-                    </p>
 
                     <!-- White Card Wrapper for Form -->
                     <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6 flex flex-col items-center">
@@ -10823,8 +10824,8 @@ html.dark #view-welcome h1.onboarding-title {
                         
                         <!-- Interactive Choices -->
                         <div class="w-full">
-                            <button id="btn-onboarding-location-permission" class="w-full h-12 bg-forest-green text-white font-bold text-sm rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center gap-2 shadow-sm" onclick="grantOnboardingLocationConsent()">
-                                <span id="icon-location-cloud" class="material-symbols-outlined text-base">cloud</span>
+                            <button id="btn-onboarding-location-permission" class="w-full h-12 bg-forest-green text-white font-bold text-sm rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center shadow-sm" onclick="grantOnboardingLocationConsent()">
+                                <span id="icon-location-cloud" style="display: none !important;"></span>
                                 <span id="text-location-cloud">Enable Location Permission</span>
                             </button>
                         </div>
@@ -10931,30 +10932,6 @@ html.dark #view-welcome h1.onboarding-title {
                 </section>
 
 
-
-                <!-- ==================================================== -->
-                <!-- 5.5. PROFILE SETUP WIZARD: LEAD BY GIVING EDUCATION -->
-                <!-- ==================================================== -->
-                <section id="view-lead_giving" class="screen-view flex-grow flex flex-col justify-between py-8 px-8 select-none hidden">
-                    <div></div>
-                    <div class="w-full max-w-sm mx-auto text-center flex flex-col items-center relative">
-                        <div class="w-20 h-20 bg-forest-green/5 border border-forest-green/10 rounded-full flex items-center justify-center mb-6 animate-bounce">
-                            <span class="material-symbols-outlined text-4xl text-forest-green" style="font-variation-settings: 'FILL' 1;">favorite</span>
-                        </div>
-                        <h2 class="onboarding-title">Lead by Giving</h2>
-                        <p class="text-on-surface-variant text-sm leading-relaxed mb-8 max-w-[285px] px-2">
-                            Corner Swaps is built on the philosophy of <strong>leading by giving</strong>. 
-                            <br><br>
-                            Listing what you can offer builds neighborhood trust early on and unlocks positive connections. Swaps flow naturally when everyone shares first!
-                        </p>
-                        
-                        <button class="w-full h-14 bg-forest-green hover:bg-forest-green/90 text-warm-cream font-bold text-base rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 shadow-sm" onclick="advanceFromLeadGiving()">
-                            Let's Give First!
-                            <span class="material-symbols-outlined text-lg">chevron_right</span>
-                        </button>
-                    </div>
-                    <div></div>
-                </section>
 
                 <!-- ==================================================== -->
                 <!-- 6. PROFILE STEP 2: OFFERINGS -->
@@ -11157,64 +11134,7 @@ html.dark #view-welcome h1.onboarding-title {
                     </div>
                   </section>
 
-                <!-- ==================================================== -->
-                <!-- 7.5. PROFILE SETUP WIZARD: ONBOARDING CUSTOM LISTING -->
-                <!-- ==================================================== -->
-                <section id="view-profile_step_custom_listing" class="screen-view flex-grow flex flex-col justify-center items-center py-6 px-6 overflow-y-auto relative hidden">
-                    <!-- Top Icon badge -->
-                    <div class="flex justify-center mb-2">
-                        <span class="material-symbols-outlined text-[42px] text-black dark:text-white" style="font-variation-settings: 'FILL' 1;">post_add</span>
-                    </div>
 
-                    <!-- Bold Capitalized Title -->
-                    <h1 class="onboarding-title">
-                        Create Your First Post
-                    </h1>
-
-                    <!-- Description -->
-                    <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
-                        Add an offering, a request, or a meetup. You can also skip this and add it later.
-                    </p>
-
-                    <!-- White Card Wrapper for Form -->
-                    <div class="w-full max-w-sm mx-auto border border-outline-variant/30 bg-white rounded-2xl p-5 shadow-sm mb-6">
-                        <!-- Segmented Tab Controls -->
-                        <div class="grid grid-cols-3 gap-1.5 p-1 bg-black/5 dark:bg-white/5 rounded-xl mb-4">
-                            <button type="button" id="onboarding-post-type-offering" onclick="setOnboardingPostType('offering')" class="p-2.5 bg-forest-green text-white border border-forest-green rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all select-none">
-                                Offering
-                            </button>
-                            <button type="button" id="onboarding-post-type-need" onclick="setOnboardingPostType('need')" class="p-2.5 bg-white border border-outline-variant/30 text-forest-green rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all select-none">
-                                Request
-                            </button>
-                            <button type="button" id="onboarding-post-type-event" onclick="setOnboardingPostType('event')" class="p-2.5 bg-white border border-outline-variant/30 text-forest-green rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all select-none">
-                                Meetup
-                            </button>
-                        </div>
-
-                        <!-- Listing Form Fields -->
-                        <div class="space-y-4">
-                            <div class="space-y-1 text-left">
-                                <label class="text-[10px] font-semibold uppercase tracking-wider text-black/80 dark:text-white/80 ml-1 block" for="onboarding-post-title">Title</label>
-                                <input class="w-full h-11 px-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-black dark:focus:border-white focus:ring-0 outline-none text-xs" id="onboarding-post-title" placeholder="e.g. Extra sourdough loaf, Math tutoring..." type="text" required />
-                            </div>
-
-                            <div class="space-y-1 text-left">
-                                <label class="text-[10px] font-semibold uppercase tracking-wider text-black/80 dark:text-white/80 ml-1 block" for="onboarding-post-desc">Description</label>
-                                <textarea class="w-full h-24 p-3 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-black dark:focus:border-white focus:ring-0 outline-none text-xs resize-none" id="onboarding-post-desc" placeholder="Describe what you are offering, requesting, or details about the meetup..." required></textarea>
-                            </div>
-
-                            <!-- Buttons -->
-                            <div class="space-y-2 pt-2">
-                                <button onclick="submitOnboardingCustomListing()" class="w-full h-12 bg-forest-green text-warm-cream font-bold text-sm rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center shadow-sm" type="button">
-                                    Submit Post
-                                </button>
-                                <button onclick="skipOnboardingCustomListing()" class="w-full h-12 bg-transparent text-forest-green border border-forest-green/30 hover:bg-forest-green/5 font-bold text-sm rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center" type="button">
-                                    Skip for now
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </section>
 
                 <!-- ==================================================== -->
                 <!-- 7.6. EXPRESS ONBOARDING STEP 1 -->
@@ -21459,6 +21379,9 @@ function showView(viewId, mode) {
         document.querySelectorAll('.screen-view').forEach(view => {
             view.classList.remove('active');
             view.style.display = 'none';
+            if (view.id === 'view-chat_detail') {
+                view.classList.add('hidden');
+            }
         });
     } else {
         // Only hide non-transitioning views
@@ -21467,6 +21390,9 @@ function showView(viewId, mode) {
             if (id !== oldViewId && id !== viewId) {
                 view.classList.remove('active');
                 view.style.display = 'none';
+                if (view.id === 'view-chat_detail') {
+                    view.classList.add('hidden');
+                }
             }
         });
     }
@@ -21480,6 +21406,9 @@ function showView(viewId, mode) {
     }
 
     if (activeView) {
+        if (viewId === 'chat_detail') {
+            activeView.classList.remove('hidden');
+        }
         if (shouldUseSlideTransition) {
             const incomingEl = activeView;
             const outgoingEl = document.getElementById(`view-${oldViewId}`);
@@ -21677,7 +21606,7 @@ function showView(viewId, mode) {
     const headerBar = document.getElementById('phone-header-bar');
     const desktopNavBar = document.getElementById('desktop-navbar');
 
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId)) {
+    if (['home', 'village', 'chat_hub', 'chat_detail', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId)) {
         if (navBar) {
             navBar.classList.remove('hidden');
         }
@@ -23687,9 +23616,10 @@ function submitProfileStep1(location) {
         }
     }
     
+    state.currentUser.skills = []; // Clear/initialize skills since we skip "What can you offer?" step
     saveState();
     playSound('click');
-    showView('lead_giving');
+    showView('profile_step_3');
 }
 
 // Onboarding Drafts
@@ -23916,10 +23846,6 @@ window.handleSetupProfileSkip = function() {
     if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
 };
 
-window.advanceFromLeadGiving = function() {
-    playSound('click');
-    showView('profile_step_2');
-};
 
 window.selectOnboardingNeighborhood = function(value, btnElement) {
     // Clear custom text input
@@ -24008,14 +23934,18 @@ function handleProfileStep3() {
     state.currentUser.needs = needs;
     saveState();
     playSound('click');
-    showView('profile_step_custom_listing');
+    showView('village');
+    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
+    if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
 }
 
 function skipProfileStep3() {
     state.currentUser.needs = [];
     saveState();
     playSound('click');
-    showView('profile_step_custom_listing');
+    showView('village');
+    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
+    if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
 }
 
 function goToMapFromCelebration() {
@@ -24033,101 +23963,11 @@ window.confirmSafeSpotsOnboarding = function() {
     showView('profile_step_1');
 };
 
-window.onboardingPostType = 'offering';
-window.setOnboardingPostType = function(type) {
-    if (typeof playSound === 'function') playSound('click');
-    window.onboardingPostType = type;
-    const types = ['offering', 'need', 'event'];
-    types.forEach(t => {
-        const btn = document.getElementById(`onboarding-post-type-${t}`);
-        if (btn) {
-            if (t === type) {
-                btn.className = "p-2.5 bg-forest-green text-white border border-forest-green rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all select-none";
-            } else {
-                btn.className = "p-2.5 bg-white border border-outline-variant/30 text-forest-green rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all select-none";
-            }
-        }
-    });
-};
 
-window.submitOnboardingCustomListing = function() {
-    const title = document.getElementById('onboarding-post-title').value.trim();
-    const desc = document.getElementById('onboarding-post-desc').value.trim();
-    if (!title || !desc) {
-        alert("Please enter a title and description for your post.");
-        return;
-    }
-    
-    // Safety checks
-    if (typeof checkSafetyPolicy === 'function' && (checkSafetyPolicy(title) || checkSafetyPolicy(desc))) {
-        showSafetyContentViolation();
-        return;
-    }
-    if (typeof checkCashlessPolicy === 'function' && (checkCashlessPolicy(title) || checkCashlessPolicy(desc))) {
-        showSafetyMoneyWarning();
-        return;
-    }
-    
-    const id = (window.onboardingPostType || 'offering') + '-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
-    
-    if (window.onboardingPostType === 'offering') {
-        state.userOfferings.push({
-            id,
-            title: title,
-            category: 'Other',
-            desc: desc,
-            icon: 'info',
-            image: null,
-            lat: state.currentUser.lat || 49.2608,
-            lng: state.currentUser.lng || -123.1368
-        });
-    } else if (window.onboardingPostType === 'need') {
-        if (!state.userNeeds) state.userNeeds = [];
-        state.userNeeds.push({
-            id,
-            title: title,
-            category: 'Other',
-            desc: desc,
-            icon: 'info',
-            lat: state.currentUser.lat || 49.2608,
-            lng: state.currentUser.lng || -123.1368
-        });
-    } else if (window.onboardingPostType === 'event') {
-        if (!state.events) state.events = [];
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        tomorrow.setHours(12, 0, 0, 0);
-        state.events.push({
-            id,
-            title: title,
-            type: 'Meetup',
-            datetime: tomorrow.toISOString().substring(0, 16),
-            endDatetime: new Date(tomorrow.getTime() + 2 * 60 * 60 * 1000).toISOString().substring(0, 16),
-            location: state.currentUser.location || 'Fairview',
-            desc: desc,
-            lat: state.currentUser.lat || 49.2608,
-            lng: state.currentUser.lng || -123.1368,
-            host: state.currentUser.displayName || 'Me'
-        });
-    }
-    
-    saveState();
-    if (typeof playSound === 'function') playSound('click');
-    showView('village');
-    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
-    if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
-};
-
-window.skipOnboardingCustomListing = function() {
-    if (typeof playSound === 'function') playSound('click');
-    showView('village');
-    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
-    if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
-};
 
 window.skipOnboardingLocation = function() {
     if (typeof playSound === 'function') playSound('click');
-    showView('create_account_safe_spots');
+    showView('profile_step_1');
 };
 
 // ====================================================
@@ -41135,7 +40975,7 @@ window.skipOnboardingLocation = function() {
         leafletMap.setView([49.2608, -123.1368], 15, { animate: true });
     }
     
-    showView('create_account_safe_spots');
+    showView('profile_step_1');
 };
 
 window.selectLocationConsent = function(mode) {
@@ -41162,7 +41002,7 @@ window.grantLocationConsent = function(mode) {
         if (state.onboardingLocationRequest) {
             state.onboardingLocationRequest = false;
             saveState();
-            showView('create_account_safe_spots');
+            showView('profile_step_1');
         } else {
             showView('settings_detail');
             setTimeout(() => {
@@ -41291,7 +41131,7 @@ function applyFinalCoords(lat, lng, mode) {
         
         // Auto transition to manual neighborhood selection view after brief delay
         setTimeout(() => {
-            showView('create_account_safe_spots');
+            showView('profile_step_1');
         }, 2000);
     } else {
         console.log(`Success: Location access enabled using ${mode} accuracy mode.`);

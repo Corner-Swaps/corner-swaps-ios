@@ -3562,6 +3562,9 @@ function showView(viewId, mode) {
         document.querySelectorAll('.screen-view').forEach(view => {
             view.classList.remove('active');
             view.style.display = 'none';
+            if (view.id === 'view-chat_detail') {
+                view.classList.add('hidden');
+            }
         });
     } else {
         // Only hide non-transitioning views
@@ -3570,6 +3573,9 @@ function showView(viewId, mode) {
             if (id !== oldViewId && id !== viewId) {
                 view.classList.remove('active');
                 view.style.display = 'none';
+                if (view.id === 'view-chat_detail') {
+                    view.classList.add('hidden');
+                }
             }
         });
     }
@@ -3583,6 +3589,9 @@ function showView(viewId, mode) {
     }
 
     if (activeView) {
+        if (viewId === 'chat_detail') {
+            activeView.classList.remove('hidden');
+        }
         if (shouldUseSlideTransition) {
             const incomingEl = activeView;
             const outgoingEl = document.getElementById(`view-${oldViewId}`);
@@ -3780,7 +3789,7 @@ function showView(viewId, mode) {
     const headerBar = document.getElementById('phone-header-bar');
     const desktopNavBar = document.getElementById('desktop-navbar');
 
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId)) {
+    if (['home', 'village', 'chat_hub', 'chat_detail', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId)) {
         if (navBar) {
             navBar.classList.remove('hidden');
         }
@@ -5790,9 +5799,10 @@ function submitProfileStep1(location) {
         }
     }
     
+    state.currentUser.skills = []; // Clear/initialize skills since we skip "What can you offer?" step
     saveState();
     playSound('click');
-    showView('lead_giving');
+    showView('profile_step_3');
 }
 
 // Onboarding Drafts
@@ -6019,10 +6029,6 @@ window.handleSetupProfileSkip = function() {
     if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
 };
 
-window.advanceFromLeadGiving = function() {
-    playSound('click');
-    showView('profile_step_2');
-};
 
 window.selectOnboardingNeighborhood = function(value, btnElement) {
     // Clear custom text input
@@ -6111,14 +6117,18 @@ function handleProfileStep3() {
     state.currentUser.needs = needs;
     saveState();
     playSound('click');
-    showView('profile_step_custom_listing');
+    showView('village');
+    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
+    if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
 }
 
 function skipProfileStep3() {
     state.currentUser.needs = [];
     saveState();
     playSound('click');
-    showView('profile_step_custom_listing');
+    showView('village');
+    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
+    if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
 }
 
 function goToMapFromCelebration() {
@@ -6136,101 +6146,11 @@ window.confirmSafeSpotsOnboarding = function() {
     showView('profile_step_1');
 };
 
-window.onboardingPostType = 'offering';
-window.setOnboardingPostType = function(type) {
-    if (typeof playSound === 'function') playSound('click');
-    window.onboardingPostType = type;
-    const types = ['offering', 'need', 'event'];
-    types.forEach(t => {
-        const btn = document.getElementById(`onboarding-post-type-${t}`);
-        if (btn) {
-            if (t === type) {
-                btn.className = "p-2.5 bg-forest-green text-white border border-forest-green rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all select-none";
-            } else {
-                btn.className = "p-2.5 bg-white border border-outline-variant/30 text-forest-green rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all select-none";
-            }
-        }
-    });
-};
 
-window.submitOnboardingCustomListing = function() {
-    const title = document.getElementById('onboarding-post-title').value.trim();
-    const desc = document.getElementById('onboarding-post-desc').value.trim();
-    if (!title || !desc) {
-        alert("Please enter a title and description for your post.");
-        return;
-    }
-    
-    // Safety checks
-    if (typeof checkSafetyPolicy === 'function' && (checkSafetyPolicy(title) || checkSafetyPolicy(desc))) {
-        showSafetyContentViolation();
-        return;
-    }
-    if (typeof checkCashlessPolicy === 'function' && (checkCashlessPolicy(title) || checkCashlessPolicy(desc))) {
-        showSafetyMoneyWarning();
-        return;
-    }
-    
-    const id = (window.onboardingPostType || 'offering') + '-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
-    
-    if (window.onboardingPostType === 'offering') {
-        state.userOfferings.push({
-            id,
-            title: title,
-            category: 'Other',
-            desc: desc,
-            icon: 'info',
-            image: null,
-            lat: state.currentUser.lat || 49.2608,
-            lng: state.currentUser.lng || -123.1368
-        });
-    } else if (window.onboardingPostType === 'need') {
-        if (!state.userNeeds) state.userNeeds = [];
-        state.userNeeds.push({
-            id,
-            title: title,
-            category: 'Other',
-            desc: desc,
-            icon: 'info',
-            lat: state.currentUser.lat || 49.2608,
-            lng: state.currentUser.lng || -123.1368
-        });
-    } else if (window.onboardingPostType === 'event') {
-        if (!state.events) state.events = [];
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        tomorrow.setHours(12, 0, 0, 0);
-        state.events.push({
-            id,
-            title: title,
-            type: 'Meetup',
-            datetime: tomorrow.toISOString().substring(0, 16),
-            endDatetime: new Date(tomorrow.getTime() + 2 * 60 * 60 * 1000).toISOString().substring(0, 16),
-            location: state.currentUser.location || 'Fairview',
-            desc: desc,
-            lat: state.currentUser.lat || 49.2608,
-            lng: state.currentUser.lng || -123.1368,
-            host: state.currentUser.displayName || 'Me'
-        });
-    }
-    
-    saveState();
-    if (typeof playSound === 'function') playSound('click');
-    showView('village');
-    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
-    if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
-};
-
-window.skipOnboardingCustomListing = function() {
-    if (typeof playSound === 'function') playSound('click');
-    showView('village');
-    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
-    if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
-};
 
 window.skipOnboardingLocation = function() {
     if (typeof playSound === 'function') playSound('click');
-    showView('create_account_safe_spots');
+    showView('profile_step_1');
 };
 
 // ====================================================
@@ -23238,7 +23158,7 @@ window.skipOnboardingLocation = function() {
         leafletMap.setView([49.2608, -123.1368], 15, { animate: true });
     }
     
-    showView('create_account_safe_spots');
+    showView('profile_step_1');
 };
 
 window.selectLocationConsent = function(mode) {
@@ -23265,7 +23185,7 @@ window.grantLocationConsent = function(mode) {
         if (state.onboardingLocationRequest) {
             state.onboardingLocationRequest = false;
             saveState();
-            showView('create_account_safe_spots');
+            showView('profile_step_1');
         } else {
             showView('settings_detail');
             setTimeout(() => {
@@ -23394,7 +23314,7 @@ function applyFinalCoords(lat, lng, mode) {
         
         // Auto transition to manual neighborhood selection view after brief delay
         setTimeout(() => {
-            showView('create_account_safe_spots');
+            showView('profile_step_1');
         }, 2000);
     } else {
         console.log(`Success: Location access enabled using ${mode} accuracy mode.`);

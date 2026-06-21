@@ -1576,7 +1576,7 @@ select::-ms-expand {
     padding-top: calc(3rem + env(safe-area-inset-top)) !important;
     padding-bottom: 2rem !important;
     height: calc(270px + env(safe-area-inset-top)) !important;
-    justify-content: flex-end !important;
+    justify-content: center !important;
 }
 
 #offer-form-header {
@@ -4579,7 +4579,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 #chat-action-center,
 #chat-action-center.group-chat-action-center {
     position: absolute !important;
-    bottom: calc(8px + var(--keyboard-offset, 0px)) !important;
+    bottom: calc(56px + 8px + var(--keyboard-offset, 0px)) !important;
     left: 0px !important;
     right: 0px !important;
     width: 100% !important;
@@ -4596,8 +4596,8 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 }
 .native-app-env #chat-action-center,
 .native-app-env #chat-action-center.group-chat-action-center {
-    bottom: calc(var(--keyboard-offset, 0px)) !important;
-    padding-bottom: calc(8px + env(safe-area-inset-bottom, 20px)) !important;
+    bottom: calc(56px + env(safe-area-inset-bottom, 20px) + var(--keyboard-offset, 0px)) !important;
+    padding-bottom: 8px !important;
 }
 body.keyboard-visible .native-app-env #chat-action-center,
 body.keyboard-visible .native-app-env #chat-action-center.group-chat-action-center {
@@ -5708,8 +5708,6 @@ html.dark #view-set_up_profile h1 {
 #view-sign_in button[onclick*="create_account"],
 #view-create_account button[type="submit"],
 #view-create_account_social button[type="submit"],
-#consent-continue-btn,
-#btn-onboarding-location-permission,
 #btn-onboarding-safespots-confirm,
 #view-profile_step_1 button[type="submit"],
 #view-lead_giving button,
@@ -5733,11 +5731,9 @@ html.dark #view-set_up_profile h1 {
 #view-sign_in button[onclick*="create_account"] *,
 #view-create_account button[type="submit"] *,
 #view-create_account_social button[type="submit"] *,
-#consent-continue-btn *,
-#btn-onboarding-location-permission *,
 #btn-onboarding-safespots-confirm *,
 #view-profile_step_1 button[type="submit"] *,
-#view-lead_giving button *,
+#view-lead_giving button * ,
 #view-profile_step_2 button[onclick*="handleProfileStep2"] *,
 #view-profile_step_3 button[onclick*="handleProfileStep3"] *,
 #view-profile_step_custom_listing button[onclick*="skipOnboardingCustomListing"] *,
@@ -5752,8 +5748,6 @@ html.dark #view-sign_in button[type="submit"],
 html.dark #view-sign_in button[onclick*="create_account"],
 html.dark #view-create_account button[type="submit"],
 html.dark #view-create_account_social button[type="submit"],
-html.dark #consent-continue-btn,
-html.dark #btn-onboarding-location-permission,
 html.dark #btn-onboarding-safespots-confirm,
 html.dark #view-profile_step_1 button[type="submit"],
 html.dark #view-lead_giving button,
@@ -6044,7 +6038,7 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
     width: 1.25rem;
     height: 1.25rem;
     border: 1.5px solid rgba(0, 0, 0, 0.23);
-    border-radius: 6px;
+    border-radius: 0px !important;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -6064,7 +6058,7 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
 .checkbox-wrapper .custom-check-box {
     width: 100%;
     height: 100%;
-    border-radius: 4px;
+    border-radius: 0px !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -6469,24 +6463,23 @@ html.dark #view-welcome button[onclick*="handleDevAutoLogin"] {
 /* Secondary Autofill Buttons in Onboarding */
 #btn-autofill-register,
 #btn-autofill-register-social {
-    background-color: rgba(34, 197, 94, 0.06) !important;
-    border: 1px solid rgba(34, 197, 94, 0.18) !important;
-    color: #16a34a !important;
+    background-color: #22C55E !important;
+    border: none !important;
+    color: #ffffff !important;
     border-radius: 16px !important;
     font-weight: 700 !important;
     height: 54px !important;
-    box-shadow: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
     transition: all 0.25s ease !important;
 }
 html.dark #btn-autofill-register,
 html.dark #btn-autofill-register-social {
-    background-color: rgba(34, 197, 94, 0.08) !important;
-    border-color: rgba(34, 197, 94, 0.25) !important;
-    color: #4ade80 !important;
+    background-color: #22C55E !important;
+    color: #ffffff !important;
 }
 #btn-autofill-register:active,
 #btn-autofill-register-social:active {
-    background-color: rgba(34, 197, 94, 0.15) !important;
+    background-color: #16a34a !important;
 }
 
 /* Back navigation button design */
@@ -6835,13 +6828,13 @@ html.dark .category-tray, html.dark .category-list-overlay {
 #chat-message-feed::after {
     content: '' !important;
     display: block !important;
-    height: calc(var(--chat-input-height, 80px) + 8px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 80px) + 56px + 8px + var(--keyboard-offset, 0px)) !important;
     flex-shrink: 0 !important;
     pointer-events: none !important;
 }
 
 .native-app-env #chat-message-feed::after {
-    height: calc(var(--chat-input-height, 80px) + 8px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 80px) + 56px + env(safe-area-inset-bottom, 20px) + var(--keyboard-offset, 0px)) !important;
 }
 
 /* Custom Chat Section Font & Size Consistency */
@@ -6979,7 +6972,6 @@ html.dark #view-profile_consent #consent-checkboxes-container span:not(.material
 
 
 /* Standardized safe area top padding for native environment */
-.native-app-env #view-profile_settings,
 .native-app-env #view-adjust_homepage,
 .native-app-env #view-settings_detail,
 .native-app-env #view-create_event,
@@ -8322,6 +8314,12 @@ html.dark .fused-filter-btn.active-filter-circle span {
     transition: all 0.2s ease !important;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
     z-index: 10 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 1 !important;
 }
 
 html.dark #village-segmented-control button,
@@ -8900,15 +8898,17 @@ html.dark .btn-welcome-admin .material-symbols-outlined {
 #view-welcome {
     background: #ffffff !important;
     background-color: #ffffff !important;
+}
+html.dark #view-welcome {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+}
+#view-welcome.active {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
     text-align: center !important;
-}
-html.dark #view-welcome {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
 }
 #view-welcome h1.onboarding-title {
     color: #000000 !important;
@@ -8918,6 +8918,73 @@ html.dark #view-welcome h1.onboarding-title {
 }
 #view-welcome .material-symbols-outlined:not(.btn-welcome-signin *):not(.btn-welcome-register *):not(.btn-welcome-admin *) {
     color: #308A5E !important; /* Top icon badge green */
+}
+
+/* Custom styling for Safe Space Consent button to override global onboarding white button styles */
+#consent-continue-btn {
+    background-color: var(--forest-green) !important;
+    color: var(--warm-cream) !important;
+    border: none !important;
+    transition: all 0.2s ease !important;
+}
+#consent-continue-btn:disabled {
+    background-color: rgba(48, 138, 94, 0.45) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    border: none !important;
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+}
+#consent-continue-btn:active,
+#consent-continue-btn:focus,
+#consent-continue-btn.active-glow {
+    background-color: #22c55e !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 18px rgba(34, 197, 94, 0.85) !important;
+    border: none !important;
+}
+html.dark #consent-continue-btn {
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+html.dark #consent-continue-btn:disabled {
+    background-color: rgba(48, 138, 94, 0.3) !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+}
+html.dark #consent-continue-btn:active,
+html.dark #consent-continue-btn:focus,
+html.dark #consent-continue-btn.active-glow {
+    background-color: #22c55e !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 18px rgba(34, 197, 94, 0.85) !important;
+}
+
+/* Custom styling for Location Permission button to override global onboarding white button styles */
+#btn-onboarding-location-permission {
+    background-color: var(--forest-green) !important;
+    color: #ffffff !important;
+    border: none !important;
+    transition: all 0.2s ease !important;
+}
+#btn-onboarding-location-permission:active,
+#btn-onboarding-location-permission:focus,
+#btn-onboarding-location-permission.active-glow {
+    background-color: #22c55e !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 18px rgba(34, 197, 94, 0.85) !important;
+    border: none !important;
+}
+html.dark #btn-onboarding-location-permission {
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+html.dark #btn-onboarding-location-permission:active,
+html.dark #btn-onboarding-location-permission:focus,
+html.dark #btn-onboarding-location-permission.active-glow {
+    background-color: #22c55e !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 18px rgba(34, 197, 94, 0.85) !important;
 }
 
 
