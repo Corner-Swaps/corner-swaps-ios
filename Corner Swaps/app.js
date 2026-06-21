@@ -1751,8 +1751,24 @@ let state = {
         }
     ],
     fictitiousReviewsInitializedVersion: 3,
-    currentUser: null,
-    eulaAgreed: false,
+    currentUser: {
+        firstName: 'Lily',
+        lastName: 'Kaufmann',
+        displayName: 'Lily Kaufmann',
+        email: 'lily@cornerswaps.org',
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop',
+        location: 'Fairview',
+        address: '1190 W 12th Avenue, Vancouver, BC',
+        lat: 49.2608,
+        lng: -123.1368,
+        skills: ['Gardening', 'Cooking'],
+        needs: ['Math tutoring'],
+        instagram: 'https://instagram.com/lilykaufmann',
+        facebook: 'https://facebook.com/lilykaufmann',
+        tiktok: 'https://tiktok.com/@lilykaufmann',
+        eulaAgreed: true
+    },
+    eulaAgreed: true,
     gofundmeSupporter: false,
     blockedUsers: [],
     suspendedUsers: [],
@@ -2022,6 +2038,27 @@ function loadState() {
         state.conversationsUpdatedToFiveMessages = true;
         needsSave = true;
     }
+    if (!state.currentUser) {
+        state.currentUser = {
+            firstName: 'Lily',
+            lastName: 'Kaufmann',
+            displayName: 'Lily Kaufmann',
+            email: 'lily@cornerswaps.org',
+            avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop',
+            location: 'Fairview',
+            address: '1190 W 12th Avenue, Vancouver, BC',
+            lat: 49.2608,
+            lng: -123.1368,
+            skills: ['Gardening', 'Cooking'],
+            needs: ['Math tutoring'],
+            instagram: 'https://instagram.com/lilykaufmann',
+            facebook: 'https://facebook.com/lilykaufmann',
+            tiktok: 'https://tiktok.com/@lilykaufmann',
+            eulaAgreed: true
+        };
+        state.eulaAgreed = true;
+        needsSave = true;
+    }
     if (state && state.currentUser) {
         if (!state.currentUser.lat || !state.currentUser.lng || state.currentUser.location === 'Oakwood Village' || state.currentUser.location === 'Commercial Drive') {
             state.currentUser.location = 'Fairview';
@@ -2045,9 +2082,7 @@ function loadState() {
     if (!state.reportedAccounts) {
         state.reportedAccounts = [];
     }
-    if (typeof state.eulaAgreed === 'undefined') {
-        state.eulaAgreed = false;
-    }
+    state.eulaAgreed = true;
     if (!state.activeCategory) {
         state.activeCategory = 'offerings';
     }
@@ -3479,10 +3514,7 @@ function showView(viewId, mode) {
     const mainAppViews = ['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'settings_detail', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'help_improve', 'create_bulletin', 'create_group', 'blocked_users'];
     if (mainAppViews.includes(viewId) || viewId.startsWith('chat_detail')) {
         if (!state.currentUser && !state.isGuest) {
-            viewId = 'welcome';
-        } else if (state.currentUser && !state.eulaAgreed && (!state.currentUser.eulaAgreed)) {
-            console.log("Redirecting to EULA safety pledge.");
-            viewId = 'profile_consent';
+            viewId = 'village';
         }
     }
 
@@ -3584,7 +3616,7 @@ function showView(viewId, mode) {
     let activeView = document.getElementById(`view-${viewId}`);
     if (!activeView) {
         console.warn(`View 'view-${viewId}' not found. Falling back to default.`);
-        viewId = (state && state.currentUser) ? 'village' : 'welcome';
+        viewId = 'village';
         activeView = document.getElementById(`view-${viewId}`);
     }
 
@@ -3850,7 +3882,7 @@ function showView(viewId, mode) {
             }
         } else {
             if (cloudIcon) {
-                cloudIcon.innerText = 'cloud';
+                cloudIcon.innerText = 'cloud_done';
                 cloudIcon.classList.remove('text-green-400');
                 cloudIcon.classList.add('text-white');
             }
@@ -3859,7 +3891,7 @@ function showView(viewId, mode) {
                 locationBtn.classList.add('bg-forest-green');
             }
             if (textCloud) {
-                textCloud.innerText = 'Enable Location Permission';
+                textCloud.innerHTML = 'Location Permission Enabled <span style="margin-left: 8px; font-weight: bold;">✓</span>';
             }
         }
     }
@@ -4497,24 +4529,16 @@ function startAppInitialization() {
                 if (hash && hash !== '#/' && hash !== '#') {
                     window.handleHashRoute();
                 } else {
-                    if (state.currentUser) {
-                        showView('village');
-                        if (typeof updateVillageViewFromState === 'function') {
-                            updateVillageViewFromState();
-                        }
-                    } else {
-                        if (typeof handleDevAutoLogin === 'function') {
-                            handleDevAutoLogin();
-                        } else {
-                            showView('welcome');
-                        }
+                    showView('village');
+                    if (typeof updateVillageViewFromState === 'function') {
+                        updateVillageViewFromState();
                     }
                 }
             } catch (e) {
                 console.error("Error during app startup sequence:", e);
                 try {
                     state = JSON.parse(INITIAL_STATE_STRING);
-                    showView('welcome');
+                    showView('village');
                 } catch (err) {
                     console.error("Fallback failed:", err);
                 }
@@ -5416,25 +5440,21 @@ window.handleDevAutoLogin = function() {
 };
 
 function handleLogout() {
-    state.currentUser = null;
-    state.eulaAgreed = false; // Reset EULA consent on logout so new user has to agree
-    state.isGuest = false;
-    saveState();
-    playSound('click');
-    showView('welcome');
-}
-
-window.restartOnboarding = function() {
-    if (!confirm('This will reset your session and restart the full onboarding experience. Continue?')) return;
-    playSound('click');
-    // Clear all persisted state
     safeLocalStorage.removeItem('barterland_state');
     safeLocalStorage.removeItem('barterland_state_sig');
     safeLocalStorage.removeItem('reinstated_onboarding_v1');
     safeLocalStorage.removeItem('corner_swaps_map_confetti_shown');
-    // Reset in-memory state
-    try { state = JSON.parse(INITIAL_STATE_STRING); } catch(e) { state = {}; }
-    showView('welcome');
+    window.location.reload();
+}
+
+window.restartOnboarding = function() {
+    if (!confirm('This will reset your session and restart the application. Continue?')) return;
+    playSound('click');
+    safeLocalStorage.removeItem('barterland_state');
+    safeLocalStorage.removeItem('barterland_state_sig');
+    safeLocalStorage.removeItem('reinstated_onboarding_v1');
+    safeLocalStorage.removeItem('corner_swaps_map_confetti_shown');
+    window.location.reload();
 };
 function toggleConsentButton() {
     const cb1 = document.getElementById('consent-check-1')?.checked;
@@ -5800,9 +5820,10 @@ function submitProfileStep1(location) {
     }
     
     state.currentUser.skills = []; // Clear/initialize skills since we skip "What can you offer?" step
+    state.currentUser.needs = [];  // Clear/initialize needs since we skip "What do you need?" step
     saveState();
     playSound('click');
-    showView('profile_step_3');
+    showView('profile_step_custom_listing');
 }
 
 // Onboarding Drafts
@@ -6328,7 +6349,7 @@ window.setExpressPostType = function(type) {
 window.handleExpressSignupSubmit = function() {
     if (!window.tempExpressUser) {
         alert("Sign up details missing. Please restart registration.");
-        showView('welcome');
+        showView('village');
         return;
     }
     
@@ -15401,11 +15422,14 @@ function handleConfirmDeleteAccount() {
     
     // Erase database storage completely (App Store compliance)
     safeLocalStorage.removeItem('barterland_state');
+    safeLocalStorage.removeItem('barterland_state_sig');
+    safeLocalStorage.removeItem('reinstated_onboarding_v1');
+    safeLocalStorage.removeItem('corner_swaps_map_confetti_shown');
     
     alert("Your account and all associated data (listings, history, profile) have been permanently deleted in compliance with App Store guidelines.");
     
     closeDeleteAccountModal();
-    showView('sign_in');
+    window.location.reload();
 }
 
 // Onboarding Slide Carousel
@@ -28519,11 +28543,7 @@ window.selectCategoryChip = function(cat) {
 window.handleHashRoute = function() {
     const hash = window.location.hash;
     if (!hash || hash === '#/' || hash === '#') {
-        if (state.currentUser) {
-            showView('village');
-        } else {
-            showView('welcome');
-        }
+        showView('village');
     } else if (hash.startsWith('#/')) {
         const viewId = hash.substring(2).replace(/-/g, '_');
         const viewEl = document.getElementById(`view-${viewId}`);
@@ -28531,13 +28551,11 @@ window.handleHashRoute = function() {
             showView(viewId);
         } else {
             console.warn(`Hash view 'view-${viewId}' not found. Falling back to default.`);
-            const fallbackView = (state && state.currentUser) ? 'village' : 'welcome';
-            showView(fallbackView);
+            showView('village');
         }
     } else {
         console.warn(`Malformed hash route: ${hash}. Falling back to default.`);
-        const fallbackView = (state && state.currentUser) ? 'village' : 'welcome';
-        showView(fallbackView);
+        showView('village');
     }
 };
 
@@ -30285,14 +30303,19 @@ window.openSwapLifecycleModal = function(role, conversationId) {
     state.selectedSwapListingId = null;
     
     if (role === 'initiator') {
+        const totalKarma = ((state.level || 1) - 1) * 100 + (state.xp || 50);
         // Render Initiator View (Propose swap)
         container.innerHTML = `
             <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
                 <h3 class="popup-modal-title text-center mb-1">Offer a Swap</h3>
-                <p class="popup-modal-desc text-center">Propose an item to swap or ask for a Karma request.</p>
+                <p class="popup-modal-desc text-center text-xs mb-2">Propose an item to swap or ask for a Karma request.</p>
+                <div class="px-3 py-1 bg-amber-500/10 text-amber-500 text-[11px] font-extrabold rounded-full flex items-center gap-1.5 border border-amber-500/20 shadow-sm mb-1">
+                    <span class="material-symbols-outlined text-xs font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                    Your Balance: ${totalKarma} Karma
+                </div>
             </div>
             
-            <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 max-h-[70vh]">
+            <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 min-h-0">
                 <!-- My Items to Offer -->
                 <div class="flex flex-col gap-1.5 shrink-0">
                     <span class="text-[10px] font-black text-black/50 dark:text-white/50 uppercase tracking-wider">My Items to Offer</span>
@@ -30306,12 +30329,12 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                     <span class="text-[10px] font-black text-black/50 dark:text-white/50 uppercase tracking-wider">Custom Item (Optional)</span>
                     <input type="text" id="lifecycle-custom-text" class="w-full bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl p-3 text-xs outline-none focus:ring-1 focus:ring-forest-green text-on-surface" placeholder="Type an item name..."/>
                 </div>
-                
-                <!-- Action buttons -->
-                <div class="flex flex-col gap-2 mt-2 shrink-0 pb-2">
-                    <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.submitLifecycleSwap(false)">Propose Swap</button>
-                    <button class="w-full bg-forest-green/20 hover:bg-forest-green/30 text-forest-green py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="window.submitLifecycleSwap(true)">Request a Karma Swap</button>
-                </div>
+            </div>
+            
+            <!-- Action buttons -->
+            <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-[calc(16px + env(safe-area-inset-bottom, 20px))]">
+                <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.submitLifecycleSwap(false)">Propose Swap</button>
+                <button class="w-full bg-forest-green/20 hover:bg-forest-green/30 text-forest-green py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="window.submitLifecycleSwap(true)">Request a Karma Swap</button>
             </div>
         `;
         
@@ -30414,10 +30437,10 @@ window.openSwapLifecycleModal = function(role, conversationId) {
             container.innerHTML = `
                 <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
                     <h3 class="popup-modal-title text-center mb-1">Review Karma Request</h3>
-                    <p class="popup-modal-desc text-center">Requested by ${escapeHTML(conv.neighborName)}</p>
+                    <p class="popup-modal-desc text-center text-xs">Requested by ${escapeHTML(conv.neighborName)}</p>
                 </div>
                 
-                <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 max-h-[70vh] items-center text-center">
+                <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 min-h-0 items-center justify-center text-center">
                     <div class="w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-500/20 shadow-sm mb-2 shrink-0">
                         <span class="material-symbols-outlined text-3xl font-bold">favorite</span>
                     </div>
@@ -30429,22 +30452,22 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                             They are proposing a Karma Swap. By helping them out, you will receive <span class="text-amber-500 font-extrabold">+50 Karma Points</span>!
                         </p>
                     </div>
-                    
-                    <!-- Action buttons -->
-                    <div class="flex flex-col gap-2 w-full mt-4 shrink-0 pb-2">
-                        <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.acceptLifecycleProposedSwap('${conv.id}')">Accept Karma Swap</button>
-                        <button class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="window.declineLifecycleProposedSwap('${conv.id}')">Decline Request</button>
-                    </div>
+                </div>
+                
+                <!-- Action buttons -->
+                <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-[calc(16px + env(safe-area-inset-bottom, 20px))]">
+                    <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.acceptLifecycleProposedSwap('${conv.id}')">Accept Karma Swap</button>
+                    <button class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="window.declineLifecycleProposedSwap('${conv.id}')">Decline Request</button>
                 </div>
             `;
         } else {
             container.innerHTML = `
                 <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
                     <h3 class="popup-modal-title text-center mb-1">Review Swap Proposal</h3>
-                    <p class="popup-modal-desc text-center">Offered by ${escapeHTML(conv.neighborName)}</p>
+                    <p class="popup-modal-desc text-center text-xs">Offered by ${escapeHTML(conv.neighborName)}</p>
                 </div>
                 
-                <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 max-h-[70vh]">
+                <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 min-h-0 justify-center">
                     <div class="flex items-center justify-between gap-4 shrink-0">
                         <!-- Offered Item (Left) -->
                         <div class="flex-grow flex-1 flex flex-col items-center p-3.5 bg-black/[0.02] dark:bg-white/[0.02] border border-outline-variant/10 rounded-2xl min-w-0">
@@ -30469,12 +30492,12 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                             <div class="text-xs font-extrabold text-black dark:text-warm-cream text-center truncate w-full mt-1">${escapeHTML(requestedTitle)}</div>
                         </div>
                     </div>
-                    
-                    <!-- Action buttons -->
-                    <div class="flex flex-col gap-2 mt-4 shrink-0 pb-2">
-                        <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.acceptLifecycleProposedSwap('${conv.id}')">Accept Swap</button>
-                        <button class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="window.declineLifecycleProposedSwap('${conv.id}')">Decline Swap</button>
-                    </div>
+                </div>
+                
+                <!-- Action buttons -->
+                <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-[calc(16px + env(safe-area-inset-bottom, 20px))]">
+                    <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.acceptLifecycleProposedSwap('${conv.id}')">Accept Swap</button>
+                    <button class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="window.declineLifecycleProposedSwap('${conv.id}')">Decline Swap</button>
                 </div>
             `;
         }

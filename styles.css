@@ -1269,6 +1269,48 @@ html.dark #neighbor-profile-modal {
     padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
 }
 
+/* Ensure the modals are layered on top of all other elements, including the floating global navbar */
+#offer-swap-modal,
+#meeting-spot-modal {
+    z-index: 6000 !important;
+}
+
+/* Safe area padding for the full-screen offer-swap and meeting-spot modals in iOS native view */
+.native-app-env #offer-swap-container,
+.native-app-env #meeting-spot-container {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    height: 100% !important;
+    width: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    background-color: var(--warm-cream) !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    padding-top: calc(8px + env(safe-area-inset-top, 20px)) !important;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom, 20px)) !important;
+}
+
+.native-app-env.dark #offer-swap-container,
+.native-app-env.dark #meeting-spot-container {
+    background-color: #18201a !important;
+}
+
+/* Adjust scroll container height and margins to fit within full screen */
+.native-app-env #offer-swap-container > .flex-grow,
+.native-app-env #meeting-spot-container > .flex-grow {
+    margin-bottom: 0 !important;
+    padding-bottom: 1rem !important;
+}
+
 /* Safe area padding for category tray and list overlays in iOS native view */
 .native-app-env .category-tray {
     padding-top: env(safe-area-inset-top) !important;
@@ -7799,7 +7841,7 @@ html.dark #view-create_group #group-friends-search::placeholder {
     border: none !important;
     border-radius: 0 !important;
     padding: 0 !important;
-    height: 42px !important;
+    height: 38px !important;
     box-shadow: none !important;
     transition: all 0.3s ease !important;
     width: 100% !important;
@@ -8307,7 +8349,7 @@ html.dark .fused-filter-btn.active-filter-circle span {
     backdrop-filter: blur(8px) !important;
     -webkit-backdrop-filter: blur(8px) !important;
     color: #71766f !important; /* Medium green-gray text */
-    height: 100% !important;
+    height: 38px !important;
     border-radius: 9999px !important;
     font-size: 11.5px !important;
     font-weight: 700 !important;
