@@ -9201,7 +9201,10 @@ html.dark #meetup-safety-subtitle {
 }
 
 /* Expanded list card header titles font size adjustment (Date & Time, Neighbourhood, Attendees) */
-.list-card-expandable-content h5 {
+.list-card-expandable-content h5,
+.list-card-expandable-content .font-bold.uppercase,
+.list-card-container h5,
+h5.uppercase.tracking-wider {
     font-size: 15.5px !important;
     font-family: 'Outfit', sans-serif !important;
     letter-spacing: 0.025em !important;
@@ -9209,7 +9212,8 @@ html.dark #meetup-safety-subtitle {
 
 /* Expanded list card values/subtext font size adjustment (actual date/time, location address, attendees list) */
 .list-card-expandable-content p,
-.list-card-expandable-content .attendee-count-el {
+.list-card-expandable-content .attendee-count-el,
+.list-card-expandable-content span.attendee-count-el {
     font-size: 13px !important;
     font-family: 'Outfit', sans-serif !important;
     line-height: 1.5 !important;
