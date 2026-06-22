@@ -24674,9 +24674,9 @@ function renderEventsList() {
                             <div>
                                 <div class="flex justify-between items-center mb-1.5">
                                     <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Attendees</h5>
-                                    <span class="text-[10px] font-medium text-outline">${rsvpsCount} ${rsvpsCount === 1 ? 'neighbor is' : 'neighbors are'} going</span>
+                                    <span class="text-[10px] font-medium text-outline attendee-count-el">${rsvpsCount} ${rsvpsCount === 1 ? 'neighbor is' : 'neighbors are'} going</span>
                                 </div>
-                                <div class="flex gap-1.5 overflow-hidden py-1">
+                                <div class="flex gap-1.5 overflow-hidden py-1 attendee-avatars-container">
                                     ${rsvpAvatarsHtml}
                                 </div>
                             </div>
@@ -24690,13 +24690,13 @@ function renderEventsList() {
                                 </button>
                             ` : `
                                 <!-- RSVP Button -->
-                                <button class="w-full py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 lowercase ${isUserRsvped ? 'bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90' : 'bg-white border border-black/20 text-black hover:bg-black/5 dark:bg-[#18201a] dark:border-white/20 dark:text-white dark:hover:bg-white/5'}" onclick="event.stopPropagation(); state.activeEventId = '${evt.id}'; window.activeExpandedCardId = 'evt_${evt.id}'; handleEventRSVPToggle();">
-                                    <span class="material-symbols-outlined text-xs">${isUserRsvped ? 'cancel' : 'check_circle'}</span>
-                                    ${isUserRsvped ? 'cancel rsvp' : 'rsvp to event'}
+                                <button class="inline-rsvp-btn w-full py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 lowercase ${isUserRsvped ? 'bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90' : 'bg-white border border-black/20 text-black hover:bg-black/5 dark:bg-[#18201a] dark:border-white/20 dark:text-white dark:hover:bg-white/5'}" onclick="window.handleEventRSVPToggleFromList('${evt.id}', event)">
+                                    <span class="material-symbols-outlined text-xs inline-rsvp-icon">${isUserRsvped ? 'cancel' : 'check_circle'}</span>
+                                    <span class="inline-rsvp-text">${isUserRsvped ? 'cancel rsvp' : 'rsvp to event'}</span>
                                 </button>
                                 
                                 <!-- Save Button -->
-                                <button class="inline-save-btn w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase ${state.savedEvents && state.savedEvents.includes(evt.id) ? 'bg-black/10 dark:bg-white/10' : ''}" onclick="window.handleInlineSaveEvent(event, '${evt.id}')">
+                                <button class="inline-save-btn w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase ${state.savedEvents && state.savedEvents.includes(evt.id) ? 'active-green-white' : ''}" onclick="window.handleInlineSaveEvent(event, '${evt.id}')">
                                     <span class="material-symbols-outlined text-xs inline-save-icon" style="font-variation-settings: 'FILL' ${state.savedEvents && state.savedEvents.includes(evt.id) ? '1' : '0'};">bookmark</span>
                                     <span class="inline-save-text">${state.savedEvents && state.savedEvents.includes(evt.id) ? 'saved to profile' : 'save event'}</span>
                                 </button>
@@ -26140,12 +26140,12 @@ window.handleInlineSaveListing = function(e, idOrName) {
         e.preventDefault();
     }
     toggleSaveListing(idOrName);
-    const card = document.querySelector(`[data-id="${idOrName}"]`);
-    if (card) {
+    const cards = document.querySelectorAll(`[data-id="${idOrName}"]`);
+    const isSaved = state.savedListings && state.savedListings.includes(idOrName);
+    cards.forEach(card => {
         const saveIcon = card.querySelector('.inline-save-icon');
         const saveText = card.querySelector('.inline-save-text');
         const saveBtn = card.querySelector('.inline-save-btn');
-        const isSaved = state.savedListings && state.savedListings.includes(idOrName);
         if (saveBtn) {
             if (isSaved) {
                 if (saveIcon) {
@@ -26153,17 +26153,17 @@ window.handleInlineSaveListing = function(e, idOrName) {
                     saveIcon.style.fontVariationSettings = "'FILL' 1";
                 }
                 if (saveText) saveText.innerText = 'saved to profile';
-                saveBtn.classList.add('bg-black/10', 'dark:bg-white/10');
+                saveBtn.classList.add('active-green-white');
             } else {
                 if (saveIcon) {
                     saveIcon.innerText = 'bookmark';
                     saveIcon.style.fontVariationSettings = "'FILL' 0";
                 }
                 if (saveText) saveText.innerText = 'save listing';
-                saveBtn.classList.remove('bg-black/10', 'dark:bg-white/10');
+                saveBtn.classList.remove('active-green-white');
             }
         }
-    }
+    });
 };
 
 window.handleInlineSaveEvent = function(e, eventId) {
@@ -26172,24 +26172,24 @@ window.handleInlineSaveEvent = function(e, eventId) {
         e.preventDefault();
     }
     toggleSaveEvent(eventId);
-    const card = document.querySelector(`[data-id="${eventId}"]`);
-    if (card) {
+    const cards = document.querySelectorAll(`[data-id="${eventId}"]`);
+    const isSaved = state.savedEvents && state.savedEvents.includes(eventId);
+    cards.forEach(card => {
         const saveIcon = card.querySelector('.inline-save-icon');
         const saveText = card.querySelector('.inline-save-text');
         const saveBtn = card.querySelector('.inline-save-btn');
-        const isSaved = state.savedEvents && state.savedEvents.includes(eventId);
         if (saveBtn) {
             if (isSaved) {
                 if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 1";
                 if (saveText) saveText.innerText = 'saved to profile';
-                saveBtn.classList.add('bg-black/10', 'dark:bg-white/10');
+                saveBtn.classList.add('active-green-white');
             } else {
                 if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 0";
                 if (saveText) saveText.innerText = 'save event';
-                saveBtn.classList.remove('bg-black/10', 'dark:bg-white/10');
+                saveBtn.classList.remove('active-green-white');
             }
         }
-    }
+    });
 };
 
 function closeMapItemDetail() {
@@ -27196,7 +27196,7 @@ function closeNeighborProfileModal() {
         state.profileReferrerPopupId = null;
         showView('village');
         if (state.lastActiveMapPinId) {
-            openMapItemPeek(state.lastActiveMapPinId);
+            openMapItemDetail(state.lastActiveMapPinId);
         }
     } else if (state.profileReferrerPopupId) {
         const refId = state.profileReferrerPopupId;
@@ -27212,7 +27212,7 @@ function handleProfileCloseButton() {
         state.profileReferrer = null;
         showView('village');
         if (state.lastActiveMapPinId) {
-            openMapItemPeek(state.lastActiveMapPinId);
+            openMapItemDetail(state.lastActiveMapPinId);
         }
     } else {
         showView('village');
@@ -34109,7 +34109,7 @@ function renderVillageListView() {
                                 ${neighbor && neighbor.isKarma ? 'free gift request' : "let's swap"}
                             </button>
                             
-                            <button class="inline-save-btn w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase ${state.savedListings && state.savedListings.includes(item.id) ? 'bg-black/10 dark:bg-white/10' : ''}" onclick="window.handleInlineSaveListing(event, '${item.id}')">
+                            <button class="inline-save-btn w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase ${state.savedListings && state.savedListings.includes(item.id) ? 'active-green-white' : ''}" onclick="window.handleInlineSaveListing(event, '${item.id}')">
                                 <span class="material-symbols-outlined text-xs inline-save-icon" style="font-variation-settings: 'FILL' ${state.savedListings && state.savedListings.includes(item.id) ? '1' : '0'};">bookmark</span>
                                 <span class="inline-save-text">${state.savedListings && state.savedListings.includes(item.id) ? 'saved to profile' : 'save listing'}</span>
                             </button>
@@ -34425,7 +34425,7 @@ function renderNeedsBoardView() {
                                 <span class="material-symbols-outlined text-xs">handshake</span> i can help
                             </button>
                             
-                            <button class="inline-save-btn w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase ${state.savedListings && state.savedListings.includes('need_' + need.id) ? 'bg-black/10 dark:bg-white/10' : ''}" onclick="window.handleInlineSaveListing(event, 'need_${need.id}')">
+                            <button class="inline-save-btn w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase ${state.savedListings && state.savedListings.includes('need_' + need.id) ? 'active-green-white' : ''}" onclick="window.handleInlineSaveListing(event, 'need_${need.id}')">
                                 <span class="material-symbols-outlined text-xs inline-save-icon" style="font-variation-settings: 'FILL' ${state.savedListings && state.savedListings.includes('need_' + need.id) ? '1' : '0'};">bookmark</span>
                                 <span class="inline-save-text">${state.savedListings && state.savedListings.includes('need_' + need.id) ? 'saved to profile' : 'save listing'}</span>
                             </button>
@@ -40150,9 +40150,12 @@ function handleEventRSVPToggle() {
 window.handleEventRSVPToggleFromList = function(eventId, eventObj) {
     if (eventObj) {
         eventObj.stopPropagation();
+        eventObj.preventDefault();
     }
     const event = state.events.find(e => e.id === eventId);
     if (!event) return;
+
+    window.activeExpandedCardId = 'evt_' + eventId;
 
     const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
     const index = event.rsvps.indexOf(currentUser);
@@ -40194,11 +40197,63 @@ window.handleEventRSVPToggleFromList = function(eventId, eventObj) {
 
     saveState();
     updateChatNotificationBadge();
-    renderEventsList();
-    renderProfileSettings();
+
+    // Find all list cards matching this eventId in DOM and update them in-place
+    const cards = document.querySelectorAll(`[data-id="${eventId}"]`);
+    const isUserRsvped = event.rsvps.includes(currentUser);
+    const rsvpsCount = event.rsvps.length;
+
+    // Generate RSVP avatars HTML for the list card
+    let rsvpAvatarsHtml = '';
+    event.rsvps.forEach(name => {
+        let avatarUrl = RSVP_AVATARS[name] || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80&auto=format&fit=crop';
+        if (state.currentUser && (name === currentUser || name === state.currentUser.displayName || name === (state.currentUser.firstName + ' ' + state.currentUser.lastName).trim())) {
+            if (state.currentUser.avatar) {
+                avatarUrl = state.currentUser.avatar;
+            }
+        }
+        rsvpAvatarsHtml += `
+            <div class="profile-avatar-no-ring inline-block h-6 w-6 flex-shrink-0" style="margin-left: -4px;">
+                <img src="${avatarUrl}" class="w-full h-full object-cover rounded-full border-2 border-white dark:border-[#18201a]" title="${name}">
+            </div>
+        `;
+    });
+
+    cards.forEach(card => {
+        const rsvpBtn = card.querySelector('.inline-rsvp-btn');
+        const rsvpIcon = card.querySelector('.inline-rsvp-icon');
+        const rsvpText = card.querySelector('.inline-rsvp-text');
+        const countEl = card.querySelector('.attendee-count-el');
+        const avatarsContainer = card.querySelector('.attendee-avatars-container');
+
+        if (rsvpBtn) {
+            if (isUserRsvped) {
+                rsvpBtn.className = "inline-rsvp-btn w-full py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 lowercase bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90";
+                if (rsvpIcon) rsvpIcon.innerText = 'cancel';
+                if (rsvpText) rsvpText.innerText = 'cancel rsvp';
+            } else {
+                rsvpBtn.className = "inline-rsvp-btn w-full py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 lowercase bg-white border border-black/20 text-black hover:bg-black/5 dark:bg-[#18201a] dark:border-white/20 dark:text-white dark:hover:bg-white/5";
+                if (rsvpIcon) rsvpIcon.innerText = 'check_circle';
+                if (rsvpText) rsvpText.innerText = 'rsvp to event';
+            }
+        }
+        if (countEl) {
+            countEl.innerText = `${rsvpsCount} ${rsvpsCount === 1 ? 'neighbor is' : 'neighbors are'} going`;
+        }
+        if (avatarsContainer) {
+            avatarsContainer.innerHTML = rsvpAvatarsHtml;
+        }
+    });
+
     if (state.currentView === 'event_detail' && state.activeEventId === eventId) {
         renderEventRSVPs(event);
     }
+    const mapOverlay = document.getElementById('map-event-detail-overlay');
+    if (mapOverlay && mapOverlay.classList.contains('active')) {
+        renderMapEventRSVPs(event);
+    }
+
+    renderProfileSettings();
 };
 
 window.handleCancelRSVPFromProfile = function(eventId, eventObj) {
@@ -44879,7 +44934,9 @@ function openMapItemPeek(idOrName) {
         return;
     }
     
-    currentPeekItemId = idOrName;
+    // Bypass the bottom peek card entirely and open the full detail overlay
+    openMapItemDetail(idOrName);
+    return;
     let title = "", authorName = "", rating = "", category = "", image = "", isEvent = false, isUserOffer = false, isUserNeed = false;
     let eventId = "";
 
