@@ -8785,11 +8785,15 @@ html.dark .list-card-expandable-content {
     z-index: 50 !important;
     background-color: var(--warm-cream) !important;
     padding-top: 0.6rem !important; /* Matches container padding-top */
-    margin-top: calc(2px - 0.6rem) !important; /* Align exactly to Map's segmented control (52px top content offset) */
+    margin-top: calc(0px - 0.6rem) !important; /* Align exactly to Map's segmented control */
     padding-bottom: 0px !important;
     margin-bottom: 0px !important;
 }
 
+.native-app-env .sticky-segmented-control-wrapper {
+    padding-top: calc(0.6rem + env(safe-area-inset-top)) !important;
+    margin-top: calc(0px - 0.6rem - env(safe-area-inset-top)) !important;
+}
 
 html.dark .sticky-segmented-control-wrapper {
     background-color: #18201a !important; /* Matches dark mode container background */

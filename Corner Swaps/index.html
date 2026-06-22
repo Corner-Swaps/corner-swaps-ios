@@ -9963,11 +9963,15 @@ html.dark .list-card-expandable-content {
     z-index: 50 !important;
     background-color: var(--warm-cream) !important;
     padding-top: 0.6rem !important; /* Matches container padding-top */
-    margin-top: calc(2px - 0.6rem) !important; /* Align exactly to Map's segmented control (52px top content offset) */
+    margin-top: calc(0px - 0.6rem) !important; /* Align exactly to Map's segmented control */
     padding-bottom: 0px !important;
     margin-bottom: 0px !important;
 }
 
+.native-app-env .sticky-segmented-control-wrapper {
+    padding-top: calc(0.6rem + env(safe-area-inset-top)) !important;
+    margin-top: calc(0px - 0.6rem - env(safe-area-inset-top)) !important;
+}
 
 html.dark .sticky-segmented-control-wrapper {
     background-color: #18201a !important; /* Matches dark mode container background */
@@ -10562,7 +10566,7 @@ html.dark #btn-onboarding-location-permission.active-glow {
                     </p>
 
                     <!-- White Card Wrapper for Form -->
-                    <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
+                    <div class="onboarding-card w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
 
                         <form class="space-y-4" onsubmit="handleSignUpNext(event)">
                             <div class="grid grid-cols-2 gap-3">
@@ -10657,7 +10661,7 @@ html.dark #btn-onboarding-location-permission.active-glow {
                     </h1>
 
                     <!-- White Card Wrapper for Form -->
-                    <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
+                    <div class="onboarding-card w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
 
                         <form class="space-y-4" onsubmit="handleSignUp(event)">
                             <div class="space-y-3">
@@ -10719,7 +10723,7 @@ html.dark #btn-onboarding-location-permission.active-glow {
                     </h1>
 
                     <!-- White Card Wrapper for Form -->
-                    <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
+                    <div class="onboarding-card w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
 
                         <!-- Policy scroll box with collapsible accordions -->
                         <div class="eula-scroll-box border border-outline-variant/30 rounded-2xl p-4 space-y-3 max-h-[250px] mt-2 overflow-y-auto custom-scrollbar text-xs leading-relaxed text-on-surface-variant select-none">
@@ -10852,7 +10856,7 @@ html.dark #btn-onboarding-location-permission.active-glow {
                     </h1>
 
                     <!-- White Card Wrapper for Form -->
-                    <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6 flex flex-col items-center">
+                    <div class="onboarding-card w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6 flex flex-col items-center">
 
                         <!-- Coarse location safeguard card -->
                         <div class="bg-forest-green/5 border border-forest-green/10 p-3.5 rounded-xl text-left text-xs mb-4 w-full">
@@ -10891,7 +10895,7 @@ html.dark #btn-onboarding-location-permission.active-glow {
                     </p>
 
                     <!-- White Card Wrapper for Form -->
-                    <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6 flex flex-col items-center">
+                    <div class="onboarding-card w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6 flex flex-col items-center">
 
                         <!-- Gorgeous generated image -->
                         <div class="w-full overflow-hidden rounded-xl mb-4 border border-outline-variant/30 shadow-sm relative">
@@ -10938,7 +10942,7 @@ html.dark #btn-onboarding-location-permission.active-glow {
                     </p>
 
                     <!-- White Card Wrapper for Form -->
-                    <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
+                    <div class="onboarding-card w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
                         <form onsubmit="handleProfileStep1(event)" class="relative w-full">
                             <input type="hidden" id="step1-location" value="">
                             <div class="grid grid-cols-2 gap-2 mb-4 max-h-[340px] overflow-y-auto p-1 custom-scrollbar text-xs font-semibold" id="step1-location-box">
@@ -11230,7 +11234,7 @@ html.dark #btn-onboarding-location-permission.active-glow {
                     </p>
 
                     <!-- White Card Wrapper for Form -->
-                    <div class="w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
+                    <div class="onboarding-card w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
                         <form class="space-y-4" onsubmit="handleExpressSignupStep1(event)">
                             <div class="grid grid-cols-2 gap-3">
                                 <div class="space-y-1">
@@ -16580,11 +16584,8 @@ html.dark #btn-onboarding-location-permission.active-glow {
                         
                         <!-- Header -->
                         <div class="relative flex flex-col items-center justify-center mb-4 border-b border-black/10 dark:border-white/10 pb-3 shrink-0">
-                            <button class="absolute right-0 top-0 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all border border-black/10 dark:border-white/10 shadow-sm cursor-pointer z-50" onclick="closeSuggestMeetingSpotModal()" title="Close">
-                                <span class="material-symbols-outlined text-[17px]">close</span>
-                            </button>
-                            <h3 id="meetup-safety-title" class="popup-modal-title text-center mb-1">Exchange Safety Guidelines</h3>
-                            <p id="meetup-safety-subtitle" class="popup-modal-desc text-center text-xs mt-0.5">Community guidelines for arranging a meetup!</p>
+                            <h3 id="meetup-safety-title" class="popup-modal-title text-center mb-1 text-xs font-bold text-black dark:text-white" style="font-size: 12px !important;">Exchange Safety Guidelines</h3>
+                            <p id="meetup-safety-subtitle" class="popup-modal-desc text-center text-xs text-gray-500 dark:text-gray-400 mt-0.5" style="font-size: 12px !important;">Community guidelines for arranging a meetup!</p>
                         </div>
                         
                         <!-- Scrollable Content -->
@@ -16600,25 +16601,25 @@ html.dark #btn-onboarding-location-permission.active-glow {
                             </div>
 
                             <!-- Selected Location Details Box (if selected) -->
-                            <div id="selected-spot-info" class="hidden" style="display: none !important;">
-                                <div id="selected-spot-name"></div>
-                                <div id="selected-spot-safety"></div>
-                                <div id="selected-spot-address"></div>
+                            <div id="selected-spot-info" class="hidden p-3.5 bg-black/[0.02] dark:bg-white/[0.02] border border-outline-variant/10 rounded-2xl flex flex-col gap-1 text-left shrink-0">
+                                <div id="selected-spot-name" class="text-xs font-bold text-black dark:text-white" style="font-size: 12px !important;"></div>
+                                <div id="selected-spot-safety" class="text-xs font-bold text-black dark:text-white" style="font-size: 12px !important;"></div>
+                                <div id="selected-spot-address" class="text-xs text-gray-500 dark:text-gray-400" style="font-size: 12px !important;"></div>
                             </div>
 
                             <!-- Date & Time Selector -->
                             <div id="meetup-time-selection" class="hidden p-3 bg-white dark:bg-[#141c16] border border-outline-variant/20 rounded-xl flex flex-col gap-2 shrink-0 select-none">
-                                <label class="text-[9.5px] font-extrabold uppercase tracking-wider text-black dark:text-warm-cream block">Choose Meetup Date & Time</label>
-                                <input type="datetime-local" id="meeting-spot-datetime" class="w-full h-10 px-3 bg-warm-cream/10 dark:bg-[#101612] border border-outline-variant/30 dark:border-white/10 rounded-xl text-xs focus:border-forest-green dark:focus:border-[#308A5E] focus:ring-0 outline-none text-black dark:text-white" />
+                                <label class="text-xs font-extrabold uppercase tracking-wider text-black dark:text-warm-cream block" style="font-size: 12px !important;">Choose Meetup Date & Time</label>
+                                <input type="datetime-local" id="meeting-spot-datetime" class="w-full h-10 px-3 bg-warm-cream/10 dark:bg-[#101612] border border-outline-variant/30 dark:border-white/10 rounded-xl text-xs focus:border-forest-green dark:focus:border-[#308A5E] focus:ring-0 outline-none text-black dark:text-white" style="font-size: 12px !important;" />
                             </div>
                         </div>
 
                         <!-- Confirm Meeting Location Button (Forest Green) -->
                         <div class="flex flex-col gap-2 pt-2 shrink-0">
-                            <button id="btn-confirm-meeting-spot" class="w-full h-12 bg-forest-green text-warm-cream font-bold text-xs rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 shadow disabled:opacity-50 disabled:pointer-events-none cursor-pointer border-0" onclick="confirmMeetingSpotSuggestion()" disabled>
+                            <button id="btn-confirm-meeting-spot" class="w-full h-12 bg-forest-green text-warm-cream font-bold text-xs rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 shadow disabled:opacity-50 disabled:pointer-events-none cursor-pointer border-0" onclick="confirmMeetingSpotSuggestion()" style="font-size: 12px !important;" disabled>
                                 <span class="material-symbols-outlined text-sm">check_circle</span> Confirm Meeting Location
                             </button>
-                            <button class="w-full h-12 bg-black/5 dark:bg-white/5 border border-outline-variant/20 dark:border-white/10 text-on-surface dark:text-warm-cream font-bold text-xs rounded-xl active:scale-95 transition-transform cursor-pointer" onclick="closeSuggestMeetingSpotModal()">
+                            <button class="w-full h-12 bg-black/5 dark:bg-white/5 border border-outline-variant/20 dark:border-white/10 text-on-surface dark:text-warm-cream font-bold text-xs rounded-xl active:scale-95 transition-transform cursor-pointer" onclick="closeSuggestMeetingSpotModal()" style="font-size: 12px !important;">
                                 Cancel
                             </button>
                         </div>
