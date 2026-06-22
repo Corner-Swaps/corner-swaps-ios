@@ -7426,6 +7426,17 @@ body.show-simulator #global-navbar {
 
 body.show-simulator #phone-header-bar {
     display: flex !important;
+    height: 48px !important;
+    box-sizing: border-box !important;
+}
+
+/* Position transitioning views below the status bar in standard simulator mode to avoid "going up top" glitch */
+body.show-simulator:not(.iphone16-mode) .app-container:has(#phone-header-bar:not(.hidden)) .screen-view.slide-push-enter,
+body.show-simulator:not(.iphone16-mode) .app-container:has(#phone-header-bar:not(.hidden)) .screen-view.slide-push-exit,
+body.show-simulator:not(.iphone16-mode) .app-container:has(#phone-header-bar:not(.hidden)) .screen-view.slide-pop-enter,
+body.show-simulator:not(.iphone16-mode) .app-container:has(#phone-header-bar:not(.hidden)) .screen-view.slide-pop-exit {
+    top: 48px !important;
+    height: calc(100% - 48px) !important;
 }
 
 body.show-simulator #view-village #village-map-container {
