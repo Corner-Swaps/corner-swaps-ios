@@ -9033,5 +9033,24 @@ html.dark #btn-onboarding-location-permission.active-glow {
     box-shadow: 0 0 18px rgba(34, 197, 94, 0.85) !important;
 }
 
+/* Force all text elements, inputs, and buttons inside the Offer a Swap modal to be exactly 12px (matching map popup descriptions) */
+#offer-swap-container,
+#offer-swap-container h3,
+#offer-swap-container h3 *,
+#offer-swap-container p,
+#offer-swap-container span,
+#offer-swap-container div,
+#offer-swap-container input,
+#offer-swap-container button,
+#offer-swap-container button *,
+#offer-swap-modal button,
+#offer-swap-modal button *,
+#offer-swap-modal .material-symbols-outlined,
+#lifecycle-custom-text,
+#lifecycle-offerings-scroller button,
+#lifecycle-offerings-scroller button * {
+    font-size: 12px !important;
+}
+
 
 

@@ -30307,9 +30307,9 @@ window.openSwapLifecycleModal = function(role, conversationId) {
         // Render Initiator View (Propose swap)
         container.innerHTML = `
             <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
-                <h3 class="popup-modal-title text-center mb-1">Offer a Swap</h3>
+                <h3 class="popup-modal-title text-center mb-1" style="font-size: 12px !important;">Offer a Swap</h3>
                 <p class="popup-modal-desc text-center text-xs mb-2">Propose an item to swap or ask for a Karma request.</p>
-                <div class="px-3 py-1 bg-amber-500/10 text-amber-500 text-[11px] font-extrabold rounded-full flex items-center gap-1.5 border border-amber-500/20 shadow-sm mb-1">
+                <div class="px-3 py-1 bg-amber-500/10 text-amber-500 text-xs font-extrabold rounded-full flex items-center gap-1.5 border border-amber-500/20 shadow-sm mb-1">
                     <span class="material-symbols-outlined text-xs font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
                     Your Balance: ${totalKarma} Karma
                 </div>
@@ -30318,7 +30318,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
             <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 min-h-0">
                 <!-- My Items to Offer -->
                 <div class="flex flex-col gap-1.5 shrink-0">
-                    <span class="text-[10px] font-black text-black/50 dark:text-white/50 uppercase tracking-wider">My Items to Offer</span>
+                    <span class="text-xs font-black text-black/50 dark:text-white/50 uppercase tracking-wider">My Items to Offer</span>
                     <div class="flex flex-col gap-2 py-1 select-none w-full" id="lifecycle-offerings-scroller">
                         <!-- Populated dynamically below -->
                     </div>
@@ -30326,7 +30326,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                 
                 <!-- Custom Item Input -->
                 <div class="flex flex-col gap-1.5 shrink-0">
-                    <span class="text-[10px] font-black text-black/50 dark:text-white/50 uppercase tracking-wider">Custom Item (Optional)</span>
+                    <span class="text-xs font-black text-black/50 dark:text-white/50 uppercase tracking-wider">Custom Item (Optional)</span>
                     <input type="text" id="lifecycle-custom-text" class="w-full bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl p-3 text-xs outline-none focus:ring-1 focus:ring-forest-green text-on-surface" placeholder="Type an item name..."/>
                 </div>
             </div>
