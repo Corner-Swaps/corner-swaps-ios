@@ -1211,11 +1211,11 @@ html.dark #phone-header-bar .material-symbols-outlined {
     padding-bottom: 0 !important;
 }
 .native-app-env #profile-settings-scroll-container {
-    padding-top: calc(110px + env(safe-area-inset-top)) !important;
+    padding-top: 100px !important;
     padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
 }
 .native-app-env #profile-settings-scroll-container.has-header {
-    padding-top: calc(110px + env(safe-area-inset-top)) !important;
+    padding-top: 100px !important;
 }
 
 .native-app-env #view-village {
@@ -1265,7 +1265,7 @@ html.dark #neighbor-profile-modal {
 }
 
 .native-app-env #neighbor-profile-scroll-container {
-    padding-top: calc(110px + env(safe-area-inset-top)) !important;
+    padding-top: 100px !important;
     padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
 }
 
@@ -6071,6 +6071,9 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
 .iphone16-mode .screen-view {
     padding-top: 44px !important;
 }
+.iphone16-mode #view-profile_settings {
+    padding-top: 0 !important;
+}
 
 .iphone16-mode #floating-map-controls {
     bottom: 82px !important;
@@ -6101,8 +6104,9 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
 .iphone16-mode #neighbor-profile-header {
     padding-top: 44px !important;
 }
-.iphone16-mode #neighbor-profile-scroll-container {
-    padding-top: 108px !important;
+.iphone16-mode #neighbor-profile-scroll-container,
+.iphone16-mode #profile-settings-scroll-container {
+    padding-top: 100px !important;
 }
 
 /* Custom premium checkboxes for EULA */
@@ -9193,9 +9197,20 @@ html.dark #meetup-safety-subtitle {
 
 #neighbor-profile-scroll-container,
 #profile-settings-scroll-container {
-    padding-top: 110px !important;
+    padding-top: 100px !important;
 }
 
+/* Expanded list card header titles font size adjustment (Date & Time, Neighbourhood, Attendees) */
+.list-card-expandable-content h5 {
+    font-size: 15.5px !important;
+    font-family: 'Outfit', sans-serif !important;
+    letter-spacing: 0.025em !important;
+}
 
-
-
+/* Expanded list card values/subtext font size adjustment (actual date/time, location address, attendees list) */
+.list-card-expandable-content p,
+.list-card-expandable-content .attendee-count-el {
+    font-size: 13px !important;
+    font-family: 'Outfit', sans-serif !important;
+    line-height: 1.5 !important;
+}

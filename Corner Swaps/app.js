@@ -3346,7 +3346,8 @@ function autoDismissAllModals() {
         'confirm-no-show-modal',
         'profile-stat-explanation-modal',
         'achievement-unlocked-modal',
-        'level-up-modal'
+        'level-up-modal',
+        'neighbor-profile-modal'
     ];
     hiddenModals.forEach(id => {
         const el = document.getElementById(id);
@@ -3399,6 +3400,11 @@ function autoDismissAllModals() {
 
 // Routing Engine
 function showView(viewId, mode) {
+    // Blur active input/textarea before view transitions to dismiss virtual keyboards safely
+    const activeEl = document.activeElement;
+    if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
+        activeEl.blur();
+    }
     try {
         if (!state) {
             try {
@@ -3680,6 +3686,9 @@ function showView(viewId, mode) {
                     
                     outgoingEl.classList.remove(...animClasses);
                     outgoingEl.style.display = 'none';
+                    if (outgoingEl.id === 'view-chat_detail') {
+                        outgoingEl.classList.add('hidden');
+                    }
                     
                     // After browser commits final state, restore normal transitions
                     requestAnimationFrame(() => {
@@ -3701,9 +3710,9 @@ function showView(viewId, mode) {
                 activeView.classList.add('no-transition');
                 activeView.classList.add('active');
                 if (viewId === 'profile_settings') {
-                    // Do not reset scroll for profile settings automatically
+                    const scrollContainer = document.getElementById('profile-settings-scroll-container');
+                    if (scrollContainer) scrollContainer.scrollTop = 0;
                     if (oldViewId && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve'].includes(oldViewId)) {
-                        const scrollContainer = document.getElementById('profile-settings-scroll-container');
                         if (scrollContainer) {
                             setTimeout(() => {
                                 if (window.savedProfileScrollTop !== undefined) {
@@ -3725,9 +3734,9 @@ function showView(viewId, mode) {
             } else {
                 setTimeout(() => activeView.classList.add('active'), 20);
                 if (viewId === 'profile_settings') {
-                    // Do not reset scroll for profile settings automatically
+                    const scrollContainer = document.getElementById('profile-settings-scroll-container');
+                    if (scrollContainer) scrollContainer.scrollTop = 0;
                     if (oldViewId && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve'].includes(oldViewId)) {
-                        const scrollContainer = document.getElementById('profile-settings-scroll-container');
                         if (scrollContainer) {
                             setTimeout(() => {
                                 if (window.savedProfileScrollTop !== undefined) {
@@ -3900,9 +3909,10 @@ function showView(viewId, mode) {
     }
     if (viewId === 'chat_hub') {
         const activeSeg = state.currentChatSegment || 'active';
-        if (window.switchChatSegment) window.switchChatSegment(activeSeg, true); // mute sound
+        if (window.switchChatSegment) window.switchChatSegment(activeSeg, true, true); // mute sound, skip render
         const activeFilter = state.chatFilter || 'all';
-        selectChatFilter(activeFilter, true); // mute sound
+        selectChatFilter(activeFilter, true, true); // mute sound, skip render
+        renderConversationsList();
     }
     if (viewId === 'village') {
         initLeafletMap();
@@ -17865,7 +17875,7 @@ function toggleChatFilterTray() {
     }
 }
 
-function selectChatFilter(filterMode, muteSound = false) {
+function selectChatFilter(filterMode, muteSound = false, skipRender = false) {
     if (!muteSound) playSound('click');
     state.chatFilter = filterMode;
     saveState();
@@ -17911,7 +17921,9 @@ function selectChatFilter(filterMode, muteSound = false) {
         }
     }
 
-    renderConversationsList();
+    if (!skipRender) {
+        renderConversationsList();
+    }
 }
 
 function clearChatFilter() {
@@ -25137,7 +25149,7 @@ function updateChatNotificationBadge() {
 }
 window.updateChatNotificationBadge = updateChatNotificationBadge;
 
-window.switchChatSegment = function(type, muteSound = false) {
+window.switchChatSegment = function(type, muteSound = false, skipRender = false) {
     if (!muteSound) playSound('click');
     collapseChatMenu();
     state.currentChatSegment = type;
@@ -25161,7 +25173,9 @@ window.switchChatSegment = function(type, muteSound = false) {
     updateBtnStyle(btnGroups, 'groups');
     updateBtnStyle(btnReviews, 'reviews');
     
-    renderConversationsList();
+    if (!skipRender) {
+        renderConversationsList();
+    }
 };
 
 window.handleChatSearch = function(val) {
@@ -29675,6 +29689,13 @@ window.openItemDetailsByTitle = function(title, neighborName) {
 
 function handleChatBackButton() {
     if (typeof playSound === 'function') playSound('click');
+    
+    // Blur any active text input/textarea to dismiss the virtual keyboard safely
+    const activeEl = document.activeElement;
+    if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
+        activeEl.blur();
+    }
+
     if (state.chatBackReferrer && state.chatBackReferrer.type === 'neighbor_profile') {
         const neighborName = state.chatBackReferrer.name;
         const prevView = state.chatBackReferrer.previousView || 'chat_hub';
