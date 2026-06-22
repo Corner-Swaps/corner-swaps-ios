@@ -8030,14 +8030,15 @@ function openMapItemDetail(idOrName) {
                 saveIcon.style.fontVariationSettings = "'FILL' 1";
             }
             if (saveText) saveText.innerText = 'saved to profile';
-            saveBtn.classList.add('bg-black/10', 'dark:bg-white/10');
+            saveBtn.classList.add('active-green-white');
+            saveBtn.classList.remove('bg-black/10', 'dark:bg-white/10');
         } else {
             if (saveIcon) {
                 saveIcon.innerText = 'bookmark';
                 saveIcon.style.fontVariationSettings = "'FILL' 0";
             }
             if (saveText) saveText.innerText = 'save listing';
-            saveBtn.classList.remove('bg-black/10', 'dark:bg-white/10');
+            saveBtn.classList.remove('active-green-white', 'bg-black/10', 'dark:bg-white/10');
         }
         saveBtn.onclick = (e) => {
             if (e) {
@@ -8485,11 +8486,12 @@ function openMapEventDetail(eventId) {
         if (isSaved) {
             if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 1";
             if (saveText) saveText.innerText = 'saved to profile';
-            saveBtn.classList.add('bg-black/10', 'dark:bg-white/10');
+            saveBtn.classList.add('active-green-white');
+            saveBtn.classList.remove('bg-black/10', 'dark:bg-white/10');
         } else {
             if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 0";
             if (saveText) saveText.innerText = 'save event';
-            saveBtn.classList.remove('bg-black/10', 'dark:bg-white/10');
+            saveBtn.classList.remove('active-green-white', 'bg-black/10', 'dark:bg-white/10');
         }
         const handleSaveClick = (e) => {
             if (e) {
@@ -15153,14 +15155,15 @@ window.toggleSaveListing = function(idOrName) {
                 saveIcon.style.fontVariationSettings = "'FILL' 1";
             }
             if (saveText) saveText.innerText = 'saved to profile';
-            saveBtn.classList.add('bg-forest-green/10', 'text-forest-green');
+            saveBtn.classList.add('active-green-white');
+            saveBtn.classList.remove('bg-forest-green/10', 'text-forest-green');
         } else {
             if (saveIcon) {
                 saveIcon.innerText = 'bookmark';
                 saveIcon.style.fontVariationSettings = "'FILL' 0";
             }
             if (saveText) saveText.innerText = 'save listing';
-            saveBtn.classList.remove('bg-forest-green/10', 'text-forest-green');
+            saveBtn.classList.remove('active-green-white', 'bg-forest-green/10', 'text-forest-green');
         }
     }
     
@@ -15192,11 +15195,12 @@ window.toggleSaveEvent = function(eventId) {
             if (isSaved) {
                 if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 1";
                 if (saveText) saveText.innerText = 'saved to profile';
-                saveBtn.classList.add('bg-forest-green/10', 'text-forest-green');
+                saveBtn.classList.add('active-green-white');
+                saveBtn.classList.remove('bg-forest-green/10', 'text-forest-green');
             } else {
                 if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 0";
                 if (saveText) saveText.innerText = 'save event';
-                saveBtn.classList.remove('bg-forest-green/10', 'text-forest-green');
+                saveBtn.classList.remove('active-green-white', 'bg-forest-green/10', 'text-forest-green');
             }
         }
     }
@@ -15212,11 +15216,12 @@ window.toggleSaveEvent = function(eventId) {
             if (isSaved) {
                 if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 1";
                 if (saveText) saveText.innerText = 'saved to profile';
-                saveBtn.classList.add('bg-forest-green/10', 'text-forest-green');
+                saveBtn.classList.add('active-green-white');
+                saveBtn.classList.remove('bg-forest-green/10', 'text-forest-green');
             } else {
                 if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 0";
                 if (saveText) saveText.innerText = 'save event';
-                saveBtn.classList.remove('bg-forest-green/10', 'text-forest-green');
+                saveBtn.classList.remove('active-green-white', 'bg-forest-green/10', 'text-forest-green');
             }
         }
     }
@@ -22055,11 +22060,12 @@ function openEventDetail(eventId) {
         if (isSaved) {
             if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 1";
             if (saveText) saveText.innerText = 'saved to profile';
-            saveBtn.classList.add('bg-forest-green/10', 'text-forest-green');
+            saveBtn.classList.add('active-green-white');
+            saveBtn.classList.remove('bg-forest-green/10', 'text-forest-green');
         } else {
             if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 0";
             if (saveText) saveText.innerText = 'save event';
-            saveBtn.classList.remove('bg-forest-green/10', 'text-forest-green');
+            saveBtn.classList.remove('active-green-white', 'bg-forest-green/10', 'text-forest-green');
         }
         saveBtn.onclick = () => {
             toggleSaveEvent(event.id);

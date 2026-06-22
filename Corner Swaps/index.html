@@ -7970,8 +7970,8 @@ html.dark .category-info-highlighted::after {
     bottom: max(12px, calc(4px + env(safe-area-inset-bottom, 34px))) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: calc(100% - 32px) !important;
-    max-width: 370px !important;
+    width: calc(100% - 48px) !important;
+    max-width: 380px !important;
     gap: 0px !important;
     height: 56px !important;
     padding-top: 0 !important;
@@ -10232,11 +10232,16 @@ html.dark #btn-onboarding-location-permission.active-glow {
 
 /* Make global bottom navbar narrower and bring icons closer together */
 body.show-simulator #global-navbar,
-.native-app-env #global-navbar {
-    max-width: 250px !important;
+.native-app-env #global-navbar,
+.native-app-env #global-navbar:not(.hidden) {
+    width: calc(100% - 48px) !important;
+    max-width: 380px !important;
 }
 
 #navbar-icons-row {
+    max-width: 250px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
     gap: 0px !important;
     justify-content: space-evenly !important;
 }
@@ -10248,6 +10253,21 @@ body.show-simulator #global-navbar,
 /* Nudge the chat/message navbar icon down slightly to align perfectly */
 #chat-icon-symbol {
     transform: translateY(2.5px) !important;
+}
+
+/* Styling for toggled/active action buttons (RSVPed, Saved) in map popups and list sections */
+.active-green-white {
+    background-color: var(--forest-green) !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+}
+.active-green-white span,
+.active-green-white span.material-symbols-outlined,
+.active-green-white svg {
+    color: #ffffff !important;
+}
+html.dark .active-green-white {
+    background-color: #308A5E !important;
 }
 </style>
     <!-- Tailwind Configuration (removed - runtime replaced with pre-compiled CSS) -->
@@ -16740,7 +16760,7 @@ body.show-simulator #global-navbar,
 
                 <!-- Privacy & Data Notice has been removed per user request -->
 
-                <div id="neighbor-profile-modal" class="hidden absolute inset-0 z-[4000] flex flex-col bg-white dark:bg-[#101612] select-none animate-fade-in pt-4">
+                <div id="neighbor-profile-modal" class="hidden absolute inset-0 z-[4000] flex flex-col bg-white dark:bg-[#101612] select-none animate-fade-in pt-0">
 
 
                     <div id="neighbor-profile-scroll-container" class="relative flex-grow overflow-y-auto min-h-0 px-6 pt-16 pb-20 custom-scrollbar" style="-webkit-overflow-scrolling: touch; overscroll-behavior: contain;">
@@ -25929,14 +25949,15 @@ function openMapItemDetail(idOrName) {
                 saveIcon.style.fontVariationSettings = "'FILL' 1";
             }
             if (saveText) saveText.innerText = 'saved to profile';
-            saveBtn.classList.add('bg-black/10', 'dark:bg-white/10');
+            saveBtn.classList.add('active-green-white');
+            saveBtn.classList.remove('bg-black/10', 'dark:bg-white/10');
         } else {
             if (saveIcon) {
                 saveIcon.innerText = 'bookmark';
                 saveIcon.style.fontVariationSettings = "'FILL' 0";
             }
             if (saveText) saveText.innerText = 'save listing';
-            saveBtn.classList.remove('bg-black/10', 'dark:bg-white/10');
+            saveBtn.classList.remove('active-green-white', 'bg-black/10', 'dark:bg-white/10');
         }
         saveBtn.onclick = (e) => {
             if (e) {
@@ -26384,11 +26405,12 @@ function openMapEventDetail(eventId) {
         if (isSaved) {
             if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 1";
             if (saveText) saveText.innerText = 'saved to profile';
-            saveBtn.classList.add('bg-black/10', 'dark:bg-white/10');
+            saveBtn.classList.add('active-green-white');
+            saveBtn.classList.remove('bg-black/10', 'dark:bg-white/10');
         } else {
             if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 0";
             if (saveText) saveText.innerText = 'save event';
-            saveBtn.classList.remove('bg-black/10', 'dark:bg-white/10');
+            saveBtn.classList.remove('active-green-white', 'bg-black/10', 'dark:bg-white/10');
         }
         const handleSaveClick = (e) => {
             if (e) {
@@ -33052,14 +33074,15 @@ window.toggleSaveListing = function(idOrName) {
                 saveIcon.style.fontVariationSettings = "'FILL' 1";
             }
             if (saveText) saveText.innerText = 'saved to profile';
-            saveBtn.classList.add('bg-forest-green/10', 'text-forest-green');
+            saveBtn.classList.add('active-green-white');
+            saveBtn.classList.remove('bg-forest-green/10', 'text-forest-green');
         } else {
             if (saveIcon) {
                 saveIcon.innerText = 'bookmark';
                 saveIcon.style.fontVariationSettings = "'FILL' 0";
             }
             if (saveText) saveText.innerText = 'save listing';
-            saveBtn.classList.remove('bg-forest-green/10', 'text-forest-green');
+            saveBtn.classList.remove('active-green-white', 'bg-forest-green/10', 'text-forest-green');
         }
     }
     
@@ -33091,11 +33114,12 @@ window.toggleSaveEvent = function(eventId) {
             if (isSaved) {
                 if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 1";
                 if (saveText) saveText.innerText = 'saved to profile';
-                saveBtn.classList.add('bg-forest-green/10', 'text-forest-green');
+                saveBtn.classList.add('active-green-white');
+                saveBtn.classList.remove('bg-forest-green/10', 'text-forest-green');
             } else {
                 if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 0";
                 if (saveText) saveText.innerText = 'save event';
-                saveBtn.classList.remove('bg-forest-green/10', 'text-forest-green');
+                saveBtn.classList.remove('active-green-white', 'bg-forest-green/10', 'text-forest-green');
             }
         }
     }
@@ -33111,11 +33135,12 @@ window.toggleSaveEvent = function(eventId) {
             if (isSaved) {
                 if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 1";
                 if (saveText) saveText.innerText = 'saved to profile';
-                saveBtn.classList.add('bg-forest-green/10', 'text-forest-green');
+                saveBtn.classList.add('active-green-white');
+                saveBtn.classList.remove('bg-forest-green/10', 'text-forest-green');
             } else {
                 if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 0";
                 if (saveText) saveText.innerText = 'save event';
-                saveBtn.classList.remove('bg-forest-green/10', 'text-forest-green');
+                saveBtn.classList.remove('active-green-white', 'bg-forest-green/10', 'text-forest-green');
             }
         }
     }
@@ -39954,11 +39979,12 @@ function openEventDetail(eventId) {
         if (isSaved) {
             if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 1";
             if (saveText) saveText.innerText = 'saved to profile';
-            saveBtn.classList.add('bg-forest-green/10', 'text-forest-green');
+            saveBtn.classList.add('active-green-white');
+            saveBtn.classList.remove('bg-forest-green/10', 'text-forest-green');
         } else {
             if (saveIcon) saveIcon.style.fontVariationSettings = "'FILL' 0";
             if (saveText) saveText.innerText = 'save event';
-            saveBtn.classList.remove('bg-forest-green/10', 'text-forest-green');
+            saveBtn.classList.remove('active-green-white', 'bg-forest-green/10', 'text-forest-green');
         }
         saveBtn.onclick = () => {
             toggleSaveEvent(event.id);

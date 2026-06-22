@@ -6792,8 +6792,8 @@ html.dark .category-info-highlighted::after {
     bottom: max(12px, calc(4px + env(safe-area-inset-bottom, 34px))) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: calc(100% - 32px) !important;
-    max-width: 370px !important;
+    width: calc(100% - 48px) !important;
+    max-width: 380px !important;
     gap: 0px !important;
     height: 56px !important;
     padding-top: 0 !important;
@@ -9054,11 +9054,16 @@ html.dark #btn-onboarding-location-permission.active-glow {
 
 /* Make global bottom navbar narrower and bring icons closer together */
 body.show-simulator #global-navbar,
-.native-app-env #global-navbar {
-    max-width: 250px !important;
+.native-app-env #global-navbar,
+.native-app-env #global-navbar:not(.hidden) {
+    width: calc(100% - 48px) !important;
+    max-width: 380px !important;
 }
 
 #navbar-icons-row {
+    max-width: 250px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
     gap: 0px !important;
     justify-content: space-evenly !important;
 }
@@ -9070,6 +9075,21 @@ body.show-simulator #global-navbar,
 /* Nudge the chat/message navbar icon down slightly to align perfectly */
 #chat-icon-symbol {
     transform: translateY(2.5px) !important;
+}
+
+/* Styling for toggled/active action buttons (RSVPed, Saved) in map popups and list sections */
+.active-green-white {
+    background-color: var(--forest-green) !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+}
+.active-green-white span,
+.active-green-white span.material-symbols-outlined,
+.active-green-white svg {
+    color: #ffffff !important;
+}
+html.dark .active-green-white {
+    background-color: #308A5E !important;
 }
 
 
