@@ -4621,7 +4621,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 #chat-action-center,
 #chat-action-center.group-chat-action-center {
     position: absolute !important;
-    bottom: calc(56px + 8px + var(--keyboard-offset, 0px)) !important;
+    bottom: calc(56px + 20px + var(--keyboard-offset, 0px)) !important;
     left: 0px !important;
     right: 0px !important;
     width: 100% !important;
@@ -4638,7 +4638,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 }
 .native-app-env #chat-action-center,
 .native-app-env #chat-action-center.group-chat-action-center {
-    bottom: calc(56px + env(safe-area-inset-bottom, 20px) + var(--keyboard-offset, 0px)) !important;
+    bottom: calc(56px + env(safe-area-inset-bottom, 20px) + 12px + var(--keyboard-offset, 0px)) !important;
     padding-bottom: 8px !important;
 }
 body.keyboard-visible .native-app-env #chat-action-center,
@@ -6870,13 +6870,13 @@ html.dark .category-tray, html.dark .category-list-overlay {
 #chat-message-feed::after {
     content: '' !important;
     display: block !important;
-    height: calc(var(--chat-input-height, 80px) + 56px + 8px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 80px) + 56px + 20px + var(--keyboard-offset, 0px)) !important;
     flex-shrink: 0 !important;
     pointer-events: none !important;
 }
 
 .native-app-env #chat-message-feed::after {
-    height: calc(var(--chat-input-height, 80px) + 56px + env(safe-area-inset-bottom, 20px) + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 80px) + 56px + env(safe-area-inset-bottom, 20px) + 12px + var(--keyboard-offset, 0px)) !important;
 }
 
 /* Custom Chat Section Font & Size Consistency */
@@ -9033,7 +9033,7 @@ html.dark #btn-onboarding-location-permission.active-glow {
     box-shadow: 0 0 18px rgba(34, 197, 94, 0.85) !important;
 }
 
-/* Force all text elements, inputs, and buttons inside the Offer a Swap modal to be exactly 12px (matching map popup descriptions) */
+/* Force all text elements, inputs, and buttons inside the Offer a Swap modal to be exactly 15.5px (matching map popup descriptions) */
 #offer-swap-container,
 #offer-swap-container h3,
 #offer-swap-container h3 *,
@@ -9049,7 +9049,27 @@ html.dark #btn-onboarding-location-permission.active-glow {
 #lifecycle-custom-text,
 #lifecycle-offerings-scroller button,
 #lifecycle-offerings-scroller button * {
-    font-size: 12px !important;
+    font-size: 15.5px !important;
+}
+
+/* Make global bottom navbar narrower and bring icons closer together */
+body.show-simulator #global-navbar,
+.native-app-env #global-navbar {
+    max-width: 250px !important;
+}
+
+#navbar-icons-row {
+    gap: 0px !important;
+    justify-content: space-evenly !important;
+}
+
+#navbar-icons-row > div {
+    width: 46px !important;
+}
+
+/* Nudge the chat/message navbar icon down slightly to align perfectly */
+#chat-icon-symbol {
+    transform: translateY(2.5px) !important;
 }
 
 

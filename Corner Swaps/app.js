@@ -30307,7 +30307,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
         // Render Initiator View (Propose swap)
         container.innerHTML = `
             <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
-                <h3 class="popup-modal-title text-center mb-1" style="font-size: 12px !important;">Offer a Swap</h3>
+                <h3 class="popup-modal-title text-center mb-1">Offer a Swap</h3>
                 <p class="popup-modal-desc text-center text-xs mb-2">Propose an item to swap or ask for a Karma request.</p>
                 <div class="px-3 py-1 bg-amber-500/10 text-amber-500 text-xs font-extrabold rounded-full flex items-center gap-1.5 border border-amber-500/20 shadow-sm mb-1">
                     <span class="material-symbols-outlined text-xs font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>

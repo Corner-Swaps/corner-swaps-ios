@@ -5799,7 +5799,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 #chat-action-center,
 #chat-action-center.group-chat-action-center {
     position: absolute !important;
-    bottom: calc(56px + 8px + var(--keyboard-offset, 0px)) !important;
+    bottom: calc(56px + 20px + var(--keyboard-offset, 0px)) !important;
     left: 0px !important;
     right: 0px !important;
     width: 100% !important;
@@ -5816,7 +5816,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 }
 .native-app-env #chat-action-center,
 .native-app-env #chat-action-center.group-chat-action-center {
-    bottom: calc(56px + env(safe-area-inset-bottom, 20px) + var(--keyboard-offset, 0px)) !important;
+    bottom: calc(56px + env(safe-area-inset-bottom, 20px) + 12px + var(--keyboard-offset, 0px)) !important;
     padding-bottom: 8px !important;
 }
 body.keyboard-visible .native-app-env #chat-action-center,
@@ -8048,13 +8048,13 @@ html.dark .category-tray, html.dark .category-list-overlay {
 #chat-message-feed::after {
     content: '' !important;
     display: block !important;
-    height: calc(var(--chat-input-height, 80px) + 56px + 8px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 80px) + 56px + 20px + var(--keyboard-offset, 0px)) !important;
     flex-shrink: 0 !important;
     pointer-events: none !important;
 }
 
 .native-app-env #chat-message-feed::after {
-    height: calc(var(--chat-input-height, 80px) + 56px + env(safe-area-inset-bottom, 20px) + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 80px) + 56px + env(safe-area-inset-bottom, 20px) + 12px + var(--keyboard-offset, 0px)) !important;
 }
 
 /* Custom Chat Section Font & Size Consistency */
@@ -10211,7 +10211,7 @@ html.dark #btn-onboarding-location-permission.active-glow {
     box-shadow: 0 0 18px rgba(34, 197, 94, 0.85) !important;
 }
 
-/* Force all text elements, inputs, and buttons inside the Offer a Swap modal to be exactly 12px (matching map popup descriptions) */
+/* Force all text elements, inputs, and buttons inside the Offer a Swap modal to be exactly 15.5px (matching map popup descriptions) */
 #offer-swap-container,
 #offer-swap-container h3,
 #offer-swap-container h3 *,
@@ -10227,7 +10227,27 @@ html.dark #btn-onboarding-location-permission.active-glow {
 #lifecycle-custom-text,
 #lifecycle-offerings-scroller button,
 #lifecycle-offerings-scroller button * {
-    font-size: 12px !important;
+    font-size: 15.5px !important;
+}
+
+/* Make global bottom navbar narrower and bring icons closer together */
+body.show-simulator #global-navbar,
+.native-app-env #global-navbar {
+    max-width: 250px !important;
+}
+
+#navbar-icons-row {
+    gap: 0px !important;
+    justify-content: space-evenly !important;
+}
+
+#navbar-icons-row > div {
+    width: 46px !important;
+}
+
+/* Nudge the chat/message navbar icon down slightly to align perfectly */
+#chat-icon-symbol {
+    transform: translateY(2.5px) !important;
 }
 </style>
     <!-- Tailwind Configuration (removed - runtime replaced with pre-compiled CSS) -->
@@ -16603,8 +16623,8 @@ html.dark #btn-onboarding-location-permission.active-glow {
                         
                         <!-- Header -->
                         <div class="relative flex flex-col items-center justify-center mb-4 border-b border-black/10 dark:border-white/10 pb-3 shrink-0">
-                            <h3 id="meetup-safety-title" class="popup-modal-title text-center mb-1 text-xs font-bold text-black dark:text-white" style="font-size: 12px !important;">Exchange Safety Guidelines</h3>
-                            <p id="meetup-safety-subtitle" class="popup-modal-desc text-center text-xs text-gray-500 dark:text-gray-400 mt-0.5" style="font-size: 12px !important;">Community guidelines for arranging a meetup!</p>
+                            <h3 id="meetup-safety-title" class="popup-modal-title text-center mb-1">Exchange Safety Guidelines</h3>
+                            <p id="meetup-safety-subtitle" class="popup-modal-desc text-center text-xs mt-0.5">Community guidelines for arranging a meetup!</p>
                         </div>
                         
                         <!-- Scrollable Content -->
@@ -16621,24 +16641,24 @@ html.dark #btn-onboarding-location-permission.active-glow {
 
                             <!-- Selected Location Details Box (if selected) -->
                             <div id="selected-spot-info" class="hidden p-3.5 bg-black/[0.02] dark:bg-white/[0.02] border border-outline-variant/10 rounded-2xl flex flex-col gap-1 text-left shrink-0">
-                                <div id="selected-spot-name" class="text-xs font-bold text-black dark:text-white" style="font-size: 12px !important;"></div>
-                                <div id="selected-spot-safety" class="text-xs font-bold text-black dark:text-white" style="font-size: 12px !important;"></div>
-                                <div id="selected-spot-address" class="text-xs text-gray-500 dark:text-gray-400" style="font-size: 12px !important;"></div>
+                                <div id="selected-spot-name" class="text-xs font-bold text-black dark:text-white"></div>
+                                <div id="selected-spot-safety" class="text-xs font-bold text-black dark:text-white"></div>
+                                <div id="selected-spot-address" class="text-xs text-gray-500 dark:text-gray-400"></div>
                             </div>
 
                             <!-- Date & Time Selector -->
                             <div id="meetup-time-selection" class="hidden p-3 bg-white dark:bg-[#141c16] border border-outline-variant/20 rounded-xl flex flex-col gap-2 shrink-0 select-none">
-                                <label class="text-xs font-extrabold uppercase tracking-wider text-black dark:text-warm-cream block" style="font-size: 12px !important;">Choose Meetup Date & Time</label>
-                                <input type="datetime-local" id="meeting-spot-datetime" class="w-full h-10 px-3 bg-warm-cream/10 dark:bg-[#101612] border border-outline-variant/30 dark:border-white/10 rounded-xl text-xs focus:border-forest-green dark:focus:border-[#308A5E] focus:ring-0 outline-none text-black dark:text-white" style="font-size: 12px !important;" />
+                                <label class="text-xs font-black text-black/50 dark:text-white/50 uppercase tracking-wider block">Choose Meetup Date & Time</label>
+                                <input type="datetime-local" id="meeting-spot-datetime" class="w-full bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl p-3 text-xs outline-none focus:ring-1 focus:ring-forest-green text-on-surface" />
                             </div>
                         </div>
 
                         <!-- Confirm Meeting Location Button (Forest Green) -->
-                        <div class="flex flex-col gap-2 pt-2 shrink-0">
-                            <button id="btn-confirm-meeting-spot" class="w-full h-12 bg-forest-green text-warm-cream font-bold text-xs rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 shadow disabled:opacity-50 disabled:pointer-events-none cursor-pointer border-0" onclick="confirmMeetingSpotSuggestion()" style="font-size: 12px !important;" disabled>
+                        <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-[calc(16px + env(safe-area-inset-bottom, 20px))]">
+                            <button id="btn-confirm-meeting-spot" class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer border-0 disabled:opacity-50 disabled:pointer-events-none" onclick="confirmMeetingSpotSuggestion()" disabled>
                                 <span class="material-symbols-outlined text-sm">check_circle</span> Confirm Meeting Location
                             </button>
-                            <button class="w-full h-12 bg-black/5 dark:bg-white/5 border border-outline-variant/20 dark:border-white/10 text-on-surface dark:text-warm-cream font-bold text-xs rounded-xl active:scale-95 transition-transform cursor-pointer" onclick="closeSuggestMeetingSpotModal()" style="font-size: 12px !important;">
+                            <button class="w-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-on-surface dark:text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="closeSuggestMeetingSpotModal()">
                                 Cancel
                             </button>
                         </div>
@@ -48186,7 +48206,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
         // Render Initiator View (Propose swap)
         container.innerHTML = `
             <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
-                <h3 class="popup-modal-title text-center mb-1" style="font-size: 12px !important;">Offer a Swap</h3>
+                <h3 class="popup-modal-title text-center mb-1">Offer a Swap</h3>
                 <p class="popup-modal-desc text-center text-xs mb-2">Propose an item to swap or ask for a Karma request.</p>
                 <div class="px-3 py-1 bg-amber-500/10 text-amber-500 text-xs font-extrabold rounded-full flex items-center gap-1.5 border border-amber-500/20 shadow-sm mb-1">
                     <span class="material-symbols-outlined text-xs font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
