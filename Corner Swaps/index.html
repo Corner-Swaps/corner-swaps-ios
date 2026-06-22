@@ -1639,6 +1639,12 @@ html.dark ::-webkit-scrollbar-thumb:hover {
     position: relative !important;
 }
 
+/* Eliminate vertical slide shift and vertical animation glitches on view-chat_detail while preserving horizontal sliding */
+#view-chat_detail {
+    transform: none !important;
+    transition: opacity 0.15s ease-in-out !important;
+}
+
 .screen-view > div.overflow-y-auto {
     min-height: 0 !important;
 }
@@ -2389,11 +2395,11 @@ html.dark #phone-header-bar .material-symbols-outlined {
     padding-bottom: 0 !important;
 }
 .native-app-env #profile-settings-scroll-container {
-    padding-top: 100px !important;
+    padding-top: 48px !important;
     padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
 }
 .native-app-env #profile-settings-scroll-container.has-header {
-    padding-top: 100px !important;
+    padding-top: 48px !important;
 }
 
 .native-app-env #view-village {
@@ -2443,7 +2449,7 @@ html.dark #neighbor-profile-modal {
 }
 
 .native-app-env #neighbor-profile-scroll-container {
-    padding-top: 100px !important;
+    padding-top: 48px !important;
     padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
 }
 
@@ -7284,7 +7290,7 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
 }
 .iphone16-mode #neighbor-profile-scroll-container,
 .iphone16-mode #profile-settings-scroll-container {
-    padding-top: 100px !important;
+    padding-top: 48px !important;
 }
 
 /* Custom premium checkboxes for EULA */
@@ -9943,6 +9949,7 @@ html.dark .category-filter-pill.active-pill {
     min-height: 0;
     overflow: hidden;
     background-color: #ffffff !important;
+    padding-top: 20px !important;
 }
 html.dark .list-card-expandable-content {
     background-color: #18201a !important;
@@ -10386,7 +10393,7 @@ html.dark #meetup-safety-subtitle {
 
 #neighbor-profile-scroll-container,
 #profile-settings-scroll-container {
-    padding-top: 100px !important;
+    padding-top: 48px !important;
 }
 
 /* Expanded list card header titles font size adjustment (Date & Time, Neighbourhood, Attendees) */
@@ -12765,17 +12772,17 @@ h5.uppercase.tracking-wider {
                         <div class="flex items-center justify-center w-full">
                             <input type="file" id="chat-photo-input" accept="image/*" class="hidden" onchange="handleSendChatPhoto(this)"/>
                             <input type="file" id="chat-camera-input" accept="image/*" capture="camera" class="hidden" onchange="handleSendChatPhoto(this)"/>
-                            <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[64px] rounded-full px-4 py-1" id="chat-input-wrapper-static" onclick="window.handleChatInputWrapperClick(event, this)">
+                            <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper-static" onclick="window.handleChatInputWrapperClick(event, this)">
                                 <input class="flex-grow bg-transparent border-0 h-full py-0 px-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
                                 <div class="flex items-center gap-1.5 flex-shrink-0">
-                                    <button id="chat-offer-swap-pill-btn" class="w-[44px] h-[44px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onclick="if(state.currentConversationId) { window.openSwapLifecycleModal('initiator', state.currentConversationId); }" title="Offer a Swap">
-                                        <span class="material-symbols-outlined text-[20px]">handshake</span>
+                                    <button id="chat-offer-swap-pill-btn" class="w-[38px] h-[38px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onclick="if(state.currentConversationId) { window.openSwapLifecycleModal('initiator', state.currentConversationId); }" title="Offer a Swap">
+                                        <span class="material-symbols-outlined text-[17px]">handshake</span>
                                     </button>
-                                    <button id="chat-map-shortcut-btn" class="w-[44px] h-[44px] bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer hidden" onclick="if(state.currentConversationId) window.viewMeetupLocationOnMap(state.currentConversationId)" title="View Swap Map">
-                                        <span class="material-symbols-outlined text-[20px] text-white">map</span>
+                                    <button id="chat-map-shortcut-btn" class="w-[38px] h-[38px] bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer hidden" onclick="if(state.currentConversationId) window.viewMeetupLocationOnMap(state.currentConversationId)" title="View Swap Map">
+                                        <span class="material-symbols-outlined text-[17px] text-white">map</span>
                                     </button>
-                                    <button class="w-[44px] h-[44px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer" onclick="handleSendTextMessage()" title="Send">
-                                        <span class="material-symbols-outlined text-[20px]">send</span>
+                                    <button class="w-[38px] h-[38px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer" onclick="handleSendTextMessage()" title="Send">
+                                        <span class="material-symbols-outlined text-[17px]">send</span>
                                     </button>
                                 </div>
                             </div>
@@ -13368,14 +13375,6 @@ h5.uppercase.tracking-wider {
 
                     <!-- Scroll Container -->
                     <div id="profile-settings-scroll-container" class="flex-grow overflow-y-auto px-6 pt-16 pb-20 custom-scrollbar" style="-webkit-overflow-scrolling: touch;">
-                        <!-- Self Reliability Warning Banner -->
-                        <div id="self-profile-reliability-warning-banner" class="hidden mb-6 p-4 bg-red-500/10 dark:bg-red-500/20 border border-red-500/20 text-red-600 dark:text-red-400 rounded-2xl flex items-start gap-2.5 select-none animate-pulse-slow">
-                        <span class="material-symbols-outlined text-lg shrink-0 mt-0.5" style="font-variation-settings: 'FILL' 1;">gpp_maybe</span>
-                        <div class="text-left">
-                            <h5 class="text-[10px] font-bold uppercase tracking-wider mb-0.5" id="self-profile-warning-title">Account Advisory</h5>
-                            <p class="text-xs leading-relaxed font-semibold" id="self-profile-reliability-warning-text">Your profile is currently shadow-banned from the platform due to multiple verified No-Show strikes.</p>
-                        </div>
-                    </div>
 
                     <!-- Profile Header Summary -->
                     <section class="flex flex-col items-center mb-6 mt-4 select-none">
@@ -13401,7 +13400,7 @@ h5.uppercase.tracking-wider {
                                 <span class="material-symbols-outlined text-sm text-forest-green dark:text-emerald-400">phone</span>
                                 <span id="settings-profile-phone"></span>
                             </p>
-
+ 
                             <!-- Social Media Profiles Row -->
                             <div id="self-profile-socials-container" class="flex items-center justify-center gap-4 mt-4 mb-2 hidden"></div>
 
@@ -13419,6 +13418,15 @@ h5.uppercase.tracking-wider {
                             </div>
                         </div>
                     </section>
+
+                    <!-- Self Reliability Warning Banner -->
+                    <div id="self-profile-reliability-warning-banner" class="hidden mb-6 p-4 bg-red-500/10 dark:bg-red-500/20 border border-red-500/20 text-red-600 dark:text-red-400 rounded-2xl flex items-start gap-2.5 select-none animate-pulse-slow">
+                        <span class="material-symbols-outlined text-lg shrink-0 mt-0.5" style="font-variation-settings: 'FILL' 1;">gpp_maybe</span>
+                        <div class="text-left">
+                            <h5 class="text-[10px] font-bold uppercase tracking-wider mb-0.5" id="self-profile-warning-title">Account Advisory</h5>
+                            <p class="text-xs leading-relaxed font-semibold" id="self-profile-reliability-warning-text">Your profile is currently shadow-banned from the platform due to multiple verified No-Show strikes.</p>
+                        </div>
+                    </div>
                                 <!-- Hidden legacy circle stats to preserve JavaScript reference logic -->
                     <div id="widget-swaps-counter" class="hidden">
                         <div id="btn-vouch-stats"></div>
@@ -20856,6 +20864,8 @@ let lastPlaySoundTime = 0;
 
 // Organic Synthesizer Chimes (Web Audio API)
 function playSound(type) {
+    const isNative = window.isNativeApp === true || document.documentElement.classList.contains('native-app-env') || (document.body && document.body.classList.contains('native-app'));
+
     try {
         if (type === 'click') {
             window.triggerHapticFeedback('light');
@@ -20868,9 +20878,15 @@ function playSound(type) {
         }
     } catch (err) {}
 
+    // On native app wrappers, the native haptics engine already produces a physical audible click.
+    // Playing the synthetic AudioContext click chime on top of it creates a double-clicking sound.
+    if (isNative && type === 'click') {
+        return;
+    }
+
     try {
         const nowMs = Date.now();
-        if (type === 'click' && nowMs - lastPlaySoundTime < 350) {
+        if (type === 'click' && nowMs - lastPlaySoundTime < 500) {
             return; // Suppress double-clicks
         }
         if (type === 'click') {
@@ -21447,7 +21463,7 @@ function showView(viewId, mode) {
     const disableTransition = window.isAppStartup;
     
     // Save scroll position of profile settings if we are leaving it for one of the four sub-views
-    if (oldViewId === 'profile_settings' && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve'].includes(viewId)) {
+    if (oldViewId === 'profile_settings' && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'adjust_homepage'].includes(viewId)) {
         const scrollContainer = document.getElementById('profile-settings-scroll-container');
         if (scrollContainer) {
             window.savedProfileScrollTop = scrollContainer.scrollTop;
@@ -21456,7 +21472,8 @@ function showView(viewId, mode) {
     }
 
     // If already on the view, handle double-tap behavior (scroll to top smoothly)
-    if (state && state.currentView === viewId && !window.isAppStartup) {
+    const isSameViewMode = (viewId !== 'village') || (window.currentRenderedViewMode === state.activeViewMode);
+    if (state && state.currentView === viewId && isSameViewMode && !window.isAppStartup) {
         if (viewId === 'profile_settings') {
             const scrollContainer = document.getElementById('profile-settings-scroll-container');
             if (scrollContainer) {
@@ -21727,52 +21744,28 @@ function showView(viewId, mode) {
             }
         } else {
             activeView.style.display = 'flex';
+            if (viewId === 'profile_settings') {
+                const scrollContainer = document.getElementById('profile-settings-scroll-container');
+                if (scrollContainer) {
+                    if (oldViewId && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'adjust_homepage'].includes(oldViewId)) {
+                        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+                        console.log("[Scroll Restore] Always restored to bottom of profile settings when returning from:", oldViewId);
+                    } else {
+                        scrollContainer.scrollTop = 0;
+                    }
+                }
+            } else {
+                activeView.scrollTop = 0;
+            }
+
             if (disableTransition) {
                 activeView.classList.add('no-transition');
                 activeView.classList.add('active');
-                if (viewId === 'profile_settings') {
-                    const scrollContainer = document.getElementById('profile-settings-scroll-container');
-                    if (scrollContainer) scrollContainer.scrollTop = 0;
-                    if (oldViewId && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve'].includes(oldViewId)) {
-                        if (scrollContainer) {
-                            setTimeout(() => {
-                                if (window.savedProfileScrollTop !== undefined) {
-                                    scrollContainer.scrollTop = window.savedProfileScrollTop;
-                                    console.log("[Scroll Restore] Restored profile settings scroll position:", window.savedProfileScrollTop);
-                                } else {
-                                    scrollContainer.scrollTop = scrollContainer.scrollHeight;
-                                    console.log("[Scroll Restore] Fallback to bottom of profile settings");
-                                }
-                            }, 50);
-                        }
-                    }
-                } else {
-                    activeView.scrollTop = 0;
-                }
                 setTimeout(() => {
                     activeView.classList.remove('no-transition');
                 }, 100);
             } else {
                 setTimeout(() => activeView.classList.add('active'), 20);
-                if (viewId === 'profile_settings') {
-                    const scrollContainer = document.getElementById('profile-settings-scroll-container');
-                    if (scrollContainer) scrollContainer.scrollTop = 0;
-                    if (oldViewId && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve'].includes(oldViewId)) {
-                        if (scrollContainer) {
-                            setTimeout(() => {
-                                if (window.savedProfileScrollTop !== undefined) {
-                                    scrollContainer.scrollTop = window.savedProfileScrollTop;
-                                    console.log("[Scroll Restore] Restored profile settings scroll position:", window.savedProfileScrollTop);
-                                } else {
-                                    scrollContainer.scrollTop = scrollContainer.scrollHeight;
-                                    console.log("[Scroll Restore] Fallback to bottom of profile settings");
-                                }
-                            }, 50);
-                        }
-                    }
-                } else {
-                    activeView.scrollTop = 0;
-                }
             }
         }
         
@@ -33889,6 +33882,9 @@ function switchVillageSegment(type) {
     } else if (targetView === 'bulletins') {
         renderBulletinsList();
     }
+    
+    // Track currently rendered view mode
+    window.currentRenderedViewMode = state.activeViewMode;
 }
 
 function formatEventTimes(startIso, endIso) {

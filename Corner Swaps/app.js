@@ -2835,6 +2835,8 @@ let lastPlaySoundTime = 0;
 
 // Organic Synthesizer Chimes (Web Audio API)
 function playSound(type) {
+    const isNative = window.isNativeApp === true || document.documentElement.classList.contains('native-app-env') || (document.body && document.body.classList.contains('native-app'));
+
     try {
         if (type === 'click') {
             window.triggerHapticFeedback('light');
@@ -2847,9 +2849,15 @@ function playSound(type) {
         }
     } catch (err) {}
 
+    // On native app wrappers, the native haptics engine already produces a physical audible click.
+    // Playing the synthetic AudioContext click chime on top of it creates a double-clicking sound.
+    if (isNative && type === 'click') {
+        return;
+    }
+
     try {
         const nowMs = Date.now();
-        if (type === 'click' && nowMs - lastPlaySoundTime < 350) {
+        if (type === 'click' && nowMs - lastPlaySoundTime < 500) {
             return; // Suppress double-clicks
         }
         if (type === 'click') {
@@ -3426,7 +3434,7 @@ function showView(viewId, mode) {
     const disableTransition = window.isAppStartup;
     
     // Save scroll position of profile settings if we are leaving it for one of the four sub-views
-    if (oldViewId === 'profile_settings' && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve'].includes(viewId)) {
+    if (oldViewId === 'profile_settings' && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'adjust_homepage'].includes(viewId)) {
         const scrollContainer = document.getElementById('profile-settings-scroll-container');
         if (scrollContainer) {
             window.savedProfileScrollTop = scrollContainer.scrollTop;
@@ -3435,7 +3443,8 @@ function showView(viewId, mode) {
     }
 
     // If already on the view, handle double-tap behavior (scroll to top smoothly)
-    if (state && state.currentView === viewId && !window.isAppStartup) {
+    const isSameViewMode = (viewId !== 'village') || (window.currentRenderedViewMode === state.activeViewMode);
+    if (state && state.currentView === viewId && isSameViewMode && !window.isAppStartup) {
         if (viewId === 'profile_settings') {
             const scrollContainer = document.getElementById('profile-settings-scroll-container');
             if (scrollContainer) {
@@ -3706,52 +3715,28 @@ function showView(viewId, mode) {
             }
         } else {
             activeView.style.display = 'flex';
+            if (viewId === 'profile_settings') {
+                const scrollContainer = document.getElementById('profile-settings-scroll-container');
+                if (scrollContainer) {
+                    if (oldViewId && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'adjust_homepage'].includes(oldViewId)) {
+                        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+                        console.log("[Scroll Restore] Always restored to bottom of profile settings when returning from:", oldViewId);
+                    } else {
+                        scrollContainer.scrollTop = 0;
+                    }
+                }
+            } else {
+                activeView.scrollTop = 0;
+            }
+
             if (disableTransition) {
                 activeView.classList.add('no-transition');
                 activeView.classList.add('active');
-                if (viewId === 'profile_settings') {
-                    const scrollContainer = document.getElementById('profile-settings-scroll-container');
-                    if (scrollContainer) scrollContainer.scrollTop = 0;
-                    if (oldViewId && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve'].includes(oldViewId)) {
-                        if (scrollContainer) {
-                            setTimeout(() => {
-                                if (window.savedProfileScrollTop !== undefined) {
-                                    scrollContainer.scrollTop = window.savedProfileScrollTop;
-                                    console.log("[Scroll Restore] Restored profile settings scroll position:", window.savedProfileScrollTop);
-                                } else {
-                                    scrollContainer.scrollTop = scrollContainer.scrollHeight;
-                                    console.log("[Scroll Restore] Fallback to bottom of profile settings");
-                                }
-                            }, 50);
-                        }
-                    }
-                } else {
-                    activeView.scrollTop = 0;
-                }
                 setTimeout(() => {
                     activeView.classList.remove('no-transition');
                 }, 100);
             } else {
                 setTimeout(() => activeView.classList.add('active'), 20);
-                if (viewId === 'profile_settings') {
-                    const scrollContainer = document.getElementById('profile-settings-scroll-container');
-                    if (scrollContainer) scrollContainer.scrollTop = 0;
-                    if (oldViewId && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve'].includes(oldViewId)) {
-                        if (scrollContainer) {
-                            setTimeout(() => {
-                                if (window.savedProfileScrollTop !== undefined) {
-                                    scrollContainer.scrollTop = window.savedProfileScrollTop;
-                                    console.log("[Scroll Restore] Restored profile settings scroll position:", window.savedProfileScrollTop);
-                                } else {
-                                    scrollContainer.scrollTop = scrollContainer.scrollHeight;
-                                    console.log("[Scroll Restore] Fallback to bottom of profile settings");
-                                }
-                            }, 50);
-                        }
-                    }
-                } else {
-                    activeView.scrollTop = 0;
-                }
             }
         }
         
@@ -15868,6 +15853,9 @@ function switchVillageSegment(type) {
     } else if (targetView === 'bulletins') {
         renderBulletinsList();
     }
+    
+    // Track currently rendered view mode
+    window.currentRenderedViewMode = state.activeViewMode;
 }
 
 function formatEventTimes(startIso, endIso) {

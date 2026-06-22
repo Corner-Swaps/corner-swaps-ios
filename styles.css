@@ -461,6 +461,12 @@ html.dark ::-webkit-scrollbar-thumb:hover {
     position: relative !important;
 }
 
+/* Eliminate vertical slide shift and vertical animation glitches on view-chat_detail while preserving horizontal sliding */
+#view-chat_detail {
+    transform: none !important;
+    transition: opacity 0.15s ease-in-out !important;
+}
+
 .screen-view > div.overflow-y-auto {
     min-height: 0 !important;
 }
@@ -1211,11 +1217,11 @@ html.dark #phone-header-bar .material-symbols-outlined {
     padding-bottom: 0 !important;
 }
 .native-app-env #profile-settings-scroll-container {
-    padding-top: 100px !important;
+    padding-top: 48px !important;
     padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
 }
 .native-app-env #profile-settings-scroll-container.has-header {
-    padding-top: 100px !important;
+    padding-top: 48px !important;
 }
 
 .native-app-env #view-village {
@@ -1265,7 +1271,7 @@ html.dark #neighbor-profile-modal {
 }
 
 .native-app-env #neighbor-profile-scroll-container {
-    padding-top: 100px !important;
+    padding-top: 48px !important;
     padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
 }
 
@@ -6106,7 +6112,7 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
 }
 .iphone16-mode #neighbor-profile-scroll-container,
 .iphone16-mode #profile-settings-scroll-container {
-    padding-top: 100px !important;
+    padding-top: 48px !important;
 }
 
 /* Custom premium checkboxes for EULA */
@@ -8765,6 +8771,7 @@ html.dark .category-filter-pill.active-pill {
     min-height: 0;
     overflow: hidden;
     background-color: #ffffff !important;
+    padding-top: 20px !important;
 }
 html.dark .list-card-expandable-content {
     background-color: #18201a !important;
@@ -9208,7 +9215,7 @@ html.dark #meetup-safety-subtitle {
 
 #neighbor-profile-scroll-container,
 #profile-settings-scroll-container {
-    padding-top: 100px !important;
+    padding-top: 48px !important;
 }
 
 /* Expanded list card header titles font size adjustment (Date & Time, Neighbourhood, Attendees) */
