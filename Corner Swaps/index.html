@@ -21748,8 +21748,15 @@ function showView(viewId, mode) {
                 const scrollContainer = document.getElementById('profile-settings-scroll-container');
                 if (scrollContainer) {
                     if (oldViewId && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'adjust_homepage'].includes(oldViewId)) {
+                        // Force layout pass to ensure scrollHeight is accurate before setting scrollTop
+                        scrollContainer.offsetHeight;
                         scrollContainer.scrollTop = scrollContainer.scrollHeight;
-                        console.log("[Scroll Restore] Always restored to bottom of profile settings when returning from:", oldViewId);
+                        
+                        // Defer to next animation frame to guarantee scroll height is settled
+                        requestAnimationFrame(() => {
+                            scrollContainer.scrollTop = scrollContainer.scrollHeight;
+                        });
+                        console.log("[Scroll Restore] Restored to bottom of profile settings when returning from:", oldViewId);
                     } else {
                         scrollContainer.scrollTop = 0;
                     }
@@ -21765,7 +21772,19 @@ function showView(viewId, mode) {
                     activeView.classList.remove('no-transition');
                 }, 100);
             } else {
-                setTimeout(() => activeView.classList.add('active'), 20);
+                setTimeout(() => {
+                    activeView.classList.add('active');
+                    if (viewId === 'profile_settings' && oldViewId && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'adjust_homepage'].includes(oldViewId)) {
+                        const scrollContainer = document.getElementById('profile-settings-scroll-container');
+                        if (scrollContainer) {
+                            scrollContainer.offsetHeight; // force layout
+                            scrollContainer.scrollTop = scrollContainer.scrollHeight;
+                            requestAnimationFrame(() => {
+                                scrollContainer.scrollTop = scrollContainer.scrollHeight;
+                            });
+                        }
+                    }
+                }, 20);
             }
         }
         
