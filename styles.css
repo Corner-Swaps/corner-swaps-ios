@@ -1211,11 +1211,11 @@ html.dark #phone-header-bar .material-symbols-outlined {
     padding-bottom: 0 !important;
 }
 .native-app-env #profile-settings-scroll-container {
-    padding-top: calc(1rem + env(safe-area-inset-top)) !important;
+    padding-top: calc(110px + env(safe-area-inset-top)) !important;
     padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
 }
 .native-app-env #profile-settings-scroll-container.has-header {
-    padding-top: calc(64px + env(safe-area-inset-top)) !important;
+    padding-top: calc(110px + env(safe-area-inset-top)) !important;
 }
 
 .native-app-env #view-village {
@@ -1265,7 +1265,7 @@ html.dark #neighbor-profile-modal {
 }
 
 .native-app-env #neighbor-profile-scroll-container {
-    padding-top: calc(1rem + env(safe-area-inset-top)) !important;
+    padding-top: calc(110px + env(safe-area-inset-top)) !important;
     padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
 }
 
@@ -3159,6 +3159,29 @@ html.dark .fused-filter-btn.has-active-filter span {
     html.dark body:not(.show-simulator):not(.native-app) #view-help_improve,
     html.dark body:not(.show-simulator):not(.native-app) #view-create_bulletin,
     html.dark body:not(.show-simulator):not(.native-app) #view-create_group {
+        background-color: #101612 !important;
+        border-left-color: rgba(255, 255, 255, 0.08) !important;
+        border-right-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    /* Neighbor profile modal centering and height alignment in browser mode */
+    body:not(.show-simulator):not(.native-app) #neighbor-profile-modal {
+        padding-top: 80px !important;
+        height: 100vh !important;
+        box-sizing: border-box !important;
+        background-color: var(--warm-cream) !important;
+        max-width: 800px !important;
+        border-left: 1px solid rgba(48, 138, 94, 0.08) !important;
+        border-right: 1px solid rgba(48, 138, 94, 0.08) !important;
+        background-color: #ffffff !important;
+        position: absolute !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        width: 100% !important;
+    }
+
+    html.dark body:not(.show-simulator):not(.native-app) #neighbor-profile-modal {
         background-color: #101612 !important;
         border-left-color: rgba(255, 255, 255, 0.08) !important;
         border-right-color: rgba(255, 255, 255, 0.08) !important;
@@ -6074,6 +6097,14 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
     padding-top: 44px !important;
 }
 
+/* Ensure neighbor profile modal is padded in simulator mode */
+.iphone16-mode #neighbor-profile-header {
+    padding-top: 44px !important;
+}
+.iphone16-mode #neighbor-profile-scroll-container {
+    padding-top: 108px !important;
+}
+
 /* Custom premium checkboxes for EULA */
 .checkbox-wrapper {
     position: relative;
@@ -6908,9 +6939,18 @@ html.dark .category-tray, html.dark .category-list-overlay {
 #chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"] div:not(.material-symbols-outlined),
 #chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] div:not(.material-symbols-outlined),
 #chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"] span:not(.material-symbols-outlined),
-#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] span:not(.material-symbols-outlined) {
+#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] span:not(.material-symbols-outlined),
+#chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"] .popup-modal-title,
+#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] .popup-modal-title {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 13px !important; /* Keep UI labels relatively smaller so they don't break layout, but regular weight! */
+    font-size: 15.5px !important;
+    font-weight: 500 !important;
+}
+
+#chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"] .popup-modal-desc,
+#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] .popup-modal-desc {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 13px !important;
     font-weight: 400 !important;
 }
 
@@ -7253,10 +7293,21 @@ html.dark input:checked + .switch-slider:before {
     width: calc(100% - 40px) !important;
     max-width: 480px !important;
     transition: all 0.3s ease !important;
+    pointer-events: none !important;
 }
 
 #village-search-bar-overlay.hidden {
     display: none !important;
+}
+
+/* Ensure interactive elements inside the search overlay capture pointer events */
+.fused-search-capsule,
+#village-search-suggestions,
+#village-quick-create-dropdown,
+#village-search-intel-pill,
+#village-segmented-control,
+.category-filter-row {
+    pointer-events: auto !important;
 }
 
 /* Fused Search Capsule */
@@ -7563,6 +7614,8 @@ html.dark .intel-title {
     overflow-y: auto !important;
     width: 100% !important;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
 }
 
 html.dark .fused-suggestions-box {
@@ -7573,7 +7626,9 @@ html.dark .fused-suggestions-box {
 
 /* Scrollbar styles for suggestions box */
 .fused-suggestions-box::-webkit-scrollbar {
-    width: 5px !important;
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
 }
 .fused-suggestions-box::-webkit-scrollbar-track {
     background: transparent !important;
@@ -8051,7 +8106,7 @@ html.dark #chat-qr-handshake-modal :not(button):not(button *):not(.material-symb
 /* Standardized typography for list card titles */
 .list-card-title {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 14px !important;
+    font-size: 16px !important;
     font-weight: 700 !important;
     color: #000000 !important;
     opacity: 1.0 !important;
@@ -8700,6 +8755,11 @@ html.dark .list-card-expandable-content {
     background-color: #18201a !important;
 }
 
+/* Make expanded card icons (neighborhood, date, attendees) slightly bigger */
+.list-card-expandable-content .flex.items-start > .material-symbols-outlined {
+    font-size: 22px !important;
+}
+
 /* ==================================================== */
 /* UNIFIED CHAT SECTION TYPOGRAPHY (15.5px & 13px) */
 /* ==================================================== */
@@ -9033,7 +9093,7 @@ html.dark #btn-onboarding-location-permission.active-glow {
     box-shadow: 0 0 18px rgba(34, 197, 94, 0.85) !important;
 }
 
-/* Force all text elements, inputs, and buttons inside the Offer a Swap modal to be exactly 15.5px (matching map popup descriptions) */
+/* Force all text elements, inputs, and buttons inside the Offer a Swap modal to be exactly 12px (Regular 400 weight, line-height 1.5) */
 #offer-swap-container,
 #offer-swap-container h3,
 #offer-swap-container h3 *,
@@ -9049,7 +9109,14 @@ html.dark #btn-onboarding-location-permission.active-glow {
 #lifecycle-custom-text,
 #lifecycle-offerings-scroller button,
 #lifecycle-offerings-scroller button * {
-    font-size: 15.5px !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    font-weight: 400 !important;
+}
+
+#offer-swap-container h3,
+#offer-swap-container h3 * {
+    font-weight: 700 !important;
 }
 
 /* Make global bottom navbar narrower and bring icons closer together */
@@ -9091,6 +9158,44 @@ body.show-simulator #global-navbar,
 html.dark .active-green-white {
     background-color: #308A5E !important;
 }
+
+/* Suggest Meeting Spot Modal Header Overrides */
+#meetup-safety-title,
+#meetup-safety-subtitle {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+}
+#meetup-safety-title {
+    font-weight: 700 !important;
+    color: #101612 !important;
+}
+html.dark #meetup-safety-title {
+    color: #ffffff !important;
+}
+#meetup-safety-subtitle {
+    font-weight: 400 !important;
+    color: #4b5563 !important;
+}
+html.dark #meetup-safety-subtitle {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Proposed Swap Card Header and Status Pill Typography Uniformity (same as typed chat messages: 14px Outfit regular) */
+#chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"] span.popup-modal-title,
+#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] span.popup-modal-title,
+#chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"] .mt-1 div.rounded-full,
+#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] .mt-1 div.rounded-full {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+}
+
+#neighbor-profile-scroll-container,
+#profile-settings-scroll-container {
+    padding-top: 110px !important;
+}
+
 
 
 

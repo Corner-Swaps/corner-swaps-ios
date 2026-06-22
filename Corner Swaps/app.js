@@ -6749,16 +6749,20 @@ function renderEventsList() {
                                 <div>
                                     <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Neighbourhood</h5>
                                     <p class="mt-0.5">${evt.location} · ${distanceDisplay}</p>
+                                </div>
                             </div>
                             
                             <!-- Attendees -->
-                            <div>
-                                <div class="flex justify-between items-center mb-1.5">
-                                    <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Attendees</h5>
-                                    <span class="text-[10px] font-medium text-outline attendee-count-el">${rsvpsCount} ${rsvpsCount === 1 ? 'neighbor is' : 'neighbors are'} going</span>
-                                </div>
-                                <div class="flex gap-1.5 overflow-hidden py-1 attendee-avatars-container">
-                                    ${rsvpAvatarsHtml}
+                            <div class="flex items-start gap-2.5 pt-1">
+                                <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-lg mt-0.5">group</span>
+                                <div class="flex-grow">
+                                    <div class="flex justify-between items-center mb-1.5">
+                                        <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Attendees</h5>
+                                        <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400 attendee-count-el">${rsvpsCount} ${rsvpsCount === 1 ? 'neighbor is' : 'neighbors are'} going</span>
+                                    </div>
+                                    <div class="flex gap-1.5 overflow-hidden py-1 attendee-avatars-container">
+                                        ${rsvpAvatarsHtml}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -7529,7 +7533,7 @@ function initLeafletMap() {
     leafletMap.on('click', (e) => {
         closeMapItemDetail();
         closeMapItemPeek();
-        closeMapCategoryDropdown();
+        // Keep map category dropdown open as requested
     });
 
     leafletMap.on('popupopen', function(e) {
@@ -8634,6 +8638,10 @@ function handleMapEventRSVPToggle() {
     const event = state.events.find(e => e.id === eventId);
     if (!event) return;
 
+    if (!event.rsvps) {
+        event.rsvps = ['Sarah Chen', 'David Kim'];
+    }
+
     const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
     const index = event.rsvps.indexOf(currentUser);
 
@@ -8645,10 +8653,11 @@ function handleMapEventRSVPToggle() {
         playSound('match_success');
         
         // Send a chat confirmation message from host to user
-        let conv = state.conversations.find(c => c.neighborName.toLowerCase() === event.host.toLowerCase() || c.id === event.host.toLowerCase().replace(' ', '-'));
+        const hostLower = (event.host || '').toLowerCase();
+        let conv = state.conversations.find(c => (c.neighborName && c.neighborName.toLowerCase() === hostLower) || (c.id && c.id === hostLower.replace(' ', '-')));
         if (!conv) {
             conv = {
-                id: event.host.toLowerCase().replace(' ', '-'),
+                id: hostLower.replace(' ', '-'),
                 neighborName: event.host,
                 unread: false,
                 timeLeft: '48 hours left',
@@ -9391,8 +9400,8 @@ function selectMapCategory(categoryName) {
     updateCategoryTrayUI();
     updateMapCategoryCirclesSelection();
     
-    // Close dropdown
-    toggleCategoryTray();
+    // Keep map category dropdown open as requested
+    // toggleCategoryTray();
 }
 function animateCategoryDropdownOut(callback) {
     const dropdown = document.getElementById('map-category-dropdown');
@@ -12379,7 +12388,7 @@ function renderChatDetail(conv) {
                                 <div class="mt-1 flex justify-center">
                                     <div class="px-3 py-1.5 rounded-full text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none popup-modal-desc font-bold">
                                         ${(conv.negotiation && (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'))
-                                            ? 'Agreement Confirmed! ⚡'
+                                            ? 'Agreement Confirmed!'
                                             : `${escapeHTML(conv.neighborName)} to agree?`}
                                     </div>
                                 </div>
@@ -12396,14 +12405,14 @@ function renderChatDetail(conv) {
                     }
                     if (msg.isLocationSuggestion) {
                         bubbleInnerContent += `
-                        <div class="flex flex-col gap-2 w-full max-w-[200px]">
+                        <div class="flex flex-col gap-2 w-full max-w-[220px]">
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-warm-cream">${msg.isLiveLocation ? 'my_location' : 'place'}</span>
-                                <span class="text-xs font-bold text-warm-cream">${msg.isLiveLocation ? 'My Live Location' : 'Suggested Meeting Spot'}</span>
+                                <span class="text-sm font-normal text-warm-cream">${msg.isLiveLocation ? 'My Live Location' : 'Suggested Meeting Spot'}</span>
                             </div>
                             <div class="p-2 bg-white/10 rounded-xl border border-white/10">
-                                <p class="font-bold text-warm-cream text-[11px]">${escapeHTML(msg.locationData ? msg.locationData.name : '')}</p>
-                                <p class="text-[9.5px] text-warm-cream/80">${escapeHTML(msg.locationData ? msg.locationData.address : '')}</p>
+                                <p class="font-normal text-warm-cream text-sm mt-0.5">${escapeHTML(msg.locationData ? msg.locationData.name : '')}</p>
+                                <p class="text-sm text-warm-cream/80 mt-0.5">${escapeHTML(msg.locationData ? msg.locationData.address : '')}</p>
                             </div>
                         </div>`;
                     } else if (msg.isKarmaSwapRequest) {
@@ -12472,7 +12481,7 @@ function renderChatDetail(conv) {
                                 <div class="mt-1 flex justify-center">
                                     <div class="px-3 py-1.5 rounded-full text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none popup-modal-desc font-bold">
                                         ${(conv.negotiation && (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'))
-                                            ? 'Agreement Confirmed! ⚡'
+                                            ? 'Agreement Confirmed!'
                                             : 'You to agree?'}
                                     </div>
                                 </div>
@@ -12488,14 +12497,14 @@ function renderChatDetail(conv) {
                     }
                     if (msg.isLocationSuggestion) {
                         bubbleInnerContent += `
-                        <div class="flex flex-col gap-2 w-full max-w-[200px]">
+                        <div class="flex flex-col gap-2 w-full max-w-[220px]">
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-forest-green">${msg.isLiveLocation ? 'my_location' : 'place'}</span>
-                                <span class="text-xs font-bold text-forest-green">${msg.isLiveLocation ? 'My Live Location' : 'Suggested Meeting Spot'}</span>
+                                <span class="text-sm font-normal text-forest-green">${msg.isLiveLocation ? 'My Live Location' : 'Suggested Meeting Spot'}</span>
                             </div>
                             <div class="p-2 bg-forest-green/5 rounded-xl border border-outline-variant/10">
-                                <p class="font-bold text-forest-green text-[11px]">${escapeHTML(msg.locationData ? msg.locationData.name : '')}</p>
-                                <p class="text-[9.5px] text-on-surface-variant">${escapeHTML(msg.locationData ? msg.locationData.address : '')}</p>
+                                <p class="font-normal text-forest-green text-sm mt-0.5">${escapeHTML(msg.locationData ? msg.locationData.name : '')}</p>
+                                <p class="text-sm text-on-surface-variant mt-0.5">${escapeHTML(msg.locationData ? msg.locationData.address : '')}</p>
                             </div>
                         </div>`;
                     } else if (msg.isKarmaSwapRequest) {
@@ -17449,13 +17458,7 @@ const initMapAndInputs = () => {
             return;
         }
 
-        // Close map category dropdown on click outside (capture phase captures it before Leaflet stops propagation)
-        const dropdown = document.getElementById('map-category-dropdown');
-        if (dropdown && !dropdown.classList.contains('hidden')) {
-            if (!dropdown.contains(e.target)) {
-                closeMapCategoryDropdown();
-            }
-        }
+        // Close map category dropdown on click outside disabled to keep it open while interacting with the map
     }, true); // Capture phase is critical to run before Leaflet stops propagation!
 
     // Load saved simulator scale
@@ -17804,14 +17807,7 @@ document.addEventListener('click', (e) => {
         if (d) d.classList.add('hidden');
     }
 
-    // Close map category dropdown on click outside
-    const dropdown = document.getElementById('map-category-dropdown');
-    const filterBtn = document.getElementById('btn-segment-filter');
-    if (dropdown && !dropdown.classList.contains('hidden') && filterBtn) {
-        if (!dropdown.contains(e.target) && !filterBtn.contains(e.target)) {
-            closeMapCategoryDropdown();
-        }
-    }
+    // Close map category dropdown on click outside disabled to keep it open while interacting with the map
 
     // Close list category dropdowns on click outside
     const listDropdowns = [
@@ -22182,6 +22178,10 @@ function handleEventRSVPToggle() {
     const event = state.events.find(e => e.id === state.activeEventId);
     if (!event) return;
 
+    if (!event.rsvps) {
+        event.rsvps = ['Sarah Chen', 'David Kim'];
+    }
+
     const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
     const index = event.rsvps.indexOf(currentUser);
 
@@ -22193,10 +22193,11 @@ function handleEventRSVPToggle() {
         playSound('match_success');
         
         // Send a chat confirmation message from host to user
-        let conv = state.conversations.find(c => c.neighborName.toLowerCase() === event.host.toLowerCase() || c.id === event.host.toLowerCase().replace(' ', '-'));
+        const hostLower = (event.host || '').toLowerCase();
+        let conv = state.conversations.find(c => (c.neighborName && c.neighborName.toLowerCase() === hostLower) || (c.id && c.id === hostLower.replace(' ', '-')));
         if (!conv) {
             conv = {
-                id: event.host.toLowerCase().replace(' ', '-'),
+                id: hostLower.replace(' ', '-'),
                 neighborName: event.host,
                 unread: true,
                 timeLeft: '48 hours left',
@@ -22238,6 +22239,10 @@ window.handleEventRSVPToggleFromList = function(eventId, eventObj) {
 
     window.activeExpandedCardId = 'evt_' + eventId;
 
+    if (!event.rsvps) {
+        event.rsvps = ['Sarah Chen', 'David Kim'];
+    }
+
     const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
     const index = event.rsvps.indexOf(currentUser);
 
@@ -22248,10 +22253,11 @@ window.handleEventRSVPToggleFromList = function(eventId, eventObj) {
         event.rsvps.push(currentUser);
         playSound('match_success');
         
-        let conv = state.conversations.find(c => c.neighborName.toLowerCase() === event.host.toLowerCase() || c.id === event.host.toLowerCase().replace(' ', '-'));
+        const hostLower = (event.host || '').toLowerCase();
+        let conv = state.conversations.find(c => (c.neighborName && c.neighborName.toLowerCase() === hostLower) || (c.id && c.id === hostLower.replace(' ', '-')));
         if (!conv) {
             conv = {
-                id: event.host.toLowerCase().replace(' ', '-'),
+                id: hostLower.replace(' ', '-'),
                 neighborName: event.host,
                 unread: true,
                 timeLeft: '48 hours left',
@@ -30367,21 +30373,16 @@ window.openSwapLifecycleModal = function(role, conversationId) {
     
     if (role === 'initiator') {
         const totalKarma = ((state.level || 1) - 1) * 100 + (state.xp || 50);
-        // Render Initiator View (Propose swap)
         container.innerHTML = `
             <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
                 <h3 class="popup-modal-title text-center mb-1">Offer a Swap</h3>
                 <p class="popup-modal-desc text-center text-xs mb-2">Propose an item to swap or ask for a Karma request.</p>
-                <div class="px-3 py-1 bg-amber-500/10 text-amber-500 text-xs font-extrabold rounded-full flex items-center gap-1.5 border border-amber-500/20 shadow-sm mb-1">
-                    <span class="material-symbols-outlined text-xs font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
-                    Your Balance: ${totalKarma} Karma
-                </div>
             </div>
             
             <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 min-h-0">
                 <!-- My Items to Offer -->
                 <div class="flex flex-col gap-1.5 shrink-0">
-                    <span class="text-xs font-black text-black/50 dark:text-white/50 uppercase tracking-wider">My Items to Offer</span>
+                    <span class="popup-modal-desc block text-left">My Items to Offer</span>
                     <div class="flex flex-col gap-2 py-1 select-none w-full" id="lifecycle-offerings-scroller">
                         <!-- Populated dynamically below -->
                     </div>
@@ -30389,7 +30390,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                 
                 <!-- Custom Item Input -->
                 <div class="flex flex-col gap-1.5 shrink-0">
-                    <span class="text-xs font-black text-black/50 dark:text-white/50 uppercase tracking-wider">Custom Item (Optional)</span>
+                    <span class="popup-modal-desc block text-left">Custom Item (Optional)</span>
                     <input type="text" id="lifecycle-custom-text" class="w-full bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl p-3 text-xs outline-none focus:ring-1 focus:ring-forest-green text-on-surface" placeholder="Type an item name..."/>
                 </div>
             </div>

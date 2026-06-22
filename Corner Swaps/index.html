@@ -2389,11 +2389,11 @@ html.dark #phone-header-bar .material-symbols-outlined {
     padding-bottom: 0 !important;
 }
 .native-app-env #profile-settings-scroll-container {
-    padding-top: calc(1rem + env(safe-area-inset-top)) !important;
+    padding-top: calc(110px + env(safe-area-inset-top)) !important;
     padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
 }
 .native-app-env #profile-settings-scroll-container.has-header {
-    padding-top: calc(64px + env(safe-area-inset-top)) !important;
+    padding-top: calc(110px + env(safe-area-inset-top)) !important;
 }
 
 .native-app-env #view-village {
@@ -2443,7 +2443,7 @@ html.dark #neighbor-profile-modal {
 }
 
 .native-app-env #neighbor-profile-scroll-container {
-    padding-top: calc(1rem + env(safe-area-inset-top)) !important;
+    padding-top: calc(110px + env(safe-area-inset-top)) !important;
     padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
 }
 
@@ -4337,6 +4337,29 @@ html.dark .fused-filter-btn.has-active-filter span {
     html.dark body:not(.show-simulator):not(.native-app) #view-help_improve,
     html.dark body:not(.show-simulator):not(.native-app) #view-create_bulletin,
     html.dark body:not(.show-simulator):not(.native-app) #view-create_group {
+        background-color: #101612 !important;
+        border-left-color: rgba(255, 255, 255, 0.08) !important;
+        border-right-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    /* Neighbor profile modal centering and height alignment in browser mode */
+    body:not(.show-simulator):not(.native-app) #neighbor-profile-modal {
+        padding-top: 80px !important;
+        height: 100vh !important;
+        box-sizing: border-box !important;
+        background-color: var(--warm-cream) !important;
+        max-width: 800px !important;
+        border-left: 1px solid rgba(48, 138, 94, 0.08) !important;
+        border-right: 1px solid rgba(48, 138, 94, 0.08) !important;
+        background-color: #ffffff !important;
+        position: absolute !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        width: 100% !important;
+    }
+
+    html.dark body:not(.show-simulator):not(.native-app) #neighbor-profile-modal {
         background-color: #101612 !important;
         border-left-color: rgba(255, 255, 255, 0.08) !important;
         border-right-color: rgba(255, 255, 255, 0.08) !important;
@@ -7252,6 +7275,14 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
     padding-top: 44px !important;
 }
 
+/* Ensure neighbor profile modal is padded in simulator mode */
+.iphone16-mode #neighbor-profile-header {
+    padding-top: 44px !important;
+}
+.iphone16-mode #neighbor-profile-scroll-container {
+    padding-top: 108px !important;
+}
+
 /* Custom premium checkboxes for EULA */
 .checkbox-wrapper {
     position: relative;
@@ -8086,9 +8117,18 @@ html.dark .category-tray, html.dark .category-list-overlay {
 #chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"] div:not(.material-symbols-outlined),
 #chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] div:not(.material-symbols-outlined),
 #chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"] span:not(.material-symbols-outlined),
-#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] span:not(.material-symbols-outlined) {
+#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] span:not(.material-symbols-outlined),
+#chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"] .popup-modal-title,
+#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] .popup-modal-title {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 13px !important; /* Keep UI labels relatively smaller so they don't break layout, but regular weight! */
+    font-size: 15.5px !important;
+    font-weight: 500 !important;
+}
+
+#chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"] .popup-modal-desc,
+#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] .popup-modal-desc {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 13px !important;
     font-weight: 400 !important;
 }
 
@@ -8431,10 +8471,21 @@ html.dark input:checked + .switch-slider:before {
     width: calc(100% - 40px) !important;
     max-width: 480px !important;
     transition: all 0.3s ease !important;
+    pointer-events: none !important;
 }
 
 #village-search-bar-overlay.hidden {
     display: none !important;
+}
+
+/* Ensure interactive elements inside the search overlay capture pointer events */
+.fused-search-capsule,
+#village-search-suggestions,
+#village-quick-create-dropdown,
+#village-search-intel-pill,
+#village-segmented-control,
+.category-filter-row {
+    pointer-events: auto !important;
 }
 
 /* Fused Search Capsule */
@@ -8741,6 +8792,8 @@ html.dark .intel-title {
     overflow-y: auto !important;
     width: 100% !important;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
 }
 
 html.dark .fused-suggestions-box {
@@ -8751,7 +8804,9 @@ html.dark .fused-suggestions-box {
 
 /* Scrollbar styles for suggestions box */
 .fused-suggestions-box::-webkit-scrollbar {
-    width: 5px !important;
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
 }
 .fused-suggestions-box::-webkit-scrollbar-track {
     background: transparent !important;
@@ -9229,7 +9284,7 @@ html.dark #chat-qr-handshake-modal :not(button):not(button *):not(.material-symb
 /* Standardized typography for list card titles */
 .list-card-title {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 14px !important;
+    font-size: 16px !important;
     font-weight: 700 !important;
     color: #000000 !important;
     opacity: 1.0 !important;
@@ -9878,6 +9933,11 @@ html.dark .list-card-expandable-content {
     background-color: #18201a !important;
 }
 
+/* Make expanded card icons (neighborhood, date, attendees) slightly bigger */
+.list-card-expandable-content .flex.items-start > .material-symbols-outlined {
+    font-size: 22px !important;
+}
+
 /* ==================================================== */
 /* UNIFIED CHAT SECTION TYPOGRAPHY (15.5px & 13px) */
 /* ==================================================== */
@@ -10211,7 +10271,7 @@ html.dark #btn-onboarding-location-permission.active-glow {
     box-shadow: 0 0 18px rgba(34, 197, 94, 0.85) !important;
 }
 
-/* Force all text elements, inputs, and buttons inside the Offer a Swap modal to be exactly 15.5px (matching map popup descriptions) */
+/* Force all text elements, inputs, and buttons inside the Offer a Swap modal to be exactly 12px (Regular 400 weight, line-height 1.5) */
 #offer-swap-container,
 #offer-swap-container h3,
 #offer-swap-container h3 *,
@@ -10227,7 +10287,14 @@ html.dark #btn-onboarding-location-permission.active-glow {
 #lifecycle-custom-text,
 #lifecycle-offerings-scroller button,
 #lifecycle-offerings-scroller button * {
-    font-size: 15.5px !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    font-weight: 400 !important;
+}
+
+#offer-swap-container h3,
+#offer-swap-container h3 * {
+    font-weight: 700 !important;
 }
 
 /* Make global bottom navbar narrower and bring icons closer together */
@@ -10268,6 +10335,43 @@ body.show-simulator #global-navbar,
 }
 html.dark .active-green-white {
     background-color: #308A5E !important;
+}
+
+/* Suggest Meeting Spot Modal Header Overrides */
+#meetup-safety-title,
+#meetup-safety-subtitle {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+}
+#meetup-safety-title {
+    font-weight: 700 !important;
+    color: #101612 !important;
+}
+html.dark #meetup-safety-title {
+    color: #ffffff !important;
+}
+#meetup-safety-subtitle {
+    font-weight: 400 !important;
+    color: #4b5563 !important;
+}
+html.dark #meetup-safety-subtitle {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Proposed Swap Card Header and Status Pill Typography Uniformity (same as typed chat messages: 14px Outfit regular) */
+#chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"] span.popup-modal-title,
+#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] span.popup-modal-title,
+#chat-message-feed .chat-bubble-hover[onclick*="viewSwapOfferOnMap"] .mt-1 div.rounded-full,
+#chat-message-feed .chat-bubble-hover[onclick*="openSwapLifecycleModal"] .mt-1 div.rounded-full {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+}
+
+#neighbor-profile-scroll-container,
+#profile-settings-scroll-container {
+    padding-top: 110px !important;
 }
 </style>
     <!-- Tailwind Configuration (removed - runtime replaced with pre-compiled CSS) -->
@@ -11490,7 +11594,7 @@ html.dark .active-green-white {
                             <div id="meetup-map-footer" class="hidden absolute bottom-12 right-6 z-[3000] flex flex-col-reverse items-end transition-all duration-300"></div>
 
                             <!-- Fused Search & Filter Bar Container -->
-                            <div id="village-search-bar-overlay" class="pointer-events-auto absolute z-[2000] flex flex-col items-stretch transition-all duration-300">
+                            <div id="village-search-bar-overlay" class="pointer-events-none absolute z-[2000] flex flex-col items-stretch transition-all duration-300">
                                 <div class="fused-search-capsule select-none">
                                     <!-- Filter Button (tune) on the left of the location icon -->
                                     <button id="btn-segment-filter" onclick="toggleMapCategoryDropdown()" class="fused-filter-btn active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Category Filter">
@@ -11800,18 +11904,6 @@ html.dark .active-green-white {
                                         </div>
                                         <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
                                     </button>
-
-                                    <!-- Donation Row -->
-                                    <button type="button" onclick="triggerQuickCreate('donation')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
-                                        <div class="quick-create-icon-circle" style="background-color: #ec4899 !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
-                                            <span class="material-symbols-outlined text-[18px]">volunteer_activism</span>
-                                        </div>
-                                        <div class="quick-create-info">
-                                            <h4 class="quick-create-title" style="font-size: 13px !important;">Donation</h4>
-                                            <p class="quick-create-desc" style="font-size: 11px !important;">Gift items or support a local cause</p>
-                                        </div>
-                                        <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
-                                    </button>
                                 </div>
                             </div>
 
@@ -11903,18 +11995,6 @@ html.dark .active-green-white {
                                         </div>
                                         <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
                                     </button>
-
-                                    <!-- Donation Row -->
-                                    <button type="button" onclick="triggerQuickCreate('donation')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
-                                        <div class="quick-create-icon-circle" style="background-color: #ec4899 !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
-                                            <span class="material-symbols-outlined text-[18px]">volunteer_activism</span>
-                                        </div>
-                                        <div class="quick-create-info">
-                                            <h4 class="quick-create-title" style="font-size: 13px !important;">Donation</h4>
-                                            <p class="quick-create-desc" style="font-size: 11px !important;">Gift items or support a local cause</p>
-                                        </div>
-                                        <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
-                                    </button>
                                 </div>
                             </div>
 
@@ -12003,18 +12083,6 @@ html.dark .active-green-white {
                                         <div class="quick-create-info">
                                             <h4 class="quick-create-title" style="font-size: 13px !important;">Event</h4>
                                             <p class="quick-create-desc" style="font-size: 11px !important;">Organize a gathering or swap meet</p>
-                                        </div>
-                                        <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
-                                    </button>
-
-                                    <!-- Donation Row -->
-                                    <button type="button" onclick="triggerQuickCreate('donation')" class="quick-create-row" style="padding: 10px 12px !important; border-radius: 9999px !important; margin: 0 !important;">
-                                        <div class="quick-create-icon-circle" style="background-color: #ec4899 !important; color: #ffffff !important; width: 36px !important; height: 36px !important;">
-                                            <span class="material-symbols-outlined text-[18px]">volunteer_activism</span>
-                                        </div>
-                                        <div class="quick-create-info">
-                                            <h4 class="quick-create-title" style="font-size: 13px !important;">Donation</h4>
-                                            <p class="quick-create-desc" style="font-size: 11px !important;">Gift items or support a local cause</p>
                                         </div>
                                         <span class="material-symbols-outlined text-[18px] quick-create-chevron">chevron_right</span>
                                     </button>
@@ -14627,7 +14695,7 @@ html.dark .active-green-white {
                             </h3>
                             <div class="space-y-3 pt-2">
                                 <form onsubmit="handleHelpImproveFeedbackSubmit(event)" class="space-y-3">
-                                    <textarea id="help-improve-suggestion-input" class="w-full bg-warm-cream/10 dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl p-3 text-xs focus:border-forest-green focus:ring-0 outline-none placeholder:text-outline/40 leading-relaxed resize-none text-black dark:text-white" placeholder="What can we do better? Tell us about any layout, design, or user interface improvements you'd like to see..." rows="3" required></textarea>
+                                    <textarea id="help-improve-suggestion-input" class="w-full bg-warm-cream/10 dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl p-3 text-xs focus:border-forest-green focus:ring-0 outline-none placeholder:text-outline/40 leading-relaxed resize-none text-black dark:text-white" placeholder="What can we do better? Tell us about any layout, design, or user interface improvements you'd like to see..." rows="12" required></textarea>
                                     <button type="submit" class="w-full bg-forest-green text-white dark:bg-[#308A5E] dark:text-white py-2 rounded-xl font-bold text-xs active:scale-[0.98] transition-all shadow cursor-pointer border-0">
                                         Submit Suggestion
                                     </button>
@@ -14642,7 +14710,7 @@ html.dark .active-green-white {
                             </h3>
                             <div class="space-y-3 pt-2">
                                 <form onsubmit="handleHelpImproveBugSubmit(event)" class="space-y-3">
-                                    <textarea id="help-improve-bug-input" class="w-full bg-warm-cream/10 dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl p-3 text-xs focus:border-forest-green focus:ring-0 outline-none placeholder:text-outline/40 leading-relaxed resize-none text-black dark:text-white" placeholder="Describe the bug or issue you encountered. What steps did you take? What did you expect to happen, and what happened instead?..." rows="3" required></textarea>
+                                    <textarea id="help-improve-bug-input" class="w-full bg-warm-cream/10 dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl p-3 text-xs focus:border-forest-green focus:ring-0 outline-none placeholder:text-outline/40 leading-relaxed resize-none text-black dark:text-white" placeholder="Describe the bug or issue you encountered. What steps did you take? What did you expect to happen, and what happened instead?..." rows="12" required></textarea>
                                     <button type="submit" class="w-full bg-forest-green text-white dark:bg-[#308A5E] dark:text-white py-2 rounded-xl font-bold text-xs active:scale-[0.98] transition-all shadow cursor-pointer border-0">
                                         Report Bug
                                     </button>
@@ -14657,7 +14725,7 @@ html.dark .active-green-white {
                             </h3>
                             <div class="space-y-3 pt-2">
                                 <form onsubmit="handleHelpImproveFeatureSubmit(event)" class="space-y-3">
-                                    <textarea id="help-improve-feature-input" class="w-full bg-warm-cream/10 dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl p-3 text-xs focus:border-forest-green focus:ring-0 outline-none placeholder:text-outline/40 leading-relaxed resize-none text-black dark:text-white" placeholder="What feature would you love to see in Corner Swaps? How would it help you and other neighbors swap items or connect?..." rows="3" required></textarea>
+                                    <textarea id="help-improve-feature-input" class="w-full bg-warm-cream/10 dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl p-3 text-xs focus:border-forest-green focus:ring-0 outline-none placeholder:text-outline/40 leading-relaxed resize-none text-black dark:text-white" placeholder="What feature would you love to see in Corner Swaps? How would it help you and other neighbors swap items or connect?..." rows="12" required></textarea>
                                     <button type="submit" class="w-full bg-forest-green text-white dark:bg-[#308A5E] dark:text-white py-2 rounded-xl font-bold text-xs active:scale-[0.98] transition-all shadow cursor-pointer border-0">
                                         Pitch Feature
                                     </button>
@@ -15005,15 +15073,15 @@ html.dark .active-green-white {
                                 Verify your identity to build community trust.
                             </p>
                             
-                            <div id="settings-verification-status-container" class="bg-warm-cream/30 border border-outline-variant/20 p-3 rounded-xl flex items-center justify-between">
+                            <div id="settings-verification-status-container" class="bg-warm-cream/30 dark:bg-white/[0.02] border border-outline-variant/20 p-4 rounded-xl flex flex-col gap-3">
                                 <div class="flex items-center gap-2">
-                                    <span id="settings-verification-status-icon" class="material-symbols-outlined text-neutral-400 dark:text-neutral-500">help</span>
+                                    <span id="settings-verification-status-icon" class="material-symbols-outlined text-neutral-400 dark:text-neutral-500 text-lg">help</span>
                                     <div>
                                         <p id="settings-verification-status-label" class="font-bold text-xs text-black dark:text-white">Not Verified</p>
-                                        <p id="settings-verification-status-desc" class="text-[9px] text-black/50 dark:text-white/50">Verify your identity now.</p>
+                                        <p id="settings-verification-status-desc" class="text-[10px] text-black/50 dark:text-white/50">Verify your identity to unlock trust badging.</p>
                                     </div>
                                 </div>
-                                <button id="settings-verify-btn" class="h-8 bg-black/[0.02] dark:bg-white/[0.02] border border-black/10 dark:border-white/10 text-forest-green dark:text-emerald-400 px-3 font-bold text-[10.5px] rounded-lg active:scale-95 transition-all cursor-pointer" onclick="openIdentityVerificationModal()">
+                                <button id="settings-verify-btn" class="w-full h-11 bg-black/[0.02] dark:bg-white/[0.02] border border-black/10 dark:border-white/10 text-forest-green dark:text-emerald-400 font-bold text-xs rounded-xl active:scale-[0.98] transition-all cursor-pointer" onclick="openIdentityVerificationModal()">
                                     Verify Now
                                 </button>
                             </div>
@@ -15042,13 +15110,13 @@ html.dark .active-green-white {
                                 </div>
                                 
                                 <!-- Accuracy Mode Selector -->
-                                <div class="flex items-center justify-between py-1">
+                                <div class="flex flex-col gap-2 py-1">
                                     <div>
                                         <p class="font-semibold text-xs text-black dark:text-white">Location Accuracy Mode</p>
                                         <p class="text-[10px] text-outline font-normal">Select coordinates precision for safety</p>
                                     </div>
-                                    <div class="relative shrink-0">
-                                        <select id="settings-location-accuracy" class="bg-white dark:bg-[#18201a] border border-outline-variant/30 rounded-xl text-xs px-3 py-2 text-black dark:text-white font-bold focus:ring-0 focus:border-black dark:focus:border-white outline-none min-w-[130px] pr-8 relative cursor-pointer shadow-sm active:scale-[0.98] transition-all" style="background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%232D6A4F%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22m6 8 4 4 4-4%22/%3E%3C/svg%3E') !important; background-repeat: no-repeat !important; background-position: right 8px center !important; background-size: 18px !important;">
+                                    <div class="relative w-full">
+                                        <select id="settings-location-accuracy" class="w-full bg-white dark:bg-[#18201a] border border-outline-variant/30 rounded-xl text-xs px-3 py-2 text-black dark:text-white font-bold focus:ring-0 focus:border-black dark:focus:border-white outline-none pr-8 relative cursor-pointer shadow-sm active:scale-[0.98] transition-all" style="background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%232D6A4F%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22m6 8 4 4 4-4%22/%3E%3C/svg%3E') !important; background-repeat: no-repeat !important; background-position: right 12px center !important; background-size: 18px !important;">
                                             <option value="precise">Precise (GPS)</option>
                                             <option value="approximate">Approximate (Fuzzed)</option>
                                             <option value="manual">Manual Entry Only</option>
@@ -15213,7 +15281,7 @@ html.dark .active-green-white {
                         </div>
 
                         <!-- Safety & Privacy / Blocked Neighbors Box -->
-                        <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-4">
+                        <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-2 space-y-4">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-rose-600 dark:text-rose-400">block</span> Blocked Neighbors
                             </h3>
@@ -15224,7 +15292,7 @@ html.dark .active-green-white {
 
 
                         <!-- Account Security Box -->
-                        <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-4">
+                        <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-2 space-y-4">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-blue-600 dark:text-blue-400">security</span> Account Security
                             </h3>
@@ -15243,9 +15311,9 @@ html.dark .active-green-white {
                         </div>
 
                         <!-- Administration & Moderation Locks Box -->
-                        <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-4">
+                        <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-2 space-y-4">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-neutral-600 dark:text-neutral-400">terminal</span> Administration & Moderation
+                                <span class="material-symbols-outlined text-sm text-neutral-600 dark:text-neutral-400">terminal</span> Admin
                             </h3>
                             <!-- Admin Moderation Logs Panel CTA -->
                             <button class="w-full h-12 bg-black/[0.02] dark:bg-white/[0.02] border border-black/10 dark:border-white/10 text-black dark:text-white font-bold text-xs rounded-xl active:scale-[0.98] transition-all text-left px-4 flex items-center justify-between hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer" onclick="showView('admin_panel')">
@@ -16659,12 +16727,7 @@ html.dark .active-green-white {
                                 </div>
                             </div>
 
-                            <!-- Selected Location Details Box (if selected) -->
-                            <div id="selected-spot-info" class="hidden p-3.5 bg-black/[0.02] dark:bg-white/[0.02] border border-outline-variant/10 rounded-2xl flex flex-col gap-1 text-left shrink-0">
-                                <div id="selected-spot-name" class="text-xs font-bold text-black dark:text-white"></div>
-                                <div id="selected-spot-safety" class="text-xs font-bold text-black dark:text-white"></div>
-                                <div id="selected-spot-address" class="text-xs text-gray-500 dark:text-gray-400"></div>
-                            </div>
+
 
                             <!-- Date & Time Selector -->
                             <div id="meetup-time-selection" class="hidden p-3 bg-white dark:bg-[#141c16] border border-outline-variant/20 rounded-xl flex flex-col gap-2 shrink-0 select-none">
@@ -16761,7 +16824,12 @@ html.dark .active-green-white {
                 <!-- Privacy & Data Notice has been removed per user request -->
 
                 <div id="neighbor-profile-modal" class="hidden absolute inset-0 z-[4000] flex flex-col bg-white dark:bg-[#101612] select-none animate-fade-in pt-0">
-
+                    <!-- Sticky Header Bar -->
+                    <div id="neighbor-profile-header" class="absolute top-0 left-0 right-0 px-6 bg-transparent flex items-center justify-end z-30 select-none" style="height: 64px !important;">
+                        <button id="neighbor-profile-close-btn" class="hidden w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="handleNeighborProfileBackButton()" title="Close">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
+                        </button>
+                    </div>
 
                     <div id="neighbor-profile-scroll-container" class="relative flex-grow overflow-y-auto min-h-0 px-6 pt-16 pb-20 custom-scrollbar" style="-webkit-overflow-scrolling: touch; overscroll-behavior: contain;">
                         <!-- Neighbor Profile Header Summary -->
@@ -24668,16 +24736,20 @@ function renderEventsList() {
                                 <div>
                                     <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Neighbourhood</h5>
                                     <p class="mt-0.5">${evt.location} · ${distanceDisplay}</p>
+                                </div>
                             </div>
                             
                             <!-- Attendees -->
-                            <div>
-                                <div class="flex justify-between items-center mb-1.5">
-                                    <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Attendees</h5>
-                                    <span class="text-[10px] font-medium text-outline attendee-count-el">${rsvpsCount} ${rsvpsCount === 1 ? 'neighbor is' : 'neighbors are'} going</span>
-                                </div>
-                                <div class="flex gap-1.5 overflow-hidden py-1 attendee-avatars-container">
-                                    ${rsvpAvatarsHtml}
+                            <div class="flex items-start gap-2.5 pt-1">
+                                <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-lg mt-0.5">group</span>
+                                <div class="flex-grow">
+                                    <div class="flex justify-between items-center mb-1.5">
+                                        <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Attendees</h5>
+                                        <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400 attendee-count-el">${rsvpsCount} ${rsvpsCount === 1 ? 'neighbor is' : 'neighbors are'} going</span>
+                                    </div>
+                                    <div class="flex gap-1.5 overflow-hidden py-1 attendee-avatars-container">
+                                        ${rsvpAvatarsHtml}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -25448,7 +25520,7 @@ function initLeafletMap() {
     leafletMap.on('click', (e) => {
         closeMapItemDetail();
         closeMapItemPeek();
-        closeMapCategoryDropdown();
+        // Keep map category dropdown open as requested
     });
 
     leafletMap.on('popupopen', function(e) {
@@ -26553,6 +26625,10 @@ function handleMapEventRSVPToggle() {
     const event = state.events.find(e => e.id === eventId);
     if (!event) return;
 
+    if (!event.rsvps) {
+        event.rsvps = ['Sarah Chen', 'David Kim'];
+    }
+
     const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
     const index = event.rsvps.indexOf(currentUser);
 
@@ -26564,10 +26640,11 @@ function handleMapEventRSVPToggle() {
         playSound('match_success');
         
         // Send a chat confirmation message from host to user
-        let conv = state.conversations.find(c => c.neighborName.toLowerCase() === event.host.toLowerCase() || c.id === event.host.toLowerCase().replace(' ', '-'));
+        const hostLower = (event.host || '').toLowerCase();
+        let conv = state.conversations.find(c => (c.neighborName && c.neighborName.toLowerCase() === hostLower) || (c.id && c.id === hostLower.replace(' ', '-')));
         if (!conv) {
             conv = {
-                id: event.host.toLowerCase().replace(' ', '-'),
+                id: hostLower.replace(' ', '-'),
                 neighborName: event.host,
                 unread: false,
                 timeLeft: '48 hours left',
@@ -27310,8 +27387,8 @@ function selectMapCategory(categoryName) {
     updateCategoryTrayUI();
     updateMapCategoryCirclesSelection();
     
-    // Close dropdown
-    toggleCategoryTray();
+    // Keep map category dropdown open as requested
+    // toggleCategoryTray();
 }
 function animateCategoryDropdownOut(callback) {
     const dropdown = document.getElementById('map-category-dropdown');
@@ -30298,7 +30375,7 @@ function renderChatDetail(conv) {
                                 <div class="mt-1 flex justify-center">
                                     <div class="px-3 py-1.5 rounded-full text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none popup-modal-desc font-bold">
                                         ${(conv.negotiation && (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'))
-                                            ? 'Agreement Confirmed! ⚡'
+                                            ? 'Agreement Confirmed!'
                                             : `${escapeHTML(conv.neighborName)} to agree?`}
                                     </div>
                                 </div>
@@ -30315,14 +30392,14 @@ function renderChatDetail(conv) {
                     }
                     if (msg.isLocationSuggestion) {
                         bubbleInnerContent += `
-                        <div class="flex flex-col gap-2 w-full max-w-[200px]">
+                        <div class="flex flex-col gap-2 w-full max-w-[220px]">
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-warm-cream">${msg.isLiveLocation ? 'my_location' : 'place'}</span>
-                                <span class="text-xs font-bold text-warm-cream">${msg.isLiveLocation ? 'My Live Location' : 'Suggested Meeting Spot'}</span>
+                                <span class="text-sm font-normal text-warm-cream">${msg.isLiveLocation ? 'My Live Location' : 'Suggested Meeting Spot'}</span>
                             </div>
                             <div class="p-2 bg-white/10 rounded-xl border border-white/10">
-                                <p class="font-bold text-warm-cream text-[11px]">${escapeHTML(msg.locationData ? msg.locationData.name : '')}</p>
-                                <p class="text-[9.5px] text-warm-cream/80">${escapeHTML(msg.locationData ? msg.locationData.address : '')}</p>
+                                <p class="font-normal text-warm-cream text-sm mt-0.5">${escapeHTML(msg.locationData ? msg.locationData.name : '')}</p>
+                                <p class="text-sm text-warm-cream/80 mt-0.5">${escapeHTML(msg.locationData ? msg.locationData.address : '')}</p>
                             </div>
                         </div>`;
                     } else if (msg.isKarmaSwapRequest) {
@@ -30391,7 +30468,7 @@ function renderChatDetail(conv) {
                                 <div class="mt-1 flex justify-center">
                                     <div class="px-3 py-1.5 rounded-full text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none popup-modal-desc font-bold">
                                         ${(conv.negotiation && (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'))
-                                            ? 'Agreement Confirmed! ⚡'
+                                            ? 'Agreement Confirmed!'
                                             : 'You to agree?'}
                                     </div>
                                 </div>
@@ -30407,14 +30484,14 @@ function renderChatDetail(conv) {
                     }
                     if (msg.isLocationSuggestion) {
                         bubbleInnerContent += `
-                        <div class="flex flex-col gap-2 w-full max-w-[200px]">
+                        <div class="flex flex-col gap-2 w-full max-w-[220px]">
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-forest-green">${msg.isLiveLocation ? 'my_location' : 'place'}</span>
-                                <span class="text-xs font-bold text-forest-green">${msg.isLiveLocation ? 'My Live Location' : 'Suggested Meeting Spot'}</span>
+                                <span class="text-sm font-normal text-forest-green">${msg.isLiveLocation ? 'My Live Location' : 'Suggested Meeting Spot'}</span>
                             </div>
                             <div class="p-2 bg-forest-green/5 rounded-xl border border-outline-variant/10">
-                                <p class="font-bold text-forest-green text-[11px]">${escapeHTML(msg.locationData ? msg.locationData.name : '')}</p>
-                                <p class="text-[9.5px] text-on-surface-variant">${escapeHTML(msg.locationData ? msg.locationData.address : '')}</p>
+                                <p class="font-normal text-forest-green text-sm mt-0.5">${escapeHTML(msg.locationData ? msg.locationData.name : '')}</p>
+                                <p class="text-sm text-on-surface-variant mt-0.5">${escapeHTML(msg.locationData ? msg.locationData.address : '')}</p>
                             </div>
                         </div>`;
                     } else if (msg.isKarmaSwapRequest) {
@@ -35368,13 +35445,7 @@ const initMapAndInputs = () => {
             return;
         }
 
-        // Close map category dropdown on click outside (capture phase captures it before Leaflet stops propagation)
-        const dropdown = document.getElementById('map-category-dropdown');
-        if (dropdown && !dropdown.classList.contains('hidden')) {
-            if (!dropdown.contains(e.target)) {
-                closeMapCategoryDropdown();
-            }
-        }
+        // Close map category dropdown on click outside disabled to keep it open while interacting with the map
     }, true); // Capture phase is critical to run before Leaflet stops propagation!
 
     // Load saved simulator scale
@@ -35723,14 +35794,7 @@ document.addEventListener('click', (e) => {
         if (d) d.classList.add('hidden');
     }
 
-    // Close map category dropdown on click outside
-    const dropdown = document.getElementById('map-category-dropdown');
-    const filterBtn = document.getElementById('btn-segment-filter');
-    if (dropdown && !dropdown.classList.contains('hidden') && filterBtn) {
-        if (!dropdown.contains(e.target) && !filterBtn.contains(e.target)) {
-            closeMapCategoryDropdown();
-        }
-    }
+    // Close map category dropdown on click outside disabled to keep it open while interacting with the map
 
     // Close list category dropdowns on click outside
     const listDropdowns = [
@@ -40101,6 +40165,10 @@ function handleEventRSVPToggle() {
     const event = state.events.find(e => e.id === state.activeEventId);
     if (!event) return;
 
+    if (!event.rsvps) {
+        event.rsvps = ['Sarah Chen', 'David Kim'];
+    }
+
     const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
     const index = event.rsvps.indexOf(currentUser);
 
@@ -40112,10 +40180,11 @@ function handleEventRSVPToggle() {
         playSound('match_success');
         
         // Send a chat confirmation message from host to user
-        let conv = state.conversations.find(c => c.neighborName.toLowerCase() === event.host.toLowerCase() || c.id === event.host.toLowerCase().replace(' ', '-'));
+        const hostLower = (event.host || '').toLowerCase();
+        let conv = state.conversations.find(c => (c.neighborName && c.neighborName.toLowerCase() === hostLower) || (c.id && c.id === hostLower.replace(' ', '-')));
         if (!conv) {
             conv = {
-                id: event.host.toLowerCase().replace(' ', '-'),
+                id: hostLower.replace(' ', '-'),
                 neighborName: event.host,
                 unread: true,
                 timeLeft: '48 hours left',
@@ -40157,6 +40226,10 @@ window.handleEventRSVPToggleFromList = function(eventId, eventObj) {
 
     window.activeExpandedCardId = 'evt_' + eventId;
 
+    if (!event.rsvps) {
+        event.rsvps = ['Sarah Chen', 'David Kim'];
+    }
+
     const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
     const index = event.rsvps.indexOf(currentUser);
 
@@ -40167,10 +40240,11 @@ window.handleEventRSVPToggleFromList = function(eventId, eventObj) {
         event.rsvps.push(currentUser);
         playSound('match_success');
         
-        let conv = state.conversations.find(c => c.neighborName.toLowerCase() === event.host.toLowerCase() || c.id === event.host.toLowerCase().replace(' ', '-'));
+        const hostLower = (event.host || '').toLowerCase();
+        let conv = state.conversations.find(c => (c.neighborName && c.neighborName.toLowerCase() === hostLower) || (c.id && c.id === hostLower.replace(' ', '-')));
         if (!conv) {
             conv = {
-                id: event.host.toLowerCase().replace(' ', '-'),
+                id: hostLower.replace(' ', '-'),
                 neighborName: event.host,
                 unread: true,
                 timeLeft: '48 hours left',
@@ -48286,21 +48360,16 @@ window.openSwapLifecycleModal = function(role, conversationId) {
     
     if (role === 'initiator') {
         const totalKarma = ((state.level || 1) - 1) * 100 + (state.xp || 50);
-        // Render Initiator View (Propose swap)
         container.innerHTML = `
             <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
                 <h3 class="popup-modal-title text-center mb-1">Offer a Swap</h3>
                 <p class="popup-modal-desc text-center text-xs mb-2">Propose an item to swap or ask for a Karma request.</p>
-                <div class="px-3 py-1 bg-amber-500/10 text-amber-500 text-xs font-extrabold rounded-full flex items-center gap-1.5 border border-amber-500/20 shadow-sm mb-1">
-                    <span class="material-symbols-outlined text-xs font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
-                    Your Balance: ${totalKarma} Karma
-                </div>
             </div>
             
             <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 min-h-0">
                 <!-- My Items to Offer -->
                 <div class="flex flex-col gap-1.5 shrink-0">
-                    <span class="text-xs font-black text-black/50 dark:text-white/50 uppercase tracking-wider">My Items to Offer</span>
+                    <span class="popup-modal-desc block text-left">My Items to Offer</span>
                     <div class="flex flex-col gap-2 py-1 select-none w-full" id="lifecycle-offerings-scroller">
                         <!-- Populated dynamically below -->
                     </div>
@@ -48308,7 +48377,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                 
                 <!-- Custom Item Input -->
                 <div class="flex flex-col gap-1.5 shrink-0">
-                    <span class="text-xs font-black text-black/50 dark:text-white/50 uppercase tracking-wider">Custom Item (Optional)</span>
+                    <span class="popup-modal-desc block text-left">Custom Item (Optional)</span>
                     <input type="text" id="lifecycle-custom-text" class="w-full bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl p-3 text-xs outline-none focus:ring-1 focus:ring-forest-green text-on-surface" placeholder="Type an item name..."/>
                 </div>
             </div>
