@@ -9214,15 +9214,21 @@ body.show-simulator #global-navbar,
 }
 
 #navbar-icons-row {
-    max-width: 250px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     gap: 0px !important;
     justify-content: space-evenly !important;
 }
 
 #navbar-icons-row > div {
-    width: 46px !important;
+    flex: 1 !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 /* Nudge the chat/message navbar icon down slightly to align perfectly */

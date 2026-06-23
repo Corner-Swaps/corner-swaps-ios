@@ -3252,6 +3252,7 @@ function updateTriggerIconState(iconEl, isX) {
 window.updateTriggerIconState = updateTriggerIconState;
 
 function handleNavbarTap(viewId) {
+    console.log("[NavbarTap] Clicked navbar item:", viewId);
     try {
         if (!state) {
             try {
@@ -3420,6 +3421,7 @@ function autoDismissAllModals() {
 
 // Routing Engine
 function showView(viewId, mode) {
+    console.log("[showView] Transitioning to:", viewId, "mode:", mode);
     // Blur active input/textarea before view transitions to dismiss virtual keyboards safely
     const activeEl = document.activeElement;
     if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
@@ -3565,7 +3567,7 @@ function showView(viewId, mode) {
     const mainAppViews = ['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'settings_detail', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'help_improve', 'create_bulletin', 'create_group', 'blocked_users'];
     if (mainAppViews.includes(viewId) || viewId.startsWith('chat_detail')) {
         if (!state.currentUser && !state.isGuest) {
-            viewId = 'village';
+            viewId = 'welcome';
         }
     }
 
@@ -4609,20 +4611,28 @@ function startAppInitialization() {
                 if (typeof updateVillageViewFromState === 'function') {
                     updateVillageViewFromState();
                 }
-                const hash = window.location.hash;
-                if (hash && hash !== '#/' && hash !== '#') {
-                    window.handleHashRoute();
+                if (!state.currentUser && !state.isGuest) {
+                    showView('welcome');
                 } else {
-                    showView('village');
-                    if (typeof updateVillageViewFromState === 'function') {
-                        updateVillageViewFromState();
+                    const hash = window.location.hash;
+                    if (hash && hash !== '#/' && hash !== '#') {
+                        window.handleHashRoute();
+                    } else {
+                        showView('village');
+                        if (typeof updateVillageViewFromState === 'function') {
+                            updateVillageViewFromState();
+                        }
                     }
                 }
             } catch (e) {
                 console.error("Error during app startup sequence:", e);
                 try {
                     state = JSON.parse(INITIAL_STATE_STRING);
-                    showView('village');
+                    if (!state.currentUser && !state.isGuest) {
+                        showView('welcome');
+                    } else {
+                        showView('village');
+                    }
                 } catch (err) {
                     console.error("Fallback failed:", err);
                 }
@@ -15709,6 +15719,7 @@ function addCustomSetupTag(type) {
 currentVillageSegment = 'map';
 
 function switchVillageSegment(type) {
+    console.log("[switchVillageSegment] Switching segment to:", type);
     try {
         playSound('click');
         closeMapCategoryDropdown();
@@ -27635,6 +27646,7 @@ async function handleAdminLogin(event) {
             dashboardContainer.classList.remove('hidden');
         }
         renderAdminPanel();
+        showView('admin_panel');
         playSound('success');
     } else {
         if (errDiv) errDiv.classList.remove('hidden');
@@ -27819,6 +27831,28 @@ window.toggleSuSocialInput = function(platform) {
         if (input) setTimeout(() => input.focus(), 100);
     }
     playSound('click');
+};
+
+window.switchWelcomeTab = function(tabName) {
+    if (typeof playSound === 'function') playSound('click');
+    const tabs = ['signin', 'register', 'admin'];
+    tabs.forEach(t => {
+        const btn = document.getElementById(`welcome-tab-${t}`);
+        const box = document.getElementById(`welcome-box-${t}`);
+        if (t === tabName) {
+            if (btn) {
+                btn.classList.add('bg-white', 'dark:bg-[#1f2621]', 'text-forest-green', 'shadow-sm');
+                btn.classList.remove('text-on-surface-variant', 'hover:text-black', 'dark:hover:text-white');
+            }
+            if (box) box.classList.remove('hidden');
+        } else {
+            if (btn) {
+                btn.classList.remove('bg-white', 'dark:bg-[#1f2621]', 'text-forest-green', 'shadow-sm');
+                btn.classList.add('text-on-surface-variant', 'hover:text-black', 'dark:hover:text-white');
+            }
+            if (box) box.classList.add('hidden');
+        }
+    });
 };
 
 window.triggerRegistrationAutofill = function() {
