@@ -481,11 +481,6 @@ html.dark ::-webkit-scrollbar-thumb:hover {
     position: relative !important;
 }
 
-/* Eliminate vertical slide shift and vertical animation glitches on view-chat_detail while preserving horizontal sliding */
-#view-chat_detail {
-    transform: none !important;
-    transition: opacity 0.15s ease-in-out !important;
-}
 
 .screen-view > div.overflow-y-auto {
     min-height: 0 !important;
@@ -6948,8 +6943,28 @@ html.dark .category-tray, html.dark .category-list-overlay {
 /* ==================================================== */
 
 /* Absolute Glassmorphic Chat Header */
-#view-chat_detail.active {
-    position: relative !important;
+body.show-simulator:not(.iphone16-mode) #view-chat_detail.active {
+    position: absolute !important;
+    top: 48px !important;
+    height: calc(100% - 48px) !important;
+    left: 0 !important;
+    width: 100% !important;
+}
+
+body.show-simulator.iphone16-mode #view-chat_detail.active {
+    position: absolute !important;
+    top: 0 !important;
+    height: 100% !important;
+    left: 0 !important;
+    width: 100% !important;
+}
+
+.native-app-env #view-chat_detail.active {
+    position: absolute !important;
+    top: 0 !important;
+    height: 100% !important;
+    left: 0 !important;
+    width: 100% !important;
 }
 
 #view-chat_detail > div:first-of-type {

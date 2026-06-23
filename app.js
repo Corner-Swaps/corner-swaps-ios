@@ -2038,7 +2038,7 @@ function loadState() {
         state.conversationsUpdatedToFiveMessages = true;
         needsSave = true;
     }
-    if (!state.currentUser) {
+    if (!state.currentUser && !state.loggedOut) {
         state.currentUser = {
             firstName: 'Lily',
             lastName: 'Kaufmann',
@@ -3707,6 +3707,16 @@ function showView(viewId, mode) {
                 // Force a layout reflow before starting the transform/opacity animations
                 incomingEl.offsetHeight; 
                 
+                if (viewId === 'chat_detail') {
+                    const feed = document.getElementById('chat-message-feed');
+                    if (feed) {
+                        feed.scrollTop = feed.scrollHeight;
+                        requestAnimationFrame(() => {
+                            feed.scrollTop = feed.scrollHeight;
+                        });
+                    }
+                }
+
                 // Set the animation target state
                 if (isPushTransition) {
                     incomingEl.classList.add('slide-push-enter-active');
@@ -3740,11 +3750,7 @@ function showView(viewId, mode) {
                         requestAnimationFrame(() => {
                             incomingEl.classList.remove('no-transition');
                             incomingEl.style.opacity = '';
-                            // Scroll message feed to bottom after transition completes
-                            if (viewId === 'chat_detail') {
-                                const feed = document.getElementById('chat-message-feed');
-                                if (feed) feed.scrollTop = feed.scrollHeight;
-                            }
+                            // View transition finished. Scroll offset is already in place.
                         });
                     });
                 }, 350);
@@ -5374,6 +5380,7 @@ function handleSignUp(e) {
         tiktok
     };
     state.isGuest = false;
+    state.loggedOut = false;
     saveState();
     playSound('click');
     showView('profile_consent');
@@ -5411,6 +5418,7 @@ function handleSignIn(e) {
         tiktok: 'https://tiktok.com/@lilykaufmann'
     };
     state.isGuest = false;
+    state.loggedOut = false;
     saveState();
     playSound('click');
     showView('profile_step_1');
@@ -5450,6 +5458,9 @@ window.handleDevAutoLogin = function() {
     };
     state.eulaAgreed = true;
     state.isGuest = false;
+    state.loggedOut = false;
+    state.activeViewMode = 'map';
+    state.activeCategory = 'offerings';
     saveState();
     playSound('click');
     showView('village');
@@ -5518,9 +5529,9 @@ window.handleDevAutoLogin = function() {
 };
 
 function handleLogout() {
-    safeLocalStorage.removeItem('barterland_state');
-    safeLocalStorage.removeItem('barterland_state_sig');
-    safeLocalStorage.removeItem('reinstated_onboarding_v1');
+    state.currentUser = null;
+    state.loggedOut = true;
+    saveState();
     safeLocalStorage.removeItem('corner_swaps_map_confetti_shown');
     window.location.reload();
 }
@@ -6473,6 +6484,7 @@ window.handleExpressSignupSubmit = function() {
         needs: []
     };
     state.isGuest = false;
+    state.loggedOut = false;
     
     if (hasListing) {
         const id = postType + '-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
@@ -12620,12 +12632,15 @@ function renderChatDetail(conv) {
     renderChatTradeDrawer(conv);
 
     feed.scrollTop = feed.scrollHeight;
-    setTimeout(() => {
-        feed.scrollTop = feed.scrollHeight;
-    }, 50);
+    const isChatActive = document.getElementById('view-chat_detail').classList.contains('active');
+    if (isChatActive) {
+        setTimeout(() => {
+            feed.scrollTop = feed.scrollHeight;
+        }, 50);
         setTimeout(() => {
             feed.scrollTop = feed.scrollHeight;
         }, 150);
+    }
     } catch (err) {
         alert("CRASH in renderChatDetail: " + err.message + "\n" + err.stack);
         console.error("CRASH in renderChatDetail: ", err);
