@@ -2835,6 +2835,14 @@ let lastPlaySoundTime = 0;
 
 // Organic Synthesizer Chimes (Web Audio API)
 function playSound(type) {
+    const nowMs = Date.now();
+    if (type === 'click') {
+        if (nowMs - lastPlaySoundTime < 250) {
+            return; // Suppress double-clicks
+        }
+        lastPlaySoundTime = nowMs;
+    }
+
     const isNative = window.isNativeApp === true || document.documentElement.classList.contains('native-app-env') || (document.body && document.body.classList.contains('native-app'));
 
     try {
@@ -2856,13 +2864,6 @@ function playSound(type) {
     }
 
     try {
-        const nowMs = Date.now();
-        if (type === 'click' && nowMs - lastPlaySoundTime < 500) {
-            return; // Suppress double-clicks
-        }
-        if (type === 'click') {
-            lastPlaySoundTime = nowMs;
-        }
 
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         if (!AudioContext) return;
@@ -3251,73 +3252,84 @@ function updateTriggerIconState(iconEl, isX) {
 window.updateTriggerIconState = updateTriggerIconState;
 
 function handleNavbarTap(viewId) {
-    state.profileReferrer = null;
-    state.meetupMapMode = false;
-    state.meetupMapCoords = null;
-    state.meetupMapName = null;
-    // Close all modal overlays, detail panels, and global floating dialogs
-    if (typeof closeSafetyHelpGuideModal === 'function') {
-        closeSafetyHelpGuideModal();
-    }
-    if (typeof closeMapItemDetail === 'function') {
-        closeMapItemDetail();
-    }
-    if (typeof closeNeighborProfileModal === 'function') {
-        closeNeighborProfileModal();
-    }
-    
-    const floatingModals = [
-        'chat-qr-handshake-modal',
-        'safety-guide-modal',
-        'messaging-help-guide-modal',
-        'privacy-auto-delete-warning-modal',
-        'achievement-detail-modal',
-        'swaps-archive-modal',
-        'share-impact-modal',
-        'trade-success-overlay'
-    ];
-    floatingModals.forEach(id => {
-        const modal = document.getElementById(id);
-        if (modal) modal.classList.add('hidden');
-    });
+    try {
+        if (!state) {
+            try {
+                state = JSON.parse(INITIAL_STATE_STRING) || {};
+            } catch(e) {
+                state = {};
+            }
+        }
+        state.profileReferrer = null;
+        state.meetupMapMode = false;
+        state.meetupMapCoords = null;
+        state.meetupMapName = null;
+        // Close all modal overlays, detail panels, and global floating dialogs
+        if (typeof closeSafetyHelpGuideModal === 'function') {
+            closeSafetyHelpGuideModal();
+        }
+        if (typeof closeMapItemDetail === 'function') {
+            closeMapItemDetail();
+        }
+        if (typeof closeNeighborProfileModal === 'function') {
+            closeNeighborProfileModal();
+        }
+        
+        const floatingModals = [
+            'chat-qr-handshake-modal',
+            'safety-guide-modal',
+            'messaging-help-guide-modal',
+            'privacy-auto-delete-warning-modal',
+            'achievement-detail-modal',
+            'swaps-archive-modal',
+            'share-impact-modal',
+            'trade-success-overlay'
+        ];
+        floatingModals.forEach(id => {
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.add('hidden');
+        });
 
-    if (viewId === 'chat_hub') {
-        state.currentConversationId = null;
-        if (window.closeChatCameraModal) {
-            window.closeChatCameraModal();
+        if (viewId === 'chat_hub') {
+            state.currentConversationId = null;
+            if (window.closeChatCameraModal) {
+                window.closeChatCameraModal();
+            }
         }
-    }
-    if (viewId === 'village_map') {
-        state.activeViewMode = 'map';
-        saveState();
-        showView('village');
-        if (typeof updateVillageViewFromState === 'function') {
-            updateVillageViewFromState();
+        if (viewId === 'village_map') {
+            state.activeViewMode = 'map';
+            saveState();
+            showView('village');
+            if (typeof updateVillageViewFromState === 'function') {
+                updateVillageViewFromState();
+            }
+            return;
         }
-        return;
-    }
-    if (viewId === 'village_list') {
-        state.activeViewMode = 'list';
-        saveState();
-        showView('village');
-        if (typeof updateVillageViewFromState === 'function') {
-            updateVillageViewFromState();
+        if (viewId === 'village_list') {
+            state.activeViewMode = 'list';
+            saveState();
+            showView('village');
+            if (typeof updateVillageViewFromState === 'function') {
+                updateVillageViewFromState();
+            }
+            return;
         }
-        return;
-    }
-    if (viewId === 'village') {
-        showView('village');
-        if (typeof updateVillageViewFromState === 'function') {
-            updateVillageViewFromState();
+        if (viewId === 'village') {
+            showView('village');
+            if (typeof updateVillageViewFromState === 'function') {
+                updateVillageViewFromState();
+            }
+            return;
         }
-        return;
-    }
-    if (viewId === 'offer') {
-        if (typeof resetOfferFormToSelector === 'function') {
-            resetOfferFormToSelector();
+        if (viewId === 'offer') {
+            if (typeof resetOfferFormToSelector === 'function') {
+                resetOfferFormToSelector();
+            }
         }
+        showView(viewId);
+    } catch (err) {
+        console.error("CRASH in handleNavbarTap:", err);
     }
-    showView(viewId);
 }
 window.handleNavbarTap = handleNavbarTap;
 
@@ -3444,7 +3456,31 @@ function showView(viewId, mode) {
 
     // If already on the view, handle double-tap behavior (scroll to top smoothly)
     const isSameViewMode = (viewId !== 'village') || (window.currentRenderedViewMode === state.activeViewMode);
-    if (state && state.currentView === viewId && isSameViewMode && !window.isAppStartup) {
+    
+    // Safety check: if transitioning to village, ensure correct sub-container is actually visible.
+    let isCorrectContainerVisible = true;
+    if (viewId === 'village') {
+        if (state.activeViewMode === 'list') {
+            const category = state.activeCategory || 'offerings';
+            let targetContainerId = 'village-list-container';
+            if (category === 'needs') {
+                targetContainerId = 'village-needs-container';
+            } else if (category === 'events') {
+                targetContainerId = 'village-events-container';
+            }
+            const container = document.getElementById(targetContainerId);
+            if (!container || container.classList.contains('hidden') || container.style.display === 'none') {
+                isCorrectContainerVisible = false;
+            }
+        } else {
+            const mapContainer = document.getElementById('village-map-container');
+            if (!mapContainer || mapContainer.classList.contains('hidden') || mapContainer.style.display === 'none') {
+                isCorrectContainerVisible = false;
+            }
+        }
+    }
+
+    if (state && state.currentView === viewId && isSameViewMode && isCorrectContainerVisible && !window.isAppStartup) {
         if (viewId === 'profile_settings') {
             const scrollContainer = document.getElementById('profile-settings-scroll-container');
             if (scrollContainer) {
@@ -3920,13 +3956,41 @@ function showView(viewId, mode) {
     }
     if (viewId === 'village') {
         initLeafletMap();
-        switchVillageSegment(currentVillageSegment);
+        let targetSeg = currentVillageSegment;
+        if (state && state.activeViewMode) {
+            if (state.activeViewMode === 'list') {
+                const cat = state.activeCategory || 'offerings';
+                if (cat === 'offerings') targetSeg = 'list';
+                else if (cat === 'needs') targetSeg = 'needs';
+                else if (cat === 'events') targetSeg = 'events';
+            } else {
+                const cat = state.activeCategory || 'offerings';
+                if (cat === 'offerings') targetSeg = 'map';
+                else if (cat === 'needs') targetSeg = 'needs_map';
+                else if (cat === 'events') targetSeg = 'events_map';
+            }
+        }
+        switchVillageSegment(targetSeg);
         
         // Force a delayed refresh to guarantee the map is fully loaded, markers plotted, and tiles aligned
         setTimeout(() => {
             if (leafletMap) {
                 leafletMap.invalidateSize();
-                switchVillageSegment(currentVillageSegment);
+                let targetSeg = currentVillageSegment;
+                if (state && state.activeViewMode) {
+                    if (state.activeViewMode === 'list') {
+                        const cat = state.activeCategory || 'offerings';
+                        if (cat === 'offerings') targetSeg = 'list';
+                        else if (cat === 'needs') targetSeg = 'needs';
+                        else if (cat === 'events') targetSeg = 'events';
+                    } else {
+                        const cat = state.activeCategory || 'offerings';
+                        if (cat === 'offerings') targetSeg = 'map';
+                        else if (cat === 'needs') targetSeg = 'needs_map';
+                        else if (cat === 'events') targetSeg = 'events_map';
+                    }
+                }
+                switchVillageSegment(targetSeg);
             }
         }, 500);
 
@@ -12170,7 +12234,7 @@ function renderChatDetail(conv) {
         const isSystem = msg.sender === 'System';
         const isAdmin = msg.sender === 'App admin';
         const isLatest = index === conv.messages.length - 1;
-        const animClass = isLatest ? 'animate-fade-in' : '';
+        const animClass = '';
         
         // Ensure first letter of admin message is capitalized
         let adminText = msg.text;
@@ -13859,7 +13923,7 @@ function submitSendProposal(conv, selected) {
 
     const feed = document.getElementById('chat-message-feed');
     const systemCard = document.createElement('div');
-    systemCard.className = 'flex justify-center animate-fade-in my-1 w-full';
+    systemCard.className = 'flex justify-center my-1 w-full';
     systemCard.innerHTML = `<span class="px-4 py-2 rounded-xl bg-forest-green/5 text-forest-green font-semibold text-xs border border-forest-green/10">Offer sent · Awaiting ${conv.neighborName}'s reply</span>`;
     if (feed) {
         feed.appendChild(systemCard);
@@ -15630,10 +15694,11 @@ function addCustomSetupTag(type) {
 currentVillageSegment = 'map';
 
 function switchVillageSegment(type) {
-    playSound('click');
-    closeMapCategoryDropdown();
-    collapseVillageMenu();
-    currentVillageSegment = type;
+    try {
+        playSound('click');
+        closeMapCategoryDropdown();
+        collapseVillageMenu();
+        currentVillageSegment = type;
 
     if (type === 'map' || type === 'needs_map' || type === 'gifts_map' || type === 'events_map') {
         state.activeViewMode = 'map';
@@ -15873,8 +15938,11 @@ function switchVillageSegment(type) {
         renderBulletinsList();
     }
     
-    // Track currently rendered view mode
-    window.currentRenderedViewMode = state.activeViewMode;
+        // Track currently rendered view mode
+        window.currentRenderedViewMode = state.activeViewMode;
+    } catch (err) {
+        console.error("Error in switchVillageSegment:", err);
+    }
 }
 
 function formatEventTimes(startIso, endIso) {
@@ -16097,6 +16165,7 @@ function renderVillageListView() {
             avatar: neighbor.avatar,
             category: neighbor.category,
             distance: distance,
+            location: neighbor.location || '',
             createdAt: neighbor.createdAt || 0 // fallback
         });
     });
@@ -22755,7 +22824,21 @@ window.submitCleanupListings = function() {
 function handleEventDetailBack() {
     showView(state.lastEventView || 'events_hub');
     if (state.lastEventView === 'village') {
-        switchVillageSegment(currentVillageSegment || 'map');
+        let targetSeg = currentVillageSegment || 'map';
+        if (state && state.activeViewMode) {
+            if (state.activeViewMode === 'list') {
+                const cat = state.activeCategory || 'offerings';
+                if (cat === 'offerings') targetSeg = 'list';
+                else if (cat === 'needs') targetSeg = 'needs';
+                else if (cat === 'events') targetSeg = 'events';
+            } else {
+                const cat = state.activeCategory || 'offerings';
+                if (cat === 'offerings') targetSeg = 'map';
+                else if (cat === 'needs') targetSeg = 'needs_map';
+                else if (cat === 'events') targetSeg = 'events_map';
+            }
+        }
+        switchVillageSegment(targetSeg);
     }
 }
 

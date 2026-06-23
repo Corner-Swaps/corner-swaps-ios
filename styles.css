@@ -17,6 +17,8 @@
 }
 
 :root {
+    --safe-area-top: env(safe-area-inset-top, 0px);
+    --safe-area-bottom: env(safe-area-inset-bottom, 0px);
     --forest-green: #308A5E;
     --warm-cream: #FAF8F5;
     --white: #ffffff;
@@ -47,6 +49,18 @@
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Simulator mode top and bottom safe area overrides */
+body.iphone16-mode {
+    --safe-area-top: 44px;
+    --safe-area-bottom: 34px;
+}
+
+/* Native App environment top and bottom safe area overrides */
+.native-app-env {
+    --safe-area-top: 59px;
+    --safe-area-bottom: 34px;
 }
 
 /* Base resets */
@@ -86,8 +100,8 @@ h1, h2, h3, h4, h5, h6, .font-headline, .font-body {
 
 /* Standardized onboarding and authentication screen paddings */
 .onboarding-screen {
-    padding-top: calc(1.5rem + env(safe-area-inset-top)) !important;
-    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)) !important;
+    padding-top: calc(1.5rem + var(--safe-area-top)) !important;
+    padding-bottom: calc(1.5rem + var(--safe-area-bottom)) !important;
     padding-left: 1.5rem !important;
     padding-right: 1.5rem !important;
 }
@@ -175,10 +189,16 @@ body.show-simulator .screen-view.active {
     display: flex !important;
     flex-direction: column !important;
     width: 100% !important;
+    height: calc(100% - 48px) !important; /* Bounded below the 48px static header bar */
     flex: 1 !important;
     min-height: 0 !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
+}
+
+/* Override active screen height back to 100% in iPhone 16 notch simulator mode */
+body.show-simulator.iphone16-mode .screen-view.active {
+    height: 100% !important;
 }
 
 /* 8. Global navbar stays pinned to bottom of app-container (absolute within position:relative container) */
@@ -187,8 +207,8 @@ body.show-simulator #global-navbar {
     bottom: 12px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: calc(100% - 48px) !important;
-    max-width: 380px !important;
+    width: calc(100% - 96px) !important; /* Increased margins */
+    max-width: 310px !important;         /* Narrower max-width */
     height: 56px !important;
     border-radius: 32px !important;
     background: rgba(255, 255, 255, 0.45) !important;
@@ -1070,7 +1090,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
     flex-grow: 1 !important;
     min-height: 0 !important;
     overscroll-behavior: contain !important;
-    padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(76px + var(--safe-area-bottom)) !important;
 }
 .detail-overlay .overflow-y-auto::-webkit-scrollbar,
 .detail-overlay .custom-scrollbar::-webkit-scrollbar {
@@ -1087,7 +1107,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
     z-index: 2500 !important;
     transform: translateY(100%) !important;
     transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1) !important;
-    padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(76px + var(--safe-area-bottom)) !important;
     pointer-events: none !important; /* Don't block map touches when off-screen */
 }
 
@@ -1159,19 +1179,19 @@ html.dark #phone-header-bar .material-symbols-outlined {
 .native-app-env #global-navbar {
     position: absolute !important;
     bottom: 12px !important;
-    bottom: max(12px, calc(4px + env(safe-area-inset-bottom, 34px))) !important;
+    bottom: max(12px, calc(4px + var(--safe-area-bottom))) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: calc(100% - 32px) !important;
-    max-width: 370px !important;
+    width: calc(100% - 96px) !important; /* Narrower width */
+    max-width: 310px !important;         /* Narrower max-width */
     height: 56px !important;
     border-radius: 32px !important;
     z-index: 5000 !important;
 }
 
 .native-app-env .screen-view {
-    padding-top: env(safe-area-inset-top) !important;
-    padding-bottom: calc(6rem + env(safe-area-inset-bottom)) !important;
+    padding-top: var(--safe-area-top) !important;
+    padding-bottom: calc(6rem + var(--safe-area-bottom)) !important;
 }
 .native-app-env .screen-view.active {
     height: 100% !important;
@@ -1182,7 +1202,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
 /* Custom Onboarding Screen Views Bottom Spacing Override (No Bottom Tab Bar) */
 .native-app-env #view-create_account,
 .native-app-env #view-create_account_social {
-    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(1.5rem + var(--safe-area-bottom)) !important;
 }
 
 .native-app-env #view-profile_consent,
@@ -1190,7 +1210,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
 .native-app-env #view-profile_step_1,
 .native-app-env #view-profile_step_2,
 .native-app-env #view-profile_step_3 {
-    padding-bottom: calc(7.5rem + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(7.5rem + var(--safe-area-bottom)) !important;
 }
 
 .native-app-env #view-chat_hub,
@@ -1199,7 +1219,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
 .native-app-env #view-help_improve,
 .native-app-env #view-settings_detail,
 .native-app-env #view-blocked_users {
-    padding-top: calc(0.6rem + env(safe-area-inset-top)) !important;
+    padding-top: calc(0.6rem + var(--safe-area-top)) !important;
 }
 
 .native-app-env #view-chat_hub,
@@ -1207,7 +1227,7 @@ html.dark #phone-header-bar .material-symbols-outlined {
 .native-app-env #view-help_improve,
 .native-app-env #view-settings_detail,
 .native-app-env #view-blocked_users {
-    padding-bottom: calc(3.8rem + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(3.8rem + var(--safe-area-bottom)) !important;
 }
 
 .native-app-env #view-profile_settings {
@@ -1217,11 +1237,11 @@ html.dark #phone-header-bar .material-symbols-outlined {
     padding-bottom: 0 !important;
 }
 .native-app-env #profile-settings-scroll-container {
-    padding-top: 48px !important;
-    padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
+    padding-top: calc(var(--safe-area-top) + 16px) !important;
+    padding-bottom: calc(56px + var(--safe-area-bottom)) !important;
 }
 .native-app-env #profile-settings-scroll-container.has-header {
-    padding-top: 48px !important;
+    padding-top: calc(var(--safe-area-top) + 16px) !important;
 }
 
 .native-app-env #view-village {
@@ -1266,13 +1286,14 @@ html.dark #neighbor-profile-modal {
     padding-bottom: 0 !important;
 }
 
+.native-app-env #profile-settings-header,
 .native-app-env #neighbor-profile-header {
-    padding-top: env(safe-area-inset-top) !important;
+    padding-top: var(--safe-area-top) !important;
 }
 
 .native-app-env #neighbor-profile-scroll-container {
-    padding-top: 48px !important;
-    padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
+    padding-top: calc(var(--safe-area-top) + 16px) !important;
+    padding-bottom: calc(56px + var(--safe-area-bottom)) !important;
 }
 
 /* Ensure the modals are layered on top of all other elements, including the floating global navbar */
@@ -1301,8 +1322,8 @@ html.dark #neighbor-profile-modal {
     display: flex !important;
     flex-direction: column !important;
     overflow: hidden !important;
-    padding-top: calc(8px + env(safe-area-inset-top, 20px)) !important;
-    padding-bottom: calc(8px + env(safe-area-inset-bottom, 20px)) !important;
+    padding-top: calc(8px + var(--safe-area-top, 20px)) !important;
+    padding-bottom: calc(8px + var(--safe-area-bottom, 20px)) !important;
 }
 
 .native-app-env.dark #offer-swap-container,
@@ -1319,13 +1340,13 @@ html.dark #neighbor-profile-modal {
 
 /* Safe area padding for category tray and list overlays in iOS native view */
 .native-app-env .category-tray {
-    padding-top: env(safe-area-inset-top) !important;
-    padding-bottom: env(safe-area-inset-bottom) !important;
+    padding-top: var(--safe-area-top) !important;
+    padding-bottom: var(--safe-area-bottom) !important;
 }
 
 .native-app-env .category-list-overlay {
     padding-top: 0 !important;
-    padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(76px + var(--safe-area-bottom)) !important;
 }
 
 /* Glowing Dot Status System - Active scale-glowing pulses */
@@ -1588,8 +1609,8 @@ select::-ms-expand {
 .native-app-env #offer-type-selector-screen {
     overflow-y: auto !important;
     height: 100% !important;
-    padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
-    padding-bottom: calc(120px + env(safe-area-inset-bottom)) !important;
+    padding-top: calc(0.2rem + var(--safe-area-top)) !important;
+    padding-bottom: calc(120px + var(--safe-area-bottom)) !important;
     box-sizing: border-box !important;
 }
 
@@ -1615,15 +1636,15 @@ select::-ms-expand {
 .native-app-env #offer-form-scroll-container {
     overflow-y: auto !important;
     height: 100% !important;
-    padding-bottom: calc(84px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(84px + var(--safe-area-bottom)) !important;
     box-sizing: border-box !important;
 }
 
 .native-app-env #offer-photo-hero,
 .native-app-env #group-photo-hero {
-    padding-top: calc(3rem + env(safe-area-inset-top)) !important;
+    padding-top: calc(3rem + var(--safe-area-top)) !important;
     padding-bottom: 2rem !important;
-    height: calc(270px + env(safe-area-inset-top)) !important;
+    height: calc(270px + var(--safe-area-top)) !important;
     justify-content: center !important;
 }
 
@@ -1635,8 +1656,8 @@ select::-ms-expand {
 }
 
 .native-app-env #offer-form-header {
-    padding-top: env(safe-area-inset-top) !important;
-    height: calc(56px + env(safe-area-inset-top)) !important;
+    padding-top: var(--safe-area-top) !important;
+    height: calc(56px + var(--safe-area-top)) !important;
     background-color: #ecebeb !important;
 }
 .native-app-env.dark #offer-form-header {
@@ -1650,14 +1671,14 @@ select::-ms-expand {
 
 /* Reposition Close/Back buttons in native environment to clear safe areas */
 .native-app-env #offer-close-btn {
-    top: calc(1rem + env(safe-area-inset-top)) !important;
+    top: calc(1rem + var(--safe-area-top)) !important;
     right: 1.5rem !important;
 }
 .native-app-env #map-detail-close-btn,
 .native-app-env #map-event-detail-close-btn,
 .native-app-env #event-detail-back-btn,
 .native-app-env #create-group-close-btn {
-    top: calc(1.5rem + env(safe-area-inset-top)) !important;
+    top: calc(1.5rem + var(--safe-area-top)) !important;
 }
 
 /* ==================================================== */
@@ -2095,43 +2116,43 @@ html.dark .chat-bubble-other {
 
 /* iOS Native App safe area positioning overrides */
 .native-app-env #btn-segment-filter {
-    top: calc(10px + env(safe-area-inset-top)) !important;
+    top: calc(10px + var(--safe-area-top)) !important;
 }
 .native-app-env #village-search-bar-overlay {
-    top: calc(0.6rem + env(safe-area-inset-top)) !important;
+    top: calc(0.6rem + var(--safe-area-top)) !important;
 }
 .native-app-env #floating-map-controls {
-    bottom: calc(82px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(82px + var(--safe-area-bottom)) !important;
     right: 24px !important;
     top: auto !important;
 }
 .native-app-env #view-village:has(#map-peek-card.active) #floating-map-controls {
-    bottom: calc(230px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(230px + var(--safe-area-bottom)) !important;
 }
 /* native-app-env map-category-dropdown override removed */
 .native-app-env #active-filter-banner {
-    top: calc(4.5rem + env(safe-area-inset-top)) !important;
+    top: calc(4.5rem + var(--safe-area-top)) !important;
 }
 .native-app-env #village-segment-floating-buttons {
-    bottom: calc(138px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(138px + var(--safe-area-bottom)) !important;
     right: 24px !important;
     top: auto !important;
 }
 .native-app-env #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
-    bottom: calc(286px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(286px + var(--safe-area-bottom)) !important;
 }
 
 .native-app-env #meetup-map-footer {
-    bottom: calc(82px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(82px + var(--safe-area-bottom)) !important;
     right: 24px !important;
     top: auto !important;
 }
 .native-app-env #view-village:has(#map-peek-card.active) #meetup-map-footer {
-    bottom: calc(230px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(230px + var(--safe-area-bottom)) !important;
 }
 
 .native-app-env #meetup-close-btn {
-    top: calc(16px + env(safe-area-inset-top)) !important;
+    top: calc(16px + var(--safe-area-top)) !important;
     left: 20px !important;
 }
 
@@ -2150,8 +2171,8 @@ html.dark .chat-bubble-other {
 .native-app-env #village-needs-container,
 .native-app-env #village-events-container,
 .native-app-env #village-bulletins-container {
-    padding-top: calc(0.6rem + env(safe-area-inset-top)) !important;
-    padding-bottom: calc(120px + env(safe-area-inset-bottom)) !important;
+    padding-top: calc(0.6rem + var(--safe-area-top)) !important;
+    padding-bottom: calc(120px + var(--safe-area-bottom)) !important;
 }
 
 /* Floating Action Button (FAB) Speed Dial Menu Wrappers */
@@ -2346,7 +2367,7 @@ html.dark .chat-bubble-other {
     padding-top: 1rem !important;
 }
 .native-app-env #chat-search-container {
-    padding-top: calc(1rem + env(safe-area-inset-top)) !important;
+    padding-top: calc(1rem + var(--safe-area-top)) !important;
 }
 
 #chat-search-bar-overlay {
@@ -2378,7 +2399,7 @@ html.dark .chat-bubble-other {
     top: auto !important;
 }
 .native-app-env #chat-segment-floating-buttons {
-    bottom: calc(88px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(88px + var(--safe-area-bottom)) !important;
     right: 24px !important;
     top: auto !important;
 }
@@ -2508,6 +2529,18 @@ html.dark .chat-bubble-other {
     justify-content: center !important;
     box-shadow: none !important;
     overflow: hidden !important;
+}
+
+#settings-profile-avatar-container,
+#neighbor-profile-avatar-container,
+#adjust-profile-avatar-container {
+    width: 128px !important;
+    height: 128px !important;
+    min-width: 128px !important;
+    min-height: 128px !important;
+    max-width: 128px !important;
+    max-height: 128px !important;
+    flex-shrink: 0 !important;
 }
 
 /* Ensure inner image or container creates the white/dark gap */
@@ -4650,7 +4683,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 #chat-action-center,
 #chat-action-center.group-chat-action-center {
     position: absolute !important;
-    bottom: calc(56px + 20px + var(--keyboard-offset, 0px)) !important;
+    bottom: calc(56px + 28px + var(--keyboard-offset, 0px)) !important;
     left: 0px !important;
     right: 0px !important;
     width: 100% !important;
@@ -4667,7 +4700,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 }
 .native-app-env #chat-action-center,
 .native-app-env #chat-action-center.group-chat-action-center {
-    bottom: calc(56px + env(safe-area-inset-bottom, 20px) + 12px + var(--keyboard-offset, 0px)) !important;
+    bottom: calc(56px + var(--safe-area-bottom) + 20px + var(--keyboard-offset, 0px)) !important;
     padding-bottom: 8px !important;
 }
 body.keyboard-visible .native-app-env #chat-action-center,
@@ -4684,8 +4717,8 @@ html.dark #chat-action-center {
 
 /* Glassmorphic Chat Input Pill (matching #global-navbar) */
 .chat-pill-input-wrapper {
-    width: calc(100% - 48px) !important;
-    max-width: 380px !important;
+    width: calc(100% - 96px) !important;
+    max-width: 310px !important;
     background: rgba(255, 255, 255, 0.96) !important;
     border: none !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
@@ -6056,6 +6089,15 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar {
     color: #ffffff;
     fill: #ffffff;
 }
+/* Use white icons on the new dark-green welcome screen */
+body:has(#view-welcome.active) #iphone16-status-bar {
+    color: #ffffff;
+    fill: #ffffff;
+}
+/* Nudge welcome hero below the notch in native iOS wrapper */
+.native-app-env #welcome-hero {
+    padding-top: calc(env(safe-area-inset-top, 44px) + 20px);
+}
 body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-container {
     border-color: rgba(255, 255, 255, 0.7);
 }
@@ -6106,13 +6148,14 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
     padding-top: 44px !important;
 }
 
-/* Ensure neighbor profile modal is padded in simulator mode */
+/* Ensure neighbor and settings profile modals are padded in simulator mode */
+.iphone16-mode #profile-settings-header,
 .iphone16-mode #neighbor-profile-header {
-    padding-top: 44px !important;
+    padding-top: var(--safe-area-top) !important;
 }
 .iphone16-mode #neighbor-profile-scroll-container,
 .iphone16-mode #profile-settings-scroll-container {
-    padding-top: 48px !important;
+    padding-top: calc(var(--safe-area-top) + 16px) !important;
 }
 
 /* Custom premium checkboxes for EULA */
@@ -6258,11 +6301,17 @@ body.show-simulator #phone-header-bar {
     box-sizing: border-box !important;
 }
 
+/* Align neighbor profile modal below the static header bar in standard simulator mode */
+body.show-simulator:not(.iphone16-mode) #neighbor-profile-modal {
+    top: 48px !important;
+    height: calc(100% - 48px) !important;
+}
+
 /* Position transitioning views below the status bar in standard simulator mode to avoid "going up top" glitch */
-body.show-simulator:not(.iphone16-mode) .app-container:has(#phone-header-bar:not(.hidden)) .screen-view.slide-push-enter,
-body.show-simulator:not(.iphone16-mode) .app-container:has(#phone-header-bar:not(.hidden)) .screen-view.slide-push-exit,
-body.show-simulator:not(.iphone16-mode) .app-container:has(#phone-header-bar:not(.hidden)) .screen-view.slide-pop-enter,
-body.show-simulator:not(.iphone16-mode) .app-container:has(#phone-header-bar:not(.hidden)) .screen-view.slide-pop-exit {
+body.show-simulator:not(.iphone16-mode) .screen-view.slide-push-enter,
+body.show-simulator:not(.iphone16-mode) .screen-view.slide-push-exit,
+body.show-simulator:not(.iphone16-mode) .screen-view.slide-pop-enter,
+body.show-simulator:not(.iphone16-mode) .screen-view.slide-pop-exit {
     top: 48px !important;
     height: calc(100% - 48px) !important;
 }
@@ -6841,11 +6890,11 @@ html.dark .category-info-highlighted::after {
 .native-app-env #global-navbar:not(.hidden) {
     position: absolute !important;
     bottom: 12px !important;
-    bottom: max(12px, calc(4px + env(safe-area-inset-bottom, 34px))) !important;
+    bottom: max(12px, calc(4px + var(--safe-area-bottom))) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: calc(100% - 48px) !important;
-    max-width: 380px !important;
+    width: calc(100% - 96px) !important;
+    max-width: 310px !important;
     gap: 0px !important;
     height: 56px !important;
     padding-top: 0 !important;
@@ -6891,7 +6940,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
 }
 
 .native-app-env .category-tray {
-    padding-bottom: calc(24px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(24px + var(--safe-area-bottom)) !important;
 }
 
 /* ==================================================== */
@@ -6899,7 +6948,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
 /* ==================================================== */
 
 /* Absolute Glassmorphic Chat Header */
-#view-chat_detail {
+#view-chat_detail.active {
     position: relative !important;
 }
 
@@ -6928,7 +6977,7 @@ html.dark .category-tray, html.dark .category-list-overlay {
 }
 
 .native-app-env #chat-message-feed::after {
-    height: calc(var(--chat-input-height, 80px) + 56px + env(safe-area-inset-bottom, 20px) + 12px + var(--keyboard-offset, 0px)) !important;
+    height: calc(var(--chat-input-height, 80px) + 56px + var(--safe-area-bottom) + 12px + var(--keyboard-offset, 0px)) !important;
 }
 
 /* Custom Chat Section Font & Size Consistency */
@@ -7010,7 +7059,7 @@ body.keyboard-visible #global-navbar {
     bottom: calc(20px + var(--keyboard-offset, 0px)) !important;
 }
 body.keyboard-visible .native-app-env #global-navbar {
-    bottom: calc(max(24px, calc(16px + env(safe-area-inset-bottom, 34px))) + var(--keyboard-offset, 0px)) !important;
+    bottom: calc(max(24px, calc(16px + var(--safe-area-bottom))) + var(--keyboard-offset, 0px)) !important;
 }
 
 #global-navbar.navbar-behind {
@@ -7079,7 +7128,7 @@ html.dark #view-profile_consent #consent-checkboxes-container span:not(.material
 .native-app-env #view-settings_detail,
 .native-app-env #view-create_event,
 .native-app-env #view-events_hub {
-    padding-top: calc(0.2rem + env(safe-area-inset-top)) !important;
+    padding-top: calc(0.2rem + var(--safe-area-top)) !important;
 }
 
 
@@ -7828,7 +7877,7 @@ html.dark .search-highlight {
 }
 
 .native-app-env #meetup-map-close-btn {
-    top: calc(16px + env(safe-area-inset-top)) !important;
+    top: calc(16px + var(--safe-area-top)) !important;
 }
 
 /* Music Guidance Banner Styling */
@@ -8873,8 +8922,8 @@ html.dark .list-card-expandable-content {
 }
 
 .native-app-env .sticky-segmented-control-wrapper {
-    padding-top: calc(0.6rem + env(safe-area-inset-top)) !important;
-    margin-top: calc(0px - 0.6rem - env(safe-area-inset-top)) !important;
+    padding-top: calc(0.6rem + var(--safe-area-top)) !important;
+    margin-top: calc(0px - 0.6rem - var(--safe-area-top)) !important;
 }
 
 html.dark .sticky-segmented-control-wrapper {
@@ -9145,8 +9194,8 @@ html.dark #btn-onboarding-location-permission.active-glow {
 body.show-simulator #global-navbar,
 .native-app-env #global-navbar,
 .native-app-env #global-navbar:not(.hidden) {
-    width: calc(100% - 48px) !important;
-    max-width: 380px !important;
+    width: calc(100% - 96px) !important;
+    max-width: 310px !important;
 }
 
 #navbar-icons-row {
