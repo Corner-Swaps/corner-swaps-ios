@@ -3642,6 +3642,28 @@ html.dark .badge-theme-green.premium-badge-unlocked {
     display: none !important;
 }
 
+/* Yellow/Amber Badge Theme (Needs) */
+.badge-theme-yellow.premium-badge-unlocked {
+    background: rgba(254, 243, 199, 0.55) !important;
+    border-color: rgba(245, 158, 11, 0.25) !important;
+}
+.dark .badge-theme-yellow.premium-badge-unlocked,
+html.dark .badge-theme-yellow.premium-badge-unlocked {
+    background: rgba(45, 34, 18, 0.5) !important;
+    border-color: rgba(245, 158, 11, 0.2) !important;
+}
+.badge-theme-yellow.premium-badge-unlocked .premium-badge-emblem {
+    background: #f59e0b !important;
+    border-color: #d97706 !important;
+    color: #ffffff !important;
+}
+.badge-theme-yellow.premium-badge-unlocked .premium-badge-emblem span {
+    color: #ffffff !important;
+}
+.badge-theme-yellow.premium-badge-unlocked .premium-badge-glow-ring {
+    display: none !important;
+}
+
 /* Premium Badge Element Sub-styling */
 .premium-badge-title-text {
     font-family: 'Outfit', sans-serif !important;
@@ -4548,8 +4570,8 @@ html:not(.dark) #view-create_group p:not(.text-error) {
 }
 
 /* Category grid button texts and icons */
-html:not(.dark) #view-offer .offer-category-btn,
-html:not(.dark) #view-offer .offer-category-btn *:not(.material-symbols-outlined) {
+html:not(.dark) #view-offer .offer-category-btn:not(.bg-forest-green),
+html:not(.dark) #view-offer .offer-category-btn:not(.bg-forest-green) *:not(.material-symbols-outlined) {
     color: #000000 !important;
 }
 
@@ -9308,6 +9330,7 @@ html.dark #welcome-panel-heading {
     line-height: 1.45 !important;
     margin: 0 0 28px 0 !important;
     padding: 0 8px !important;
+    text-align: center !important;
 }
 html.dark #welcome-panel-sub {
     color: #92a79a !important;
@@ -9474,6 +9497,8 @@ html.dark .btn-welcome-admin .material-symbols-outlined {
 
 /* Custom styling for Safe Space Consent button to override global onboarding white button styles */
 #consent-continue-btn {
+    height: 52px !important;
+    border-radius: 16px !important;
     background-color: var(--forest-green) !important;
     color: var(--warm-cream) !important;
     border: none !important;

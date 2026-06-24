@@ -5030,6 +5030,16 @@ function renderOfferIconDisplay() {
         if (removeBtn) removeBtn.classList.remove('hidden');
         if (symbolSpan) {
             symbolSpan.innerText = state.selectedOfferIcon;
+            
+            // Set the color dynamically based on the selected category
+            const select = document.getElementById('offer-category-select');
+            if (select && select.value) {
+                if (typeof getCategoryColor === 'function') {
+                    symbolSpan.style.setProperty('color', getCategoryColor(select.value), 'important');
+                }
+            } else {
+                symbolSpan.style.removeProperty('color');
+            }
         }
     } else {
         if (placeholder) placeholder.classList.remove('hidden');
@@ -14815,7 +14825,7 @@ function renderProfileSettings() {
         }).sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
 
         if (upcomingEvents.length === 0) {
-            upcomingContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1">No upcoming events RSVP'd yet.</p>`;
+            upcomingContainer.innerHTML = `<p class="text-xs text-on-surface-variant dark:text-warm-cream/80 font-semibold italic py-2 px-1 text-center">No upcoming events RSVP'd yet.</p>`;
         } else {
             upcomingEvents.forEach(evt => {
                 const dateObj = new Date(evt.datetime);
@@ -14826,6 +14836,7 @@ function renderProfileSettings() {
                 card.className = "flex items-center p-3 bg-white dark:bg-[#18201a] rounded-xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm relative w-full mb-2.5 cursor-pointer hover:bg-forest-green/5 transition-colors";
                 card.onclick = (e) => {
                     if (e.target.closest('.cancel-rsvp-btn')) return;
+                    window.detailOverlayCameFromProfile = true;
                     openEventDetail(evt.id);
                 };
                 card.innerHTML = `
@@ -15443,6 +15454,7 @@ window.renderMyCornerItems = function() {
             const row = document.createElement('div');
             row.className = "flex items-center justify-between p-2 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
             row.onclick = () => {
+                window.detailOverlayCameFromProfile = true;
                 showView('village');
                 openMapItemDetail(item.id);
             };
@@ -15477,6 +15489,7 @@ window.renderMyCornerItems = function() {
             const row = document.createElement('div');
             row.className = "flex items-center justify-between p-2 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
             row.onclick = () => {
+                window.detailOverlayCameFromProfile = true;
                 showView('village');
                 openMapItemDetail('need_' + item.id);
             };
@@ -15516,6 +15529,7 @@ window.renderMyCornerItems = function() {
             const row = document.createElement('div');
             row.className = "flex items-center justify-between p-2 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
             row.onclick = () => {
+                window.detailOverlayCameFromProfile = true;
                 showView('village');
                 openMapItemDetail('evt_' + item.id);
             };
@@ -15557,13 +15571,13 @@ window.updateMyCornerSection = function() {
     
     // Update badge sub-labels
     const offCountEl = document.getElementById('my-corner-count-offerings');
-    if (offCountEl) offCountEl.innerText = `${offeringsCount} ${offeringsCount === 1 ? 'Item' : 'Items'}`;
+    if (offCountEl) offCountEl.innerText = `${offeringsCount}`;
     
     const needsCountEl = document.getElementById('my-corner-count-needs');
-    if (needsCountEl) needsCountEl.innerText = `${needsCount} ${needsCount === 1 ? 'Item' : 'Items'}`;
+    if (needsCountEl) needsCountEl.innerText = `${needsCount}`;
     
     const eventsCountEl = document.getElementById('my-corner-count-events');
-    if (eventsCountEl) eventsCountEl.innerText = `${eventsCount} ${eventsCount === 1 ? 'Event' : 'Events'}`;
+    if (eventsCountEl) eventsCountEl.innerText = `${eventsCount}`;
     
     // Set active tab if undefined
     if (!state.myCornerActiveTab) {
@@ -15575,10 +15589,12 @@ window.updateMyCornerSection = function() {
     tabs.forEach(t => {
         const btn = document.getElementById(`my-corner-tab-${t}`);
         if (btn) {
+            const theme = t === 'offerings' ? 'badge-theme-green' : t === 'needs' ? 'badge-theme-yellow' : 'badge-theme-blue';
             if (t === state.myCornerActiveTab) {
-                btn.className = "flex-1 bg-white dark:bg-[#1f2922] p-3 rounded-2xl border border-forest-green dark:border-[#308A5E] flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition-all shadow-sm text-center relative max-w-[95px]";
+                let borderCol = t === 'offerings' ? 'border-forest-green dark:border-[#308A5E]' : t === 'needs' ? 'border-amber-500' : 'border-blue-500';
+                btn.className = `premium-badge-item premium-badge-unlocked ${theme} flex-grow flex-1 max-w-[95px] ${borderCol} border-[2.5px]`;
             } else {
-                btn.className = "flex-1 bg-white dark:bg-[#1f2922] p-3 rounded-2xl border border-black/10 dark:border-white/10 flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition-all hover:bg-forest-green/5 dark:hover:bg-forest-green/10 shadow-sm text-center relative max-w-[95px]";
+                btn.className = `premium-badge-item premium-badge-unlocked ${theme} flex-grow flex-1 max-w-[95px] opacity-60 saturate-50`;
             }
         }
     });
@@ -32205,5 +32221,22 @@ window.toggleListCategoryFilter = function(categoryName) {
     }
 };
 /* --- End: Horizontal Scrolling Category Filters for List Page --- */
+
+window.handleDetailBackArrow = function() {
+    closeMapItemDetail();
+    if (window.detailOverlayCameFromProfile) {
+        window.detailOverlayCameFromProfile = false;
+        showView('profile_settings');
+    }
+};
+
+window.handleEventDetailBackArrow = function() {
+    if (window.detailOverlayCameFromProfile) {
+        window.detailOverlayCameFromProfile = false;
+        showView('profile_settings');
+    } else {
+        handleEventDetailBack();
+    }
+};
 
 // Global scope ends

@@ -1816,11 +1816,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
 
                         <div style="display:flex;gap:12px;margin-top:2px;">
-                            <button type="button" onclick="showView('create_account_social')" style="flex:1;height:46px;border:1.5px solid rgba(48,138,94,0.2) !important;background:transparent !important;color:#308A5E !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">
+                            <button type="button" onclick="showView('create_account_social')" style="flex:1;height:52px;border:1.5px solid rgba(48,138,94,0.2) !important;background:transparent !important;color:#308A5E !important;border-radius:16px;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">
                                 <span class="material-symbols-outlined text-sm font-semibold">arrow_back</span>
                                 Back
                             </button>
-                            <button class="w-[50%] h-12 bg-forest-green/45 text-white font-bold text-xs rounded-xl cursor-not-allowed transition-all flex items-center justify-center gap-1.5 mt-0 shadow-sm" style="flex:1;height:46px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:not-allowed;box-shadow:0 6px 18px rgba(48,138,94,0.3);opacity:0.45;transition:opacity 0.2s;" id="consent-continue-btn" onclick="handleProfileConsentSubmit()" disabled>
+                            <button style="flex:1;height:52px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:16px;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:not-allowed;box-shadow:0 6px 18px rgba(48,138,94,0.3);opacity:0.45;transition:opacity 0.2s;" id="consent-continue-btn" onclick="handleProfileConsentSubmit()" disabled>
                                 Next Step
                                 <span class="material-symbols-outlined" style="font-size:18px;color:#ffffff !important;">arrow_forward</span>
                             </button>
@@ -1946,11 +1946,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         
                         <!-- Action buttons -->
                         <div style="display:flex;gap:12px;margin-top:4px;">
-                            <button type="button" onclick="showView('create_account_safe_spots')" style="flex:1;height:52px;border:1.5px solid rgba(48,138,94,0.2) !important;background:transparent !important;color:#308A5E !important;border-radius:16px;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">
+                            <button type="button" onclick="showView('create_account_safe_spots')" style="flex:1 1 0% !important;height:56px !important;border:1.5px solid rgba(48,138,94,0.2) !important;background:transparent !important;color:#308A5E !important;border-radius:16px;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">
                                 <span class="material-symbols-outlined text-sm font-semibold">arrow_back</span>
                                 Back
                             </button>
-                            <button type="submit" style="flex:1;height:52px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:16px;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);">
+                            <button type="submit" style="flex:1 1 0% !important;height:56px !important;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:16px;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);">
                                 Next Step
                                 <span class="material-symbols-outlined" style="font-size:18px;color:#ffffff !important;">arrow_forward</span>
                             </button>
@@ -2983,6 +2983,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                     <!-- Neighbor details bottom sheet overlay -->
                     <div class="detail-overlay" id="map-detail-overlay">
+                        <!-- Back arrow top-left -->
+                        <button onclick="handleDetailBackArrow()" class="absolute top-4 left-4 z-[100] w-10 h-10 rounded-full flex items-center justify-center bg-black/40 hover:bg-black/60 active:scale-90 transition-all cursor-pointer text-white border-0 shadow-lg">
+                            <span class="material-symbols-outlined text-[20px] font-black">arrow_back_ios_new</span>
+                        </button>
                         <!-- Scrollable wrapper for both image and content -->
                         <div id="map-detail-scroll-container" class="flex-grow overflow-y-auto custom-scrollbar min-h-0">
                             <!-- Image Container (full width, no padding, matching event detail cover) -->
@@ -3086,6 +3090,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                     <!-- Event details bottom sheet overlay -->
                     <div class="detail-overlay" id="map-event-detail-overlay">
+                        <!-- Back arrow top-left -->
+                        <button onclick="handleEventDetailBackArrow()" class="absolute top-4 left-4 z-[100] w-10 h-10 rounded-full flex items-center justify-center bg-black/40 hover:bg-black/60 active:scale-90 transition-all cursor-pointer text-white border-0 shadow-lg">
+                            <span class="material-symbols-outlined text-[20px] font-black">arrow_back_ios_new</span>
+                        </button>
                         <!-- Scrollable wrapper for both image and content -->
                         <div id="map-event-detail-scroll-container" class="flex-grow overflow-y-auto custom-scrollbar min-h-0">
                             <!-- Image Container (full width, no padding) -->
@@ -3876,17 +3884,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                             <input type="file" id="offer-photo-input-1" accept="image/*" class="hidden" onchange="handleOfferPhotoSlotUpload(this, 1)">
                                         </div>
 
-                                        <!-- Slot 2 (Icon Selector) -->
-                                        <div class="relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="openIconSelectorModal()">
+                                        <!-- Slot 2 (Icon Display - Not Clickable) -->
+                                        <div class="relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center select-none overflow-hidden shadow-sm">
                                             <div id="offer-icon-placeholder" class="flex items-center justify-center p-2">
-                                                <span class="material-symbols-outlined text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">interests</span>
+                                                <span class="material-symbols-outlined text-black dark:text-white text-[36px] transition-transform">interests</span>
                                             </div>
                                             <div id="offer-icon-selected-display" class="w-full h-full flex items-center justify-center hidden bg-black/5">
-                                                <span id="offer-selected-icon-symbol" class="material-symbols-outlined text-2xl text-black dark:text-white flex items-center justify-center w-full h-full" style="font-variation-settings: 'FILL' 1;">interests</span>
+                                                <span id="offer-selected-icon-symbol" class="material-symbols-outlined text-[36px] text-black dark:text-white flex items-center justify-center w-full h-full" style="font-variation-settings: 'FILL' 1;">interests</span>
                                             </div>
-                                            <button id="offer-icon-remove" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeOfferIcon()">
-                                                <span class="material-symbols-outlined text-[10px] font-bold">close</span>
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -4253,35 +4258,41 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <!-- My Corner Section (Offerings, Needs, Events tabs modeled after badges) -->
                     <section id="widget-my-listings-section" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
                         <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
-                            <span class="material-symbols-outlined text-sm">grid_view</span> My Corner
+                            <span class="material-symbols-outlined text-sm">grid_view</span> MY CORNER
                         </h3>
                         
-                        <div class="flex gap-2 justify-around items-center py-2" id="user-my-corner-tabs">
+                        <div class="flex gap-2 justify-around items-stretch py-2" id="user-my-corner-tabs">
                             <!-- Offerings badge-like button -->
-                            <button type="button" onclick="switchMyCornerTab('offerings')" id="my-corner-tab-offerings" class="flex-1 bg-white dark:bg-[#1f2922] p-3 rounded-2xl border border-black dark:border-white flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition-all hover:bg-forest-green/5 dark:hover:bg-forest-green/10 shadow-sm text-center relative max-w-[95px]">
-                                <div class="w-10 h-10 rounded-full bg-forest-green/10 dark:bg-[#308A5E]/10 flex items-center justify-center text-forest-green dark:text-[#308A5E]">
-                                    <span class="material-symbols-outlined text-xl">handshake</span>
+                            <button type="button" onclick="switchMyCornerTab('offerings')" id="my-corner-tab-offerings" class="premium-badge-item premium-badge-unlocked badge-theme-green flex-1 max-w-[95px]">
+                                <div class="premium-badge-emblem">
+                                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1 !important;">handshake</span>
                                 </div>
-                                <span class="text-[10px] font-bold text-black dark:text-warm-cream leading-tight mt-1 tracking-wide">Offerings</span>
-                                <span id="my-corner-count-offerings" class="text-[9px] font-bold text-forest-green dark:text-[#308A5E]">0 Items</span>
+                                <span class="premium-badge-title-text">Offerings</span>
+                                <div class="premium-badge-status-pill unlocked">
+                                    <span id="my-corner-count-offerings">0</span>
+                                </div>
                             </button>
 
                             <!-- Needs badge-like button -->
-                            <button type="button" onclick="switchMyCornerTab('needs')" id="my-corner-tab-needs" class="flex-1 bg-white dark:bg-[#1f2922] p-3 rounded-2xl border border-black/10 dark:border-white/10 flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition-all hover:bg-forest-green/5 dark:hover:bg-forest-green/10 shadow-sm text-center relative max-w-[95px]">
-                                <div class="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500">
-                                    <span class="material-symbols-outlined text-xl">search</span>
+                            <button type="button" onclick="switchMyCornerTab('needs')" id="my-corner-tab-needs" class="premium-badge-item premium-badge-unlocked badge-theme-yellow flex-1 max-w-[95px]">
+                                <div class="premium-badge-emblem">
+                                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1 !important;">search</span>
                                 </div>
-                                <span class="text-[10px] font-bold text-black dark:text-warm-cream leading-tight mt-1 tracking-wide">Needs</span>
-                                <span id="my-corner-count-needs" class="text-[9px] font-bold text-amber-500">0 Items</span>
+                                <span class="premium-badge-title-text">Needs</span>
+                                <div class="premium-badge-status-pill unlocked">
+                                    <span id="my-corner-count-needs">0</span>
+                                </div>
                             </button>
 
                             <!-- Events badge-like button -->
-                            <button type="button" onclick="switchMyCornerTab('events')" id="my-corner-tab-events" class="flex-1 bg-white dark:bg-[#1f2922] p-3 rounded-2xl border border-black/10 dark:border-white/10 flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition-all hover:bg-forest-green/5 dark:hover:bg-forest-green/10 shadow-sm text-center relative max-w-[95px]">
-                                <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500">
-                                    <span class="material-symbols-outlined text-xl">festival</span>
+                            <button type="button" onclick="switchMyCornerTab('events')" id="my-corner-tab-events" class="premium-badge-item premium-badge-unlocked badge-theme-blue flex-1 max-w-[95px]">
+                                <div class="premium-badge-emblem">
+                                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1 !important;">festival</span>
                                 </div>
-                                <span class="text-[10px] font-bold text-black dark:text-warm-cream leading-tight mt-1 tracking-wide">Events</span>
-                                <span id="my-corner-count-events" class="text-[9px] font-bold text-blue-500">0 RSVPs</span>
+                                <span class="premium-badge-title-text">Events</span>
+                                <div class="premium-badge-status-pill unlocked">
+                                    <span id="my-corner-count-events">0</span>
+                                </div>
                             </button>
                         </div>
 
@@ -4693,14 +4704,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <button onclick="closeConfirmSwapRatingModal()" class="w-10 h-10 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-[#2a352d] flex-shrink-0 shadow-sm">
                             <span class="material-symbols-outlined text-[20px] font-black">arrow_back_ios_new</span>
                         </button>
-                        <!-- Swap Complete and Karma points in header -->
-                        <div class="flex items-center gap-2.5">
-                            <span style="font-size: 9px !important; color: #308A5E !important; font-weight: 800 !important; background-color: rgba(48, 138, 94, 0.1) !important; padding: 3px 10px !important; border-radius: 9999px !important; text-transform: uppercase !important; letter-spacing: 0.05em !important;">swap complete</span>
-                            <div class="flex items-center gap-1" style="font-size: 11px !important; font-weight: 700 !important; color: #308A5E !important;">
-                                <span class="material-symbols-outlined text-xs">volunteer_activism</span>
-                                <span id="confirm-swap-karma-points" style="font-size: 11px !important; font-weight: 700 !important;">50</span> Karma
-                            </div>
-                        </div>
+                        <!-- Top-right elements deleted -->
+                        <div></div>
                     </div>
 
                     <!-- Scrollable Container -->
@@ -4708,45 +4713,45 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- Top Header Section (No container card, same profile layout style) -->
                         <div class="flex flex-col items-center gap-3 w-full" style="background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin-top: 10px !important;">
                             <!-- Avatar and Name -->
-                            <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-forest-green shadow-sm mt-1">
-                                <img id="confirm-swap-avatar" src="" class="w-full h-full object-cover animate-fade-in" alt="Neighbor Avatar">
+                            <div class="profile-avatar-ring w-32 h-32 flex-shrink-0 relative mt-1">
+                                <img id="confirm-swap-avatar" src="" class="w-full h-full object-cover rounded-full animate-fade-in" alt="Neighbor Avatar">
                             </div>
-                            <h3 class="font-headline font-extrabold text-black dark:text-white text-lg mt-1" id="confirm-swap-neighbor-name" style="font-weight: 800 !important;">Neighbor Name</h3>
+                            <h3 class="font-headline font-extrabold text-black dark:text-white text-lg mt-1" id="confirm-swap-neighbor-name" style="font-weight: 800 !important; margin-bottom: 0 !important;">Neighbor Name</h3>
+                            <p style="font-size: 13px !important; color: #6b7280 !important; font-weight: 700 !important; margin: 0 !important; margin-top: -4px !important;">Rate a neighbor</p>
                         </div>
 
                         <!-- 4-Button Action Grid -->
                         <div class="flex flex-col gap-2.5">
-                            <p style="font-size: 11.5px !important; color: #6b7280 !important; font-weight: 700 !important; text-align: left !important; margin: 0 !important;">Rate neighbor & select actions:</p>
                             <div class="grid grid-cols-2 gap-2.5">
                                 <!-- Thumbs Up -->
-                                <button id="fused-btn-up" class="h-12 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#22c55e] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#22c55e]" onclick="toggleFusedRating('up')" title="Thumbs Up">
-                                    <span class="material-symbols-outlined text-xl" style="font-size: 22px !important;">thumb_up</span>
+                                <button id="fused-btn-up" class="h-20 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#22c55e] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#22c55e]" onclick="toggleFusedRating('up')" title="Thumbs Up">
+                                    <span class="material-symbols-outlined text-3xl" style="font-size: 30px !important;">thumb_up</span>
                                 </button>
                                 <!-- Add Friend -->
-                                <button id="fused-btn-friend" class="h-12 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#22c55e] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#22c55e]" onclick="toggleFusedRating('friend')" title="Add Friend">
-                                    <span class="material-symbols-outlined text-xl" style="font-size: 22px !important;">person_add</span>
+                                <button id="fused-btn-friend" class="h-20 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#22c55e] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#22c55e]" onclick="toggleFusedRating('friend')" title="Add Friend">
+                                    <span class="material-symbols-outlined text-3xl" style="font-size: 30px !important;">person_add</span>
                                 </button>
                                 <!-- Thumbs Down -->
-                                <button id="fused-btn-down" class="h-12 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#ef4444] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#ef4444]" onclick="toggleFusedRating('down')" title="Thumbs Down">
-                                    <span class="material-symbols-outlined text-xl" style="font-size: 22px !important;">thumb_down</span>
+                                <button id="fused-btn-down" class="h-20 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#ef4444] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#ef4444]" onclick="toggleFusedRating('down')" title="Thumbs Down">
+                                    <span class="material-symbols-outlined text-3xl" style="font-size: 30px !important;">thumb_down</span>
                                 </button>
                                 <!-- Block -->
-                                <button id="fused-btn-block" class="h-12 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#ef4444] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#ef4444]" onclick="toggleFusedRating('block')" title="Block">
-                                    <span class="material-symbols-outlined text-xl" style="font-size: 22px !important;">block</span>
+                                <button id="fused-btn-block" class="h-20 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#ef4444] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#ef4444]" onclick="toggleFusedRating('block')" title="Block">
+                                    <span class="material-symbols-outlined text-3xl" style="font-size: 30px !important;">block</span>
                                 </button>
                             </div>
                         </div>
 
                         <!-- Dynamic Negative Tags Sub-menu -->
                         <div id="confirm-swap-negative-menu" class="hidden flex-col gap-2">
-                            <p style="font-size: 12px !important; color: #ef4444 !important; font-weight: 700 !important; text-align: left !important; margin: 0 !important;">Please select issue tags:</p>
-                            <div class="flex flex-wrap gap-2.5 justify-start">
-                                <button class="fused-tag-btn px-4 py-2.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[13px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 13px !important;" onclick="toggleFusedTag(this, 'slow communication')">slow communication</button>
-                                <button class="fused-tag-btn px-4 py-2.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[13px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 13px !important;" onclick="toggleFusedTag(this, 'felt unsafe')">felt unsafe</button>
-                                <button class="fused-tag-btn px-4 py-2.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[13px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 13px !important;" onclick="toggleFusedTag(this, 'item not as described')">item not as described</button>
-                                <button class="fused-tag-btn px-4 py-2.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[13px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 13px !important;" onclick="toggleFusedTag(this, 'late')">late</button>
-                                <button class="fused-tag-btn px-4 py-2.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[13px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 13px !important;" onclick="toggleFusedTag(this, 'no-show')">no-show</button>
-                                <button class="fused-tag-btn px-4 py-2.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[13px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 13px !important;" onclick="toggleFusedTag(this, 'hard to coordinate')">hard to coordinate</button>
+                            <p style="font-size: 13px !important; color: #ef4444 !important; font-weight: 700 !important; text-align: center !important; margin: 0 !important; width: 100% !important;">Please select issue tags:</p>
+                            <div class="flex flex-wrap gap-2.5 justify-center">
+                                <button class="fused-tag-btn px-5 py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-md text-[14px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 14px !important;" onclick="toggleFusedTag(this, 'slow communication')">slow communication</button>
+                                <button class="fused-tag-btn px-5 py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-md text-[14px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 14px !important;" onclick="toggleFusedTag(this, 'felt unsafe')">felt unsafe</button>
+                                <button class="fused-tag-btn px-5 py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-md text-[14px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 14px !important;" onclick="toggleFusedTag(this, 'item not as described')">item not as described</button>
+                                <button class="fused-tag-btn px-5 py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-md text-[14px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 14px !important;" onclick="toggleFusedTag(this, 'late')">late</button>
+                                <button class="fused-tag-btn px-5 py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-md text-[14px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 14px !important;" onclick="toggleFusedTag(this, 'no-show')">no-show</button>
+                                <button class="fused-tag-btn px-5 py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-md text-[14px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 14px !important;" onclick="toggleFusedTag(this, 'hard to coordinate')">hard to coordinate</button>
                             </div>
                         </div>
 
