@@ -15422,10 +15422,12 @@ window.switchMyCornerTab = function(tab) {
     tabs.forEach(t => {
         const btn = document.getElementById(`my-corner-tab-${t}`);
         if (btn) {
+            const theme = t === 'offerings' ? 'badge-theme-green' : t === 'needs' ? 'badge-theme-yellow' : 'badge-theme-blue';
             if (t === tab) {
-                btn.className = "flex-1 bg-white dark:bg-[#1f2922] p-3 rounded-2xl border border-forest-green dark:border-[#308A5E] flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition-all shadow-sm text-center relative max-w-[95px]";
+                let borderCol = t === 'offerings' ? 'border-forest-green dark:border-[#308A5E]' : t === 'needs' ? 'border-amber-500' : 'border-blue-500';
+                btn.className = `premium-badge-item premium-badge-unlocked ${theme} flex-grow flex-1 max-w-[95px] ${borderCol} border-[2.5px]`;
             } else {
-                btn.className = "flex-1 bg-white dark:bg-[#1f2922] p-3 rounded-2xl border border-black/10 dark:border-white/10 flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition-all hover:bg-forest-green/5 dark:hover:bg-forest-green/10 shadow-sm text-center relative max-w-[95px]";
+                btn.className = `premium-badge-item premium-badge-unlocked ${theme} flex-grow flex-1 max-w-[95px] opacity-60 saturate-50`;
             }
         }
     });
@@ -24401,6 +24403,11 @@ function selectOfferCategory(categoryName) {
 
     const mappedCategory = (categoryName === 'Kids' || categoryName === 'Maternity') ? 'Kids and Maternity' : categoryName;
 
+    const select = document.getElementById('offer-category-select');
+    if (select) {
+        select.value = mappedCategory;
+    }
+
     // Auto-update the icon preview box to match the selected category's icon
     if (typeof getCategoryIcon === 'function') {
         const iconName = getCategoryIcon(categoryName);
@@ -24409,11 +24416,6 @@ function selectOfferCategory(categoryName) {
         if (typeof renderOfferIconDisplay === 'function') {
             renderOfferIconDisplay();
         }
-    }
-
-    const select = document.getElementById('offer-category-select');
-    if (select) {
-        select.value = mappedCategory;
     }
 
     if (typeof checkOfferFormValidity === 'function') {
@@ -26756,15 +26758,38 @@ function queueTradeCheckIn(convId) {
 
 function openListingSuccessModal(message) {
     const modal = document.getElementById('listing-success-modal');
-    const msgEl = document.getElementById('listing-success-message');
-    if (msgEl) msgEl.innerText = message;
-    if (modal) modal.classList.remove('hidden');
+    if (modal) modal.classList.add('hidden');
+    
+    const banner = document.getElementById('listing-success-banner');
+    const bannerText = document.getElementById('listing-success-banner-text');
+    if (banner) {
+        if (bannerText) {
+            if (state.currentOfferMode === 'need') {
+                bannerText.innerText = "Need Listed!";
+            } else if (state.currentOfferMode === 'donation') {
+                bannerText.innerText = "Donation Listed!";
+            } else {
+                bannerText.innerText = "Offer Listed!";
+            }
+        }
+        banner.classList.remove('hidden');
+        
+        setTimeout(() => {
+            banner.classList.add('hidden');
+            showView('profile_settings');
+        }, 1500);
+    } else {
+        showView('profile_settings');
+    }
 }
 
 function closeListingSuccessModal() {
     if (typeof playSound === 'function') playSound('click');
     const modal = document.getElementById('listing-success-modal');
     if (modal) modal.classList.add('hidden');
+    
+    const banner = document.getElementById('listing-success-banner');
+    if (banner) banner.classList.add('hidden');
     showView('profile_settings');
 }
 
@@ -28264,20 +28289,37 @@ window.closeGuestPromptModal = function() {
 
 window.openListingSuccessModal = function(message) {
     const modal = document.getElementById('listing-success-modal');
-    const msgEl = document.getElementById('listing-success-modal-message');
-    if (modal) {
-        if (msgEl && message) {
-            msgEl.textContent = message;
+    if (modal) modal.classList.add('hidden');
+    
+    const banner = document.getElementById('listing-success-banner');
+    const bannerText = document.getElementById('listing-success-banner-text');
+    if (banner) {
+        if (bannerText) {
+            if (state.currentOfferMode === 'need') {
+                bannerText.innerText = "Need Listed!";
+            } else if (state.currentOfferMode === 'donation') {
+                bannerText.innerText = "Donation Listed!";
+            } else {
+                bannerText.innerText = "Offer Listed!";
+            }
         }
-        modal.classList.remove('hidden');
+        banner.classList.remove('hidden');
+        
+        setTimeout(() => {
+            banner.classList.add('hidden');
+            showView('profile_settings');
+        }, 1500);
+    } else {
+        showView('profile_settings');
     }
 };
 
 window.closeListingSuccessModal = function() {
     const modal = document.getElementById('listing-success-modal');
-    if (modal) {
-        modal.classList.add('hidden');
-    }
+    if (modal) modal.classList.add('hidden');
+    
+    const banner = document.getElementById('listing-success-banner');
+    if (banner) banner.classList.add('hidden');
     showView('profile_settings');
 };
 
