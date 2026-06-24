@@ -2983,7 +2983,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <!-- Neighbor details bottom sheet overlay -->
                     <div class="detail-overlay" id="map-detail-overlay">
                         <!-- Back arrow top-left -->
-                        <button onclick="handleDetailBackArrow()" class="absolute top-4 left-4 z-[100] w-10 h-10 rounded-full flex items-center justify-center bg-black/40 hover:bg-black/60 active:scale-90 transition-all cursor-pointer text-white border-0 shadow-lg">
+                        <button id="map-detail-back-btn" onclick="handleDetailBackArrow()" class="absolute top-4 left-4 z-[100] w-10 h-10 rounded-full flex items-center justify-center bg-black/40 hover:bg-black/60 active:scale-90 transition-all cursor-pointer text-white border-0 shadow-lg">
                             <span class="material-symbols-outlined text-[20px] font-black">arrow_back_ios_new</span>
                         </button>
                         <!-- Scrollable wrapper for both image and content -->
@@ -3090,7 +3090,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <!-- Event details bottom sheet overlay -->
                     <div class="detail-overlay" id="map-event-detail-overlay">
                         <!-- Back arrow top-left -->
-                        <button onclick="handleEventDetailBackArrow()" class="absolute top-4 left-4 z-[100] w-10 h-10 rounded-full flex items-center justify-center bg-black/40 hover:bg-black/60 active:scale-90 transition-all cursor-pointer text-white border-0 shadow-lg">
+                        <button id="map-event-detail-back-btn" onclick="handleEventDetailBackArrow()" class="absolute top-4 left-4 z-[100] w-10 h-10 rounded-full flex items-center justify-center bg-black/40 hover:bg-black/60 active:scale-90 transition-all cursor-pointer text-white border-0 shadow-lg">
                             <span class="material-symbols-outlined text-[20px] font-black">arrow_back_ios_new</span>
                         </button>
                         <!-- Scrollable wrapper for both image and content -->
@@ -7423,7 +7423,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
                         
                         <!-- Scrollable Content -->
-                        <div class="flex-grow overflow-y-auto space-y-4 pr-1 scrollbar-thin mb-4 min-h-0">
+                        <div class="flex-grow overflow-y-auto space-y-4 pr-1 no-scrollbar mb-4 min-h-0">
                             <!-- Map area (Enlarged) -->
                             <div class="w-full h-[260px] rounded-2xl border border-outline-variant/30 overflow-hidden relative shrink-0">
                                 <div id="meeting-spot-map" class="w-full h-full"></div>
@@ -7438,7 +7438,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div class="flex flex-col gap-2 bg-forest-green/5 dark:bg-black/20 p-3 rounded-2xl border border-outline-variant/20 flex-shrink-0">
                                 <div class="flex justify-between items-center text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">
                                     <span>Vicinity Radius</span>
-                                    <span id="chat-meeting-radius-display" class="font-bold bg-forest-green dark:bg-[#308A5E] text-warm-cream dark:text-[#101612] px-2 py-0.5 rounded-md text-[10px]">100m</span>
+                                    <span id="chat-meeting-radius-display" style="color: #ffffff !important;" class="font-bold bg-forest-green dark:bg-[#308A5E] text-white dark:text-white px-2 py-0.5 rounded-md text-[10px]">100m</span>
                                 </div>
                                 <!-- Slider from 10m to 500m -->
                                 <input type="range" id="chat-meeting-radius-slider" min="10" max="500" step="10" value="100" class="w-full accent-forest-green cursor-pointer mt-1" oninput="updateChatMeetingPickerRadius(this.value)">
@@ -7731,7 +7731,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                 <!-- ==================================================== -->
                 <section id="view-create_group" class="screen-view flex-grow pb-24 overflow-y-auto relative hidden">
                     <!-- Exit/Close button -->
-                    <button id="create-group-close-btn" class="absolute top-8 right-6 z-[100] w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeCreateGroupModal()" title="Close and Exit">
+                    <button id="create-group-close-btn" class="absolute top-8 left-6 z-[100] w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeCreateGroupModal()" title="Close and Exit">
                         <span class="material-symbols-outlined text-[17px]">close</span>
                     </button>
 
@@ -7754,24 +7754,24 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <div class="px-6 py-6 space-y-6 w-full max-w-xl mx-auto">
                         <!-- Group Name Input -->
                         <div class="text-left w-full mb-2">
-                            <label class="block text-sm font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E] mb-2.5 text-left" for="group-name-input">
+                            <label class="block text-[9px] font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E] mb-2.5 text-left" for="group-name-input">
                                 Group Name
                             </label>
-                            <input class="w-full text-left bg-white dark:bg-[#101612] border border-outline-variant/30 rounded-xl focus:border-forest-green focus:ring-1 focus:ring-forest-green text-[15px] font-body py-3.5 px-4 transition-all placeholder:text-outline/40 shadow-sm" id="group-name-input" placeholder="e.g. Kitsilano Swappers Crew" type="text" required>
+                            <input class="w-full text-left bg-white dark:bg-[#101612] border border-outline-variant/30 rounded-xl focus:border-forest-green focus:ring-1 focus:ring-forest-green text-xs font-body py-3.5 px-4 transition-all placeholder:text-outline/40 shadow-sm" id="group-name-input" placeholder="e.g. Kitsilano Swappers Crew" type="text" required>
                         </div>
 
                         <!-- Group Description Input -->
                         <div class="text-left w-full mb-2">
-                            <label class="block text-sm font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E] mb-2.5 text-left" for="group-desc-input">
+                            <label class="block text-[9px] font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E] mb-2.5 text-left" for="group-desc-input">
                                 Group Description
                             </label>
-                            <textarea id="group-desc-input" class="w-full p-4 bg-white dark:bg-[#101612] border border-outline-variant/30 rounded-xl text-[15px] focus:border-forest-green focus:ring-0 outline-none min-h-[120px] placeholder:text-outline/40 leading-relaxed" placeholder="Describe group purpose, guidelines, or topics (e.g. swapping veggies, tool sharing)..." required></textarea>
+                            <textarea id="group-desc-input" class="w-full h-[140px] p-4 bg-white dark:bg-[#101612] border border-outline-variant/30 rounded-xl text-xs focus:border-forest-green focus:ring-0 outline-none resize-none placeholder:text-outline/40 leading-relaxed" placeholder="Describe group purpose, guidelines, or topics..." required></textarea>
                         </div>
 
                         <!-- Select Friends Section -->
                         <div class="text-left w-full mb-2">
                             <div class="flex justify-between items-center mb-2.5">
-                                <label class="block text-sm font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E]">
+                                <label class="block text-[9px] font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E]">
                                     Select Friends (Min. 1)
                                 </label>
                                 <span id="group-friends-count-badge" class="hidden text-[10px] font-bold bg-forest-green/10 dark:bg-emerald-950/20 text-forest-green dark:text-emerald-400 px-2 py-0.5 rounded-full border border-forest-green/10">0 Selected</span>
@@ -7779,7 +7779,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             
                             <!-- Friend Search Input -->
                             <div class="relative w-full mb-3 flex items-center">
-                                <input class="w-full text-left bg-white dark:bg-[#101612] border border-outline-variant/30 rounded-xl focus:border-outline-variant focus:ring-0 text-[14px] font-body py-3 pl-9 pr-4 transition-all placeholder:text-outline/40 shadow-sm" id="group-friends-search" placeholder="Search friends by name..." type="text" oninput="filterGroupFriends(this.value)">
+                                <input class="w-full text-left bg-white dark:bg-[#101612] border border-outline-variant/30 rounded-xl focus:border-outline-variant focus:ring-0 text-xs font-body py-3 pl-9 pr-4 transition-all placeholder:text-outline/40 shadow-sm" id="group-friends-search" placeholder="Search friends by name..." type="text" oninput="filterGroupFriends(this.value)">
                                 <span class="material-symbols-outlined absolute left-3 text-outline/50 text-sm">search</span>
                             </div>
 
@@ -8626,7 +8626,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <div class="relative bg-warm-cream dark:bg-[#101612] w-full max-w-[340px] md:max-w-md rounded-3xl border border-outline-variant/30 shadow-2xl p-5 flex flex-col max-h-[85vh] overflow-hidden text-center animate-slide-up">
                         
                         <h3 class="font-headline text-lg font-bold text-black dark:text-white flex items-center justify-center gap-2 mb-1.5">
-                            <span class="material-symbols-outlined text-forest-green dark:text-[#308A5E]">map</span> Choose Meetup
+                            Choose Meetup
                         </h3>
                         
                         <!-- Body -->
@@ -8635,8 +8635,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 Tap or click on the map to set your meetup vicinity. For safety, we only display this approximate area to neighbors.
                             </p>
                             
-                            <!-- Map Container (Hidden per user request, kept in DOM to prevent Leaflet JS errors) -->
-                            <div class="w-full h-[220px] rounded-2xl border border-outline-variant/40 overflow-hidden shadow-inner relative flex-shrink-0 bg-[#e8ece9] dark:bg-[#18201a] hidden">
+                            <!-- Map Container -->
+                            <div class="w-full h-[220px] rounded-2xl border border-outline-variant/40 overflow-hidden shadow-inner relative flex-shrink-0 bg-[#e8ece9] dark:bg-[#18201a]">
                                 <div id="meetup-picker-map" class="w-full h-full bg-[#e8ece9]"></div>
                                 <div id="map-picker-instruction" class="absolute bottom-2 left-2 right-2 bg-forest-green/80 dark:bg-[#308A5E] text-warm-cream dark:text-[#101612] text-[9px] font-bold px-2 py-1 rounded-lg text-center backdrop-blur-sm pointer-events-none shadow-sm z-[999] transition-all">
                                     Tap map to set meetup point
@@ -8647,7 +8647,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div class="flex flex-col gap-2 bg-forest-green/5 dark:bg-black/20 p-3 rounded-2xl border border-outline-variant/20 flex-shrink-0">
                                 <div class="flex justify-between items-center text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">
                                     <span>Vicinity Radius</span>
-                                    <span id="meetup-radius-display" class="font-bold bg-forest-green dark:bg-[#308A5E] text-white dark:text-white px-2 py-0.5 rounded-md text-[10px]">100m</span>
+                                    <span id="meetup-radius-display" style="color: #ffffff !important;" class="font-bold bg-forest-green dark:bg-[#308A5E] text-white dark:text-white px-2 py-0.5 rounded-md text-[10px]">100m</span>
                                 </div>
                                 <!-- Slider from 10m to 500m -->
                                 <input type="range" id="meetup-radius-slider" min="10" max="500" step="10" value="100" class="w-full accent-forest-green cursor-pointer mt-1" oninput="updateMeetupPickerRadius(this.value)">

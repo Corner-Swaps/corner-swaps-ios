@@ -3730,10 +3730,12 @@ html.dark .badge-theme-yellow.premium-badge-unlocked {
 
 /* Section title header "Badges" override to match requested color (black in light mode) */
 #widget-badges-section h3,
+#widget-my-listings-section h3,
 #neighbor-widget-badges-section h3 {
     color: #000000 !important;
 }
 .dark #widget-badges-section h3,
+.dark #widget-my-listings-section h3,
 .dark #neighbor-widget-badges-section h3 {
     color: #ffffff !important;
 }
@@ -3747,6 +3749,7 @@ html.dark .badge-theme-yellow.premium-badge-unlocked {
 
 /* Style 1: Section titles/headers (14px, bold, uppercase, tracked) */
 #widget-badges-section h3,
+#widget-my-listings-section h3,
 #widget-my-offerings h3,
 #widget-my-needs h3,
 #widget-my-events h3,
@@ -9071,6 +9074,19 @@ html.dark .sticky-segmented-control-wrapper {
     font-size: 15.5px !important;
 }
 
+/* Space under report listing/event buttons before the bottom menu */
+#map-detail-report-btn,
+#map-event-detail-report-btn,
+#event-detail-report-btn {
+    margin-bottom: 12px !important; /* Small spacing below the button */
+}
+
+#map-detail-scroll-container,
+#map-event-detail-scroll-container,
+#view-event_detail {
+    padding-bottom: 90px !important;
+}
+
 /* Ensure close/back button inside the chat details screen is visible */
 #chat-close-btn {
     display: flex !important;
@@ -10192,7 +10208,7 @@ html.dark .auth-avatar-upload {
 .auth-custom-avatar-sub { font-family: 'Outfit', sans-serif; font-size: 10px; color: #668c75; }
 .auth-custom-avatar-upload-btn { font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 700; color: #308A5E; background-color: rgba(48,138,94,0.1); border: 1px solid rgba(48,138,94,0.18); border-radius: 10px; padding: 7px 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; }
 
-
-
-
-
+#chat-meeting-radius-display,
+#meetup-radius-display {
+    color: #ffffff !important;
+}

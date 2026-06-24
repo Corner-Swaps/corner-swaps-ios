@@ -1272,6 +1272,12 @@ function escapeHTML(str) {
         .replace(/'/g, '&#39;');
 }
 
+function isContentReported(targetId) {
+    if (!state || !state.reportedAccounts) return false;
+    return state.reportedAccounts.some(r => r.targetId === targetId);
+}
+window.isContentReported = isContentReported;
+
 function formatMessageTime(timeStr) {
     if (!timeStr) return '';
     timeStr = String(timeStr);
@@ -3437,10 +3443,13 @@ function showView(viewId, mode) {
         viewId = 'village';
     }
     const oldViewId = (state && state.currentView) ? state.currentView : null;
-    const disableTransition = window.isAppStartup;
+    const disableTransition = window.isAppStartup || window.disableNextViewTransition;
+    if (window.disableNextViewTransition) {
+        window.disableNextViewTransition = false;
+    }
     
-    // Save scroll position of profile settings if we are leaving it for one of the four sub-views
-    if (oldViewId === 'profile_settings' && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'adjust_homepage'].includes(viewId)) {
+    // Save scroll position of profile settings if we are leaving it
+    if (oldViewId === 'profile_settings') {
         const scrollContainer = document.getElementById('profile-settings-scroll-container');
         if (scrollContainer) {
             window.savedProfileScrollTop = scrollContainer.scrollTop;
@@ -3756,6 +3765,13 @@ function showView(viewId, mode) {
                             scrollContainer.scrollTop = scrollContainer.scrollHeight;
                         });
                         console.log("[Scroll Restore] Restored to bottom of profile settings when returning from:", oldViewId);
+                    } else if (window.savedProfileScrollTop !== undefined) {
+                        scrollContainer.offsetHeight;
+                        scrollContainer.scrollTop = window.savedProfileScrollTop;
+                        requestAnimationFrame(() => {
+                            scrollContainer.scrollTop = window.savedProfileScrollTop;
+                        });
+                        console.log("[Scroll Restore] Restored profile settings scroll position:", window.savedProfileScrollTop);
                     } else {
                         scrollContainer.scrollTop = 0;
                     }
@@ -3773,14 +3789,21 @@ function showView(viewId, mode) {
             } else {
                 setTimeout(() => {
                     activeView.classList.add('active');
-                    if (viewId === 'profile_settings' && oldViewId && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'adjust_homepage'].includes(oldViewId)) {
+                    if (viewId === 'profile_settings') {
                         const scrollContainer = document.getElementById('profile-settings-scroll-container');
                         if (scrollContainer) {
                             scrollContainer.offsetHeight; // force layout
-                            scrollContainer.scrollTop = scrollContainer.scrollHeight;
-                            requestAnimationFrame(() => {
+                            if (oldViewId && ['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'adjust_homepage'].includes(oldViewId)) {
                                 scrollContainer.scrollTop = scrollContainer.scrollHeight;
-                            });
+                                requestAnimationFrame(() => {
+                                    scrollContainer.scrollTop = scrollContainer.scrollHeight;
+                                });
+                            } else if (window.savedProfileScrollTop !== undefined) {
+                                scrollContainer.scrollTop = window.savedProfileScrollTop;
+                                requestAnimationFrame(() => {
+                                    scrollContainer.scrollTop = window.savedProfileScrollTop;
+                                });
+                            }
                         }
                     }
                 }, 20);
@@ -3982,7 +4005,14 @@ function showView(viewId, mode) {
                         else if (cat === 'events') targetSeg = 'events_map';
                     }
                 }
-                switchVillageSegment(targetSeg);
+                
+                // Only switch segment if map detail overlay is not active to prevent race-condition dismissal
+                const overlay = document.getElementById('map-detail-overlay');
+                const eventOverlay = document.getElementById('map-event-detail-overlay');
+                const isDetailActive = (overlay && overlay.classList.contains('active')) || (eventOverlay && eventOverlay.classList.contains('active'));
+                if (!isDetailActive) {
+                    switchVillageSegment(targetSeg);
+                }
             }
         }, 500);
 
@@ -6386,6 +6416,9 @@ window.openExpressPolicyModal = function(e, type) {
     } else if (type === 'privacy') {
         title = "Privacy Policy";
         body = "We collect basic account details (name, email) and location information (neighborhood or neighborhood center) to connect you with other users. We do not sell your personal data. You can delete your account at any time in Account Settings.";
+    } else if (type === 'terms') {
+        title = "Terms of Service";
+        body = "By using Corner Swaps, you agree to exchange items and skills in good faith, act respectfully, and prioritize community safety. We maintain a zero-tolerance policy for abusive content, spam, scamming, or illegal trades. Violations will result in immediate and permanent account suspension.";
     }
     
     titleEl.textContent = title;
@@ -7287,7 +7320,7 @@ window.closeCongratsEventModal = closeCongratsEventModal;
 // 4. Immersive Discovery Map (Leaflet)
 // ----------------------------------------------------
 function getCategoryColor(category) {
-    if (!category) return '#546E7A'; // Default gray for other (non-green)
+    if (!category) return '#6b7280'; // Default gray for other
     const catLower = category.toLowerCase();
     if (catLower.includes('karma')) return '#f59e0b';
     if (catLower.includes('donation')) return '#ec4899';
@@ -7309,20 +7342,20 @@ function getCategoryColor(category) {
     }
     
     // Fallback logic to match MAP_FILTER_CATEGORIES colors
-    if (catLower.includes('food') || catLower.includes('drink')) return '#EF5350';
-    if (catLower.includes('home') || catLower.includes('living') || catLower.includes('gear')) return '#AB47BC';
-    if (catLower.includes('garden') || catLower.includes('outdoor')) return '#66BB6A';
-    if (catLower.includes('skills') || catLower.includes('education')) return '#42A5F5';
-    if (catLower.includes('handyman') || catLower.includes('service')) return '#FF7043';
-    if (catLower.includes('creative') || catLower.includes('art')) return '#EC407A';
-    if (catLower.includes('health') || catLower.includes('wellness')) return '#26A69A';
-    if (catLower.includes('clothing') || catLower.includes('apparel')) return '#FFB300';
-    if (catLower.includes('books') || catLower.includes('games') || catLower.includes('entertainment')) return '#5C6BC0';
-    if (catLower.includes('kids') || catLower.includes('maternity')) return '#F06292';
-    if (catLower.includes('event') || catLower.includes('meetup')) return '#8D6E63';
-    if (catLower.includes('language') || catLower.includes('info') || catLower.includes('exchange')) return '#00ACC1';
+    if (catLower.includes('food') || catLower.includes('drink')) return '#f97316';
+    if (catLower.includes('home') || catLower.includes('living') || catLower.includes('gear')) return '#3b82f6';
+    if (catLower.includes('garden') || catLower.includes('outdoor')) return '#10b981';
+    if (catLower.includes('skills') || catLower.includes('education')) return '#8b5cf6';
+    if (catLower.includes('handyman') || catLower.includes('service')) return '#f59e0b';
+    if (catLower.includes('creative') || catLower.includes('art')) return '#ec4899';
+    if (catLower.includes('health') || catLower.includes('wellness')) return '#14b8a6';
+    if (catLower.includes('clothing') || catLower.includes('apparel')) return '#06b6d4';
+    if (catLower.includes('books') || catLower.includes('games') || catLower.includes('entertainment')) return '#6366f1';
+    if (catLower.includes('kids') || catLower.includes('maternity')) return '#a855f7';
+    if (catLower.includes('event') || catLower.includes('meetup')) return '#10b981';
+    if (catLower.includes('language') || catLower.includes('info') || catLower.includes('exchange')) return '#2563eb';
     
-    return '#546E7A'; // Gray for Other
+    return '#6b7280'; // Gray for Other
 }
 
 function getCategoryIcon(category) {
@@ -8303,6 +8336,16 @@ function openMapItemDetail(idOrName) {
     }
     document.getElementById('map-detail-overlay').classList.add('active');
     
+    // Toggle back arrow visibility based on referrer
+    const detailBackBtn = document.getElementById('map-detail-back-btn');
+    if (detailBackBtn) {
+        if (window.detailOverlayCameFromProfile) {
+            detailBackBtn.style.display = 'flex';
+        } else {
+            detailBackBtn.style.display = 'none';
+        }
+    }
+    
     // Keep the tab bar visible
     const navbar = document.getElementById('global-navbar');
     if (navbar) {
@@ -8705,6 +8748,16 @@ function openMapEventDetail(eventId) {
         }
     }
     document.getElementById('map-event-detail-overlay').classList.add('active');
+    
+    // Toggle back arrow visibility based on referrer
+    const eventDetailBackBtn = document.getElementById('map-event-detail-back-btn');
+    if (eventDetailBackBtn) {
+        if (window.detailOverlayCameFromProfile) {
+            eventDetailBackBtn.style.display = 'flex';
+        } else {
+            eventDetailBackBtn.style.display = 'none';
+        }
+    }
     
     // Keep the tab bar visible in event details
     const navbar = document.getElementById('global-navbar');
@@ -9683,20 +9736,20 @@ function toggleCategoryTray() {
 
 const MAP_FILTER_CATEGORIES = [
     { name: "Karma Swap", displayName: "Gifts", icon: "volunteer_activism", color: "#f59e0b", rgb: "245,158,11" },
-    { name: "Event or Meetup", displayName: "Events", icon: "groups", color: "#8D6E63", rgb: "141,110,99" },
-    { name: "Food & Drink", displayName: "Food", icon: "restaurant", color: "#EF5350", rgb: "239,83,80" },
-    { name: "Home and Living", displayName: "Home", icon: "home", color: "#AB47BC", rgb: "171,71,188" },
-    { name: "Garden & Outdoors", displayName: "Garden", icon: "yard", color: "#66BB6A", rgb: "102,187,106" },
-    { name: "Skills & Education", displayName: "Skills", icon: "school", color: "#42A5F5", rgb: "66,165,245" },
-    { name: "Handyman & Services", displayName: "Handyman", icon: "handyman", color: "#FF7043", rgb: "255,112,67" },
-    { name: "Creative & Art", displayName: "Creative", icon: "palette", color: "#EC407A", rgb: "236,64,122" },
-    { name: "Health", displayName: "Health", icon: "spa", color: "#26A69A", rgb: "38,166,154" },
-    { name: "Clothing & Apparel", displayName: "Clothing", icon: "checkroom", color: "#FFB300", rgb: "255,179,0" },
-    { name: "Books, Games, Entertainment", displayName: "Books", icon: "sports_esports", color: "#5C6BC0", rgb: "92,107,192" },
-    { name: "Kids and Maternity", displayName: "Kids", icon: "stroller", color: "#F06292", rgb: "240,98,146" },
-    { name: "Language or Info Exchange", displayName: "Language", icon: "translate", color: "#00ACC1", rgb: "0,172,193" },
+    { name: "Event or Meetup", displayName: "Events", icon: "groups", color: "#10b981", rgb: "16,185,129" },
+    { name: "Food & Drink", displayName: "Food", icon: "restaurant", color: "#f97316", rgb: "249,115,22" },
+    { name: "Home and Living", displayName: "Home", icon: "home", color: "#3b82f6", rgb: "59,130,246" },
+    { name: "Garden & Outdoors", displayName: "Garden", icon: "yard", color: "#10b981", rgb: "16,185,129" },
+    { name: "Skills & Education", displayName: "Skills", icon: "school", color: "#8b5cf6", rgb: "139,92,246" },
+    { name: "Handyman & Services", displayName: "Handyman", icon: "handyman", color: "#f59e0b", rgb: "245,158,11" },
+    { name: "Creative & Art", displayName: "Creative", icon: "palette", color: "#ec4899", rgb: "236,72,153" },
+    { name: "Health", displayName: "Health", icon: "spa", color: "#14b8a6", rgb: "20,184,166" },
+    { name: "Clothing & Apparel", displayName: "Clothing", icon: "checkroom", color: "#06b6d4", rgb: "6,182,212" },
+    { name: "Books, Games, Entertainment", displayName: "Books", icon: "sports_esports", color: "#6366f1", rgb: "99,102,241" },
+    { name: "Kids and Maternity", displayName: "Kids", icon: "stroller", color: "#a855f7", rgb: "168,85,247" },
+    { name: "Language or Info Exchange", displayName: "Language", icon: "translate", color: "#2563eb", rgb: "37,99,235" },
     { name: "Donation", displayName: "Donation", icon: "volunteer_activism", color: "#ec4899", rgb: "236,72,153" },
-    { name: "Clear Filter", displayName: "Clear", icon: "filter_alt_off", color: "#546E7A", rgb: "84,110,122" }
+    { name: "Clear Filter", displayName: "Clear", icon: "filter_alt_off", color: "#6b7280", rgb: "107,114,128" }
 ];
 
 let mapInfoModeActive = false;
@@ -15455,7 +15508,11 @@ window.renderMyCornerItems = function() {
         offerings.forEach(item => {
             const row = document.createElement('div');
             row.className = "flex items-center justify-between p-2 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
-            row.onclick = () => {
+            row.onclick = (e) => {
+                if (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
                 window.detailOverlayCameFromProfile = true;
                 showView('village');
                 openMapItemDetail(item.id);
@@ -15490,7 +15547,11 @@ window.renderMyCornerItems = function() {
         needs.forEach(item => {
             const row = document.createElement('div');
             row.className = "flex items-center justify-between p-2 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
-            row.onclick = () => {
+            row.onclick = (e) => {
+                if (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
                 window.detailOverlayCameFromProfile = true;
                 showView('village');
                 openMapItemDetail('need_' + item.id);
@@ -15530,7 +15591,11 @@ window.renderMyCornerItems = function() {
         userEvents.forEach(item => {
             const row = document.createElement('div');
             row.className = "flex items-center justify-between p-2 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
-            row.onclick = () => {
+            row.onclick = (e) => {
+                if (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
                 window.detailOverlayCameFromProfile = true;
                 showView('village');
                 openMapItemDetail('evt_' + item.id);
@@ -32268,6 +32333,7 @@ window.handleDetailBackArrow = function() {
     closeMapItemDetail();
     if (window.detailOverlayCameFromProfile) {
         window.detailOverlayCameFromProfile = false;
+        window.disableNextViewTransition = true;
         showView('profile_settings');
     }
 };
@@ -32275,6 +32341,7 @@ window.handleDetailBackArrow = function() {
 window.handleEventDetailBackArrow = function() {
     if (window.detailOverlayCameFromProfile) {
         window.detailOverlayCameFromProfile = false;
+        window.disableNextViewTransition = true;
         showView('profile_settings');
     } else {
         handleEventDetailBack();
