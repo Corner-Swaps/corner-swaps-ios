@@ -1513,14 +1513,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <div id="welcome-cta-stack">
                             <!-- PRIMARY: Sign In -->
-                            <button onclick="showView('sign_in')" class="btn-welcome-signin" style="background:#308A5E !important;color:#ffffff !important;">
-                                <span class="material-symbols-outlined" style="color:#ffffff !important;">login</span>
+                            <button onclick="showView('sign_in')" class="btn-welcome-signin">
+                                <span class="material-symbols-outlined">arrow_forward</span>
                                 Sign In
                             </button>
 
                             <!-- SECONDARY: Create Account -->
-                            <button onclick="showView('create_account')" class="btn-welcome-register" style="background:#308A5E !important;color:#ffffff !important;">
-                                <span class="material-symbols-outlined" style="color:#ffffff !important;">person_add</span>
+                            <button onclick="showView('create_account')" class="btn-welcome-register">
+                                <span class="material-symbols-outlined">person_add</span>
                                 Create Account
                             </button>
 
@@ -1532,8 +1532,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </div>
 
                             <!-- TERTIARY: Admin Access -->
-                            <button onclick="handleDevAutoLogin()" class="btn-welcome-admin" style="background:#308A5E !important;color:#ffffff !important;">
-                                <span class="material-symbols-outlined" style="color:#ffffff !important;">admin_panel_settings</span>
+                            <button onclick="handleDevAutoLogin()" class="btn-welcome-admin">
+                                <span class="material-symbols-outlined">admin_panel_settings</span>
                                 Admin Access
                             </button>
                         </div>
@@ -1569,7 +1569,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <div style="padding:0 12px;display:flex;flex-direction:column;gap:14px;">
                         <div style="display:flex;flex-direction:column;gap:6px;">
                             <label for="si-email" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Email Address</label>
-                            <input id="si-email" type="email" placeholder="neighbor@community.com" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                            <input id="si-email" type="email" placeholder="neighbor@community.com" autocomplete="off" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
                         </div>
 
                         <div style="display:flex;flex-direction:column;gap:6px;">
@@ -1577,7 +1577,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <label for="si-password" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Password</label>
                                 <a onclick="alert('Demo: Use any password.')" style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#308A5E;cursor:pointer;">Forgot?</a>
                             </div>
-                            <input id="si-password" type="password" placeholder="••••••••" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                            <input id="si-password" type="password" placeholder="••••••••" autocomplete="off" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
                         </div>
 
                         <button type="button" onclick="handleSignIn(event)" style="width:100%;height:46px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);margin-top:4px;">
@@ -1605,17 +1605,17 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                             <div style="display:flex;flex-direction:column;gap:6px;">
                                 <label for="su-first-name" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">First Name</label>
-                                <input id="su-first-name" type="text" placeholder="First name" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 12px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                                <input id="su-first-name" type="text" placeholder="First name" autocomplete="off" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 12px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
                             </div>
                             <div style="display:flex;flex-direction:column;gap:6px;">
                                 <label for="su-last-name" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Last Name</label>
-                                <input id="su-last-name" type="text" placeholder="Last name" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 12px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                                <input id="su-last-name" type="text" placeholder="Last name" autocomplete="off" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 12px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
                             </div>
                         </div>
 
                         <div style="display:flex;flex-direction:column;gap:6px;">
                             <label for="su-display-name" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Display Name</label>
-                            <input id="su-display-name" type="text" placeholder="e.g. LilyK, GreenNeighbor" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                            <input id="su-display-name" type="text" placeholder="e.g. LilyK, GreenNeighbor" autocomplete="off" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
                             <p style="font-family:'Outfit',sans-serif;font-size:11px;color:#668c75;margin:0;line-height:1.4;">First &amp; Last names stay private. Display Name is what neighbors see.</p>
                         </div>
 
@@ -1659,13 +1659,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <div style="display:flex;flex-direction:column;gap:6px;">
                             <label for="su-email" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Email Address</label>
-                            <input id="su-email" type="email" placeholder="neighbor@community.com" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                            <input id="su-email" type="email" placeholder="neighbor@community.com" autocomplete="off" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
                         </div>
 
                         <div style="display:flex;flex-direction:column;gap:6px;">
                             <label for="su-password" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Password</label>
                             <div style="position:relative;">
-                                <input id="su-password" type="password" placeholder="At least 8 characters" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 44px 0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                                <input id="su-password" type="password" placeholder="At least 8 characters" autocomplete="off" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 44px 0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
                                 <button type="button" onclick="togglePasswordVisibility('su-password', this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(30,63,32,0.4);padding:0;cursor:pointer;display:flex;align-items:center;">
                                     <span class="material-symbols-outlined" style="font-size:19px;">visibility</span>
                                 </button>
@@ -1696,15 +1696,15 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <div style="padding:0 12px;display:flex;flex-direction:column;gap:14px;">
                         <div style="display:flex;flex-direction:column;gap:6px;">
                             <label for="su-instagram" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Instagram Handle</label>
-                            <input id="su-instagram" type="text" placeholder="@username" style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                            <input id="su-instagram" type="text" placeholder="@username" autocomplete="off" style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
                         </div>
                         <div style="display:flex;flex-direction:column;gap:6px;">
                             <label for="su-facebook" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Facebook Profile</label>
-                            <input id="su-facebook" type="text" placeholder="@username" style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                            <input id="su-facebook" type="text" placeholder="@username" autocomplete="off" style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
                         </div>
                         <div style="display:flex;flex-direction:column;gap:6px;">
                             <label for="su-tiktok" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">TikTok Handle</label>
-                            <input id="su-tiktok" type="text" placeholder="@username" style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                            <input id="su-tiktok" type="text" placeholder="@username" autocomplete="off" style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
                         </div>
 
                         <button type="button" onclick="handleSignUpStep3(event)" style="width:100%;height:46px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);margin-top:4px;">
@@ -1725,15 +1725,15 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     </div>
 
                     <!-- Title block -->
-                    <div style="padding:12px 22px 14px 22px;text-align:center;">
-                        <h2 style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#1a2f23;margin:0;letter-spacing:-0.02em;line-height:1.15;">Safe Space Agreement</h2>
-                        <p style="font-family:'Outfit',sans-serif;font-size:13px;color:#4d6657;margin:6px 0 0 0;line-height:1.45;">Please review our neighborhood code of conduct and guidelines.</p>
+                    <div style="padding:4px 22px 6px 22px;text-align:center;">
+                        <h2 style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:#1a2f23;margin:0;letter-spacing:-0.02em;line-height:1.15;">Safe Space Agreement</h2>
+                        <p style="font-family:'Outfit',sans-serif;font-size:12px;color:#4d6657;margin:4px 0 0 0;line-height:1.45;">Please review our neighborhood code of conduct and guidelines.</p>
                     </div>
 
                     <!-- Form -->
-                    <div style="padding:0 12px;display:flex;flex-direction:column;gap:14px;">
+                    <div style="padding:0 12px;display:flex;flex-direction:column;gap:10px;">
                         <!-- Policy scroll box -->
-                        <div class="eula-scroll-box border border-outline-variant/30 rounded-2xl p-4 overflow-y-auto custom-scrollbar text-xs leading-relaxed text-slate-700 dark:text-slate-300 select-none text-left" style="background:rgba(255,255,255,0.6);border:1.5px solid rgba(48,138,94,0.15);border-radius:16px;max-height:170px;">
+                        <div class="eula-scroll-box border border-outline-variant/30 rounded-2xl p-3 overflow-y-auto custom-scrollbar text-xs leading-relaxed text-slate-700 dark:text-slate-300 select-none text-left" style="background:rgba(255,255,255,0.6);border:1.5px solid rgba(48,138,94,0.15);border-radius:16px;max-height:120px;">
                             <div class="space-y-4">
                                 <div>
                                     <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">1. Code of Conduct</h4>
@@ -1779,34 +1779,48 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </div>
                         </div>
 
-                        <!-- Checkbox agreement group container -->
-                        <div id="consent-checkboxes-container" class="bg-forest-green/5 border border-forest-green/10 p-3.5 rounded-xl space-y-2.5 text-left transition-opacity duration-300" style="background:rgba(255,255,255,0.6);border:1.5px solid rgba(48,138,94,0.15);border-radius:16px;">
-                            <label class="flex items-start gap-3 cursor-pointer select-none">
-                                <div class="checkbox-wrapper">
-                                    <input type="checkbox" id="consent-check-1" onchange="toggleConsentButton()"/>
-                                    <div class="custom-check-box">
-                                        <span class="material-symbols-outlined select-none pointer-events-none text-xs">check</span>
-                                    </div>
-                                </div>
-                                <span class="text-[11px] text-slate-700 dark:text-slate-300 font-semibold leading-tight" style="font-family:'Outfit',sans-serif;">I agree to the Safe Space Guidelines, exchange safety, and sharing rules</span>
-                            </label>
-                            <label class="flex items-start gap-3 cursor-pointer select-none">
-                                <div class="checkbox-wrapper">
-                                    <input type="checkbox" id="consent-check-2" onchange="toggleConsentButton()"/>
-                                    <div class="custom-check-box">
-                                        <span class="material-symbols-outlined select-none pointer-events-none text-xs">check</span>
-                                    </div>
-                                </div>
-                                <span class="text-[11px] text-slate-700 dark:text-slate-300 font-semibold leading-tight" style="font-family:'Outfit',sans-serif;">I confirm that I am at least 18 years old</span>
-                            </label>
+                        <!-- Switch agreement group container -->
+                        <div id="consent-checkboxes-container" class="bg-forest-green/5 border border-forest-green/10 p-3 rounded-xl space-y-2.5 text-left transition-opacity duration-300" style="background:rgba(255,255,255,0.6);border:1.5px solid rgba(48,138,94,0.15);border-radius:16px;">
+                            <!-- Switch 1: Safe Space Guidelines -->
+                            <div class="flex items-center justify-between py-0.5 border-b border-outline-variant/10 pb-1.5">
+                                <span class="text-[10.5px] text-slate-700 dark:text-slate-300 font-semibold leading-tight pr-4" style="font-family:'Outfit',sans-serif;">I agree to the Safe Space Guidelines, exchange safety, and sharing rules</span>
+                                <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                                    <input type="checkbox" id="consent-check-1" class="sr-only peer" onchange="toggleConsentButton()">
+                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
+                                </label>
+                            </div>
+                            <!-- Switch 2: Age Check -->
+                            <div class="flex items-center justify-between py-0.5 border-b border-outline-variant/10 pb-1.5">
+                                <span class="text-[10.5px] text-slate-700 dark:text-slate-300 font-semibold leading-tight pr-4" style="font-family:'Outfit',sans-serif;">I confirm that I am at least 18 years old</span>
+                                <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                                    <input type="checkbox" id="consent-check-2" class="sr-only peer" onchange="toggleConsentButton()">
+                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
+                                </label>
+                            </div>
+                            <!-- Switch 3: EULA & TOS -->
+                            <div class="flex items-center justify-between py-0.5 border-b border-outline-variant/10 pb-1.5">
+                                <span class="text-[10.5px] text-slate-700 dark:text-slate-300 font-semibold leading-tight pr-4" style="font-family:'Outfit',sans-serif;">I accept the Terms of Service and End User License Agreement (EULA) with zero tolerance for abuse</span>
+                                <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                                    <input type="checkbox" id="consent-check-3" class="sr-only peer" onchange="toggleConsentButton()">
+                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
+                                </label>
+                            </div>
+                            <!-- Switch 4: Privacy Policy -->
+                            <div class="flex items-center justify-between py-0.5">
+                                <span class="text-[10.5px] text-slate-700 dark:text-slate-300 font-semibold leading-tight pr-4" style="font-family:'Outfit',sans-serif;">I accept the Privacy Policy and consent to approximate location verification</span>
+                                <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                                    <input type="checkbox" id="consent-check-4" class="sr-only peer" onchange="toggleConsentButton()">
+                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
+                                </label>
+                            </div>
                         </div>
 
-                        <div style="display:flex;gap:12px;margin-top:4px;">
-                            <button type="button" onclick="showView('create_account_social')" style="width:40%;height:46px;border:1.5px solid rgba(48, 138, 94, 0.2) !important;background:transparent !important;color:#308A5E !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">
+                        <div style="display:flex;gap:12px;margin-top:2px;">
+                            <button type="button" onclick="showView('create_account_social')" style="flex:1;height:46px;border:1.5px solid rgba(48,138,94,0.2) !important;background:transparent !important;color:#308A5E !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">
                                 <span class="material-symbols-outlined text-sm font-semibold">arrow_back</span>
                                 Back
                             </button>
-                            <button class="w-[60%] h-12 bg-forest-green/45 text-white font-bold text-xs rounded-xl cursor-not-allowed transition-all flex items-center justify-center gap-1.5 mt-0 shadow-sm" style="width:60%;height:46px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:not-allowed;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);opacity:0.45;transition:opacity 0.2s;" id="consent-continue-btn" onclick="handleProfileConsentSubmit()" disabled>
+                            <button class="w-[50%] h-12 bg-forest-green/45 text-white font-bold text-xs rounded-xl cursor-not-allowed transition-all flex items-center justify-center gap-1.5 mt-0 shadow-sm" style="flex:1;height:46px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:not-allowed;box-shadow:0 6px 18px rgba(48,138,94,0.3);opacity:0.45;transition:opacity 0.2s;" id="consent-continue-btn" onclick="handleProfileConsentSubmit()" disabled>
                                 Next Step
                                 <span class="material-symbols-outlined" style="font-size:18px;color:#ffffff !important;">arrow_forward</span>
                             </button>
@@ -1897,7 +1911,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <!-- Title block -->
                     <div style="padding:12px 22px 14px 22px;text-align:center;">
                         <h2 style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#1a2f23;margin:0;letter-spacing:-0.02em;line-height:1.15;">Choose Your Neighborhood</h2>
-                        <p style="font-family:'Outfit',sans-serif;font-size:13px;color:#4d6657;margin:6px 0 0 0;line-height:1.45;">Select your local area from the options below or enter your community name manually.</p>
+                        <p style="font-family:'Outfit',sans-serif;font-size:13px;color:#4d6657;margin:6px 0 0 0;line-height:1.45;">Select your local area from the options below or like the others.</p>
                     </div>
 
                     <!-- Form without card container -->
@@ -1905,36 +1919,42 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <input type="hidden" id="step1-location" value="">
                         
                         <!-- Neighborhood Grid -->
-                        <div class="grid grid-cols-2 gap-2 mb-2 max-h-[220px] overflow-y-auto p-1 custom-scrollbar text-xs font-semibold" id="step1-location-box">
-                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Downtown', this)">Downtown</button>
-                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Kitsilano', this)">Kitsilano</button>
-                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Commercial Drive', this)">Commercial Drive</button>
-                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Mount Pleasant', this)">Mount Pleasant</button>
-                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('West End', this)">West End</button>
-                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Yaletown', this)">Yaletown</button>
-                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Gastown', this)">Gastown</button>
-                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Kerrisdale', this)">Kerrisdale</button>
-                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Fairview', this)">Fairview</button>
-                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('East Vancouver', this)">East Vancouver</button>
+                        <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;margin-bottom:8px;max-height:260px;overflow-y:auto;padding:4px;box-sizing:border-box;" class="custom-scrollbar" id="step1-location-box">
+                            <button type="button" class="neighborhood-opt-btn" onclick="selectOnboardingNeighborhood('Downtown', this)">Downtown</button>
+                            <button type="button" class="neighborhood-opt-btn" onclick="selectOnboardingNeighborhood('Kitsilano', this)">Kitsilano</button>
+                            <button type="button" class="neighborhood-opt-btn" onclick="selectOnboardingNeighborhood('Commercial Drive', this)">Commercial Drive</button>
+                            <button type="button" class="neighborhood-opt-btn" onclick="selectOnboardingNeighborhood('Mount Pleasant', this)">Mount Pleasant</button>
+                            <button type="button" class="neighborhood-opt-btn" onclick="selectOnboardingNeighborhood('West End', this)">West End</button>
+                            <button type="button" class="neighborhood-opt-btn" onclick="selectOnboardingNeighborhood('Yaletown', this)">Yaletown</button>
+                            <button type="button" class="neighborhood-opt-btn" onclick="selectOnboardingNeighborhood('Gastown', this)">Gastown</button>
+                            <button type="button" class="neighborhood-opt-btn" onclick="selectOnboardingNeighborhood('Kerrisdale', this)">Kerrisdale</button>
+                            <button type="button" class="neighborhood-opt-btn" onclick="selectOnboardingNeighborhood('Fairview', this)">Fairview</button>
+                            <button type="button" class="neighborhood-opt-btn" onclick="selectOnboardingNeighborhood('East Vancouver', this)">East Vancouver</button>
                         </div>
                         
                         <!-- Divider section -->
-                        <div class="flex items-center my-1 text-outline" style="opacity: 0.85;">
-                            <div class="flex-grow border-t border-outline-variant/20"></div>
-                            <span class="px-2 text-[9px] font-bold uppercase tracking-widest" style="font-family:'Outfit',sans-serif;color:#4d6657;">Or write your own</span>
-                            <div class="flex-grow border-t border-outline-variant/20"></div>
+                        <div style="display:flex;align-items:center;margin:4px 0;opacity:0.85;">
+                            <div style="flex-grow:1;border-top:1px solid rgba(48,138,94,0.15);"></div>
+                            <span style="padding:0 8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;font-family:'Outfit',sans-serif;color:#4d6657;">Or write your own</span>
+                            <div style="flex-grow:1;border-top:1px solid rgba(48,138,94,0.15);"></div>
                         </div>
                         
                         <!-- Custom neighborhood text input -->
                         <div style="display:flex;flex-direction:column;gap:6px;" id="step1-custom-location-container">
-                            <input id="step1-custom-location" type="text" placeholder="Type your neighbourhood name..." oninput="clearNeighborhoodSelectionButtons()" style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                            <input id="step1-custom-location" type="text" placeholder="Type your neighbourhood name..." oninput="clearNeighborhoodSelectionButtons()" style="width:100%;height:52px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:16px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
                         </div>
                         
-                        <!-- Submit Button -->
-                        <button type="submit" style="width:100%;height:46px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);margin-top:4px;">
-                            Next Step
-                            <span class="material-symbols-outlined" style="font-size:18px;color:#ffffff !important;">arrow_forward</span>
-                        </button>
+                        <!-- Action buttons -->
+                        <div style="display:flex;gap:12px;margin-top:4px;">
+                            <button type="button" onclick="showView('create_account_safe_spots')" style="flex:1;height:52px;border:1.5px solid rgba(48,138,94,0.2) !important;background:transparent !important;color:#308A5E !important;border-radius:16px;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">
+                                <span class="material-symbols-outlined text-sm font-semibold">arrow_back</span>
+                                Back
+                            </button>
+                            <button type="submit" style="flex:1;height:52px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:16px;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);">
+                                Next Step
+                                <span class="material-symbols-outlined" style="font-size:18px;color:#ffffff !important;">arrow_forward</span>
+                            </button>
+                        </div>
                     </form>
                 </section>
 
@@ -2654,8 +2674,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <div class="mb-0 px-0 flex flex-col gap-2.5 flex-shrink-0 relative z-[60]">
                             <!-- Fused Search Capsule with Add button -->
                             <div class="fused-search-capsule select-none">
-                                <button id="btn-list-filter" onclick="toggleListFiltersSection(event)" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer mr-1" title="Filter Categories">
-                                    <span class="material-symbols-outlined text-[16px] font-bold">tune</span>
+                                <button id="btn-list-filter" onclick="toggleListFiltersSection(event)" class="fused-filter-btn active:scale-90 transition-all cursor-pointer flex-shrink-0 mr-1" title="Filter Categories">
+                                    <span class="material-symbols-outlined text-[15px]">tune</span>
                                 </button>
                                 <button id="btn-list-quick-create" onclick="toggleQuickCreateDropdown(event, 'list')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
                                     <span class="material-symbols-outlined text-[16px] font-bold">add</span>
@@ -2751,8 +2771,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <div class="mb-0 px-0 flex flex-col gap-2.5 flex-shrink-0 relative z-[60]">
                             <!-- Fused Search Capsule with Add button -->
                             <div class="fused-search-capsule select-none">
-                                <button id="btn-needs-filter" onclick="toggleListFiltersSection(event)" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer mr-1" title="Filter Categories">
-                                    <span class="material-symbols-outlined text-[16px] font-bold">tune</span>
+                                <button id="btn-needs-filter" onclick="toggleListFiltersSection(event)" class="fused-filter-btn active:scale-90 transition-all cursor-pointer flex-shrink-0 mr-1" title="Filter Categories">
+                                    <span class="material-symbols-outlined text-[15px]">tune</span>
                                 </button>
                                 <button id="btn-needs-quick-create" onclick="toggleQuickCreateDropdown(event, 'needs')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
                                     <span class="material-symbols-outlined text-[16px] font-bold">add</span>
@@ -2848,8 +2868,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <div class="mb-0 px-0 flex flex-col gap-2.5 flex-shrink-0 relative z-[60]">
                             <!-- Fused Search Capsule with Add button -->
                             <div class="fused-search-capsule select-none">
-                                <button id="btn-events-filter" onclick="toggleListFiltersSection(event)" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer mr-1" title="Filter Categories">
-                                    <span class="material-symbols-outlined text-[16px] font-bold">tune</span>
+                                <button id="btn-events-filter" onclick="toggleListFiltersSection(event)" class="fused-filter-btn active:scale-90 transition-all cursor-pointer flex-shrink-0 mr-1" title="Filter Categories">
+                                    <span class="material-symbols-outlined text-[15px]">tune</span>
                                 </button>
                                 <button id="btn-events-quick-create" onclick="toggleQuickCreateDropdown(event, 'events')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
                                     <span class="material-symbols-outlined text-[16px] font-bold">add</span>
@@ -2989,7 +3009,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                             </div>
                             <!-- Content Container -->
-                            <div class="px-6 pt-3 pb-0 space-y-3.5 text-left flex-grow">
+                            <div class="px-6 pt-3 pb-28 space-y-3.5 text-left flex-grow">
                                 <div class="flex flex-col w-full">
                                     <!-- Category and Status Badge -->
                                     <div class="flex items-center justify-between">
@@ -4069,10 +4089,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <!-- Option row with Checkbox -->
                                 <div class="flex items-center gap-2.5">
                                     <input type="checkbox" id="karma-checkbox" class="w-4 h-4 rounded border-outline-variant text-forest-green focus:ring-forest-green cursor-pointer" onchange="handleKarmaCheckboxChange(this)" onclick="event.stopPropagation();">
-                                    <label for="karma-checkbox" class="text-xs font-bold text-on-surface cursor-pointer flex-grow flex items-center justify-between" onclick="event.stopPropagation();">
-                                        <span id="karma-checkbox-text" class="text-on-surface dark:text-warm-cream">Offer for free / Give karma points</span>
+                                                                    <label for="karma-checkbox" class="text-xs font-bold text-on-surface cursor-pointer flex-grow flex items-center justify-between" onclick="event.stopPropagation();">
+                                        <span id="karma-checkbox-text" class="text-on-surface dark:text-warm-cream">Offer for free</span>
                                         <div class="flex items-center justify-center bg-forest-green/5 dark:bg-black/20 rounded-lg px-2 py-0.5 border border-outline-variant/35 shrink-0 select-none">
-                                            <span class="material-symbols-outlined text-xs mr-0.5" style="color: #f59e0b !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
+                                            <span class="material-symbols-outlined text-xs mr-0.5" style="color: #f59e0b !important; font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span>
                                             <span id="karma-score-display" class="text-[10px] font-black text-on-surface dark:text-warm-cream">+50 XP</span>
                                         </div>
                                     </label>
@@ -4107,8 +4127,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                     <span class="material-symbols-outlined text-base text-black dark:text-white">map</span>
                                     <span>Choose Location on Map</span>
                                 </button>
-                                <div id="meetup-map-status" class="hidden mt-2 p-2.5 bg-forest-green/5 border border-forest-green/10 text-forest-green font-semibold text-[10px] rounded-xl flex items-center justify-center gap-1.5 select-none animate-fade-in">
-                                    <span class="material-symbols-outlined text-[14px]">check_circle</span> Map set (+100m)
+                                <div id="meetup-map-status" class="hidden mt-2 h-12 bg-forest-green/5 border border-forest-green/15 text-forest-green font-bold text-xs rounded-xl flex items-center justify-center gap-2 select-none animate-fade-in shadow-sm">
+                                    <span class="material-symbols-outlined text-base">check_circle</span>
+                                    <span>Meetup Location Selected (within 100m)</span>
                                 </div>
                             </div>
                         </div>
@@ -4176,7 +4197,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
                                 <!-- Self Karma Points Badge -->
                                 <div id="settings-profile-karma-container" class="flex items-center gap-1.5 text-xs text-forest-green dark:text-emerald-400 font-bold bg-forest-green/5 dark:bg-emerald-950/20 px-3 py-1 rounded-full border border-forest-green/10 cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('karma')">
-                                    <span class="material-symbols-outlined text-base" style="color: #f59e0b !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
+                                    <span class="material-symbols-outlined text-base" style="color: #f59e0b !important; font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span>
                                     <span id="settings-profile-karma">0 Karma</span>
                                 </div>
                                 <!-- Self Swaps Completed Badge -->
@@ -4226,6 +4247,47 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         
                         <div class="flex gap-2 justify-start py-2 scrollbar-none scroll-smooth overflow-x-auto" id="user-badges-container">
                             <!-- Dynamic Badges Rendered in app.js -->
+                        </div>
+                    </section>
+
+                    <!-- My Corner Section (Offerings, Needs, Events tabs modeled after badges) -->
+                    <section id="widget-my-listings-section" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
+                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
+                            <span class="material-symbols-outlined text-sm">grid_view</span> My Corner
+                        </h3>
+                        
+                        <div class="flex gap-2 justify-around items-center py-2" id="user-my-corner-tabs">
+                            <!-- Offerings badge-like button -->
+                            <button type="button" onclick="switchMyCornerTab('offerings')" id="my-corner-tab-offerings" class="flex-1 bg-white dark:bg-[#1f2922] p-3 rounded-2xl border border-black dark:border-white flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition-all hover:bg-forest-green/5 dark:hover:bg-forest-green/10 shadow-sm text-center relative max-w-[95px]">
+                                <div class="w-10 h-10 rounded-full bg-forest-green/10 dark:bg-[#308A5E]/10 flex items-center justify-center text-forest-green dark:text-[#308A5E]">
+                                    <span class="material-symbols-outlined text-xl">handshake</span>
+                                </div>
+                                <span class="text-[10px] font-bold text-black dark:text-warm-cream leading-tight mt-1 tracking-wide">Offerings</span>
+                                <span id="my-corner-count-offerings" class="text-[9px] font-bold text-forest-green dark:text-[#308A5E]">0 Items</span>
+                            </button>
+
+                            <!-- Needs badge-like button -->
+                            <button type="button" onclick="switchMyCornerTab('needs')" id="my-corner-tab-needs" class="flex-1 bg-white dark:bg-[#1f2922] p-3 rounded-2xl border border-black/10 dark:border-white/10 flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition-all hover:bg-forest-green/5 dark:hover:bg-forest-green/10 shadow-sm text-center relative max-w-[95px]">
+                                <div class="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500">
+                                    <span class="material-symbols-outlined text-xl">search</span>
+                                </div>
+                                <span class="text-[10px] font-bold text-black dark:text-warm-cream leading-tight mt-1 tracking-wide">Needs</span>
+                                <span id="my-corner-count-needs" class="text-[9px] font-bold text-amber-500">0 Items</span>
+                            </button>
+
+                            <!-- Events badge-like button -->
+                            <button type="button" onclick="switchMyCornerTab('events')" id="my-corner-tab-events" class="flex-1 bg-white dark:bg-[#1f2922] p-3 rounded-2xl border border-black/10 dark:border-white/10 flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition-all hover:bg-forest-green/5 dark:hover:bg-forest-green/10 shadow-sm text-center relative max-w-[95px]">
+                                <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500">
+                                    <span class="material-symbols-outlined text-xl">festival</span>
+                                </div>
+                                <span class="text-[10px] font-bold text-black dark:text-warm-cream leading-tight mt-1 tracking-wide">Events</span>
+                                <span id="my-corner-count-events" class="text-[9px] font-bold text-blue-500">0 RSVPs</span>
+                            </button>
+                        </div>
+
+                        <!-- Panel for listings inside same block -->
+                        <div id="my-corner-items-list" class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 space-y-2 max-h-[250px] overflow-y-auto pr-1">
+                            <!-- Populated Dynamically -->
                         </div>
                     </section>
 
@@ -4626,30 +4688,30 @@ svg.leaflet-image-layer.leaflet-interactive path {
                 <!-- ==================================================== -->
                 <section id="view-review_rating" class="screen-view flex-grow flex flex-col h-full overflow-hidden bg-warm-cream dark:bg-[#18201a] pt-4 select-none hidden">
                     <!-- Glassmorphic Header -->
-                    <div class="px-6 bg-warm-cream dark:bg-[#18201a] border-b border-outline-variant/10 dark:border-outline-variant/5 flex items-center z-10 shrink-0 select-none gap-3" style="height: 64px !important;">
+                    <div class="px-6 bg-warm-cream dark:bg-[#18201a] flex items-center justify-between z-10 shrink-0 select-none gap-3" style="height: 64px !important; border-bottom: none !important;">
                         <!-- Back Button -->
                         <button onclick="closeConfirmSwapRatingModal()" class="w-10 h-10 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-[#2a352d] flex-shrink-0 shadow-sm">
                             <span class="material-symbols-outlined text-[20px] font-black">arrow_back_ios_new</span>
                         </button>
+                        <!-- Swap Complete and Karma points in header -->
+                        <div class="flex items-center gap-2.5">
+                            <span style="font-size: 9px !important; color: #308A5E !important; font-weight: 800 !important; background-color: rgba(48, 138, 94, 0.1) !important; padding: 3px 10px !important; border-radius: 9999px !important; text-transform: uppercase !important; letter-spacing: 0.05em !important;">swap complete</span>
+                            <div class="flex items-center gap-1" style="font-size: 11px !important; font-weight: 700 !important; color: #308A5E !important;">
+                                <span class="material-symbols-outlined text-xs">volunteer_activism</span>
+                                <span id="confirm-swap-karma-points" style="font-size: 11px !important; font-weight: 700 !important;">50</span> Karma
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Scrollable Container -->
                     <div class="overflow-y-auto custom-scrollbar flex-grow p-6 flex flex-col gap-6 pb-24">
-                        <!-- Top Header Section -->
-                        <div class="flex flex-col items-center gap-3 bg-white dark:bg-[#111813] border border-outline-variant/15 p-5 rounded-3xl shadow-sm">
-                            <div class="flex items-center justify-between w-full">
-                                <span style="font-size: 10px !important; color: #308A5E !important; font-weight: 700 !important; background-color: rgba(48, 138, 94, 0.1) !important; padding: 2px 10px !important; border-radius: 9999px !important; text-transform: uppercase !important; letter-spacing: 0.05em !important;">swap complete</span>
-                                <div class="flex items-center gap-1" style="font-size: 11px !important; font-weight: 700 !important; color: #308A5E !important;">
-                                    <span class="material-symbols-outlined text-xs">volunteer_activism</span>
-                                    <span id="confirm-swap-karma-points" style="font-size: 11px !important; font-weight: 700 !important;">50</span> Karma
-                                </div>
-                            </div>
+                        <!-- Top Header Section (No container card, same profile layout style) -->
+                        <div class="flex flex-col items-center gap-3 w-full" style="background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin-top: 10px !important;">
                             <!-- Avatar and Name -->
-                            <div class="w-20 h-20 rounded-full overflow-hidden border border-outline-variant/20 shadow-sm mt-1">
+                            <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-forest-green shadow-sm mt-1">
                                 <img id="confirm-swap-avatar" src="" class="w-full h-full object-cover animate-fade-in" alt="Neighbor Avatar">
                             </div>
                             <h3 class="font-headline font-extrabold text-black dark:text-white text-lg mt-1" id="confirm-swap-neighbor-name" style="font-weight: 800 !important;">Neighbor Name</h3>
-                            <p style="font-size: 11px !important; color: #6b7280 !important; font-weight: 500 !important; margin: 0 !important; line-height: 1.2 !important;" id="confirm-swap-items-details">Loading swap info...</p>
                         </div>
 
                         <!-- 4-Button Action Grid -->
@@ -4677,14 +4739,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <!-- Dynamic Negative Tags Sub-menu -->
                         <div id="confirm-swap-negative-menu" class="hidden flex-col gap-2">
-                            <p style="font-size: 11px !important; color: #ef4444 !important; font-weight: 700 !important; text-align: left !important; margin: 0 !important;">Please select issue tags:</p>
-                            <div class="flex flex-wrap gap-1.5 justify-start">
-                                <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'slow communication')">slow communication</button>
-                                <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'felt unsafe')">felt unsafe</button>
-                                <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'item not as described')">item not as described</button>
-                                <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'late')">late</button>
-                                <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'no-show')">no-show</button>
-                                <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'hard to coordinate')">hard to coordinate</button>
+                            <p style="font-size: 12px !important; color: #ef4444 !important; font-weight: 700 !important; text-align: left !important; margin: 0 !important;">Please select issue tags:</p>
+                            <div class="flex flex-wrap gap-2.5 justify-start">
+                                <button class="fused-tag-btn px-4 py-2.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[13px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 13px !important;" onclick="toggleFusedTag(this, 'slow communication')">slow communication</button>
+                                <button class="fused-tag-btn px-4 py-2.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[13px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 13px !important;" onclick="toggleFusedTag(this, 'felt unsafe')">felt unsafe</button>
+                                <button class="fused-tag-btn px-4 py-2.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[13px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 13px !important;" onclick="toggleFusedTag(this, 'item not as described')">item not as described</button>
+                                <button class="fused-tag-btn px-4 py-2.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[13px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 13px !important;" onclick="toggleFusedTag(this, 'late')">late</button>
+                                <button class="fused-tag-btn px-4 py-2.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[13px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 13px !important;" onclick="toggleFusedTag(this, 'no-show')">no-show</button>
+                                <button class="fused-tag-btn px-4 py-2.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[13px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 13px !important;" onclick="toggleFusedTag(this, 'hard to coordinate')">hard to coordinate</button>
                             </div>
                         </div>
 
@@ -4695,7 +4757,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <span class="material-symbols-outlined text-sm font-bold">check_circle</span> Submit
                             </button>
                             
-                            <button id="fused-skip-btn" class="w-full h-12 bg-forest-green/10 hover:bg-forest-green/20 text-forest-green dark:text-warm-cream border border-forest-green/25 rounded-xl text-xs font-bold active:scale-[0.98] transition-transform shadow cursor-pointer flex items-center justify-center gap-1.5" onclick="skipFusedReview()">
+                            <button id="fused-skip-btn" class="w-full h-12 bg-forest-green hover:bg-forest-green/90 text-warm-cream border-0 rounded-xl text-xs font-bold active:scale-[0.98] transition-transform shadow cursor-pointer flex items-center justify-center gap-1.5" style="background-color: #308A5E !important; color: #ffffff !important;" onclick="skipFusedReview()">
                                 Skip
                             </button>
                             
@@ -4965,7 +5027,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <p class="font-headline text-base text-forest-green font-bold mt-0.5">+1</p>
                             </div>
                             <div class="bg-white p-4 rounded-xl shadow-sm border border-outline-variant/25 flex flex-col items-center justify-center transition-transform duration-300 w-28">
-                                <span class="material-symbols-outlined text-[#f59e0b] text-lg mb-1" style="font-variation-settings: 'FILL' 1 !important;">favorite</span>
+                                <span class="material-symbols-outlined text-[#f59e0b] text-lg mb-1" style="font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span>
                                 <span class="text-[9px] text-on-surface-variant font-bold">Karma Pts</span>
                                 <p class="font-headline text-base text-[#f59e0b] font-bold mt-0.5" id="celebration-karma-pts">+50</p>
                             </div>
@@ -5250,7 +5312,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- What is Karma? -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-rose-600 dark:text-rose-400">favorite</span> Karma
+                                <span class="material-symbols-outlined text-sm text-[#f59e0b] dark:text-[#f59e0b]" style="font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span> Karma
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
                                 Karma points reflect your active contributions, reliability, and good standing in the community. You earn karma by listing offerings (including free items and gifts), sharing services, helping neighbors, and completing successful swaps. Higher karma highlights you as a trusted neighbor and unlocks special badges!
@@ -5349,7 +5411,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- Lead by Giving -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-red-500">favorite</span> Lead by Giving
+                                <span class="material-symbols-outlined text-sm text-amber-500">volunteer_activism</span> Lead by Giving
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
                                 Every listing you share builds your public neighborhood trust rating and inspires others to trade. Start by putting out what you can share!
@@ -7364,6 +7426,22 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                             </div>
 
+                            <!-- Radius Selection (Vicinity scale section) -->
+                            <div class="flex flex-col gap-2 bg-forest-green/5 dark:bg-black/20 p-3 rounded-2xl border border-outline-variant/20 flex-shrink-0">
+                                <div class="flex justify-between items-center text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">
+                                    <span>Vicinity Radius</span>
+                                    <span id="chat-meeting-radius-display" class="font-bold bg-forest-green dark:bg-[#308A5E] text-warm-cream dark:text-[#101612] px-2 py-0.5 rounded-md text-[10px]">100m</span>
+                                </div>
+                                <!-- Slider from 10m to 500m -->
+                                <input type="range" id="chat-meeting-radius-slider" min="10" max="500" step="10" value="100" class="w-full accent-forest-green cursor-pointer mt-1" oninput="updateChatMeetingPickerRadius(this.value)">
+                                <div class="flex justify-between items-center text-[9.5px] text-black/60 dark:text-white/60 font-semibold px-0.5">
+                                    <span>10m</span>
+                                    <span>100m</span>
+                                    <span>250m</span>
+                                    <span>500m</span>
+                                </div>
+                            </div>
+
 
 
                             <!-- Date & Time Selector -->
@@ -7491,7 +7569,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                     <div id="neighbor-profile-rating-display" class="hidden items-center gap-1 text-[10px] text-amber-500 font-bold"></div>
                                     <!-- Neighbor Karma Points Badge -->
                                     <div id="neighbor-profile-karma-container" class="flex items-center gap-1.5 text-xs text-forest-green dark:text-emerald-400 font-bold bg-forest-green/5 dark:bg-emerald-950/20 px-3 py-1 rounded-full border border-forest-green/10 cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('karma')">
-                                        <span class="material-symbols-outlined text-base" style="color: #f59e0b !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
+                                        <span class="material-symbols-outlined text-base" style="color: #f59e0b !important; font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span>
                                         <span id="neighbor-profile-karma">0 Karma</span>
                                     </div>
                                     <!-- Neighbor Swaps Completed Badge -->
@@ -7770,7 +7848,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                                 <div class="flex items-center gap-3.5 bg-forest-green/5 dark:bg-white/5 p-3 rounded-2xl border border-outline-variant/10">
                                     <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 dark:text-amber-400 flex items-center justify-center flex-shrink-0">
-                                        <span class="material-symbols-outlined text-lg" style="color: #f59e0b !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
+                                        <span class="material-symbols-outlined text-lg" style="color: #f59e0b !important; font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span>
                                     </div>
                                     <div class="flex-grow">
                                         <h4 class="font-bold text-xs text-black dark:text-[#308A5E] leading-tight">4. Vouch & Karma</h4>
@@ -8531,83 +8609,71 @@ svg.leaflet-image-layer.leaflet-interactive path {
                 <!-- Mock Phone home indicator bar -->
                 <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-28 h-1 bg-forest-green/20 rounded-full z-[6000] pointer-events-none hidden sm:block"></div>
 
-            </div>
-        </div>
-    </div>
+                <!-- MEETUP LOCATION PICKER MODAL -->
+                <div id="meetup-picker-modal" class="hidden fixed inset-0 z-[5000] flex items-center justify-center p-4 md:p-6 select-none animate-fade-in">
+                    <!-- Backdrop -->
+                    <div class="absolute inset-0 bg-[#060b08]/40 dark:bg-black/60 backdrop-blur-md" onclick="closeMeetupLocationPicker(false)"></div>
+                    
+                    <!-- Modal Card -->
+                    <div class="relative bg-warm-cream dark:bg-[#101612] w-full max-w-[340px] md:max-w-md rounded-3xl border border-outline-variant/30 shadow-2xl p-5 flex flex-col max-h-[85vh] overflow-hidden text-left animate-slide-up">
+                        <!-- Close Button -->
+                        <button onclick="closeMeetupLocationPicker(false)" class="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm z-20">
+                            <span class="material-symbols-outlined text-[17px]">close</span>
+                        </button>
+                        
+                        <h3 class="font-headline text-lg font-bold text-black dark:text-white flex items-center gap-2 mb-1.5 pr-8">
+                            <span class="material-symbols-outlined text-forest-green dark:text-[#308A5E]">map</span> Choose Meetup
+                        </h3>
+                        
+                        <!-- Body -->
+                        <div class="flex-grow overflow-y-auto custom-scrollbar flex flex-col gap-4 pr-1 text-left">
+                            <p class="text-[10px] text-black dark:text-white/80 border-b border-outline-variant/15 pb-2 leading-normal">
+                                Tap or click on the map to set your meetup vicinity. For safety, we only display this approximate area to neighbors.
+                            </p>
+                            
+                            <!-- Map Container -->
+                            <div class="w-full h-[220px] rounded-2xl border border-outline-variant/40 overflow-hidden shadow-inner relative flex-shrink-0 bg-[#e8ece9] dark:bg-[#18201a]">
+                                <div id="meetup-picker-map" class="w-full h-full bg-[#e8ece9]"></div>
+                                <div id="map-picker-instruction" class="absolute bottom-2 left-2 right-2 bg-forest-green/80 dark:bg-[#308A5E] text-warm-cream dark:text-[#101612] text-[9px] font-bold px-2 py-1 rounded-lg text-center backdrop-blur-sm pointer-events-none shadow-sm z-[999] transition-all">
+                                    Tap map to set meetup point
+                                </div>
+                            </div>
 
+                            <!-- Radius Selection (Vicinity scale section) -->
+                            <div class="flex flex-col gap-2 bg-forest-green/5 dark:bg-black/20 p-3 rounded-2xl border border-outline-variant/20 flex-shrink-0">
+                                <div class="flex justify-between items-center text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">
+                                    <span>Vicinity Radius</span>
+                                    <span id="meetup-radius-display" class="font-bold bg-forest-green dark:bg-[#308A5E] text-warm-cream dark:text-[#101612] px-2 py-0.5 rounded-md text-[10px]">100m</span>
+                                </div>
+                                <!-- Slider from 10m to 500m -->
+                                <input type="range" id="meetup-radius-slider" min="10" max="500" step="10" value="100" class="w-full accent-forest-green cursor-pointer mt-1" oninput="updateMeetupPickerRadius(this.value)">
+                                <div class="flex justify-between items-center text-[9.5px] text-black/60 dark:text-white/60 font-semibold px-0.5">
+                                    <span>10m</span>
+                                    <span>100m</span>
+                                    <span>250m</span>
+                                    <span>500m</span>
+                                </div>
+                            </div>
 
+                            <!-- Neighborhood text input helper (read only or editable fallback) -->
+                            <div class="flex flex-col gap-1 hidden">
+                                <label class="text-[10px] font-bold text-forest-green dark:text-[#308A5E] uppercase tracking-wider">Selected Neighborhood</label>
+                                <input type="text" id="meetup-picker-neighborhood" class="w-full px-3 py-2.5 bg-white dark:bg-[#18201a] border border-outline-variant/30 rounded-xl text-xs outline-none focus:border-forest-green text-on-surface" placeholder="Resolving location..." />
+                            </div>
+                        </div>
 
-    <!-- Modern Full-screen Photo Viewer Modal -->
-    <div id="photo-viewer-modal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-md z-[6000] flex flex-col items-center justify-center p-0" onclick="if(event.target === this) closePhotoViewerModal()">
-        <button id="photo-viewer-close-btn" class="absolute top-8 right-6 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm z-10" onclick="closePhotoViewerModal()">
-            <span class="material-symbols-outlined text-[17px]">close</span>
-        </button>
-        <img id="photo-viewer-img" src="" class="max-w-[95%] max-h-[85vh] object-contain rounded-lg shadow-2xl transition-all duration-300 active:scale-[1.02]" onclick="event.stopPropagation()">
-    </div>
-
-
-
-    <!-- MEETUP LOCATION PICKER MODAL -->
-    <div id="meetup-picker-modal" class="hidden fixed inset-0 z-[5000] flex items-center justify-center p-4 md:p-6 select-none animate-fade-in">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-[#060b08]/40 dark:bg-black/60 backdrop-blur-md" onclick="closeMeetupLocationPicker(false)"></div>
-        
-        <!-- Modal Card -->
-        <div class="relative bg-warm-cream dark:bg-[#101612] w-full max-w-[340px] md:max-w-md rounded-3xl border border-outline-variant/30 shadow-2xl p-5 flex flex-col max-h-[85vh] overflow-hidden text-left animate-slide-up">
-            <!-- Close Button -->
-            <button onclick="closeMeetupLocationPicker(false)" class="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm z-20">
-                <span class="material-symbols-outlined text-[17px]">close</span>
-            </button>
-            
-            <h3 class="font-headline text-lg font-bold text-black dark:text-white flex items-center gap-2 mb-1.5 pr-8">
-                <span class="material-symbols-outlined text-forest-green dark:text-[#308A5E]">map</span> Choose Meetup
-            </h3>
-            
-            <!-- Body -->
-            <div class="flex-grow overflow-y-auto custom-scrollbar flex flex-col gap-4 pr-1 text-left">
-                <p class="text-[10px] text-black dark:text-white/80 border-b border-outline-variant/15 pb-2 leading-normal">
-                    Tap or click on the map to set your meetup vicinity. For safety, we only display this approximate area to neighbors.
-                </p>
-                
-                <!-- Map Container -->
-                <div class="w-full h-[220px] rounded-2xl border border-outline-variant/40 overflow-hidden shadow-inner relative flex-shrink-0 bg-[#e8ece9] dark:bg-[#18201a]">
-                    <div id="meetup-picker-map" class="w-full h-full bg-[#e8ece9]"></div>
-                    <div id="map-picker-instruction" class="absolute bottom-2 left-2 right-2 bg-forest-green/80 dark:bg-[#308A5E] text-warm-cream dark:text-[#101612] text-[9px] font-bold px-2 py-1 rounded-lg text-center backdrop-blur-sm pointer-events-none shadow-sm z-[999] transition-all">
-                        Tap map to set meetup point
+                        <!-- Footer Buttons -->
+                        <div class="flex gap-2.5 mt-4 pt-3 border-t border-outline-variant/15 flex-shrink-0">
+                            <button class="flex-grow py-3 bg-white dark:bg-[#18201a] border border-outline-variant/30 dark:border-outline-variant/15 text-slate-700 dark:text-[#FDFBF7]/80 font-bold text-xs rounded-xl active:scale-[0.98] transition-transform cursor-pointer" onclick="closeMeetupLocationPicker(false)">
+                                Cancel
+                            </button>
+                            <button id="meetup-confirm-btn" class="flex-grow py-3 bg-blue-600 text-white dark:bg-blue-600 dark:text-white font-bold text-xs rounded-xl active:scale-[0.98] transition-transform shadow-md disabled:opacity-50 disabled:pointer-events-none cursor-pointer border-none" onclick="confirmMeetupLocation()" disabled>
+                                Confirm
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Radius Selection (Vicinity scale section) -->
-                <div class="flex flex-col gap-2 bg-forest-green/5 dark:bg-black/20 p-3 rounded-2xl border border-outline-variant/20 flex-shrink-0">
-                    <div class="flex justify-between items-center text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">
-                        <span>Vicinity Radius</span>
-                        <span id="meetup-radius-display" class="font-bold bg-forest-green dark:bg-[#308A5E] text-warm-cream dark:text-[#101612] px-2 py-0.5 rounded-md text-[10px]">100m</span>
-                    </div>
-                    <!-- Slider from 10m to 500m -->
-                    <input type="range" id="meetup-radius-slider" min="10" max="500" step="10" value="100" class="w-full accent-forest-green cursor-pointer mt-1" oninput="updateMeetupPickerRadius(this.value)">
-                    <div class="flex justify-between items-center text-[9.5px] text-black/60 dark:text-white/60 font-semibold px-0.5">
-                        <span>10m</span>
-                        <span>100m</span>
-                        <span>250m</span>
-                        <span>500m</span>
-                    </div>
-                </div>
-
-                <!-- Neighborhood text input helper (read only or editable fallback) -->
-                <div class="flex flex-col gap-1 hidden">
-                    <label class="text-[10px] font-bold text-forest-green dark:text-[#308A5E] uppercase tracking-wider">Selected Neighborhood</label>
-                    <input type="text" id="meetup-picker-neighborhood" class="w-full px-3 py-2.5 bg-white dark:bg-[#18201a] border border-outline-variant/30 rounded-xl text-xs outline-none focus:border-forest-green text-on-surface" placeholder="Resolving location..." />
-                </div>
-            </div>
-
-            <!-- Footer Buttons -->
-            <div class="flex gap-2.5 mt-4 pt-3 border-t border-outline-variant/15 flex-shrink-0">
-                <button class="flex-grow py-3 bg-white dark:bg-[#18201a] border border-outline-variant/30 dark:border-outline-variant/15 text-slate-700 dark:text-[#FDFBF7]/80 font-bold text-xs rounded-xl active:scale-[0.98] transition-transform cursor-pointer" onclick="closeMeetupLocationPicker(false)">
-                    Cancel
-                </button>
-                <button id="meetup-confirm-btn" class="flex-grow py-3 bg-blue-600 text-white dark:bg-blue-600 dark:text-white font-bold text-xs rounded-xl active:scale-[0.98] transition-transform shadow-md disabled:opacity-50 disabled:pointer-events-none cursor-pointer border-none" onclick="confirmMeetupLocation()" disabled>
-                    Confirm
-                </button>
             </div>
         </div>
     </div>

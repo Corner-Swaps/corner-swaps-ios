@@ -678,6 +678,24 @@ html.dark .app-container ::-webkit-scrollbar-thumb:hover, html.dark .phone-simul
     transform: scale(0.9);
 }
 
+@keyframes pulseCircle {
+    0% {
+        stroke-width: 1px;
+        fill-opacity: 0.12;
+    }
+    50% {
+        stroke-width: 2.5px;
+        fill-opacity: 0.22;
+    }
+    100% {
+        stroke-width: 1px;
+        fill-opacity: 0.12;
+    }
+}
+.pulsing-circle {
+    animation: pulseCircle 2s infinite ease-in-out;
+}
+
 /* Leaflet Overrides */
 .leaflet-marker-pane .custom-div-icon {
     background: transparent !important;
@@ -5184,6 +5202,15 @@ html.dark #view-help_improve :not(button):not(button *):not(.material-symbols-ou
     white-space: nowrap !important;
 }
 
+/* Force selected category button text and icons to be white */
+#offer-categories-grid button.offer-category-btn.bg-forest-green,
+#offer-categories-grid button.offer-category-btn.bg-forest-green *,
+#offer-event-type-grid button.offer-category-btn.bg-forest-green,
+#offer-event-type-grid button.offer-category-btn.bg-forest-green * {
+    color: #ffffff !important;
+}
+
+
 /* Custom subcategories layout: 2 columns side-by-side with horizontal icon/text */
 #subcategory-options-container,
 #clothes-type-select,
@@ -5645,7 +5672,7 @@ button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
     color: #000000 !important;
 }
 
-#view-welcome *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+#view-welcome *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error):not(.btn-welcome-signin):not(.btn-welcome-signin *):not(.btn-welcome-register):not(.btn-welcome-register *):not(.btn-welcome-admin):not(.btn-welcome-admin *),
 #view-sign_in *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
 #view-create_account *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
 #view-create_account_credentials *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
@@ -5663,7 +5690,7 @@ button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
 }
 
 /* Force all icons in onboarding wizard & login slides to be green */
-#view-welcome .material-symbols-outlined,
+#view-welcome .material-symbols-outlined:not(.btn-welcome-signin *):not(.btn-welcome-register *):not(.btn-welcome-admin *),
 #view-sign_in .material-symbols-outlined,
 #view-profile_location_permission .material-symbols-outlined,
 #view-create_account_safe_spots .material-symbols-outlined,
@@ -5695,16 +5722,30 @@ html.dark .onboarding-header-icon-container .material-symbols-outlined {
 .wizard-skills-category-btn,
 .wizard-needs-category-btn,
 .neighborhood-opt-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    padding: 8px 12px !important;
+    height: 52px !important;
+    border-radius: 14px !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-sizing: border-box !important;
     color: #000000 !important;
-    border: 1px solid rgba(48, 138, 94, 0.2) !important;
+    border: 1.5px solid rgba(48, 138, 94, 0.15) !important;
     background-color: #ffffff !important;
 }
 html.dark .wizard-skills-category-btn,
 html.dark .wizard-needs-category-btn,
 html.dark .neighborhood-opt-btn {
     color: #ffffff !important;
-    border: 1px solid rgba(48, 138, 94, 0.3) !important;
-    background-color: rgba(48, 138, 94, 0.1) !important;
+    border: 1.5px solid rgba(130, 185, 149, 0.15) !important;
+    background-color: rgba(48, 138, 94, 0.08) !important;
 }
 .neighborhood-opt-btn .material-symbols-outlined {
     color: #308A5E !important;
@@ -5717,6 +5758,7 @@ html.dark .neighborhood-opt-btn {
     background-color: #308A5E !important;
     color: #ffffff !important;
     border-color: #308A5E !important;
+    transform: scale(0.97) !important;
 }
 html.dark .wizard-skills-category-btn.active,
 html.dark .wizard-needs-category-btn.active,
@@ -5724,6 +5766,13 @@ html.dark .neighborhood-opt-btn.active {
     background-color: #308A5E !important;
     color: #ffffff !important;
     border-color: #308A5E !important;
+    transform: scale(0.97) !important;
+}
+
+.wizard-skills-category-btn:active,
+.wizard-needs-category-btn:active,
+.neighborhood-opt-btn:active {
+    transform: scale(0.95) !important;
 }
 
 /* Force placeholder texts to be legible grey for readability */
@@ -5783,7 +5832,7 @@ html.dark #view-set_up_profile {
     color: #ffffff !important;
 }
 
-html.dark #view-welcome *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
+html.dark #view-welcome *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error):not(.btn-welcome-signin):not(.btn-welcome-signin *):not(.btn-welcome-register):not(.btn-welcome-register *):not(.btn-welcome-admin):not(.btn-welcome-admin *),
 html.dark #view-sign_in *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
 html.dark #view-create_account *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
 html.dark #view-create_account_credentials *:not(.material-symbols-outlined):not(button.bg-forest-green):not(button.bg-error),
@@ -9276,10 +9325,10 @@ html.dark #welcome-panel-sub {
 .btn-welcome-register,
 .btn-welcome-admin {
     width: 280px !important;
-    height: 54px !important;
-    border-radius: 16px !important;
+    height: 46px !important;
+    border-radius: 14px !important;
     font-family: 'Outfit', sans-serif !important;
-    font-size: 15.5px !important;
+    font-size: 15px !important;
     font-weight: 700 !important;
     display: flex !important;
     align-items: center !important;
@@ -9299,25 +9348,49 @@ html.dark #welcome-panel-sub {
     transform: scale(0.975) !important;
 }
 
-/* Welcome Buttons - All unified to Primary Green */
-.btn-welcome-signin,
-.btn-welcome-register,
-.btn-welcome-admin {
+/* Welcome Buttons - Distinct Hierarchies */
+.btn-welcome-signin {
     background-color: #308A5E !important;
     color: #ffffff !important;
     border: none !important;
     box-shadow: 0 4px 14px rgba(48, 138, 94, 0.2) !important;
 }
-.btn-welcome-signin:hover,
-.btn-welcome-register:hover,
-.btn-welcome-admin:hover {
+.btn-welcome-signin:hover {
     background-color: #256d4a !important;
     box-shadow: 0 6px 20px rgba(48, 138, 94, 0.3) !important;
 }
-.btn-welcome-signin .material-symbols-outlined,
-.btn-welcome-register .material-symbols-outlined,
-.btn-welcome-admin .material-symbols-outlined {
+.btn-welcome-signin .material-symbols-outlined {
     color: #ffffff !important;
+    font-variation-settings: 'FILL' 0, 'wght' 400 !important;
+    font-size: 20px !important;
+}
+
+.btn-welcome-register {
+    background-color: rgba(48, 138, 94, 0.03) !important;
+    color: #308A5E !important;
+    border: 1.5px solid rgba(48, 138, 94, 0.4) !important;
+    box-shadow: none !important;
+}
+.btn-welcome-register:hover {
+    background-color: rgba(48, 138, 94, 0.08) !important;
+}
+.btn-welcome-register .material-symbols-outlined {
+    color: #308A5E !important;
+    font-variation-settings: 'FILL' 0, 'wght' 400 !important;
+    font-size: 20px !important;
+}
+
+.btn-welcome-admin {
+    background-color: rgba(48, 138, 94, 0.08) !important;
+    color: #308A5E !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+.btn-welcome-admin:hover {
+    background-color: rgba(48, 138, 94, 0.14) !important;
+}
+.btn-welcome-admin .material-symbols-outlined {
+    color: #308A5E !important;
     font-variation-settings: 'FILL' 0, 'wght' 400 !important;
     font-size: 20px !important;
 }
@@ -9352,7 +9425,7 @@ html.dark #welcome-divider p {
     color: #617568 !important;
 }
 
-/* Dark mode matches exactly */
+/* Dark mode variations */
 html.dark .btn-welcome-signin {
     background-color: #308A5E !important;
     color: #ffffff !important;
@@ -9366,29 +9439,29 @@ html.dark .btn-welcome-signin .material-symbols-outlined {
 }
 
 html.dark .btn-welcome-register {
-    background-color: #457A56 !important;
-    color: #ffffff !important;
-    border: none !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+    background-color: rgba(130, 185, 149, 0.05) !important;
+    color: #82b995 !important;
+    border: 1.5px solid rgba(130, 185, 149, 0.4) !important;
+    box-shadow: none !important;
 }
 html.dark .btn-welcome-register:hover {
-    background-color: #376245 !important;
+    background-color: rgba(130, 185, 149, 0.1) !important;
 }
 html.dark .btn-welcome-register .material-symbols-outlined {
-    color: #ffffff !important;
+    color: #82b995 !important;
 }
 
 html.dark .btn-welcome-admin {
-    background-color: #4b5563 !important;
-    color: #ffffff !important;
+    background-color: rgba(130, 185, 149, 0.1) !important;
+    color: #82b995 !important;
     border: none !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: none !important;
 }
 html.dark .btn-welcome-admin:hover {
-    background-color: #374151 !important;
+    background-color: rgba(130, 185, 149, 0.18) !important;
 }
 html.dark .btn-welcome-admin .material-symbols-outlined {
-    color: #ffffff !important;
+    color: #82b995 !important;
 }
 
 #welcome-safe-spacer {
@@ -9887,13 +9960,13 @@ html.dark .auth-forgot-link {
 /* ---- Primary button — solid green, white text ---- */
 .auth-btn-primary {
     width: 100% !important;
-    height: 52px !important;
+    height: 46px !important;
     background-color: #308A5E !important;
     color: #ffffff !important;
     border: none !important;
-    border-radius: 16px !important;
+    border-radius: 14px !important;
     font-family: 'Outfit', sans-serif !important;
-    font-size: 15.5px !important;
+    font-size: 15px !important;
     font-weight: 700 !important;
     display: flex !important;
     align-items: center !important;
@@ -9932,13 +10005,13 @@ html.dark .auth-btn-primary {
 /* ---- Ghost / secondary button ---- */
 .auth-btn-ghost {
     width: 100% !important;
-    height: 48px !important;
+    height: 44px !important;
     background-color: rgba(48, 138, 94, 0.1) !important;
     color: #308A5E !important;
     border: 1.5px solid rgba(48, 138, 94, 0.2) !important;
     border-radius: 14px !important;
     font-family: 'Outfit', sans-serif !important;
-    font-size: 14.5px !important;
+    font-size: 14px !important;
     font-weight: 700 !important;
     display: flex !important;
     align-items: center !important;

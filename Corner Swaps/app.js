@@ -1886,6 +1886,8 @@ let mapMarkers = [];
 let meetupPickerMap = null;
 let meetupPickerMarker = null;
 let meetupPickerCircle = null;
+let chatMeetingPickerCircle = null;
+let chatMeetingRadius = 100;
 let activeCategoryFilter = null;
 const mapCategories = [
     { name: "Skills & Swaps", icon: "handyman", color: "#2E7D32" },
@@ -2336,6 +2338,19 @@ function loadState() {
             }
         });
     }
+
+    // Shift Commercial Drive coordinates westward to ensure they fall well within 1.5 - 3.5 km of Downtown/Yaletown/Kitsilano
+    Object.keys(state.neighbors).forEach(name => {
+        const neighbor = state.neighbors[name];
+        if (neighbor && neighbor.lng && neighbor.lng > -123.10) {
+            // Shift longitude westward by ~0.045 degrees (about 3.2 km westward)
+            neighbor.lng = neighbor.lng - 0.045;
+            // Ensure latitude is within active downtown/kitsilano/fairview corridor
+            if (neighbor.lat < 49.245) {
+                neighbor.lat = neighbor.lat + 0.015;
+            }
+        }
+    });
 
     // Ensure all neighbors have initialized properties
     Object.keys(state.neighbors).forEach(name => {
@@ -3847,7 +3862,7 @@ function showView(viewId, mode) {
     const headerBar = document.getElementById('phone-header-bar');
     const desktopNavBar = document.getElementById('desktop-navbar');
 
-    if (['home', 'village', 'chat_hub', 'chat_detail', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId)) {
+    if (['home', 'village', 'chat_hub', 'chat_detail', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId) && !(viewId === 'village' && state.meetupMapMode)) {
         if (navBar) {
             navBar.classList.remove('hidden');
         }
@@ -5558,9 +5573,11 @@ window.restartOnboarding = function() {
 function toggleConsentButton() {
     const cb1 = document.getElementById('consent-check-1')?.checked;
     const cb2 = document.getElementById('consent-check-2')?.checked;
+    const cb3 = document.getElementById('consent-check-3')?.checked;
+    const cb4 = document.getElementById('consent-check-4')?.checked;
     const btn = document.getElementById('consent-continue-btn');
     if (!btn) return;
-    if (cb1 && cb2) {
+    if (cb1 && cb2 && cb3 && cb4) {
         btn.disabled = false;
         btn.style.opacity = '1.0';
         btn.style.cursor = 'pointer';
@@ -5584,7 +5601,7 @@ function enableConsentCheckboxesIfEligible() {
         if (container) {
             container.classList.remove('opacity-50', 'pointer-events-none');
         }
-        for (let i = 1; i <= 2; i++) {
+        for (let i = 1; i <= 4; i++) {
             const cb = document.getElementById(`consent-check-${i}`);
             if (cb) cb.removeAttribute('disabled');
         }
@@ -6180,11 +6197,13 @@ window.selectOnboardingNeighborhood = function(value, btnElement) {
     // Update active button styles
     const buttons = document.querySelectorAll('.neighborhood-opt-btn');
     buttons.forEach(btn => {
+        btn.classList.remove('active');
         btn.classList.remove('bg-forest-green', 'text-white', 'border-forest-green');
         btn.classList.add('bg-white', 'text-forest-green', 'border-[rgba(30,63,32,0.15)]');
     });
     
     // Set active style for selected button
+    btnElement.classList.add('active');
     btnElement.classList.remove('bg-white', 'text-forest-green', 'border-[rgba(30,63,32,0.15)]');
     btnElement.classList.add('bg-forest-green', 'text-white', 'border-forest-green');
     
@@ -6196,6 +6215,7 @@ window.clearNeighborhoodSelectionButtons = function() {
     if (hiddenInput) hiddenInput.value = '';
     const buttons = document.querySelectorAll('.neighborhood-opt-btn');
     buttons.forEach(btn => {
+        btn.classList.remove('active');
         btn.classList.remove('bg-forest-green', 'text-white', 'border-forest-green');
         btn.classList.add('bg-white', 'text-forest-green', 'border-[rgba(30,63,32,0.15)]');
     });
@@ -7298,7 +7318,7 @@ function getCategoryColor(category) {
 function getCategoryIcon(category) {
     if (!category) return 'handshake';
     const cat = category.toLowerCase();
-    if (cat.includes('karma')) return 'favorite';
+    if (cat.includes('karma')) return 'volunteer_activism';
     if (cat.includes('donation')) return 'volunteer_activism';
     if (cat.includes('food') || cat.includes('drink')) return 'restaurant';
     if (cat.includes('home') || cat.includes('living')) return 'home';
@@ -9652,7 +9672,7 @@ function toggleCategoryTray() {
 }
 
 const MAP_FILTER_CATEGORIES = [
-    { name: "Karma Swap", displayName: "Gifts", icon: "favorite", color: "#EF4444", rgb: "239,68,68" },
+    { name: "Karma Swap", displayName: "Gifts", icon: "volunteer_activism", color: "#f59e0b", rgb: "245,158,11" },
     { name: "Event or Meetup", displayName: "Events", icon: "groups", color: "#8D6E63", rgb: "141,110,99" },
     { name: "Food & Drink", displayName: "Food", icon: "restaurant", color: "#EF5350", rgb: "239,83,80" },
     { name: "Home and Living", displayName: "Home", icon: "home", color: "#AB47BC", rgb: "171,71,188" },
@@ -15372,7 +15392,199 @@ function renderProfileSettings() {
         }
         if (triggerVerificationBtn) triggerVerificationBtn.classList.remove('hidden');
     }
+    
+    // Update My Corner listings/needs/events counts and active tab rendering
+    if (typeof updateMyCornerSection === 'function') {
+        updateMyCornerSection();
+    }
 }
+
+// ----------------------------------------------------
+// My Corner widget switcher & dynamic listings
+// ----------------------------------------------------
+window.switchMyCornerTab = function(tab) {
+    if (typeof playSound === 'function') playSound('click');
+    state.myCornerActiveTab = tab;
+    
+    // Update button visual styles (active vs inactive)
+    const tabs = ['offerings', 'needs', 'events'];
+    tabs.forEach(t => {
+        const btn = document.getElementById(`my-corner-tab-${t}`);
+        if (btn) {
+            if (t === tab) {
+                btn.className = "flex-1 bg-white dark:bg-[#1f2922] p-3 rounded-2xl border border-forest-green dark:border-[#308A5E] flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition-all shadow-sm text-center relative max-w-[95px]";
+            } else {
+                btn.className = "flex-1 bg-white dark:bg-[#1f2922] p-3 rounded-2xl border border-black/10 dark:border-white/10 flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition-all hover:bg-forest-green/5 dark:hover:bg-forest-green/10 shadow-sm text-center relative max-w-[95px]";
+            }
+        }
+    });
+    
+    // Render the items
+    renderMyCornerItems();
+};
+
+window.renderMyCornerItems = function() {
+    const listEl = document.getElementById('my-corner-items-list');
+    if (!listEl) return;
+    
+    const activeTab = state.myCornerActiveTab || 'offerings';
+    listEl.innerHTML = "";
+    
+    const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
+    
+    if (activeTab === 'offerings') {
+        const offerings = state.userOfferings || [];
+        if (offerings.length === 0) {
+            listEl.innerHTML = `<div class="text-center py-6 text-[11px] text-gray-500 dark:text-gray-400 select-none">You aren't offering anything yet.</div>`;
+            return;
+        }
+        
+        offerings.forEach(item => {
+            const row = document.createElement('div');
+            row.className = "flex items-center justify-between p-2 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
+            row.onclick = () => {
+                showView('village');
+                openMapItemDetail(item.id);
+            };
+            
+            const imgHtml = item.image ? `<img src="${item.image}" class="w-8 h-8 rounded-lg object-cover flex-shrink-0" />` : `
+                <div class="w-8 h-8 rounded-lg bg-forest-green/10 flex items-center justify-center text-forest-green flex-shrink-0">
+                    <span class="material-symbols-outlined text-base">${item.icon || 'handshake'}</span>
+                </div>
+            `;
+            
+            row.innerHTML = `
+                <div class="flex items-center gap-2.5 min-w-0 flex-grow text-left">
+                    ${imgHtml}
+                    <div class="min-w-0 flex-1">
+                        <h4 class="text-xs font-bold text-black dark:text-warm-cream truncate">${item.title}</h4>
+                        <p class="text-[9px] text-gray-500 dark:text-gray-400 truncate">${item.category}</p>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined text-gray-400 text-[16px]">chevron_right</span>
+            `;
+            listEl.appendChild(row);
+        });
+        
+    } else if (activeTab === 'needs') {
+        const needs = state.userNeeds || [];
+        if (needs.length === 0) {
+            listEl.innerHTML = `<div class="text-center py-6 text-[11px] text-gray-500 dark:text-gray-400 select-none">You don't have any needs listed.</div>`;
+            return;
+        }
+        
+        needs.forEach(item => {
+            const row = document.createElement('div');
+            row.className = "flex items-center justify-between p-2 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
+            row.onclick = () => {
+                showView('village');
+                openMapItemDetail('need_' + item.id);
+            };
+            
+            const imgHtml = item.image ? `<img src="${item.image}" class="w-8 h-8 rounded-lg object-cover flex-shrink-0" />` : `
+                <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500 flex-shrink-0">
+                    <span class="material-symbols-outlined text-base">${item.icon || 'search'}</span>
+                </div>
+            `;
+            
+            row.innerHTML = `
+                <div class="flex items-center gap-2.5 min-w-0 flex-grow text-left">
+                    ${imgHtml}
+                    <div class="min-w-0 flex-1">
+                        <h4 class="text-xs font-bold text-black dark:text-warm-cream truncate">${item.title}</h4>
+                        <p class="text-[9px] text-gray-500 dark:text-gray-400 truncate">${item.category}</p>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined text-gray-400 text-[16px]">chevron_right</span>
+            `;
+            listEl.appendChild(row);
+        });
+        
+    } else if (activeTab === 'events') {
+        const userEvents = (state.events || []).filter(evt => {
+            const isRsvped = evt.rsvps && evt.rsvps.includes(currentUser);
+            const isHost = evt.host === currentUser;
+            return isRsvped || isHost;
+        }).sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+        
+        if (userEvents.length === 0) {
+            listEl.innerHTML = `<div class="text-center py-6 text-[11px] text-gray-500 dark:text-gray-400 select-none">No events RSVP'd or hosted.</div>`;
+            return;
+        }
+        
+        userEvents.forEach(item => {
+            const row = document.createElement('div');
+            row.className = "flex items-center justify-between p-2 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
+            row.onclick = () => {
+                showView('village');
+                openMapItemDetail('evt_' + item.id);
+            };
+            
+            const isHost = item.host === currentUser;
+            const dateObj = new Date(item.datetime);
+            const dateStr = dateObj.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' at ' + dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            row.innerHTML = `
+                <div class="flex items-center gap-2.5 min-w-0 flex-grow text-left">
+                    <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 flex-shrink-0">
+                        <span class="material-symbols-outlined text-base">festival</span>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <h4 class="text-xs font-bold text-black dark:text-warm-cream truncate">${item.title}</h4>
+                            ${isHost ? `<span class="bg-blue-500 text-white text-[7px] px-1 py-0.2 rounded font-bold uppercase tracking-wider flex-shrink-0">Host</span>` : ''}
+                        </div>
+                        <p class="text-[9px] text-gray-500 dark:text-gray-400 truncate">${dateStr}</p>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined text-gray-400 text-[16px]">chevron_right</span>
+            `;
+            listEl.appendChild(row);
+        });
+    }
+};
+
+window.updateMyCornerSection = function() {
+    const offeringsCount = (state.userOfferings || []).length;
+    const needsCount = (state.userNeeds || []).length;
+    
+    const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
+    const eventsCount = (state.events || []).filter(evt => {
+        const isRsvped = evt.rsvps && evt.rsvps.includes(currentUser);
+        const isHost = evt.host === currentUser;
+        return isRsvped || isHost;
+    }).length;
+    
+    // Update badge sub-labels
+    const offCountEl = document.getElementById('my-corner-count-offerings');
+    if (offCountEl) offCountEl.innerText = `${offeringsCount} ${offeringsCount === 1 ? 'Item' : 'Items'}`;
+    
+    const needsCountEl = document.getElementById('my-corner-count-needs');
+    if (needsCountEl) needsCountEl.innerText = `${needsCount} ${needsCount === 1 ? 'Item' : 'Items'}`;
+    
+    const eventsCountEl = document.getElementById('my-corner-count-events');
+    if (eventsCountEl) eventsCountEl.innerText = `${eventsCount} ${eventsCount === 1 ? 'Event' : 'Events'}`;
+    
+    // Set active tab if undefined
+    if (!state.myCornerActiveTab) {
+        state.myCornerActiveTab = 'offerings';
+    }
+    
+    // Make sure tab buttons styles are updated
+    const tabs = ['offerings', 'needs', 'events'];
+    tabs.forEach(t => {
+        const btn = document.getElementById(`my-corner-tab-${t}`);
+        if (btn) {
+            if (t === state.myCornerActiveTab) {
+                btn.className = "flex-1 bg-white dark:bg-[#1f2922] p-3 rounded-2xl border border-forest-green dark:border-[#308A5E] flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition-all shadow-sm text-center relative max-w-[95px]";
+            } else {
+                btn.className = "flex-1 bg-white dark:bg-[#1f2922] p-3 rounded-2xl border border-black/10 dark:border-white/10 flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition-all hover:bg-forest-green/5 dark:hover:bg-forest-green/10 shadow-sm text-center relative max-w-[95px]";
+            }
+        }
+    });
+    
+    renderMyCornerItems();
+};
 
 window.toggleSaveListing = function(idOrName) {
     if (!state.savedListings) {
@@ -16187,9 +16399,9 @@ function getNeighborCoordinates(neighbor) {
     if (loc.includes('coal harbour')) return [49.289, -123.122];
     if (loc.includes('false creek')) return [49.272, -123.115];
     if (loc.includes('gastown')) return [49.286, -123.112];
-    if (loc.includes('commercial drive')) return [49.2530, -123.0695];
+    if (loc.includes('commercial drive')) return [49.2530, -123.1145];
     if (loc.includes('fairview')) return [49.2608, -123.1368];
-    if (loc.includes('east van')) return [49.270, -123.069];
+    if (loc.includes('east van')) return [49.270, -123.1140];
     return [49.2827, -123.1207];
 }
 
@@ -19153,37 +19365,8 @@ function refreshAllLayouts() {
 }
 
 function getCategoryIconHtml(category) {
-    const cat = (category || '').toLowerCase().trim();
-    let icon = 'tag';
-    let color = '#308A5E'; // default forest green
-    if (cat.includes('garden') || cat.includes('plant') || cat.includes('seed')) {
-        icon = 'potted_plant';
-        color = '#10B981'; // green
-    } else if (cat.includes('tool') || cat.includes('diy') || cat.includes('hardware') || cat.includes('handyman')) {
-        icon = 'build';
-        color = '#F59E0B'; // amber/orange
-    } else if (cat.includes('kitchen') || cat.includes('food') || cat.includes('cook') || cat.includes('bake') || cat.includes('produce')) {
-        icon = 'restaurant';
-        color = '#EF4444'; // red
-    } else if (cat.includes('household') || cat.includes('home') || cat.includes('furniture') || cat.includes('living')) {
-        icon = 'home';
-        color = '#3B82F6'; // blue
-    } else if (cat.includes('book') || cat.includes('media') || cat.includes('study') || cat.includes('education') || cat.includes('skills')) {
-        icon = 'menu_book';
-        color = '#8B5CF6'; // purple
-    } else if (cat.includes('clothing') || cat.includes('apparel') || cat.includes('shoes')) {
-        icon = 'checkroom';
-        color = '#EC4899'; // pink
-    } else if (cat.includes('toy') || cat.includes('baby') || cat.includes('kid')) {
-        icon = 'smart_toy';
-        color = '#06B6D4'; // cyan
-    } else if (cat.includes('event') || cat.includes('meet') || cat.includes('gathering')) {
-        icon = 'event';
-        color = '#8B5CF6'; // purple
-    } else if (cat.includes('need') || cat.includes('request') || cat.includes('help')) {
-        icon = 'handshake';
-        color = '#F59E0B'; // amber
-    }
+    const icon = getCategoryIcon(category);
+    const color = getCategoryColor(category);
     return `<span class="material-symbols-outlined text-sm flex-shrink-0" style="color: ${color} !important; font-variation-settings: 'FILL' 1 !important; margin-right: 4px; vertical-align: middle;">${icon}</span>`;
 }
 
@@ -19268,6 +19451,18 @@ function plotMapMarkersOnly() {
         
         const marker = L.marker([lat, lng], { icon: customIcon, interactive: false }).addTo(leafletMap);
         mapMarkers.push({ marker, name: 'meetup_location' });
+        
+        const radius = state.meetupMapRadius || 100;
+        const vicinityCircle = L.circle([lat, lng], {
+            radius: radius,
+            color: '#2563eb',
+            fillColor: '#2563eb',
+            fillOpacity: 0.15,
+            weight: 1.5,
+            dashArray: '4, 4',
+            className: 'pulsing-circle'
+        }).addTo(leafletMap);
+        mapMarkers.push({ marker: vicinityCircle, name: 'meetup_vicinity_circle' });
         
         // Also plot current user's location
         let uLat = 49.2608;
@@ -24190,6 +24385,16 @@ function selectOfferCategory(categoryName) {
 
     const mappedCategory = (categoryName === 'Kids' || categoryName === 'Maternity') ? 'Kids and Maternity' : categoryName;
 
+    // Auto-update the icon preview box to match the selected category's icon
+    if (typeof getCategoryIcon === 'function') {
+        const iconName = getCategoryIcon(categoryName);
+        state.selectedOfferIcon = iconName;
+        saveState();
+        if (typeof renderOfferIconDisplay === 'function') {
+            renderOfferIconDisplay();
+        }
+    }
+
     const select = document.getElementById('offer-category-select');
     if (select) {
         select.value = mappedCategory;
@@ -25995,6 +26200,16 @@ function openSuggestMeetingSpotModal() {
         }
     }, 10);
     
+    chatMeetingRadius = 100;
+    const slider = document.getElementById('chat-meeting-radius-slider');
+    const display = document.getElementById('chat-meeting-radius-display');
+    if (slider) slider.value = 100;
+    if (display) display.innerText = "100m";
+    if (chatMeetingPickerCircle && meetingSpotMap) {
+        meetingSpotMap.removeLayer(chatMeetingPickerCircle);
+        chatMeetingPickerCircle = null;
+    }
+    
     const dtInput = document.getElementById('meeting-spot-datetime');
     if (dtInput) dtInput.value = "";
     
@@ -26048,6 +26263,12 @@ function closeSuggestMeetingSpotModal() {
     playSound('click');
     const modal = document.getElementById('meeting-spot-modal');
     const container = document.getElementById('meeting-spot-container');
+    
+    if (chatMeetingPickerCircle && meetingSpotMap) {
+        meetingSpotMap.removeLayer(chatMeetingPickerCircle);
+        chatMeetingPickerCircle = null;
+    }
+    
     if (modal && container) {
         modal.classList.remove('opacity-100');
         modal.classList.add('opacity-0', 'pointer-events-none');
@@ -26140,19 +26361,31 @@ function plotMeetingSpotMarkers(spots) {
         } else if (spot.type === 'park') {
             color = '#38a169'; // green
         } else if (spot.type === 'custom') {
-            color = '#3182ce'; // blue
+            color = '#2563eb'; // blue
         }
         
-        const customIcon = L.divIcon({
-            className: 'meeting-spot-div-icon',
-            html: `<div class="meeting-pin flex items-center justify-center rounded-full border-2 border-white" style="background-color: ${color}; width: 30px; height: 30px; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;">
-                    <svg style="color: #ffffff !important; fill: #ffffff !important; width: 16px; height: 16px;" viewBox="0 0 24 24">
-                        <path fill="#ffffff" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                    </svg>
-                   </div>`,
-            iconSize: [30, 30],
-            iconAnchor: [15, 15]
-        });
+        let customIcon;
+        if (spot.type === 'custom') {
+            customIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div class="pin-icon overflow-hidden flex items-center justify-center rounded-full" style="border: 1.5px solid white !important; background-color: ${color} !important; width: 28px; height: 28px; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important; border-radius: 50% !important;">
+                        <span class="material-symbols-outlined text-[15px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 500;">location_on</span>
+                       </div>`,
+                iconSize: [28, 28],
+                iconAnchor: [14, 14]
+            });
+        } else {
+            customIcon = L.divIcon({
+                className: 'meeting-spot-div-icon',
+                html: `<div class="meeting-pin flex items-center justify-center rounded-full border-2 border-white" style="background-color: ${color}; width: 30px; height: 30px; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;">
+                        <svg style="color: #ffffff !important; fill: #ffffff !important; width: 16px; height: 16px;" viewBox="0 0 24 24">
+                            <path fill="#ffffff" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                       </div>`,
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+            });
+        }
         
         const lat = parseFloat(spot.lat);
         const lng = parseFloat(spot.lng);
@@ -26216,6 +26449,21 @@ function selectMeetingSpot(spot) {
         if (meetingSpotMap) {
             meetingSpotMap.panTo([lat, lng]);
             
+            if (chatMeetingPickerCircle) {
+                meetingSpotMap.removeLayer(chatMeetingPickerCircle);
+                chatMeetingPickerCircle = null;
+            }
+            
+            chatMeetingPickerCircle = L.circle([lat, lng], {
+                radius: chatMeetingRadius,
+                color: '#2563eb', // Blue to match picker map
+                fillColor: '#2563eb',
+                fillOpacity: 0.15,
+                weight: 1.5,
+                dashArray: '4, 4',
+                className: 'pulsing-circle'
+            }).addTo(meetingSpotMap);
+            
             // Open popup for this marker
             const marker = meetingSpotMarkers.find(m => m.spot && m.spot.name === spot.name);
             if (marker && spot.type !== 'custom') {
@@ -26275,6 +26523,7 @@ function confirmMeetingSpotSuggestion() {
     conv.negotiation.meetupTime = formattedDT;
     conv.negotiation.meetupLat = selectedMeetingSpot.lat;
     conv.negotiation.meetupLng = selectedMeetingSpot.lng;
+    conv.negotiation.meetupRadius = chatMeetingRadius;
     conv.locationChosenAt = Date.now(); // Set location chosen timestamp
     
     // Push the admin waiting message instead of 'me' proposal message
@@ -26503,10 +26752,22 @@ function closeListingSuccessModal() {
     showView('profile_settings');
 }
 
+function updateChatMeetingPickerRadius(val) {
+    chatMeetingRadius = parseInt(val, 10) || 100;
+    const display = document.getElementById('chat-meeting-radius-display');
+    if (display) {
+        display.innerText = `${chatMeetingRadius}m`;
+    }
+    if (meetingSpotMap && chatMeetingPickerCircle && selectedMeetingSpot) {
+        chatMeetingPickerCircle.setRadius(chatMeetingRadius);
+    }
+}
+
 // Window exposures for inline HTML handlers
 window.openSuggestMeetingSpotModal = openSuggestMeetingSpotModal;
 window.closeSuggestMeetingSpotModal = closeSuggestMeetingSpotModal;
 window.filterMeetingSpots = filterMeetingSpots;
+window.updateChatMeetingPickerRadius = updateChatMeetingPickerRadius;
 window.clearSpotSearch = clearSpotSearch;
 window.confirmMeetingSpotSuggestion = confirmMeetingSpotSuggestion;
 window.openConfirmNoShowModal = openConfirmNoShowModal;
@@ -27939,8 +28200,12 @@ window.triggerRegistrationAutofill = function() {
     // Pre-check Terms of Service and EULA checkboxes
     const cb1 = document.getElementById('consent-check-1');
     const cb2 = document.getElementById('consent-check-2');
+    const cb3 = document.getElementById('consent-check-3');
+    const cb4 = document.getElementById('consent-check-4');
     if (cb1) cb1.checked = true;
     if (cb2) cb2.checked = true;
+    if (cb3) cb3.checked = true;
+    if (cb4) cb4.checked = true;
     if (typeof toggleConsentButton === 'function') {
         toggleConsentButton();
     }
@@ -28301,11 +28566,11 @@ function plotMeetupPickerMarker(lat, lng, radius) {
     } else {
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
-            html: `<div class="pin-icon overflow-hidden flex items-center justify-center rounded-full" style="border: 2px solid white !important; background-color: ${color} !important; width: 38px; height: 38px; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; border-radius: 50% !important;">
-                    <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 500;">location_on</span>
+            html: `<div class="pin-icon overflow-hidden flex items-center justify-center rounded-full" style="border: 1.5px solid white !important; background-color: ${color} !important; width: 28px; height: 28px; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important; border-radius: 50% !important;">
+                    <span class="material-symbols-outlined text-[15px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 500;">location_on</span>
                    </div>`,
-            iconSize: [38, 38],
-            iconAnchor: [19, 19]
+            iconSize: [28, 28],
+            iconAnchor: [14, 14]
         });
         meetupPickerMarker = L.marker([lat, lng], { icon: customIcon }).addTo(meetupPickerMap);
     }
@@ -28321,7 +28586,8 @@ function plotMeetupPickerMarker(lat, lng, radius) {
             fillColor: color,
             fillOpacity: 0.15,
             weight: 1.5,
-            dashArray: '4, 4'
+            dashArray: '4, 4',
+            className: 'pulsing-circle'
         }).addTo(meetupPickerMap);
     }
 }
@@ -28417,7 +28683,7 @@ function confirmMeetupLocation() {
     const mapStatus = document.getElementById('meetup-map-status');
     if (mapStatus) {
         mapStatus.classList.remove('hidden');
-        mapStatus.innerHTML = `<span class="material-symbols-outlined text-[14px]">check_circle</span> Map set (+${tempMeetupRadius}m)`;
+        mapStatus.innerHTML = `<span class="material-symbols-outlined text-base">check_circle</span> <span>Meetup Location Selected (within ${tempMeetupRadius}m)</span>`;
     }
 
     closeMeetupLocationPicker(true);
@@ -28713,7 +28979,7 @@ window.createListingAtCoords = function(lat, lng) {
     const statusEl = document.getElementById('meetup-map-status');
     if (statusEl) {
         statusEl.classList.remove('hidden');
-        statusEl.innerHTML = `<span class="material-symbols-outlined text-[14px]">check_circle</span> Location preset from map click`;
+        statusEl.innerHTML = `<span class="material-symbols-outlined text-base">check_circle</span> <span>Meetup Location Selected from Map Click</span>`;
     }
 };
 
@@ -29642,6 +29908,7 @@ window.viewMeetupLocationOnMap = function(convId) {
     state.meetupMapMode = true;
     state.meetupMapCoords = { lat, lng };
     state.meetupMapName = conv.negotiation.meetupLocation;
+    state.meetupMapRadius = conv.negotiation.meetupRadius || 100;
 
     showView('village');
     switchVillageSegment('map');
@@ -29690,8 +29957,8 @@ function openProfileStatExplanation(type) {
             btnContainer.classList.add('hidden');
         }
         
-        iconContainer.className = "w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center text-[#EF4444] mb-4";
-        iconEl.innerText = "favorite";
+        iconContainer.className = "w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center text-[#f59e0b] mb-4";
+        iconEl.innerText = "volunteer_activism";
         iconEl.style.fontVariationSettings = "'FILL' 1";
         titleEl.innerText = "Karma Points";
         descEl.innerText = "Karma points reflect your good standing in the community and active involvement as a trusted community member. You earn karma by sharing offerings, listing needs, helping neighbors, and receiving positive feedback after completed swaps. Having high karma unlocks special badges and cements your status as a reliable neighbor!";
@@ -30305,7 +30572,7 @@ window.openFusedReviewModal = function(neighborName, convId, reviewId) {
 
     // Reset tag buttons styling
     document.querySelectorAll('.fused-tag-btn').forEach(btn => {
-        btn.className = "fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white";
+        btn.className = "fused-tag-btn px-4 py-2.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[13px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white";
     });
 
     // Update UI buttons and negative menu visibility
@@ -30356,10 +30623,10 @@ window.toggleFusedTag = function(btn, tag) {
     const index = fusedReviewTags.indexOf(tag);
     if (index !== -1) {
         fusedReviewTags.splice(index, 1);
-        btn.className = "fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white";
+        btn.className = "fused-tag-btn px-4 py-2.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[13px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white";
     } else {
         fusedReviewTags.push(tag);
-        btn.className = "fused-tag-btn px-2.5 py-1.5 bg-red-500/10 dark:bg-red-500/20 border border-red-500 text-red-500 font-bold rounded-lg text-[10px] cursor-pointer";
+        btn.className = "fused-tag-btn px-4 py-2.5 bg-red-500/10 dark:bg-red-500/20 border border-red-500 text-red-500 font-bold rounded-xl text-[13px] cursor-pointer";
     }
 };
 
@@ -30712,7 +30979,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
         container.innerHTML = `
             <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
                 <h3 class="popup-modal-title text-center mb-1">Offer a Swap</h3>
-                <p class="popup-modal-desc text-center text-xs mb-2">Propose an item to swap or ask for a Karma request.</p>
+                <p class="popup-modal-desc text-center text-xs mb-2">Propose an item to swap or request to receive it for free.</p>
             </div>
             
             <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 min-h-0">
@@ -30734,7 +31001,6 @@ window.openSwapLifecycleModal = function(role, conversationId) {
             <!-- Action buttons -->
             <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-[calc(16px + env(safe-area-inset-bottom, 20px))]">
                 <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.submitLifecycleSwap(false)">Propose Swap</button>
-                <button class="w-full bg-forest-green/20 hover:bg-forest-green/30 text-forest-green py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="window.submitLifecycleSwap(true)">Request a Karma Swap</button>
             </div>
         `;
         
@@ -30794,8 +31060,57 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                     scroller.appendChild(card);
                 });
             } else {
-                scroller.innerHTML = `<p class="text-[10px] text-outline italic py-2">No active listings on your profile.</p>`;
+                const placeholder = document.createElement('p');
+                placeholder.className = "text-[10px] text-outline italic py-2";
+                placeholder.innerText = "No active listings on your profile.";
+                scroller.appendChild(placeholder);
             }
+            
+            // Append the special Karma Request card at the bottom
+            const karmaCard = document.createElement('button');
+            karmaCard.type = 'button';
+            karmaCard.className = `w-full flex items-center p-3 rounded-xl border border-black/10 dark:border-white/10 transition-all cursor-pointer text-left bg-white dark:bg-[#101612] hover:bg-forest-green/5`;
+            karmaCard.setAttribute('data-id', 'karma_request');
+            
+            karmaCard.innerHTML = `
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3 flex-shrink-0" style="background-color: rgba(234, 179, 8, 0.15) !important; color: #eab308 !important;">
+                    <span class="material-symbols-outlined text-[18px]">volunteer_activism</span>
+                </div>
+                <div class="flex-grow min-w-0 pr-3">
+                    <div class="text-xs font-bold text-black dark:text-white truncate">Request for Free (Gives Karma)</div>
+                    <div class="text-[10px] text-gray-500 dark:text-gray-400 truncate">Neighbor gets +50 Karma Points 💛</div>
+                </div>
+                <div class="check-indicator w-4 h-4 rounded-full border border-black/20 dark:border-white/20 flex items-center justify-center flex-shrink-0 ml-auto transition-all bg-transparent">
+                    <span class="material-symbols-outlined text-[10px] text-white opacity-0 select-none font-bold">check</span>
+                </div>
+            `;
+            
+            karmaCard.onclick = () => {
+                playSound('click');
+                state.selectedSwapListingId = 'karma_request';
+                const customText = document.getElementById('lifecycle-custom-text');
+                if (customText) customText.value = '';
+                scroller.querySelectorAll('button').forEach(btn => {
+                    const indicator = btn.querySelector('.check-indicator');
+                    const indicatorCheck = btn.querySelector('.check-indicator span');
+                    if (btn.getAttribute('data-id') === 'karma_request') {
+                        btn.classList.add('border-forest-green', 'bg-forest-green/5', 'dark:bg-forest-green/10');
+                        if (indicator) {
+                            indicator.classList.remove('bg-transparent', 'border-black/20', 'dark:border-white/20');
+                            indicator.classList.add('bg-forest-green', 'border-forest-green');
+                        }
+                        if (indicatorCheck) indicatorCheck.classList.remove('opacity-0');
+                    } else {
+                        btn.classList.remove('border-forest-green', 'bg-forest-green/5', 'dark:bg-forest-green/10');
+                        if (indicator) {
+                            indicator.classList.add('bg-transparent', 'border-black/20', 'dark:border-white/20');
+                            indicator.classList.remove('bg-forest-green', 'border-forest-green');
+                        }
+                        if (indicatorCheck) indicatorCheck.classList.add('opacity-0');
+                    }
+                });
+            };
+            scroller.appendChild(karmaCard);
         }
         
         const customText = document.getElementById('lifecycle-custom-text');
@@ -30804,7 +31119,14 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                 state.selectedSwapListingId = null;
                 if (scroller) {
                     scroller.querySelectorAll('button').forEach(btn => {
-                        btn.classList.remove('border-forest-green', 'ring-1', 'ring-forest-green');
+                        btn.classList.remove('border-forest-green', 'bg-forest-green/5', 'dark:bg-forest-green/10');
+                        const indicator = btn.querySelector('.check-indicator');
+                        const indicatorCheck = btn.querySelector('.check-indicator span');
+                        if (indicator) {
+                            indicator.classList.add('bg-transparent', 'border-black/20', 'dark:border-white/20');
+                            indicator.classList.remove('bg-forest-green', 'border-forest-green');
+                        }
+                        if (indicatorCheck) indicatorCheck.classList.add('opacity-0');
                     });
                 }
             };
@@ -30842,7 +31164,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                 
                 <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 min-h-0 items-center justify-center text-center">
                     <div class="w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-500/20 shadow-sm mb-2 shrink-0">
-                        <span class="material-symbols-outlined text-3xl font-bold">favorite</span>
+                        <span class="material-symbols-outlined text-3xl font-bold">volunteer_activism</span>
                     </div>
                     
                     <div class="flex flex-col items-center gap-2 shrink-0">
@@ -30943,6 +31265,10 @@ window.submitLifecycleSwap = function(isKarma) {
     }
     const conv = state.conversations.find(c => c.id === state.currentConversationId);
     if (!conv) return;
+    
+    if (state.selectedSwapListingId === 'karma_request') {
+        isKarma = true;
+    }
     
     let offeredText = "";
     if (isKarma) {
