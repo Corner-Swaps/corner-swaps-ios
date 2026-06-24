@@ -221,8 +221,7 @@ struct WebView: UIViewRepresentable {
         webView.scrollView.alwaysBounceHorizontal = false
         webView.scrollView.contentInsetAdjustmentBehavior = .never
         
-        NSLog("[SWIFT] Loading self-contained HTML string...")
-        print("[SWIFT] Loading self-contained HTML string...")
+        print("[SWIFT] Loading file URL: \(fileURL.path)")
         fflush(stdout)
         
         webView.loadFileURL(fileURL, allowingReadAccessTo: Bundle.main.resourceURL ?? fileURL.deletingLastPathComponent())

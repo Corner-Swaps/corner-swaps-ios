@@ -204,11 +204,11 @@ body.show-simulator.iphone16-mode .screen-view.active {
 /* 8. Global navbar stays pinned to bottom of app-container (absolute within position:relative container) */
 body.show-simulator #global-navbar {
     position: absolute !important;
-    bottom: 12px !important;
+    bottom: 6px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: calc(100% - 96px) !important; /* Increased margins */
-    max-width: 310px !important;         /* Narrower max-width */
+    width: calc(100% - 140px) !important; /* Increased margins */
+    max-width: 210px !important;         /* Narrower max-width */
     height: 56px !important;
     border-radius: 32px !important;
     background: rgba(255, 255, 255, 0.45) !important;
@@ -430,29 +430,29 @@ html:has(#view-landing.active) body {
 }
 
 /* Custom Scrollbars */
-::-webkit-scrollbar {
+.app-container ::-webkit-scrollbar, .phone-simulator ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
 }
 
-::-webkit-scrollbar-track {
+.app-container ::-webkit-scrollbar-track, .phone-simulator ::-webkit-scrollbar-track {
     background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
+.app-container ::-webkit-scrollbar-thumb, .phone-simulator ::-webkit-scrollbar-thumb {
     background: rgba(48, 138, 94, 0.3) !important;
     border-radius: var(--radius-full) !important;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.app-container ::-webkit-scrollbar-thumb:hover, .phone-simulator ::-webkit-scrollbar-thumb:hover {
     background: rgba(48, 138, 94, 0.6) !important;
 }
 
-html.dark ::-webkit-scrollbar-thumb {
+html.dark .app-container ::-webkit-scrollbar-thumb, html.dark .phone-simulator ::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2) !important;
 }
 
-html.dark ::-webkit-scrollbar-thumb:hover {
+html.dark .app-container ::-webkit-scrollbar-thumb:hover, html.dark .phone-simulator ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.4) !important;
 }
 
@@ -951,7 +951,20 @@ html.dark #global-navbar {
 }
 
 html.dark #global-navbar .text-forest-green {
-    color: #308A5E !important;
+    color: #cccccc !important;
+}
+
+#global-navbar .material-symbols-outlined {
+    color: #bbbbbb !important;
+}
+#global-navbar .active-tab .material-symbols-outlined {
+    color: #5a5a5a !important;
+}
+html.dark #global-navbar .material-symbols-outlined {
+    color: #555555 !important;
+}
+html.dark #global-navbar .active-tab .material-symbols-outlined {
+    color: #cccccc !important;
 }
 
 html.dark #global-navbar .text-\[\#424840\] {
@@ -1173,12 +1186,12 @@ html.dark #phone-header-bar .material-symbols-outlined {
 
 .native-app-env #global-navbar {
     position: absolute !important;
-    bottom: 12px !important;
-    bottom: max(12px, calc(4px + var(--safe-area-bottom))) !important;
+    bottom: 6px !important;
+    bottom: max(6px, calc(-12px + var(--safe-area-bottom))) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: calc(100% - 96px) !important; /* Narrower width */
-    max-width: 310px !important;         /* Narrower max-width */
+    width: calc(100% - 140px) !important; /* Narrower width */
+    max-width: 210px !important;         /* Narrower max-width */
     height: 56px !important;
     border-radius: 32px !important;
     z-index: 5000 !important;
@@ -1194,14 +1207,15 @@ html.dark #phone-header-bar .material-symbols-outlined {
     flex: 1 !important;
 }
 
-/* Custom Onboarding Screen Views Bottom Spacing Override (No Bottom Tab Bar) */
 .native-app-env #view-create_account,
-.native-app-env #view-create_account_social {
+.native-app-env #view-create_account_credentials,
+.native-app-env #view-create_account_social,
+.native-app-env #view-profile_consent,
+.native-app-env #view-profile_location_permission,
+.native-app-env #view-create_account_safe_spots {
     padding-bottom: calc(1.5rem + var(--safe-area-bottom)) !important;
 }
 
-.native-app-env #view-profile_consent,
-.native-app-env #view-profile_location_permission,
 .native-app-env #view-profile_step_1,
 .native-app-env #view-profile_step_2,
 .native-app-env #view-profile_step_3 {
@@ -4185,16 +4199,16 @@ html.dark .swap-listing-box:hover {
     background-color: rgba(16, 185, 129, 0.03) !important;
 }
 
-/* Selected state: turns green */
+/* Selected state: turns yellow */
 .swap-listing-box.active-swap-box {
-    background-color: rgba(48, 138, 94, 0.05) !important;
-    border-color: #308A5E !important;
+    background-color: rgba(234, 179, 8, 0.05) !important;
+    border-color: #eab308 !important;
     box-shadow: none !important;
 }
 
 html.dark .swap-listing-box.active-swap-box {
-    background-color: rgba(16, 185, 129, 0.05) !important;
-    border-color: #10b981 !important;
+    background-color: rgba(234, 179, 8, 0.08) !important;
+    border-color: #eab308 !important;
     box-shadow: none !important;
 }
 
@@ -4203,13 +4217,13 @@ html.dark .swap-listing-box.active-swap-box {
 }
 
 .swap-listing-box.active-swap-box .swap-listing-check-indicator {
-    background-color: #308A5E !important;
-    border-color: #308A5E !important;
+    background-color: #eab308 !important;
+    border-color: #eab308 !important;
 }
 
 html.dark .swap-listing-box.active-swap-box .swap-listing-check-indicator {
-    background-color: #10b981 !important;
-    border-color: #10b981 !important;
+    background-color: #eab308 !important;
+    border-color: #eab308 !important;
 }
 
 .swap-listing-box.active-swap-box .swap-listing-check-indicator span {
@@ -4698,8 +4712,11 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
     bottom: calc(56px + var(--safe-area-bottom) + 20px + var(--keyboard-offset, 0px)) !important;
     padding-bottom: 8px !important;
 }
+body.keyboard-visible #chat-action-center,
+body.keyboard-visible #chat-action-center.group-chat-action-center,
 body.keyboard-visible .native-app-env #chat-action-center,
 body.keyboard-visible .native-app-env #chat-action-center.group-chat-action-center {
+    bottom: calc(var(--keyboard-offset, 0px) + 8px) !important;
     padding-bottom: 8px !important;
 }
 html.dark #chat-action-center {
@@ -5648,9 +5665,6 @@ button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
 /* Force all icons in onboarding wizard & login slides to be green */
 #view-welcome .material-symbols-outlined,
 #view-sign_in .material-symbols-outlined,
-#view-create_account .material-symbols-outlined,
-#view-create_account_social .material-symbols-outlined,
-#view-profile_consent .material-symbols-outlined,
 #view-profile_location_permission .material-symbols-outlined,
 #view-create_account_safe_spots .material-symbols-outlined,
 #view-profile_step_1 .material-symbols-outlined,
@@ -5667,6 +5681,13 @@ button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
 }
 html.dark #view-profile_step_custom_listing .material-symbols-outlined,
 html.dark #view-create_account_credentials .material-symbols-outlined {
+    color: #ffffff !important;
+}
+
+.onboarding-header-icon-container .material-symbols-outlined {
+    color: #000000 !important;
+}
+html.dark .onboarding-header-icon-container .material-symbols-outlined {
     color: #ffffff !important;
 }
 
@@ -5802,7 +5823,6 @@ html.dark #view-set_up_profile h1 {
 }
 
 /* Premium white background buttons with green borders, black text, and green icons in onboarding */
-#view-welcome button:not([onclick*="handleDevAutoLogin"]),
 #view-sign_in button[type="submit"],
 #view-sign_in button[onclick*="create_account"],
 #view-create_account button[type="submit"],
@@ -5825,7 +5845,6 @@ html.dark #view-set_up_profile h1 {
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-#view-welcome button:not([onclick*="handleDevAutoLogin"]) *,
 #view-sign_in button[type="submit"] *,
 #view-sign_in button[onclick*="create_account"] *,
 #view-create_account button[type="submit"] *,
@@ -5841,8 +5860,6 @@ html.dark #view-set_up_profile h1 {
     color: #308A5E !important;
 }
 
-/* Dark mode buttons in onboarding */
-html.dark #view-welcome button:not([onclick*="handleDevAutoLogin"]),
 html.dark #view-sign_in button[type="submit"],
 html.dark #view-sign_in button[onclick*="create_account"],
 html.dark #view-create_account button[type="submit"],
@@ -5884,7 +5901,7 @@ html.dark #view-profile_step_3 h2 {
 #view-create_account_social button[type="submit"],
 #btn-autofill-register,
 #btn-autofill-register-social,
-#view-profile_consent button,
+#view-profile_consent button#consent-continue-btn,
 #btn-onboarding-location-permission,
 #view-profile_step_1 button[type="submit"],
 #view-lead_giving button,
@@ -5901,7 +5918,7 @@ html.dark #view-profile_step_3 h2 {
 #view-create_account_social button[type="submit"] *,
 #btn-autofill-register *,
 #btn-autofill-register-social *,
-#view-profile_consent button *,
+#view-profile_consent button#consent-continue-btn *,
 #btn-onboarding-location-permission *,
 #view-profile_step_1 button[type="submit"] *,
 #view-lead_giving button *,
@@ -6209,6 +6226,10 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
     transform: scale(1);
 }
 
+.checkbox-wrapper:has(input[type="checkbox"]:checked) .custom-check-box span.material-symbols-outlined {
+    color: #ffffff !important;
+}
+
 html.dark .checkbox-wrapper {
     border-color: rgba(255, 255, 255, 0.23);
     background-color: #18201a;
@@ -6302,6 +6323,28 @@ body.show-simulator:not(.iphone16-mode) #neighbor-profile-modal {
     height: calc(100% - 48px) !important;
 }
 
+body.show-simulator #neighbor-profile-modal,
+body.show-simulator #view-offer,
+body.show-simulator #view-profile_settings,
+body.show-simulator #view-settings_detail,
+body.show-simulator #view-events_hub,
+body.show-simulator #view-event_detail,
+body.show-simulator #view-adjust_homepage,
+body.show-simulator #view-admin_panel,
+body.show-simulator #view-definitions,
+body.show-simulator #view-help_improve,
+body.show-simulator #view-create_bulletin,
+body.show-simulator #view-create_group {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    transform: none !important;
+    border: none !important;
+    box-sizing: border-box !important;
+}
+
 /* Position transitioning views below the status bar in standard simulator mode to avoid "going up top" glitch */
 body.show-simulator:not(.iphone16-mode) .screen-view.slide-push-enter,
 body.show-simulator:not(.iphone16-mode) .screen-view.slide-push-exit,
@@ -6363,10 +6406,10 @@ html.dark .event-stock-thumbnail {
 /* Premium Onboarding Card & Input Styling */
 .onboarding-card {
     background-color: #ffffff !important;
-    border: 1px solid rgba(48, 138, 94, 0.08) !important;
-    border-radius: var(--radius-xl) !important;
-    padding: 26px 24px !important;
-    box-shadow: 0 20px 48px -12px rgba(48, 138, 94, 0.05), 0 8px 16px -8px rgba(48, 138, 94, 0.03) !important;
+    border: 1px solid rgba(48, 138, 94, 0.15) !important;
+    border-radius: 20px !important;
+    padding: 1.25rem !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
     width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
@@ -6374,13 +6417,14 @@ html.dark .event-stock-thumbnail {
     box-sizing: border-box !important;
 }
 html.dark .onboarding-card {
-    background-color: #161e1a !important;
-    border-color: rgba(130, 185, 149, 0.08) !important;
-    box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.4) !important;
+    background-color: #18201a !important;
+    border: 1px solid rgba(130, 185, 149, 0.15) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
 }
 
 /* Base text styling overrides for onboarding screens to make them feel organic and cohesive */
 #view-welcome,
+#view-sign_in,
 #view-create_account,
 #view-create_account_credentials,
 #view-create_account_social,
@@ -6391,11 +6435,11 @@ html.dark .onboarding-card {
 #view-lead_giving,
 #view-profile_step_2,
 #view-profile_step_3,
-#view-profile_step_custom_listing,
-#view-sign_in {
+#view-profile_step_custom_listing {
     background: linear-gradient(180deg, #FDFCF8 0%, #F4F1E6 100%) !important;
 }
 html.dark #view-welcome,
+html.dark #view-sign_in,
 html.dark #view-create_account,
 html.dark #view-create_account_credentials,
 html.dark #view-create_account_social,
@@ -6406,9 +6450,25 @@ html.dark #view-profile_step_1,
 html.dark #view-lead_giving,
 html.dark #view-profile_step_2,
 html.dark #view-profile_step_3,
-html.dark #view-profile_step_custom_listing,
-html.dark #view-sign_in {
+html.dark #view-profile_step_custom_listing {
     background: linear-gradient(180deg, #111713 0%, #0a0e0b 100%) !important;
+}
+
+#view-create_account.active,
+#view-create_account_credentials.active,
+#view-create_account_social.active,
+#view-profile_consent.active,
+#view-profile_location_permission.active,
+#view-create_account_safe_spots.active,
+#view-profile_step_1.active {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    box-sizing: border-box !important;
+    padding: calc(env(safe-area-inset-top, 44px) + 24px) 24px calc(env(safe-area-inset-bottom, 34px) + 24px) !important;
 }
 
 #view-welcome p,
@@ -6550,7 +6610,6 @@ html.dark #view-profile_step_1 button[type="submit"] {
 }
 
 /* Secondary Outline Buttons in Onboarding */
-#view-welcome button[onclick*="sign_in"],
 #view-sign_in button[onclick*="create_account"] {
     background-color: transparent !important;
     border: 2px solid rgba(48, 138, 94, 0.25) !important;
@@ -6561,41 +6620,18 @@ html.dark #view-profile_step_1 button[type="submit"] {
     box-shadow: none !important;
     transition: all 0.25s ease !important;
 }
-html.dark #view-welcome button[onclick*="sign_in"],
 html.dark #view-sign_in button[onclick*="create_account"] {
     border-color: rgba(130, 185, 149, 0.25) !important;
     color: #82b995 !important;
 }
 
-#view-welcome button[onclick*="sign_in"]:active,
 #view-sign_in button[onclick*="create_account"]:active {
     background-color: rgba(48, 138, 94, 0.05) !important;
     border-color: var(--forest-green) !important;
 }
-html.dark #view-welcome button[onclick*="sign_in"]:active,
 html.dark #view-sign_in button[onclick*="create_account"]:active {
     background-color: rgba(130, 185, 149, 0.05) !important;
     border-color: #82b995 !important;
-}
-
-/* Dev Auto Login Button */
-#view-welcome button[onclick*="handleDevAutoLogin"] {
-    background-color: rgba(48, 138, 94, 0.06) !important;
-    border: 1px solid rgba(48, 138, 94, 0.12) !important;
-    color: var(--forest-green) !important;
-    border-radius: 16px !important;
-    font-weight: 700 !important;
-    height: 54px !important;
-    box-shadow: none !important;
-    transition: all 0.25s ease !important;
-}
-html.dark #view-welcome button[onclick*="handleDevAutoLogin"] {
-    background-color: rgba(130, 185, 149, 0.06) !important;
-    border-color: rgba(130, 185, 149, 0.12) !important;
-    color: #82b995 !important;
-}
-#view-welcome button[onclick*="handleDevAutoLogin"]:active {
-    background-color: rgba(48, 138, 94, 0.12) !important;
 }
 
 /* Secondary Autofill Buttons in Onboarding */
@@ -6884,12 +6920,12 @@ html.dark .category-info-highlighted::after {
 
 .native-app-env #global-navbar:not(.hidden) {
     position: absolute !important;
-    bottom: 12px !important;
-    bottom: max(12px, calc(4px + var(--safe-area-bottom))) !important;
+    bottom: 6px !important;
+    bottom: max(6px, calc(-12px + var(--safe-area-bottom))) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: calc(100% - 96px) !important;
-    max-width: 310px !important;
+    width: calc(100% - 140px) !important;
+    max-width: 210px !important;
     gap: 0px !important;
     height: 56px !important;
     padding-top: 0 !important;
@@ -8043,7 +8079,6 @@ html.dark #meetup-picker-modal h3,
 html.dark #meetup-picker-modal h3 *,
 html.dark #barter-container h2,
 html.dark #neighbor-review-modal h3,
-html.dark #confirm-swap-rating-modal h3,
 html.dark #chat-qr-handshake-modal h3 {
     color: #ffffff !important;
 }
@@ -8057,7 +8092,6 @@ html.dark #chat-qr-handshake-modal h3 {
 #meetup-picker-modal :not(button):not(button *):not(.material-symbols-outlined),
 #barter-modal :not(button):not(button *):not(.material-symbols-outlined),
 #neighbor-review-modal :not(button):not(button *):not(.material-symbols-outlined),
-#confirm-swap-rating-modal :not(button):not(button *):not(.material-symbols-outlined),
 #chat-qr-handshake-modal :not(button):not(button *):not(.material-symbols-outlined) {
     font-family: 'Outfit', sans-serif !important;
     font-size: 15.5px !important;
@@ -8074,7 +8108,6 @@ html.dark #meeting-spot-modal :not(button):not(button *):not(.material-symbols-o
 html.dark #meetup-picker-modal :not(button):not(button *):not(.material-symbols-outlined),
 html.dark #barter-modal :not(button):not(button *):not(.material-symbols-outlined),
 html.dark #neighbor-review-modal :not(button):not(button *):not(.material-symbols-outlined),
-html.dark #confirm-swap-rating-modal :not(button):not(button *):not(.material-symbols-outlined),
 html.dark #chat-qr-handshake-modal :not(button):not(button *):not(.material-symbols-outlined) {
     color: #ffffff !important;
 }
@@ -8088,7 +8121,6 @@ html.dark #chat-qr-handshake-modal :not(button):not(button *):not(.material-symb
 #meetup-picker-modal strong,
 #barter-modal strong,
 #neighbor-review-modal strong,
-#confirm-swap-rating-modal strong,
 #chat-qr-handshake-modal strong,
 #offer-swap-modal label,
 #did-you-swap-modal label,
@@ -8098,7 +8130,6 @@ html.dark #chat-qr-handshake-modal :not(button):not(button *):not(.material-symb
 #meetup-picker-modal label,
 #barter-modal label,
 #neighbor-review-modal label,
-#confirm-swap-rating-modal label,
 #chat-qr-handshake-modal label,
 #offer-swap-modal .font-bold,
 #did-you-swap-modal .font-bold,
@@ -8106,7 +8137,6 @@ html.dark #chat-qr-handshake-modal :not(button):not(button *):not(.material-symb
 #meetup-picker-modal .font-bold,
 #barter-modal .font-bold,
 #neighbor-review-modal .font-bold,
-#confirm-swap-rating-modal .font-bold,
 #chat-qr-handshake-modal .font-bold,
 #offer-swap-modal .font-extrabold,
 #did-you-swap-modal .font-extrabold,
@@ -8114,7 +8144,6 @@ html.dark #chat-qr-handshake-modal :not(button):not(button *):not(.material-symb
 #meetup-picker-modal .font-extrabold,
 #barter-modal .font-extrabold,
 #neighbor-review-modal .font-extrabold,
-#confirm-swap-rating-modal .font-extrabold,
 #chat-qr-handshake-modal .font-extrabold,
 #offer-swap-modal .font-black,
 #did-you-swap-modal .font-black,
@@ -8122,7 +8151,6 @@ html.dark #chat-qr-handshake-modal :not(button):not(button *):not(.material-symb
 #meetup-picker-modal .font-black,
 #barter-modal .font-black,
 #neighbor-review-modal .font-black,
-#confirm-swap-rating-modal .font-black,
 #chat-qr-handshake-modal .font-black,
 #lifecycle-offerings-scroller button div.text-xs,
 .meeting-spot-card h4,
@@ -8140,7 +8168,6 @@ html.dark #chat-qr-handshake-modal :not(button):not(button *):not(.material-symb
 #meetup-picker-modal p,
 #barter-modal p,
 #neighbor-review-modal p,
-#confirm-swap-rating-modal p,
 #chat-qr-handshake-modal p {
     font-weight: 400 !important;
     opacity: 0.85 !important;
@@ -8168,7 +8195,6 @@ html.dark #chat-qr-handshake-modal :not(button):not(button *):not(.material-symb
 #meetup-picker-modal button,
 #barter-modal button,
 #neighbor-review-modal button,
-#confirm-swap-rating-modal button,
 #chat-qr-handshake-modal button {
     font-family: 'Outfit', sans-serif !important;
     font-size: 15.5px !important;
@@ -8182,7 +8208,6 @@ html.dark #chat-qr-handshake-modal :not(button):not(button *):not(.material-symb
 #meetup-picker-modal .material-symbols-outlined,
 #barter-modal .material-symbols-outlined,
 #neighbor-review-modal .material-symbols-outlined,
-#confirm-swap-rating-modal .material-symbols-outlined,
 #chat-qr-handshake-modal .material-symbols-outlined {
     font-size: 15.5px !important;
 }
@@ -9003,18 +9028,243 @@ html.dark .popup-modal-desc {
     color: rgba(255, 255, 255, 0.7) !important;
 }
 
-/* Welcome Screen Premium Buttons */
-.welcome-buttons-container {
+/* Welcome Screen Decorative Orbs */
+#welcome-bg-orb-1 {
+    position: absolute !important;
+    width: 280px !important;
+    height: 280px !important;
+    border-radius: 50% !important;
+    background: radial-gradient(circle, rgba(48, 138, 94, 0.18) 0%, rgba(48, 138, 94, 0) 70%) !important;
+    top: -60px !important;
+    left: -60px !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+    filter: blur(40px) !important;
+}
+#welcome-bg-orb-2 {
+    position: absolute !important;
+    width: 320px !important;
+    height: 320px !important;
+    border-radius: 50% !important;
+    background: radial-gradient(circle, rgba(239, 235, 216, 0.8) 0%, rgba(239, 235, 216, 0) 70%) !important;
+    bottom: 8% !important;
+    right: -100px !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+    filter: blur(50px) !important;
+}
+#welcome-bg-orb-3 {
+    position: absolute !important;
+    width: 220px !important;
+    height: 220px !important;
+    border-radius: 50% !important;
+    background: radial-gradient(circle, rgba(48, 138, 94, 0.1) 0%, rgba(48, 138, 94, 0) 70%) !important;
+    top: 35% !important;
+    right: 5% !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+    filter: blur(35px) !important;
+}
+html.dark #welcome-bg-orb-1 {
+    background: radial-gradient(circle, rgba(48, 138, 94, 0.28) 0%, rgba(48, 138, 94, 0) 75%) !important;
+}
+html.dark #welcome-bg-orb-2 {
+    background: radial-gradient(circle, rgba(130, 185, 149, 0.15) 0%, rgba(130, 185, 149, 0) 75%) !important;
+}
+html.dark #welcome-bg-orb-3 {
+    background: radial-gradient(circle, rgba(48, 138, 94, 0.18) 0%, rgba(48, 138, 94, 0) 75%) !important;
+}
+
+#welcome-leaf-svg {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    opacity: 0.05 !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+}
+html.dark #welcome-leaf-svg {
+    opacity: 0.02 !important;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Welcome Screen Premium Layout & Buttons */
+/* Welcome Screen Premium Layout & Buttons */
+#view-welcome {
+    background: linear-gradient(135deg, #fbfaf7 0%, #f3f0e8 100%) !important;
+    position: relative !important;
+    height: 100% !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    opacity: 1 !important;
+}
+html.dark #view-welcome {
+    background: linear-gradient(135deg, #111a15 0%, #0d1410 100%) !important;
+}
+
+#welcome-bg-orb-1,
+#welcome-bg-orb-2,
+#welcome-bg-orb-3,
+#welcome-leaf-svg {
+    display: block !important;
+}
+
+#view-welcome.active {
     display: flex !important;
     flex-direction: column !important;
-    gap: 16px !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    padding: calc(env(safe-area-inset-top, 44px) + 24px) 24px calc(env(safe-area-inset-bottom, 34px) + 20px) !important;
+    box-sizing: border-box !important;
+    opacity: 1 !important;
+}
+
+#welcome-hero {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    margin-top: 16px !important;
+    z-index: 2 !important;
+    animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+    opacity: 1 !important;
+}
+
+#welcome-wordmark {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+#welcome-wordmark-icon {
+    width: 64px !important;
+    height: 64px !important;
+    background-color: rgba(48, 138, 94, 0.08) !important;
+    border-radius: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 8px 24px -6px rgba(48, 138, 94, 0.15) !important;
+}
+html.dark #welcome-wordmark-icon {
+    background-color: rgba(48, 138, 94, 0.2) !important;
+    box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.3) !important;
+}
+
+#welcome-wordmark-icon span {
+    font-size: 32px !important;
+    color: #308A5E !important;
+}
+html.dark #welcome-wordmark-icon span {
+    color: #82b995 !important;
+}
+
+#welcome-app-name {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 26px !important;
+    font-weight: 800 !important;
+    color: #1a2f23 !important;
+    letter-spacing: -0.02em !important;
+    margin-top: 4px !important;
+}
+html.dark #welcome-app-name {
+    color: #ffffff !important;
+}
+
+#welcome-tagline {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    color: #4a5d52 !important;
+    line-height: 1.45 !important;
+    margin-top: 14px !important;
+    text-align: center !important;
+}
+html.dark #welcome-tagline {
+    color: #a4b8ab !important;
+}
+
+#welcome-bottom-panel {
+    width: 100% !important;
+    max-width: 384px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    z-index: 2 !important;
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 0 !important;
+    opacity: 1 !important;
+    box-sizing: border-box !important;
+}
+
+#welcome-panel-heading {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    color: #111b15 !important;
+    margin: 0 0 8px 0 !important;
+    letter-spacing: -0.015em !important;
+}
+html.dark #welcome-panel-heading {
+    color: #ffffff !important;
+}
+
+#welcome-panel-sub {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14.5px !important;
+    color: #55685d !important;
+    line-height: 1.45 !important;
+    margin: 0 0 28px 0 !important;
+    padding: 0 8px !important;
+}
+html.dark #welcome-panel-sub {
+    color: #92a79a !important;
+}
+
+#welcome-cta-stack {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
 }
 
 .btn-welcome-signin,
 .btn-welcome-register,
 .btn-welcome-admin {
-    width: 100% !important;
-    height: 56px !important;
+    width: 280px !important;
+    height: 54px !important;
     border-radius: 16px !important;
     font-family: 'Outfit', sans-serif !important;
     font-size: 15.5px !important;
@@ -9022,92 +9272,146 @@ html.dark .popup-modal-desc {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 8px !important;
+    gap: 10px !important;
     cursor: pointer !important;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
     outline: none !important;
     letter-spacing: normal !important;
     text-transform: none !important;
+    box-sizing: border-box !important;
 }
 
 .btn-welcome-signin:active,
 .btn-welcome-register:active,
 .btn-welcome-admin:active {
-    transform: scale(0.98) !important;
+    transform: scale(0.975) !important;
 }
 
-/* Sign In Button: Premium Solid Forest Green */
-.btn-welcome-signin,
-.btn-welcome-register,
+/* Welcome Buttons - Distinct Hierarchies */
+/* 1. Primary: Sign In (Solid Green) */
+.btn-welcome-signin {
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(48, 138, 94, 0.2) !important;
+}
+.btn-welcome-signin:hover {
+    background-color: #256d4a !important;
+    box-shadow: 0 6px 20px rgba(48, 138, 94, 0.3) !important;
+}
+.btn-welcome-signin .material-symbols-outlined {
+    color: #ffffff !important;
+    font-variation-settings: 'FILL' 0, 'wght' 400 !important;
+    font-size: 20px !important;
+}
+
+/* 2. Secondary: Create Account (Solid Sage Green) */
+.btn-welcome-register {
+    background-color: #457A56 !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(69, 122, 86, 0.2) !important;
+}
+.btn-welcome-register:hover {
+    background-color: #376245 !important;
+    box-shadow: 0 6px 20px rgba(69, 122, 86, 0.3) !important;
+}
+.btn-welcome-register .material-symbols-outlined {
+    color: #ffffff !important;
+    font-variation-settings: 'FILL' 0, 'wght' 400 !important;
+    font-size: 20px !important;
+}
+
+/* 3. Tertiary: Admin Access (Solid Gray) */
 .btn-welcome-admin {
-    background-color: #ffffff !important;
-    color: #308A5E !important;
-    border: 2px solid #308A5E !important;
-    box-shadow: none !important;
+    background-color: #6b7280 !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(107, 114, 128, 0.2) !important;
 }
-.btn-welcome-signin:hover,
-.btn-welcome-register:hover,
 .btn-welcome-admin:hover {
-    background-color: rgba(48, 138, 94, 0.05) !important;
-    color: #256d4a !important;
-    border-color: #256d4a !important;
+    background-color: #4b5563 !important;
+    box-shadow: 0 6px 20px rgba(107, 114, 128, 0.3) !important;
 }
-.btn-welcome-signin .material-symbols-outlined,
-.btn-welcome-register .material-symbols-outlined,
 .btn-welcome-admin .material-symbols-outlined {
-    color: #308A5E !important;
-    font-variation-settings: 'FILL' 1 !important;
-    font-size: 18px !important;
-}
-.btn-welcome-signin:hover .material-symbols-outlined,
-.btn-welcome-register:hover .material-symbols-outlined,
-.btn-welcome-admin:hover .material-symbols-outlined {
-    color: #256d4a !important;
+    color: #ffffff !important;
+    font-variation-settings: 'FILL' 0, 'wght' 400 !important;
+    font-size: 20px !important;
 }
 
-/* Force dark mode welcome screen buttons to also have white background and green text/borders */
-html.dark .btn-welcome-signin,
-html.dark .btn-welcome-register,
-html.dark .btn-welcome-admin {
-    background-color: #ffffff !important;
-    color: #308A5E !important;
-    border-color: #308A5E !important;
-}
-html.dark .btn-welcome-signin:hover,
-html.dark .btn-welcome-register:hover,
-html.dark .btn-welcome-admin:hover {
-    background-color: rgba(48, 138, 94, 0.05) !important;
-    color: #256d4a !important;
-    border-color: #256d4a !important;
-}
-html.dark .btn-welcome-signin .material-symbols-outlined,
-html.dark .btn-welcome-register .material-symbols-outlined,
-html.dark .btn-welcome-admin .material-symbols-outlined {
-    color: #308A5E !important;
-}
-
-/* Force Welcome screen to have a clean centered layout, white background, and dark text in all modes */
-#view-welcome {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-}
-html.dark #view-welcome {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-}
-#view-welcome.active {
+/* Divider */
+#welcome-divider {
     display: flex !important;
-    flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    text-align: center !important;
+    gap: 16px !important;
+    margin: 8px 0 !important;
+    width: 280px !important;
 }
-#view-welcome h1.onboarding-title {
-    color: #000000 !important;
+#welcome-divider span {
+    flex: 1 !important;
+    height: 1px !important;
+    background-color: rgba(48, 138, 94, 0.12) !important;
 }
-html.dark #view-welcome h1.onboarding-title {
-    color: #000000 !important;
+html.dark #welcome-divider span {
+    background-color: rgba(255, 255, 255, 0.1) !important;
 }
+#welcome-divider p {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: #8a9d90 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    margin: 0 !important;
+}
+html.dark #welcome-divider p {
+    color: #617568 !important;
+}
+
+/* Dark mode matches exactly */
+html.dark .btn-welcome-signin {
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+}
+html.dark .btn-welcome-signin:hover {
+    background-color: #389e6c !important;
+}
+html.dark .btn-welcome-signin .material-symbols-outlined {
+    color: #ffffff !important;
+}
+
+html.dark .btn-welcome-register {
+    background-color: #457A56 !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+}
+html.dark .btn-welcome-register:hover {
+    background-color: #376245 !important;
+}
+html.dark .btn-welcome-register .material-symbols-outlined {
+    color: #ffffff !important;
+}
+
+html.dark .btn-welcome-admin {
+    background-color: #4b5563 !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+}
+html.dark .btn-welcome-admin:hover {
+    background-color: #374151 !important;
+}
+html.dark .btn-welcome-admin .material-symbols-outlined {
+    color: #ffffff !important;
+}
+
+#welcome-safe-spacer {
+    display: none !important;
+}
+
 #view-welcome .material-symbols-outlined:not(.btn-welcome-signin *):not(.btn-welcome-register *):not(.btn-welcome-admin *) {
     color: #308A5E !important; /* Top icon badge green */
 }
@@ -9209,8 +9513,8 @@ html.dark #btn-onboarding-location-permission.active-glow {
 body.show-simulator #global-navbar,
 .native-app-env #global-navbar,
 .native-app-env #global-navbar:not(.hidden) {
-    width: calc(100% - 96px) !important;
-    max-width: 310px !important;
+    width: calc(100% - 140px) !important;
+    max-width: 210px !important;
 }
 
 #navbar-icons-row {
@@ -9305,4 +9609,193 @@ h5.uppercase.tracking-wider {
     font-size: 13px !important;
     font-family: 'Outfit', sans-serif !important;
     line-height: 1.5 !important;
+}
+
+/* Helper utility classes for registration screen button widths that bypass compiled Tailwind */
+.w-\[40\%\] {
+    width: 40% !important;
+}
+.w-\[60\%\] {
+    width: 60% !important;
+}
+.w-\[35\%\] {
+    width: 35% !important;
+}
+.w-\[65\%\] {
+    width: 65% !important;
+}
+
+/* Auth Portal Redesign - Deep Glassmorphism Theme */
+.auth-portal-screen {
+    background: linear-gradient(135deg, #060e0a 0%, #112017 50%, #0c1912 100%) !important;
+    position: relative !important;
+    overflow-y: auto !important;
+}
+
+.auth-portal-screen.active {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.auth-portal-card {
+    background: rgba(20, 35, 27, 0.45) !important;
+    backdrop-filter: blur(30px) !important;
+    -webkit-backdrop-filter: blur(30px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 32px !important;
+    padding: 2.25rem 2rem !important;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    width: 100% !important;
+    max-width: 360px !important;
+    margin: 1.5rem auto !important;
+    box-sizing: border-box !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.auth-portal-title {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 24px !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+    letter-spacing: 0.03em !important;
+    text-transform: uppercase !important;
+    text-align: center !important;
+    margin-bottom: 4px !important;
+    background: linear-gradient(120deg, #ffffff 0%, #a7ffd0 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.auth-portal-subtitle {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 12px !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    text-align: center !important;
+    line-height: 1.5 !important;
+    margin-bottom: 2rem !important;
+}
+
+.auth-portal-label {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    color: #82b995 !important;
+    margin-left: 6px !important;
+    margin-bottom: 6px !important;
+    display: block !important;
+}
+
+.auth-portal-input {
+    display: block !important;
+    width: 100% !important;
+    height: 52px !important;
+    padding: 0 1.25rem !important;
+    background-color: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 16px !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    color: #ffffff !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.auth-portal-input::placeholder {
+    color: rgba(255, 255, 255, 0.35) !important;
+}
+
+.auth-portal-input:focus {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border-color: #82b995 !important;
+    box-shadow: 0 0 0 4px rgba(130, 185, 149, 0.25) !important;
+}
+
+.auth-portal-btn-primary {
+    width: 100% !important;
+    height: 54px !important;
+    background: linear-gradient(135deg, #457A56 0%, #2f5a3e 100%) !important;
+    color: #ffffff !important;
+    border-radius: 18px !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15.5px !important;
+    font-weight: 700 !important;
+    border: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    box-shadow: 0 8px 24px rgba(69, 122, 86, 0.3) !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.auth-portal-btn-primary:hover {
+    background: linear-gradient(135deg, #539167 0%, #366747 100%) !important;
+    box-shadow: 0 12px 28px rgba(69, 122, 86, 0.45) !important;
+    transform: translateY(-1px) !important;
+}
+
+.auth-portal-btn-primary:active {
+    transform: scale(0.975) !important;
+}
+
+.auth-portal-btn-secondary {
+    width: 100% !important;
+    height: 50px !important;
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 18px !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.auth-portal-btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.auth-portal-btn-secondary:active {
+    transform: scale(0.975) !important;
+}
+
+.auth-portal-back-btn {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #ffffff !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.auth-portal-back-btn:hover {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.auth-portal-link {
+    color: #a7ffd0 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+}
+
+.auth-portal-link:hover {
+    text-decoration: underline !important;
 }

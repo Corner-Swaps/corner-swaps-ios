@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C00000042C12345600000004 /* final_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C00000042C12345600000001 /* final_logo.png */; };
+		C00000042C12345600000005 /* lily_avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C00000042C12345600000002 /* lily_avatar.jpg */; };
+		C00000042C12345600000006 /* safe_spot.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C00000042C12345600000003 /* safe_spot.jpg */; };
 		C00000012C12345600000001 /* CornerSwapsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00000012C12345600000002 /* CornerSwapsApp.swift */; };
 		C00000012C12345600000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00000012C12345600000004 /* ContentView.swift */; };
 		C00000022C12345600000004 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = C00000022C12345600000001 /* index.html */; };
@@ -22,6 +25,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C00000042C12345600000001 /* final_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = final_logo.png; sourceTree = "<group>"; };
+		C00000042C12345600000002 /* lily_avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lily_avatar.jpg; sourceTree = "<group>"; };
+		C00000042C12345600000003 /* safe_spot.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = safe_spot.jpg; sourceTree = "<group>"; };
 		C00000012C12345600000002 /* CornerSwapsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerSwapsApp.swift; sourceTree = "<group>"; };
 		C00000012C12345600000004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C00000012C12345600000006 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -63,6 +69,9 @@
 		C00000012C12345600000009 /* Corner Swaps */ = {
 			isa = PBXGroup;
 			children = (
+				C00000042C12345600000001 /* final_logo.png */,
+				C00000042C12345600000002 /* lily_avatar.jpg */,
+				C00000042C12345600000003 /* safe_spot.jpg */,
 				C00000032C12345600000001 /* Assets.xcassets */,
 				C00000022C12345600000003 /* styles.css */,
 				C00000012C12345600000002 /* CornerSwapsApp.swift */,
@@ -141,6 +150,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C00000042C12345600000004 /* final_logo.png in Resources */,
+				C00000042C12345600000005 /* lily_avatar.jpg in Resources */,
+				C00000042C12345600000006 /* safe_spot.jpg in Resources */,
 				C00000032C12345600000002 /* Assets.xcassets in Resources */,
 				C00000022C12345600000004 /* index.html in Resources */,
 				F9F554152FD607EF007987A5 /* GoogleService-Info.plist in Resources */,
