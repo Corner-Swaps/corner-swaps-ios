@@ -1513,14 +1513,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <div id="welcome-cta-stack">
                             <!-- PRIMARY: Sign In -->
-                            <button onclick="showView('sign_in')" class="btn-welcome-signin">
-                                <span class="material-symbols-outlined">login</span>
+                            <button onclick="showView('sign_in')" class="btn-welcome-signin" style="background:#308A5E !important;color:#ffffff !important;">
+                                <span class="material-symbols-outlined" style="color:#ffffff !important;">login</span>
                                 Sign In
                             </button>
 
                             <!-- SECONDARY: Create Account -->
-                            <button onclick="showView('create_account')" class="btn-welcome-register">
-                                <span class="material-symbols-outlined">person_add</span>
+                            <button onclick="showView('create_account')" class="btn-welcome-register" style="background:#308A5E !important;color:#ffffff !important;">
+                                <span class="material-symbols-outlined" style="color:#ffffff !important;">person_add</span>
                                 Create Account
                             </button>
 
@@ -1532,8 +1532,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </div>
 
                             <!-- TERTIARY: Admin Access -->
-                            <button onclick="handleDevAutoLogin()" class="btn-welcome-admin">
-                                <span class="material-symbols-outlined">admin_panel_settings</span>
+                            <button onclick="handleDevAutoLogin()" class="btn-welcome-admin" style="background:#308A5E !important;color:#ffffff !important;">
+                                <span class="material-symbols-outlined" style="color:#ffffff !important;">admin_panel_settings</span>
                                 Admin Access
                             </button>
                         </div>
@@ -1552,257 +1552,227 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     </div>
                 </section>
 
-                <section id="view-sign_in" class="auth-portal-screen screen-view flex-grow flex flex-col justify-center items-center py-6 px-8 overflow-y-auto">
-                    <div class="auth-portal-card">
-                        <!-- Custom Back Navigation -->
-                        <div class="flex items-center justify-between mb-8">
-                            <button class="auth-portal-back-btn" onclick="showView('welcome')">
-                                <span class="material-symbols-outlined text-[20px]">arrow_back</span>
-                            </button>
-                            <span class="text-xs font-semibold text-white/50 uppercase tracking-widest">Sign In</span>
-                            <div class="w-[38px]"></div> <!-- spacer -->
-                        </div>
-                        
-                        <h1 class="auth-portal-title">Welcome Back</h1>
-                        <p class="auth-portal-subtitle">Sign in to connect with your community exchange.</p>
-                        
-                        <form class="space-y-5" onsubmit="handleSignIn(event)">
-                            <div class="space-y-1">
-                                <label class="auth-portal-label" for="si-email">Email Address</label>
-                                <input class="auth-portal-input" id="si-email" placeholder="neighbor@community.com" type="email" required/>
-                            </div>
-                            <div class="space-y-1">
-                                <div class="flex justify-between items-center px-1">
-                                    <label class="auth-portal-label" for="si-password">Password</label>
-                                    <a class="text-xs auth-portal-link" href="#" onclick="alert('Demo feature: Use any password.')">Forgot?</a>
-                                </div>
-                                <input class="auth-portal-input" id="si-password" placeholder="••••••••" type="password" required/>
-                            </div>
-                            <button class="auth-portal-btn-primary !mt-8" type="submit">
-                                Sign In
-                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                            </button>
-                        </form>
-                        
-                        <div class="text-center mt-8 pt-6 border-t border-white/5">
-                            <p class="text-xs text-white/40 mb-3">New to Corner Swaps?</p>
-                            <button class="auth-portal-btn-secondary" onclick="showView('create_account')">
-                                Create Account
-                            </button>
-                        </div>
+                <!-- ==================================================== -->
+                <!-- SIGN IN SCREEN -->
+                <!-- ==================================================== -->
+                <section id="view-sign_in" class="auth-custom-screen screen-view hidden">
+
+
+
+                    <!-- Title block -->
+                    <div style="padding:12px 22px 14px 22px;text-align:center;">
+                        <h2 style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#1a2f23;margin:0;letter-spacing:-0.02em;line-height:1.15;">Welcome Back</h2>
+                        <p style="font-family:'Outfit',sans-serif;font-size:13px;color:#4d6657;margin:6px 0 0 0;line-height:1.45;">Sign in to your neighborhood exchange network.</p>
                     </div>
+
+                    <!-- Form -->
+                    <div style="padding:0 12px;display:flex;flex-direction:column;gap:14px;">
+                        <div style="display:flex;flex-direction:column;gap:6px;">
+                            <label for="si-email" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Email Address</label>
+                            <input id="si-email" type="email" placeholder="neighbor@community.com" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                        </div>
+
+                        <div style="display:flex;flex-direction:column;gap:6px;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;">
+                                <label for="si-password" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Password</label>
+                                <a onclick="alert('Demo: Use any password.')" style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#308A5E;cursor:pointer;">Forgot?</a>
+                            </div>
+                            <input id="si-password" type="password" placeholder="••••••••" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                        </div>
+
+                        <button type="button" onclick="handleSignIn(event)" style="width:100%;height:46px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);margin-top:4px;">
+                            Sign In
+                            <span class="material-symbols-outlined" style="font-size:18px;color:#ffffff !important;">arrow_forward</span>
+                        </button>
+                    </div>
+
+
+
                 </section>
 
-                <section id="view-create_account" class="auth-portal-screen screen-view flex-grow flex flex-col justify-start items-center pt-3 pb-4 px-6 overflow-y-auto relative hidden">
-                    <div class="auth-portal-card">
-                        <!-- Custom Back Navigation -->
-                        <div class="flex items-center justify-between mb-8">
-                            <button class="auth-portal-back-btn" onclick="showView('welcome')">
-                                <span class="material-symbols-outlined text-[20px]">arrow_back</span>
-                            </button>
-                            <span class="bg-white/10 text-[9px] font-bold text-[#a7ffd0] px-2 py-0.5 rounded-full uppercase tracking-wider">Step 1/4</span>
-                            <div class="w-[38px]"></div> <!-- spacer -->
-                        </div>
-                        
-                        <h1 class="auth-portal-title">Create Account</h1>
-                        <p class="auth-portal-subtitle">Set up your profile so neighbours can recognize you.</p>
+                <section id="view-create_account" class="auth-custom-screen screen-view hidden">
 
-                        <form class="space-y-4" onsubmit="handleSignUpStep1(event)">
-                            <div class="grid grid-cols-2 gap-3 text-left">
-                                <div class="space-y-1">
-                                    <label class="auth-portal-label" for="su-first-name">First Name *</label>
-                                    <input class="auth-portal-input !px-3" id="su-first-name" placeholder="First name" type="text" required/>
-                                </div>
-                                <div class="space-y-1 text-left">
-                                    <label class="auth-portal-label" for="su-last-name">Last Name *</label>
-                                    <input class="auth-portal-input !px-3" id="su-last-name" placeholder="Last name" type="text" required/>
-                                </div>
-                            </div>
-                            <div class="space-y-1 text-left">
-                                <label class="auth-portal-label" for="su-display-name">Public Display Name *</label>
-                                <input class="auth-portal-input" id="su-display-name" placeholder="e.g. LilyK, GreenNeighbor" type="text" required/>
-                            </div>
-                            
-                            <p class="text-[10px] text-white/40 leading-normal text-left pt-2">
-                                Your First and Last names are kept private for safety, while your Display Name is how neighbors will see you on the map and in chat.
-                            </p>
-                            
-                            <button class="auth-portal-btn-primary !mt-8" type="submit">
-                                Next Step
-                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                            </button>
-                        </form>
+
+
+                    <!-- Title block -->
+                    <div style="padding:12px 22px 14px 22px;text-align:center;">
+                        <h2 style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#1a2f23;margin:0;letter-spacing:-0.02em;line-height:1.15;">Claim Your Corner</h2>
+                        <p style="font-family:'Outfit',sans-serif;font-size:13px;color:#4d6657;margin:6px 0 0 0;line-height:1.45;">Introduce yourself to your neighborhood loop.</p>
                     </div>
+
+                    <!-- Form -->
+                    <div style="padding:0 12px;display:flex;flex-direction:column;gap:14px;">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                            <div style="display:flex;flex-direction:column;gap:6px;">
+                                <label for="su-first-name" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">First Name</label>
+                                <input id="su-first-name" type="text" placeholder="First name" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 12px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                            </div>
+                            <div style="display:flex;flex-direction:column;gap:6px;">
+                                <label for="su-last-name" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Last Name</label>
+                                <input id="su-last-name" type="text" placeholder="Last name" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 12px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                            </div>
+                        </div>
+
+                        <div style="display:flex;flex-direction:column;gap:6px;">
+                            <label for="su-display-name" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Display Name</label>
+                            <input id="su-display-name" type="text" placeholder="e.g. LilyK, GreenNeighbor" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                            <p style="font-family:'Outfit',sans-serif;font-size:11px;color:#668c75;margin:0;line-height:1.4;">First &amp; Last names stay private. Display Name is what neighbors see.</p>
+                        </div>
+
+                        <button type="button" onclick="handleSignUpStep1(event)" style="width:100%;height:46px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);margin-top:4px;">
+                            Continue
+                            <span class="material-symbols-outlined" style="font-size:18px;color:#ffffff !important;">arrow_forward</span>
+                        </button>
+                    </div>
+
                 </section>
 
-                <section id="view-create_account_credentials" class="auth-portal-screen screen-view flex-grow flex flex-col justify-start items-center pt-3 pb-4 px-6 overflow-y-auto relative hidden">
-                    <div class="auth-portal-card">
-                        <!-- Custom Back Navigation -->
-                        <div class="flex items-center justify-between mb-8">
-                            <button class="auth-portal-back-btn" onclick="showView('create_account')">
-                                <span class="material-symbols-outlined text-[20px]">arrow_back</span>
-                            </button>
-                            <span class="bg-white/10 text-[9px] font-bold text-[#a7ffd0] px-2 py-0.5 rounded-full uppercase tracking-wider">Step 2/4</span>
-                            <div class="w-[38px]"></div> <!-- spacer -->
-                        </div>
-                        
-                        <h1 class="auth-portal-title">Account Security</h1>
-                        <p class="auth-portal-subtitle">Enter your email and a secure password.</p>
+                <section id="view-create_account_credentials" class="auth-custom-screen screen-view hidden">
 
-                        <form class="space-y-4" onsubmit="handleSignUpStep2(event)">
-                            <!-- Avatar Selection Section -->
-                            <div class="space-y-1 text-left">
-                                <label class="auth-portal-label">Choose Avatar</label>
-                                <div class="flex items-center gap-3 bg-white/[0.02] border border-white/10 p-3 rounded-2xl">
-                                    <div class="w-11 h-11 rounded-full overflow-hidden border border-white/10 flex items-center justify-center flex-shrink-0 bg-[#0d1912]">
-                                        <img id="su-avatar-preview" src="lily_avatar.jpg" class="w-full h-full object-cover">
-                                    </div>
-                                    <div class="flex-grow flex flex-col justify-center text-left">
-                                        <div class="text-[10px] font-bold text-white">Your Profile Avatar</div>
-                                        <div class="text-[9px] text-white/40 mt-0.5">Default avatar selected</div>
-                                    </div>
-                                    <div class="flex-shrink-0">
-                                        <label class="text-[9px] font-bold text-white bg-white/5 border border-white/15 px-3 py-2 rounded-xl cursor-pointer hover:bg-white/10 transition-all inline-flex items-center gap-1.5 select-none">
-                                            <span class="material-symbols-outlined text-xs">camera_alt</span>
-                                            Upload
-                                            <input type="file" id="su-avatar-file" class="hidden" accept="image/*" onchange="handleCustomAvatarUpload(this, 'su-avatar-preview')">
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="space-y-1 text-left">
-                                <label class="auth-portal-label" for="su-email">Email Address *</label>
-                                <input class="auth-portal-input" id="su-email" placeholder="neighbor@community.com" type="email" required/>
-                            </div>
-
-                            <div class="space-y-1 text-left">
-                                <label class="auth-portal-label" for="su-password">Password *</label>
-                                <div class="relative">
-                                    <input class="auth-portal-input !pr-10" id="su-password" placeholder="Enter secure password" type="password" required/>
-                                    <button type="button" onclick="togglePasswordVisibility('su-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white">
-                                        <span class="material-symbols-outlined text-[18px]">visibility</span>
-                                    </button>
-                                </div>
-                                <p class="text-[9px] text-white/30 mt-1 ml-1">Password must be at least 8 characters long</p>
-                            </div>
-                            
-                            <button class="auth-portal-btn-primary !mt-8" type="submit">
-                                Next Step
-                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                            </button>
-                        </form>
+                    <!-- Top nav bar -->
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 22px;">
                     </div>
+
+                    <!-- Title block -->
+                    <div style="padding:12px 22px 14px 22px;text-align:center;">
+                        <h2 style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#1a2f23;margin:0;letter-spacing:-0.02em;line-height:1.15;">Forge Your Keys</h2>
+                        <p style="font-family:'Outfit',sans-serif;font-size:13px;color:#4d6657;margin:6px 0 0 0;line-height:1.45;">Establish your secure sign-in details.</p>
+                    </div>
+
+                    <!-- Form -->
+                    <div style="padding:0 12px;display:flex;flex-direction:column;gap:14px;">
+                        <!-- Avatar row -->
+                        <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.6);border:1.5px solid rgba(48,138,94,0.15);border-radius:16px;padding:12px 14px;">
+                            <div style="width:48px;height:48px;border-radius:50%;overflow:hidden;border:2px solid rgba(48,138,94,0.25);flex-shrink:0;">
+                                <img id="su-avatar-preview" src="lily_avatar.jpg" style="width:100%;height:100%;object-fit:cover;">
+                            </div>
+                            <div style="flex-grow:1;">
+                                <div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#1a2f23;">Profile Avatar</div>
+                                <div style="font-family:'Outfit',sans-serif;font-size:10px;color:#668c75;">Default avatar selected</div>
+                            </div>
+                            <label style="font-family:'Outfit',sans-serif;font-size:10px;font-weight:700;color:#308A5E;background:rgba(48,138,94,0.1);border:1px solid rgba(48,138,94,0.18);border-radius:10px;padding:7px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;">
+                                <span class="material-symbols-outlined" style="font-size:13px;color:#308A5E;">camera_alt</span>
+                                Upload
+                                <input type="file" id="su-avatar-file" style="display:none;" accept="image/*" onchange="handleCustomAvatarUpload(this, 'su-avatar-preview')">
+                            </label>
+                        </div>
+
+                        <div style="display:flex;flex-direction:column;gap:6px;">
+                            <label for="su-email" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Email Address</label>
+                            <input id="su-email" type="email" placeholder="neighbor@community.com" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                        </div>
+
+                        <div style="display:flex;flex-direction:column;gap:6px;">
+                            <label for="su-password" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Password</label>
+                            <div style="position:relative;">
+                                <input id="su-password" type="password" placeholder="At least 8 characters" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 44px 0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                                <button type="button" onclick="togglePasswordVisibility('su-password', this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(30,63,32,0.4);padding:0;cursor:pointer;display:flex;align-items:center;">
+                                    <span class="material-symbols-outlined" style="font-size:19px;">visibility</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="handleSignUpStep2(event)" style="width:100%;height:46px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);margin-top:4px;">
+                            Continue
+                            <span class="material-symbols-outlined" style="font-size:18px;color:#ffffff !important;">arrow_forward</span>
+                        </button>
+                    </div>
+
                 </section>
 
-                <section id="view-create_account_social" class="auth-portal-screen screen-view flex-grow flex flex-col justify-start items-center pt-3 pb-4 px-6 overflow-y-auto relative hidden">
-                    <div class="auth-portal-card">
-                        <!-- Custom Back Navigation -->
-                        <div class="flex items-center justify-between mb-8">
-                            <button class="auth-portal-back-btn" onclick="showView('create_account_credentials')">
-                                <span class="material-symbols-outlined text-[20px]">arrow_back</span>
-                            </button>
-                            <span class="bg-white/10 text-[9px] font-bold text-[#a7ffd0] px-2 py-0.5 rounded-full uppercase tracking-wider">Step 3/4</span>
-                            <div class="w-[38px]"></div> <!-- spacer -->
-                        </div>
-                        
-                        <h1 class="auth-portal-title">Build Trust</h1>
-                        <p class="auth-portal-subtitle">Link your social accounts to verify your identity (optional).</p>
+                <section id="view-create_account_social" class="auth-custom-screen screen-view hidden">
 
-                        <form class="space-y-4" onsubmit="handleSignUpStep3(event)">
-                            <p class="text-[10px] text-white/40 leading-normal text-left mb-4">
-                                All handles below are completely optional. Feel free to skip if you do not have or want to link social accounts.
-                            </p>
-
-                             <div class="space-y-3 text-left">
-                                <!-- Instagram Input Container -->
-                                <div class="space-y-1">
-                                    <label class="auth-portal-label" for="su-instagram">Instagram Handle (optional)</label>
-                                    <input class="auth-portal-input" id="su-instagram" placeholder="e.g. @username" type="text" />
-                                </div>
-
-                                <!-- Facebook Input Container -->
-                                <div class="space-y-1">
-                                    <label class="auth-portal-label" for="su-facebook">Facebook Profile (optional)</label>
-                                    <input class="auth-portal-input" id="su-facebook" placeholder="e.g. @username" type="text" />
-                                </div>
-
-                                <!-- TikTok Input Container -->
-                                <div class="space-y-1">
-                                    <label class="auth-portal-label" for="su-tiktok">TikTok Handle (optional)</label>
-                                    <input class="auth-portal-input" id="su-tiktok" placeholder="e.g. @username" type="text" />
-                                </div>
-                            </div>
-
-                            <button class="auth-portal-btn-primary !mt-8" type="submit">
-                                Next Step
-                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                            </button>
-                        </form>
+                    <!-- Top nav bar -->
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 22px;">
                     </div>
+
+                    <!-- Title block -->
+                    <div style="padding:12px 22px 14px 22px;text-align:center;">
+                        <h2 style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#1a2f23;margin:0;letter-spacing:-0.02em;line-height:1.15;">Vouch Your Presence</h2>
+                        <p style="font-family:'Outfit',sans-serif;font-size:13px;color:#4d6657;margin:6px 0 0 0;line-height:1.45;">Link your profiles to build trust. All optional.</p>
+                    </div>
+
+                    <!-- Form -->
+                    <div style="padding:0 12px;display:flex;flex-direction:column;gap:14px;">
+                        <div style="display:flex;flex-direction:column;gap:6px;">
+                            <label for="su-instagram" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Instagram Handle</label>
+                            <input id="su-instagram" type="text" placeholder="@username" style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:6px;">
+                            <label for="su-facebook" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Facebook Profile</label>
+                            <input id="su-facebook" type="text" placeholder="@username" style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:6px;">
+                            <label for="su-tiktok" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">TikTok Handle</label>
+                            <input id="su-tiktok" type="text" placeholder="@username" style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                        </div>
+
+                        <button type="button" onclick="handleSignUpStep3(event)" style="width:100%;height:46px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);margin-top:4px;">
+                            Finish &amp; Join
+                            <span class="material-symbols-outlined" style="font-size:18px;color:#ffffff !important;">check_circle</span>
+                        </button>
+                    </div>
+
                 </section>
 
                 <!-- ==================================================== -->
                 <!-- PROFILE STEP 0: CONSENT & TERMS -->
                 <!-- ==================================================== -->
-                <section id="view-profile_consent" class="screen-view flex-grow flex flex-col justify-start items-center pt-3 pb-4 px-6 overflow-y-auto relative hidden">
-                    <!-- White Card Wrapper for Form -->
-                    <div class="onboarding-card w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6 mt-4">
-                        <!-- Card Header -->
-                        <div class="flex flex-col items-center gap-3 pb-4 border-b border-black/5 dark:border-white/5 text-center w-full">
-                            <div class="onboarding-header-icon-container w-11 h-11 bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/10 text-black dark:text-white rounded-xl flex items-center justify-center flex-shrink-0 mx-auto">
-                                <span class="material-symbols-outlined text-xl">shield</span>
-                            </div>
-                            <div class="w-full text-center leading-normal">
-                                <div class="flex flex-col items-center justify-center gap-1.5">
-                                    <span class="bg-forest-green/10 dark:bg-white/10 text-[9px] font-bold text-forest-green dark:text-white px-2 py-0.5 rounded-full">4/4</span>
-                                    <h2 class="font-headline font-black text-sm text-black dark:text-white uppercase tracking-wider">Safe Space Agreement</h2>
-                                </div>
-                                <p class="text-[10.5px] text-slate-500 dark:text-slate-400 mt-1 leading-normal max-w-[280px] mx-auto">Please review our neighborhood code of conduct and guidelines.</p>
-                            </div>
-                        </div>
+                <section id="view-profile_consent" class="auth-custom-screen screen-view hidden">
 
+                    <!-- Top nav bar -->
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 22px;">
+                    </div>
+
+                    <!-- Title block -->
+                    <div style="padding:12px 22px 14px 22px;text-align:center;">
+                        <h2 style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#1a2f23;margin:0;letter-spacing:-0.02em;line-height:1.15;">Safe Space Agreement</h2>
+                        <p style="font-family:'Outfit',sans-serif;font-size:13px;color:#4d6657;margin:6px 0 0 0;line-height:1.45;">Please review our neighborhood code of conduct and guidelines.</p>
+                    </div>
+
+                    <!-- Form -->
+                    <div style="padding:0 12px;display:flex;flex-direction:column;gap:14px;">
                         <!-- Policy scroll box -->
-                        <div class="eula-scroll-box border border-outline-variant/30 rounded-2xl p-4 max-h-[220px] mt-4 overflow-y-auto custom-scrollbar text-xs leading-relaxed text-on-surface-variant select-none text-left">
+                        <div class="eula-scroll-box border border-outline-variant/30 rounded-2xl p-4 overflow-y-auto custom-scrollbar text-xs leading-relaxed text-slate-700 dark:text-slate-300 select-none text-left" style="background:rgba(255,255,255,0.6);border:1.5px solid rgba(48,138,94,0.15);border-radius:16px;max-height:170px;">
                             <div class="space-y-4">
                                 <div>
-                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1">1. Code of Conduct</h4>
-                                    <p class="text-[11px] text-slate-600 dark:text-slate-400">
+                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">1. Code of Conduct</h4>
+                                    <p class="text-[11px] text-slate-600 dark:text-slate-400" style="font-family:'Outfit',sans-serif;">
                                         Be respectful, kind, and honest with your neighbors. We have a zero-tolerance policy for objectionable content or abusive users. The listing of illegal goods, weapons, drugs, and adult services is strictly prohibited. Any harassment, discrimination, illicit substances, dangerous behavior, or offensive postings will result in immediate permanent suspension from the platform.
                                     </p>
                                 </div>
                                 
                                 <div>
-                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1">2. Exchange Safety</h4>
-                                    <p class="text-[11px] text-slate-600 dark:text-slate-400">
+                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">2. Exchange Safety</h4>
+                                    <p class="text-[11px] text-slate-600 dark:text-slate-400" style="font-family:'Outfit',sans-serif;">
                                         Always arrange exchanges in safe, public, and well-lit locations (such as local parks, cafes, or community centers). Only share cross-streets or general vicinities; never share your exact home address or apartment number.
                                     </p>
                                 </div>
 
                                 <div>
-                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1">3. Liability Disclaimer</h4>
-                                    <p class="text-[11px] text-slate-600 dark:text-slate-400">
+                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">3. Liability Disclaimer</h4>
+                                    <p class="text-[11px] text-slate-600 dark:text-slate-400" style="font-family:'Outfit',sans-serif;">
                                         All trades are at your own risk. Corner Swaps helps neighbors connect, but we do not verify or guarantee the safety or quality of items or services shared.
                                     </p>
                                 </div>
 
                                 <div>
-                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1">4. Privacy & Data Protection</h4>
-                                    <p class="text-[11px] text-slate-600 dark:text-slate-400">
+                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">4. Privacy & Data Protection</h4>
+                                    <p class="text-[11px] text-slate-600 dark:text-slate-400" style="font-family:'Outfit',sans-serif;">
                                         We protect your personal information and approximate location data using standard security practices. We never sell your data, and you can delete your account at any time.
                                     </p>
                                 </div>
 
                                 <div>
-                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1">5. Safety Responsibility</h4>
-                                    <p class="text-[11px] text-slate-600 dark:text-slate-400">
+                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">5. Safety Responsibility</h4>
+                                    <p class="text-[11px] text-slate-600 dark:text-slate-400" style="font-family:'Outfit',sans-serif;">
                                         By using the app, you agree to coordinate trades safely and release the platform from personal disputes or swapping mishaps.
                                     </p>
                                 </div>
 
                                 <div>
-                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1">6. Sharing & Tax Guidelines</h4>
-                                    <p class="text-[11px] text-slate-600 dark:text-slate-400">
+                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">6. Sharing & Tax Guidelines</h4>
+                                    <p class="text-[11px] text-slate-600 dark:text-slate-400" style="font-family:'Outfit',sans-serif;">
                                         Occasional personal swaps (like trading tools or fresh vegetables) are friendly neighborly sharing and are not taxable. Business trades should follow standard local tax guidelines.
                                     </p>
                                 </div>
@@ -1810,7 +1780,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
 
                         <!-- Checkbox agreement group container -->
-                        <div id="consent-checkboxes-container" class="bg-forest-green/5 border border-forest-green/10 p-3 rounded-xl space-y-2.5 mt-3 text-left transition-opacity duration-300">
+                        <div id="consent-checkboxes-container" class="bg-forest-green/5 border border-forest-green/10 p-3.5 rounded-xl space-y-2.5 text-left transition-opacity duration-300" style="background:rgba(255,255,255,0.6);border:1.5px solid rgba(48,138,94,0.15);border-radius:16px;">
                             <label class="flex items-start gap-3 cursor-pointer select-none">
                                 <div class="checkbox-wrapper">
                                     <input type="checkbox" id="consent-check-1" onchange="toggleConsentButton()"/>
@@ -1818,7 +1788,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                         <span class="material-symbols-outlined select-none pointer-events-none text-xs">check</span>
                                     </div>
                                 </div>
-                                <span class="text-[11px] text-slate-700 dark:text-slate-300 font-semibold leading-tight">I agree to the Safe Space Guidelines, exchange safety, and sharing rules</span>
+                                <span class="text-[11px] text-slate-700 dark:text-slate-300 font-semibold leading-tight" style="font-family:'Outfit',sans-serif;">I agree to the Safe Space Guidelines, exchange safety, and sharing rules</span>
                             </label>
                             <label class="flex items-start gap-3 cursor-pointer select-none">
                                 <div class="checkbox-wrapper">
@@ -1827,18 +1797,18 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                         <span class="material-symbols-outlined select-none pointer-events-none text-xs">check</span>
                                     </div>
                                 </div>
-                                <span class="text-[11px] text-slate-700 dark:text-slate-300 font-semibold leading-tight">I confirm that I am at least 18 years old</span>
+                                <span class="text-[11px] text-slate-700 dark:text-slate-300 font-semibold leading-tight" style="font-family:'Outfit',sans-serif;">I confirm that I am at least 18 years old</span>
                             </label>
                         </div>
 
-                        <div class="flex gap-2 pt-2">
-                            <button type="button" onclick="showView('create_account_social')" class="w-[40%] h-12 border border-black/10 dark:border-white/10 text-black dark:text-white font-bold text-xs rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 shadow-sm bg-transparent hover:bg-black/5 dark:hover:bg-white/5" >
+                        <div style="display:flex;gap:12px;margin-top:4px;">
+                            <button type="button" onclick="showView('create_account_social')" style="width:40%;height:46px;border:1.5px solid rgba(48, 138, 94, 0.2) !important;background:transparent !important;color:#308A5E !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">
                                 <span class="material-symbols-outlined text-sm font-semibold">arrow_back</span>
                                 Back
                             </button>
-                            <button class="w-[60%] h-12 bg-forest-green/45 text-white font-bold text-xs rounded-xl cursor-not-allowed transition-all flex items-center justify-center gap-1.5 mt-0 shadow-sm" style="color: #ffffff !important;" id="consent-continue-btn" onclick="handleProfileConsentSubmit()" disabled>
+                            <button class="w-[60%] h-12 bg-forest-green/45 text-white font-bold text-xs rounded-xl cursor-not-allowed transition-all flex items-center justify-center gap-1.5 mt-0 shadow-sm" style="width:60%;height:46px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:not-allowed;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);opacity:0.45;transition:opacity 0.2s;" id="consent-continue-btn" onclick="handleProfileConsentSubmit()" disabled>
                                 Next Step
-                                <span class="material-symbols-outlined text-sm font-semibold" style="color: #ffffff !important;">arrow_forward</span>
+                                <span class="material-symbols-outlined" style="font-size:18px;color:#ffffff !important;">arrow_forward</span>
                             </button>
                         </div>
                     </div>
@@ -1923,56 +1893,49 @@ svg.leaflet-image-layer.leaflet-interactive path {
                 <!-- ==================================================== -->
                 <!-- 5. PROFILE STEP 1: SAFE MEETING SPOT -->
                 <!-- ==================================================== -->
-                <section id="view-profile_step_1" class="screen-view flex-grow flex flex-col justify-center items-center py-6 px-6 overflow-y-auto">
-                    <!-- Top Icon badge -->
-                    <div class="flex justify-center mb-2">
-                        <span class="material-symbols-outlined text-[42px] text-forest-green" style="font-variation-settings: 'FILL' 1;">edit_location_alt</span>
+                <section id="view-profile_step_1" class="auth-custom-screen screen-view hidden">
+                    <!-- Title block -->
+                    <div style="padding:12px 22px 14px 22px;text-align:center;">
+                        <h2 style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#1a2f23;margin:0;letter-spacing:-0.02em;line-height:1.15;">Choose Your Neighborhood</h2>
+                        <p style="font-family:'Outfit',sans-serif;font-size:13px;color:#4d6657;margin:6px 0 0 0;line-height:1.45;">Select your local area from the options below or enter your community name manually.</p>
                     </div>
 
-                    <!-- Bold Capitalized Title -->
-                    <h1 class="onboarding-title">
-                        Choose Your Neighborhood
-                    </h1>
-
-                    <!-- Description word sentence -->
-                    <p class="text-on-surface-variant text-xs leading-relaxed max-w-[280px] mx-auto mb-4 text-center">
-                        Select your local area from the options below or enter your community name manually.
-                    </p>
-
-                    <!-- White Card Wrapper for Form -->
-                    <div class="onboarding-card w-full max-w-sm mx-auto border border-[rgba(48,138,94,0.15)] bg-white rounded-2xl p-5 shadow-sm mb-6">
-                        <form onsubmit="handleProfileStep1(event)" class="relative w-full">
-                            <input type="hidden" id="step1-location" value="">
-                            <div class="grid grid-cols-2 gap-2 mb-4 max-h-[340px] overflow-y-auto p-1 custom-scrollbar text-xs font-semibold" id="step1-location-box">
-                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Downtown', this)">Downtown</button>
-                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Kitsilano', this)">Kitsilano</button>
-                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Commercial Drive', this)">Commercial Drive</button>
-                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Mount Pleasant', this)">Mount Pleasant</button>
-                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('West End', this)">West End</button>
-                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Yaletown', this)">Yaletown</button>
-                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Gastown', this)">Gastown</button>
-                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Kerrisdale', this)">Kerrisdale</button>
-                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Fairview', this)">Fairview</button>
-                                <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('East Vancouver', this)">East Vancouver</button>
-                            </div>
-                            
-                            <!-- Divider section -->
-                            <div class="flex items-center my-3 text-outline">
-                                <div class="flex-grow border-t border-outline-variant/20"></div>
-                                <span class="px-2 text-[9px] font-bold uppercase tracking-widest">Or write your own</span>
-                                <div class="flex-grow border-t border-outline-variant/20"></div>
-                            </div>
-                            
-                            <!-- Custom neighborhood text input -->
-                            <div class="relative w-full mb-4" id="step1-custom-location-container">
-                                <input class="w-full h-11 px-4 bg-warm-cream/30 border border-outline-variant/60 rounded-xl focus:border-forest-green focus:ring-0 outline-none text-xs text-left font-semibold text-forest-green placeholder:text-xs" id="step1-custom-location" placeholder="Type your neighbourhood name..." type="text" oninput="clearNeighborhoodSelectionButtons()"/>
-                            </div>
-                            
-                            <button class="w-full h-12 bg-forest-green text-white font-bold text-base rounded-xl active:scale-[0.98] transition-transform flex items-center justify-center shadow-sm" type="submit">
-                                Next Step
-                            </button>
-                        </form>
-                    </div>
+                    <!-- Form without card container -->
+                    <form onsubmit="handleProfileStep1(event)" style="padding:0 12px;display:flex;flex-direction:column;gap:14px;">
+                        <input type="hidden" id="step1-location" value="">
+                        
+                        <!-- Neighborhood Grid -->
+                        <div class="grid grid-cols-2 gap-2 mb-2 max-h-[220px] overflow-y-auto p-1 custom-scrollbar text-xs font-semibold" id="step1-location-box">
+                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Downtown', this)">Downtown</button>
+                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Kitsilano', this)">Kitsilano</button>
+                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Commercial Drive', this)">Commercial Drive</button>
+                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Mount Pleasant', this)">Mount Pleasant</button>
+                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('West End', this)">West End</button>
+                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Yaletown', this)">Yaletown</button>
+                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Gastown', this)">Gastown</button>
+                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Kerrisdale', this)">Kerrisdale</button>
+                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('Fairview', this)">Fairview</button>
+                            <button type="button" class="neighborhood-opt-btn h-14 flex items-center justify-center p-2 bg-white border border-[rgba(48,138,94,0.15)] rounded-xl text-forest-green active:scale-95 transition-all text-center select-none text-xs leading-tight" onclick="selectOnboardingNeighborhood('East Vancouver', this)">East Vancouver</button>
+                        </div>
+                        
+                        <!-- Divider section -->
+                        <div class="flex items-center my-1 text-outline" style="opacity: 0.85;">
+                            <div class="flex-grow border-t border-outline-variant/20"></div>
+                            <span class="px-2 text-[9px] font-bold uppercase tracking-widest" style="font-family:'Outfit',sans-serif;color:#4d6657;">Or write your own</span>
+                            <div class="flex-grow border-t border-outline-variant/20"></div>
+                        </div>
+                        
+                        <!-- Custom neighborhood text input -->
+                        <div style="display:flex;flex-direction:column;gap:6px;" id="step1-custom-location-container">
+                            <input id="step1-custom-location" type="text" placeholder="Type your neighbourhood name..." oninput="clearNeighborhoodSelectionButtons()" style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" style="width:100%;height:46px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);margin-top:4px;">
+                            Next Step
+                            <span class="material-symbols-outlined" style="font-size:18px;color:#ffffff !important;">arrow_forward</span>
+                        </button>
+                    </form>
                 </section>
 
 
@@ -2691,6 +2654,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <div class="mb-0 px-0 flex flex-col gap-2.5 flex-shrink-0 relative z-[60]">
                             <!-- Fused Search Capsule with Add button -->
                             <div class="fused-search-capsule select-none">
+                                <button id="btn-list-filter" onclick="toggleListFiltersSection(event)" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer mr-1" title="Filter Categories">
+                                    <span class="material-symbols-outlined text-[16px] font-bold">tune</span>
+                                </button>
                                 <button id="btn-list-quick-create" onclick="toggleQuickCreateDropdown(event, 'list')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
                                     <span class="material-symbols-outlined text-[16px] font-bold">add</span>
                                 </button>
@@ -2759,6 +2725,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                     </button>
                                 </div>
                             </div>
+                            <!-- Horizontal Scrolling Category Filter Bar -->
+                            <div id="list-category-filters-container" class="hidden overflow-x-auto py-1.5 flex gap-2 scrollbar-none" style="display: none; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; gap: 8px; width: 100%; box-sizing: border-box;">
+                            </div>
                         </div>
 
 
@@ -2782,6 +2751,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <div class="mb-0 px-0 flex flex-col gap-2.5 flex-shrink-0 relative z-[60]">
                             <!-- Fused Search Capsule with Add button -->
                             <div class="fused-search-capsule select-none">
+                                <button id="btn-needs-filter" onclick="toggleListFiltersSection(event)" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer mr-1" title="Filter Categories">
+                                    <span class="material-symbols-outlined text-[16px] font-bold">tune</span>
+                                </button>
                                 <button id="btn-needs-quick-create" onclick="toggleQuickCreateDropdown(event, 'needs')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
                                     <span class="material-symbols-outlined text-[16px] font-bold">add</span>
                                 </button>
@@ -2850,6 +2822,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                     </button>
                                 </div>
                             </div>
+                            <!-- Horizontal Scrolling Category Filter Bar -->
+                            <div id="needs-category-filters-container" class="hidden overflow-x-auto py-1.5 flex gap-2 scrollbar-none" style="display: none; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; gap: 8px; width: 100%; box-sizing: border-box;">
+                            </div>
 
                             <!-- Distance Range Filter Slider -->
                         </div>
@@ -2873,6 +2848,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <div class="mb-0 px-0 flex flex-col gap-2.5 flex-shrink-0 relative z-[60]">
                             <!-- Fused Search Capsule with Add button -->
                             <div class="fused-search-capsule select-none">
+                                <button id="btn-events-filter" onclick="toggleListFiltersSection(event)" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer mr-1" title="Filter Categories">
+                                    <span class="material-symbols-outlined text-[16px] font-bold">tune</span>
+                                </button>
                                 <button id="btn-events-quick-create" onclick="toggleQuickCreateDropdown(event, 'events')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
                                     <span class="material-symbols-outlined text-[16px] font-bold">add</span>
                                 </button>
@@ -2940,6 +2918,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                         Events
                                     </button>
                                 </div>
+                            </div>
+                            <!-- Horizontal Scrolling Category Filter Bar -->
+                            <div id="events-category-filters-container" class="hidden overflow-x-auto py-1.5 flex gap-2 scrollbar-none" style="display: none; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; gap: 8px; width: 100%; box-sizing: border-box;">
                             </div>
                         </div>
 
@@ -3303,28 +3284,21 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <div class="px-4 py-2.5 bg-white dark:bg-[#18201a] flex-shrink-0 select-none border-b border-outline-variant/5">
                         <div id="chat-segmented-control" class="relative w-full h-9 flex items-center justify-between gap-1 select-none">
                             <!-- Read (Active) -->
-                            <button id="btn-chat-segment-active" onclick="switchChatSegment('active')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm">
+                            <button id="btn-chat-segment-active" onclick="switchChatSegment('active')" class="relative flex-1 text-[13px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm">
                                 <span class="flex items-center gap-1.5 justify-center">
                                     <span>Read</span>
                                     <span id="badge-chat-segment-active" class="chat-badge-inline hidden"></span>
                                 </span>
                             </button>
-                            <!-- Unread (Requests) -->
-                            <button id="btn-chat-segment-requests" onclick="switchChatSegment('requests')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-xl border border-black/5 dark:border-white/5 bg-white dark:bg-[#18201a] text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5">
-                                <span class="flex items-center gap-1.5 justify-center">
-                                    <span>Unread</span>
-                                    <span id="badge-chat-segment-requests" class="chat-badge-inline hidden"></span>
-                                </span>
-                            </button>
                             <!-- Groups -->
-                            <button id="btn-chat-segment-groups" onclick="switchChatSegment('groups')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-xl border border-black/5 dark:border-white/5 bg-white dark:bg-[#18201a] text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5">
+                            <button id="btn-chat-segment-groups" onclick="switchChatSegment('groups')" class="relative flex-1 text-[13px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-xl border border-black/5 dark:border-white/5 bg-white dark:bg-[#18201a] text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5">
                                 <span class="flex items-center gap-1.5 justify-center">
                                     <span>Groups</span>
                                     <span id="badge-chat-segment-groups" class="chat-badge-inline hidden"></span>
                                 </span>
                             </button>
                             <!-- Reviews -->
-                            <button id="btn-chat-segment-reviews" onclick="switchChatSegment('reviews')" class="relative flex-1 text-[11px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-xl border border-black/5 dark:border-white/5 bg-white dark:bg-[#18201a] text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5">
+                            <button id="btn-chat-segment-reviews" onclick="switchChatSegment('reviews')" class="relative flex-1 text-[13px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-xl border border-black/5 dark:border-white/5 bg-white dark:bg-[#18201a] text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5">
                                 <span class="flex items-center gap-1.5 justify-center">
                                     <span>Reviews</span>
                                     <span id="badge-chat-segment-reviews" class="chat-badge-inline hidden"></span>
@@ -3378,14 +3352,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <div class="flex items-center gap-2 flex-shrink-0">
                             <!-- Header Expiry Countdown Badge (Click to simulate 24h expiration) -->
-                            <div id="chat-header-expiry-container" class="hidden flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 font-bold px-2 py-1 rounded-lg text-[10px] select-none cursor-pointer active:scale-95 transition-transform" onclick="simulateChatExpiration()" title="Tap to simulate 24h expiration">
-                                <span class="material-symbols-outlined text-[12px] font-bold">schedule</span>
+                            <div id="chat-header-expiry-container" class="hidden flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 font-bold px-1.5 py-0.5 rounded-lg text-[9px] select-none cursor-pointer active:scale-95 transition-transform" onclick="simulateChatExpiration()" title="Tap to simulate 24h expiration">
                                 <span id="chat-header-expiry-val">24h left</span>
                             </div>
-                            <!-- Header Checkmark Button (Click to trigger Swap Complete & Review modal) -->
-                            <button id="chat-header-complete-btn" class="hidden w-10 h-10 rounded-full flex items-center justify-center bg-forest-green text-warm-cream hover:bg-forest-green/90 active:scale-90 transition-all cursor-pointer border-0 shadow-sm" onclick="openFusedReviewModalFromChat()" title="Swap Complete">
-                                <span class="material-symbols-outlined text-[20px] font-bold">check_circle</span>
-                            </button>
                         </div>
                     </div>
                     
@@ -3410,8 +3379,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <span id="chat-drawer-status-label" class="text-black/60 dark:text-white/60">Active</span>
                             </div>
                             <div class="flex items-center gap-3">
-                                <div class="hidden flex items-center gap-1 text-[10px] text-amber-600 dark:text-amber-400 font-bold" id="chat-drawer-expiry-container">
-                                    <span class="material-symbols-outlined text-[12px] font-bold">schedule</span>
+                                <div class="hidden flex items-center gap-1 text-[9px] text-amber-600 dark:text-amber-400 font-bold" id="chat-drawer-expiry-container">
                                     <span id="chat-drawer-expiry-val">48h left</span>
                                 </div>
                                 <span id="chat-drawer-toggle-icon" class="material-symbols-outlined text-base transition-transform duration-200">keyboard_arrow_down</span>
@@ -3861,7 +3829,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- Scrollable Form Container -->
                         <div id="offer-form-scroll-container" class="flex-grow overflow-y-auto w-full" style="-webkit-overflow-scrolling: touch;">
                             <!-- sticky/fixed header: Hero Image area with three photo uploader slots -->
-                            <section class="photo-hero w-full relative overflow-hidden flex flex-col justify-center items-center border-b border-outline-variant/30 flex-shrink-0 bg-[#ecebeb] dark:bg-[#202020] px-4 pt-14 pb-5 animate-fade-in" id="offer-photo-hero">
+                            <section class="photo-hero w-full relative overflow-hidden flex flex-col justify-center items-center border-b border-outline-variant/30 flex-shrink-0 bg-[#ecebeb] dark:bg-[#202020] px-4 pt-14 pb-8 animate-fade-in" id="offer-photo-hero">
                                 <div class="flex flex-col items-center w-full">
                                     <div class="flex justify-center gap-1 items-center w-full max-w-[300px] mx-auto">
                                         <!-- Slot 0 (Primary) -->
@@ -4652,87 +4620,92 @@ svg.leaflet-image-layer.leaflet-interactive path {
                              </button>
                          </div>
                      </div>
-                 </div>
+                </div>
+                                    <!-- ==================================================== -->
+                <!-- 11. REVIEW RATING FULL SCREEN VIEW -->
+                <!-- ==================================================== -->
+                <section id="view-review_rating" class="screen-view flex-grow flex flex-col h-full overflow-hidden bg-warm-cream dark:bg-[#18201a] pt-4 select-none hidden">
+                    <!-- Glassmorphic Header -->
+                    <div class="px-6 bg-warm-cream dark:bg-[#18201a] border-b border-outline-variant/10 dark:border-outline-variant/5 flex items-center z-10 shrink-0 select-none gap-3" style="height: 64px !important;">
+                        <!-- Back Button -->
+                        <button onclick="closeConfirmSwapRatingModal()" class="w-10 h-10 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-[#2a352d] flex-shrink-0 shadow-sm">
+                            <span class="material-symbols-outlined text-[20px] font-black">arrow_back_ios_new</span>
+                        </button>
+                    </div>
 
-                                <div id="confirm-swap-rating-modal" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-6 select-none animate-fade-in">
-                       <div class="absolute inset-0 bg-forest-green/20 backdrop-blur-sm" onclick="skipFusedReview()"></div>
-                       <div class="relative bg-warm-cream dark:bg-[#18201a] w-full max-w-[340px] rounded-3xl border border-outline-variant/15 shadow-2xl p-6 text-center flex flex-col gap-4">
-                           
-                           <!-- Header Section -->
-                           <div class="flex flex-col items-center gap-2">
-                               <div class="flex items-center justify-between w-full">
-                                   <span style="font-size: 10px !important; color: #308A5E !important; font-weight: 700 !important; background-color: rgba(48, 138, 94, 0.1) !important; padding: 2px 10px !important; border-radius: 9999px !important; text-transform: uppercase !important; letter-spacing: 0.05em !important;">swap complete</span>
-                                   <div class="flex items-center gap-1" style="font-size: 11px !important; font-weight: 700 !important; color: #308A5E !important;">
-                                       <span class="material-symbols-outlined text-xs">volunteer_activism</span>
-                                       <span id="confirm-swap-karma-points" style="font-size: 11px !important; font-weight: 700 !important;">50</span> Karma
-                                   </div>
-                               </div>
-                               <!-- Avatar and Name -->
-                               <div class="w-16 h-16 rounded-full overflow-hidden border border-outline-variant/20 shadow-sm mt-1">
-                                   <img id="confirm-swap-avatar" src="" class="w-full h-full object-cover animate-fade-in" alt="Neighbor Avatar">
-                               </div>
-                               <h3 class="font-headline font-extrabold text-black dark:text-white mt-1" id="confirm-swap-neighbor-name" style="font-size: 16px !important; margin: 0 !important; font-weight: 800 !important;">Neighbor Name</h3>
-                               <p style="font-size: 10px !important; color: #6b7280 !important; font-weight: 500 !important; margin: 0 !important; line-height: 1.2 !important;" id="confirm-swap-items-details">Loading swap info...</p>
-                           </div>
+                    <!-- Scrollable Container -->
+                    <div class="overflow-y-auto custom-scrollbar flex-grow p-6 flex flex-col gap-6 pb-24">
+                        <!-- Top Header Section -->
+                        <div class="flex flex-col items-center gap-3 bg-white dark:bg-[#111813] border border-outline-variant/15 p-5 rounded-3xl shadow-sm">
+                            <div class="flex items-center justify-between w-full">
+                                <span style="font-size: 10px !important; color: #308A5E !important; font-weight: 700 !important; background-color: rgba(48, 138, 94, 0.1) !important; padding: 2px 10px !important; border-radius: 9999px !important; text-transform: uppercase !important; letter-spacing: 0.05em !important;">swap complete</span>
+                                <div class="flex items-center gap-1" style="font-size: 11px !important; font-weight: 700 !important; color: #308A5E !important;">
+                                    <span class="material-symbols-outlined text-xs">volunteer_activism</span>
+                                    <span id="confirm-swap-karma-points" style="font-size: 11px !important; font-weight: 700 !important;">50</span> Karma
+                                </div>
+                            </div>
+                            <!-- Avatar and Name -->
+                            <div class="w-20 h-20 rounded-full overflow-hidden border border-outline-variant/20 shadow-sm mt-1">
+                                <img id="confirm-swap-avatar" src="" class="w-full h-full object-cover animate-fade-in" alt="Neighbor Avatar">
+                            </div>
+                            <h3 class="font-headline font-extrabold text-black dark:text-white text-lg mt-1" id="confirm-swap-neighbor-name" style="font-weight: 800 !important;">Neighbor Name</h3>
+                            <p style="font-size: 11px !important; color: #6b7280 !important; font-weight: 500 !important; margin: 0 !important; line-height: 1.2 !important;" id="confirm-swap-items-details">Loading swap info...</p>
+                        </div>
 
-                           <!-- 4-Button Action Grid -->
-                           <div class="flex flex-col gap-2">
-                               <p style="font-size: 11px !important; color: #6b7280 !important; font-weight: 700 !important; text-align: left !important; margin: 0 !important;">Rate neighbor & select actions:</p>
-                               <div class="grid grid-cols-4 gap-2">
-                                   <!-- Thumbs Up -->
-                                   <button id="fused-btn-up" class="h-12 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#22c55e] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#22c55e]" onclick="toggleFusedRating('up')" title="Thumbs Up">
-                                       <span class="material-symbols-outlined text-xl" style="font-size: 22px !important;">thumb_up</span>
-                                   </button>
-                                   <!-- Add Friend -->
-                                   <button id="fused-btn-friend" class="h-12 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#22c55e] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#22c55e]" onclick="toggleFusedRating('friend')" title="Add Friend">
-                                       <span class="material-symbols-outlined text-xl" style="font-size: 22px !important;">person_add</span>
-                                   </button>
-                                   <!-- Thumbs Down -->
-                                   <button id="fused-btn-down" class="h-12 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#ef4444] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#ef4444]" onclick="toggleFusedRating('down')" title="Thumbs Down">
-                                       <span class="material-symbols-outlined text-xl" style="font-size: 22px !important;">thumb_down</span>
-                                   </button>
-                                   <!-- Block -->
-                                   <button id="fused-btn-block" class="h-12 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#ef4444] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#ef4444]" onclick="toggleFusedRating('block')" title="Block">
-                                       <span class="material-symbols-outlined text-xl" style="font-size: 22px !important;">block</span>
-                                   </button>
-                               </div>
-                           </div>
+                        <!-- 4-Button Action Grid -->
+                        <div class="flex flex-col gap-2.5">
+                            <p style="font-size: 11.5px !important; color: #6b7280 !important; font-weight: 700 !important; text-align: left !important; margin: 0 !important;">Rate neighbor & select actions:</p>
+                            <div class="grid grid-cols-2 gap-2.5">
+                                <!-- Thumbs Up -->
+                                <button id="fused-btn-up" class="h-12 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#22c55e] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#22c55e]" onclick="toggleFusedRating('up')" title="Thumbs Up">
+                                    <span class="material-symbols-outlined text-xl" style="font-size: 22px !important;">thumb_up</span>
+                                </button>
+                                <!-- Add Friend -->
+                                <button id="fused-btn-friend" class="h-12 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#22c55e] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#22c55e]" onclick="toggleFusedRating('friend')" title="Add Friend">
+                                    <span class="material-symbols-outlined text-xl" style="font-size: 22px !important;">person_add</span>
+                                </button>
+                                <!-- Thumbs Down -->
+                                <button id="fused-btn-down" class="h-12 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#ef4444] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#ef4444]" onclick="toggleFusedRating('down')" title="Thumbs Down">
+                                    <span class="material-symbols-outlined text-xl" style="font-size: 22px !important;">thumb_down</span>
+                                </button>
+                                <!-- Block -->
+                                <button id="fused-btn-block" class="h-12 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#ef4444] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#ef4444]" onclick="toggleFusedRating('block')" title="Block">
+                                    <span class="material-symbols-outlined text-xl" style="font-size: 22px !important;">block</span>
+                                </button>
+                            </div>
+                        </div>
 
-                           <!-- Dynamic Negative Tags Sub-menu -->
-                           <div id="confirm-swap-negative-menu" class="hidden flex-col gap-2">
-                               <p style="font-size: 11px !important; color: #ef4444 !important; font-weight: 700 !important; text-align: left !important; margin: 0 !important;">Please select issue tags:</p>
-                               <div class="flex flex-wrap gap-1.5 justify-start">
-                                   <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'slow communication')">slow communication</button>
-                                   <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'felt unsafe')">felt unsafe</button>
-                                   <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'item not as described')">item not as described</button>
-                                   <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'late')">late</button>
-                                   <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'no-show')">no-show</button>
-                                   <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'hard to coordinate')">hard to coordinate</button>
-                               </div>
-                           </div>
+                        <!-- Dynamic Negative Tags Sub-menu -->
+                        <div id="confirm-swap-negative-menu" class="hidden flex-col gap-2">
+                            <p style="font-size: 11px !important; color: #ef4444 !important; font-weight: 700 !important; text-align: left !important; margin: 0 !important;">Please select issue tags:</p>
+                            <div class="flex flex-wrap gap-1.5 justify-start">
+                                <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'slow communication')">slow communication</button>
+                                <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'felt unsafe')">felt unsafe</button>
+                                <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'item not as described')">item not as described</button>
+                                <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'late')">late</button>
+                                <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'no-show')">no-show</button>
+                                <button class="fused-tag-btn px-2.5 py-1.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-lg text-[10px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 10px !important;" onclick="toggleFusedTag(this, 'hard to coordinate')">hard to coordinate</button>
+                            </div>
+                        </div>
 
-                           <!-- Written Feedback Area -->
-                           <div class="flex flex-col gap-1.5 text-left">
-                               <label id="confirm-swap-written-feedback-label" for="confirm-swap-written-feedback" style="font-size: 11px !important; color: #6b7280 !important; font-weight: 700 !important; margin: 0 !important;">Write a public review:</label>
-                               <textarea id="confirm-swap-written-feedback" class="w-full h-16 p-2 rounded-xl bg-white dark:bg-[#101612] border border-outline-variant/25 text-xs text-on-surface dark:text-white focus:outline-none focus:border-forest-green" placeholder="Tell us more details (optional)..." style="font-family: 'Outfit', sans-serif !important; font-size: 12px !important;"></textarea>
-                           </div>
-
-                           <!-- Bottom Primary Actions -->
-                           <div class="flex flex-col gap-2 pt-1">
-                               <button id="fused-submit-btn" class="w-full h-11 bg-forest-green text-warm-cream rounded-xl text-xs font-bold active:scale-[0.98] transition-transform shadow cursor-pointer border-0 flex items-center justify-center gap-1.5" onclick="submitFusedReview()">
-                                   <span class="material-symbols-outlined text-sm font-bold">check_circle</span> Submit
-                               </button>
-                               <div class="grid grid-cols-2 gap-2">
-                                   <button id="fused-skip-btn" class="h-10 bg-white dark:bg-[#1b261f] border border-outline-variant/30 text-on-surface dark:text-white rounded-xl text-xs font-bold active:scale-[0.98] transition-transform shadow cursor-pointer flex items-center justify-center gap-1.5" onclick="skipFusedReview()">
-                                       Skip
-                                   </button>
-                                   <button id="fused-cancel-btn" class="h-10 bg-white dark:bg-[#1b261f] border border-outline-variant/30 text-on-surface dark:text-white rounded-xl text-xs font-bold active:scale-[0.98] transition-transform shadow cursor-pointer flex items-center justify-center gap-1.5" onclick="notCompletedFusedReview()">
-                                       Swap Not Complete
-                                   </button>
-                               </div>
-                           </div>
-                       </div>
-                  </div>
+                        <!-- Bottom Primary Actions Stack -->
+                        <div class="flex flex-col gap-3 pt-3">
+                            <!-- Green Buttons on Top -->
+                            <button id="fused-submit-btn" class="w-full h-12 bg-forest-green hover:bg-forest-green/90 text-warm-cream rounded-xl text-xs font-bold active:scale-[0.98] transition-transform shadow cursor-pointer border-0 flex items-center justify-center gap-1.5" onclick="submitFusedReview()">
+                                <span class="material-symbols-outlined text-sm font-bold">check_circle</span> Submit
+                            </button>
+                            
+                            <button id="fused-skip-btn" class="w-full h-12 bg-forest-green/10 hover:bg-forest-green/20 text-forest-green dark:text-warm-cream border border-forest-green/25 rounded-xl text-xs font-bold active:scale-[0.98] transition-transform shadow cursor-pointer flex items-center justify-center gap-1.5" onclick="skipFusedReview()">
+                                Skip
+                            </button>
+                            
+                            <!-- Red Button on the Bottom -->
+                            <button id="fused-cancel-btn" class="w-full h-12 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold active:scale-[0.98] transition-transform shadow cursor-pointer border-0 flex items-center justify-center gap-1.5" onclick="notCompletedFusedReview()">
+                                Swap Not Complete
+                            </button>
+                        </div>
+                    </div>
+                </section>
 
                   <!-- CONGRATS EVENT MODAL -->
                   <div id="congrats-event-modal" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-6 select-none animate-fade-in">

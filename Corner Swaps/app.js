@@ -2822,7 +2822,7 @@ let lastPlaySoundTime = 0;
 function playSound(type) {
     const nowMs = Date.now();
     if (type === 'click') {
-        if (nowMs - lastPlaySoundTime < 350) {
+        if (nowMs - lastPlaySoundTime < 600) {
             return; // Suppress double-clicks
         }
         lastPlaySoundTime = nowMs;
@@ -2861,18 +2861,20 @@ function playSound(type) {
         }
         
         if (type === 'click') {
-            // Soft and subtle UI clicking sound
+            // Soft and subtle UI clicking sound without pops
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
             osc.connect(gain);
             gain.connect(ctx.destination);
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(800, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.008);
-            gain.gain.setValueAtTime(0.015, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.008);
-            osc.start();
-            osc.stop(ctx.currentTime + 0.01);
+            const now = ctx.currentTime;
+            osc.frequency.setValueAtTime(1000, now);
+            osc.frequency.exponentialRampToValueAtTime(400, now + 0.03);
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.01, now + 0.002);
+            gain.gain.linearRampToValueAtTime(0, now + 0.035);
+            osc.start(now);
+            osc.stop(now + 0.04);
         } else if (type === 'message') {
             // Soft Double Chime
             const now = ctx.currentTime;
@@ -3164,17 +3166,7 @@ function getExpirationBadgeDetails(conv) {
     }
 
     const remainingHours = Math.max(0, Math.ceil(remainingMs / (60 * 60 * 1000)));
-    let label = '';
-    if (remainingHours > 24) {
-        const remainingDays = Math.ceil(remainingHours / 24);
-        label = remainingDays === 1 ? '1 day left' : `${remainingDays} days left`;
-    } else {
-        label = remainingHours === 1 ? '1 hour left' : `${remainingHours} hours left`;
-        if (remainingHours <= 1) {
-            const remainingMins = Math.ceil(remainingMs / (60 * 1000));
-            label = `${remainingMins} minutes left`;
-        }
-    }
+    let label = remainingHours === 1 ? '1 hour left' : `${remainingHours} hours left`;
 
     // Cache the calculated value back to timeLeft
     conv.timeLeft = label;
@@ -3996,6 +3988,12 @@ function showView(viewId, mode) {
             safeLocalStorage.setItem('corner_swaps_map_confetti_shown', 'true');
             setTimeout(() => {
                 if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
+                // After confetti finishes (about 1.5 seconds later), ask about location
+                setTimeout(() => {
+                    if (typeof window.openLocationPrivacyModal === 'function') {
+                        window.openLocationPrivacyModal();
+                    }
+                }, 1500);
             }, 800);
         }
     }
@@ -5564,12 +5562,12 @@ function toggleConsentButton() {
     if (!btn) return;
     if (cb1 && cb2) {
         btn.disabled = false;
-        btn.classList.remove('bg-forest-green/45', 'cursor-not-allowed');
-        btn.classList.add('bg-forest-green', 'cursor-pointer');
+        btn.style.opacity = '1.0';
+        btn.style.cursor = 'pointer';
     } else {
         btn.disabled = true;
-        btn.classList.add('bg-forest-green/45', 'cursor-not-allowed');
-        btn.classList.remove('bg-forest-green', 'cursor-pointer');
+        btn.style.opacity = '0.45';
+        btn.style.cursor = 'not-allowed';
     }
 }
 
@@ -5636,8 +5634,28 @@ function handleProfileConsentSubmit() {
         };
     }
     state.eulaAgreed = true;
+
+    // Skip location permission step by configuring defaults directly
+    state.onboardingLocationRequest = false;
+    state.locationConsent = false;
+    if (!state.currentUser) state.currentUser = {};
+    state.currentUser.lat = 49.2608;
+    state.currentUser.lng = -123.1368;
+    state.currentUser.locationAccuracy = 'approximate';
+
+    const accuracySelect = document.getElementById('settings-location-accuracy');
+    const gpsToggle = document.getElementById('settings-location-gps');
+    if (accuracySelect) accuracySelect.value = 'approximate';
+    if (gpsToggle) gpsToggle.checked = false;
+
     saveState();
-    showView('profile_location_permission');
+
+    if (typeof leafletMap !== 'undefined' && leafletMap) {
+        if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
+        leafletMap.setView([49.2608, -123.1368], 15, { animate: true });
+    }
+
+    showView('profile_step_1');
 }
 
 // Client-side Policy Validators
@@ -11482,7 +11500,7 @@ function renderConversationsList() {
             if (isCompleted) return;
             if (!isUnread) return;
         } else if (segment === 'active') {
-            // "Read" tab: individual read chats/requests
+            // "Read" tab: individual read and unread chats/requests
             const isCompleted = conv.negotiation && conv.negotiation.status === 'completed';
             if (isCompleted) return;
             if (conv.isGroup || conv.isOld) return;
@@ -11492,7 +11510,6 @@ function renderConversationsList() {
                     return;
                 }
             }
-            if (isUnread) return;
         } else if (segment === 'groups') {
             if (!conv.isGroup) return;
         } else if (segment === 'swaps') {
@@ -11670,8 +11687,7 @@ function renderConversationsList() {
                         <span class="font-medium">${lastMsgTime || 'Yesterday'}</span>
                         ${badge ? `
                         <span class="text-outline/35 dark:text-warm-cream/20">•</span>
-                        <div class="flex items-center gap-0.5 ${badge.textClass} font-bold">
-                            <span class="material-symbols-outlined text-[11px]">${badge.icon}</span>
+                        <div class="flex items-center ${badge.textClass} font-medium text-[9px] leading-none">
                             <span>${badge.label}</span>
                         </div>` : ''}
                     </div>
@@ -12252,18 +12268,8 @@ function renderChatDetail(conv) {
         }
     }
 
-    // Toggle checkmark complete button and countdown badge in header
-    const completeBtn = document.getElementById('chat-header-complete-btn');
     const expiryContainer = document.getElementById('chat-header-expiry-container');
     const expiryVal = document.getElementById('chat-header-expiry-val');
-
-    if (completeBtn) {
-        if (!conv.isGroup && !conv.isOld && conv.negotiation && conv.negotiation.status !== 'completed') {
-            completeBtn.classList.remove('hidden');
-        } else {
-            completeBtn.classList.add('hidden');
-        }
-    }
 
     if (expiryContainer) {
         if (!conv.isGroup && !conv.isOld && conv.negotiation && conv.negotiation.meetupLocation && conv.locationChosenAt && conv.negotiation.status !== 'completed') {
@@ -15851,6 +15857,23 @@ function switchVillageSegment(type) {
         closeMapCategoryDropdown();
         collapseVillageMenu();
         currentVillageSegment = type;
+
+        // Hide all category filters when changing views
+        ['list-category-filters-container', 'needs-category-filters-container', 'events-category-filters-container'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.add('hidden');
+                el.style.display = 'none';
+            }
+        });
+        // Reset toggle button backgrounds
+        ['btn-list-filter', 'btn-needs-filter', 'btn-events-filter'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.style.backgroundColor = '';
+                el.style.color = '';
+            }
+        });
 
     if (type === 'map' || type === 'needs_map' || type === 'gifts_map' || type === 'events_map') {
         state.activeViewMode = 'map';
@@ -22712,10 +22735,10 @@ window.openConfirmSwapRatingModal = function(convId) {
 
 window.closeConfirmSwapRatingModal = function() {
     if (typeof playSound === 'function') playSound('click');
-    const modal = document.getElementById('confirm-swap-rating-modal');
-    if (modal) {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
+    if (state.currentConversationId && state.conversations.find(c => c.id === state.currentConversationId)) {
+        showView('chat_detail');
+    } else {
+        showView('chat_hub');
     }
     fusedReviewTargetId = null;
     fusedReviewTargetType = null;
@@ -25175,13 +25198,10 @@ function getPendingReviews() {
     const list = [];
     const now = Date.now();
     
-    // Add fictitious reviews if they are not deleted and not expired (expire after 48h)
+    // Add fictitious reviews if they are not deleted
     if (state.fictitiousReviews) {
         state.fictitiousReviews.forEach(rev => {
-            const elapsed = now - rev.createdAt;
-            if (elapsed < 48 * 60 * 60 * 1000) {
-                list.push(rev);
-            }
+            list.push(rev);
         });
     }
 
@@ -25191,9 +25211,8 @@ function getPendingReviews() {
             if (conv.negotiation && conv.negotiation.meetupLocation && conv.locationChosenAt) {
                 const elapsedSinceLocation = now - conv.locationChosenAt;
                 const timeShowReview = 48 * 60 * 60 * 1000; // 48h (immediately after active chat expiry)
-                const timeReviewExpires = 96 * 60 * 60 * 1000; // 96h total (reviewable for 48h)
                 
-                if (elapsedSinceLocation >= timeShowReview && elapsedSinceLocation < timeReviewExpires) {
+                if (elapsedSinceLocation >= timeShowReview) {
                     // Check if they haven't reviewed or deleted it yet
                     if (!conv.reviewSubmitted && !conv.reviewDeleted) {
                         list.push({
@@ -25218,7 +25237,6 @@ window.getPendingReviews = getPendingReviews;
 function updateChatNotificationBadge() {
     // Calculate unread counts for each segment
     let activeUnread = 0;
-    let requestsUnread = 0;
     let groupsUnread = 0;
     let oldUnread = 0;
     
@@ -25232,13 +25250,13 @@ function updateChatNotificationBadge() {
                 } else if (c.isOld) {
                     oldUnread += count;
                 } else {
-                    requestsUnread += count;
+                    activeUnread += count;
                 }
             }
         });
     }
     
-    const totalUnread = activeUnread + requestsUnread + groupsUnread + oldUnread;
+    const totalUnread = activeUnread + groupsUnread + oldUnread;
     
     // Update global bottom navbar badge
     const globalBadge = document.getElementById('chat-notification-badge');
@@ -25253,7 +25271,6 @@ function updateChatNotificationBadge() {
     
     // Update segment button badges
     const badgeActive = document.getElementById('badge-chat-segment-active');
-    const badgeRequests = document.getElementById('badge-chat-segment-requests');
     const badgeGroups = document.getElementById('badge-chat-segment-groups');
     const badgeOld = document.getElementById('badge-chat-segment-old');
     
@@ -25263,15 +25280,6 @@ function updateChatNotificationBadge() {
             badgeActive.classList.remove('hidden');
         } else {
             badgeActive.classList.add('hidden');
-        }
-    }
-    
-    if (badgeRequests) {
-        if (requestsUnread > 0) {
-            badgeRequests.textContent = requestsUnread;
-            badgeRequests.classList.remove('hidden');
-        } else {
-            badgeRequests.classList.add('hidden');
         }
     }
     
@@ -25313,7 +25321,6 @@ window.switchChatSegment = function(type, muteSound = false, skipRender = false)
     state.currentChatSegment = type;
     
     const btnActive = document.getElementById('btn-chat-segment-active');
-    const btnRequests = document.getElementById('btn-chat-segment-requests');
     const btnGroups = document.getElementById('btn-chat-segment-groups');
     const btnReviews = document.getElementById('btn-chat-segment-reviews');
     
@@ -25327,7 +25334,6 @@ window.switchChatSegment = function(type, muteSound = false, skipRender = false)
     };
 
     updateBtnStyle(btnActive, 'active');
-    updateBtnStyle(btnRequests, 'requests');
     updateBtnStyle(btnGroups, 'groups');
     updateBtnStyle(btnReviews, 'reviews');
     
@@ -25709,6 +25715,17 @@ function syncVillageSearch(val) {
     const mainInput = document.getElementById('village-search-input');
     if (mainInput) {
         mainInput.value = val;
+    }
+    
+    if (val.trim() === "") {
+        activeCategoryFilter = null;
+        if (state) {
+            state.activeMapFilters = [];
+        }
+        const banner = document.getElementById('active-filter-banner');
+        if (banner) {
+            banner.classList.add('hidden');
+        }
     }
     
     // Toggle segmented control pills visibility based on active search typing
@@ -26762,19 +26779,20 @@ function updateSearchSuggestions(query) {
 
     const q = query.toLowerCase().trim();
     if (!q) {
-        const isDark = document.documentElement.classList.contains('dark');
-        const bgLight = 'rgba(48, 138, 94, 0.08)';
-        const typeBg = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
-        const typeColor = isDark ? '#a4a9a0' : '#4b5563';
+        const toolsColor = '#FF7043';
+        const toolsBg = 'rgba(255, 112, 67, 0.08)';
+        const foodColor = '#EF5350';
+        const foodBg = 'rgba(239, 83, 80, 0.08)';
+        const skillsColor = '#42A5F5';
+        const skillsBg = 'rgba(66, 165, 245, 0.08)';
+        const gardenColor = '#66BB6A';
+        const gardenBg = 'rgba(102, 187, 106, 0.08)';
         
         container.innerHTML = `
             <div class="suggestion-section-title" style="margin-top: 0 !important;"><span>Suggested Searches</span></div>
             <div class="fused-suggestion-item" onclick="selectSearchSuggestion('', 'Tools', null, null)">
-                <div class="fused-suggestion-icon-wrapper" style="background-color: ${bgLight} !important; margin-right: 6px !important;">
-                    <span class="material-symbols-outlined text-[18px]" style="color: #308A5E !important;">handyman</span>
-                </div>
-                <div class="fused-suggestion-type-icon-wrapper" style="width: 24px !important; height: 24px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin-right: 12px !important; flex-shrink: 0 !important; background-color: ${typeBg} !important;">
-                    <span class="material-symbols-outlined text-[14px]" style="color: ${typeColor} !important;">search</span>
+                <div class="fused-suggestion-icon-wrapper" style="background-color: ${toolsBg} !important; margin-right: 12px !important;">
+                    <span class="material-symbols-outlined text-[18px]" style="color: ${toolsColor} !important;">handyman</span>
                 </div>
                 <div class="fused-suggestion-info">
                     <div class="fused-suggestion-title">Tools & Handyman</div>
@@ -26784,11 +26802,8 @@ function updateSearchSuggestions(query) {
             </div>
             
             <div class="fused-suggestion-item" onclick="selectSearchSuggestion('', 'Food', null, null)">
-                <div class="fused-suggestion-icon-wrapper" style="background-color: ${bgLight} !important; margin-right: 6px !important;">
-                    <span class="material-symbols-outlined text-[18px]" style="color: #308A5E !important;">restaurant</span>
-                </div>
-                <div class="fused-suggestion-type-icon-wrapper" style="width: 24px !important; height: 24px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin-right: 12px !important; flex-shrink: 0 !important; background-color: ${typeBg} !important;">
-                    <span class="material-symbols-outlined text-[14px]" style="color: ${typeColor} !important;">search</span>
+                <div class="fused-suggestion-icon-wrapper" style="background-color: ${foodBg} !important; margin-right: 12px !important;">
+                    <span class="material-symbols-outlined text-[18px]" style="color: ${foodColor} !important;">restaurant</span>
                 </div>
                 <div class="fused-suggestion-info">
                     <div class="fused-suggestion-title">Food & Cooking</div>
@@ -26798,11 +26813,8 @@ function updateSearchSuggestions(query) {
             </div>
 
             <div class="fused-suggestion-item" onclick="selectSearchSuggestion('', 'Skills', null, null)">
-                <div class="fused-suggestion-icon-wrapper" style="background-color: ${bgLight} !important; margin-right: 6px !important;">
-                    <span class="material-symbols-outlined text-[18px]" style="color: #308A5E !important;">school</span>
-                </div>
-                <div class="fused-suggestion-type-icon-wrapper" style="width: 24px !important; height: 24px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin-right: 12px !important; flex-shrink: 0 !important; background-color: ${typeBg} !important;">
-                    <span class="material-symbols-outlined text-[14px]" style="color: ${typeColor} !important;">search</span>
+                <div class="fused-suggestion-icon-wrapper" style="background-color: ${skillsBg} !important; margin-right: 12px !important;">
+                    <span class="material-symbols-outlined text-[18px]" style="color: ${skillsColor} !important;">school</span>
                 </div>
                 <div class="fused-suggestion-info">
                     <div class="fused-suggestion-title">Skills & Learning</div>
@@ -26812,11 +26824,8 @@ function updateSearchSuggestions(query) {
             </div>
 
             <div class="fused-suggestion-item" onclick="selectSearchSuggestion('', 'Garden', null, null)">
-                <div class="fused-suggestion-icon-wrapper" style="background-color: ${bgLight} !important; margin-right: 6px !important;">
-                    <span class="material-symbols-outlined text-[18px]" style="color: #308A5E !important;">yard</span>
-                </div>
-                <div class="fused-suggestion-type-icon-wrapper" style="width: 24px !important; height: 24px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin-right: 12px !important; flex-shrink: 0 !important; background-color: ${typeBg} !important;">
-                    <span class="material-symbols-outlined text-[14px]" style="color: ${typeColor} !important;">search</span>
+                <div class="fused-suggestion-icon-wrapper" style="background-color: ${gardenBg} !important; margin-right: 12px !important;">
+                    <span class="material-symbols-outlined text-[18px]" style="color: ${gardenColor} !important;">yard</span>
                 </div>
                 <div class="fused-suggestion-info">
                     <div class="fused-suggestion-title">Garden & Yard</div>
@@ -27035,11 +27044,8 @@ function updateSearchSuggestions(query) {
             }
 
             div.innerHTML = `
-                <div class="fused-suggestion-icon-wrapper" style="background-color: ${bgLight} !important; margin-right: 6px !important;">
+                <div class="fused-suggestion-icon-wrapper" style="background-color: ${bgLight} !important; margin-right: 12px !important;">
                     <span class="material-symbols-outlined text-[18px]" style="color: ${iconColor} !important;">${item.icon}</span>
-                </div>
-                <div class="fused-suggestion-type-icon-wrapper" style="width: 24px !important; height: 24px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin-right: 12px !important; flex-shrink: 0 !important; background-color: ${typeBg} !important;">
-                    <span class="material-symbols-outlined text-[14px]" style="color: ${typeColor} !important;">${typeIcon}</span>
                 </div>
                 <div class="fused-suggestion-info">
                     <div class="fused-suggestion-title">${highlightQuery(item.title, query)}</div>
@@ -27081,11 +27087,8 @@ function updateSearchSuggestions(query) {
             }
 
             div.innerHTML = `
-                <div class="fused-suggestion-icon-wrapper" style="background-color: ${bgLight} !important; margin-right: 6px !important;">
+                <div class="fused-suggestion-icon-wrapper" style="background-color: ${bgLight} !important; margin-right: 12px !important;">
                     <span class="material-symbols-outlined text-[18px]" style="color: ${iconColor} !important;">${item.icon}</span>
-                </div>
-                <div class="fused-suggestion-type-icon-wrapper" style="width: 24px !important; height: 24px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin-right: 12px !important; flex-shrink: 0 !important; background-color: ${typeBg} !important;">
-                    <span class="material-symbols-outlined text-[14px]" style="color: ${typeColor} !important;">${typeIcon}</span>
                 </div>
                 <div class="fused-suggestion-info">
                     <div class="fused-suggestion-title">${highlightQuery(item.title, query)}</div>
@@ -30004,12 +30007,6 @@ function renderReviewsList() {
 
         const avatarHtml = `<div class="profile-avatar-ring w-14 h-14 flex-shrink-0"><img alt="${escapeHTML(rev.neighborName)}" class="w-full h-full object-cover rounded-full" src="${rev.avatar}"/></div>`;
 
-        // Calculate time left for the review (it disappears after 48h in review section)
-        const elapsed = Date.now() - rev.createdAt;
-        const remainingMs = Math.max(0, 48 * 60 * 60 * 1000 - elapsed);
-        const remainingHours = Math.round(remainingMs / (60 * 60 * 1000));
-        const timeLeftText = `Review Pending • ${remainingHours} hours left`;
-
         card.innerHTML = `
             <div class="relative flex-shrink-0 select-none w-14 overflow-visible">
                 <div class="relative w-14 h-14 overflow-visible">
@@ -30020,9 +30017,8 @@ function renderReviewsList() {
                 <h3 class="font-headline text-base font-bold text-on-surface truncate leading-tight">
                     ${escapeHTML(rev.neighborName)}
                 </h3>
-                <div class="flex items-center gap-1.5 text-[11px] font-bold leading-tight">
-                    <span class="material-symbols-outlined text-[13px] font-bold text-red-600 dark:text-red-400">schedule</span>
-                    <span class="text-gray-500 dark:text-gray-400">${remainingHours}h left Review Pending</span>
+                <div class="flex items-center gap-1.5 text-[11px] font-bold leading-tight text-red-600 dark:text-red-400">
+                    <span>Review Pending</span>
                 </div>
             </div>
         `;
@@ -30315,12 +30311,8 @@ window.openFusedReviewModal = function(neighborName, convId, reviewId) {
     // Update UI buttons and negative menu visibility
     updateFusedReviewUI();
 
-    // Show modal
-    const modal = document.getElementById('confirm-swap-rating-modal');
-    if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-    }
+    // Show view
+    showView('review_rating');
 };
 
 window.openFusedReviewModalFromChat = function() {
@@ -31744,5 +31736,148 @@ window.toggleCategoryTray = function() {
     window.toggleMapCategoryDropdown();
 };
 /* --- End: Compact Filter Category Dropdowns Logic --- */
+
+/* --- Start: Horizontal Scrolling Category Filters for List Page --- */
+window.toggleListFiltersSection = function(event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    playSound('click');
+
+    const activeCategory = state.activeCategory || 'offerings';
+    let containerId = 'list-category-filters-container';
+    let filterBtnId = 'btn-list-filter';
+    if (activeCategory === 'needs') {
+        containerId = 'needs-category-filters-container';
+        filterBtnId = 'btn-needs-filter';
+    } else if (activeCategory === 'events') {
+        containerId = 'events-category-filters-container';
+        filterBtnId = 'btn-events-filter';
+    }
+
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const isHidden = container.style.display === 'none' || container.classList.contains('hidden');
+    if (isHidden) {
+        window.renderListCategoryFilters(container, activeCategory);
+        container.classList.remove('hidden');
+        container.style.display = 'flex';
+        const btn = document.getElementById(filterBtnId);
+        if (btn) {
+            btn.style.backgroundColor = 'rgba(48,138,94,0.15)';
+            btn.style.color = '#308A5E';
+        }
+    } else {
+        container.classList.add('hidden');
+        container.style.display = 'none';
+        const btn = document.getElementById(filterBtnId);
+        if (btn) {
+            btn.style.backgroundColor = '';
+            btn.style.color = '';
+        }
+    }
+};
+
+window.renderListCategoryFilters = function(container, category) {
+    if (!container) return;
+    
+    let categoriesList = [];
+    if (category === 'events') {
+        categoriesList = [
+            { name: "Workshop", displayName: "Workshops", icon: "school", color: "#42A5F5" },
+            { name: "Meetup", displayName: "Meetups", icon: "groups", color: "#8D6E63" },
+            { name: "Community Clean", displayName: "Cleanups", icon: "cleaning_services", color: "#66BB6A" },
+            { name: "Book Swap", displayName: "Book Swaps", icon: "menu_book", color: "#AB47BC" },
+            { name: "Playdate", displayName: "Playdates", icon: "child_care", color: "#F06292" },
+            { name: "Garden Swap", displayName: "Garden Swaps", icon: "yard", color: "#EF5350" },
+            { name: "Repair Cafe", displayName: "Repair Cafes", icon: "handyman", color: "#FF7043" },
+            { name: "Clothing Swap", displayName: "Clothing Swaps", icon: "checkroom", color: "#FFB300" }
+        ];
+    } else {
+        categoriesList = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Event or Meetup' && c.name !== 'Clear Filter');
+    }
+
+    container.innerHTML = "";
+
+    categoriesList.forEach(cat => {
+        const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
+        
+        const pill = document.createElement('div');
+        pill.className = "list-filter-pill";
+        pill.style.cssText = `
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 9999px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            border: 1.5px solid ${isActive ? '#308A5E' : 'rgba(48,138,94,0.15)'};
+            background: ${isActive ? 'rgba(48,138,94,0.1)' : 'rgba(255,255,255,0.7)'};
+            color: ${isActive ? '#308A5E' : '#4d6657'};
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        `;
+        
+        pill.innerHTML = `
+            <span class="material-symbols-outlined select-none pointer-events-none" style="font-size:14px; color:${isActive ? '#308A5E' : cat.color || '#4d6657'}">${cat.icon}</span>
+            <span class="select-none pointer-events-none">${cat.displayName}</span>
+        `;
+        
+        pill.onclick = (e) => {
+            e.stopPropagation();
+            window.toggleListCategoryFilter(cat.name);
+        };
+        
+        container.appendChild(pill);
+    });
+};
+
+window.toggleListCategoryFilter = function(categoryName) {
+    playSound('click');
+    if (!state.activeMapFilters) {
+        state.activeMapFilters = [];
+    }
+    
+    const index = state.activeMapFilters.indexOf(categoryName);
+    if (index > -1) {
+        state.activeMapFilters.splice(index, 1);
+    } else {
+        state.activeMapFilters.push(categoryName);
+    }
+    
+    saveState();
+    
+    const activeCategory = state.activeCategory || 'offerings';
+    let containerId = 'list-category-filters-container';
+    if (activeCategory === 'needs') {
+        containerId = 'needs-category-filters-container';
+    } else if (activeCategory === 'events') {
+        containerId = 'events-category-filters-container';
+    }
+    
+    const container = document.getElementById(containerId);
+    if (container) {
+        window.renderListCategoryFilters(container, activeCategory);
+    }
+    
+    if (activeCategory === 'offerings' || activeCategory === 'needs') {
+        renderVillageListView();
+    } else if (activeCategory === 'events') {
+        if (typeof renderEventsList === 'function') {
+            renderEventsList();
+        }
+    }
+    
+    if (typeof renderMapFilterCircles === 'function') {
+        renderMapFilterCircles();
+    }
+};
+/* --- End: Horizontal Scrolling Category Filters for List Page --- */
 
 // Global scope ends
