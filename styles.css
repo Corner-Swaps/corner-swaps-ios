@@ -196,8 +196,8 @@ body.show-simulator .screen-view.active {
     overflow-x: hidden !important;
 }
 
-/* Override active screen height back to 100% in iPhone 16 notch simulator mode */
-body.show-simulator.iphone16-mode .screen-view.active {
+body.show-simulator.iphone16-mode .screen-view.active,
+body.show-simulator #view-village.active {
     height: 100% !important;
 }
 
@@ -1606,13 +1606,15 @@ select::-ms-expand {
 
 /* Full bleed headers for Offer and Event Details: absolute overlay header bar and color customization */
 .app-container:has(#view-offer.active) #phone-header-bar,
-.app-container:has(#view-event_detail.active) #phone-header-bar {
+.app-container:has(#view-event_detail.active) #phone-header-bar,
+.app-container:has(#view-village.active) #phone-header-bar {
     background: transparent !important;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 50;
+    border-bottom: none !important;
 }
 .app-container:has(#view-offer.active) #phone-header-bar {
     color: var(--forest-green) !important;
@@ -6205,7 +6207,10 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
 .iphone16-mode .screen-view {
     padding-top: 44px !important;
 }
-.iphone16-mode #view-profile_settings {
+.iphone16-mode #view-profile_settings,
+.iphone16-mode #view-create_group,
+.iphone16-mode #view-event_detail,
+.iphone16-mode #view-offer {
     padding-top: 0 !important;
 }
 
@@ -6223,7 +6228,58 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
 .iphone16-mode #view-village:has(#map-peek-card.active) ~ #village-segment-floating-buttons {
     bottom: 286px !important;
 }
+
+/* Full bleed photo hero elements adjustment in notch mode */
+.iphone16-mode #offer-photo-hero,
+.iphone16-mode #group-photo-hero {
+    padding-top: calc(3rem + var(--safe-area-top)) !important;
+    padding-bottom: 2rem !important;
+    height: calc(270px + var(--safe-area-top)) !important;
+    justify-content: center !important;
+}
+.iphone16-mode #create-group-close-btn {
+    top: calc(1.5rem + var(--safe-area-top)) !important;
+}
+
+/* Adjust map overlay search bar and list container paddings in notch mode */
+.iphone16-mode #village-search-bar-overlay {
+    top: calc(0.6rem + var(--safe-area-top)) !important;
+}
+.iphone16-mode #active-filter-banner {
+    top: calc(4.5rem + var(--safe-area-top)) !important;
+}
+.iphone16-mode #village-list-container,
+.iphone16-mode #village-needs-container,
+.iphone16-mode #village-events-container,
+.iphone16-mode #village-bulletins-container {
+    padding-top: calc(0.6rem + var(--safe-area-top)) !important;
+}
+.iphone16-mode #meetup-close-btn {
+    top: calc(16px + var(--safe-area-top)) !important;
+}
+
+/* Align navbar menu pill correctly in simulator notch mode */
+.iphone16-mode #global-navbar:not(.hidden) {
+    bottom: max(6px, calc(-12px + var(--safe-area-bottom))) !important;
+}
 /* iphone16-mode map-category-dropdown override removed */
+
+/* Standard simulator mode offsets for full bleed village view (keeps search bars and pills below 48px header) */
+body.show-simulator:not(.iphone16-mode) #view-village #village-search-bar-overlay {
+    top: calc(0.6rem + 48px) !important;
+}
+body.show-simulator:not(.iphone16-mode) #view-village #active-filter-banner {
+    top: calc(4.5rem + 48px) !important;
+}
+body.show-simulator:not(.iphone16-mode) #view-village #village-list-container,
+body.show-simulator:not(.iphone16-mode) #view-village #village-needs-container,
+body.show-simulator:not(.iphone16-mode) #view-village #village-events-container,
+body.show-simulator:not(.iphone16-mode) #view-village #village-bulletins-container {
+    padding-top: calc(0.6rem + 48px) !important;
+}
+body.show-simulator:not(.iphone16-mode) #view-village #meetup-close-btn {
+    top: calc(16px + 48px) !important;
+}
 
 /* Ensure onboarding screens are padded too */
 .iphone16-mode #view-profile_consent,
