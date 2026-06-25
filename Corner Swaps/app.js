@@ -204,12 +204,13 @@ const INITIAL_NEIGHBORS = {
         verified: true,
         location: 'West End',
         offerTitle: 'Ferments & Cultures',
-        offerDesc: "Active kombucha scobys, water kefir grains, and mature sourdough starter cultures to share.\n\nI will also provide printed step-by-step instructions, troubleshooting tips, and starter recipes to help you kickstart your own home fermentation journey!",
+        offerDesc: "Active kombucha scobys, water kefir grains, and mature sourdough starter cultures to share.\n\nI will also provide printed step-by-step instructions, troubleshooting tips, and starter recipes to help you kickstart your own home fermentation journey! Offered for free in exchange for Karma points! ❤️",
         offerImg: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=60&w=400&auto=format&fit=crop',
         category: 'Food & Drink',
         icon: 'restaurant',
         lat: 49.285,
-        lng: -123.130
+        lng: -123.130,
+        isKarma: true
     },
     'Ethan': {
         name: 'Ethan',
@@ -230,12 +231,13 @@ const INITIAL_NEIGHBORS = {
         vouches: 9,
         location: 'False Creek',
         offerTitle: 'Tech & Digital Help',
-        offerDesc: "Friendly, patient technical support for home network router setups, laptop cleanups, virus scans, smartphone configurations, smart home installations, or basic HTML/JS coding tutoring lessons.\n\nI explain tech in plain, jargon-free English!",
+        offerDesc: "Friendly, patient technical support for home network router setups, laptop cleanups, virus scans, smartphone configurations, smart home installations, or basic HTML/JS coding tutoring lessons.\n\nI explain tech in plain, jargon-free English! Offered for free in exchange for Karma points! ❤️",
         offerImg: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=60&w=400&auto=format&fit=crop',
         category: 'Handyman & Services',
         icon: 'handyman',
         lat: 49.272,
-        lng: -123.115
+        lng: -123.115,
+        isKarma: true
     },
     'Ava': {
         name: 'Ava',
@@ -256,12 +258,13 @@ const INITIAL_NEIGHBORS = {
         vouches: 20,
         location: 'Kitsilano',
         offerTitle: 'Yoga & Mindfulness',
-        offerDesc: "Sunrise beach yoga and mindfulness meditation sessions at Kitsilano Beach.\n\nStructured for all levels, focusing on gentle flow transitions, core breathing exercises, and guided positive visualization to start your day with calm energy.",
+        offerDesc: "Sunrise beach yoga and mindfulness meditation sessions at Kitsilano Beach.\n\nStructured for all levels, focusing on gentle flow transitions, core breathing exercises, and guided positive visualization to start your day with calm energy. Offered for free in exchange for Karma points! ❤️",
         offerImg: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=60&w=400&auto=format&fit=crop',
         category: 'Skills & Education',
         icon: 'school',
         lat: 49.282,
-        lng: -123.120
+        lng: -123.120,
+        isKarma: true
     },
     'Liam': {
         name: 'Liam',
@@ -269,12 +272,13 @@ const INITIAL_NEIGHBORS = {
         vouches: 11,
         location: 'Commercial Drive',
         offerTitle: 'Heirloom Tomato Seedlings',
-        offerDesc: "Healthy, organic heirloom tomato seedlings (Brandywine and Cherokee Purple varieties) ready to be transplanted into your garden beds, backyard plots, or patio greenhouse grow bags.\n\nRaised from organic seed without chemical fertilizers.",
+        offerDesc: "Healthy, organic heirloom tomato seedlings (Brandywine and Cherokee Purple varieties) ready to be transplanted into your garden beds, backyard plots, or patio greenhouse grow bags.\n\nRaised from organic seed without chemical fertilizers. Offered for free in exchange for Karma points! ❤️",
         offerImg: 'https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?q=60&w=400&auto=format&fit=crop',
         category: 'Garden & Outdoors',
         icon: 'yard',
         lat: 49.2550,
-        lng: -123.0680
+        lng: -123.0680,
+        isKarma: true
     },
     'Chloe': {
         name: 'Chloe',
@@ -282,12 +286,13 @@ const INITIAL_NEIGHBORS = {
         vouches: 16,
         location: 'Mount Pleasant',
         offerTitle: 'Custom Canvas Tote Painting',
-        offerDesc: "Beautiful, hand-painted durable cotton canvas tote bags featuring vibrant botanical patterns or custom illustrations of your choice.\n\nDouble-stitched seams make them perfect for heavy grocery runs or farmer's market trips.",
+        offerDesc: "Beautiful, hand-painted durable cotton canvas tote bags featuring vibrant botanical patterns or custom illustrations of your choice.\n\nDouble-stitched seams make them perfect for heavy grocery runs or farmer's market trips. Offered for free in exchange for Karma points! ❤️",
         offerImg: 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=60&w=400&auto=format&fit=crop',
         category: 'Creative & Art',
         icon: 'palette',
         lat: 49.263,
-        lng: -123.102
+        lng: -123.102,
+        isKarma: true
     },
     'Sophia': {
         name: 'Sophia',
@@ -308,12 +313,13 @@ const INITIAL_NEIGHBORS = {
         vouches: 8,
         location: 'Commercial Drive',
         offerTitle: 'Sewing Alterations & Hemming',
-        offerDesc: "High-quality basic clothing alterations, professional jeans and trousers hemming, patch repair for torn knees or elbows, and zipper replacements.\n\nGreat way to repair and extend the lifespan of your favorite wardrobe pieces.",
+        offerDesc: "High-quality basic clothing alterations, professional jeans and trousers hemming, patch repair for torn knees or elbows, and zipper replacements.\n\nGreat way to repair and extend the lifespan of your favorite wardrobe pieces. Offered for free in exchange for Karma points! ❤️",
         offerImg: 'https://images.unsplash.com/photo-1528570916404-6a5b06bd9e0c?q=60&w=400&auto=format&fit=crop',
         category: 'Clothing & Apparel',
         icon: 'checkroom',
         lat: 49.2515,
-        lng: -123.0720
+        lng: -123.0720,
+        isKarma: true
     },
     'Nora Miller': {
         name: 'Nora Miller',
@@ -360,7 +366,7 @@ const INITIAL_NEIGHBORS = {
         vouches: 13,
         location: 'West End',
         offerTitle: 'Organic Composting Starter',
-        offerDesc: "Active worm bin composting starter with red wiggler worms and organic bedding materials to kickstart your composting. Offered for free in exchange for Karma points! 💛",
+        offerDesc: "Active worm bin composting starter with red wiggler worms and organic bedding materials to kickstart your composting. Offered for free in exchange for Karma points! ❤️",
         offerImg: 'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?q=60&w=400&auto=format&fit=crop',
         category: 'Garden & Outdoors',
         icon: 'yard',
@@ -478,7 +484,7 @@ const INITIAL_NEIGHBORS = {
         vouches: 5,
         location: 'Mount Pleasant',
         offerTitle: 'Leather Boot Cleaning & Polishing',
-        offerDesc: "Clean, condition, and polish your leather boots or shoes to protect them from rainy weather and extend their life. Offered for free in exchange for Karma points! 💛",
+        offerDesc: "Clean, condition, and polish your leather boots or shoes to protect them from rainy weather and extend their life. Offered for free in exchange for Karma points! ❤️",
         offerImg: 'https://images.unsplash.com/photo-1449505278894-297fdb3edbc1?q=60&w=400&auto=format&fit=crop',
         category: 'Clothing & Apparel',
         icon: 'checkroom',
@@ -557,7 +563,7 @@ const INITIAL_NEIGHBORS = {
         vouches: 12,
         location: 'Commercial Drive',
         offerTitle: 'Slow Cooker & Blender Loan',
-        offerDesc: "Kitchen appliances available for weekend lending. Perfect for testing new recipes. Offered for free in exchange for Karma points! 💛",
+        offerDesc: "Kitchen appliances available for weekend lending. Perfect for testing new recipes. Offered for free in exchange for Karma points! ❤️",
         offerImg: 'https://images.unsplash.com/photo-1574269909862-7e1d70bb8078?q=60&w=400&auto=format&fit=crop',
         category: 'Home and Living',
         icon: 'home',
@@ -688,7 +694,7 @@ const INITIAL_NEIGHBORS = {
         vouches: 19,
         location: 'Commercial Drive',
         offerTitle: 'Herbal Tea Blend',
-        offerDesc: "Custom chamomile, lavender, and peppermint tea blends for relaxation and sleep. Offered for free in exchange for Karma points! 💛",
+        offerDesc: "Custom chamomile, lavender, and peppermint tea blends for relaxation and sleep. Offered for free in exchange for Karma points! ❤️",
         offerImg: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?q=60&w=400&auto=format&fit=crop',
         category: 'Health',
         icon: 'spa',
@@ -754,7 +760,7 @@ const INITIAL_NEIGHBORS = {
         vouches: 13,
         location: 'Commercial Drive',
         offerTitle: 'Catan Board Game Loan',
-        offerDesc: "Settlers of Catan board game loan for family game nights. Offered for free in exchange for Karma points! 💛",
+        offerDesc: "Settlers of Catan board game loan for family game nights. Offered for free in exchange for Karma points! ❤️",
         offerImg: 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?q=60&w=400&auto=format&fit=crop',
         category: 'Books, Games, Entertainment',
         icon: 'sports_esports',
@@ -7361,8 +7367,8 @@ function getCategoryColor(category) {
 function getCategoryIcon(category) {
     if (!category) return 'handshake';
     const cat = category.toLowerCase();
-    if (cat.includes('karma')) return 'volunteer_activism';
-    if (cat.includes('donation')) return 'volunteer_activism';
+    if (cat.includes('karma')) return 'favorite';
+    if (cat.includes('donation')) return 'favorite';
     if (cat.includes('food') || cat.includes('drink')) return 'restaurant';
     if (cat.includes('home') || cat.includes('living')) return 'home';
     if (cat.includes('garden') || cat.includes('outdoor')) return 'yard';
@@ -8155,7 +8161,7 @@ function openMapItemDetail(idOrName) {
         };
         const mappedCat = displayCategoryMap[category] || category || "Skills & Education";
         if (neighbor && neighbor.isKarma) {
-            badgeEl.innerText = `💛 gift · ${mappedCat}`;
+            badgeEl.innerText = `❤️ karma · ${mappedCat}`;
         } else {
             badgeEl.innerText = mappedCat;
         }
@@ -8251,7 +8257,7 @@ function openMapItemDetail(idOrName) {
         } else {
             const neighbor = state.neighbors ? state.neighbors[idOrName] : null;
             if (neighbor && neighbor.isKarma) {
-                chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs">volunteer_activism</span> free gift request`;
+                chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs text-red-500" style="font-variation-settings: 'FILL' 1;">favorite</span> free karma request`;
             } else {
                 chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs">handshake</span> lets swap`;
             }
@@ -9735,7 +9741,7 @@ function toggleCategoryTray() {
 }
 
 const MAP_FILTER_CATEGORIES = [
-    { name: "Karma Swap", displayName: "Gifts", icon: "volunteer_activism", color: "#f59e0b", rgb: "245,158,11" },
+    { name: "Karma Swap", displayName: "Karma", icon: "favorite", color: "#ef4444", rgb: "239,68,68" },
     { name: "Event or Meetup", displayName: "Events", icon: "groups", color: "#10b981", rgb: "16,185,129" },
     { name: "Food & Drink", displayName: "Food", icon: "restaurant", color: "#f97316", rgb: "249,115,22" },
     { name: "Home and Living", displayName: "Home", icon: "home", color: "#3b82f6", rgb: "59,130,246" },
@@ -9748,14 +9754,14 @@ const MAP_FILTER_CATEGORIES = [
     { name: "Books, Games, Entertainment", displayName: "Books", icon: "sports_esports", color: "#6366f1", rgb: "99,102,241" },
     { name: "Kids and Maternity", displayName: "Kids", icon: "stroller", color: "#a855f7", rgb: "168,85,247" },
     { name: "Language or Info Exchange", displayName: "Language", icon: "translate", color: "#2563eb", rgb: "37,99,235" },
-    { name: "Donation", displayName: "Donation", icon: "volunteer_activism", color: "#ec4899", rgb: "236,72,153" },
+    { name: "Donation", displayName: "Donation", icon: "favorite", color: "#ec4899", rgb: "236,72,153" },
     { name: "Clear Filter", displayName: "Clear", icon: "filter_alt_off", color: "#6b7280", rgb: "107,114,128" }
 ];
 
 let mapInfoModeActive = false;
 
 const MAP_CATEGORY_DESCRIPTIONS = {
-    "Karma Swap": "Gifts are free items or services offered out of neighborly kindness. Swap for good karma, clear out clutter, or lend a hand without expecting anything in return!",
+    "Karma Swap": "Karma swaps are free items or services offered out of neighborly kindness. Swap to get good karma, clear out clutter, or lend a hand without expecting anything in return!",
     "Event or Meetup": "Community gatherings, street parties, volunteer cleanups, or casual meetups. Connect with neighbors in person and build local relationships.",
     "Food & Drink": "Share homegrown veggies, surplus bakes, or invite neighbors for a home-cooked meal or coffee swap.",
     "Home and Living": "Household items, furniture, tools to borrow, or home organization advice shared within the neighborhood.",
@@ -12201,7 +12207,7 @@ function startChatConversation(convIdOrNeighborName) {
             
             let initialText = `Hello! I noticed you were looking at my "${neighbor ? neighbor.offerTitle : ''}". Are you open to a trade?`;
             if (isKarma) {
-                initialText = `Hello! I noticed you were looking at my "${neighbor.offerTitle}". Would you like to have it as a free gift?`;
+                initialText = `Hello! I noticed you were looking at my "${neighbor.offerTitle}". Would you like to have it as a free karma swap?`;
             }
             
             conv = {
@@ -12225,7 +12231,7 @@ function startChatConversation(convIdOrNeighborName) {
             if (neighbor && neighbor.isKarma) {
                 if (conv.messages && conv.messages.length > 0 && conv.messages[0].sender === conv.neighborName) {
                     if (conv.messages[0].text.includes("Are you open to a trade?")) {
-                        conv.messages[0].text = `Hello! I noticed you were looking at my "${neighbor.offerTitle}". Would you like to have it as a free gift?`;
+                        conv.messages[0].text = `Hello! I noticed you were looking at my "${neighbor.offerTitle}". Would you like to have it as a free karma swap?`;
                         saveState();
                     }
                 }
@@ -12734,11 +12740,11 @@ function renderChatDetail(conv) {
                         bubbleInnerContent += `
                         <div class="flex flex-col gap-2 w-full max-w-[240px] text-left">
                             <div class="flex items-center gap-1.5 border-b border-white/10 pb-1.5">
-                                <span class="material-symbols-outlined text-xs font-bold text-amber-300">volunteer_activism</span>
-                                <span class="text-[9px] uppercase tracking-wider font-extrabold text-amber-300">Karma Swap Request</span>
+                                <span class="material-symbols-outlined text-xs font-bold text-red-300" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                                <span class="text-[9px] uppercase tracking-wider font-extrabold text-red-300">Karma Swap Request</span>
                             </div>
                             <p class="text-xs leading-relaxed font-semibold text-warm-cream">
-                                "Hey! I'm really interested in your <strong class="underline">${escapeHTML(msg.requestedItem)}</strong>. I don't have anything to trade right now, but would you be open to a Karma Swap? You'd receive +50 Karma Points for helping a neighbor, and it would mean the world to me! 💛"
+                                "Hey! I'm really interested in your <strong class="underline">${escapeHTML(msg.requestedItem)}</strong>. I don't have anything to trade right now, but would you be open to a Karma Swap? You'd receive +50 Karma Points for helping a neighbor, and it would mean the world to me! ❤️"
                             </p>
                         </div>`;
                     } else {
@@ -12826,11 +12832,11 @@ function renderChatDetail(conv) {
                         bubbleInnerContent += `
                         <div class="flex flex-col gap-2 w-full max-w-[240px] text-left">
                             <div class="flex items-center gap-1.5 border-b border-outline-variant/15 pb-1.5">
-                                <span class="material-symbols-outlined text-xs font-bold text-amber-600 dark:text-amber-400">volunteer_activism</span>
-                                <span class="text-[9px] uppercase tracking-wider font-extrabold text-amber-600 dark:text-amber-400">Karma Swap Request</span>
+                                <span class="material-symbols-outlined text-xs font-bold text-red-500 dark:text-red-400" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                                <span class="text-[9px] uppercase tracking-wider font-extrabold text-red-500 dark:text-red-400">Karma Swap Request</span>
                             </div>
                             <p class="text-xs leading-relaxed font-semibold text-on-surface dark:text-warm-cream">
-                                "Hey! I'm really interested in your <strong class="underline">${escapeHTML(msg.requestedItem)}</strong>. I don't have anything to trade right now, but would you be open to a Karma Swap? You'd receive +50 Karma Points for helping a neighbor, and it would mean the world to me! 💛"
+                                "Hey! I'm really interested in your <strong class="underline">${escapeHTML(msg.requestedItem)}</strong>. I don't have anything to trade right now, but would you be open to a Karma Swap? You'd receive +50 Karma Points for helping a neighbor, and it would mean the world to me! ❤️"
                             </p>
                         </div>`;
                     } else {
@@ -13110,8 +13116,8 @@ function renderChatTradeDrawer(conv) {
                     <!-- Left Item Card -->
                     <div class="flex-grow flex-1 flex flex-col items-center p-2 bg-forest-green/[0.03] dark:bg-white/[0.02] border border-outline-variant/10 rounded-xl min-w-0">
                         ${isKarma 
-                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-amber-500/20 bg-amber-50 dark:bg-amber-950/20 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-1.5">
-                                   <span class="material-symbols-outlined text-xl font-bold">volunteer_activism</span>
+                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-red-500/20 bg-red-50 dark:bg-red-950/20 flex items-center justify-center text-red-500 dark:text-red-400 mb-1.5">
+                                   <span class="material-symbols-outlined text-xl font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
                                </div>
                                <span class="text-[9px] text-outline dark:text-warm-cream font-bold truncate w-full text-center mb-0.5">Karma Points</span>`
                             : `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-outline-variant/20 dark:border-white/10 mb-1.5 relative">
@@ -13158,8 +13164,8 @@ function renderChatTradeDrawer(conv) {
                     <!-- Left Item Card -->
                     <div class="flex-grow flex-1 flex flex-col items-center p-2 bg-forest-green/[0.03] dark:bg-white/[0.02] border border-outline-variant/10 rounded-xl min-w-0">
                         ${isKarma 
-                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-amber-500/20 bg-amber-50 dark:bg-amber-950/20 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-1.5">
-                                   <span class="material-symbols-outlined text-xl font-bold">volunteer_activism</span>
+                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-red-500/20 bg-red-50 dark:bg-red-950/20 flex items-center justify-center text-red-500 dark:text-red-400 mb-1.5">
+                                   <span class="material-symbols-outlined text-xl font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
                                </div>
                                <span class="text-[9px] text-outline dark:text-warm-cream font-bold truncate w-full text-center mb-0.5">Karma Points</span>`
                             : `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-outline-variant/20 dark:border-white/10 mb-1.5 relative">
@@ -13248,8 +13254,8 @@ function renderChatTradeDrawer(conv) {
                     <!-- Left Item Card -->
                     <div class="flex-grow flex-1 flex flex-col items-center p-2 bg-forest-green/[0.03] dark:bg-white/[0.02] border border-outline-variant/10 rounded-xl min-w-0">
                         ${isKarma 
-                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-amber-500/20 bg-amber-50 dark:bg-amber-950/20 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-1.5">
-                                   <span class="material-symbols-outlined text-xl font-bold">volunteer_activism</span>
+                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-red-500/20 bg-red-50 dark:bg-red-950/20 flex items-center justify-center text-red-500 dark:text-red-400 mb-1.5">
+                                   <span class="material-symbols-outlined text-xl font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
                                </div>
                                <span class="text-[9px] text-outline dark:text-warm-cream font-bold truncate w-full text-center mb-0.5">Karma Points</span>`
                             : `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-outline-variant/20 dark:border-white/10 mb-1.5 relative">
@@ -14084,8 +14090,8 @@ function openBarterProposalModal() {
     const karmaLabel = document.createElement('label');
     karmaLabel.className = "flex items-center p-3 bg-white rounded-xl border border-outline-variant/30 hover:border-forest-green cursor-pointer transition-all active:scale-[0.98] w-full";
     karmaLabel.innerHTML = `
-        <div class="w-10 h-10 rounded-lg bg-forest-green/5 text-forest-green flex items-center justify-center mr-4 flex-shrink-0">
-            <span class="material-symbols-outlined text-lg">volunteer_activism</span>
+        <div class="w-10 h-10 rounded-lg bg-red-500/10 text-red-500 flex items-center justify-center mr-4 flex-shrink-0">
+            <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">favorite</span>
         </div>
         <div class="flex-grow min-w-0 pr-2">
             <p class="font-semibold text-on-surface text-sm">Offer for karma points</p>
@@ -14204,6 +14210,15 @@ window.simulatePartnerAccept = function(convId) {
             text: acceptMsg,
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
+        
+        if (isKarma) {
+            active.messages.push({
+                sender: 'App admin',
+                text: `Reward: ${active.neighborName} will gain +50 Karma points for good standing in the community upon completion.`,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            });
+        }
+
         active.messages.push({
             sender: 'App admin',
             text: 'Click this message to set up a meeting location',
@@ -14211,14 +14226,6 @@ window.simulatePartnerAccept = function(convId) {
             isMeetupPrompt: true,
             isAdminMeetupClick: true
         });
-        
-        if (isKarma) {
-            active.messages.push({
-                sender: 'System',
-                text: `Reward: ${active.neighborName} will gain +50 Karma points for good standing in the community upon completion.`,
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            });
-        }
         
         if (active.mockAcceptTimer) {
             clearTimeout(active.mockAcceptTimer);
@@ -15508,7 +15515,7 @@ window.renderMyCornerItems = function() {
         
         offerings.forEach(item => {
             const row = document.createElement('div');
-            row.className = "flex items-center justify-between p-2 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
+            row.className = "flex items-center justify-between p-3.5 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
             row.onclick = (e) => {
                 if (e) {
                     e.stopPropagation();
@@ -15519,21 +15526,21 @@ window.renderMyCornerItems = function() {
                 openMapItemDetail(item.id);
             };
             
-            const imgHtml = item.image ? `<img src="${item.image}" class="w-8 h-8 rounded-lg object-cover flex-shrink-0" />` : `
-                <div class="w-8 h-8 rounded-lg bg-forest-green/10 flex items-center justify-center text-forest-green flex-shrink-0">
-                    <span class="material-symbols-outlined text-base">${item.icon || 'handshake'}</span>
+            const imgHtml = item.image ? `<img src="${item.image}" class="w-12 h-12 rounded-lg object-cover flex-shrink-0" />` : `
+                <div class="w-12 h-12 rounded-lg bg-forest-green/10 flex items-center justify-center text-forest-green flex-shrink-0">
+                    <span class="material-symbols-outlined text-[22px]">${item.icon || 'handshake'}</span>
                 </div>
             `;
             
             row.innerHTML = `
-                <div class="flex items-center gap-2.5 min-w-0 flex-grow text-left">
+                <div class="flex items-center gap-3 min-w-0 flex-grow text-left">
                     ${imgHtml}
                     <div class="min-w-0 flex-1">
-                        <h4 class="text-xs font-bold text-black dark:text-warm-cream truncate">${item.title}</h4>
-                        <p class="text-[9px] text-gray-500 dark:text-gray-400 truncate">${item.category}</p>
+                        <h4 class="text-[13.5px] font-semibold text-black dark:text-warm-cream truncate">${item.title}</h4>
+                        <p class="text-[11px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${item.category}</p>
                     </div>
                 </div>
-                <span class="material-symbols-outlined text-gray-400 text-[16px]">chevron_right</span>
+                <span class="material-symbols-outlined text-gray-400 text-[18px]">chevron_right</span>
             `;
             listEl.appendChild(row);
         });
@@ -15547,7 +15554,7 @@ window.renderMyCornerItems = function() {
         
         needs.forEach(item => {
             const row = document.createElement('div');
-            row.className = "flex items-center justify-between p-2 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
+            row.className = "flex items-center justify-between p-3.5 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
             row.onclick = (e) => {
                 if (e) {
                     e.stopPropagation();
@@ -15558,21 +15565,21 @@ window.renderMyCornerItems = function() {
                 openMapItemDetail('need_' + item.id);
             };
             
-            const imgHtml = item.image ? `<img src="${item.image}" class="w-8 h-8 rounded-lg object-cover flex-shrink-0" />` : `
-                <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500 flex-shrink-0">
-                    <span class="material-symbols-outlined text-base">${item.icon || 'search'}</span>
+            const imgHtml = item.image ? `<img src="${item.image}" class="w-12 h-12 rounded-lg object-cover flex-shrink-0" />` : `
+                <div class="w-12 h-12 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500 flex-shrink-0">
+                    <span class="material-symbols-outlined text-[22px]">${item.icon || 'search'}</span>
                 </div>
             `;
             
             row.innerHTML = `
-                <div class="flex items-center gap-2.5 min-w-0 flex-grow text-left">
+                <div class="flex items-center gap-3 min-w-0 flex-grow text-left">
                     ${imgHtml}
                     <div class="min-w-0 flex-1">
-                        <h4 class="text-xs font-bold text-black dark:text-warm-cream truncate">${item.title}</h4>
-                        <p class="text-[9px] text-gray-500 dark:text-gray-400 truncate">${item.category}</p>
+                        <h4 class="text-[13.5px] font-semibold text-black dark:text-warm-cream truncate">${item.title}</h4>
+                        <p class="text-[11px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${item.category}</p>
                     </div>
                 </div>
-                <span class="material-symbols-outlined text-gray-400 text-[16px]">chevron_right</span>
+                <span class="material-symbols-outlined text-gray-400 text-[18px]">chevron_right</span>
             `;
             listEl.appendChild(row);
         });
@@ -15591,7 +15598,7 @@ window.renderMyCornerItems = function() {
         
         userEvents.forEach(item => {
             const row = document.createElement('div');
-            row.className = "flex items-center justify-between p-2 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
+            row.className = "flex items-center justify-between p-3.5 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
             row.onclick = (e) => {
                 if (e) {
                     e.stopPropagation();
@@ -15607,19 +15614,19 @@ window.renderMyCornerItems = function() {
             const dateStr = dateObj.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' at ' + dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             
             row.innerHTML = `
-                <div class="flex items-center gap-2.5 min-w-0 flex-grow text-left">
-                    <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 flex-shrink-0">
-                        <span class="material-symbols-outlined text-base">festival</span>
+                <div class="flex items-center gap-3 min-w-0 flex-grow text-left">
+                    <div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 flex-shrink-0">
+                        <span class="material-symbols-outlined text-[22px]">festival</span>
                     </div>
                     <div class="min-w-0 flex-1">
                         <div class="flex items-center gap-1.5 min-w-0">
-                            <h4 class="text-xs font-bold text-black dark:text-warm-cream truncate">${item.title}</h4>
+                            <h4 class="text-[13.5px] font-semibold text-black dark:text-warm-cream truncate">${item.title}</h4>
                             ${isHost ? `<span class="bg-blue-500 text-white text-[7px] px-1 py-0.2 rounded font-bold uppercase tracking-wider flex-shrink-0">Host</span>` : ''}
                         </div>
-                        <p class="text-[9px] text-gray-500 dark:text-gray-400 truncate">${dateStr}</p>
+                        <p class="text-[11px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${dateStr}</p>
                     </div>
                 </div>
-                <span class="material-symbols-outlined text-gray-400 text-[16px]">chevron_right</span>
+                <span class="material-symbols-outlined text-gray-400 text-[18px]">chevron_right</span>
             `;
             listEl.appendChild(row);
         });
@@ -16757,8 +16764,8 @@ function renderVillageListView() {
                         <!-- Actions Row -->
                         <div class="flex flex-col gap-2 pt-1.5 bg-white dark:bg-[#18201a] rounded-b-2xl">
                             <button class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase" onclick="event.stopPropagation(); startChatConversation('${item.name}');">
-                                <span class="material-symbols-outlined text-xs">${neighbor && neighbor.isKarma ? 'volunteer_activism' : 'handshake'}</span>
-                                ${neighbor && neighbor.isKarma ? 'free gift request' : "let's swap"}
+                                <span class="material-symbols-outlined text-xs ${neighbor && neighbor.isKarma ? 'text-red-500' : ''}" style="${neighbor && neighbor.isKarma ? "font-variation-settings: 'FILL' 1;" : ""}">${neighbor && neighbor.isKarma ? 'favorite' : 'handshake'}</span>
+                                ${neighbor && neighbor.isKarma ? 'free karma request' : "let's swap"}
                             </button>
                             
                             <button class="inline-save-btn w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase ${state.savedListings && state.savedListings.includes(item.id) ? 'active-green-white' : ''}" onclick="window.handleInlineSaveListing(event, '${item.id}')">
@@ -19641,17 +19648,17 @@ function plotMapMarkersOnly() {
                 const iconName = neighbor.icon || getCategoryIcon(neighbor.category);
                 const pinImgUrl = getCategoryPresetImage(neighbor.category);
 
-                // Append small heart badge for free Karma items
-                const heartBadge = neighbor.isKarma ? 
-                    `<div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid white !important; background-color: #EF4444 !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important; z-index: 10 !important;">
-                        <span class="material-symbols-outlined text-[8px]" style="color: white !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
+                // Append small karma badge for free Karma items
+                const karmaBadge = neighbor.isKarma ? 
+                    `<div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid white !important; background-color: #ef4444 !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important; z-index: 10 !important;">
+                        <span class="material-symbols-outlined" style="color: white !important; font-size: 8px !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
                      </div>` : '';
 
                 const customIcon = L.divIcon({
                     className: 'custom-div-icon',
                     html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid white !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
                             <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">${iconName}</span>
-                            ${heartBadge}
+                            ${karmaBadge}
                            </div>`,
                     iconSize: [38, 38],
                     iconAnchor: [19, 19]
@@ -28583,8 +28590,17 @@ let tempMeetupRadius = 100;
 
 function openMeetupLocationPicker() {
     const modal = document.getElementById('meetup-picker-modal');
+    const container = document.getElementById('meetup-picker-container');
     if (!modal) return;
     modal.classList.remove('hidden');
+    setTimeout(() => {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100');
+        if (container) {
+            container.classList.remove('translate-y-full');
+            container.classList.add('translate-y-0');
+        }
+    }, 10);
     playSound('click');
 
     // Initialize map if it doesn't exist
@@ -28820,7 +28836,19 @@ function confirmMeetupLocation() {
 
 function closeMeetupLocationPicker(confirm) {
     const modal = document.getElementById('meetup-picker-modal');
-    if (modal) modal.classList.add('hidden');
+    const container = document.getElementById('meetup-picker-container');
+    if (!modal) return;
+    
+    if (container) {
+        container.classList.remove('translate-y-0');
+        container.classList.add('translate-y-full');
+    }
+    modal.classList.remove('opacity-100');
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    setTimeout(() => {
+        modal.classList.add('hidden');
+    }, 300);
+    
     if (!confirm) {
         playSound('click');
     }
@@ -28899,7 +28927,7 @@ window.openSwapsPopupModal = function() {
                 <div>
                     <h4 class="font-bold text-[13.5px] text-on-surface">${displayName}</h4>
                     <p class="text-[10px] text-outline mt-0.5 flex items-center gap-1.5">
-                        <span class="flex items-center text-forest-green font-semibold"><span class="material-symbols-outlined text-xs mr-0.5">volunteer_activism</span> ${karma} Karma</span>
+                        <span class="flex items-center text-forest-green font-semibold"><span class="material-symbols-outlined text-xs mr-0.5 text-red-500" style="font-variation-settings: 'FILL' 1;">favorite</span> ${karma} Karma</span>
                         <span class="text-outline-variant/30">•</span>
                         <span>${completedCount} swaps completed</span>
                     </p>
@@ -29696,7 +29724,7 @@ function submitOfferSwapProposal(isKarma) {
 
     if (isKarma) {
         const req = conv.negotiation.requestedItem || "item";
-        msgText = `Hey! I'm really interested in your "${req}". I don't have anything to trade right now, but would you be open to a Karma Swap? You'd receive +50 Karma Points for helping a neighbor, and it would mean the world to me! 💛✨`;
+        msgText = `Hey! I'm really interested in your "${req}". I don't have anything to trade right now, but would you be open to a Karma Swap? You'd receive +50 Karma Points for helping a neighbor, and it would mean the world to me! ❤️✨`;
         conv.negotiation.isKarmaSwap = true;
     } else {
         const req = conv.negotiation.requestedItem || "item";
@@ -30086,8 +30114,8 @@ function openProfileStatExplanation(type) {
             btnContainer.classList.add('hidden');
         }
         
-        iconContainer.className = "w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center text-[#f59e0b] mb-4";
-        iconEl.innerText = "volunteer_activism";
+        iconContainer.className = "w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center text-[#ef4444] mb-4";
+        iconEl.innerText = "favorite";
         iconEl.style.fontVariationSettings = "'FILL' 1";
         titleEl.innerText = "Karma Points";
         descEl.innerText = "Karma points reflect your good standing in the community and active involvement as a trusted community member. You earn karma by sharing offerings, listing needs, helping neighbors, and receiving positive feedback after completed swaps. Having high karma unlocks special badges and cements your status as a reliable neighbor!";
@@ -31202,12 +31230,12 @@ window.openSwapLifecycleModal = function(role, conversationId) {
             karmaCard.setAttribute('data-id', 'karma_request');
             
             karmaCard.innerHTML = `
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3 flex-shrink-0" style="background-color: rgba(234, 179, 8, 0.15) !important; color: #eab308 !important;">
-                    <span class="material-symbols-outlined text-[18px]">volunteer_activism</span>
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3 flex-shrink-0" style="background-color: rgba(239, 68, 68, 0.15) !important; color: #ef4444 !important;">
+                    <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
                 </div>
                 <div class="flex-grow min-w-0 pr-3">
                     <div class="text-xs font-bold text-black dark:text-white truncate">Request for Free (Gives Karma)</div>
-                    <div class="text-[10px] text-gray-500 dark:text-gray-400 truncate">Neighbor gets +50 Karma Points 💛</div>
+                    <div class="text-[10px] text-gray-500 dark:text-gray-400 truncate">Neighbor gets +50 Karma Points ❤️</div>
                 </div>
                 <div class="check-indicator w-4 h-4 rounded-full border border-black/20 dark:border-white/20 flex items-center justify-center flex-shrink-0 ml-auto transition-all bg-transparent">
                     <span class="material-symbols-outlined text-[10px] text-white opacity-0 select-none font-bold">check</span>
@@ -31292,15 +31320,15 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                 </div>
                 
                 <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 min-h-0 items-center justify-center text-center">
-                    <div class="w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-500/20 shadow-sm mb-2 shrink-0">
-                        <span class="material-symbols-outlined text-3xl font-bold">volunteer_activism</span>
+                    <div class="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center text-red-500 border border-red-500/20 shadow-sm mb-2 shrink-0">
+                        <span class="material-symbols-outlined text-3xl font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
                     </div>
                     
                     <div class="flex flex-col items-center gap-2 shrink-0">
                         <h4 class="popup-modal-title text-center mb-1">Karma Swap Request</h4>
                         <p class="popup-modal-desc text-center max-w-[90%]">
                             Your neighbor ${escapeHTML(conv.neighborName)} wants your <strong class="text-forest-green">"${escapeHTML(requestedTitle)}"</strong> but doesn't have an item to trade right now. 
-                            They are proposing a Karma Swap. By helping them out, you will receive <span class="text-amber-500 font-extrabold">+50 Karma Points</span>!
+                            They are proposing a Karma Swap. By helping them out, you will receive <span class="text-red-500 font-extrabold">+50 Karma Points</span>!
                         </p>
                     </div>
                 </div>
@@ -31449,7 +31477,7 @@ window.submitLifecycleSwap = function(isKarma) {
     
     if (isKarma) {
         const req = conv.negotiation?.requestedItem || "item";
-        msgText = `Hey! I'm really interested in your "${req}". I don't have anything to trade right now, but would you be open to a Karma Swap? You'd receive +50 Karma Points for helping a neighbor, and it would mean the world to me! 💛✨`;
+        msgText = `Hey! I'm really interested in your "${req}". I don't have anything to trade right now, but would you be open to a Karma Swap? You'd receive +50 Karma Points for helping a neighbor, and it would mean the world to me! ❤️✨`;
         if (!conv.negotiation) conv.negotiation = {};
         conv.negotiation.isKarmaSwap = true;
     } else {

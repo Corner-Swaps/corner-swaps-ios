@@ -204,7 +204,7 @@ body.show-simulator #view-village.active {
 /* 8. Global navbar stays pinned to bottom of app-container (absolute within position:relative container) */
 body.show-simulator #global-navbar:not(.hidden) {
     position: absolute !important;
-    bottom: 6px !important;
+    bottom: 12px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 140px) !important; /* Increased margins */
@@ -1204,8 +1204,8 @@ html.dark #phone-header-bar .material-symbols-outlined {
 
 .native-app-env #global-navbar:not(.hidden) {
     position: absolute !important;
-    bottom: 6px !important;
-    bottom: max(6px, calc(-12px + var(--safe-area-bottom))) !important;
+    bottom: 12px !important;
+    bottom: max(12px, calc(-4px + var(--safe-area-bottom))) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 140px) !important; /* Narrower width */
@@ -1660,6 +1660,10 @@ select::-ms-expand {
     overflow: hidden !important;
     height: 100% !important;
     box-sizing: border-box !important;
+}
+
+#offer-form-scroll-container {
+    padding-bottom: 84px !important;
 }
 
 .native-app-env #offer-form-scroll-container {
@@ -4754,7 +4758,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 #chat-action-center,
 #chat-action-center.group-chat-action-center {
     position: absolute !important;
-    bottom: calc(56px + 28px + var(--keyboard-offset, 0px)) !important;
+    bottom: calc(56px + 14px + var(--keyboard-offset, 0px)) !important;
     left: 0px !important;
     right: 0px !important;
     width: 100% !important;
@@ -4771,7 +4775,7 @@ html.dark #chat-action-center div.focus-within\:border-forest-green:has(input:fo
 }
 .native-app-env #chat-action-center,
 .native-app-env #chat-action-center.group-chat-action-center {
-    bottom: calc(56px + var(--safe-area-bottom) + 20px + var(--keyboard-offset, 0px)) !important;
+    bottom: calc(56px + var(--safe-area-bottom) + 6px + var(--keyboard-offset, 0px)) !important;
     padding-bottom: 8px !important;
 }
 body.keyboard-visible #chat-action-center,
@@ -7077,8 +7081,8 @@ html.dark .category-info-highlighted::after {
 
 .native-app-env #global-navbar:not(.hidden) {
     position: absolute !important;
-    bottom: 6px !important;
-    bottom: max(6px, calc(-12px + var(--safe-area-bottom))) !important;
+    bottom: 12px !important;
+    bottom: max(12px, calc(-4px + var(--safe-area-bottom))) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 140px) !important;
@@ -9115,14 +9119,23 @@ html.dark .list-card-expandable-content {
     z-index: 50 !important;
     background-color: var(--warm-cream) !important;
     padding-top: 0.6rem !important; /* Matches container padding-top */
-    margin-top: calc(0px - 0.6rem) !important; /* Align exactly to Map's segmented control */
+    margin-top: 0px !important; 
     padding-bottom: 0px !important;
     margin-bottom: 0px !important;
 }
 
+body.show-simulator:not(.iphone16-mode) #view-village .sticky-segmented-control-wrapper {
+    top: 48px !important;
+}
+
+.iphone16-mode .sticky-segmented-control-wrapper {
+    top: var(--safe-area-top) !important;
+}
+
 .native-app-env .sticky-segmented-control-wrapper {
-    padding-top: calc(0.6rem + var(--safe-area-top)) !important;
-    margin-top: calc(0px - 0.6rem - var(--safe-area-top)) !important;
+    padding-top: 0.6rem !important;
+    margin-top: 0px !important;
+    top: var(--safe-area-top) !important;
 }
 
 html.dark .sticky-segmented-control-wrapper {
@@ -9163,11 +9176,16 @@ html.dark .sticky-segmented-control-wrapper {
 /* Ensure close/back button inside the chat details screen is visible */
 #chat-close-btn {
     display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     width: 40px !important;
     height: 40px !important;
 }
 #chat-close-btn span {
     font-size: 20px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 /* Specificity overrides to hide chat detail Read/Unread title and bar when hidden class is added */
@@ -9310,7 +9328,7 @@ html.dark #view-welcome {
     justify-content: center !important;
     align-items: center !important;
     text-align: center !important;
-    padding: calc(env(safe-area-inset-top, 44px) + 24px) 24px calc(env(safe-area-inset-bottom, 34px) + 20px) !important;
+    padding: calc(env(safe-area-inset-top, 44px) + 24px) 24px calc(env(safe-area-inset-bottom, 34px) + 65px) !important;
     box-sizing: border-box !important;
     opacity: 1 !important;
 }
@@ -9478,16 +9496,17 @@ html.dark #welcome-panel-sub {
 }
 
 .btn-welcome-register {
-    background-color: rgba(48, 138, 94, 0.03) !important;
-    color: #308A5E !important;
-    border: 1.5px solid rgba(48, 138, 94, 0.4) !important;
-    box-shadow: none !important;
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(48, 138, 94, 0.2) !important;
 }
 .btn-welcome-register:hover {
-    background-color: rgba(48, 138, 94, 0.08) !important;
+    background-color: #256d4a !important;
+    box-shadow: 0 6px 20px rgba(48, 138, 94, 0.3) !important;
 }
 .btn-welcome-register .material-symbols-outlined {
-    color: #308A5E !important;
+    color: #ffffff !important;
     font-variation-settings: 'FILL' 0, 'wght' 400 !important;
     font-size: 20px !important;
 }
@@ -9551,16 +9570,16 @@ html.dark .btn-welcome-signin .material-symbols-outlined {
 }
 
 html.dark .btn-welcome-register {
-    background-color: rgba(130, 185, 149, 0.05) !important;
-    color: #82b995 !important;
-    border: 1.5px solid rgba(130, 185, 149, 0.4) !important;
-    box-shadow: none !important;
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
 }
 html.dark .btn-welcome-register:hover {
-    background-color: rgba(130, 185, 149, 0.1) !important;
+    background-color: #389e6c !important;
 }
 html.dark .btn-welcome-register .material-symbols-outlined {
-    color: #82b995 !important;
+    color: #ffffff !important;
 }
 
 html.dark .btn-welcome-admin {
@@ -9814,7 +9833,8 @@ h5.uppercase.tracking-wider {
     margin: 0 auto !important;
 }
 
-/* Shift the registration steps slightly higher up to prevent them from sitting too low */
+/* Shift the registration steps and sign in screen slightly higher up to prevent them from sitting too low */
+#view-sign_in.active,
 #view-create_account.active,
 #view-create_account_credentials.active,
 #view-create_account_social.active,
@@ -10284,4 +10304,66 @@ html.dark .auth-avatar-upload {
 #chat-meeting-radius-display,
 #meetup-radius-display {
     color: #ffffff !important;
+}
+
+/* Location Privacy Consent Option Buttons */
+.btn-consent-option {
+    width: 100% !important;
+    height: 48px !important;
+    background-color: #ffffff !important;
+    border: 1px solid rgba(48, 138, 94, 0.25) !important;
+    color: #308A5E !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    border-radius: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding: 0 24px !important;
+    gap: 12px !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02) !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+.btn-consent-option:hover {
+    background-color: rgba(48, 138, 94, 0.05) !important;
+}
+.btn-consent-option:active {
+    transform: scale(0.98) !important;
+}
+.btn-consent-option.selected {
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    border-color: #308A5E !important;
+    box-shadow: 0 4px 12px rgba(48, 138, 94, 0.25) !important;
+}
+.btn-consent-option .material-symbols-outlined {
+    font-size: 18px !important;
+    color: inherit !important;
+}
+
+/* Dark Mode */
+html.dark .btn-consent-option {
+    background-color: #1a231d !important;
+    border-color: rgba(130, 185, 149, 0.2) !important;
+    color: #82b995 !important;
+}
+html.dark .btn-consent-option:hover {
+    background-color: rgba(130, 185, 149, 0.08) !important;
+}
+html.dark .btn-consent-option.selected {
+    background-color: #308A5E !important;
+    color: #ffffff !important;
+    border-color: #308A5E !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Detail overlay back button alignment with safe area */
+#map-detail-back-btn,
+#map-event-detail-back-btn {
+    top: 16px !important;
+}
+.native-app-env #map-detail-back-btn,
+.native-app-env #map-event-detail-back-btn {
+    top: calc(12px + var(--safe-area-top, 20px)) !important;
 }

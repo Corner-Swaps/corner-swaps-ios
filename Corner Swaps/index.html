@@ -2654,8 +2654,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                                 <!-- Karma category -->
                                 <div class="bento-card bg-white dark:bg-[#1b261f] p-2 py-3.5 rounded-2xl border border-outline-variant/10 flex flex-col items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition-all hover:bg-forest-green/5 dark:hover:bg-forest-green/10 shadow-sm relative overflow-hidden group text-center w-full" data-category="Karma Swap" onclick="openCategoryView('Karma Swap')">
-                                    <div class="icon-box w-11 h-11 rounded-full bg-amber-50 text-amber-600 dark:bg-amber-950/20 dark:text-amber-400 flex items-center justify-center group-hover:scale-105 transition-transform">
-                                        <span class="material-symbols-outlined text-xl">volunteer_activism</span>
+                                    <div class="icon-box w-11 h-11 rounded-full bg-red-50 text-red-600 dark:bg-red-950/20 dark:text-red-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+                                        <span class="material-symbols-outlined text-xl">favorite</span>
                                     </div>
                                     <span class="category-title text-[11.5px] font-bold text-black dark:text-warm-cream leading-tight mt-1.5 tracking-wide">Karma</span>
                                 </div>
@@ -3360,7 +3360,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <div class="flex items-center gap-3 flex-grow min-w-0">
                             <!-- Avatar Wrapper with Status Dot Overlay -->
-                            <div id="chat-header-avatar-container" class="relative flex-shrink-0 cursor-pointer active:scale-95 transition-transform hidden" onclick="handleChatHeaderClick()">
+                            <div id="chat-header-avatar-container" class="relative flex-shrink-0 cursor-pointer active:scale-95 transition-transform hidden flex items-center" onclick="handleChatHeaderClick()">
                                 <div class="profile-avatar-ring w-10 h-10 flex-shrink-0"><img id="chat-header-avatar" class="w-full h-full object-cover rounded-full" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop"/></div>
                                 <div id="chat-header-single-dot" class="absolute -bottom-0.5 -right-0.5 w-[14px] h-[14px] rounded-full bg-[#00FF66] border-[2.5px] border-white dark:border-[#101612] z-10 shadow-sm transition-all duration-300 hidden"></div>
                             </div>
@@ -3896,7 +3896,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                             </section>
 
-                    <div class="px-6 py-6 space-y-4 w-full mx-auto">
+                    <div class="px-6 pt-6 pb-0 space-y-4 w-full mx-auto">
                         <!-- 2. Stylized Title input -->
                         <div class="text-left w-full mb-2">
                             <label id="offer-title-label" class="block text-[9px] font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E] mb-2.5 text-left" for="offer-title">
@@ -4090,13 +4090,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             
                             <!-- Unified Karma Options Card Box -->
                             <div id="karma-unified-card" class="bg-white dark:bg-[#18201a] py-[9px] px-3.5 rounded-xl border border-outline-variant/30 transition-all select-none overflow-hidden cursor-pointer" onclick="handleKarmaCardClick(event)">
-                                <!-- Option row with Checkbox -->
                                 <div class="flex items-center gap-2.5">
                                     <input type="checkbox" id="karma-checkbox" class="w-4 h-4 rounded border-outline-variant text-forest-green focus:ring-forest-green cursor-pointer" onchange="handleKarmaCheckboxChange(this)" onclick="event.stopPropagation();">
-                                                                    <label for="karma-checkbox" class="text-xs font-bold text-on-surface cursor-pointer flex-grow flex items-center justify-between" onclick="event.stopPropagation();">
-                                        <span id="karma-checkbox-text" class="text-on-surface dark:text-warm-cream">Offer for free</span>
+                                    <label for="karma-checkbox" class="text-xs font-bold text-on-surface cursor-pointer flex-grow flex items-center justify-between" onclick="event.stopPropagation();">
+                                        <span id="karma-checkbox-text" class="text-on-surface dark:text-warm-cream">Offer for free (Earn Karma points)</span>
                                         <div class="flex items-center justify-center bg-forest-green/5 dark:bg-black/20 rounded-lg px-2 py-0.5 border border-outline-variant/35 shrink-0 select-none">
-                                            <span class="material-symbols-outlined text-xs mr-0.5" style="color: #f59e0b !important; font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span>
+                                            <span class="material-symbols-outlined text-xs mr-0.5" style="color: #ef4444 !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
                                             <span id="karma-score-display" class="text-[10px] font-black text-on-surface dark:text-warm-cream">+50 XP</span>
                                         </div>
                                     </label>
@@ -4205,7 +4204,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
                                 <!-- Self Karma Points Badge -->
                                 <div id="settings-profile-karma-container" class="flex items-center gap-1.5 text-xs text-forest-green dark:text-emerald-400 font-bold bg-forest-green/5 dark:bg-emerald-950/20 px-3 py-1 rounded-full border border-forest-green/10 cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('karma')">
-                                    <span class="material-symbols-outlined text-base" style="color: #f59e0b !important; font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span>
+                                    <span class="material-symbols-outlined text-base" style="color: #ef4444 !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
                                     <span id="settings-profile-karma">0 Karma</span>
                                 </div>
                                 <!-- Self Swaps Completed Badge -->
@@ -4712,11 +4711,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     </div>
 
                     <!-- Scrollable Container -->
-                    <div class="overflow-y-auto custom-scrollbar flex-grow p-6 flex flex-col justify-center gap-6 pb-24">
+                    <div class="overflow-y-auto custom-scrollbar flex-grow p-6 flex flex-col justify-start gap-4 pb-20">
                         <!-- Top Header Section (No container card, same profile layout style) -->
-                        <div class="flex flex-col items-center gap-3 w-full" style="background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin-top: 10px !important;">
+                        <div class="flex flex-col items-center gap-2 w-full" style="background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin-top: 5px !important;">
                             <!-- Avatar and Name -->
-                            <div class="profile-avatar-ring w-32 h-32 flex-shrink-0 relative mt-1">
+                            <div class="profile-avatar-ring w-24 h-24 flex-shrink-0 relative mt-1">
                                 <img id="confirm-swap-avatar" src="" class="w-full h-full object-cover rounded-full animate-fade-in" alt="Neighbor Avatar">
                             </div>
                             <h3 class="font-headline font-extrabold text-black dark:text-white text-lg mt-1" id="confirm-swap-neighbor-name" style="font-weight: 800 !important; margin-bottom: 0 !important;">Neighbor Name</h3>
@@ -4746,15 +4745,19 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
 
                         <!-- Dynamic Negative Tags Sub-menu -->
-                        <div id="confirm-swap-negative-menu" class="hidden flex-col gap-2">
-                            <p style="font-size: 13px !important; color: #ef4444 !important; font-weight: 700 !important; text-align: center !important; margin: 0 !important; width: 100% !important;">Please select issue tags:</p>
-                            <div class="flex flex-wrap gap-2.5 justify-center">
-                                <button class="fused-tag-btn px-5 py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-md text-[14px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 14px !important;" onclick="toggleFusedTag(this, 'slow communication')">slow communication</button>
-                                <button class="fused-tag-btn px-5 py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-md text-[14px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 14px !important;" onclick="toggleFusedTag(this, 'felt unsafe')">felt unsafe</button>
-                                <button class="fused-tag-btn px-5 py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-md text-[14px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 14px !important;" onclick="toggleFusedTag(this, 'item not as described')">item not as described</button>
-                                <button class="fused-tag-btn px-5 py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-md text-[14px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 14px !important;" onclick="toggleFusedTag(this, 'late')">late</button>
-                                <button class="fused-tag-btn px-5 py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-md text-[14px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 14px !important;" onclick="toggleFusedTag(this, 'no-show')">no-show</button>
-                                <button class="fused-tag-btn px-5 py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-md text-[14px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white" style="font-size: 14px !important;" onclick="toggleFusedTag(this, 'hard to coordinate')">hard to coordinate</button>
+                        <div id="confirm-swap-negative-menu" class="hidden flex-col gap-2.5">
+                            <p style="font-size: 13px !important; color: #ef4444 !important; font-weight: 700 !important; text-align: center !important; margin: 4px 0 !important; width: 100% !important;">Please select issue tags:</p>
+                            <div class="grid grid-cols-2 gap-2 w-full px-1">
+                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'slow response')">slow response</button>
+                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'felt unsafe')">felt unsafe</button>
+                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'not as described')">not as described</button>
+                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'damaged item')">damaged item</button>
+                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'unfriendly')">unfriendly</button>
+                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'late arrival')">late arrival</button>
+                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'no-show')">no-show</button>
+                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'wrong location')">wrong location</button>
+                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'poor coordination')">poor coordination</button>
+                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'other issue')">other issue</button>
                             </div>
                         </div>
 
@@ -4854,8 +4857,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- Karma Points Display Card -->
                         <div class="bg-forest-green/5 dark:bg-white/5 rounded-xl p-3 border border-outline-variant/10 text-center">
                             <p class="text-[9px] font-bold text-outline dark:text-warm-cream/75 uppercase tracking-wider mb-1">Karma Points Awarded</p>
-                            <p class="text-base font-extrabold text-[#f59e0b] leading-normal flex items-center justify-center gap-1">
-                                <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span> +50 Karma Points
+                            <p class="text-base font-extrabold text-[#ef4444] leading-normal flex items-center justify-center gap-1">
+                                <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1; color: #ef4444 !important;">favorite</span> +50 Karma Points
                             </p>
                         </div>
 
@@ -5035,9 +5038,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <p class="font-headline text-base text-forest-green font-bold mt-0.5">+1</p>
                             </div>
                             <div class="bg-white p-4 rounded-xl shadow-sm border border-outline-variant/25 flex flex-col items-center justify-center transition-transform duration-300 w-28">
-                                <span class="material-symbols-outlined text-[#f59e0b] text-lg mb-1" style="font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span>
+                                <span class="material-symbols-outlined text-[#ef4444] text-lg mb-1" style="font-variation-settings: 'FILL' 1 !important;">favorite</span>
                                 <span class="text-[9px] text-on-surface-variant font-bold">Karma Pts</span>
-                                <p class="font-headline text-base text-[#f59e0b] font-bold mt-0.5" id="celebration-karma-pts">+50</p>
+                                <p class="font-headline text-base text-[#ef4444] font-bold mt-0.5" id="celebration-karma-pts">+50</p>
                             </div>
                         </div>
 
@@ -5217,32 +5220,32 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                 <!-- LOCATION PRIVACY CONSENT MODAL -->
                 <div id="location-privacy-modal" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-4">
-                    <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" onclick="closeLocationPrivacyModal()"></div>
-                    <div class="relative bg-warm-cream border border-outline-variant w-full max-w-[340px] p-6 rounded-3xl shadow-2xl text-center space-y-6">
+                    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeLocationPrivacyModal()"></div>
+                    <div class="relative bg-warm-cream dark:bg-[#121c16] border border-black/10 dark:border-white/10 w-full max-w-[340px] p-6 rounded-3xl shadow-2xl text-center space-y-6">
                         
                         <!-- Top Icon and Title -->
                         <div class="flex flex-col items-center space-y-3">
-                            <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-950/40 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                            <div class="w-12 h-12 rounded-full bg-forest-green/15 dark:bg-forest-green/25 flex items-center justify-center text-forest-green dark:text-[#82b995]">
                                 <span class="material-symbols-outlined text-2xl">location_on</span>
                             </div>
-                            <h3 class="font-headline text-lg font-bold text-black dark:text-black">
+                            <h3 class="font-headline text-lg font-bold text-black dark:text-warm-cream">
                                 Location Privacy
                             </h3>
                         </div>
 
                         <!-- Description -->
-                        <p class="text-xs text-black dark:text-black leading-relaxed px-2">
+                        <p class="text-[12.5px] text-gray-600 dark:text-warm-cream/80 leading-relaxed px-2">
                             Corner Swaps requests your location to show local swap offerings and connect you with nearby neighbors. Coordinates are fuzzed by 200–300 meters to safeguard your privacy.
                         </p>
 
                         <!-- Spacious Buttons List -->
                         <div class="space-y-3 pt-2">
-                            <button id="consent-btn-approximate" class="w-full h-12 bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-black font-bold text-xs rounded-xl active:scale-[0.98] transition-all flex items-center justify-start px-6 gap-3 shadow-sm cursor-pointer hover:bg-black/5 dark:hover:bg-white/5" onclick="selectLocationConsent('approximate')">
-                                <span class="material-symbols-outlined text-base">near_me</span>
+                            <button id="consent-btn-approximate" class="btn-consent-option" onclick="selectLocationConsent('approximate')">
+                                <span class="material-symbols-outlined">near_me</span>
                                 <span>Proximity</span>
                             </button>
-                            <button id="consent-btn-precise" class="w-full h-12 bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-black font-bold text-xs rounded-xl active:scale-[0.98] transition-all flex items-center justify-start px-6 gap-3 shadow-sm cursor-pointer hover:bg-black/5 dark:hover:bg-white/5" onclick="selectLocationConsent('precise')">
-                                <span class="material-symbols-outlined text-base">gps_fixed</span>
+                            <button id="consent-btn-precise" class="btn-consent-option" onclick="selectLocationConsent('precise')">
+                                <span class="material-symbols-outlined">gps_fixed</span>
                                 <span>Precise</span>
                             </button>
                         </div>
@@ -5320,7 +5323,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- What is Karma? -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-[#f59e0b] dark:text-[#f59e0b]" style="font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span> Karma
+                                <span class="material-symbols-outlined text-sm text-[#ef4444] dark:text-[#ef4444]" style="font-variation-settings: 'FILL' 1 !important;">favorite</span> Karma
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
                                 Karma points reflect your active contributions, reliability, and good standing in the community. You earn karma by listing offerings (including free items and gifts), sharing services, helping neighbors, and completing successful swaps. Higher karma highlights you as a trusted neighbor and unlocks special badges!
@@ -5340,7 +5343,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- What is Karma? -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-amber-500">volunteer_activism</span> Karma
+                                <span class="material-symbols-outlined text-sm text-red-500">favorite</span> Karma
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
                                 Karma listings are offered for free out of neighborly kindness. Giving or sharing for free earns you extra karma points, highlighting you as a trusted neighbor!
@@ -5419,7 +5422,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- Lead by Giving -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-amber-500">volunteer_activism</span> Lead by Giving
+                                <span class="material-symbols-outlined text-sm text-red-500">favorite</span> Lead by Giving
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
                                 Every listing you share builds your public neighborhood trust rating and inspires others to trade. Start by putting out what you can share!
@@ -5439,7 +5442,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- Karma -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-[#f59e0b]">volunteer_activism</span> Karma
+                                <span class="material-symbols-outlined text-sm text-red-500">favorite</span> Karma
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
                                 Karma listings are items that are given away for free. Giving to your neighbors is a great way to support the community and earns you extra Karma points!
@@ -7577,7 +7580,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                     <div id="neighbor-profile-rating-display" class="hidden items-center gap-1 text-[10px] text-amber-500 font-bold"></div>
                                     <!-- Neighbor Karma Points Badge -->
                                     <div id="neighbor-profile-karma-container" class="flex items-center gap-1.5 text-xs text-forest-green dark:text-emerald-400 font-bold bg-forest-green/5 dark:bg-emerald-950/20 px-3 py-1 rounded-full border border-forest-green/10 cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('karma')">
-                                        <span class="material-symbols-outlined text-base" style="color: #f59e0b !important; font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span>
+                                        <span class="material-symbols-outlined text-base" style="color: #ef4444 !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
                                         <span id="neighbor-profile-karma">0 Karma</span>
                                     </div>
                                     <!-- Neighbor Swaps Completed Badge -->
@@ -7856,7 +7859,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                                 <div class="flex items-center gap-3.5 bg-forest-green/5 dark:bg-white/5 p-3 rounded-2xl border border-outline-variant/10">
                                     <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 dark:text-amber-400 flex items-center justify-center flex-shrink-0">
-                                        <span class="material-symbols-outlined text-lg" style="color: #f59e0b !important; font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span>
+                                        <span class="material-symbols-outlined text-lg" style="color: #ef4444 !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
                                     </div>
                                     <div class="flex-grow">
                                         <h4 class="font-bold text-xs text-black dark:text-[#308A5E] leading-tight">4. Vouch & Karma</h4>
@@ -8618,26 +8621,24 @@ svg.leaflet-image-layer.leaflet-interactive path {
                 <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-28 h-1 bg-forest-green/20 rounded-full z-[6000] pointer-events-none hidden sm:block"></div>
 
                 <!-- MEETUP LOCATION PICKER MODAL -->
-                <div id="meetup-picker-modal" class="hidden fixed inset-0 z-[5000] flex items-center justify-center p-4 md:p-6 select-none animate-fade-in">
+                <div id="meetup-picker-modal" class="fixed inset-0 z-[5000] flex items-end justify-center transition-all duration-300 opacity-0 pointer-events-none select-none">
                     <!-- Backdrop -->
-                    <div class="absolute inset-0 bg-[#060b08]/40 dark:bg-black/60 backdrop-blur-md" onclick="closeMeetupLocationPicker(false)"></div>
+                    <div class="absolute inset-0 bg-forest-green/20 backdrop-blur-sm pointer-events-auto" onclick="closeMeetupLocationPicker(false)"></div>
                     
-                    <!-- Modal Card -->
-                    <div class="relative bg-warm-cream dark:bg-[#101612] w-full max-w-[340px] md:max-w-md rounded-3xl border border-outline-variant/30 shadow-2xl p-5 flex flex-col max-h-[85vh] overflow-hidden text-center animate-slide-up">
+                    <!-- Bottom Sheet Container -->
+                    <div id="meetup-picker-container" class="relative bg-white dark:bg-[#18201a] w-full max-w-[600px] rounded-t-3xl shadow-2xl px-6 pt-6 pb-10 transform transition-transform duration-300 translate-y-full flex flex-col max-h-[90vh] z-[5010] pointer-events-auto" onclick="event.stopPropagation()">
                         
-                        <h3 class="font-headline text-lg font-bold text-black dark:text-white flex items-center justify-center gap-2 mb-1.5">
-                            Choose Meetup
-                        </h3>
+                        <!-- Header -->
+                        <div class="relative flex flex-col items-center justify-center mb-4 border-b border-black/10 dark:border-white/10 pb-3 shrink-0">
+                            <h3 class="popup-modal-title text-center mb-1">Choose Meetup</h3>
+                            <p class="popup-modal-desc text-center text-xs mt-0.5">Tap or click on the map to set your meetup vicinity. For safety, we only display this approximate area to neighbors.</p>
+                        </div>
                         
-                        <!-- Body -->
-                        <div class="flex-grow overflow-y-auto custom-scrollbar flex flex-col gap-4 pr-1 text-center">
-                            <p class="text-[10px] text-black dark:text-white/80 border-b border-outline-variant/15 pb-2 leading-normal text-center">
-                                Tap or click on the map to set your meetup vicinity. For safety, we only display this approximate area to neighbors.
-                            </p>
-                            
-                            <!-- Map Container -->
-                            <div class="w-full h-[220px] rounded-2xl border border-outline-variant/40 overflow-hidden shadow-inner relative flex-shrink-0 bg-[#e8ece9] dark:bg-[#18201a]">
-                                <div id="meetup-picker-map" class="w-full h-full bg-[#e8ece9]"></div>
+                        <!-- Scrollable Content -->
+                        <div class="flex-grow overflow-y-auto space-y-4 pr-1 no-scrollbar mb-4 min-h-0">
+                            <!-- Map area (Enlarged) -->
+                            <div class="w-full h-[260px] rounded-2xl border border-outline-variant/30 overflow-hidden relative shrink-0">
+                                <div id="meetup-picker-map" class="w-full h-full"></div>
                                 <div id="map-picker-instruction" class="absolute bottom-2 left-2 right-2 bg-forest-green/80 dark:bg-[#308A5E] text-warm-cream dark:text-[#101612] text-[9px] font-bold px-2 py-1 rounded-lg text-center backdrop-blur-sm pointer-events-none shadow-sm z-[999] transition-all">
                                     Tap map to set meetup point
                                 </div>
@@ -8667,12 +8668,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
 
                         <!-- Footer Buttons -->
-                        <div class="flex gap-2.5 mt-4 pt-3 border-t border-outline-variant/15 flex-shrink-0">
-                            <button class="flex-grow py-3 bg-white dark:bg-[#18201a] border border-outline-variant/30 dark:border-outline-variant/15 text-slate-700 dark:text-[#FDFBF7]/80 font-bold text-xs rounded-xl active:scale-[0.98] transition-transform cursor-pointer" onclick="closeMeetupLocationPicker(false)">
-                                Cancel
+                        <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-[calc(16px + env(safe-area-inset-bottom, 20px))]">
+                            <button id="meetup-confirm-btn" class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer border-0 disabled:opacity-50 disabled:pointer-events-none" onclick="confirmMeetupLocation()" disabled>
+                                <span class="material-symbols-outlined text-sm">check_circle</span> Confirm Location
                             </button>
-                            <button id="meetup-confirm-btn" class="flex-grow py-3 bg-blue-600 text-white dark:bg-blue-600 dark:text-white font-bold text-xs rounded-xl active:scale-[0.98] transition-transform shadow-md disabled:opacity-50 disabled:pointer-events-none cursor-pointer border-none" onclick="confirmMeetupLocation()" disabled>
-                                Confirm
+                            <button class="w-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-on-surface dark:text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="closeMeetupLocationPicker(false)">
+                                Cancel
                             </button>
                         </div>
                     </div>
