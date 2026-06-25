@@ -3840,38 +3840,17 @@ function showView(viewId, mode) {
             }
             const container = document.getElementById('consent-checkboxes-container');
             if (container) {
-                container.style.opacity = '0.5';
-                container.style.pointerEvents = 'none';
+                container.style.opacity = '1';
+                container.style.pointerEvents = 'auto';
             }
             for (let i = 1; i <= 4; i++) {
                 const cb = document.getElementById(`consent-check-${i}`);
                 if (cb) {
                     cb.checked = false;
-                    cb.disabled = true;
+                    cb.disabled = false;
                 }
             }
             toggleConsentButton();
-
-            if (scrollBox) {
-                const handleScroll = function() {
-                    if (scrollBox.scrollTop + scrollBox.clientHeight >= scrollBox.scrollHeight - 10) {
-                        if (container) {
-                            container.style.opacity = '1';
-                            container.style.pointerEvents = 'auto';
-                        }
-                        for (let i = 1; i <= 4; i++) {
-                            const cb = document.getElementById(`consent-check-${i}`);
-                            if (cb) {
-                                cb.disabled = false;
-                            }
-                        }
-                        scrollBox.removeEventListener('scroll', handleScroll);
-                    }
-                };
-                scrollBox.addEventListener('scroll', handleScroll);
-                // Check if content does not require scrolling
-                setTimeout(handleScroll, 150);
-            }
         }
         
         // Toggle profile settings close header visibility
@@ -4745,6 +4724,8 @@ function selectSignupAvatar(element, url) {
     });
     element.classList.remove('border-transparent');
     element.classList.add('border-forest-green');
+    const subtitle = document.getElementById('su-avatar-subtitle');
+    if (subtitle) subtitle.innerText = "Preset avatar selected";
 }
 
 function selectSettingsAvatar(element, url) {
@@ -4834,6 +4815,8 @@ function handleCustomAvatarUpload(input, previewId) {
                     img.classList.remove('border-forest-green');
                     img.classList.add('border-transparent');
                 });
+                const subtitle = document.getElementById('su-avatar-subtitle');
+                if (subtitle) subtitle.innerText = "Custom avatar uploaded";
             } else if (previewId === 'settings-avatar-preview') {
                 settingsAvatarUrl = dataUrl;
                 document.querySelectorAll('.settings-avatar-option').forEach(img => {
@@ -5467,6 +5450,7 @@ function handleSignUpStep3(e) {
         lastName,
         displayName,
         email,
+        password, // Save password for credentials validation on login
         avatar: signupAvatarUrl || DEFAULT_AVATAR,
         location: '',
         skills: [],
@@ -5475,6 +5459,14 @@ function handleSignUpStep3(e) {
         facebook,
         tiktok
     };
+    if (!state.users) state.users = [];
+    const existingIndex = state.users.findIndex(u => u.email.toLowerCase() === email.toLowerCase());
+    if (existingIndex > -1) {
+        state.users[existingIndex] = state.currentUser;
+    } else {
+        state.users.push(state.currentUser);
+    }
+
     state.isGuest = false;
     state.loggedOut = false;
     state.isNewAccount = true;
@@ -5510,7 +5502,7 @@ function togglePasswordVisibility(inputId, buttonEl) {
 window.togglePasswordVisibility = togglePasswordVisibility;
 
 function handleSignIn(e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
     const email = document.getElementById('si-email').value.trim();
     const password = document.getElementById('si-password').value.trim();
 
@@ -5519,27 +5511,41 @@ function handleSignIn(e) {
         return;
     }
 
+    if (password.length < 8) {
+        alert("Password must be at least 8 characters.");
+        return;
+    }
+
     if (state.suspendedUsers && (state.suspendedUsers.includes('Lily Kaufmann') || state.suspendedUsers.includes('Lily') || state.suspendedUsers.includes('lily@community.com') || state.suspendedUsers.includes(email))) {
         alert("Your account has been suspended for repeated unreliability (5 no-show strikes). Please contact support.");
         return;
     }
 
-    state.currentUser = {
-        firstName: 'Lily',
-        lastName: 'Kaufmann',
-        displayName: 'Lily Kaufmann',
-        email: 'lily@community.com',
-        avatar: DEFAULT_AVATAR,
-        location: '',
-        address: '',
-        lat: 49.2608,
-        lng: -123.1368,
-        skills: [],
-        needs: [],
-        instagram: 'https://instagram.com/lilykaufmann',
-        facebook: 'https://facebook.com/lilykaufmann',
-        tiktok: 'https://tiktok.com/@lilykaufmann'
-    };
+    const foundUser = state.users ? state.users.find(u => u.email.toLowerCase() === email.toLowerCase()) : null;
+    if (foundUser) {
+        if (foundUser.password && foundUser.password !== password) {
+            alert("Incorrect password.");
+            return;
+        }
+        state.currentUser = foundUser;
+    } else {
+        state.currentUser = {
+            firstName: 'Lily',
+            lastName: 'Kaufmann',
+            displayName: 'Lily Kaufmann',
+            email: 'lily@community.com',
+            avatar: DEFAULT_AVATAR,
+            location: '',
+            address: '',
+            lat: 49.2608,
+            lng: -123.1368,
+            skills: [],
+            needs: [],
+            instagram: 'https://instagram.com/lilykaufmann',
+            facebook: 'https://facebook.com/lilykaufmann',
+            tiktok: 'https://tiktok.com/@lilykaufmann'
+        };
+    }
     state.isGuest = false;
     state.loggedOut = false;
     saveState();

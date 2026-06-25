@@ -1500,7 +1500,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <div id="welcome-hero">
                         <div id="welcome-wordmark">
                             <div id="welcome-wordmark-icon">
-                                <img src="final_logo.png" style="width:40px;height:40px;object-fit:contain;">
+                                <img src="final_logo.png" style="width:68px;height:68px;object-fit:contain;">
                             </div>
                             <h1 id="welcome-app-name">CORNER SWAPS</h1>
                         </div>
@@ -1660,7 +1660,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </div>
                             <div style="flex-grow:1;">
                                 <div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#1a2f23;">Profile Avatar</div>
-                                <div style="font-family:'Outfit',sans-serif;font-size:10px;color:#668c75;">Default avatar selected</div>
+                                <div style="font-family:'Outfit',sans-serif;font-size:10px;color:#668c75;" id="su-avatar-subtitle">Default avatar selected</div>
                             </div>
                             <label style="font-family:'Outfit',sans-serif;font-size:10px;font-weight:700;color:#308A5E;background:rgba(48,138,94,0.1);border:1px solid rgba(48,138,94,0.18);border-radius:10px;padding:7px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;">
                                 <span class="material-symbols-outlined" style="font-size:13px;color:#308A5E;">camera_alt</span>
@@ -1807,12 +1807,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
 
                         <!-- Switch agreement group container -->
-                        <div id="consent-checkboxes-container" class="bg-forest-green/5 border border-forest-green/10 p-3 rounded-xl space-y-2.5 text-left transition-opacity duration-300" style="background:rgba(255,255,255,0.6);border:1.5px solid rgba(48,138,94,0.15);border-radius:16px;opacity:0.5;pointer-events:none;">
+                        <div id="consent-checkboxes-container" class="bg-forest-green/5 border border-forest-green/10 p-3 rounded-xl space-y-2.5 text-left transition-opacity duration-300" style="background:rgba(255,255,255,0.6);border:1.5px solid rgba(48,138,94,0.15);border-radius:16px;">
                             <!-- Switch 1: Safe Space Guidelines -->
                             <div class="flex items-center justify-between py-0.5 border-b border-outline-variant/10 pb-1.5">
                                 <span class="text-[10.5px] text-slate-700 dark:text-slate-300 font-semibold leading-tight pr-4" style="font-family:'Outfit',sans-serif;">I agree to the Safe Space Guidelines, exchange safety, and sharing rules</span>
                                 <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                                    <input type="checkbox" id="consent-check-1" class="sr-only peer" onchange="toggleConsentButton()" disabled>
+                                    <input type="checkbox" id="consent-check-1" class="sr-only peer" onchange="toggleConsentButton()">
                                     <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
                                 </label>
                             </div>
@@ -1820,7 +1820,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div class="flex items-center justify-between py-0.5 border-b border-outline-variant/10 pb-1.5">
                                 <span class="text-[10.5px] text-slate-700 dark:text-slate-300 font-semibold leading-tight pr-4" style="font-family:'Outfit',sans-serif;">I confirm that I am at least 18 years old</span>
                                 <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                                    <input type="checkbox" id="consent-check-2" class="sr-only peer" onchange="toggleConsentButton()" disabled>
+                                    <input type="checkbox" id="consent-check-2" class="sr-only peer" onchange="toggleConsentButton()">
                                     <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
                                 </label>
                             </div>
@@ -1828,7 +1828,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div class="flex items-center justify-between py-0.5 border-b border-outline-variant/10 pb-1.5">
                                 <span class="text-[10.5px] text-slate-700 dark:text-slate-300 font-semibold leading-tight pr-4" style="font-family:'Outfit',sans-serif;">I accept the Terms of Service and End User License Agreement (EULA) with zero tolerance for abuse</span>
                                 <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                                    <input type="checkbox" id="consent-check-3" class="sr-only peer" onchange="toggleConsentButton()" disabled>
+                                    <input type="checkbox" id="consent-check-3" class="sr-only peer" onchange="toggleConsentButton()">
                                     <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
                                 </label>
                             </div>
@@ -1836,7 +1836,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div class="flex items-center justify-between py-0.5">
                                 <span class="text-[10.5px] text-slate-700 dark:text-slate-300 font-semibold leading-tight pr-4" style="font-family:'Outfit',sans-serif;">I accept the Privacy Policy and consent to approximate location verification</span>
                                 <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                                    <input type="checkbox" id="consent-check-4" class="sr-only peer" onchange="toggleConsentButton()" disabled>
+                                    <input type="checkbox" id="consent-check-4" class="sr-only peer" onchange="toggleConsentButton()">
                                     <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
                                 </label>
                             </div>
