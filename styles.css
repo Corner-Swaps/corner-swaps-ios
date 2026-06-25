@@ -204,7 +204,7 @@ body.show-simulator #view-village.active {
 /* 8. Global navbar stays pinned to bottom of app-container (absolute within position:relative container) */
 body.show-simulator #global-navbar:not(.hidden) {
     position: absolute !important;
-    bottom: 12px !important;
+    bottom: 20px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 140px) !important; /* Increased margins */
@@ -1204,8 +1204,8 @@ html.dark #phone-header-bar .material-symbols-outlined {
 
 .native-app-env #global-navbar:not(.hidden) {
     position: absolute !important;
-    bottom: 12px !important;
-    bottom: max(12px, calc(-4px + var(--safe-area-bottom))) !important;
+    bottom: 20px !important;
+    bottom: max(20px, calc(6px + var(--safe-area-bottom))) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 140px) !important; /* Narrower width */
@@ -1663,13 +1663,13 @@ select::-ms-expand {
 }
 
 #offer-form-scroll-container {
-    padding-bottom: 84px !important;
+    padding-bottom: 100px !important;
 }
 
 .native-app-env #offer-form-scroll-container {
     overflow-y: auto !important;
     height: 100% !important;
-    padding-bottom: calc(84px + var(--safe-area-bottom)) !important;
+    padding-bottom: calc(100px + var(--safe-area-bottom)) !important;
     box-sizing: border-box !important;
 }
 
@@ -6281,7 +6281,7 @@ body:has(#loading-screen:not(.hidden)) #iphone16-status-bar .battery-tip {
 
 /* Align navbar menu pill correctly in simulator notch mode */
 .iphone16-mode #global-navbar:not(.hidden) {
-    bottom: max(6px, calc(-12px + var(--safe-area-bottom))) !important;
+    bottom: max(20px, calc(6px + var(--safe-area-bottom))) !important;
 }
 /* iphone16-mode map-category-dropdown override removed */
 
@@ -7081,8 +7081,8 @@ html.dark .category-info-highlighted::after {
 
 .native-app-env #global-navbar:not(.hidden) {
     position: absolute !important;
-    bottom: 12px !important;
-    bottom: max(12px, calc(-4px + var(--safe-area-bottom))) !important;
+    bottom: 20px !important;
+    bottom: max(20px, calc(6px + var(--safe-area-bottom))) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 140px) !important;
