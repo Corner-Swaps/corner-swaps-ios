@@ -43,7 +43,7 @@
     /* Centralized simulator/component layout size tokens */
     --dynamic-island-width: 95px;
     --pulse-ring-size: 260px;
-    --badge-item-width: 92px;
+    --badge-item-width: 98px;
     
     /* Centralized shadow tokens */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -3684,11 +3684,11 @@ html.dark .badge-theme-yellow.premium-badge-unlocked {
 }
 
 .premium-badge-status-pill {
-    font-size: 9px !important;
-    font-weight: 700 !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.05em !important;
-    padding: 2.5px 8px !important;
+    padding: 3px 9px !important;
     border-radius: 9999px !important;
     margin-top: 4px !important;
     display: inline-flex !important;
@@ -3696,12 +3696,29 @@ html.dark .badge-theme-yellow.premium-badge-unlocked {
     gap: 2px !important;
 }
 .premium-badge-status-pill.unlocked {
-    background: rgba(48, 138, 94, 0.1) !important;
+    background: rgba(48, 138, 94, 0.15) !important;
     color: #308a5e !important;
 }
 .dark .premium-badge-status-pill.unlocked {
-    background: rgba(48, 138, 94, 0.2) !important;
+    background: rgba(48, 138, 94, 0.25) !important;
     color: #a7f3d0 !important;
+}
+/* Theme-specific high-contrast status pill overrides */
+.badge-theme-green .premium-badge-status-pill.unlocked {
+    background: #10b981 !important;
+    color: #ffffff !important;
+}
+.badge-theme-yellow .premium-badge-status-pill.unlocked {
+    background: #f59e0b !important;
+    color: #ffffff !important;
+}
+.badge-theme-blue .premium-badge-status-pill.unlocked {
+    background: #3b82f6 !important;
+    color: #ffffff !important;
+}
+.badge-theme-red .premium-badge-status-pill.unlocked {
+    background: #ef4444 !important;
+    color: #ffffff !important;
 }
 .premium-badge-status-pill.locked {
     background: rgba(0, 0, 0, 0.05) !important;

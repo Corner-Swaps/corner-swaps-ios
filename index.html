@@ -4253,7 +4253,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <span class="material-symbols-outlined text-sm">military_tech</span> Badges
                         </h3>
                         
-                        <div class="flex gap-2 justify-start py-2 scrollbar-none scroll-smooth overflow-x-auto" id="user-badges-container">
+                        <div class="flex gap-2 justify-evenly py-2 scrollbar-none scroll-smooth overflow-x-auto" id="user-badges-container">
                             <!-- Dynamic Badges Rendered in app.js -->
                         </div>
                     </section>
@@ -4266,7 +4266,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         
                         <div class="flex gap-2 justify-around items-stretch py-2" id="user-my-corner-tabs">
                             <!-- Offerings badge-like button -->
-                            <button type="button" onclick="switchMyCornerTab('offerings')" id="my-corner-tab-offerings" class="premium-badge-item premium-badge-unlocked badge-theme-green flex-1 max-w-[95px]">
+                            <button type="button" onclick="switchMyCornerTab('offerings')" id="my-corner-tab-offerings" class="premium-badge-item premium-badge-unlocked badge-theme-green flex-1 max-w-[105px]">
                                 <div class="premium-badge-emblem">
                                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1 !important;">handshake</span>
                                 </div>
@@ -4277,7 +4277,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </button>
 
                             <!-- Needs badge-like button -->
-                            <button type="button" onclick="switchMyCornerTab('needs')" id="my-corner-tab-needs" class="premium-badge-item premium-badge-unlocked badge-theme-yellow flex-1 max-w-[95px]">
+                            <button type="button" onclick="switchMyCornerTab('needs')" id="my-corner-tab-needs" class="premium-badge-item premium-badge-unlocked badge-theme-yellow flex-1 max-w-[105px]">
                                 <div class="premium-badge-emblem">
                                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1 !important;">search</span>
                                 </div>
@@ -4288,7 +4288,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </button>
 
                             <!-- Events badge-like button -->
-                            <button type="button" onclick="switchMyCornerTab('events')" id="my-corner-tab-events" class="premium-badge-item premium-badge-unlocked badge-theme-blue flex-1 max-w-[95px]">
+                            <button type="button" onclick="switchMyCornerTab('events')" id="my-corner-tab-events" class="premium-badge-item premium-badge-unlocked badge-theme-blue flex-1 max-w-[105px]">
                                 <div class="premium-badge-emblem">
                                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1 !important;">festival</span>
                                 </div>
@@ -4712,7 +4712,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     </div>
 
                     <!-- Scrollable Container -->
-                    <div class="overflow-y-auto custom-scrollbar flex-grow p-6 flex flex-col gap-6 pb-24">
+                    <div class="overflow-y-auto custom-scrollbar flex-grow p-6 flex flex-col justify-center gap-6 pb-24">
                         <!-- Top Header Section (No container card, same profile layout style) -->
                         <div class="flex flex-col items-center gap-3 w-full" style="background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin-top: 10px !important;">
                             <!-- Avatar and Name -->
@@ -5522,7 +5522,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div class="space-y-3 pt-2">
                                 <form onsubmit="handleHelpImproveFeedbackSubmit(event)" class="space-y-3">
                                     <textarea id="help-improve-suggestion-input" class="w-full bg-warm-cream/10 dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl p-3 text-xs focus:border-forest-green focus:ring-0 outline-none placeholder:text-outline/40 leading-relaxed resize-none text-black dark:text-white" placeholder="What can we do better? Tell us about any layout, design, or user interface improvements you'd like to see..." rows="12" required></textarea>
-                                    <button type="submit" class="w-full bg-forest-green text-white dark:bg-[#308A5E] dark:text-white py-2 rounded-xl font-bold text-xs active:scale-[0.98] transition-all shadow cursor-pointer border-0">
+                                    <button type="submit" class="w-full bg-forest-green text-white dark:bg-[#308A5E] dark:text-white py-3 rounded-xl font-bold text-sm active:scale-[0.98] transition-all shadow cursor-pointer border-0">
                                         Submit Suggestion
                                     </button>
                                 </form>
@@ -5537,7 +5537,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div class="space-y-3 pt-2">
                                 <form onsubmit="handleHelpImproveBugSubmit(event)" class="space-y-3">
                                     <textarea id="help-improve-bug-input" class="w-full bg-warm-cream/10 dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl p-3 text-xs focus:border-forest-green focus:ring-0 outline-none placeholder:text-outline/40 leading-relaxed resize-none text-black dark:text-white" placeholder="Describe the bug or issue you encountered. What steps did you take? What did you expect to happen, and what happened instead?..." rows="12" required></textarea>
-                                    <button type="submit" class="w-full bg-forest-green text-white dark:bg-[#308A5E] dark:text-white py-2 rounded-xl font-bold text-xs active:scale-[0.98] transition-all shadow cursor-pointer border-0">
+                                    <button type="submit" class="w-full bg-forest-green text-white dark:bg-[#308A5E] dark:text-white py-3 rounded-xl font-bold text-sm active:scale-[0.98] transition-all shadow cursor-pointer border-0">
                                         Report Bug
                                     </button>
                                 </form>
@@ -5552,7 +5552,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div class="space-y-3 pt-2">
                                 <form onsubmit="handleHelpImproveFeatureSubmit(event)" class="space-y-3">
                                     <textarea id="help-improve-feature-input" class="w-full bg-warm-cream/10 dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl p-3 text-xs focus:border-forest-green focus:ring-0 outline-none placeholder:text-outline/40 leading-relaxed resize-none text-black dark:text-white" placeholder="What feature would you love to see in Corner Swaps? How would it help you and other neighbors swap items or connect?..." rows="12" required></textarea>
-                                    <button type="submit" class="w-full bg-forest-green text-white dark:bg-[#308A5E] dark:text-white py-2 rounded-xl font-bold text-xs active:scale-[0.98] transition-all shadow cursor-pointer border-0">
+                                    <button type="submit" class="w-full bg-forest-green text-white dark:bg-[#308A5E] dark:text-white py-3 rounded-xl font-bold text-sm active:scale-[0.98] transition-all shadow cursor-pointer border-0">
                                         Pitch Feature
                                     </button>
                                 </form>
@@ -7616,7 +7616,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
                                     <span class="material-symbols-outlined text-sm">military_tech</span> Badges
                                 </h3>
-                                <div class="flex gap-2 justify-start py-2 scrollbar-none scroll-smooth overflow-x-auto" id="neighbor-badges-container">
+                                <div class="flex gap-2 justify-evenly py-2 scrollbar-none scroll-smooth overflow-x-auto" id="neighbor-badges-container">
                                     <!-- Dynamic Badges Rendered in app.js -->
                                 </div>
                             </section>

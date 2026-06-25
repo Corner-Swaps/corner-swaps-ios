@@ -3885,7 +3885,7 @@ function showView(viewId, mode) {
     const headerBar = document.getElementById('phone-header-bar');
     const desktopNavBar = document.getElementById('desktop-navbar');
 
-    if (['home', 'village', 'chat_hub', 'chat_detail', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage'].includes(viewId) && !(viewId === 'village' && state.meetupMapMode)) {
+    if (['home', 'village', 'chat_hub', 'chat_detail', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage', 'review_rating'].includes(viewId) && !(viewId === 'village' && state.meetupMapMode)) {
         if (navBar) {
             navBar.classList.remove('hidden');
         }
@@ -3903,7 +3903,7 @@ function showView(viewId, mode) {
         }
     }
 
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'events_hub', 'create_event', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'help_improve', 'create_bulletin', 'create_group'].includes(viewId) || viewId.startsWith('chat_detail')) {
+    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'events_hub', 'create_event', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'help_improve', 'create_bulletin', 'create_group', 'review_rating'].includes(viewId) || viewId.startsWith('chat_detail')) {
         if (desktopNavBar) {
             desktopNavBar.classList.remove('hidden');
             if (window.syncUserNavbarInfo) window.syncUserNavbarInfo();
@@ -13712,7 +13712,8 @@ window.showToast = function(message) {
     if (!container) {
         container = document.createElement('div');
         container.id = 'toast-container';
-        container.className = 'fixed bottom-24 left-1/2 transform -translate-x-1/2 z-[9999] flex flex-col gap-2 pointer-events-none w-full max-w-[280px]';
+        container.className = 'fixed left-1/2 transform -translate-x-1/2 z-[9999] flex flex-col gap-2 pointer-events-none w-full max-w-[280px]';
+        container.style.setProperty('bottom', 'calc(82px + var(--safe-area-bottom, 0px))', 'important');
         document.body.appendChild(container);
     }
     const toast = document.createElement('div');
@@ -15478,9 +15479,9 @@ window.switchMyCornerTab = function(tab) {
             const theme = t === 'offerings' ? 'badge-theme-green' : t === 'needs' ? 'badge-theme-yellow' : 'badge-theme-blue';
             if (t === tab) {
                 let borderCol = t === 'offerings' ? 'border-forest-green dark:border-[#308A5E]' : t === 'needs' ? 'border-amber-500' : 'border-blue-500';
-                btn.className = `premium-badge-item premium-badge-unlocked ${theme} flex-grow flex-1 max-w-[95px] ${borderCol} border-[2.5px]`;
+                btn.className = `premium-badge-item premium-badge-unlocked ${theme} flex-grow flex-1 max-w-[105px] ${borderCol} border-[2.5px]`;
             } else {
-                btn.className = `premium-badge-item premium-badge-unlocked ${theme} flex-grow flex-1 max-w-[95px] opacity-60 saturate-50`;
+                btn.className = `premium-badge-item premium-badge-unlocked ${theme} flex-grow flex-1 max-w-[105px] opacity-60 saturate-50`;
             }
         }
     });
@@ -16226,10 +16227,15 @@ function switchVillageSegment(type) {
         const meetupCloseBtn = document.getElementById('meetup-close-btn');
         if (meetupCloseBtn) meetupCloseBtn.classList.remove('hidden');
     } else {
-        if (searchBar) searchBar.classList.remove('hidden');
-        if (meetupFooter) meetupFooter.classList.add('hidden');
-        
         const isMapSegment = type === 'map' || type === 'needs_map' || type === 'gifts_map' || type === 'events_map';
+        if (searchBar) {
+            if (isMapSegment) {
+                searchBar.classList.remove('hidden');
+            } else {
+                searchBar.classList.add('hidden');
+            }
+        }
+        if (meetupFooter) meetupFooter.classList.add('hidden');
         if (mapControls) {
             mapControls.style.display = 'flex';
             mapControls.classList.remove('hidden');
@@ -29345,7 +29351,7 @@ function renderBadgesList(containerId, targetName) {
     container.innerHTML = "";
     
     // Layout as boxes side-by-side taking up the space, allowing horizontal scrolling
-    container.className = "flex flex-row gap-2 py-2 w-full justify-start items-stretch select-none overflow-x-auto scrollbar-none scroll-smooth";
+    container.className = "flex flex-row gap-2 py-2 w-full justify-evenly items-stretch select-none overflow-x-auto scrollbar-none scroll-smooth";
 
     const isSelf = (containerId === 'user-badges-container' || targetName === 'Lily Kaufmann' || targetName === 'Lily' || (state.currentUser && targetName === (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`)));
     
@@ -31877,11 +31883,11 @@ function initQuickCreateSheet() {
         
         let collapsedBottom;
         if (isNative) {
-            collapsedBottom = Math.max(20, 12 + safeArea);
+            collapsedBottom = Math.max(10, safeArea - 14);
         } else if (isSimulator) {
-            collapsedBottom = 20;
+            collapsedBottom = 10;
         } else {
-            collapsedBottom = 20;
+            collapsedBottom = 10;
         }
         
         // Keep bottom margin floating and static so it sits nicely above safe area

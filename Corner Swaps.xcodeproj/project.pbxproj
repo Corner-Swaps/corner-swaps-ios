@@ -96,6 +96,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C00000012C1234560000000D /* Build configuration list for PBXNativeTarget "Corner Swaps" */;
 			buildPhases = (
+				C00000022C123456000000A0 /* Sync Assets in Frameworks */,
 				C00000012C1234560000000E /* Sources */,
 				C00000012C12345600000007 /* Frameworks */,
 				C00000012C1234560000000F /* Resources */,
@@ -162,6 +163,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+
+/* Begin PBXShellScriptBuildPhase section */
+		C00000022C123456000000A0 /* Sync Assets */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Sync Assets";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "python3 \"$SRCROOT/sync_all.py\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C00000012C1234560000000E /* Sources */ = {
@@ -265,7 +288,7 @@
 				DEVELOPMENT_TEAM = KZ8W2GCVH8;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -331,7 +354,7 @@
 				DEVELOPMENT_TEAM = KZ8W2GCVH8;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
