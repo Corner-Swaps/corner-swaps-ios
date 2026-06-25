@@ -11,9 +11,9 @@ def sync_assets():
     with open(index_html_path, 'r', encoding='utf-8') as f:
         html_content = f.read()
 
-    # Ensure logo size class is correct (64px) for the native app
+    # Ensure logo size class is correct (84px) for the native app
     target_logo = 'class="w-[140px] h-[140px] mb-4 object-contain"'
-    replacement_logo = 'class="w-[64px] h-[64px] mb-4 object-contain"'
+    replacement_logo = 'class="w-[84px] h-[84px] mb-4 object-contain"'
     if target_logo in html_content:
         print("Adjusting logo size class in index.html...")
         html_content = html_content.replace(target_logo, replacement_logo)

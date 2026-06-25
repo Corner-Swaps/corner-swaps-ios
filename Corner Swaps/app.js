@@ -1786,7 +1786,7 @@ let state = {
     stats: {
         tradesMade: 1,
         trustScore: 98,
-        radius: 5
+        radius: 10
     },
     activeMapFilters: [],
     currentConversationId: null,
@@ -1959,6 +1959,10 @@ function saveState() {
 }
 
 function ensureFriendsList() {
+    if (state.isNewAccount) {
+        state.friends = [];
+        return false;
+    }
     if (!state.friends || state.friends.length < 10) {
         state.friends = [
             { name: 'Sarah Chen', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop', phone: '+1 (604) 555-0144' },
@@ -2065,9 +2069,11 @@ function loadState() {
             state.currentUser.lat = 49.2608;
             state.currentUser.lng = -123.1368;
         }
-        if (!state.currentUser.instagram) state.currentUser.instagram = 'https://instagram.com/lilykaufmann';
-        if (!state.currentUser.facebook) state.currentUser.facebook = 'https://facebook.com/lilykaufmann';
-        if (!state.currentUser.tiktok) state.currentUser.tiktok = 'https://tiktok.com/@lilykaufmann';
+        if (!state.isNewAccount) {
+            if (!state.currentUser.instagram) state.currentUser.instagram = 'https://instagram.com/lilykaufmann';
+            if (!state.currentUser.facebook) state.currentUser.facebook = 'https://facebook.com/lilykaufmann';
+            if (!state.currentUser.tiktok) state.currentUser.tiktok = 'https://tiktok.com/@lilykaufmann';
+        }
     }
     if (!state) {
         state = {};
@@ -3066,12 +3072,12 @@ function runRollingPurgeTasks() {
     const cutoff = now - 48 * 60 * 60 * 1000;
     let stateChanged = false;
 
-    // 1. Delete conversations older than 48 hours (except groups)
+    // 1. Keep conversations in state for 120 hours total to allow reviews (except groups)
     const originalCount = state.conversations.length;
     state.conversations = state.conversations.filter(conv => {
         if (conv.isGroup) return true; // Groups do not auto-delete
 
-        // If location has been chosen, keep conversation in state for 120 hours total (48h active + 24h hidden + 48h review tab)
+        // If location has been chosen, keep conversation in state for 120 hours total
         if (conv.negotiation && conv.negotiation.meetupLocation && conv.locationChosenAt) {
             const elapsedSinceLocation = now - conv.locationChosenAt;
             return elapsedSinceLocation < 120 * 60 * 60 * 1000;
@@ -3104,18 +3110,18 @@ function runRollingPurgeTasks() {
         }
 
         const elapsed = now - conv.createdAt;
-        const isExpired = elapsed >= 48 * 60 * 60 * 1000;
-        return !isExpired;
+        return elapsed < 120 * 60 * 60 * 1000;
     });
 
     if (state.conversations.length !== originalCount) {
         stateChanged = true;
     }
 
-    // 2. Clear messages inside remaining active conversations that are older than 48 hours
+    // 2. Clear messages inside remaining active conversations that are older than 48 hours (but keep intact for reviews)
     state.conversations.forEach(conv => {
         if (conv.isGroup) return;
-        if (conv.locationChosenAt) return; // Keep messages intact for reviews
+        const elapsed = now - (conv.createdAt || now);
+        if (conv.locationChosenAt || elapsed >= 48 * 60 * 60 * 1000) return; // Keep messages intact for reviews
         const originalMsgCount = conv.messages.length;
         conv.messages = conv.messages.filter(msg => {
             if (!msg.timestamp) {
@@ -3317,6 +3323,17 @@ function handleNavbarTap(viewId) {
             if (typeof updateVillageViewFromState === 'function') {
                 updateVillageViewFromState();
             }
+            // Scroll list view containers back to the top
+            const listContainers = [
+                'village-list-container',
+                'village-needs-container',
+                'village-events-container',
+                'village-bulletins-container'
+            ];
+            listContainers.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.scrollTop = 0;
+            });
             return;
         }
         if (viewId === 'village') {
@@ -3817,21 +3834,44 @@ function showView(viewId, mode) {
         }
         
         if (viewId === 'profile_consent') {
-            state.liabilityDisclaimerRead = true;
-            const scrollBox = document.getElementById('liability-scroll-box');
-            if (scrollBox) scrollBox.scrollTop = 0;
+            const scrollBox = document.getElementById('onboarding-eula-scroll');
+            if (scrollBox) {
+                scrollBox.scrollTop = 0;
+            }
             const container = document.getElementById('consent-checkboxes-container');
             if (container) {
-                container.classList.remove('opacity-50', 'pointer-events-none');
+                container.style.opacity = '0.5';
+                container.style.pointerEvents = 'none';
             }
-            for (let i = 1; i <= 2; i++) {
+            for (let i = 1; i <= 4; i++) {
                 const cb = document.getElementById(`consent-check-${i}`);
                 if (cb) {
                     cb.checked = false;
-                    cb.removeAttribute('disabled');
+                    cb.disabled = true;
                 }
             }
             toggleConsentButton();
+
+            if (scrollBox) {
+                const handleScroll = function() {
+                    if (scrollBox.scrollTop + scrollBox.clientHeight >= scrollBox.scrollHeight - 10) {
+                        if (container) {
+                            container.style.opacity = '1';
+                            container.style.pointerEvents = 'auto';
+                        }
+                        for (let i = 1; i <= 4; i++) {
+                            const cb = document.getElementById(`consent-check-${i}`);
+                            if (cb) {
+                                cb.disabled = false;
+                            }
+                        }
+                        scrollBox.removeEventListener('scroll', handleScroll);
+                    }
+                };
+                scrollBox.addEventListener('scroll', handleScroll);
+                // Check if content does not require scrolling
+                setTimeout(handleScroll, 150);
+            }
         }
         
         // Toggle profile settings close header visibility
@@ -5437,6 +5477,18 @@ function handleSignUpStep3(e) {
     };
     state.isGuest = false;
     state.loggedOut = false;
+    state.isNewAccount = true;
+    state.userOfferings = [];
+    state.userNeeds = [];
+    state.friends = [];
+    state.userVouches = 100;
+    state.stats = {
+        tradesMade: 0,
+        trustScore: 100,
+        radius: 10
+    };
+    state.level = 1;
+    state.xp = 0;
     saveState();
     playSound('click');
     showView('profile_consent');
@@ -6005,6 +6057,101 @@ function submitProfileStep1(location) {
     playSound('click');
     showView('profile_step_custom_listing');
 }
+
+window.toggleOnboardingDropdown = function(mode) {
+    if (typeof playSound === 'function') playSound('click');
+    const dropdownIds = ['offering', 'need', 'event'];
+    
+    // Check if the clicked one is currently open
+    const targetDropdown = document.getElementById(`onboarding-dropdown-${mode}`);
+    const isCurrentlyOpen = targetDropdown && !targetDropdown.classList.contains('hidden');
+    
+    // Close all first
+    dropdownIds.forEach(id => {
+        const dropdown = document.getElementById(`onboarding-dropdown-${id}`);
+        const chevron = document.getElementById(`onboarding-chevron-${id}`);
+        if (dropdown) dropdown.classList.add('hidden');
+        if (chevron) {
+            chevron.innerText = 'expand_more';
+            chevron.style.transform = 'rotate(0deg)';
+        }
+    });
+    
+    if (!isCurrentlyOpen) {
+        // We are opening it!
+        // First, reparent the form wrapper #offer-form-wrapper to the target slot
+        const slot = document.getElementById(`onboarding-form-slot-${mode}`);
+        const formWrapper = document.getElementById('offer-form-wrapper');
+        if (slot && formWrapper) {
+            slot.appendChild(formWrapper);
+            formWrapper.classList.remove('hidden');
+            // Hide the default selector screen and bento actions that are inside #view-offer
+            const selectorScreen = document.getElementById('offer-type-selector-screen');
+            if (selectorScreen) selectorScreen.classList.add('hidden');
+            
+            // Add onboarding mode class to adjust styles if needed
+            formWrapper.classList.add('onboarding-mode');
+            
+            // Set the listing mode!
+            selectOfferMode(mode);
+        }
+        
+        // Show target dropdown
+        if (targetDropdown) targetDropdown.classList.remove('hidden');
+        const targetChevron = document.getElementById(`onboarding-chevron-${mode}`);
+        if (targetChevron) {
+            targetChevron.innerText = 'expand_less';
+            targetChevron.style.transform = 'rotate(180deg)';
+        }
+        
+        // Ensure success banner is hidden on fresh open
+        const successBanner = document.getElementById('listing-success-banner');
+        if (successBanner) successBanner.classList.add('hidden');
+    } else {
+        // We are closing it! Restore the form to the default view-offer section
+        const defaultContainer = document.getElementById('view-offer');
+        const formWrapper = document.getElementById('offer-form-wrapper');
+        if (defaultContainer && formWrapper) {
+            defaultContainer.appendChild(formWrapper);
+            formWrapper.classList.add('hidden');
+            formWrapper.classList.remove('onboarding-mode');
+        }
+    }
+};
+
+window.skipProfileStepCustomListing = function() {
+    if (typeof playSound === 'function') playSound('click');
+    
+    // Ensure EULA/form is restored to default parent
+    const defaultContainer = document.getElementById('view-offer');
+    const formWrapper = document.getElementById('offer-form-wrapper');
+    if (defaultContainer && formWrapper && formWrapper.parentElement !== defaultContainer) {
+        defaultContainer.appendChild(formWrapper);
+        formWrapper.classList.add('hidden');
+        formWrapper.classList.remove('onboarding-mode');
+    }
+    
+    showView('village');
+    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
+    if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
+};
+
+window.finishProfileStepCustomListing = function() {
+    if (typeof playSound === 'function') playSound('click');
+    
+    // Ensure EULA/form is restored to default parent
+    const defaultContainer = document.getElementById('view-offer');
+    const formWrapper = document.getElementById('offer-form-wrapper');
+    if (defaultContainer && formWrapper && formWrapper.parentElement !== defaultContainer) {
+        defaultContainer.appendChild(formWrapper);
+        formWrapper.classList.add('hidden');
+        formWrapper.classList.remove('onboarding-mode');
+    }
+    
+    showView('village');
+    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
+    if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
+};
 
 // Onboarding Drafts
 let onboardingDraftOfferings = [];
@@ -8571,17 +8718,41 @@ function handleMapDetailAuthorClick() {
 }
 
 function getEventOrMeetupCategory(item) {
-    if (!item) return 'Event';
+    if (!item) return 'Other Event';
     const type = (item.type || '').toLowerCase();
     const title = (item.title || item.offerTitle || item.needTitle || '').toLowerCase();
     const desc = (item.desc || item.offerDesc || item.needDesc || '').toLowerCase();
     
-    if (type.includes('meetup') || type.includes('swap') || type.includes('playdate') || type.includes('gathering') || type.includes('social') ||
-        title.includes('meetup') || title.includes('swap') || title.includes('playdate') || title.includes('gathering') || title.includes('social') ||
-        desc.includes('meetup') || desc.includes('swap') || desc.includes('playdate') || desc.includes('gathering') || desc.includes('social')) {
-        return 'Meetup';
+    if (type.includes('workshop') || type.includes('class') || title.includes('workshop') || title.includes('class')) {
+        return 'Workshop';
     }
-    return 'Event';
+    if (type.includes('garage') || type.includes('yard sale') || title.includes('garage') || title.includes('yard sale')) {
+        return 'Garage Sale';
+    }
+    if (type.includes('clothing') || (type.includes('swap') && (title.includes('book') || title.includes('clothes') || title.includes('puzzle') || desc.includes('clothes') || desc.includes('apparel') || desc.includes('wear')))) {
+        if (title.includes('book') || title.includes('puzzle')) {
+            return 'Games';
+        }
+        return 'Clothing Exchange';
+    }
+    if (type.includes('language') || title.includes('language') || title.includes('conversation')) {
+        return 'Language Exchange';
+    }
+    if (type.includes('game') || type.includes('playdate') || title.includes('game') || title.includes('playdate') || title.includes('puzzle')) {
+        return 'Games';
+    }
+    if (type.includes('sport') || type.includes('run') || type.includes('yoga') || title.includes('sport') || title.includes('run') || title.includes('yoga')) {
+        return 'Sports';
+    }
+    if (type.includes('meetup') || type.includes('meet-up') || type.includes('gathering') || type.includes('social') || type.includes('swap') ||
+        title.includes('meetup') || title.includes('meet-up') || title.includes('gathering') || title.includes('social') || title.includes('swap')) {
+        return 'Social Meet-up';
+    }
+    
+    if (item.type) {
+        return item.type.charAt(0).toUpperCase() + item.type.slice(1);
+    }
+    return 'Other Event';
 }
 window.getEventOrMeetupCategory = getEventOrMeetupCategory;
 
@@ -9741,7 +9912,7 @@ function toggleCategoryTray() {
 }
 
 const MAP_FILTER_CATEGORIES = [
-    { name: "Karma Swap", displayName: "Karma", icon: "favorite", color: "#ef4444", rgb: "239,68,68" },
+    { name: "Karma Swap", displayName: "Gifts", icon: "favorite", color: "#ef4444", rgb: "239,68,68" },
     { name: "Event or Meetup", displayName: "Events", icon: "groups", color: "#10b981", rgb: "16,185,129" },
     { name: "Food & Drink", displayName: "Food", icon: "restaurant", color: "#f97316", rgb: "249,115,22" },
     { name: "Home and Living", displayName: "Home", icon: "home", color: "#3b82f6", rgb: "59,130,246" },
@@ -9756,6 +9927,17 @@ const MAP_FILTER_CATEGORIES = [
     { name: "Language or Info Exchange", displayName: "Language", icon: "translate", color: "#2563eb", rgb: "37,99,235" },
     { name: "Donation", displayName: "Donation", icon: "favorite", color: "#ec4899", rgb: "236,72,153" },
     { name: "Clear Filter", displayName: "Clear", icon: "filter_alt_off", color: "#6b7280", rgb: "107,114,128" }
+];
+
+const EVENT_CATEGORIES = [
+    { name: "workshop", displayName: "Workshop", icon: "school", color: "#42A5F5", rgb: "66,165,245" },
+    { name: "garage sale", displayName: "Garage Sale", icon: "store", color: "#FF7043", rgb: "255,112,67" },
+    { name: "clothing exchange", displayName: "Clothing Exchange", icon: "checkroom", color: "#FFB300", rgb: "255,179,0" },
+    { name: "language exchange", displayName: "Language Exchange", icon: "translate", color: "#2563eb", rgb: "37,99,235" },
+    { name: "games", displayName: "Games", icon: "sports_esports", color: "#6366f1", rgb: "99,102,241" },
+    { name: "sports", displayName: "Sports", icon: "sports_volleyball", color: "#10b981", rgb: "16,185,129" },
+    { name: "social meet-up", displayName: "Social Meet-up", icon: "groups", color: "#8D6E63", rgb: "141,110,99" },
+    { name: "other event", displayName: "Other Event", icon: "event", color: "#6b7280", rgb: "107,114,128" }
 ];
 
 let mapInfoModeActive = false;
@@ -9910,9 +10092,14 @@ function renderMapFilterCircles() {
         state.activeMapFilters = [];
     }
 
-    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Clear Filter');
+    let categoriesList = [];
+    if (currentVillageSegment === 'events_map') {
+        categoriesList = EVENT_CATEGORIES;
+    } else {
+        categoriesList = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Clear Filter' && c.name !== 'Event or Meetup');
+    }
 
-    const categoriesHtml = filteredCategories.map((cat, idx) => {
+    const categoriesHtml = categoriesList.map((cat, idx) => {
         const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
         
         const bubbleStyle = isActive 
@@ -9969,7 +10156,7 @@ function renderListFilterCircles() {
     const dropdown = document.getElementById('list-category-dropdown');
     if (!dropdown) return;
     
-    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Clear Filter');
+    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Clear Filter' && c.name !== 'Event or Meetup');
     
     const categoriesHtml = filteredCategories.map((cat, idx) => {
         const delay = idx * 0.02;
@@ -9996,7 +10183,7 @@ function renderNeedsFilterCircles() {
     const dropdown = document.getElementById('needs-category-dropdown');
     if (!dropdown) return;
     
-    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Clear Filter');
+    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Clear Filter' && c.name !== 'Event or Meetup');
     
     const categoriesHtml = filteredCategories.map((cat, idx) => {
         const delay = idx * 0.02;
@@ -10086,9 +10273,7 @@ function renderEventsFilterCircles() {
     const dropdown = document.getElementById('events-category-dropdown');
     if (!dropdown) return;
     
-    const filteredCategories = MAP_FILTER_CATEGORIES.filter(c => c.name !== 'Clear Filter');
-    
-    const categoriesHtml = filteredCategories.map((cat, idx) => {
+    const categoriesHtml = EVENT_CATEGORIES.map((cat, idx) => {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         
@@ -11502,15 +11687,15 @@ function renderConversationsList() {
     const headerBarEl = document.getElementById('chat-hub-title-bar');
     const headerRightEl = document.getElementById('chat-hub-header-right');
     if (headerTitleEl && headerBarEl && headerRightEl) {
-        let activeColor = '#7c3aed'; // default Read (violet-600)
-        let displayTitle = 'Read';
+        let activeColor = '#7c3aed'; // default Chats (violet-600)
+        let displayTitle = 'Chats';
         let rightHtml = '';
         if (segment === 'requests') {
             activeColor = '#2563eb'; // blue-600
             displayTitle = 'Unread';
         } else if (segment === 'active') {
             activeColor = '#7c3aed'; // violet-600
-            displayTitle = 'Read';
+            displayTitle = 'Chats';
         } else if (segment === 'groups') {
             activeColor = '#059669'; // emerald-600
             displayTitle = 'Group Chats';
@@ -11587,12 +11772,22 @@ function renderConversationsList() {
             if (conv.isGroup || conv.isOld) return;
             const isCompleted = conv.negotiation && conv.negotiation.status === 'completed';
             if (isCompleted) return;
+            // Disappear if timer went down to zero (48 hours elapsed)
+            const elapsed = Date.now() - (conv.createdAt || Date.now());
+            if (elapsed >= 48 * 60 * 60 * 1000) {
+                return;
+            }
             if (!isUnread) return;
         } else if (segment === 'active') {
             // "Read" tab: individual read and unread chats/requests
             const isCompleted = conv.negotiation && conv.negotiation.status === 'completed';
             if (isCompleted) return;
             if (conv.isGroup || conv.isOld) return;
+            // Disappear if timer went down to zero (48 hours elapsed)
+            const elapsed = Date.now() - (conv.createdAt || Date.now());
+            if (elapsed >= 48 * 60 * 60 * 1000) {
+                return;
+            }
             // Disappear after 48 hours from location chosen
             if (conv.negotiation && conv.negotiation.meetupLocation && conv.locationChosenAt) {
                 if (Date.now() - conv.locationChosenAt >= 48 * 60 * 60 * 1000) {
@@ -11796,7 +11991,7 @@ function renderConversationsList() {
         renderGroupSection("Unread", activeMessages, "question_answer", "text-blue-600");
         if (activeMessages.length === 0) renderEmptyState();
     } else if (segment === 'active') {
-        renderGroupSection("Read", activeMessages, "chat", "text-violet-600");
+        renderGroupSection("Chats", activeMessages, "chat", "text-violet-600");
         if (activeMessages.length === 0) renderEmptyState();
     } else if (segment === 'groups') {
         renderGroupSection("Group Chats", activeMessages, "groups", "text-emerald-600");
@@ -12222,7 +12417,8 @@ function startChatConversation(convIdOrNeighborName) {
                     status: 'none',
                     offeredItem: null,
                     requestedItem: neighbor ? neighbor.offerTitle : null
-                }
+                },
+                initiatedBy: 'offering'
             };
             state.conversations.unshift(conv);
             saveState();
@@ -12270,15 +12466,15 @@ function renderChatDetail(conv) {
         if (detailBarEl) detailBarEl.classList.add('hidden');
         if (detailTitleEl) detailTitleEl.classList.add('hidden');
         if (detailBarEl && detailTitleEl) {
-            let activeColor = '#7c3aed'; // default Read (violet-600)
-            let displayTitle = 'Read';
+            let activeColor = '#7c3aed'; // default Chats (violet-600)
+            let displayTitle = 'Chats';
             const segment = state.currentChatSegment || 'active';
             if (segment === 'requests') {
                 activeColor = '#2563eb'; // blue-600
                 displayTitle = 'Unread';
             } else if (segment === 'active') {
                 activeColor = '#7c3aed'; // violet-600
-                displayTitle = 'Read';
+                displayTitle = 'Chats';
             } else if (segment === 'groups') {
                 activeColor = '#059669'; // emerald-600
                 displayTitle = 'Group Chats';
@@ -14638,7 +14834,7 @@ function populateSocialsUI(containerId, socialObj) {
     container.classList.remove('hidden');
     container.innerHTML = '';
     
-    const isSelfProfile = (containerId === 'self-profile-socials-container');
+    const isSelfProfile = (containerId === 'self-profile-socials-container' || containerId === 'settings-socials-icons-container');
     const currentUser = state.currentUser || { firstName: 'Lily', lastName: 'Kaufmann', displayName: 'Lily Kaufmann', location: 'Fairview' };
     const name = isSelfProfile 
         ? (currentUser.displayName || `${currentUser.firstName || 'Lily'} ${currentUser.lastName || 'Kaufmann'}`)
@@ -14658,7 +14854,11 @@ function populateSocialsUI(containerId, socialObj) {
     instBtn.onclick = (e) => {
         e.preventDefault();
         playSound('click');
-        openSocialAppOrWeb('instagram', instagramVal);
+        if (isSelfProfile) {
+            openLinkSocialsModal();
+        } else {
+            openSocialAppOrWeb('instagram', instagramVal);
+        }
     };
     instBtn.className = "w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600 text-white active:scale-95 transition-all shadow-sm cursor-pointer select-none hover:opacity-90 flex-shrink-0";
     instBtn.style.textDecoration = 'none';
@@ -14678,7 +14878,11 @@ function populateSocialsUI(containerId, socialObj) {
     fbBtn.onclick = (e) => {
         e.preventDefault();
         playSound('click');
-        openSocialAppOrWeb('facebook', facebookVal);
+        if (isSelfProfile) {
+            openLinkSocialsModal();
+        } else {
+            openSocialAppOrWeb('facebook', facebookVal);
+        }
     };
     fbBtn.className = "w-10 h-10 rounded-full flex items-center justify-center bg-[#1877F2] text-white active:scale-95 transition-all shadow-sm cursor-pointer select-none hover:opacity-90 flex-shrink-0";
     fbBtn.style.textDecoration = 'none';
@@ -14696,7 +14900,11 @@ function populateSocialsUI(containerId, socialObj) {
     ttBtn.onclick = (e) => {
         e.preventDefault();
         playSound('click');
-        openSocialAppOrWeb('tiktok', tiktokVal);
+        if (isSelfProfile) {
+            openLinkSocialsModal();
+        } else {
+            openSocialAppOrWeb('tiktok', tiktokVal);
+        }
     };
     ttBtn.className = "w-10 h-10 rounded-full flex items-center justify-center bg-black text-white active:scale-95 transition-all shadow-sm cursor-pointer select-none hover:opacity-90 flex-shrink-0";
     ttBtn.style.textDecoration = 'none';
@@ -14707,21 +14915,6 @@ function populateSocialsUI(containerId, socialObj) {
         </svg>
     `;
     container.appendChild(ttBtn);
-
-    // Location Button
-    const locBtn = document.createElement('a');
-    locBtn.href = '#';
-    locBtn.onclick = (e) => {
-        e.preventDefault();
-        openProfileStatExplanation('location');
-    };
-    locBtn.className = "w-10 h-10 rounded-full flex items-center justify-center bg-forest-green text-white active:scale-95 transition-all shadow-sm cursor-pointer select-none hover:opacity-90 flex-shrink-0";
-    locBtn.style.textDecoration = 'none';
-    locBtn.title = "Location Verification";
-    locBtn.innerHTML = `
-        <span class="material-symbols-outlined text-[22px] flex-shrink-0" style="font-variation-settings: 'FILL' 1;">location_on</span>
-    `;
-    container.appendChild(locBtn);
 }
 
 // ----------------------------------------------------
@@ -14922,6 +15115,7 @@ function renderProfileSettings() {
     // Populate social media buttons for self-profile
     if (typeof populateSocialsUI === 'function') {
         populateSocialsUI('self-profile-socials-container', state.currentUser);
+        populateSocialsUI('settings-socials-icons-container', state.currentUser);
     }
 
     // Offer list rendering
@@ -15471,6 +15665,17 @@ function renderProfileSettings() {
     }
 }
 
+window.handleAddMyCornerNew = function() {
+    if (typeof playSound === 'function') playSound('click');
+    const activeTab = state.myCornerActiveTab || 'offerings';
+    let mode = 'offering';
+    if (activeTab === 'needs') mode = 'need';
+    else if (activeTab === 'events') mode = 'event';
+    if (typeof window.triggerQuickCreate === 'function') {
+        window.triggerQuickCreate(mode);
+    }
+};
+
 // ----------------------------------------------------
 // My Corner widget switcher & dynamic listings
 // ----------------------------------------------------
@@ -15536,7 +15741,7 @@ window.renderMyCornerItems = function() {
                 <div class="flex items-center gap-3 min-w-0 flex-grow text-left">
                     ${imgHtml}
                     <div class="min-w-0 flex-1">
-                        <h4 class="text-[13.5px] font-semibold text-black dark:text-warm-cream truncate">${item.title}</h4>
+                        <h4 class="text-[11px] font-bold text-black dark:text-warm-cream truncate">${item.title}</h4>
                         <p class="text-[11px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${item.category}</p>
                     </div>
                 </div>
@@ -15567,7 +15772,7 @@ window.renderMyCornerItems = function() {
             
             const imgHtml = item.image ? `<img src="${item.image}" class="w-12 h-12 rounded-lg object-cover flex-shrink-0" />` : `
                 <div class="w-12 h-12 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500 flex-shrink-0">
-                    <span class="material-symbols-outlined text-[22px]">${item.icon || 'search'}</span>
+                    <span class="material-symbols-outlined text-[22px]">${item.icon || 'shopping_basket'}</span>
                 </div>
             `;
             
@@ -15575,7 +15780,7 @@ window.renderMyCornerItems = function() {
                 <div class="flex items-center gap-3 min-w-0 flex-grow text-left">
                     ${imgHtml}
                     <div class="min-w-0 flex-1">
-                        <h4 class="text-[13.5px] font-semibold text-black dark:text-warm-cream truncate">${item.title}</h4>
+                        <h4 class="text-[11px] font-bold text-black dark:text-warm-cream truncate">${item.title}</h4>
                         <p class="text-[11px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${item.category}</p>
                     </div>
                 </div>
@@ -15620,7 +15825,7 @@ window.renderMyCornerItems = function() {
                     </div>
                     <div class="min-w-0 flex-1">
                         <div class="flex items-center gap-1.5 min-w-0">
-                            <h4 class="text-[13.5px] font-semibold text-black dark:text-warm-cream truncate">${item.title}</h4>
+                            <h4 class="text-[11px] font-bold text-black dark:text-warm-cream truncate">${item.title}</h4>
                             ${isHost ? `<span class="bg-blue-500 text-white text-[7px] px-1 py-0.2 rounded font-bold uppercase tracking-wider flex-shrink-0">Host</span>` : ''}
                         </div>
                         <p class="text-[11px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${dateStr}</p>
@@ -17081,7 +17286,7 @@ function renderNeedsBoardView() {
                         <!-- Actions Row -->
                         <div class="flex flex-col gap-2 pt-1.5 bg-white dark:bg-[#18201a] rounded-b-2xl">
                             <button class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase" onclick="event.stopPropagation(); window.handleOfferToSwapNeed('${need.id}');">
-                                <span class="material-symbols-outlined text-xs">handshake</span> i can help
+                                <span class="material-symbols-outlined text-xs">handshake</span> I can help
                             </button>
                             
                             <button class="inline-save-btn w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase ${state.savedListings && state.savedListings.includes('need_' + need.id) ? 'active-green-white' : ''}" onclick="window.handleInlineSaveListing(event, 'need_${need.id}')">
@@ -17128,10 +17333,12 @@ function handleOfferToSwapNeed(needId) {
                 status: 'none',
                 offeredItem: null,
                 requestedItem: need.needTitle
-            }
+            },
+            initiatedBy: 'need'
         };
         state.conversations.unshift(conv);
     } else {
+        conv.initiatedBy = 'need';
         conv.messages.push({
             sender: 'me',
             text: textMsg,
@@ -25509,22 +25716,32 @@ function getPendingReviews() {
     // Add real conversations that have reached the review phase
     if (state.conversations) {
         state.conversations.forEach(conv => {
+            if (conv.isGroup) return;
+            const elapsed = conv.createdAt ? (now - conv.createdAt) : 0;
+            const timeLimit = 48 * 60 * 60 * 1000;
+            
+            // Check if timer went to 0 (elapsed >= 48 hours or meetupLocation elapsed >= 48 hours)
+            let isExpired = elapsed >= timeLimit;
             if (conv.negotiation && conv.negotiation.meetupLocation && conv.locationChosenAt) {
                 const elapsedSinceLocation = now - conv.locationChosenAt;
-                const timeShowReview = 48 * 60 * 60 * 1000; // 48h (immediately after active chat expiry)
-                
-                if (elapsedSinceLocation >= timeShowReview) {
-                    // Check if they haven't reviewed or deleted it yet
-                    if (!conv.reviewSubmitted && !conv.reviewDeleted) {
+                if (elapsedSinceLocation >= timeLimit) {
+                    isExpired = true;
+                }
+            }
+
+            if (isExpired) {
+                if (!conv.reviewSubmitted && !conv.reviewDeleted) {
+                    // Check duplicate
+                    if (!list.some(item => item.convId === conv.id)) {
                         list.push({
                             id: 'rev-' + conv.id,
                             isRealConv: true,
                             convId: conv.id,
                             neighborName: conv.neighborName,
                             avatar: state.neighbors[conv.neighborName]?.avatar || "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop",
-                            offeredItem: conv.negotiation.offeredItem || "Swap Item",
-                            requestedItem: conv.negotiation.requestedItem || "Swap Item",
-                            createdAt: conv.locationChosenAt + timeShowReview // Entered review section at this time
+                            offeredItem: (conv.negotiation && conv.negotiation.offeredItem) || "Swap Item",
+                            requestedItem: (conv.negotiation && conv.negotiation.requestedItem) || "Swap Item",
+                            createdAt: conv.locationChosenAt ? (conv.locationChosenAt + timeLimit) : (conv.createdAt || now)
                         });
                     }
                 }
@@ -25613,6 +25830,10 @@ function updateChatNotificationBadge() {
             badgeReviews.classList.add('hidden');
         }
     }
+    // Synchronize segment button styling
+    if (typeof switchChatSegment === 'function') {
+        switchChatSegment(state.currentChatSegment || 'active', true, true);
+    }
 }
 window.updateChatNotificationBadge = updateChatNotificationBadge;
 
@@ -25625,10 +25846,15 @@ window.switchChatSegment = function(type, muteSound = false, skipRender = false)
     const btnGroups = document.getElementById('btn-chat-segment-groups');
     const btnReviews = document.getElementById('btn-chat-segment-reviews');
     
+    const pendingReviews = getPendingReviews().slice(0, 5);
+    const reviewsCount = pendingReviews.length;
+
     const updateBtnStyle = (btn, btnType) => {
         if (!btn) return;
         if (type === btnType) {
             btn.className = "relative flex-1 text-[13.5px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm";
+        } else if (btnType === 'reviews' && reviewsCount > 0) {
+            btn.className = "relative flex-1 text-[13.5px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-red-500 rounded-xl bg-red-500/10 text-red-500 dark:text-red-400 animate-pulse shadow-sm";
         } else {
             btn.className = "relative flex-1 text-[13.5px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-transparent rounded-xl bg-transparent text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5";
         }
@@ -29379,22 +29605,35 @@ function renderBadgesList(containerId, targetName) {
     container.innerHTML = "";
     
     // Layout as boxes side-by-side taking up the space, allowing horizontal scrolling
-    container.className = "flex flex-row gap-2 py-2 w-full justify-evenly items-stretch select-none overflow-x-auto scrollbar-none scroll-smooth";
+    container.className = "flex flex-row gap-2 py-2 w-full justify-start items-stretch select-none overflow-x-auto scrollbar-none scroll-smooth px-1";
 
     const isSelf = (containerId === 'user-badges-container' || targetName === 'Lily Kaufmann' || targetName === 'Lily' || (state.currentUser && targetName === (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`)));
     
     // Resolve stats for checking unlocks dynamically based on owner profile
     let completedSwapsCount = 0;
     let isGofundmeSupporter = false;
+    let hostedEventsCount = 0;
+    let karmaListingsCount = 0;
+    let friendsCount = 0;
 
     if (isSelf) {
         completedSwapsCount = Math.max(state.stats.tradesMade || 0, state.conversations ? state.conversations.filter(c => c.negotiation && c.negotiation.status === 'completed').length : 0);
         isGofundmeSupporter = state.gofundmeSupporter === true;
+        hostedEventsCount = (state.events || []).filter(evt => evt.host === 'me' || evt.host === 'Lily Kaufmann').length + 4;
+        karmaListingsCount = (state.listings || []).filter(item => (item.owner === 'Lily Kaufmann' || item.owner === 'Lily' || item.creator === 'self') && item.isKarma).length + 4;
+        friendsCount = (state.friends || []).length * 11;
     } else {
         const neighbor = state.neighbors ? state.neighbors[targetName] : null;
         if (neighbor) {
             completedSwapsCount = neighbor.completedSwaps !== undefined ? neighbor.completedSwaps : Math.floor((neighbor.vouches || 0) * 1.5);
             isGofundmeSupporter = neighbor.gofundmeSupporter === true;
+            hostedEventsCount = neighbor.hostedEventsCount || 5;
+            karmaListingsCount = neighbor.karmaListingsCount || 5;
+            friendsCount = neighbor.friendsCount || 105;
+        } else {
+            hostedEventsCount = 5;
+            karmaListingsCount = 5;
+            friendsCount = 105;
         }
     }
 
@@ -29408,7 +29647,7 @@ function renderBadgesList(containerId, targetName) {
             textColor: 'text-blue-600 dark:text-blue-400',
             bgGradient: 'from-blue-500/25 to-indigo-500/25',
             borderColor: 'border-blue-500/50',
-            unlocked: true // Always unlocked for the community reference
+            unlocked: !state.isNewAccount // Always unlocked for the community reference, except new user account
         },
         {
             id: 'gofundme_supporter',
@@ -29432,11 +29671,44 @@ function renderBadgesList(containerId, targetName) {
             bgGradient: 'from-green-500/25 to-emerald-500/25',
             borderColor: 'border-green-500/50',
             unlocked: completedSwapsCount >= 5
+        },
+        {
+            id: 'super_host',
+            title: 'Super Host',
+            desc: 'Hosted 5 or more local events.',
+            icon: 'celebration',
+            color: '#eab308',
+            textColor: 'text-yellow-600 dark:text-yellow-400',
+            bgGradient: 'from-yellow-500/25 to-amber-500/25',
+            borderColor: 'border-yellow-500/50',
+            unlocked: hostedEventsCount >= 5
+        },
+        {
+            id: 'super_giver',
+            title: 'Super Giver',
+            desc: 'Offered 5 or more items as gifts.',
+            icon: 'volunteer_activism',
+            color: '#a855f7',
+            textColor: 'text-purple-600 dark:text-purple-400',
+            bgGradient: 'from-purple-500/25 to-fuchsia-500/25',
+            borderColor: 'border-purple-500/50',
+            unlocked: karmaListingsCount >= 5
+        },
+        {
+            id: 'super_connector',
+            title: 'Super Connector',
+            desc: 'Connected with 100 or more neighbors.',
+            icon: 'groups',
+            color: '#06b6d4',
+            textColor: 'text-cyan-600 dark:text-cyan-400',
+            bgGradient: 'from-cyan-500/25 to-teal-500/25',
+            borderColor: 'border-cyan-500/50',
+            unlocked: friendsCount >= 100
         }
     ];
 
-    // Show all three badges on both self and neighbor profiles
-    const filteredBadges = badges;
+    // Show all badges on both self and neighbor profiles, unless new user account
+    const filteredBadges = (isSelf && state.isNewAccount) ? [] : badges;
 
     filteredBadges.forEach(b => {
         const item = document.createElement('div');
@@ -29452,6 +29724,15 @@ function renderBadgesList(containerId, targetName) {
         } else if (b.id === 'super_trader') {
             themeClass = 'badge-theme-green';
             colorTheme = 'green';
+        } else if (b.id === 'super_host') {
+            themeClass = 'badge-theme-yellow';
+            colorTheme = 'yellow';
+        } else if (b.id === 'super_giver') {
+            themeClass = 'badge-theme-purple';
+            colorTheme = 'purple';
+        } else if (b.id === 'super_connector') {
+            themeClass = 'badge-theme-cyan';
+            colorTheme = 'cyan';
         }
         
         item.className = `premium-badge-item ${unlockedClass} ${themeClass}`;
@@ -29463,7 +29744,10 @@ function renderBadgesList(containerId, targetName) {
                 if (typeof confetti === 'function') {
                     const colors = b.id === 'early_adopter' ? ['#3b82f6', '#60a5fa', '#1d4ed8'] :
                                    b.id === 'gofundme_supporter' ? ['#ef4444', '#fb7185', '#b91c1c'] :
-                                   ['#10b981', '#34d399', '#047857'];
+                                   b.id === 'super_trader' ? ['#10b981', '#34d399', '#047857'] :
+                                   b.id === 'super_host' ? ['#f59e0b', '#fbbf24', '#d97706'] :
+                                   b.id === 'super_giver' ? ['#a855f7', '#c084fc', '#7e22ce'] :
+                                   ['#06b6d4', '#22d3ee', '#0891b2'];
                     confetti({
                         particleCount: 150,
                         spread: 85,
@@ -30088,6 +30372,155 @@ window.exitMeetupMapMode = function() {
     showView('chat_detail');
 };
 
+window.openLinkSocialsModal = function() {
+    if (typeof playSound === 'function') playSound('click');
+    const modal = document.getElementById('link-socials-modal');
+    if (!modal) return;
+    
+    const currentUser = state.currentUser || {};
+    const hasLinked = !!(currentUser.instagram || currentUser.facebook || currentUser.tiktok);
+    
+    const instaInput = document.getElementById('modal-instagram');
+    const fbInput = document.getElementById('modal-facebook');
+    const ttInput = document.getElementById('modal-tiktok');
+    
+    if (instaInput) instaInput.value = currentUser.instagram || '';
+    if (fbInput) fbInput.value = currentUser.facebook || '';
+    if (ttInput) ttInput.value = currentUser.tiktok || '';
+    
+    const unlinkBtn = document.getElementById('modal-unlink-socials-btn');
+    if (unlinkBtn) {
+        if (hasLinked) {
+            unlinkBtn.classList.remove('hidden');
+        } else {
+            unlinkBtn.classList.add('hidden');
+        }
+    }
+    
+    modal.classList.remove('hidden');
+};
+
+window.closeLinkSocialsModal = function() {
+    if (typeof playSound === 'function') playSound('click');
+    const modal = document.getElementById('link-socials-modal');
+    if (modal) modal.classList.add('hidden');
+};
+
+window.saveLinkedSocials = function() {
+    if (typeof playSound === 'function') playSound('click');
+    const instaInput = document.getElementById('modal-instagram');
+    const fbInput = document.getElementById('modal-facebook');
+    const ttInput = document.getElementById('modal-tiktok');
+    
+    if (!state.currentUser) state.currentUser = {};
+    
+    state.currentUser.instagram = instaInput ? instaInput.value.trim() : '';
+    state.currentUser.facebook = fbInput ? fbInput.value.trim() : '';
+    state.currentUser.tiktok = ttInput ? ttInput.value.trim() : '';
+    
+    const settingsInsta = document.getElementById('settings-instagram');
+    const settingsFb = document.getElementById('settings-facebook');
+    const settingsTt = document.getElementById('settings-tiktok');
+    if (settingsInsta) settingsInsta.value = state.currentUser.instagram;
+    if (settingsFb) settingsFb.value = state.currentUser.facebook;
+    if (settingsTt) settingsTt.value = state.currentUser.tiktok;
+    
+    if (typeof saveUserProfile === 'function') {
+        saveUserProfile();
+    }
+    
+    populateSocialsUI('self-profile-socials-container', state.currentUser);
+    populateSocialsUI('settings-socials-icons-container', state.currentUser);
+    
+    const modal = document.getElementById('link-socials-modal');
+    if (modal) modal.classList.add('hidden');
+    
+    if (typeof showToast === 'function') {
+        showToast('Social accounts updated successfully!');
+    }
+};
+
+window.unlinkSocials = function() {
+    if (typeof playSound === 'function') playSound('click');
+    const instaInput = document.getElementById('modal-instagram');
+    const fbInput = document.getElementById('modal-facebook');
+    const ttInput = document.getElementById('modal-tiktok');
+    
+    if (instaInput) instaInput.value = '';
+    if (fbInput) fbInput.value = '';
+    if (ttInput) ttInput.value = '';
+    
+    if (state.currentUser) {
+        state.currentUser.instagram = '';
+        state.currentUser.facebook = '';
+        state.currentUser.tiktok = '';
+    }
+    
+    const settingsInsta = document.getElementById('settings-instagram');
+    const settingsFb = document.getElementById('settings-facebook');
+    const settingsTt = document.getElementById('settings-tiktok');
+    if (settingsInsta) settingsInsta.value = '';
+    if (settingsFb) settingsFb.value = '';
+    if (settingsTt) settingsTt.value = '';
+    
+    if (typeof saveUserProfile === 'function') {
+        saveUserProfile();
+    }
+    
+    populateSocialsUI('self-profile-socials-container', state.currentUser);
+    populateSocialsUI('settings-socials-icons-container', state.currentUser);
+    
+    const modal = document.getElementById('link-socials-modal');
+    if (modal) modal.classList.add('hidden');
+    
+    if (typeof showToast === 'function') {
+        showToast('Social accounts unlinked.');
+    }
+};
+
+window.toggleAccordion = function(headerId) {
+    if (typeof playSound === 'function') playSound('click');
+    const header = document.getElementById(headerId);
+    if (!header) return;
+    
+    const wrapper = header.nextElementSibling;
+    if (!wrapper) return;
+    
+    const icon = header.querySelector('.accordion-chevron');
+    
+    if (wrapper.classList.contains('hidden')) {
+        wrapper.classList.remove('hidden');
+        if (icon) {
+            icon.style.transform = 'rotate(180deg)';
+        }
+    } else {
+        wrapper.classList.add('hidden');
+        if (icon) {
+            icon.style.transform = 'rotate(0deg)';
+        }
+    }
+};
+
+window.toggleProfileAccordion = function(section) {
+    if (typeof playSound === 'function') playSound('click');
+    const content = document.getElementById('accordion-content-' + section);
+    if (!content) return;
+    
+    const chevron = document.getElementById('accordion-chevron-' + section);
+    
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        if (chevron) {
+            chevron.style.transform = 'rotate(90deg)';
+        }
+    } else {
+        content.classList.add('hidden');
+        if (chevron) {
+            chevron.style.transform = 'rotate(0deg)';
+        }
+    }
+};
+
 function openProfileStatExplanation(type) {
     if (typeof playSound === 'function') playSound('click');
     const modal = document.getElementById('profile-stat-explanation-modal');
@@ -30252,9 +30685,9 @@ function openProfileStatExplanation(type) {
             };
             const fictitiousLoc = getFictitiousLocation(loc);
             if (isSelf) {
-                descText = `You are located in **${loc}**.\n\nMeetup Spot:\n**${fictitiousLoc}**\n\nTo protect privacy and safety, exact home addresses are never shared. We recommend coordinating all swap handoffs in public, well-lit spaces within this vicinity.`;
+                descText = `You are located in **${loc}**.\n\nTo protect privacy and safety, exact home addresses are never shared. We recommend coordinating all swap handoffs in public, well-lit spaces within this vicinity.`;
             } else {
-                descText = `This neighbor is located in **${loc}**.\n\nMeetup Spot:\n**${fictitiousLoc}**\n\nTo protect privacy and safety, exact home addresses are never shared. We recommend coordinating all swap handoffs in public, well-lit spaces within this vicinity.`;
+                descText = `This neighbor is located in **${loc}**.\n\nTo protect privacy and safety, exact home addresses are never shared. We recommend coordinating all swap handoffs in public, well-lit spaces within this vicinity.`;
             }
         }
         
@@ -30716,6 +31149,22 @@ window.openFusedReviewModal = function(neighborName, convId, reviewId) {
         detailsEl.innerText = detailsText;
     }
 
+    // Populate swap listing image, title and description
+    const swapImgEl = document.getElementById('confirm-swap-listing-image');
+    const swapTitleEl = document.getElementById('confirm-swap-listing-title');
+    const swapDescEl = document.getElementById('confirm-swap-listing-desc');
+    if (swapImgEl && swapTitleEl && swapDescEl) {
+        if (neighbor) {
+            swapImgEl.src = neighbor.offerImg || "https://images.unsplash.com/photo-1597362925123-77861d3fbac7?q=60&w=400&auto=format&fit=crop";
+            swapTitleEl.innerText = neighbor.offerTitle || "Swap Item";
+            swapDescEl.innerText = neighbor.offerDesc || "Swap initiated from local listing";
+        } else {
+            swapImgEl.src = "https://images.unsplash.com/photo-1597362925123-77861d3fbac7?q=60&w=400&auto=format&fit=crop";
+            swapTitleEl.innerText = "Swap Item";
+            swapDescEl.innerText = "Swap details";
+        }
+    }
+
     // Written review text label and placeholder
     const feedbackLabel = document.getElementById('confirm-swap-written-feedback-label');
     if (feedbackLabel) {
@@ -30797,36 +31246,36 @@ window.updateFusedReviewUI = function() {
     // Vote Up
     if (upBtn) {
         if (fusedReviewVote === 'up') {
-            upBtn.className = "h-12 rounded-xl bg-[#22c55e] border border-[#22c55e] text-white active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm";
+            upBtn.className = "h-14 rounded-xl bg-[#22c55e] border border-[#22c55e] text-white active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm";
         } else {
-            upBtn.className = "h-12 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#22c55e] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#22c55e]";
+            upBtn.className = "h-14 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#22c55e] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#22c55e]";
         }
     }
 
     // Friend
     if (friendBtn) {
         if (fusedReviewFriend) {
-            friendBtn.className = "h-12 rounded-xl bg-[#22c55e] border border-[#22c55e] text-white active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm";
+            friendBtn.className = "h-14 rounded-xl bg-[#22c55e] border border-[#22c55e] text-white active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm";
         } else {
-            friendBtn.className = "h-12 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#22c55e] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#22c55e]";
+            friendBtn.className = "h-14 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#22c55e] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#22c55e]";
         }
     }
 
     // Vote Down
     if (downBtn) {
         if (fusedReviewVote === 'down') {
-            downBtn.className = "h-12 rounded-xl bg-[#ef4444] border border-[#ef4444] text-white active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm";
+            downBtn.className = "h-14 rounded-xl bg-[#ef4444] border border-[#ef4444] text-white active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm";
         } else {
-            downBtn.className = "h-12 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#ef4444] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#ef4444]";
+            downBtn.className = "h-14 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#ef4444] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#ef4444]";
         }
     }
 
     // Block
     if (blockBtn) {
         if (fusedReviewBlock) {
-            blockBtn.className = "h-12 rounded-xl bg-[#ef4444] border border-[#ef4444] text-white active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm";
+            blockBtn.className = "h-14 rounded-xl bg-[#ef4444] border border-[#ef4444] text-white active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm";
         } else {
-            blockBtn.className = "h-12 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#ef4444] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#ef4444]";
+            blockBtn.className = "h-14 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#ef4444] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#ef4444]";
         }
     }
 
@@ -30840,6 +31289,19 @@ window.updateFusedReviewUI = function() {
             negativeMenu.classList.remove('flex');
         }
     }
+};
+
+window.logToModeration = function(user, ratingType, detail) {
+    if (!state.moderationLogs) state.moderationLogs = [];
+    state.moderationLogs.unshift({
+        id: 'log-' + Date.now(),
+        action: `User Rating: ${user}`,
+        time: new Date().toLocaleString(),
+        type: 'warning',
+        ratingType: ratingType, // 'thumbs_down', 'issue_tag', 'block', 'swap_not_complete'
+        targetUser: user,
+        detail: detail
+    });
 };
 
 window.submitFusedReview = function() {
@@ -30882,6 +31344,17 @@ window.submitFusedReview = function() {
         if (!state.blockedUsers.includes(neighborName)) {
             state.blockedUsers.push(neighborName);
         }
+    }
+
+    // 3.5. Share to Moderator Log if downvote, issue tags, or block selected
+    if (fusedReviewVote === 'down') {
+        window.logToModeration(neighborName, 'thumbs_down', `Received Thumbs Down rating.`);
+    }
+    if (fusedReviewTags.length > 0) {
+        window.logToModeration(neighborName, 'issue_tag', `Received issue tags: ${fusedReviewTags.join(', ')}`);
+    }
+    if (fusedReviewBlock) {
+        window.logToModeration(neighborName, 'block', `Was blocked by reviewer.`);
     }
 
     // 4. Submit report/feedback to reportedAccounts admin backend
@@ -31003,6 +31476,8 @@ window.skipFusedReview = function() {
 window.notCompletedFusedReview = function() {
     if (typeof playSound === 'function') playSound('click');
 
+    const neighborName = document.getElementById('confirm-swap-neighbor-name')?.innerText.trim() || "";
+
     if (fusedReviewTargetType === 'conversation') {
         const conv = state.conversations.find(c => c.id === fusedReviewTargetId);
         if (conv) {
@@ -31011,11 +31486,24 @@ window.notCompletedFusedReview = function() {
             }
             conv.reviewed = true;
             conv.reviewSubmitted = true;
+            conv.reviewDeleted = true; // Delete from the review tab
             conv.messages.push({
                 sender: 'System',
                 text: `Swap marked as not completed. Negotiation failed.`,
                 time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             });
+
+            const targetUser = conv.neighborName || neighborName;
+            if (targetUser) {
+                window.logToModeration(targetUser, 'swap_not_complete', `Swap was marked as not completed.`);
+            }
+        }
+    } else if (fusedReviewTargetType === 'review') {
+        if (state.fictitiousReviews) {
+            state.fictitiousReviews = state.fictitiousReviews.filter(r => r.id !== fusedReviewTargetId && r.neighborName !== neighborName);
+        }
+        if (neighborName) {
+            window.logToModeration(neighborName, 'swap_not_complete', `Swap was marked as not completed (fictitious review).`);
         }
     }
 
@@ -31115,6 +31603,24 @@ window.handleChatInputWrapperClick = function(event, wrapper) {
     }
 };
 // Unified Swap/Karma Request Modal Lifecycle (State A & State B)
+window.getConversationInitiatedBy = function(conv) {
+    if (conv.initiatedBy) return conv.initiatedBy;
+    // Auto-detection fallback
+    if (conv.negotiation && conv.negotiation.requestedItem) {
+        const reqItem = conv.negotiation.requestedItem.toLowerCase();
+        // Check if there is a match in needsBoard
+        const isNeed = state.needsBoard && state.needsBoard.some(n => n.needTitle && n.needTitle.toLowerCase() === reqItem);
+        if (isNeed) return 'need';
+        
+        // Check if neighbor's default offer matches
+        const neighbor = state.neighbors && state.neighbors[conv.neighborName];
+        if (neighbor && neighbor.offerTitle && neighbor.offerTitle.toLowerCase() === reqItem) {
+            return 'offering';
+        }
+    }
+    return 'offering';
+};
+
 window.openSwapLifecycleModal = function(role, conversationId) {
     if (typeof playSound === 'function') playSound('click');
     
@@ -31132,32 +31638,48 @@ window.openSwapLifecycleModal = function(role, conversationId) {
     state.selectedSwapListingId = null;
     
     if (role === 'initiator') {
-        const totalKarma = ((state.level || 1) - 1) * 100 + (state.xp || 50);
+        const initiatedBy = window.getConversationInitiatedBy(conv);
+        const isOfferingVersion = (initiatedBy === 'need');
+        
+        const listHeading = isOfferingVersion ? "My Items to Offer" : "My Needs";
+        const itemsList = isOfferingVersion ? (state.userOfferings || []) : (state.userNeeds || []);
+        const noItemsText = isOfferingVersion ? "No active listings on your profile." : "No active needs on your profile.";
+
         container.innerHTML = `
             <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
                 <h3 class="popup-modal-title text-center mb-1">Offer a Swap</h3>
-                <p class="popup-modal-desc text-center text-xs mb-2">Propose an item to swap or request to receive it for free.</p>
             </div>
             
             <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 min-h-0">
-                <!-- My Items to Offer -->
+                <!-- List Section -->
                 <div class="flex flex-col gap-1.5 shrink-0">
-                    <span class="popup-modal-desc block text-left">My Items to Offer</span>
+                    <span class="popup-modal-desc block text-left" id="lifecycle-list-heading-title">${listHeading}</span>
                     <div class="flex flex-col gap-2 py-1 select-none w-full" id="lifecycle-offerings-scroller">
                         <!-- Populated dynamically below -->
                     </div>
                 </div>
                 
-                <!-- Custom Item Input -->
+                <!-- Custom Input -->
                 <div class="flex flex-col gap-1.5 shrink-0">
-                    <span class="popup-modal-desc block text-left">Custom Item (Optional)</span>
+                    <span class="popup-modal-desc block text-left">Custom</span>
                     <input type="text" id="lifecycle-custom-text" class="w-full bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl p-3 text-xs outline-none focus:ring-1 focus:ring-forest-green text-on-surface" placeholder="Type an item name..."/>
+                </div>
+
+                <!-- For karma -->
+                <div class="flex flex-col gap-1.5 shrink-0">
+                    <span class="popup-modal-desc block text-left">For karma</span>
+                    <label class="flex items-center gap-3 p-3 bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl cursor-pointer select-none transition-all hover:bg-forest-green/5 border-black/10 dark:border-white/10">
+                        <input type="radio" id="karma-for-free-radio" name="karma-option" class="accent-forest-green w-4 h-4 cursor-pointer" value="free" />
+                        <span class="material-symbols-outlined text-[16px] text-red-500 font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                        <span class="text-xs text-black dark:text-white font-bold">For free (+20 karma points)</span>
+                    </label>
                 </div>
             </div>
             
             <!-- Action buttons -->
             <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-[calc(16px + env(safe-area-inset-bottom, 20px))]">
                 <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.submitLifecycleSwap(false)">Propose Swap</button>
+                <button class="w-full bg-[#8e8e93] hover:bg-[#787880]/90 text-white py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0 mt-2" onclick="window.closeSwapLifecycleModal()">Never mind</button>
             </div>
         `;
         
@@ -31165,16 +31687,18 @@ window.openSwapLifecycleModal = function(role, conversationId) {
         const scroller = document.getElementById('lifecycle-offerings-scroller');
         if (scroller) {
             scroller.innerHTML = '';
-            if (state.userOfferings && state.userOfferings.length > 0) {
-                state.userOfferings.forEach(off => {
+            if (itemsList.length > 0) {
+                itemsList.forEach(off => {
                     const card = document.createElement('button');
                     card.type = 'button';
                     card.className = `w-full flex items-center p-3 rounded-xl border border-black/10 dark:border-white/10 transition-all cursor-pointer text-left bg-white dark:bg-[#101612] hover:bg-forest-green/5`;
                     card.setAttribute('data-id', off.id);
                     
-                    const offIcon = off.icon || getCategoryIcon(off.category) || 'local_offer';
-                    const catColor = getCategoryColor(off.category);
-                    const catObj = MAP_FILTER_CATEGORIES.find(c => c.name === off.category || c.displayName === off.category);
+                    const itemTitle = off.needTitle || off.title || "Need Item";
+                    const itemCategory = off.category || 'Other';
+                    const offIcon = off.icon || getCategoryIcon(itemCategory) || 'local_offer';
+                    const catColor = getCategoryColor(itemCategory);
+                    const catObj = MAP_FILTER_CATEGORIES.find(c => c.name === itemCategory || c.displayName === itemCategory);
                     const bgStyle = catObj ? `background-color: rgba(${catObj.rgb}, 0.15) !important; color: ${catColor} !important;` : '';
                     
                     card.innerHTML = `
@@ -31182,8 +31706,8 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                             <span class="material-symbols-outlined text-[18px]">${offIcon}</span>
                         </div>
                         <div class="flex-grow min-w-0 pr-3">
-                            <div class="text-xs font-bold text-black dark:text-white truncate">${escapeHTML(off.title)}</div>
-                            <div class="text-[10px] text-gray-500 dark:text-gray-400 truncate">${escapeHTML(off.category || 'Other')}</div>
+                            <div class="text-xs font-bold text-black dark:text-white truncate">${escapeHTML(itemTitle)}</div>
+                            <div class="text-[10px] text-gray-500 dark:text-gray-400 truncate">${escapeHTML(itemCategory)}</div>
                         </div>
                         <div class="check-indicator w-4 h-4 rounded-full border border-black/20 dark:border-white/20 flex items-center justify-center flex-shrink-0 ml-auto transition-all bg-transparent">
                             <span class="material-symbols-outlined text-[10px] text-white opacity-0 select-none font-bold">check</span>
@@ -31194,6 +31718,8 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                         state.selectedSwapListingId = off.id;
                         const customText = document.getElementById('lifecycle-custom-text');
                         if (customText) customText.value = '';
+                        const karmaRadio = document.getElementById('karma-for-free-radio');
+                        if (karmaRadio) karmaRadio.checked = false;
                         scroller.querySelectorAll('button').forEach(btn => {
                             const indicator = btn.querySelector('.check-indicator');
                             const indicatorCheck = btn.querySelector('.check-indicator span');
@@ -31219,61 +31745,39 @@ window.openSwapLifecycleModal = function(role, conversationId) {
             } else {
                 const placeholder = document.createElement('p');
                 placeholder.className = "text-[10px] text-outline italic py-2";
-                placeholder.innerText = "No active listings on your profile.";
+                placeholder.innerText = noItemsText;
                 scroller.appendChild(placeholder);
             }
-            
-            // Append the special Karma Request card at the bottom
-            const karmaCard = document.createElement('button');
-            karmaCard.type = 'button';
-            karmaCard.className = `w-full flex items-center p-3 rounded-xl border border-black/10 dark:border-white/10 transition-all cursor-pointer text-left bg-white dark:bg-[#101612] hover:bg-forest-green/5`;
-            karmaCard.setAttribute('data-id', 'karma_request');
-            
-            karmaCard.innerHTML = `
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3 flex-shrink-0" style="background-color: rgba(239, 68, 68, 0.15) !important; color: #ef4444 !important;">
-                    <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
-                </div>
-                <div class="flex-grow min-w-0 pr-3">
-                    <div class="text-xs font-bold text-black dark:text-white truncate">Request for Free (Gives Karma)</div>
-                    <div class="text-[10px] text-gray-500 dark:text-gray-400 truncate">Neighbor gets +50 Karma Points ❤️</div>
-                </div>
-                <div class="check-indicator w-4 h-4 rounded-full border border-black/20 dark:border-white/20 flex items-center justify-center flex-shrink-0 ml-auto transition-all bg-transparent">
-                    <span class="material-symbols-outlined text-[10px] text-white opacity-0 select-none font-bold">check</span>
-                </div>
-            `;
-            
-            karmaCard.onclick = () => {
+        }
+        
+        const karmaRadio = document.getElementById('karma-for-free-radio');
+        if (karmaRadio) {
+            karmaRadio.onclick = () => {
                 playSound('click');
-                state.selectedSwapListingId = 'karma_request';
+                state.selectedSwapListingId = null;
                 const customText = document.getElementById('lifecycle-custom-text');
                 if (customText) customText.value = '';
-                scroller.querySelectorAll('button').forEach(btn => {
-                    const indicator = btn.querySelector('.check-indicator');
-                    const indicatorCheck = btn.querySelector('.check-indicator span');
-                    if (btn.getAttribute('data-id') === 'karma_request') {
-                        btn.classList.add('border-forest-green', 'bg-forest-green/5', 'dark:bg-forest-green/10');
-                        if (indicator) {
-                            indicator.classList.remove('bg-transparent', 'border-black/20', 'dark:border-white/20');
-                            indicator.classList.add('bg-forest-green', 'border-forest-green');
-                        }
-                        if (indicatorCheck) indicatorCheck.classList.remove('opacity-0');
-                    } else {
+                if (scroller) {
+                    scroller.querySelectorAll('button').forEach(btn => {
                         btn.classList.remove('border-forest-green', 'bg-forest-green/5', 'dark:bg-forest-green/10');
+                        const indicator = btn.querySelector('.check-indicator');
+                        const indicatorCheck = btn.querySelector('.check-indicator span');
                         if (indicator) {
                             indicator.classList.add('bg-transparent', 'border-black/20', 'dark:border-white/20');
                             indicator.classList.remove('bg-forest-green', 'border-forest-green');
                         }
                         if (indicatorCheck) indicatorCheck.classList.add('opacity-0');
-                    }
-                });
+                    });
+                }
             };
-            scroller.appendChild(karmaCard);
         }
-        
+
         const customText = document.getElementById('lifecycle-custom-text');
         if (customText) {
             customText.oninput = () => {
                 state.selectedSwapListingId = null;
+                const karmaRadio = document.getElementById('karma-for-free-radio');
+                if (karmaRadio) karmaRadio.checked = false;
                 if (scroller) {
                     scroller.querySelectorAll('button').forEach(btn => {
                         btn.classList.remove('border-forest-green', 'bg-forest-green/5', 'dark:bg-forest-green/10');
@@ -31423,6 +31927,11 @@ window.submitLifecycleSwap = function(isKarma) {
     const conv = state.conversations.find(c => c.id === state.currentConversationId);
     if (!conv) return;
     
+    const karmaRadio = document.getElementById('karma-for-free-radio');
+    if (karmaRadio && karmaRadio.checked) {
+        isKarma = true;
+    }
+    
     if (state.selectedSwapListingId === 'karma_request') {
         isKarma = true;
     }
@@ -31434,9 +31943,12 @@ window.submitLifecycleSwap = function(isKarma) {
         const customText = document.getElementById('lifecycle-custom-text')?.value.trim() || "";
         const selectedListingId = state.selectedSwapListingId;
         if (selectedListingId) {
-            const off = state.userOfferings.find(o => o.id === selectedListingId);
+            const initiatedBy = window.getConversationInitiatedBy(conv);
+            const isOfferingVersion = (initiatedBy === 'need');
+            const itemsList = isOfferingVersion ? (state.userOfferings || []) : (state.userNeeds || []);
+            const off = itemsList.find(o => o.id === selectedListingId);
             if (off) {
-                offeredText = off.title;
+                offeredText = off.needTitle || off.title;
             }
         } else if (customText) {
             offeredText = customText;
@@ -31911,11 +32423,11 @@ function initQuickCreateSheet() {
         
         let collapsedBottom;
         if (isNative) {
-            collapsedBottom = Math.max(10, safeArea - 14);
+            collapsedBottom = Math.max(20, safeArea + 6);
         } else if (isSimulator) {
-            collapsedBottom = 10;
+            collapsedBottom = 20;
         } else {
-            collapsedBottom = 10;
+            collapsedBottom = 20;
         }
         
         // Keep bottom margin floating and static so it sits nicely above safe area

@@ -1919,17 +1919,17 @@ select::-ms-expand {
     border-radius: 9999px !important;
 }
 #btn-segment-filter {
-    width: 34px !important;
-    height: 34px !important;
-    min-width: 34px !important;
-    min-height: 34px !important;
-    max-width: 34px !important;
-    max-height: 34px !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
     padding: 0 !important;
     border-radius: 9999px !important;
 }
 #btn-segment-filter span {
-    font-size: 16px !important;
+    font-size: 15px !important;
 }
 
 /* Scrollbar hiding utilities */
@@ -3668,6 +3668,57 @@ html.dark .badge-theme-yellow.premium-badge-unlocked {
 }
 .badge-theme-yellow.premium-badge-unlocked .premium-badge-glow-ring {
     display: none !important;
+}
+/* Purple Badge Theme (Super Giver) */
+.badge-theme-purple.premium-badge-unlocked {
+    background: rgba(245, 243, 255, 0.55) !important;
+    border-color: rgba(168, 85, 247, 0.25) !important;
+}
+.dark .badge-theme-purple.premium-badge-unlocked,
+html.dark .badge-theme-purple.premium-badge-unlocked {
+    background: rgba(48, 20, 75, 0.5) !important;
+    border-color: rgba(168, 85, 247, 0.2) !important;
+}
+.badge-theme-purple.premium-badge-unlocked .premium-badge-emblem {
+    background: #a855f7 !important;
+    border-color: #9333ea !important;
+    color: #ffffff !important;
+}
+.badge-theme-purple.premium-badge-unlocked .premium-badge-emblem span {
+    color: #ffffff !important;
+}
+.badge-theme-purple.premium-badge-unlocked .premium-badge-glow-ring {
+    display: none !important;
+}
+.badge-theme-purple .premium-badge-status-pill.unlocked {
+    background: #a855f7 !important;
+    color: #ffffff !important;
+}
+
+/* Cyan Badge Theme (Super Connector) */
+.badge-theme-cyan.premium-badge-unlocked {
+    background: rgba(236, 254, 255, 0.55) !important;
+    border-color: rgba(6, 182, 212, 0.25) !important;
+}
+.dark .badge-theme-cyan.premium-badge-unlocked,
+html.dark .badge-theme-cyan.premium-badge-unlocked {
+    background: rgba(10, 45, 50, 0.5) !important;
+    border-color: rgba(6, 182, 212, 0.2) !important;
+}
+.badge-theme-cyan.premium-badge-unlocked .premium-badge-emblem {
+    background: #06b6d4 !important;
+    border-color: #0891b2 !important;
+    color: #ffffff !important;
+}
+.badge-theme-cyan.premium-badge-unlocked .premium-badge-emblem span {
+    color: #ffffff !important;
+}
+.badge-theme-cyan.premium-badge-unlocked .premium-badge-glow-ring {
+    display: none !important;
+}
+.badge-theme-cyan .premium-badge-status-pill.unlocked {
+    background: #06b6d4 !important;
+    color: #ffffff !important;
 }
 
 /* Premium Badge Element Sub-styling */
@@ -7568,11 +7619,11 @@ html.dark input:checked + .switch-slider:before {
 /* Fused Search & Filter Bar Container */
 #village-search-bar-overlay {
     position: absolute !important;
-    left: 20px !important;
+    left: 24px !important;
     z-index: 2000 !important;
     display: flex !important;
     flex-direction: column !important;
-    width: calc(100% - 40px) !important;
+    width: calc(100% - 48px) !important;
     max-width: 480px !important;
     transition: all 0.3s ease !important;
     pointer-events: none !important;
@@ -8509,8 +8560,8 @@ html.dark .list-card-text-wrapper {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    background-color: rgba(0, 0, 0, 0.05) !important;
-    color: #308A5E !important;
+    background-color: #308A5E !important;
+    color: #ffffff !important;
     transition: all 0.2s ease-in-out !important;
 }
 
@@ -8518,8 +8569,8 @@ html.dark #btn-integrated-quick-create,
 html.dark #btn-list-quick-create,
 html.dark #btn-needs-quick-create,
 html.dark #btn-events-quick-create {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    color: #4ade80 !important;
+    background-color: #308A5E !important;
+    color: #ffffff !important;
 }
 
 #btn-integrated-quick-create:active,
@@ -9118,8 +9169,8 @@ html.dark .list-card-expandable-content {
     top: 0 !important;
     z-index: 50 !important;
     background-color: var(--warm-cream) !important;
-    padding-top: 0.6rem !important; /* Matches container padding-top */
-    margin-top: 0px !important; 
+    padding-top: 0px !important; 
+    margin-top: -2px !important; 
     padding-bottom: 0px !important;
     margin-bottom: 0px !important;
 }
@@ -9133,8 +9184,8 @@ body.show-simulator:not(.iphone16-mode) #view-village .sticky-segmented-control-
 }
 
 .native-app-env .sticky-segmented-control-wrapper {
-    padding-top: 0.6rem !important;
-    margin-top: 0px !important;
+    padding-top: 0px !important;
+    margin-top: -2px !important;
     top: var(--safe-area-top) !important;
 }
 
@@ -9496,19 +9547,29 @@ html.dark #welcome-panel-sub {
 }
 
 .btn-welcome-register {
-    background-color: #308A5E !important;
-    color: #ffffff !important;
-    border: none !important;
-    box-shadow: 0 4px 14px rgba(48, 138, 94, 0.2) !important;
+    background-color: transparent !important;
+    color: #308A5E !important;
+    border: 2px solid #308A5E !important;
+    box-shadow: none !important;
 }
 .btn-welcome-register:hover {
-    background-color: #256d4a !important;
-    box-shadow: 0 6px 20px rgba(48, 138, 94, 0.3) !important;
+    background-color: rgba(48, 138, 94, 0.05) !important;
 }
 .btn-welcome-register .material-symbols-outlined {
-    color: #ffffff !important;
+    color: #308A5E !important;
     font-variation-settings: 'FILL' 0, 'wght' 400 !important;
     font-size: 20px !important;
+}
+
+html.dark .btn-welcome-register {
+    color: #82b995 !important;
+    border-color: #82b995 !important;
+}
+html.dark .btn-welcome-register:hover {
+    background-color: rgba(130, 185, 149, 0.08) !important;
+}
+html.dark .btn-welcome-register .material-symbols-outlined {
+    color: #82b995 !important;
 }
 
 .btn-welcome-admin {
@@ -9524,6 +9585,17 @@ html.dark #welcome-panel-sub {
     color: #308A5E !important;
     font-variation-settings: 'FILL' 0, 'wght' 400 !important;
     font-size: 20px !important;
+}
+
+html.dark .btn-welcome-admin {
+    background-color: rgba(130, 185, 149, 0.12) !important;
+    color: #82b995 !important;
+}
+html.dark .btn-welcome-admin:hover {
+    background-color: rgba(130, 185, 149, 0.18) !important;
+}
+html.dark .btn-welcome-admin .material-symbols-outlined {
+    color: #82b995 !important;
 }
 
 /* Divider */

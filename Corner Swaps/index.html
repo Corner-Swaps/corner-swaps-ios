@@ -1351,7 +1351,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
                         <!-- Final reveling logo (Vertical Premium Layout) -->
                         <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none" id="final-logo">
-                            <img src="final_logo.png" class="w-[64px] h-[64px] mb-4 object-contain">
+                            <img src="final_logo.png" class="w-[84px] h-[84px] mb-4 object-contain">
                             <span id="final-brand-text">CORNER SWAPS</span>
                         </div>
                     </div>
@@ -1500,16 +1500,16 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <div id="welcome-hero">
                         <div id="welcome-wordmark">
                             <div id="welcome-wordmark-icon">
-                                <span class="material-symbols-outlined">diversity_3</span>
+                                <img src="final_logo.png" style="width:40px;height:40px;object-fit:contain;">
                             </div>
                             <h1 id="welcome-app-name">CORNER SWAPS</h1>
                         </div>
-                        <p id="welcome-tagline">Your local neighborhood swapping network.</p>
+                        <p id="welcome-tagline">Your local neighbourhood swapping network.</p>
                     </div>
 
                     <!-- === Bottom frosted card panel === -->
                     <div id="welcome-bottom-panel">
-                        <p id="welcome-panel-sub">Sign in to your account or create one to join your neighborhood exchange.</p>
+                        <p id="welcome-panel-sub">Sign in or make an account today.</p>
 
                         <div id="welcome-cta-stack">
                             <!-- PRIMARY: Sign In -->
@@ -1591,12 +1591,15 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                 <section id="view-create_account" class="auth-custom-screen screen-view hidden">
 
-
+                    <!-- Progress Bar -->
+                    <div style="width: 100%; background-color: rgba(48, 138, 94, 0.1); height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 20px; flex-shrink: 0;">
+                        <div style="background-color: #308A5E; height: 100%; width: 33.3%;"></div>
+                    </div>
 
                     <!-- Title block -->
                     <div style="padding:12px 22px 14px 22px;text-align:center;">
-                        <h2 style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#1a2f23;margin:0;letter-spacing:-0.02em;line-height:1.15;">Claim Your Corner</h2>
-                        <p style="font-family:'Outfit',sans-serif;font-size:13px;color:#4d6657;margin:6px 0 0 0;line-height:1.45;">Introduce yourself to your neighborhood loop.</p>
+                        <h2 style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#1a2f23;margin:0;letter-spacing:-0.02em;line-height:1.15;">Set up account</h2>
+                        <p style="font-family:'Outfit',sans-serif;font-size:13px;color:#4d6657;margin:6px 0 0 0;line-height:1.45;">Introduce yourself to the neighbourhood.</p>
                     </div>
 
                     <!-- Form -->
@@ -1615,18 +1618,28 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <div style="display:flex;flex-direction:column;gap:6px;">
                             <label for="su-display-name" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#3d5446;">Display Name</label>
                             <input id="su-display-name" type="text" placeholder="e.g. LilyK, GreenNeighbor" autocomplete="off" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
-                            <p style="font-family:'Outfit',sans-serif;font-size:11px;color:#668c75;margin:0;line-height:1.4;">First &amp; Last names stay private. Display Name is what neighbors see.</p>
+                            <p style="font-family:'Outfit',sans-serif;font-size:11px;color:#668c75;margin:10px 0 0 0;line-height:1.4;">First and last names stay private. Only your display name will be visible to neighbours.</p>
                         </div>
 
-                        <button type="button" onclick="handleSignUpStep1(event)" style="width:100%;height:52px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);margin-top:4px;">
-                            Continue
-                            <span class="material-symbols-outlined" style="font-size:16px;color:#ffffff !important;">arrow_forward</span>
-                        </button>
+                        <div style="display: flex; align-items: center; gap: 12px; margin-top: 4px; width: 100%;">
+                            <button type="button" onclick="showView('welcome')" style="width: 52px; height: 52px; background: #308A5E !important; color: #ffffff !important; border: none !important; border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; box-shadow: 0 6px 18px rgba(48, 138, 94, 0.2);">
+                                <span class="material-symbols-outlined" style="font-size: 20px; color: #ffffff !important; font-weight: bold;">arrow_back</span>
+                            </button>
+                            <button type="button" onclick="handleSignUpStep1(event)" style="flex-grow: 1; height: 52px; background: #308A5E !important; color: #ffffff !important; border: none !important; border-radius: 14px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; box-shadow: 0 6px 18px rgba(48, 138, 94, 0.3);">
+                                Continue
+                                <span class="material-symbols-outlined" style="font-size: 16px; color: #ffffff !important;">arrow_forward</span>
+                            </button>
+                        </div>
                     </div>
 
                 </section>
 
                 <section id="view-create_account_credentials" class="auth-custom-screen screen-view hidden">
+
+                    <!-- Progress Bar -->
+                    <div style="width: 100%; background-color: rgba(48, 138, 94, 0.1); height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 20px; flex-shrink: 0;">
+                        <div style="background-color: #308A5E; height: 100%; width: 66.6%;"></div>
+                    </div>
 
                     <!-- Top nav bar -->
                     <div style="display:flex;align-items:center;justify-content:space-between;padding:0 22px;">
@@ -1634,7 +1647,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                     <!-- Title block -->
                     <div style="padding:12px 22px 14px 22px;text-align:center;">
-                        <h2 style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#1a2f23;margin:0;letter-spacing:-0.02em;line-height:1.15;">Forge Your Keys</h2>
+                        <h2 style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#1a2f23;margin:0;letter-spacing:-0.02em;line-height:1.15;">Create sign-in</h2>
                         <p style="font-family:'Outfit',sans-serif;font-size:13px;color:#4d6657;margin:6px 0 0 0;line-height:1.45;">Establish your secure sign-in details.</p>
                     </div>
 
@@ -1671,15 +1684,25 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </div>
                         </div>
 
-                        <button type="button" onclick="handleSignUpStep2(event)" style="width:100%;height:52px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);margin-top:4px;">
-                            Continue
-                            <span class="material-symbols-outlined" style="font-size:16px;color:#ffffff !important;">arrow_forward</span>
-                        </button>
+                        <div style="display: flex; align-items: center; gap: 12px; margin-top: 4px; width: 100%;">
+                            <button type="button" onclick="showView('create_account')" style="width: 52px; height: 52px; background: #308A5E !important; color: #ffffff !important; border: none !important; border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; box-shadow: 0 6px 18px rgba(48, 138, 94, 0.2);">
+                                <span class="material-symbols-outlined" style="font-size: 20px; color: #ffffff !important; font-weight: bold;">arrow_back</span>
+                            </button>
+                            <button type="button" onclick="handleSignUpStep2(event)" style="flex-grow: 1; height: 52px; background: #308A5E !important; color: #ffffff !important; border: none !important; border-radius: 14px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; box-shadow: 0 6px 18px rgba(48, 138, 94, 0.3);">
+                                Continue
+                                <span class="material-symbols-outlined" style="font-size: 16px; color: #ffffff !important;">arrow_forward</span>
+                            </button>
+                        </div>
                     </div>
 
                 </section>
 
                 <section id="view-create_account_social" class="auth-custom-screen screen-view hidden">
+
+                    <!-- Progress Bar -->
+                    <div style="width: 100%; background-color: rgba(48, 138, 94, 0.1); height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 20px; flex-shrink: 0;">
+                        <div style="background-color: #308A5E; height: 100%; width: 100%;"></div>
+                    </div>
 
                     <!-- Top nav bar -->
                     <div style="display:flex;align-items:center;justify-content:space-between;padding:0 22px;">
@@ -1687,8 +1710,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                     <!-- Title block -->
                     <div style="padding:12px 22px 14px 22px;text-align:center;">
-                        <h2 style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#1a2f23;margin:0;letter-spacing:-0.02em;line-height:1.15;">Vouch Your Presence</h2>
-                        <p style="font-family:'Outfit',sans-serif;font-size:13px;color:#4d6657;margin:6px 0 0 0;line-height:1.45;">Link your profiles to build trust. All optional.</p>
+                        <h2 style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#1a2f23;margin:0;letter-spacing:-0.02em;line-height:1.15;">Link your socials</h2>
+                        <p style="font-family:'Outfit',sans-serif;font-size:13px;color:#4d6657;margin:6px 0 0 0;line-height:1.45;">Optional. Adding your social media profile(s) can help build trust with neighbours.</p>
                     </div>
 
                     <!-- Form -->
@@ -1706,10 +1729,15 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <input id="su-tiktok" type="text" placeholder="@username" autocomplete="off" style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
                         </div>
 
-                        <button type="button" onclick="handleSignUpStep3(event)" style="width:100%;height:52px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);margin-top:4px;">
-                            Finish &amp; Join
-                            <span class="material-symbols-outlined" style="font-size:16px;color:#ffffff !important;">check_circle</span>
-                        </button>
+                        <div style="display: flex; align-items: center; gap: 12px; margin-top: 4px; width: 100%;">
+                            <button type="button" onclick="showView('create_account_credentials')" style="width: 52px; height: 52px; background: #308A5E !important; color: #ffffff !important; border: none !important; border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; box-shadow: 0 6px 18px rgba(48, 138, 94, 0.2);">
+                                <span class="material-symbols-outlined" style="font-size: 20px; color: #ffffff !important; font-weight: bold;">arrow_back</span>
+                            </button>
+                            <button type="button" onclick="handleSignUpStep3(event)" style="flex-grow: 1; height: 52px; background: #308A5E !important; color: #ffffff !important; border: none !important; border-radius: 14px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; box-shadow: 0 6px 18px rgba(48, 138, 94, 0.3);">
+                                next
+                                <span class="material-symbols-outlined" style="font-size: 16px; color: #ffffff !important;">arrow_forward</span>
+                            </button>
+                        </div>
                     </div>
 
                 </section>
@@ -1732,59 +1760,59 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <!-- Form -->
                     <div style="padding:0 12px;display:flex;flex-direction:column;gap:10px;">
                         <!-- Policy scroll box -->
-                        <div class="eula-scroll-box border border-outline-variant/30 rounded-2xl p-3 overflow-y-auto custom-scrollbar text-xs leading-relaxed text-slate-700 dark:text-slate-300 select-none text-left" style="background:rgba(255,255,255,0.6);border:1.5px solid rgba(48,138,94,0.15);border-radius:16px;max-height:120px;">
+                        <div id="onboarding-eula-scroll" class="eula-scroll-box border border-outline-variant/30 rounded-2xl p-4 overflow-y-auto custom-scrollbar text-xs leading-relaxed text-slate-700 dark:text-slate-300 select-none text-left" style="background:rgba(255,255,255,0.65);border:1.5px solid rgba(48,138,94,0.2);border-radius:16px;max-height:160px;">
                             <div class="space-y-4">
                                 <div>
-                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">1. Code of Conduct</h4>
+                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">1. Detailed Code of Conduct</h4>
                                     <p class="text-[11px] text-slate-600 dark:text-slate-400" style="font-family:'Outfit',sans-serif;">
-                                        Be respectful, kind, and honest with your neighbors. We have a zero-tolerance policy for objectionable content or abusive users. The listing of illegal goods, weapons, drugs, and adult services is strictly prohibited. Any harassment, discrimination, illicit substances, dangerous behavior, or offensive postings will result in immediate permanent suspension from the platform.
+                                        Be respectful, kind, and honest with your neighbors. We have a zero-tolerance policy for objectionable content or abusive users. Any harassment, discrimination, illicit substances, dangerous behavior, or offensive postings will result in immediate permanent suspension from the platform. The listing of illegal goods, weapons, drugs, and adult services is strictly prohibited.
                                     </p>
                                 </div>
                                 
                                 <div>
-                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">2. Exchange Safety</h4>
+                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">2. Terms of Service</h4>
+                                    <p class="text-[11px] text-slate-600 dark:text-slate-400" style="font-family:'Outfit',sans-serif;">
+                                        Access to and use of Corner Swaps is subject to these terms. Users must provide accurate profile details. You agree not to list illegal goods, weapons, prescription drugs, or adult services. You agree to use the service in compliance with all local laws and municipal guidelines.
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">3. Privacy Policy</h4>
+                                    <p class="text-[11px] text-slate-600 dark:text-slate-400" style="font-family:'Outfit',sans-serif;">
+                                        We collect your personal information and approximate location details to connect you with nearby neighbors. Coordinates are fuzzed by 200–300 meters to safeguard your privacy. We never sell your data, and you can delete your account and personal information at any time.
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">4. End User License Agreement (EULA)</h4>
+                                    <p class="text-[11px] text-slate-600 dark:text-slate-400" style="font-family:'Outfit',sans-serif;">
+                                        We grant you a limited, non-exclusive, non-transferable, revocable license to use the Corner Swaps application. You retain ownership of content you post, but grant us a worldwide license to display it. Objectionable content or behavior is strictly prohibited, and we reserve the right to remove any content or terminate user accounts that violate this agreement.
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">5. Exchange Safety Guidelines</h4>
                                     <p class="text-[11px] text-slate-600 dark:text-slate-400" style="font-family:'Outfit',sans-serif;">
                                         Always arrange exchanges in safe, public, and well-lit locations (such as local parks, cafes, or community centers). Only share cross-streets or general vicinities; never share your exact home address or apartment number.
                                     </p>
                                 </div>
 
                                 <div>
-                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">3. Liability Disclaimer</h4>
+                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">6. Liability Disclaimer</h4>
                                     <p class="text-[11px] text-slate-600 dark:text-slate-400" style="font-family:'Outfit',sans-serif;">
-                                        All trades are at your own risk. Corner Swaps helps neighbors connect, but we do not verify or guarantee the safety or quality of items or services shared.
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">4. Privacy & Data Protection</h4>
-                                    <p class="text-[11px] text-slate-600 dark:text-slate-400" style="font-family:'Outfit',sans-serif;">
-                                        We protect your personal information and approximate location data using standard security practices. We never sell your data, and you can delete your account at any time.
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">5. Safety Responsibility</h4>
-                                    <p class="text-[11px] text-slate-600 dark:text-slate-400" style="font-family:'Outfit',sans-serif;">
-                                        By using the app, you agree to coordinate trades safely and release the platform from personal disputes or swapping mishaps.
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <h4 class="font-bold text-black dark:text-white text-xs mb-1" style="font-family:'Outfit',sans-serif;">6. Sharing & Tax Guidelines</h4>
-                                    <p class="text-[11px] text-slate-600 dark:text-slate-400" style="font-family:'Outfit',sans-serif;">
-                                        Occasional personal swaps (like trading tools or fresh vegetables) are friendly neighborly sharing and are not taxable. Business trades should follow standard local tax guidelines.
+                                        All trades are at your own risk. Corner Swaps helps neighbors connect, but we do not verify or guarantee the safety or quality of items or services shared. By using the app, you release the platform from personal disputes or swapping mishaps.
                                     </p>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Switch agreement group container -->
-                        <div id="consent-checkboxes-container" class="bg-forest-green/5 border border-forest-green/10 p-3 rounded-xl space-y-2.5 text-left transition-opacity duration-300" style="background:rgba(255,255,255,0.6);border:1.5px solid rgba(48,138,94,0.15);border-radius:16px;">
+                        <div id="consent-checkboxes-container" class="bg-forest-green/5 border border-forest-green/10 p-3 rounded-xl space-y-2.5 text-left transition-opacity duration-300" style="background:rgba(255,255,255,0.6);border:1.5px solid rgba(48,138,94,0.15);border-radius:16px;opacity:0.5;pointer-events:none;">
                             <!-- Switch 1: Safe Space Guidelines -->
                             <div class="flex items-center justify-between py-0.5 border-b border-outline-variant/10 pb-1.5">
                                 <span class="text-[10.5px] text-slate-700 dark:text-slate-300 font-semibold leading-tight pr-4" style="font-family:'Outfit',sans-serif;">I agree to the Safe Space Guidelines, exchange safety, and sharing rules</span>
                                 <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                                    <input type="checkbox" id="consent-check-1" class="sr-only peer" onchange="toggleConsentButton()">
+                                    <input type="checkbox" id="consent-check-1" class="sr-only peer" onchange="toggleConsentButton()" disabled>
                                     <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
                                 </label>
                             </div>
@@ -1792,7 +1820,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div class="flex items-center justify-between py-0.5 border-b border-outline-variant/10 pb-1.5">
                                 <span class="text-[10.5px] text-slate-700 dark:text-slate-300 font-semibold leading-tight pr-4" style="font-family:'Outfit',sans-serif;">I confirm that I am at least 18 years old</span>
                                 <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                                    <input type="checkbox" id="consent-check-2" class="sr-only peer" onchange="toggleConsentButton()">
+                                    <input type="checkbox" id="consent-check-2" class="sr-only peer" onchange="toggleConsentButton()" disabled>
                                     <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
                                 </label>
                             </div>
@@ -1800,7 +1828,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div class="flex items-center justify-between py-0.5 border-b border-outline-variant/10 pb-1.5">
                                 <span class="text-[10.5px] text-slate-700 dark:text-slate-300 font-semibold leading-tight pr-4" style="font-family:'Outfit',sans-serif;">I accept the Terms of Service and End User License Agreement (EULA) with zero tolerance for abuse</span>
                                 <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                                    <input type="checkbox" id="consent-check-3" class="sr-only peer" onchange="toggleConsentButton()">
+                                    <input type="checkbox" id="consent-check-3" class="sr-only peer" onchange="toggleConsentButton()" disabled>
                                     <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
                                 </label>
                             </div>
@@ -1808,7 +1836,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div class="flex items-center justify-between py-0.5">
                                 <span class="text-[10.5px] text-slate-700 dark:text-slate-300 font-semibold leading-tight pr-4" style="font-family:'Outfit',sans-serif;">I accept the Privacy Policy and consent to approximate location verification</span>
                                 <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                                    <input type="checkbox" id="consent-check-4" class="sr-only peer" onchange="toggleConsentButton()">
+                                    <input type="checkbox" id="consent-check-4" class="sr-only peer" onchange="toggleConsentButton()" disabled>
                                     <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
                                 </label>
                             </div>
@@ -1955,6 +1983,79 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </button>
                         </div>
                     </form>
+                </section>
+
+                <!-- ==================================================== -->
+                <!-- NEW STEP: START SHARING (OFFERING, NEED, EVENT) -->
+                <!-- ==================================================== -->
+                <section id="view-profile_step_custom_listing" class="auth-custom-screen screen-view hidden" style="padding-bottom: 80px;">
+                    <!-- Title block -->
+                    <div style="padding:12px 22px 14px 22px;text-align:center;">
+                        <h2 style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#1a2f23;margin:0;letter-spacing:-0.02em;line-height:1.15;">Start sharing</h2>
+                        <p style="font-family:'Outfit',sans-serif;font-size:13px;color:#4d6657;margin:6px 0 0 0;line-height:1.45;">Add your offerings, needs, or events to your profile. This will allow you to start swapping or hosting right away.</p>
+                    </div>
+
+                    <!-- Buttons and Dropdowns Wrapper -->
+                    <div style="padding:0 12px;display:flex;flex-direction:column;gap:12px;">
+                        <!-- Offering Button -->
+                        <button type="button" onclick="toggleOnboardingDropdown('offering')" class="quick-create-row" style="background: rgba(48,138,94,0.05) !important; border: 1.5px solid rgba(48,138,94,0.15) !important;">
+                            <div class="quick-create-icon-circle" style="background-color: #308A5E !important; color: #ffffff !important;">
+                                <span class="material-symbols-outlined text-[18px]">handyman</span>
+                            </div>
+                            <div class="quick-create-info">
+                                <h4 class="quick-create-title">Offering</h4>
+                                <p class="quick-create-desc">Share tools, skills, or food</p>
+                            </div>
+                            <span class="material-symbols-outlined text-[20px] text-forest-green" id="onboarding-chevron-offering" style="transition: transform 0.2s;">expand_more</span>
+                        </button>
+                        <!-- Offering Slot -->
+                        <div id="onboarding-dropdown-offering" class="hidden border border-outline-variant/30 rounded-2xl bg-white/40 dark:bg-black/20 p-2 overflow-y-auto" style="max-height: 480px; transition: all 0.3s ease;">
+                            <div id="onboarding-form-slot-offering"></div>
+                        </div>
+
+                        <!-- Need Button -->
+                        <button type="button" onclick="toggleOnboardingDropdown('need')" class="quick-create-row" style="background: rgba(245,158,11,0.05) !important; border: 1.5px solid rgba(245,158,11,0.15) !important;">
+                            <div class="quick-create-icon-circle" style="background-color: #f59e0b !important; color: #ffffff !important;">
+                                <span class="material-symbols-outlined text-[18px]">shopping_basket</span>
+                            </div>
+                            <div class="quick-create-info">
+                                <h4 class="quick-create-title">Need</h4>
+                                <p class="quick-create-desc">Ask neighbors for items or help</p>
+                            </div>
+                            <span class="material-symbols-outlined text-[20px] text-amber-500" id="onboarding-chevron-need" style="transition: transform 0.2s;">expand_more</span>
+                        </button>
+                        <!-- Need Slot -->
+                        <div id="onboarding-dropdown-need" class="hidden border border-outline-variant/30 rounded-2xl bg-white/40 dark:bg-black/20 p-2 overflow-y-auto" style="max-height: 480px; transition: all 0.3s ease;">
+                            <div id="onboarding-form-slot-need"></div>
+                        </div>
+
+                        <!-- Event Button -->
+                        <button type="button" onclick="toggleOnboardingDropdown('event')" class="quick-create-row" style="background: rgba(139,92,246,0.05) !important; border: 1.5px solid rgba(139,92,246,0.15) !important;">
+                            <div class="quick-create-icon-circle" style="background-color: #8b5cf6 !important; color: #ffffff !important;">
+                                <span class="material-symbols-outlined text-[18px]">festival</span>
+                            </div>
+                            <div class="quick-create-info">
+                                <h4 class="quick-create-title">Event</h4>
+                                <p class="quick-create-desc">Organize a gathering or swap meet</p>
+                            </div>
+                            <span class="material-symbols-outlined text-[20px] text-purple-500" id="onboarding-chevron-event" style="transition: transform 0.2s;">expand_more</span>
+                        </button>
+                        <!-- Event Slot -->
+                        <div id="onboarding-dropdown-event" class="hidden border border-outline-variant/30 rounded-2xl bg-white/40 dark:bg-black/20 p-2 overflow-y-auto" style="max-height: 480px; transition: all 0.3s ease;">
+                            <div id="onboarding-form-slot-event"></div>
+                        </div>
+
+                        <!-- Action buttons -->
+                        <div style="display:flex;gap:12px;margin-top:16px;">
+                            <button type="button" onclick="skipProfileStepCustomListing()" style="flex:1;height:52px;border:1.5px solid rgba(0,0,0,0.15) !important;background:#e5e7eb !important;color:#4b5563 !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+                                Skip for now
+                            </button>
+                            <button type="button" onclick="finishProfileStepCustomListing()" style="flex:1;height:52px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);">
+                                Finish
+                                <span class="material-symbols-outlined text-sm font-semibold" style="color:#ffffff !important;">check_circle</span>
+                            </button>
+                        </div>
+                    </div>
                 </section>
 
 
@@ -2410,6 +2511,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <!-- Bottom Back to Chat Button for Meetup Map Mode (Empty / Hidden) -->
                             <div id="meetup-map-footer" class="hidden absolute bottom-12 right-6 z-[3000] flex flex-col-reverse items-end transition-all duration-300"></div>
 
+                            <!-- Yellow Change Location Bar Button -->
+                            <div id="meetup-change-location-container" class="hidden absolute bottom-24 left-1/2 -translate-x-1/2 z-[3000] w-full max-w-[280px] px-4">
+                                <button onclick="window.handleMeetupChangeLocation()" class="w-full h-11 bg-amber-500 hover:bg-amber-600 active:scale-95 transition-transform text-white font-black text-xs rounded-xl flex items-center justify-center gap-1.5 shadow-md border-0 cursor-pointer">
+                                    <span class="material-symbols-outlined text-base">edit_location_alt</span>
+                                    Change Location
+                                </button>
+                            </div>
+
                             <!-- Fused Search & Filter Bar Container -->
                             <div id="village-search-bar-overlay" class="pointer-events-none absolute z-[2000] flex flex-col items-stretch transition-all duration-300">
                                 <div class="fused-search-capsule select-none">
@@ -2420,7 +2529,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                     <button onclick="handleAddMapTap()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Add Listing" style="display: none !important; border: 0 !important; margin-left: 4px !important;">
                                         <span class="material-symbols-outlined text-[15px] font-black">add</span>
                                     </button>
-                                    <button id="btn-integrated-quick-create" onclick="toggleQuickCreateDropdown(event)" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
+                                    <button id="btn-integrated-quick-create" onclick="toggleQuickCreateDropdown(event)" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-[#308A5E] dark:bg-[#308A5E] text-white dark:text-white hover:opacity-90 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
                                         <span class="material-symbols-outlined text-[16px] font-bold">add</span>
                                     </button>
                                     <button id="btn-integrated-location" onclick="snapToUserNeighborhood()" class="fused-location-btn active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Snap to my location">
@@ -2676,7 +2785,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <button id="btn-list-filter" onclick="toggleListFiltersSection(event)" class="fused-filter-btn active:scale-90 transition-all cursor-pointer flex-shrink-0 mr-1" title="Filter Categories">
                                     <span class="material-symbols-outlined text-[15px]">tune</span>
                                 </button>
-                                <button id="btn-list-quick-create" onclick="toggleQuickCreateDropdown(event, 'list')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
+                                <button id="btn-list-quick-create" onclick="toggleQuickCreateDropdown(event, 'list')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-[#308A5E] dark:bg-[#308A5E] text-white dark:text-white hover:opacity-90 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
                                     <span class="material-symbols-outlined text-[16px] font-bold">add</span>
                                 </button>
                                 <input type="text" id="village-list-search-input" oninput="syncVillageSearch(this.value);" placeholder="Neighbourhood Search" class="fused-search-input">
@@ -2755,9 +2864,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <div class="flex flex-col gap-2 bg-forest-green/5 dark:bg-black/20 p-3.5 rounded-xl border border-outline-variant/15 flex-shrink-0 select-none">
                             <div class="flex justify-between items-center text-[11px] font-bold text-black dark:text-white uppercase tracking-wider">
                                 <span>Distance Filter</span>
-                                <span id="village-list-distance-display" class="font-bold border border-outline-variant/30 text-black dark:text-white bg-transparent px-2.5 py-0.5 rounded-md text-[11.5px] min-w-[54px] text-center bg-white/40 dark:bg-black/20">5 km</span>
+                                <span id="village-list-distance-display" class="font-bold border border-outline-variant/30 text-black dark:text-white bg-transparent px-2.5 py-0.5 rounded-md text-[11.5px] min-w-[54px] text-center bg-white/40 dark:bg-black/20">10 km</span>
                             </div>
-                            <input type="range" id="village-list-distance-slider" min="0.5" max="5.0" step="0.1" value="5.0" class="w-full cursor-pointer mt-1 distance-filter-slider" oninput="updateVillageListDistanceFilter(this.value)">
+                            <input type="range" id="village-list-distance-slider" min="0.5" max="10.0" step="0.1" value="10.0" class="w-full cursor-pointer mt-1 distance-filter-slider" oninput="updateVillageListDistanceFilter(this.value)">
                         </div>
 
                         <div class="flex flex-col gap-4 pb-8" id="village-list-items">
@@ -2773,7 +2882,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <button id="btn-needs-filter" onclick="toggleListFiltersSection(event)" class="fused-filter-btn active:scale-90 transition-all cursor-pointer flex-shrink-0 mr-1" title="Filter Categories">
                                     <span class="material-symbols-outlined text-[15px]">tune</span>
                                 </button>
-                                <button id="btn-needs-quick-create" onclick="toggleQuickCreateDropdown(event, 'needs')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
+                                <button id="btn-needs-quick-create" onclick="toggleQuickCreateDropdown(event, 'needs')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-[#308A5E] dark:bg-[#308A5E] text-white dark:text-white hover:opacity-90 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
                                     <span class="material-symbols-outlined text-[16px] font-bold">add</span>
                                 </button>
                                 <input type="text" id="village-needs-search-input" oninput="syncVillageSearch(this.value);" placeholder="Neighbourhood Search" class="fused-search-input">
@@ -2852,9 +2961,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <div class="flex flex-col gap-2 bg-forest-green/5 dark:bg-black/20 p-3.5 rounded-xl border border-outline-variant/15 flex-shrink-0 select-none">
                             <div class="flex justify-between items-center text-[11px] font-bold text-black dark:text-white uppercase tracking-wider">
                                 <span>Distance Filter</span>
-                                <span id="village-needs-distance-display" class="font-bold border border-outline-variant/30 text-black dark:text-white bg-transparent px-2.5 py-0.5 rounded-md text-[11.5px] min-w-[54px] text-center bg-white/40 dark:bg-black/20">5 km</span>
+                                <span id="village-needs-distance-display" class="font-bold border border-outline-variant/30 text-black dark:text-white bg-transparent px-2.5 py-0.5 rounded-md text-[11.5px] min-w-[54px] text-center bg-white/40 dark:bg-black/20">10 km</span>
                             </div>
-                            <input type="range" id="village-needs-distance-slider" min="0.5" max="5.0" step="0.1" value="5.0" class="w-full cursor-pointer mt-1 distance-filter-slider" oninput="updateVillageNeedsDistanceFilter(this.value)">
+                            <input type="range" id="village-needs-distance-slider" min="0.5" max="10.0" step="0.1" value="10.0" class="w-full cursor-pointer mt-1 distance-filter-slider" oninput="updateVillageNeedsDistanceFilter(this.value)">
                         </div>
 
                         <div class="flex flex-col gap-4 pb-8" id="needs-board-list">
@@ -2870,7 +2979,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <button id="btn-events-filter" onclick="toggleListFiltersSection(event)" class="fused-filter-btn active:scale-90 transition-all cursor-pointer flex-shrink-0 mr-1" title="Filter Categories">
                                     <span class="material-symbols-outlined text-[15px]">tune</span>
                                 </button>
-                                <button id="btn-events-quick-create" onclick="toggleQuickCreateDropdown(event, 'events')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 text-[#308A5E] dark:text-[#4ade80] hover:bg-black/10 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
+                                <button id="btn-events-quick-create" onclick="toggleQuickCreateDropdown(event, 'events')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-[#308A5E] dark:bg-[#308A5E] text-white dark:text-white hover:opacity-90 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
                                     <span class="material-symbols-outlined text-[16px] font-bold">add</span>
                                 </button>
                                 <input type="text" id="village-events-search-input" oninput="syncVillageSearch(this.value);" placeholder="Neighbourhood Search" class="fused-search-input">
@@ -2947,9 +3056,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <div class="flex flex-col gap-2 bg-forest-green/5 dark:bg-black/20 p-3.5 rounded-xl border border-outline-variant/15 flex-shrink-0 select-none">
                             <div class="flex justify-between items-center text-[11px] font-bold text-black dark:text-white uppercase tracking-wider">
                                 <span>Distance Filter</span>
-                                <span id="village-events-distance-display" class="font-bold border border-outline-variant/30 text-black dark:text-white bg-transparent px-2.5 py-0.5 rounded-md text-[11.5px] min-w-[54px] text-center bg-white/40 dark:bg-black/20">5 km</span>
+                                <span id="village-events-distance-display" class="font-bold border border-outline-variant/30 text-black dark:text-white bg-transparent px-2.5 py-0.5 rounded-md text-[11.5px] min-w-[54px] text-center bg-white/40 dark:bg-black/20">10 km</span>
                             </div>
-                            <input type="range" id="village-events-distance-slider" min="0.5" max="5.0" step="0.1" value="5.0" class="w-full cursor-pointer mt-1 distance-filter-slider" oninput="updateVillageEventsDistanceFilter(this.value)">
+                            <input type="range" id="village-events-distance-slider" min="0.5" max="10.0" step="0.1" value="10.0" class="w-full cursor-pointer mt-1 distance-filter-slider" oninput="updateVillageEventsDistanceFilter(this.value)">
                         </div>
 
                         <div class="flex flex-col gap-4 pb-8" id="village-events-list">
@@ -2966,7 +3075,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <!-- Synced Search Bar inside Bulletins View -->
                             <div class="relative flex-grow flex items-center">
                                 <span class="material-symbols-outlined text-forest-green absolute left-3.5 text-base">search</span>
-                                <input type="text" id="village-bulletins-search-input" placeholder="Search Items, Needs, or Skills, Events" class="w-full h-10 pl-9 pr-10 bg-white border border-outline-variant/25 rounded-xl text-xs focus:border-outline-variant/25 focus:ring-0 outline-none placeholder:text-forest-green/75 dark:placeholder:text-warm-cream/60" oninput="syncVillageSearch(this.value);">
+                                <input type="text" id="village-bulletins-search-input" placeholder="Search Items, Needs, or Gifts, Events" class="w-full h-10 pl-9 pr-10 bg-white border border-outline-variant/25 rounded-xl text-xs focus:border-outline-variant/25 focus:ring-0 outline-none placeholder:text-forest-green/75 dark:placeholder:text-warm-cream/60" oninput="syncVillageSearch(this.value);">
                                 <button id="btn-bulletins-search-clear" onclick="clearSearchInput('village-bulletins-search-input')" class="hidden absolute right-3 w-6 h-6 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 active:scale-90 transition-all text-black dark:text-white border-0 flex-shrink-0 shadow-sm" title="Clear Search">
                                     <span class="material-symbols-outlined text-[13px]">close</span>
                                 </button>
@@ -3299,7 +3408,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <div id="chat-hub-header-bar" class="px-6 bg-white dark:bg-[#18201a] border-b border-outline-variant/10 dark:border-outline-variant/5 flex items-center justify-between z-10 shrink-0 select-none flex-shrink-0" style="height: 64px !important;">
                         <div class="flex items-center gap-3 flex-grow min-w-0">
                             <span id="chat-hub-title-bar" class="w-[8px] h-[22px] rounded-full flex-shrink-0" style="background-color: #7c3aed !important;"></span>
-                            <h1 id="chat-hub-title-text" class="font-headline font-black uppercase tracking-wider app-screen-header-title" style="color: #7c3aed !important;">Read</h1>
+                            <h1 id="chat-hub-title-text" class="font-headline font-black uppercase tracking-wider app-screen-header-title" style="color: #7c3aed !important;">Chats</h1>
                         </div>
                         <div class="flex items-center gap-2 flex-shrink-0">
                             <!-- Dynamic Right Content (New Group or Info button) -->
@@ -3313,7 +3422,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <!-- Read (Active) -->
                             <button id="btn-chat-segment-active" onclick="switchChatSegment('active')" class="relative flex-1 text-[13px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm">
                                 <span class="flex items-center gap-1.5 justify-center">
-                                    <span>Read</span>
+                                    <span>Chats</span>
                                     <span id="badge-chat-segment-active" class="chat-badge-inline hidden"></span>
                                 </span>
                             </button>
@@ -4182,11 +4291,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         
                         <!-- Details underneath that box separate -->
                         <div class="mt-6 text-center">
-                            <div class="flex items-center justify-center gap-1.5 mb-1.5 cursor-pointer hover:text-forest-green transition-colors" id="self-profile-badge-row" onclick="showView('settings_detail'); playSound('click');">
-                                <span class="material-symbols-outlined text-xs text-black dark:text-warm-cream opacity-90" id="self-profile-badge-icon">verified_user</span>
+                            <h2 class="text-2xl text-black dark:text-warm-cream font-headline font-bold" id="settings-profile-name">Lily Kaufmann</h2>
+                            <div class="flex items-center justify-center gap-1.5 mt-1.5 mb-1.5 cursor-pointer hover:text-forest-green transition-colors" id="self-profile-badge-row" onclick="openProfileStatExplanation('location');">
+                                <span class="material-symbols-outlined text-xs text-forest-green dark:text-emerald-400 opacity-90" id="self-profile-badge-icon">location_on</span>
                                 <span class="text-[8px] font-bold uppercase tracking-widest text-black dark:text-warm-cream/70" id="self-profile-badge-text">Community Member</span>
                             </div>
-                            <h2 class="text-2xl text-black dark:text-warm-cream font-headline font-bold" id="settings-profile-name">Lily Kaufmann</h2>
                             
                             <!-- Location and Phone displays -->
                             <p id="self-profile-location-container" class="text-on-surface-variant dark:text-warm-cream/80 flex items-center justify-center gap-1 mt-1.5 text-xs font-semibold hidden select-none">
@@ -4246,130 +4355,170 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 
 
-                    <!-- Unified Badges Section -->
-                    <section id="widget-badges-section" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
-                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
-                            <span class="material-symbols-outlined text-sm">military_tech</span> Badges
-                        </h3>
-                        
-                        <div class="flex gap-2 justify-evenly py-2 scrollbar-none scroll-smooth overflow-x-auto" id="user-badges-container">
-                            <!-- Dynamic Badges Rendered in app.js -->
-                        </div>
-                    </section>
-
-                    <!-- My Corner Section (Offerings, Needs, Events tabs modeled after badges) -->
-                    <section id="widget-my-listings-section" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
-                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
-                            <span class="material-symbols-outlined text-sm">grid_view</span> MY CORNER
-                        </h3>
-                        
-                        <div class="flex gap-2 justify-around items-stretch py-2" id="user-my-corner-tabs">
-                            <!-- Offerings badge-like button -->
-                            <button type="button" onclick="switchMyCornerTab('offerings')" id="my-corner-tab-offerings" class="premium-badge-item premium-badge-unlocked badge-theme-green flex-1 max-w-[105px]">
-                                <div class="premium-badge-emblem">
-                                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1 !important;">handshake</span>
-                                </div>
-                                <span class="premium-badge-title-text">Offerings</span>
-                                <div class="premium-badge-status-pill unlocked">
-                                    <span id="my-corner-count-offerings">0</span>
-                                </div>
-                            </button>
-
-                            <!-- Needs badge-like button -->
-                            <button type="button" onclick="switchMyCornerTab('needs')" id="my-corner-tab-needs" class="premium-badge-item premium-badge-unlocked badge-theme-yellow flex-1 max-w-[105px]">
-                                <div class="premium-badge-emblem">
-                                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1 !important;">search</span>
-                                </div>
-                                <span class="premium-badge-title-text">Needs</span>
-                                <div class="premium-badge-status-pill unlocked">
-                                    <span id="my-corner-count-needs">0</span>
-                                </div>
-                            </button>
-
-                            <!-- Events badge-like button -->
-                            <button type="button" onclick="switchMyCornerTab('events')" id="my-corner-tab-events" class="premium-badge-item premium-badge-unlocked badge-theme-blue flex-1 max-w-[105px]">
-                                <div class="premium-badge-emblem">
-                                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1 !important;">festival</span>
-                                </div>
-                                <span class="premium-badge-title-text">Events</span>
-                                <div class="premium-badge-status-pill unlocked">
-                                    <span id="my-corner-count-events">0</span>
-                                </div>
-                            </button>
-                        </div>
-
-                        <!-- Panel for listings inside same block -->
-                        <div id="my-corner-items-list" class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 space-y-2 max-h-[250px] overflow-y-auto pr-1">
-                            <!-- Populated Dynamically -->
-                        </div>
-                    </section>
-
-                    <!-- Upcoming Events section -->
-                    <section id="widget-upcoming-events" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
-                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
-                            <span class="material-symbols-outlined text-sm">event_available</span> Upcoming Events
-                        </h3>
-                        <div class="space-y-3" id="profile-upcoming-events-container">
-                            <!-- Dynamic upcoming events cards -->
-                        </div>
-                    </section>
-
-                    <!-- Friends List section -->
-                    <section id="widget-friends-list" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
-                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
-                            <span class="material-symbols-outlined text-sm">share</span> Invite Friends
-                        </h3>
-                        
-                        <!-- Description text -->
-                        <p class="text-xs text-on-surface-variant dark:text-warm-cream/80 mb-4 leading-relaxed text-left">
-                            Invite friends and build the neighborhood!
-                        </p>
-                        
-                        <!-- Invite Friends Button -->
-                        <div class="mb-4">
-                            <button class="w-full bg-forest-green hover:bg-forest-green/90 text-white py-2.5 rounded-xl text-xs font-bold shadow active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer border-none" onclick="handleInviteFriend()">
-                                <span class="material-symbols-outlined text-base text-white">person_add</span> Invite Friends
-                            </button>
-                        </div>
-                        
-                        <!-- Hidden Friends container to satisfy dynamic js rendering without breaking -->
-                        <div class="hidden" id="my-friends-container"></div>
-                    </section>
-
-                    <!-- Swaps History section -->
-                    <section id="widget-swaps-history" class="relative mb-6 bg-gray-100 dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
-                        <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
-                            <span class="material-symbols-outlined text-sm">history</span> Swaps History
-                        </h3>
-                        <div class="space-y-3" id="profile-trade-log-container">
-                            <!-- Dynamic completed and active trades -->
-                        </div>
-                    </section>
-
-
-
-                    <!-- Profile dialog actions -->
+                    <!-- Profile sections and actions stack -->
                     <div class="space-y-2 mb-6 flex-shrink-0">
-                        <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer" onclick="showView('settings_detail')">
-                            <span class="flex items-center gap-2 text-black dark:text-white font-bold">
+                        <!-- Unified Badges Section -->
+                        <section id="widget-badges-section" class="w-full">
+                            <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="toggleProfileAccordion('badges')">
+                                <span class="flex items-center gap-2 text-black dark:text-white">
+                                    <span class="material-symbols-outlined text-base text-emerald-600 dark:text-emerald-400">military_tech</span> Badges
+                                </span>
+                                <span id="accordion-chevron-badges" class="material-symbols-outlined text-outline dark:text-neutral-400 transition-transform duration-200">chevron_right</span>
+                            </button>
+                            
+                            <div id="accordion-content-badges" class="hidden mt-2 p-4 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl shadow-inner">
+                                <div class="flex gap-2 justify-start px-1 py-2 scrollbar-none scroll-smooth overflow-x-auto" id="user-badges-container">
+                                    <!-- Dynamic Badges Rendered in app.js -->
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- My Corner Section (Offerings, Needs, Events tabs modeled after badges) -->
+                        <section id="widget-my-listings-section" class="w-full">
+                            <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="toggleProfileAccordion('my-listings')">
+                                <span class="flex items-center gap-2 text-black dark:text-white">
+                                    <span class="material-symbols-outlined text-base text-amber-600 dark:text-amber-400">grid_view</span> My Corner
+                                </span>
+                                <span id="accordion-chevron-my-listings" class="material-symbols-outlined text-outline dark:text-neutral-400 transition-transform duration-200">chevron_right</span>
+                            </button>
+                            
+                            <div id="accordion-content-my-listings" class="hidden mt-2 p-4 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl shadow-inner">
+                                <div class="flex gap-2 justify-around items-stretch py-2" id="user-my-corner-tabs">
+                                    <!-- Offerings badge-like button -->
+                                    <button type="button" onclick="switchMyCornerTab('offerings')" id="my-corner-tab-offerings" class="premium-badge-item premium-badge-unlocked badge-theme-green flex-1 max-w-[105px]">
+                                        <div class="premium-badge-emblem">
+                                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1 !important;">handshake</span>
+                                        </div>
+                                        <span class="premium-badge-title-text">Offerings</span>
+                                        <div class="premium-badge-status-pill unlocked">
+                                            <span id="my-corner-count-offerings">0</span>
+                                        </div>
+                                    </button>
+
+                                    <!-- Needs badge-like button -->
+                                    <button type="button" onclick="switchMyCornerTab('needs')" id="my-corner-tab-needs" class="premium-badge-item premium-badge-unlocked badge-theme-yellow flex-1 max-w-[105px]">
+                                        <div class="premium-badge-emblem">
+                                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1 !important;">shopping_basket</span>
+                                        </div>
+                                        <span class="premium-badge-title-text">Needs</span>
+                                        <div class="premium-badge-status-pill unlocked">
+                                            <span id="my-corner-count-needs">0</span>
+                                        </div>
+                                    </button>
+
+                                    <!-- Events badge-like button -->
+                                    <button type="button" onclick="switchMyCornerTab('events')" id="my-corner-tab-events" class="premium-badge-item premium-badge-unlocked badge-theme-blue flex-1 max-w-[105px]">
+                                        <div class="premium-badge-emblem">
+                                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1 !important;">festival</span>
+                                        </div>
+                                        <span class="premium-badge-title-text">Events</span>
+                                        <div class="premium-badge-status-pill unlocked">
+                                            <span id="my-corner-count-events">0</span>
+                                        </div>
+                                    </button>
+                                </div>
+
+                                <!-- Add New button -->
+                                <div class="mt-4 px-1">
+                                    <button type="button" onclick="handleAddMyCornerNew()" class="w-full h-11 bg-forest-green hover:bg-forest-green/90 text-white font-bold text-xs rounded-xl active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 border-none cursor-pointer">
+                                        <span class="material-symbols-outlined text-sm font-bold">add</span> Add New
+                                    </button>
+                                </div>
+
+                                <!-- Panel for listings inside same block -->
+                                <div id="my-corner-items-list" class="mt-3 pt-3 border-t border-black/10 dark:border-white/10 space-y-2 max-h-[250px] overflow-y-auto pr-1">
+                                    <!-- Populated Dynamically -->
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Upcoming Events section -->
+                        <section id="widget-upcoming-events" class="w-full">
+                            <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="toggleProfileAccordion('upcoming-events')">
+                                <span class="flex items-center gap-2 text-black dark:text-white">
+                                    <span class="material-symbols-outlined text-base text-rose-600 dark:text-rose-400">event_available</span> Upcoming Events
+                                </span>
+                                <span id="accordion-chevron-upcoming-events" class="material-symbols-outlined text-outline dark:text-neutral-400 transition-transform duration-200">chevron_right</span>
+                            </button>
+                            
+                            <div id="accordion-content-upcoming-events" class="hidden mt-2 p-4 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl shadow-inner">
+                                <div class="space-y-3" id="profile-upcoming-events-container">
+                                    <!-- Dynamic upcoming events cards -->
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Friends List section (Invite swaps) -->
+                        <section id="widget-friends-list" class="w-full">
+                            <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="toggleProfileAccordion('friends')">
+                                <span class="flex items-center gap-2 text-black dark:text-white">
+                                    <span class="material-symbols-outlined text-base text-blue-600 dark:text-blue-400">group</span> Invite Friends
+                                </span>
+                                <span id="accordion-chevron-friends" class="material-symbols-outlined text-outline dark:text-neutral-400 transition-transform duration-200">chevron_right</span>
+                            </button>
+
+                            <div id="accordion-content-friends" class="hidden mt-2 p-4 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl shadow-inner text-left">
+                                <div class="mb-4">
+                                    <button class="w-full bg-forest-green hover:bg-forest-green/90 text-white py-2.5 rounded-xl text-xs font-bold shadow active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer border-none" onclick="toggleAddFriendSearch(); event.stopPropagation();">
+                                        <span class="material-symbols-outlined text-base text-white">person_add</span> Add Friends
+                                    </button>
+                                </div>
+                                
+                                <!-- Search Bar container (hidden by default) -->
+                                <div id="add-friend-search-container" class="hidden mb-3">
+                                    <div class="relative">
+                                        <input type="text" id="add-friend-search-input" class="w-full bg-white dark:bg-black/20 border border-black/20 dark:border-white/20 rounded-xl px-3 py-2 text-xs text-black dark:text-white placeholder-gray-400 outline-none focus:border-forest-green" placeholder="Search neighbors by name..." oninput="handleFriendSearch(this.value)">
+                                        <span class="material-symbols-outlined absolute right-3 top-2.5 text-xs text-outline">search</span>
+                                    </div>
+                                    <div id="add-friend-search-results" class="mt-2 bg-white dark:bg-[#1b261f] border border-black/10 dark:border-white/10 rounded-xl overflow-hidden shadow-md max-h-40 overflow-y-auto hidden">
+                                        <!-- Results populated dynamically -->
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-3" id="my-friends-container"></div>
+                            </div>
+                        </section>
+
+                        <!-- Swaps History section -->
+                        <section id="widget-swaps-history" class="w-full">
+                            <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="toggleProfileAccordion('swaps-history')">
+                                <span class="flex items-center gap-2 text-black dark:text-white">
+                                    <span class="material-symbols-outlined text-base text-purple-600 dark:text-purple-400">history</span> Swaps History
+                                </span>
+                                <span id="accordion-chevron-swaps-history" class="material-symbols-outlined text-outline dark:text-neutral-400 transition-transform duration-200">chevron_right</span>
+                            </button>
+                            
+                            <div id="accordion-content-swaps-history" class="hidden mt-2 p-4 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl shadow-inner">
+                                <div class="space-y-3" id="profile-trade-log-container">
+                                    <!-- Dynamic completed and active trades -->
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Account Settings button -->
+                        <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="showView('settings_detail')">
+                            <span class="flex items-center gap-2 text-black dark:text-white">
                                 <span class="material-symbols-outlined text-base text-blue-600 dark:text-blue-400">settings</span> Account Settings
                             </span>
                             <span class="material-symbols-outlined text-outline dark:text-neutral-400">chevron_right</span>
                         </button>
-                        <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer" onclick="showView('definitions')">
-                            <span class="flex items-center gap-2 text-black dark:text-white font-bold">
-                                <span class="material-symbols-outlined text-base text-violet-600 dark:text-violet-400">menu_book</span> Definitions
+
+                        <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="showView('definitions')">
+                            <span class="flex items-center gap-2 text-black dark:text-white">
+                                <span class="material-symbols-outlined text-base text-violet-600 dark:text-violet-400">menu_book</span> Definitions & guidance
                             </span>
                             <span class="material-symbols-outlined text-outline dark:text-neutral-400">chevron_right</span>
                         </button>
-                        <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer" onclick="showView('neighborhood_tips')">
-                            <span class="flex items-center gap-2 text-black dark:text-white font-bold">
+
+                        <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="showView('neighborhood_tips')">
+                            <span class="flex items-center gap-2 text-black dark:text-white">
                                 <span class="material-symbols-outlined text-base text-yellow-600 dark:text-yellow-400">lightbulb</span> Neighbourhood Tips
                             </span>
                             <span class="material-symbols-outlined text-outline dark:text-neutral-400">chevron_right</span>
                         </button>
-                        <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer" onclick="showView('help_improve')">
-                            <span class="flex items-center gap-2 text-black dark:text-white font-bold">
+
+                        <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="showView('help_improve')">
+                            <span class="flex items-center gap-2 text-black dark:text-white">
                                 <span class="material-symbols-outlined text-base text-cyan-600 dark:text-cyan-400">rate_review</span> Help Us Improve
                             </span>
                             <span class="material-symbols-outlined text-outline dark:text-neutral-400">chevron_right</span>
@@ -4722,24 +4871,41 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <p style="font-size: 13px !important; color: #6b7280 !important; font-weight: 700 !important; margin: 0 !important; margin-top: -4px !important;">Rate a neighbor</p>
                         </div>
 
-                        <!-- 4-Button Action Grid -->
-                        <div class="flex flex-col gap-2.5">
-                            <div class="grid grid-cols-2 gap-2.5">
+                        <!-- Swap Section -->
+                        <div class="text-left bg-black/[0.02] dark:bg-white/[0.02] border border-black/10 dark:border-white/10 p-4 rounded-xl space-y-2">
+                            <h4 class="text-[10px] font-bold text-black/60 dark:text-white/60 uppercase tracking-widest">swap</h4>
+                            <div class="flex flex-col gap-2">
+                                <img id="confirm-swap-listing-image" src="" class="w-full h-32 object-cover rounded-xl" alt="Swap Listing Image" />
+                                <h5 id="confirm-swap-listing-title" class="text-xs font-bold text-black dark:text-white"></h5>
+                                <p id="confirm-swap-listing-desc" class="text-[11px] text-neutral-600 dark:text-neutral-400 leading-relaxed"></p>
+                            </div>
+                        </div>
+
+                        <!-- Review Section -->
+                        <div class="text-left space-y-3">
+                            <h4 class="text-[10px] font-bold text-black/60 dark:text-white/60 uppercase tracking-widest">review</h4>
+                            
+                            <!-- Thumbs up & Thumbs down left-to-right -->
+                            <div class="grid grid-cols-2 gap-3">
                                 <!-- Thumbs Up -->
-                                <button id="fused-btn-up" class="h-20 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#22c55e] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#22c55e]" onclick="toggleFusedRating('up')" title="Thumbs Up">
-                                    <span class="material-symbols-outlined text-3xl" style="font-size: 30px !important;">thumb_up</span>
-                                </button>
-                                <!-- Add Friend -->
-                                <button id="fused-btn-friend" class="h-20 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#22c55e] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#22c55e]" onclick="toggleFusedRating('friend')" title="Add Friend">
-                                    <span class="material-symbols-outlined text-3xl" style="font-size: 30px !important;">person_add</span>
+                                <button id="fused-btn-up" class="h-14 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#22c55e] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#22c55e]" onclick="toggleFusedRating('up')" title="Thumbs Up">
+                                    <span class="material-symbols-outlined text-2xl">thumb_up</span>
                                 </button>
                                 <!-- Thumbs Down -->
-                                <button id="fused-btn-down" class="h-20 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#ef4444] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#ef4444]" onclick="toggleFusedRating('down')" title="Thumbs Down">
-                                    <span class="material-symbols-outlined text-3xl" style="font-size: 30px !important;">thumb_down</span>
+                                <button id="fused-btn-down" class="h-14 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#ef4444] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#ef4444]" onclick="toggleFusedRating('down')" title="Thumbs Down">
+                                    <span class="material-symbols-outlined text-2xl">thumb_down</span>
+                                </button>
+                            </div>
+
+                            <!-- Add Friend & Block User left-to-right -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <!-- Add Friend -->
+                                <button id="fused-btn-friend" class="h-14 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#22c55e] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#22c55e]" onclick="toggleFusedRating('friend')" title="Add Friend">
+                                    <span class="material-symbols-outlined text-2xl">person_add</span>
                                 </button>
                                 <!-- Block -->
-                                <button id="fused-btn-block" class="h-20 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#ef4444] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#ef4444]" onclick="toggleFusedRating('block')" title="Block">
-                                    <span class="material-symbols-outlined text-3xl" style="font-size: 30px !important;">block</span>
+                                <button id="fused-btn-block" class="h-14 rounded-xl bg-white dark:bg-[#1b261f] border border-outline-variant/20 text-[#ef4444] active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer shadow-sm hover:border-[#ef4444]" onclick="toggleFusedRating('block')" title="Block">
+                                    <span class="material-symbols-outlined text-2xl">block</span>
                                 </button>
                             </div>
                         </div>
@@ -4763,13 +4929,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <!-- Bottom Primary Actions Stack -->
                         <div class="flex flex-col gap-3 pt-3">
-                            <!-- Green Buttons on Top -->
+                            <!-- Submit Button -->
                             <button id="fused-submit-btn" class="w-full h-12 bg-forest-green hover:bg-forest-green/90 text-warm-cream rounded-xl text-xs font-bold active:scale-[0.98] transition-transform shadow cursor-pointer border-0 flex items-center justify-center gap-1.5" onclick="submitFusedReview()">
                                 <span class="material-symbols-outlined text-sm font-bold">check_circle</span> Submit
-                            </button>
-                            
-                            <button id="fused-skip-btn" class="w-full h-12 bg-forest-green hover:bg-forest-green/90 text-warm-cream border-0 rounded-xl text-xs font-bold active:scale-[0.98] transition-transform shadow cursor-pointer flex items-center justify-center gap-1.5" style="background-color: #308A5E !important; color: #ffffff !important;" onclick="skipFusedReview()">
-                                Skip
                             </button>
                             
                             <!-- Red Button on the Bottom -->
@@ -4801,10 +4963,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
                           <div class="mb-4">
                               <span class="material-symbols-outlined text-5xl text-amber-500 animate-bounce">info</span>
                           </div>
-                          <h3 class="font-headline text-xl font-bold text-black dark:text-white mb-2">Auto-Delete Policy</h3>
-                          <p class="text-xs text-black dark:text-white mb-6 leading-relaxed">
-                              To protect neighbor privacy and keep interactions fresh, all active chats, swap requests, and pending reviews automatically expire and delete after 48 hours. Group chats do not auto-delete.
-                          </p>
+                          <h3 class="font-headline text-lg font-bold text-black dark:text-white mb-3">Auto-Delete Policy</h3>
+                          <div class="text-left text-xs text-black dark:text-white mb-6 space-y-2 leading-relaxed">
+                              <div><strong>Active Chats:</strong> The 48-hour countdown timer starts from the very first message sent in the chat.</div>
+                              <div><strong>Location Chosen:</strong> The countdown timer resets back to 48 hours once a meetup location is chosen.</div>
+                              <div><strong>Group Chats:</strong> Group chats do not auto-delete.</div>
+                          </div>
                           <button class="w-full bg-forest-green text-white py-3.5 rounded-xl text-xs font-bold active:scale-[0.98] transition-transform shadow border-0 cursor-pointer flex items-center justify-center gap-1.5" onclick="closePrivacyAutoDeleteModal()">
                               Understood
                           </button>
@@ -5325,9 +5489,21 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-[#ef4444] dark:text-[#ef4444]" style="font-variation-settings: 'FILL' 1 !important;">favorite</span> Karma
                             </h3>
-                            <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
-                                Karma points reflect your active contributions, reliability, and good standing in the community. You earn karma by listing offerings (including free items and gifts), sharing services, helping neighbors, and completing successful swaps. Higher karma highlights you as a trusted neighbor and unlocks special badges!
+                            <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed mb-2">
+                                Karma points reflect your active contributions, reliability, and good standing in the community. You earn karma and XP by completing neighborhood actions. Higher karma highlights you as a trusted neighbor and unlocks special badges!
                             </p>
+                            <div class="text-[11px] text-on-surface-variant dark:text-on-surface-variant/80 space-y-1 bg-black/5 dark:bg-white/5 p-3 rounded-lg border border-black/5 dark:border-white/5 text-left">
+                                <p class="font-bold text-xs mb-1">XP & Karma Point Formula:</p>
+                                <ul class="list-disc pl-4 space-y-0.5">
+                                    <li><strong>List an offer/item:</strong> +10 XP</li>
+                                    <li><strong>Create an event/meetup:</strong> +10 XP</li>
+                                    <li><strong>Complete standard swap:</strong> +5 XP</li>
+                                    <li><strong>Complete a Karma swap (gift):</strong> +10 XP for donor / +50 Karma Points to donor</li>
+                                    <li><strong>Submit a swap review:</strong> +10 XP</li>
+                                    <li><strong>Positive swap rating received:</strong> +10 Karma Points to you</li>
+                                    <li><strong>Negative swap rating received:</strong> -10 Karma Points from you</li>
+                                </ul>
+                            </div>
                         </div>
 
                         <!-- What are Swaps? -->
@@ -5340,13 +5516,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </p>
                         </div>
 
-                        <!-- What is Karma? -->
+                        <!-- What are Gifts? -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-red-500">favorite</span> Karma
+                                <span class="material-symbols-outlined text-sm text-red-500">favorite</span> Gifts
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
-                                Karma listings are offered for free out of neighborly kindness. Giving or sharing for free earns you extra karma points, highlighting you as a trusted neighbor!
+                                Gift listings are offered for free out of neighborly kindness. Giving or sharing for free earns you extra karma points, highlighting you as a trusted neighbor!
                             </p>
                         </div>
 
@@ -5636,19 +5812,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                                 
                                 <!-- Social Media Links (Optional) -->
-                                <div class="space-y-2 text-left bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 p-3 rounded-xl">
-                                    <div class="flex items-center gap-2 bg-white dark:bg-[#1b261f] rounded-xl px-3 py-1">
-                                        <span class="text-xs font-bold text-black/50 dark:text-white/70 w-16 flex-shrink-0">Instagram</span>
-                                        <input class="w-full bg-transparent border-0 px-2 py-1 text-xs outline-none focus:ring-0 text-black dark:text-white" id="settings-instagram" placeholder="https://instagram.com/username" type="url" />
-                                    </div>
-                                    <div class="flex items-center gap-2 bg-white dark:bg-[#1b261f] rounded-xl px-3 py-1">
-                                        <span class="text-xs font-bold text-black/50 dark:text-white/70 w-16 flex-shrink-0">Facebook</span>
-                                        <input class="w-full bg-transparent border-0 px-2 py-1 text-xs outline-none focus:ring-0 text-black dark:text-white" id="settings-facebook" placeholder="https://facebook.com/username" type="url" />
-                                    </div>
-                                    <div class="flex items-center gap-2 bg-white dark:bg-[#1b261f] rounded-xl px-3 py-1">
-                                        <span class="text-xs font-bold text-black/50 dark:text-white/70 w-16 flex-shrink-0">TikTok</span>
-                                        <input class="w-full bg-transparent border-0 px-2 py-1 text-xs outline-none focus:ring-0 text-black dark:text-white" id="settings-tiktok" placeholder="https://tiktok.com/@username" type="url" />
-                                    </div>
+                                <input class="hidden" id="settings-instagram" type="url" />
+                                <input class="hidden" id="settings-facebook" type="url" />
+                                <input class="hidden" id="settings-tiktok" type="url" />
+                                
+                                <div class="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 p-3 rounded-xl flex flex-col items-center gap-2">
+                                    <label class="text-[9px] font-bold uppercase tracking-wider text-black/80 dark:text-white/80 block text-center">Social Media Accounts</label>
+                                    <div id="settings-socials-icons-container" class="flex items-center justify-center gap-4 py-1"></div>
                                 </div>
                                 
                                 <!-- Edit Profile Picture Avatar Picker -->
@@ -5672,7 +5842,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                     <label class="text-[9px] font-bold uppercase tracking-wider text-black/80 dark:text-white/80 block mb-1">Neighborhood</label>
                                     <input class="w-full h-11 px-4 bg-warm-cream/30 border border-outline-variant/40 rounded-xl text-xs text-black dark:text-white focus:border-black dark:focus:border-white focus:ring-0 outline-none" id="settings-location" type="text" />
                                 </div>
-                                <div class="relative">
+                                <div class="relative hidden">
                                     <label class="text-[9px] font-bold uppercase tracking-wider text-black/80 dark:text-white/80 block mb-1">Swap intersection</label>
                                     <input class="w-full h-11 px-4 bg-warm-cream/30 border border-outline-variant/40 rounded-xl text-xs text-black dark:text-white focus:border-black dark:focus:border-white focus:ring-0 outline-none" id="settings-address" type="text" placeholder="Add a street intersection near you." autocomplete="off" />
                                     <div id="address-autocomplete-list" class="hidden absolute left-0 right-0 z-50 bg-white dark:bg-[#18201a] border border-outline-variant/30 rounded-xl shadow-lg max-h-48 overflow-y-auto mt-1"></div>
@@ -5770,29 +5940,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div class="mt-3 text-center">
                                 <button id="btn-toggle-friends" onclick="toggleFriendsList()" class="w-full py-2.5 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-blue-600 dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-3 cursor-pointer active:scale-95 transition-all text-center select-none">
                                     Show More
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Trust & Verification Box -->
-                        <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-4">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-teal-600 dark:text-teal-400">verified_user</span> Trust & Verification
-                            </h3>
-                            <p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                                Verify your identity to build community trust.
-                            </p>
-                            
-                            <div id="settings-verification-status-container" class="bg-warm-cream/30 dark:bg-white/[0.02] border border-outline-variant/20 p-4 rounded-xl flex flex-col gap-3">
-                                <div class="flex items-center gap-2">
-                                    <span id="settings-verification-status-icon" class="material-symbols-outlined text-neutral-400 dark:text-neutral-500 text-lg">help</span>
-                                    <div>
-                                        <p id="settings-verification-status-label" class="font-bold text-xs text-black dark:text-white">Not Verified</p>
-                                        <p id="settings-verification-status-desc" class="text-[10px] text-black/50 dark:text-white/50">Verify your identity to unlock trust badging.</p>
-                                    </div>
-                                </div>
-                                <button id="settings-verify-btn" class="w-full h-11 bg-black/[0.02] dark:bg-white/[0.02] border border-black/10 dark:border-white/10 text-forest-green dark:text-emerald-400 font-bold text-xs rounded-xl active:scale-[0.98] transition-all cursor-pointer" onclick="openIdentityVerificationModal()">
-                                    Verify Now
                                 </button>
                             </div>
                         </div>
@@ -6472,6 +6619,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                             </button>
                                         </div>
                                     </div>
+                                    
+                                    <!-- User Review Statistics Summary Panel -->
+                                    <div id="admin-audit-user-stats" class="mb-4 p-3 bg-neutral-200/50 dark:bg-black/25 rounded-xl border border-black/10 dark:border-white/10 space-y-2 max-h-[160px] overflow-y-auto custom-scrollbar">
+                                        <!-- User stats populated dynamically -->
+                                    </div>
+
                                     <div class="space-y-3 w-full" id="admin-audit-logs">
                                         <!-- Populated dynamically -->
                                     </div>
@@ -8085,6 +8238,38 @@ svg.leaflet-image-layer.leaflet-interactive path {
                       </div>
                  </div>
 
+                <!-- LINK SOCIALS MODAL -->
+                <div id="link-socials-modal" class="hidden fixed inset-0 z-[6000] flex items-center justify-center p-6 select-none animate-fade-in-only">
+                    <div class="absolute inset-0 bg-[#060b08]/40 dark:bg-black/60 backdrop-blur-md" onclick="closeLinkSocialsModal()"></div>
+                    <div class="relative bg-white dark:bg-[#18201a] border border-outline-variant/30 rounded-3xl p-6 shadow-2xl max-w-xs w-full text-center flex flex-col items-center animate-slide-up">
+                        <div class="w-16 h-16 rounded-full bg-forest-green/10 flex items-center justify-center text-forest-green mb-4">
+                            <span class="material-symbols-outlined text-3xl">share</span>
+                        </div>
+                        <h3 class="popup-modal-title mb-2">Link your socials</h3>
+                        <p class="popup-modal-desc mb-4">Optional. Adding your social media profile(s) can help build trust with neighbours.</p>
+                        
+                        <div class="w-full space-y-3.5 mb-6 text-left">
+                            <div class="flex flex-col gap-1.5">
+                                <label for="modal-instagram" class="text-[10px] font-bold text-forest-green dark:text-emerald-400 uppercase tracking-wider">Instagram Handle</label>
+                                <input type="text" id="modal-instagram" placeholder="@username" class="w-full px-3 py-2.5 bg-gray-50 dark:bg-black/20 border border-outline-variant/30 rounded-xl text-xs outline-none focus:border-forest-green text-on-surface" />
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                                <label for="modal-facebook" class="text-[10px] font-bold text-forest-green dark:text-emerald-400 uppercase tracking-wider">Facebook Profile</label>
+                                <input type="text" id="modal-facebook" placeholder="@username" class="w-full px-3 py-2.5 bg-gray-50 dark:bg-black/20 border border-outline-variant/30 rounded-xl text-xs outline-none focus:border-forest-green text-on-surface" />
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                                <label for="modal-tiktok" class="text-[10px] font-bold text-forest-green dark:text-emerald-400 uppercase tracking-wider">TikTok Handle</label>
+                                <input type="text" id="modal-tiktok" placeholder="@username" class="w-full px-3 py-2.5 bg-gray-50 dark:bg-black/20 border border-outline-variant/30 rounded-xl text-xs outline-none focus:border-forest-green text-on-surface" />
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col gap-2.5 w-full">
+                            <button class="w-full h-11 bg-forest-green dark:bg-[#308A5E] text-warm-cream dark:text-[#101612] font-bold text-xs rounded-xl active:scale-[0.98] transition-transform shadow-md cursor-pointer border-none" onclick="saveLinkedSocials()">Save Changes</button>
+                            <button id="modal-unlink-socials-btn" class="w-full h-11 bg-red-600/10 hover:bg-red-600/20 text-red-600 dark:text-red-400 font-bold text-xs rounded-xl active:scale-[0.98] transition-transform border-none cursor-pointer hidden" onclick="unlinkSocials()">Unlink Account</button>
+                            <button class="w-full h-11 bg-transparent text-gray-500 dark:text-gray-400 border border-black/10 dark:border-white/10 font-bold text-xs rounded-xl active:scale-[0.98] transition-transform cursor-pointer" onclick="closeLinkSocialsModal()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
 
 
 
