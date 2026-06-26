@@ -3443,6 +3443,32 @@ function autoDismissAllModals() {
 // Routing Engine
 function showView(viewId, mode) {
     console.log("[showView] Transitioning to:", viewId, "mode:", mode);
+
+    // Redirect settings sub-views to profile page accordions inline
+    if (['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve'].includes(viewId)) {
+        let accordionId = 'account-settings';
+        if (viewId === 'definitions') accordionId = 'definitions-guidance';
+        else if (viewId === 'neighborhood_tips') accordionId = 'neighbourhood-tips';
+        else if (viewId === 'help_improve') accordionId = 'help-improve';
+
+        // Redirect to profile_settings
+        showView('profile_settings');
+        
+        // Expand the accordion
+        setTimeout(() => {
+            const content = document.getElementById('accordion-content-' + accordionId);
+            if (content && content.classList.contains('hidden')) {
+                toggleProfileAccordion(accordionId);
+            }
+            // Scroll to the button
+            const btn = document.getElementById('accordion-chevron-' + accordionId);
+            if (btn && btn.parentElement) {
+                btn.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }, 120);
+        return;
+    }
+
     // Blur active input/textarea before view transitions to dismiss virtual keyboards safely
     const activeEl = document.activeElement;
     if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
@@ -12561,6 +12587,7 @@ function renderChatDetail(conv) {
 
     const expiryContainer = document.getElementById('chat-header-expiry-container');
     const expiryVal = document.getElementById('chat-header-expiry-val');
+    const completeBtn = document.getElementById('chat-header-complete-btn');
 
     if (expiryContainer) {
         if (!conv.isGroup && !conv.isOld && conv.negotiation && conv.negotiation.meetupLocation && conv.locationChosenAt && conv.negotiation.status !== 'completed') {
@@ -12573,6 +12600,14 @@ function renderChatDetail(conv) {
             }
         } else {
             expiryContainer.classList.add('hidden');
+        }
+    }
+
+    if (completeBtn) {
+        if (!conv.isGroup && !conv.isOld && (!conv.negotiation || conv.negotiation.status !== 'completed')) {
+            completeBtn.classList.remove('hidden');
+        } else {
+            completeBtn.classList.add('hidden');
         }
     }
 
@@ -13010,7 +13045,7 @@ function renderChatDetail(conv) {
                                 </div>
                             </div>
                             
-                            <span class="text-[9px] text-on-surface-variant/65 mt-1.5 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
+                            <span class="text-[9px] text-on-surface-variant/65 mt-1.5 font-semibold ml-1 select-none"><span class="cursor-pointer hover:underline text-forest-green dark:text-emerald-400 font-bold" onclick="event.stopPropagation(); openNeighborProfileModal('${escapeHTML(senderProfileName)}')">${escapeHTML(msg.sender)}</span> • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
                         </div>
                     `;
                 } else {
@@ -13052,7 +13087,7 @@ function renderChatDetail(conv) {
                             <div id="msg-bubble-${index}" class="chat-bubble-other chat-bubble-hover py-2 px-3.5 rounded-3xl rounded-tl-none shadow-sm border border-outline-variant/15 dark:border-[#308A5E1f] cursor-pointer select-none transition-all duration-200" onclick="${msg.isKarmaSwapRequest ? `window.openSwapLifecycleModal('receiver', '${conv.id}'); event.stopPropagation();` : `handleMessageClick(event, ${index})`}">
                                 ${bubbleInnerContent}
                             </div>
-                            <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
+                            <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none"><span class="cursor-pointer hover:underline text-forest-green dark:text-emerald-400 font-bold" onclick="event.stopPropagation(); openNeighborProfileModal('${escapeHTML(senderProfileName)}')">${escapeHTML(msg.sender)}</span> • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
                         </div>
                     `;
                 }
@@ -25719,23 +25754,34 @@ function getPendingReviews() {
         });
     }
 
+    const timeShowReview = 48 * 60 * 60 * 1000;      // 48h
+    const timeReviewExpires = 96 * 60 * 60 * 1000;    // 96h total
+
     // Add real conversations that have reached the review phase
     if (state.conversations) {
         state.conversations.forEach(conv => {
             if (conv.isGroup) return;
             const elapsed = conv.createdAt ? (now - conv.createdAt) : 0;
-            const timeLimit = 48 * 60 * 60 * 1000;
             
             // Check if timer went to 0 (elapsed >= 48 hours or meetupLocation elapsed >= 48 hours)
-            let isExpired = elapsed >= timeLimit;
+            let isExpired = elapsed >= timeShowReview;
+            let elapsedSinceLocation = -1;
             if (conv.negotiation && conv.negotiation.meetupLocation && conv.locationChosenAt) {
-                const elapsedSinceLocation = now - conv.locationChosenAt;
-                if (elapsedSinceLocation >= timeLimit) {
+                elapsedSinceLocation = now - conv.locationChosenAt;
+                if (elapsedSinceLocation >= timeShowReview) {
                     isExpired = true;
                 }
             }
 
-            if (isExpired) {
+            // Expiry check: 96 hours total (from locationChosenAt if set, otherwise from createdAt)
+            let isTooOld = elapsed >= timeReviewExpires;
+            if (conv.negotiation && conv.negotiation.meetupLocation && conv.locationChosenAt) {
+                if (elapsedSinceLocation >= timeReviewExpires) {
+                    isTooOld = true;
+                }
+            }
+
+            if (isExpired && !isTooOld) {
                 if (!conv.reviewSubmitted && !conv.reviewDeleted) {
                     // Check duplicate
                     if (!list.some(item => item.convId === conv.id)) {
@@ -25747,7 +25793,7 @@ function getPendingReviews() {
                             avatar: state.neighbors[conv.neighborName]?.avatar || "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop",
                             offeredItem: (conv.negotiation && conv.negotiation.offeredItem) || "Swap Item",
                             requestedItem: (conv.negotiation && conv.negotiation.requestedItem) || "Swap Item",
-                            createdAt: conv.locationChosenAt ? (conv.locationChosenAt + timeLimit) : (conv.createdAt || now)
+                            createdAt: conv.locationChosenAt ? (conv.locationChosenAt + timeShowReview) : (conv.createdAt || now)
                         });
                     }
                 }
@@ -29713,8 +29759,8 @@ function renderBadgesList(containerId, targetName) {
         }
     ];
 
-    // Show all badges on both self and neighbor profiles, unless new user account
-    const filteredBadges = (isSelf && state.isNewAccount) ? [] : badges;
+    // Show all badges on both self and neighbor profiles
+    const filteredBadges = badges;
 
     filteredBadges.forEach(b => {
         const item = document.createElement('div');
@@ -30827,7 +30873,7 @@ function renderReviewsList() {
         div.innerHTML = `
             <span class="material-symbols-outlined text-4xl text-red-500/50">rate_review</span>
             <p class="text-xs font-semibold">No pending reviews right now.</p>
-            <p class="text-[10px] text-outline/60 px-6">Completed swaps will appear here for review immediately after they disappear from active chats.</p>
+            <p class="text-[10px] text-outline/60 px-6">Expired conversations will appear here for review immediately (48 hours after choosing a location).</p>
         `;
         container.appendChild(div);
         return;
@@ -31107,11 +31153,15 @@ window.openFusedReviewModal = function(neighborName, convId, reviewId) {
         avatarEl.src = neighbor ? neighbor.avatar : "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop";
     }
 
-    // Karma points
+    // Karma points & Badge
+    const nKarma = neighbor ? (neighbor.karmaPoints !== undefined ? neighbor.karmaPoints : ((neighbor.vouches || 0) * 12 + 30)) : 50;
     const karmaEl = document.getElementById('confirm-swap-karma-points');
     if (karmaEl) {
-        const nKarma = neighbor ? (neighbor.karmaPoints !== undefined ? neighbor.karmaPoints : ((neighbor.vouches || 0) * 12 + 30)) : 50;
         karmaEl.innerText = nKarma;
+    }
+    const badgeEl = document.getElementById('confirm-swap-badge');
+    if (badgeEl) {
+        badgeEl.innerText = getUserBadgeText(nKarma);
     }
 
     // Details of items being swapped
@@ -31184,7 +31234,7 @@ window.openFusedReviewModal = function(neighborName, convId, reviewId) {
 
     // Reset tag buttons styling
     document.querySelectorAll('.fused-tag-btn').forEach(btn => {
-        btn.className = "fused-tag-btn px-4 py-2.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[13px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white";
+        btn.className = "fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]";
     });
 
     // Update UI buttons and negative menu visibility
@@ -31204,26 +31254,33 @@ window.toggleFusedRating = function(choice) {
     if (typeof playSound === 'function') playSound('click');
 
     if (choice === 'up') {
-        fusedReviewVote = (fusedReviewVote === 'up') ? null : 'up';
-        fusedReviewTags = [];
+        if (fusedReviewVote === 'up') {
+            fusedReviewVote = null;
+        } else {
+            fusedReviewVote = 'up';
+            fusedReviewBlock = false; // Thumbs Up deselects Block
+        }
+        fusedReviewTags = []; // Clear negative tags
     } else if (choice === 'down') {
-        fusedReviewVote = (fusedReviewVote === 'down') ? null : 'down';
+        if (fusedReviewVote === 'down') {
+            fusedReviewVote = null;
+            fusedReviewTags = [];
+        } else {
+            fusedReviewVote = 'down';
+            fusedReviewFriend = false; // Thumbs Down deselects Friend
+        }
     } else if (choice === 'friend') {
         fusedReviewFriend = !fusedReviewFriend;
         if (fusedReviewFriend) {
-            fusedReviewBlock = false;
+            fusedReviewBlock = false; // Friend deselects Block
+            fusedReviewVote = (fusedReviewVote === 'down') ? null : fusedReviewVote; // Friend deselects Thumbs Down
             fusedReviewTags = [];
-            if (fusedReviewVote === 'down') {
-                fusedReviewVote = null;
-            }
         }
     } else if (choice === 'block') {
         fusedReviewBlock = !fusedReviewBlock;
         if (fusedReviewBlock) {
-            fusedReviewFriend = false;
-            if (fusedReviewVote === 'up') {
-                fusedReviewVote = null;
-            }
+            fusedReviewFriend = false; // Block deselects Friend
+            fusedReviewVote = (fusedReviewVote === 'up') ? null : fusedReviewVote; // Block deselects Thumbs Up
         }
     }
 
@@ -31235,10 +31292,10 @@ window.toggleFusedTag = function(btn, tag) {
     const index = fusedReviewTags.indexOf(tag);
     if (index !== -1) {
         fusedReviewTags.splice(index, 1);
-        btn.className = "fused-tag-btn px-4 py-2.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[13px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white";
+        btn.className = "fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]";
     } else {
         fusedReviewTags.push(tag);
-        btn.className = "fused-tag-btn px-4 py-2.5 bg-red-500/10 dark:bg-red-500/20 border border-red-500 text-red-500 font-bold rounded-xl text-[13px] cursor-pointer";
+        btn.className = "fused-tag-btn w-full py-3 bg-red-500/10 dark:bg-red-500/20 border border-red-500 text-red-500 font-bold rounded-xl text-[12px] cursor-pointer transition-all active:scale-[0.98]";
     }
 };
 
@@ -32400,15 +32457,74 @@ function initKeyboardLayoutHandler() {
 }
 
 // Initialize on DOM loaded
+function initializeProfileSettingsAccordions() {
+    // 1. Move Update Profile elements
+    const updateProfileTarget = document.querySelector('#accordion-content-update-profile');
+    if (updateProfileTarget) {
+        ['#settings-edit-profile-card', '#settings-socials-card'].forEach(id => {
+            const el = document.querySelector(id);
+            if (el) updateProfileTarget.appendChild(el);
+        });
+    }
+
+    // 2. Move Friends List elements
+    const friendsTarget = document.querySelector('#accordion-content-friends-list');
+    if (friendsTarget) {
+        const el = document.querySelector('#settings-friends-box');
+        if (el) friendsTarget.appendChild(el);
+    }
+
+    // 3. Move Privacy Center elements
+    const privacyTarget = document.querySelector('#accordion-content-privacy-center');
+    if (privacyTarget) {
+        ['#settings-location-privacy-box', '#settings-preferences-box', '#settings-notifications-box', '#settings-blocked-neighbors-box', '#settings-privacy-policy-box'].forEach(id => {
+            const el = document.querySelector(id);
+            if (el) privacyTarget.appendChild(el);
+        });
+    }
+
+    // 4. Move Account Security elements
+    const securityTarget = document.querySelector('#accordion-content-account-security');
+    if (securityTarget) {
+        ['#settings-account-security-box', '#settings-admin-box', '#settings-session-box'].forEach(id => {
+            const el = document.querySelector(id);
+            if (el) securityTarget.appendChild(el);
+        });
+    }
+
+    // 5. Move other mappings
+    const mappings = [
+        { source: '#view-definitions > div.flex-grow', target: '#accordion-content-definitions-guidance' },
+        { source: '#view-neighborhood_tips > div.flex-grow', target: '#accordion-content-neighbourhood-tips' },
+        { source: '#view-help_improve > div.flex-grow', target: '#accordion-content-help-improve' }
+    ];
+
+    mappings.forEach(m => {
+        const src = document.querySelector(m.source);
+        const tgt = document.querySelector(m.target);
+        if (src && tgt) {
+            src.classList.remove('overflow-y-auto', 'h-full', 'pb-12', 'pb-8', 'px-6', 'py-6');
+            src.classList.add('px-1', 'py-2'); // nested padding adjustments
+            while (src.firstChild) {
+                tgt.appendChild(src.firstChild);
+            }
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    initializeProfileSettingsAccordions();
     initSearchBehavior();
     initKeyboardLayoutHandler();
     initQuickCreateSheet();
+    startWelcomeCarousel();
 });
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initializeProfileSettingsAccordions();
     initSearchBehavior();
     initKeyboardLayoutHandler();
     initQuickCreateSheet();
+    startWelcomeCarousel();
 }
 
 function initQuickCreateSheet() {
@@ -32898,6 +33014,47 @@ window.handleEventDetailBackArrow = function() {
     } else {
         handleEventDetailBack();
     }
+};
+
+/* --- Welcome screen tagline word carousel --- */
+const CAROUSEL_WORDS = [
+    "Community", "Connection", "Trust", "Fairness", "Sustainability", "Value", 
+    "Neighbors", "Purpose", "Balance", "Generosity", "Resourcefulness", "Simplicity", 
+    "Harmony", "Opportunity"
+];
+
+let carouselWordIdx = 0;
+window.startWelcomeCarousel = function() {
+    const wordEl = document.getElementById('welcome-word-carousel');
+    if (!wordEl) return;
+    
+    // Set initial word
+    wordEl.innerText = CAROUSEL_WORDS[0];
+    
+    setInterval(() => {
+        // Slide out
+        wordEl.style.transition = 'opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+        wordEl.style.opacity = '0';
+        wordEl.style.transform = 'translateY(-12px)';
+        
+        setTimeout(() => {
+            // Update index and text
+            carouselWordIdx = (carouselWordIdx + 1) % CAROUSEL_WORDS.length;
+            wordEl.innerText = CAROUSEL_WORDS[carouselWordIdx];
+            
+            // Instantly move to bottom, invisible
+            wordEl.style.transition = 'none';
+            wordEl.style.transform = 'translateY(12px)';
+            
+            // Force browser layout reflow
+            void wordEl.offsetHeight;
+            
+            // Slide up to middle and fade in
+            wordEl.style.transition = 'opacity 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            wordEl.style.opacity = '1';
+            wordEl.style.transform = 'translateY(0)';
+        }, 350);
+    }, 2800);
 };
 
 // Global scope ends

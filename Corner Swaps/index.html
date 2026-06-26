@@ -1504,7 +1504,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </div>
                             <h1 id="welcome-app-name">CORNER SWAPS</h1>
                         </div>
-                        <p id="welcome-tagline">Your local neighbourhood swapping network.</p>
+                        <p id="welcome-tagline"><span>Bring back the barter. A return to</span> <span id="welcome-word-carousel" class="welcome-carousel-word">Community</span></p>
                     </div>
 
                     <!-- === Bottom frosted card panel === -->
@@ -1579,10 +1579,15 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <input id="si-password" type="password" placeholder="••••••••" autocomplete="off" required style="width:100%;height:50px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(48,138,94,0.2);border-radius:14px;padding:0 14px;font-family:'Outfit',sans-serif;font-size:15px;color:#1c2d24;outline:none;box-sizing:border-box;"/>
                         </div>
 
-                        <button type="button" onclick="handleSignIn(event)" style="width:100%;height:52px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);margin-top:4px;">
-                            Sign In
-                            <span class="material-symbols-outlined" style="font-size:16px;color:#ffffff !important;">arrow_forward</span>
-                        </button>
+                        <div style="display:flex;align-items:center;gap:12px;margin-top:4px;width:100%;">
+                            <button type="button" onclick="showView('welcome')" style="width: 52px; height: 52px; border: 1.5px solid rgba(48,138,94,0.2) !important; background: transparent !important; color: #308A5E !important; border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;">
+                                <span class="material-symbols-outlined" style="font-size: 20px; color: #308A5E !important; font-weight: bold;">arrow_back</span>
+                            </button>
+                            <button type="button" onclick="handleSignIn(event)" style="flex-grow: 1; height: 52px; background: #308A5E !important; color: #ffffff !important; border: none !important; border-radius: 14px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; box-shadow: 0 6px 18px rgba(48, 138, 94, 0.3);">
+                                Sign In
+                                <span class="material-symbols-outlined" style="font-size: 16px; color: #ffffff !important;">arrow_forward</span>
+                            </button>
+                        </div>
                     </div>
 
 
@@ -1734,7 +1739,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <span class="material-symbols-outlined" style="font-size: 20px; color: #ffffff !important; font-weight: bold;">arrow_back</span>
                             </button>
                             <button type="button" onclick="handleSignUpStep3(event)" style="flex-grow: 1; height: 52px; background: #308A5E !important; color: #ffffff !important; border: none !important; border-radius: 14px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; box-shadow: 0 6px 18px rgba(48, 138, 94, 0.3);">
-                                next
+                                Next
                                 <span class="material-symbols-outlined" style="font-size: 16px; color: #ffffff !important;">arrow_forward</span>
                             </button>
                         </div>
@@ -1842,14 +1847,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </div>
                         </div>
 
-                        <div style="display:flex;gap:12px;margin-top:2px;">
-                            <button type="button" onclick="showView('create_account_social')" style="flex:1;height:52px;border:1.5px solid rgba(48,138,94,0.2) !important;background:transparent !important;color:#308A5E !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">
-                                <span class="material-symbols-outlined text-sm font-semibold">arrow_back</span>
-                                Back
+                        <div style="display:flex;gap:12px;margin-top:2px;width:100%;">
+                            <button type="button" onclick="showView('create_account_social')" style="width:52px;height:52px;border:1.5px solid rgba(48,138,94,0.2) !important;background:transparent !important;color:#308A5E !important;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">
+                                <span class="material-symbols-outlined" style="font-size:20px;color:#308A5E !important;font-weight:bold;">arrow_back</span>
                             </button>
-                            <button style="flex:1;height:52px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:not-allowed;box-shadow:0 6px 18px rgba(48,138,94,0.3);opacity:0.45;transition:opacity 0.2s;" id="consent-continue-btn" onclick="handleProfileConsentSubmit()" disabled>
-                                Next Step
-                                <span class="material-symbols-outlined" style="font-size:16px;color:#ffffff !important;">arrow_forward</span>
+                            <button style="flex-grow:1;height:52px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:not-allowed;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);opacity:0.45;transition:opacity 0.2s;" id="consent-continue-btn" onclick="handleProfileConsentSubmit()" disabled>
+                                Agree and Continue
                             </button>
                         </div>
                     </div>
@@ -1972,14 +1975,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
                         
                         <!-- Action buttons -->
-                        <div style="display:flex;gap:12px;margin-top:4px;">
-                            <button type="button" onclick="showView('create_account_safe_spots')" style="flex:1 1 0% !important;height:52px !important;border:1.5px solid rgba(48,138,94,0.2) !important;background:transparent !important;color:#308A5E !important;border-radius:14px !important;font-family:'Outfit',sans-serif;font-size:13px !important;font-weight:600 !important;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">
-                                <span class="material-symbols-outlined text-sm font-semibold">arrow_back</span>
-                                Back
+                        <div style="display:flex;align-items:center;gap:12px;margin-top:4px;width:100%;">
+                            <button type="button" onclick="showView('create_account_safe_spots')" style="width:52px;height:52px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;box-shadow:0 6px 18px rgba(48,138,94,0.2);">
+                                <span class="material-symbols-outlined" style="font-size:20px;color:#ffffff !important;font-weight:bold;">arrow_back</span>
                             </button>
-                            <button type="submit" style="flex:1 1 0% !important;height:52px !important;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px !important;font-family:'Outfit',sans-serif;font-size:13px !important;font-weight:600 !important;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);">
-                                Next Step
-                                <span class="material-symbols-outlined" style="font-size:16px;color:#ffffff !important;">arrow_forward</span>
+                            <button type="submit" style="flex-grow:1;height:52px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);">
+                                Confirm and Continue
                             </button>
                         </div>
                     </form>
@@ -1996,9 +1997,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     </div>
 
                     <!-- Buttons and Dropdowns Wrapper -->
-                    <div style="padding:0 12px;display:flex;flex-direction:column;gap:12px;">
+                    <div style="padding:0 4px;display:flex;flex-direction:column;gap:12px;">
                         <!-- Offering Button -->
-                        <button type="button" onclick="toggleOnboardingDropdown('offering')" class="quick-create-row" style="background: rgba(48,138,94,0.05) !important; border: 1.5px solid rgba(48,138,94,0.15) !important;">
+                        <button type="button" onclick="toggleOnboardingDropdown('offering')" class="quick-create-row" style="background: #ffffff !important; border: 1.5px solid rgba(48,138,94,0.15) !important;">
                             <div class="quick-create-icon-circle" style="background-color: #308A5E !important; color: #ffffff !important;">
                                 <span class="material-symbols-outlined text-[18px]">handyman</span>
                             </div>
@@ -2009,12 +2010,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <span class="material-symbols-outlined text-[20px] text-forest-green" id="onboarding-chevron-offering" style="transition: transform 0.2s;">expand_more</span>
                         </button>
                         <!-- Offering Slot -->
-                        <div id="onboarding-dropdown-offering" class="hidden border border-outline-variant/30 rounded-2xl bg-white/40 dark:bg-black/20 p-2 overflow-y-auto" style="max-height: 480px; transition: all 0.3s ease;">
+                        <div id="onboarding-dropdown-offering" class="hidden border border-outline-variant/30 rounded-2xl bg-white/40 dark:bg-black/20 p-0 overflow-y-auto" style="max-height: 480px; transition: all 0.3s ease;">
                             <div id="onboarding-form-slot-offering"></div>
                         </div>
 
                         <!-- Need Button -->
-                        <button type="button" onclick="toggleOnboardingDropdown('need')" class="quick-create-row" style="background: rgba(245,158,11,0.05) !important; border: 1.5px solid rgba(245,158,11,0.15) !important;">
+                        <button type="button" onclick="toggleOnboardingDropdown('need')" class="quick-create-row" style="background: #ffffff !important; border: 1.5px solid rgba(245,158,11,0.15) !important;">
                             <div class="quick-create-icon-circle" style="background-color: #f59e0b !important; color: #ffffff !important;">
                                 <span class="material-symbols-outlined text-[18px]">shopping_basket</span>
                             </div>
@@ -2025,12 +2026,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <span class="material-symbols-outlined text-[20px] text-amber-500" id="onboarding-chevron-need" style="transition: transform 0.2s;">expand_more</span>
                         </button>
                         <!-- Need Slot -->
-                        <div id="onboarding-dropdown-need" class="hidden border border-outline-variant/30 rounded-2xl bg-white/40 dark:bg-black/20 p-2 overflow-y-auto" style="max-height: 480px; transition: all 0.3s ease;">
+                        <div id="onboarding-dropdown-need" class="hidden border border-outline-variant/30 rounded-2xl bg-white/40 dark:bg-black/20 p-0 overflow-y-auto" style="max-height: 480px; transition: all 0.3s ease;">
                             <div id="onboarding-form-slot-need"></div>
                         </div>
 
                         <!-- Event Button -->
-                        <button type="button" onclick="toggleOnboardingDropdown('event')" class="quick-create-row" style="background: rgba(139,92,246,0.05) !important; border: 1.5px solid rgba(139,92,246,0.15) !important;">
+                        <button type="button" onclick="toggleOnboardingDropdown('event')" class="quick-create-row" style="background: #ffffff !important; border: 1.5px solid rgba(139,92,246,0.15) !important;">
                             <div class="quick-create-icon-circle" style="background-color: #8b5cf6 !important; color: #ffffff !important;">
                                 <span class="material-symbols-outlined text-[18px]">festival</span>
                             </div>
@@ -2041,18 +2042,17 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <span class="material-symbols-outlined text-[20px] text-purple-500" id="onboarding-chevron-event" style="transition: transform 0.2s;">expand_more</span>
                         </button>
                         <!-- Event Slot -->
-                        <div id="onboarding-dropdown-event" class="hidden border border-outline-variant/30 rounded-2xl bg-white/40 dark:bg-black/20 p-2 overflow-y-auto" style="max-height: 480px; transition: all 0.3s ease;">
+                        <div id="onboarding-dropdown-event" class="hidden border border-outline-variant/30 rounded-2xl bg-white/40 dark:bg-black/20 p-0 overflow-y-auto" style="max-height: 480px; transition: all 0.3s ease;">
                             <div id="onboarding-form-slot-event"></div>
                         </div>
 
                         <!-- Action buttons -->
                         <div style="display:flex;gap:12px;margin-top:16px;">
-                            <button type="button" onclick="skipProfileStepCustomListing()" style="flex:1;height:52px;border:1.5px solid rgba(0,0,0,0.15) !important;background:#e5e7eb !important;color:#4b5563 !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+                            <button type="button" onclick="skipProfileStepCustomListing()" style="flex:1;height:52px;border:1.5px solid rgba(48,138,94,0.2) !important;background:#ffffff !important;color:#308A5E !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;">
                                 Skip for now
                             </button>
                             <button type="button" onclick="finishProfileStepCustomListing()" style="flex:1;height:52px;background:#308A5E !important;color:#ffffff !important;border:none !important;border-radius:14px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;box-shadow:0 6px 18px rgba(48, 138, 94, 0.3);">
                                 Finish
-                                <span class="material-symbols-outlined text-sm font-semibold" style="color:#ffffff !important;">check_circle</span>
                             </button>
                         </div>
                     </div>
@@ -2529,11 +2529,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                     <button onclick="handleAddMapTap()" class="hidden w-7 h-7 rounded-full flex items-center justify-center bg-[#308A5E]/10 dark:bg-[#308A5E]/20 text-[#308A5E] hover:bg-[#308A5E]/20 active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Add Listing" style="display: none !important; border: 0 !important; margin-left: 4px !important;">
                                         <span class="material-symbols-outlined text-[15px] font-black">add</span>
                                     </button>
-                                    <button id="btn-integrated-quick-create" onclick="toggleQuickCreateDropdown(event)" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-[#308A5E] dark:bg-[#308A5E] text-white dark:text-white hover:opacity-90 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
-                                        <span class="material-symbols-outlined text-[16px] font-bold">add</span>
-                                    </button>
                                     <button id="btn-integrated-location" onclick="snapToUserNeighborhood()" class="fused-location-btn active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Snap to my location">
                                         <span class="material-symbols-outlined text-[15px]">my_location</span>
+                                    </button>
+                                    <button id="btn-integrated-quick-create" onclick="toggleQuickCreateDropdown(event)" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-[#4AA376] dark:bg-[#377F56] text-white dark:text-white hover:opacity-90 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
+                                        <span class="material-symbols-outlined text-[16px] font-bold">add</span>
                                     </button>
                                     <input type="text" id="village-search-input" oninput="applyMapFiltering();" placeholder="Neighbourhood Search" class="fused-search-input">
                                     <button id="btn-map-search-clear" onclick="clearSearchInput('village-search-input')" class="hidden w-6 h-6 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 active:scale-90 transition-all text-black dark:text-white border-0 flex-shrink-0 ml-1 mr-1 shadow-sm" title="Clear Search">
@@ -2785,7 +2785,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <button id="btn-list-filter" onclick="toggleListFiltersSection(event)" class="fused-filter-btn active:scale-90 transition-all cursor-pointer flex-shrink-0 mr-1" title="Filter Categories">
                                     <span class="material-symbols-outlined text-[15px]">tune</span>
                                 </button>
-                                <button id="btn-list-quick-create" onclick="toggleQuickCreateDropdown(event, 'list')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-[#308A5E] dark:bg-[#308A5E] text-white dark:text-white hover:opacity-90 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
+                                <button id="btn-list-location" onclick="snapToUserNeighborhood()" class="fused-location-btn active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Snap to my location">
+                                    <span class="material-symbols-outlined text-[15px]">my_location</span>
+                                </button>
+                                <button id="btn-list-quick-create" onclick="toggleQuickCreateDropdown(event, 'list')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-[#4AA376] dark:bg-[#377F56] text-white dark:text-white hover:opacity-90 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
                                     <span class="material-symbols-outlined text-[16px] font-bold">add</span>
                                 </button>
                                 <input type="text" id="village-list-search-input" oninput="syncVillageSearch(this.value);" placeholder="Neighbourhood Search" class="fused-search-input">
@@ -2882,7 +2885,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <button id="btn-needs-filter" onclick="toggleListFiltersSection(event)" class="fused-filter-btn active:scale-90 transition-all cursor-pointer flex-shrink-0 mr-1" title="Filter Categories">
                                     <span class="material-symbols-outlined text-[15px]">tune</span>
                                 </button>
-                                <button id="btn-needs-quick-create" onclick="toggleQuickCreateDropdown(event, 'needs')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-[#308A5E] dark:bg-[#308A5E] text-white dark:text-white hover:opacity-90 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
+                                <button id="btn-needs-location" onclick="snapToUserNeighborhood()" class="fused-location-btn active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Snap to my location">
+                                    <span class="material-symbols-outlined text-[15px]">my_location</span>
+                                </button>
+                                <button id="btn-needs-quick-create" onclick="toggleQuickCreateDropdown(event, 'needs')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-[#4AA376] dark:bg-[#377F56] text-white dark:text-white hover:opacity-90 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
                                     <span class="material-symbols-outlined text-[16px] font-bold">add</span>
                                 </button>
                                 <input type="text" id="village-needs-search-input" oninput="syncVillageSearch(this.value);" placeholder="Neighbourhood Search" class="fused-search-input">
@@ -2979,7 +2985,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <button id="btn-events-filter" onclick="toggleListFiltersSection(event)" class="fused-filter-btn active:scale-90 transition-all cursor-pointer flex-shrink-0 mr-1" title="Filter Categories">
                                     <span class="material-symbols-outlined text-[15px]">tune</span>
                                 </button>
-                                <button id="btn-events-quick-create" onclick="toggleQuickCreateDropdown(event, 'events')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-[#308A5E] dark:bg-[#308A5E] text-white dark:text-white hover:opacity-90 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
+                                <button id="btn-events-location" onclick="snapToUserNeighborhood()" class="fused-location-btn active:scale-90 transition-all cursor-pointer flex-shrink-0" title="Snap to my location">
+                                    <span class="material-symbols-outlined text-[15px]">my_location</span>
+                                </button>
+                                <button id="btn-events-quick-create" onclick="toggleQuickCreateDropdown(event, 'events')" class="w-[28px] h-[28px] rounded-full flex items-center justify-center bg-[#4AA376] dark:bg-[#377F56] text-white dark:text-white hover:opacity-90 active:scale-95 transition-all border-0 flex-shrink-0 cursor-pointer" title="Quick Create">
                                     <span class="material-symbols-outlined text-[16px] font-bold">add</span>
                                 </button>
                                 <input type="text" id="village-events-search-input" oninput="syncVillageSearch(this.value);" placeholder="Neighbourhood Search" class="fused-search-input">
@@ -3491,6 +3500,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div id="chat-header-expiry-container" class="hidden flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 font-bold px-1.5 py-0.5 rounded-lg text-[9px] select-none cursor-pointer active:scale-95 transition-transform" onclick="simulateChatExpiration()" title="Tap to simulate 24h expiration">
                                 <span id="chat-header-expiry-val">24h left</span>
                             </div>
+                            <!-- Complete Swap Checkmark Button -->
+                            <button id="chat-header-complete-btn" onclick="window.openConfirmSwapRatingModal(state.currentConversationId)" class="w-10 h-10 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-[#2a352d] flex-shrink-0 shadow-sm hidden" title="Complete Swap">
+                                <span class="material-symbols-outlined text-[20px] font-black text-forest-green dark:text-emerald-400">check_circle</span>
+                            </button>
                         </div>
                     </div>
                     
@@ -3967,9 +3980,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <!-- sticky/fixed header: Hero Image area with three photo uploader slots -->
                             <section class="photo-hero w-full relative overflow-hidden flex flex-col justify-center items-center border-b border-outline-variant/30 flex-shrink-0 bg-[#ecebeb] dark:bg-[#202020] px-4 pt-14 pb-8 animate-fade-in" id="offer-photo-hero">
                                 <div class="flex flex-col items-center w-full">
-                                    <div class="flex justify-center gap-1 items-center w-full max-w-[300px] mx-auto">
+                                    <div class="flex justify-center gap-1.5 items-center w-full max-w-[320px] mx-auto">
                                         <!-- Slot 0 (Primary) -->
-                                        <div class="relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(0)">
+                                        <div class="relative w-[92px] h-[92px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(0)">
                                             <div id="offer-photo-placeholder-0" class="flex items-center justify-center p-2">
                                                 <span class="material-symbols-outlined text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">add_a_photo</span>
                                             </div>
@@ -3981,7 +3994,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                         </div>
 
                                         <!-- Slot 1 (Optional) -->
-                                        <div class="relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(1)">
+                                        <div class="relative w-[92px] h-[92px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="triggerOfferPhotoUpload(1)">
                                             <div id="offer-photo-placeholder-1" class="flex items-center justify-center p-2">
                                                 <span class="material-symbols-outlined text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">add_a_photo</span>
                                             </div>
@@ -3993,7 +4006,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                         </div>
 
                                         <!-- Slot 2 (Icon Display - Not Clickable) -->
-                                        <div class="relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center select-none overflow-hidden shadow-sm">
+                                        <div class="relative w-[92px] h-[92px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center select-none overflow-hidden shadow-sm">
                                             <div id="offer-icon-placeholder" class="flex items-center justify-center p-2">
                                                 <span class="material-symbols-outlined text-black dark:text-white text-[36px] transition-transform">interests</span>
                                             </div>
@@ -4098,51 +4111,51 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div class="relative w-full">
                                 <div id="offer-categories-grid" class="grid grid-cols-2 gap-2 mb-4 p-0.5">
                                     <button type="button" data-category="Food & Drink" class="offer-category-btn p-1.5 bg-white border border-outline-variant/30 rounded-xl text-forest-green font-semibold text-xs flex flex-col items-center justify-center text-center gap-1 hover:bg-forest-green/5 active:scale-95 transition-all select-none" onclick="selectOfferCategory('Food & Drink')">
-                                        <span class="material-symbols-outlined text-[15px]">restaurant</span>
+                                        <span class="material-symbols-outlined text-[15px]" style="color:#ef4444;">restaurant</span>
                                         <span class="text-[8px] font-medium tracking-tight leading-[1.1] break-words w-full">Food & Drink</span>
                                     </button>
                                     <button type="button" data-category="Home and Living" class="offer-category-btn p-1.5 bg-white border border-outline-variant/30 rounded-xl text-forest-green font-semibold text-xs flex flex-col items-center justify-center text-center gap-1 hover:bg-forest-green/5 active:scale-95 transition-all select-none" onclick="selectOfferCategory('Home and Living')">
-                                        <span class="material-symbols-outlined text-[15px]">home</span>
+                                        <span class="material-symbols-outlined text-[15px]" style="color:#3b82f6;">home</span>
                                         <span class="text-[8px] font-medium tracking-tight leading-[1.1] break-words w-full">Home & Living</span>
                                     </button>
                                     <button type="button" data-category="Garden & Outdoors" class="offer-category-btn p-1.5 bg-white border border-outline-variant/30 rounded-xl text-forest-green font-semibold text-xs flex flex-col items-center justify-center text-center gap-1 hover:bg-forest-green/5 active:scale-95 transition-all select-none" onclick="selectOfferCategory('Garden & Outdoors')">
-                                        <span class="material-symbols-outlined text-[15px]">yard</span>
+                                        <span class="material-symbols-outlined text-[15px]" style="color:#10b981;">yard</span>
                                         <span class="text-[8px] font-medium tracking-tight leading-[1.1] break-words w-full">Garden & Outdoors</span>
                                     </button>
                                     <button type="button" data-category="Skills & Education" class="offer-category-btn p-1.5 bg-white border border-outline-variant/30 rounded-xl text-forest-green font-semibold text-xs flex flex-col items-center justify-center text-center gap-1 hover:bg-forest-green/5 active:scale-95 transition-all select-none" onclick="selectOfferCategory('Skills & Education')">
-                                        <span class="material-symbols-outlined text-[15px]">school</span>
+                                        <span class="material-symbols-outlined text-[15px]" style="color:#f59e0b;">school</span>
                                         <span class="text-[8px] font-medium tracking-tight leading-[1.1] break-words w-full">Skills & Education</span>
                                     </button>
                                     <button type="button" data-category="Handyman & Services" class="offer-category-btn p-1.5 bg-white border border-outline-variant/30 rounded-xl text-forest-green font-semibold text-xs flex flex-col items-center justify-center text-center gap-1 hover:bg-forest-green/5 active:scale-95 transition-all select-none" onclick="selectOfferCategory('Handyman & Services')">
-                                        <span class="material-symbols-outlined text-[15px]">handyman</span>
+                                        <span class="material-symbols-outlined text-[15px]" style="color:#6b7280;">handyman</span>
                                         <span class="text-[8px] font-medium tracking-tight leading-[1.1] break-words w-full">Handyman & Services</span>
                                     </button>
                                     <button type="button" data-category="Creative & Art" class="offer-category-btn p-1.5 bg-white border border-outline-variant/30 rounded-xl text-forest-green font-semibold text-xs flex flex-col items-center justify-center text-center gap-1 hover:bg-forest-green/5 active:scale-95 transition-all select-none" onclick="selectOfferCategory('Creative & Art')">
-                                        <span class="material-symbols-outlined text-[15px]">palette</span>
+                                        <span class="material-symbols-outlined text-[15px]" style="color:#ec4899;">palette</span>
                                         <span class="text-[8px] font-medium tracking-tight leading-[1.1] break-words w-full">Creative & Art</span>
                                     </button>
                                     <button type="button" data-category="Health" class="offer-category-btn p-1.5 bg-white border border-outline-variant/30 rounded-xl text-forest-green font-semibold text-xs flex flex-col items-center justify-center text-center gap-1 hover:bg-forest-green/5 active:scale-95 transition-all select-none" onclick="selectOfferCategory('Health')">
-                                        <span class="material-symbols-outlined text-[15px]">spa</span>
+                                        <span class="material-symbols-outlined text-[15px]" style="color:#14b8a6;">spa</span>
                                         <span class="text-[8px] font-medium tracking-tight leading-[1.1] break-words w-full">Health</span>
                                     </button>
                                     <button type="button" data-category="Clothing & Apparel" class="offer-category-btn p-1.5 bg-white border border-outline-variant/30 rounded-xl text-forest-green font-semibold text-xs flex flex-col items-center justify-center text-center gap-1 hover:bg-forest-green/5 active:scale-95 transition-all select-none" onclick="selectOfferCategory('Clothing & Apparel')">
-                                        <span class="material-symbols-outlined text-[15px]">checkroom</span>
+                                        <span class="material-symbols-outlined text-[15px]" style="color:#8b5cf6;">checkroom</span>
                                         <span class="text-[8px] font-medium tracking-tight leading-[1.1] break-words w-full">Clothing & Apparel</span>
                                     </button>
                                     <button type="button" data-category="Books, Games, Entertainment" class="offer-category-btn p-1.5 bg-white border border-outline-variant/30 rounded-xl text-forest-green font-semibold text-xs flex flex-col items-center justify-center text-center gap-1 hover:bg-forest-green/5 active:scale-95 transition-all select-none" onclick="selectOfferCategory('Books, Games, Entertainment')">
-                                        <span class="material-symbols-outlined text-[15px]">sports_esports</span>
+                                        <span class="material-symbols-outlined text-[15px]" style="color:#6366f1;">sports_esports</span>
                                         <span class="text-[8px] font-medium tracking-tight leading-[1.1] break-words w-full">Books & Games</span>
                                     </button>
                                     <button type="button" data-category="Kids and Maternity" class="offer-category-btn p-1.5 bg-white border border-outline-variant/30 rounded-xl text-forest-green font-semibold text-xs flex flex-col items-center justify-center text-center gap-1 hover:bg-forest-green/5 active:scale-95 transition-all select-none" onclick="selectOfferCategory('Kids and Maternity')">
-                                        <span class="material-symbols-outlined text-[15px]">stroller</span>
+                                        <span class="material-symbols-outlined text-[15px]" style="color:#f43f5e;">stroller</span>
                                         <span class="text-[8px] font-medium tracking-tight leading-[1.1] break-words w-full">Kids & Maternity</span>
                                     </button>
                                     <button type="button" data-category="Other" class="offer-category-btn p-1.5 bg-white border border-outline-variant/30 rounded-xl text-forest-green font-semibold text-xs flex flex-col items-center justify-center text-center gap-1 hover:bg-forest-green/5 active:scale-95 transition-all select-none" onclick="selectOfferCategory('Other')">
-                                        <span class="material-symbols-outlined text-[15px]">more_horiz</span>
+                                        <span class="material-symbols-outlined text-[15px]" style="color:#9ca3af;">more_horiz</span>
                                         <span class="text-[8px] font-medium tracking-tight leading-[1.1] break-words w-full">Other</span>
                                     </button>
                                     <button type="button" data-category="Language or Info Exchange" class="offer-category-btn p-1.5 bg-white border border-outline-variant/30 rounded-xl text-forest-green font-semibold text-xs flex flex-col items-center justify-center text-center gap-1 hover:bg-forest-green/5 active:scale-95 transition-all select-none" onclick="selectOfferCategory('Language or Info Exchange')">
-                                        <span class="material-symbols-outlined text-[15px]">translate</span>
+                                        <span class="material-symbols-outlined text-[15px]" style="color:#0ea5e9;">translate</span>
                                         <span class="text-[8px] font-medium tracking-tight leading-[1.1] break-words w-full">Language & Info</span>
                                     </button>
                                 </div>
@@ -4494,35 +4507,96 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                             </div>
                         </section>
+                         <!-- Update Your Profile Accordion -->
+                        <div class="space-y-2 w-full">
+                            <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="toggleProfileAccordion('update-profile')">
+                                <span class="flex items-center gap-2 text-black dark:text-white">
+                                    <span class="material-symbols-outlined text-base text-blue-600 dark:text-blue-400">person</span> Update Your Profile
+                                </span>
+                                <span id="accordion-chevron-update-profile" class="material-symbols-outlined text-outline dark:text-neutral-400 transition-transform duration-200">chevron_right</span>
+                            </button>
+                            <div id="accordion-content-update-profile" class="hidden mt-2 p-4 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl shadow-inner text-left overflow-hidden">
+                                <!-- Loaded dynamically on initialize -->
+                            </div>
+                        </div>
 
-                        <!-- Account Settings button -->
-                        <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="showView('settings_detail')">
-                            <span class="flex items-center gap-2 text-black dark:text-white">
-                                <span class="material-symbols-outlined text-base text-blue-600 dark:text-blue-400">settings</span> Account Settings
-                            </span>
-                            <span class="material-symbols-outlined text-outline dark:text-neutral-400">chevron_right</span>
-                        </button>
+                        <!-- Friends List Accordion -->
+                        <div class="space-y-2 w-full">
+                            <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="toggleProfileAccordion('friends-list')">
+                                <span class="flex items-center gap-2 text-black dark:text-white">
+                                    <span class="material-symbols-outlined text-base text-blue-600 dark:text-blue-400">group</span> Friends List
+                                </span>
+                                <span id="accordion-chevron-friends-list" class="material-symbols-outlined text-outline dark:text-neutral-400 transition-transform duration-200">chevron_right</span>
+                            </button>
+                            <div id="accordion-content-friends-list" class="hidden mt-2 p-4 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl shadow-inner text-left overflow-hidden">
+                                <!-- Loaded dynamically on initialize -->
+                            </div>
+                        </div>
 
-                        <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="showView('definitions')">
-                            <span class="flex items-center gap-2 text-black dark:text-white">
-                                <span class="material-symbols-outlined text-base text-violet-600 dark:text-violet-400">menu_book</span> Definitions & guidance
-                            </span>
-                            <span class="material-symbols-outlined text-outline dark:text-neutral-400">chevron_right</span>
-                        </button>
+                        <!-- Privacy Center Accordion -->
+                        <div class="space-y-2 w-full">
+                            <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="toggleProfileAccordion('privacy-center')">
+                                <span class="flex items-center gap-2 text-black dark:text-white">
+                                    <span class="material-symbols-outlined text-base text-blue-600 dark:text-blue-400">privacy_tip</span> Privacy Center & Settings
+                                </span>
+                                <span id="accordion-chevron-privacy-center" class="material-symbols-outlined text-outline dark:text-neutral-400 transition-transform duration-200">chevron_right</span>
+                            </button>
+                            <div id="accordion-content-privacy-center" class="hidden mt-2 p-4 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl shadow-inner text-left overflow-hidden">
+                                <!-- Loaded dynamically on initialize -->
+                            </div>
+                        </div>
 
-                        <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="showView('neighborhood_tips')">
-                            <span class="flex items-center gap-2 text-black dark:text-white">
-                                <span class="material-symbols-outlined text-base text-yellow-600 dark:text-yellow-400">lightbulb</span> Neighbourhood Tips
-                            </span>
-                            <span class="material-symbols-outlined text-outline dark:text-neutral-400">chevron_right</span>
-                        </button>
+                        <!-- Account Security Accordion -->
+                        <div class="space-y-2 w-full">
+                            <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="toggleProfileAccordion('account-security')">
+                                <span class="flex items-center gap-2 text-black dark:text-white">
+                                    <span class="material-symbols-outlined text-base text-blue-600 dark:text-blue-400">security</span> Account Security, Admin & Session
+                                </span>
+                                <span id="accordion-chevron-account-security" class="material-symbols-outlined text-outline dark:text-neutral-400 transition-transform duration-200">chevron_right</span>
+                            </button>
+                            <div id="accordion-content-account-security" class="hidden mt-2 p-4 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl shadow-inner text-left overflow-hidden">
+                                <!-- Loaded dynamically on initialize -->
+                            </div>
+                        </div>
 
-                        <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="showView('help_improve')">
-                            <span class="flex items-center gap-2 text-black dark:text-white">
-                                <span class="material-symbols-outlined text-base text-cyan-600 dark:text-cyan-400">rate_review</span> Help Us Improve
-                            </span>
-                            <span class="material-symbols-outlined text-outline dark:text-neutral-400">chevron_right</span>
-                        </button>
+                        <!-- Definitions & Guidance Accordion -->
+                        <div class="space-y-2 w-full">
+                            <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="toggleProfileAccordion('definitions-guidance')">
+                                <span class="flex items-center gap-2 text-black dark:text-white">
+                                    <span class="material-symbols-outlined text-base text-violet-600 dark:text-violet-400">menu_book</span> Definitions & guidance
+                                </span>
+                                <span id="accordion-chevron-definitions-guidance" class="material-symbols-outlined text-outline dark:text-neutral-400 transition-transform duration-200">chevron_right</span>
+                            </button>
+                            <div id="accordion-content-definitions-guidance" class="hidden mt-2 p-4 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl shadow-inner text-left overflow-hidden">
+                                <!-- Loaded dynamically on initialize -->
+                            </div>
+                        </div>
+
+                        <!-- Neighbourhood Tips Accordion -->
+                        <div class="space-y-2 w-full">
+                            <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="toggleProfileAccordion('neighbourhood-tips')">
+                                <span class="flex items-center gap-2 text-black dark:text-white">
+                                    <span class="material-symbols-outlined text-base text-yellow-600 dark:text-yellow-400">lightbulb</span> Neighbourhood Tips
+                                </span>
+                                <span id="accordion-chevron-neighbourhood-tips" class="material-symbols-outlined text-outline dark:text-neutral-400 transition-transform duration-200">chevron_right</span>
+                            </button>
+                            <div id="accordion-content-neighbourhood-tips" class="hidden mt-2 p-4 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl shadow-inner text-left overflow-hidden">
+                                <!-- Loaded dynamically on initialize -->
+                            </div>
+                        </div>
+
+                        <!-- Help Us Improve Accordion -->
+                        <div class="space-y-2 w-full">
+                            <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="toggleProfileAccordion('help-improve')">
+                                <span class="flex items-center gap-2 text-black dark:text-white">
+                                    <span class="material-symbols-outlined text-base text-cyan-600 dark:text-cyan-400">rate_review</span> Help Us Improve
+                                </span>
+                                <span id="accordion-chevron-help-improve" class="material-symbols-outlined text-outline dark:text-neutral-400 transition-transform duration-200">chevron_right</span>
+                            </button>
+                            <div id="accordion-content-help-improve" class="hidden mt-2 p-4 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl shadow-inner text-left overflow-hidden">
+                                <!-- Loaded dynamically on initialize -->
+                            </div>
+                        </div>
                     </div>
 
 
@@ -4863,12 +4937,20 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <div class="overflow-y-auto custom-scrollbar flex-grow p-6 flex flex-col justify-start gap-4 pb-20">
                         <!-- Top Header Section (No container card, same profile layout style) -->
                         <div class="flex flex-col items-center gap-2 w-full" style="background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin-top: 5px !important;">
+                            <!-- Badge -->
+                            <span id="confirm-swap-badge" class="px-2.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-forest-green/10 text-forest-green dark:bg-emerald-600/20 dark:text-emerald-400 mt-1 select-none">Community Member</span>
+                            
                             <!-- Avatar and Name -->
-                            <div class="profile-avatar-ring w-24 h-24 flex-shrink-0 relative mt-1">
+                            <div class="profile-avatar-ring w-24 h-24 flex-shrink-0 relative mt-1 cursor-pointer active:scale-95 transition-transform" onclick="event.stopPropagation(); openNeighborProfileModal(document.getElementById('confirm-swap-neighbor-name').innerText.trim())">
                                 <img id="confirm-swap-avatar" src="" class="w-full h-full object-cover rounded-full animate-fade-in" alt="Neighbor Avatar">
                             </div>
-                            <h3 class="font-headline font-extrabold text-black dark:text-white text-lg mt-1" id="confirm-swap-neighbor-name" style="font-weight: 800 !important; margin-bottom: 0 !important;">Neighbor Name</h3>
-                            <p style="font-size: 13px !important; color: #6b7280 !important; font-weight: 700 !important; margin: 0 !important; margin-top: -4px !important;">Rate a neighbor</p>
+                            <h3 class="font-headline font-extrabold text-black dark:text-white text-lg mt-1 cursor-pointer hover:underline" id="confirm-swap-neighbor-name" style="font-weight: 800 !important; margin-bottom: 0 !important;" onclick="event.stopPropagation(); openNeighborProfileModal(document.getElementById('confirm-swap-neighbor-name').innerText.trim())">Neighbor Name</h3>
+                            
+                            <!-- Karma Points -->
+                            <div class="flex items-center gap-1.5 mt-0.5 text-xs font-bold text-amber-500 dark:text-amber-400 select-none">
+                                <span class="material-symbols-outlined text-sm font-bold" style="font-variation-settings: 'FILL' 1; color: #f59e0b !important;">favorite</span>
+                                <span id="confirm-swap-karma-points">50</span> Karma Points
+                            </div>
                         </div>
 
                         <!-- Swap Section -->
@@ -4914,17 +4996,18 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <div id="confirm-swap-negative-menu" class="hidden flex-col gap-2.5">
                             <p style="font-size: 13px !important; color: #ef4444 !important; font-weight: 700 !important; text-align: center !important; margin: 4px 0 !important; width: 100% !important;">Please select issue tags:</p>
                             <div class="grid grid-cols-2 gap-2 w-full px-1">
-                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'slow response')">slow response</button>
-                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'felt unsafe')">felt unsafe</button>
-                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'not as described')">not as described</button>
-                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'damaged item')">damaged item</button>
-                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'unfriendly')">unfriendly</button>
-                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'late arrival')">late arrival</button>
-                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'no-show')">no-show</button>
-                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'wrong location')">wrong location</button>
-                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'poor coordination')">poor coordination</button>
-                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'other issue')">other issue</button>
+                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'Late for meetup')">Late for meetup</button>
+                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'Item not as described')">Item not as described</button>
+                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'Poor communication')">Poor communication</button>
+                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]" onclick="toggleFusedTag(this, 'No show')">No show</button>
+                                <button class="fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98] col-span-2" onclick="toggleFusedTag(this, 'Other')">Other</button>
                             </div>
+                        </div>
+
+                        <!-- Optional Written Review -->
+                        <div class="text-left space-y-1.5">
+                            <label id="confirm-swap-written-feedback-label" class="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider block">Write a public review for Neighbor Name:</label>
+                            <textarea id="confirm-swap-written-feedback" class="w-full bg-white dark:bg-[#1b261f] border border-outline-variant/30 dark:border-outline-variant/20 rounded-xl p-3 text-xs focus:border-forest-green focus:ring-0 outline-none text-black dark:text-white placeholder:text-outline/40 dark:placeholder:text-warm-cream/35 leading-relaxed" rows="3" placeholder="Tell us more details about your swap (optional)..."></textarea>
                         </div>
 
                         <!-- Bottom Primary Actions Stack -->
@@ -4934,6 +5017,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <span class="material-symbols-outlined text-sm font-bold">check_circle</span> Submit
                             </button>
                             
+                            <!-- Skip Button -->
+                            <button id="fused-skip-btn" class="w-full h-12 bg-white dark:bg-[#1b261f] border border-outline-variant/30 text-on-surface dark:text-white rounded-xl text-xs font-bold active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm" onclick="skipFusedReview()">
+                                Skip
+                            </button>
+
                             <!-- Red Button on the Bottom -->
                             <button id="fused-cancel-btn" class="w-full h-12 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold active:scale-[0.98] transition-transform shadow cursor-pointer border-0 flex items-center justify-center gap-1.5" onclick="notCompletedFusedReview()">
                                 Swap Not Complete
@@ -5389,8 +5477,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         
                         <!-- Top Icon and Title -->
                         <div class="flex flex-col items-center space-y-3">
-                            <div class="w-12 h-12 rounded-full bg-forest-green/15 dark:bg-forest-green/25 flex items-center justify-center text-forest-green dark:text-[#82b995]">
-                                <span class="material-symbols-outlined text-2xl">location_on</span>
+                            <div class="w-16 h-16 rounded-full bg-forest-green/15 dark:bg-forest-green/25 flex items-center justify-center text-forest-green dark:text-[#82b995]">
+                                <span class="material-symbols-outlined text-3xl">my_location</span>
                             </div>
                             <h3 class="font-headline text-lg font-bold text-black dark:text-warm-cream">
                                 Location Privacy
@@ -5492,17 +5580,15 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed mb-2">
                                 Karma points reflect your active contributions, reliability, and good standing in the community. You earn karma and XP by completing neighborhood actions. Higher karma highlights you as a trusted neighbor and unlocks special badges!
                             </p>
-                            <div class="text-[11px] text-on-surface-variant dark:text-on-surface-variant/80 space-y-1 bg-black/5 dark:bg-white/5 p-3 rounded-lg border border-black/5 dark:border-white/5 text-left">
-                                <p class="font-bold text-xs mb-1">XP & Karma Point Formula:</p>
-                                <ul class="list-disc pl-4 space-y-0.5">
-                                    <li><strong>List an offer/item:</strong> +10 XP</li>
-                                    <li><strong>Create an event/meetup:</strong> +10 XP</li>
-                                    <li><strong>Complete standard swap:</strong> +5 XP</li>
-                                    <li><strong>Complete a Karma swap (gift):</strong> +10 XP for donor / +50 Karma Points to donor</li>
-                                    <li><strong>Submit a swap review:</strong> +10 XP</li>
-                                    <li><strong>Positive swap rating received:</strong> +10 Karma Points to you</li>
-                                    <li><strong>Negative swap rating received:</strong> -10 Karma Points from you</li>
-                                </ul>
+                            <div class="text-[10px] text-outline dark:text-neutral-400 space-y-1 text-left pt-2 border-t border-black/5 dark:border-white/5">
+                                <p class="font-bold text-[10px] text-black dark:text-white uppercase tracking-wider mb-1.5">XP & Karma Point Formula:</p>
+                                <p><strong>List an offer/item:</strong> +10 XP</p>
+                                <p><strong>Create an event/meetup:</strong> +10 XP</p>
+                                <p><strong>Complete standard swap:</strong> +5 XP</p>
+                                <p><strong>Complete a Karma swap (gift):</strong> +10 XP / +50 Karma Points</p>
+                                <p><strong>Submit a swap review:</strong> +10 XP</p>
+                                <p><strong>Positive swap rating received:</strong> +10 Karma Points</p>
+                                <p><strong>Negative swap rating received:</strong> -10 Karma Points</p>
                             </div>
                         </div>
 
@@ -5787,7 +5873,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                     <div class="flex-grow overflow-y-auto custom-scrollbar px-6 py-6 pb-12">
                         <!-- Profile Info Edit Box -->
-                        <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-4">
+                        <div id="settings-profile-details-box" class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-4">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-blue-600 dark:text-blue-400">person</span> Profile Details<span id="profile-saved-checkmark" class="hidden material-symbols-outlined text-sm text-emerald-500" style="transition: opacity 0.3s;">check_circle</span>
                             </h3>
@@ -5848,7 +5934,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                     <div id="address-autocomplete-list" class="hidden absolute left-0 right-0 z-50 bg-white dark:bg-[#18201a] border border-outline-variant/30 rounded-xl shadow-lg max-h-48 overflow-y-auto mt-1"></div>
                                 </div>
                                 <div class="pt-3 border-t border-outline-variant/10">
-                                    <button class="w-full h-10 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl active:scale-[0.98] transition-all cursor-pointer shadow-sm" onclick="handleSaveSettingsDetails(event)">
+                                    <button class="w-full h-10 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl active:scale-[0.98] transition-all cursor-pointer shadow-sm border-0" onclick="handleSaveSettingsDetails(event)">
                                         Update your profile
                                     </button>
                                 </div>
@@ -5856,7 +5942,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
 
                         <!-- Friends List Section -->
-                        <div id="widget-friends-list" class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-4">
+                        <div id="settings-friends-box" class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-4">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-blue-600 dark:text-blue-400">group</span> Friends List
                             </h3>
@@ -5938,14 +6024,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                             <!-- Toggle Button -->
                             <div class="mt-3 text-center">
-                                <button id="btn-toggle-friends" onclick="toggleFriendsList()" class="w-full py-2.5 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-blue-600 dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-3 cursor-pointer active:scale-95 transition-all text-center select-none">
+                                <button id="btn-toggle-friends" onclick="toggleFriendsList()" class="w-full py-2.5 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-blue-600 dark:text-blue-400 text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-3 cursor-pointer active:scale-95 transition-all text-center select-none">
                                     Show More
                                 </button>
                             </div>
                         </div>
 
                         <!-- Location Privacy Settings Box -->
-                        <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-4">
+                        <div id="settings-location-privacy-box" class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-4">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-purple-600 dark:text-purple-400">location_on</span> Location Privacy Settings
                             </h3>
@@ -5962,7 +6048,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                     </div>
                                     <label class="relative inline-flex items-center cursor-pointer">
                                         <input type="checkbox" id="settings-location-gps" class="sr-only peer" checked onchange="toggleGPSService(this.checked)">
-                                        <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
+                                        <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                     </label>
                                 </div>
                                 
@@ -5973,7 +6059,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                         <p class="text-[10px] text-outline font-normal">Select coordinates precision for safety</p>
                                     </div>
                                     <div class="relative w-full">
-                                        <select id="settings-location-accuracy" class="w-full bg-white dark:bg-[#18201a] border border-outline-variant/30 rounded-xl text-xs px-3 py-2 text-black dark:text-white font-bold focus:ring-0 focus:border-black dark:focus:border-white outline-none pr-8 relative cursor-pointer shadow-sm active:scale-[0.98] transition-all" style="background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%232D6A4F%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22m6 8 4 4 4-4%22/%3E%3C/svg%3E') !important; background-repeat: no-repeat !important; background-position: right 12px center !important; background-size: 18px !important;">
+                                        <select id="settings-location-accuracy" class="w-full bg-white dark:bg-[#18201a] border border-outline-variant/30 rounded-xl text-xs px-3 py-2 text-black dark:text-white font-bold focus:ring-0 focus:border-black dark:focus:border-white outline-none pr-8 relative cursor-pointer shadow-sm active:scale-[0.98] transition-all" style="background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%232563eb%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22m6 8 4 4 4-4%22/%3E%3C/svg%3E') !important; background-repeat: no-repeat !important; background-position: right 12px center !important; background-size: 18px !important;">
                                             <option value="precise">Precise (GPS)</option>
                                             <option value="approximate">Approximate (Fuzzed)</option>
                                             <option value="manual">Manual Entry Only</option>
@@ -6004,9 +6090,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
 
                         <!-- Toggles Box (Preferences) -->
-                        <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-4">
+                        <div id="settings-preferences-box" class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-4">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-emerald-600 dark:text-emerald-400">settings</span> Preferences & Privacy
+                                <span class="material-symbols-outlined text-sm text-blue-600 dark:text-blue-400">settings</span> Preferences & Privacy
                             </h3>
                             
                             <!-- Toggle Dark Mode -->
@@ -6017,7 +6103,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" id="settings-toggle-dark" class="sr-only peer" onchange="handleToggleDarkMode(this.checked)">
-                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
+                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
 
@@ -6029,7 +6115,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" id="settings-toggle-upcoming-visible" class="sr-only peer" checked>
-                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
+                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
 
@@ -6041,7 +6127,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" id="settings-toggle-visible-friends" class="sr-only peer">
-                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
+                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
                             
@@ -6053,7 +6139,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" id="settings-toggle-search-username" class="sr-only peer" checked>
-                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
+                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
                             
@@ -6065,13 +6151,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" id="settings-toggle-search-phone" class="sr-only peer" checked>
-                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
+                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
                         </div>
 
                         <!-- Push Notifications Box -->
-                        <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-4">
+                        <div id="settings-notifications-box" class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-4">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-red-600 dark:text-red-400">notifications</span> Notification Settings
                             </h3>
@@ -6084,7 +6170,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" id="settings-notify-reminders" class="sr-only peer" checked>
-                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
+                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
 
@@ -6096,7 +6182,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" id="settings-notify-messages" class="sr-only peer" checked>
-                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
+                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
 
@@ -6108,7 +6194,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" id="settings-notify-offers" class="sr-only peer" checked>
-                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
+                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
 
@@ -6120,7 +6206,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" id="settings-notify-reviews" class="sr-only peer" checked>
-                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
+                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
 
@@ -6132,13 +6218,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" id="settings-notify-mute-all" class="sr-only peer" onchange="handleMuteAllNotifications(this.checked)">
-                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-green"></div>
+                                    <div class="w-10 h-6 bg-outline-variant/40 rounded-full peer peer-checked:after:translate-x-[16px] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
                         </div>
 
                         <!-- Safety & Privacy / Blocked Neighbors Box -->
-                        <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-2 space-y-4">
+                        <div id="settings-blocked-neighbors-box" class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-2 space-y-4">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-rose-600 dark:text-rose-400">block</span> Blocked Neighbors
                             </h3>
@@ -6149,7 +6235,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 
                         <!-- Account Security Box -->
-                        <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-2 space-y-4">
+                        <div id="settings-account-security-box" class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-2 space-y-4">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-blue-600 dark:text-blue-400">security</span> Account Security
                             </h3>
@@ -6168,7 +6254,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
 
                         <!-- Administration & Moderation Locks Box -->
-                        <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-2 space-y-4">
+                        <div id="settings-admin-box" class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-2 space-y-4">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-neutral-600 dark:text-neutral-400">terminal</span> Admin
                             </h3>
@@ -6181,7 +6267,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 
                         <!-- Exit / Logout Box -->
-                        <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-2">
+                        <div id="settings-session-box" class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-2">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-1.5 flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-red-600 dark:text-red-400">logout</span> Session
                             </h3>
@@ -7894,7 +7980,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <!-- Photo Hero uploader slots style matching the Event page -->
                     <section class="photo-hero w-full relative overflow-hidden flex flex-col justify-center items-center border-b border-outline-variant/30 flex-shrink-0 bg-[#ecebeb] dark:bg-[#202020] px-4 pt-14 pb-5" id="group-photo-hero">
                         <div class="flex flex-col items-center w-full">
-                            <div class="relative w-[84px] h-[84px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="document.getElementById('group-avatar-file').click()">
+                            <div class="relative w-[92px] h-[92px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="document.getElementById('group-avatar-file').click()">
                                 <div id="group-photo-placeholder" class="flex items-center justify-center p-2">
                                     <span class="material-symbols-outlined text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">add_a_photo</span>
                                 </div>

@@ -5309,6 +5309,21 @@ html.dark #view-help_improve :not(button):not(button *):not(.material-symbols-ou
     color: #ffffff !important;
 }
 
+/* Onboarding mode custom styles for the dynamically embedded post offering form */
+.onboarding-mode #offer-form-scroll-container {
+    padding-bottom: 16px !important;
+}
+
+.onboarding-mode #offer-photo-hero {
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
+    margin-top: 0px !important;
+    height: auto !important;
+    border-top-left-radius: 14px !important;
+    border-top-right-radius: 14px !important;
+}
+
+
 
 /* Custom subcategories layout: 2 columns side-by-side with horizontal icon/text */
 #subcategory-options-container,
@@ -9445,9 +9460,36 @@ html.dark #welcome-app-name {
     line-height: 1.45 !important;
     margin-top: 14px !important;
     text-align: center !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    min-height: 24px !important;
 }
 html.dark #welcome-tagline {
     color: #a4b8ab !important;
+}
+
+.welcome-carousel-word {
+    font-weight: 800 !important;
+    background: linear-gradient(135deg, #a7f3d0 0%, #10b981 50%, #059669 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+    display: inline-block !important;
+    transition: opacity 0.35s ease, transform 0.35s ease !important;
+    opacity: 1;
+    transform: translateY(0);
+    margin-left: 2px !important;
+}
+
+html.dark .welcome-carousel-word {
+    background: linear-gradient(135deg, #a7f3d0 0%, #34d399 50%, #059669 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
 }
 
 #welcome-bottom-panel {
@@ -10381,10 +10423,10 @@ html.dark .auth-avatar-upload {
 /* Location Privacy Consent Option Buttons */
 .btn-consent-option {
     width: 100% !important;
-    height: 48px !important;
-    background-color: #ffffff !important;
-    border: 1px solid rgba(48, 138, 94, 0.25) !important;
-    color: #308A5E !important;
+    height: 50px !important;
+    background-color: #308A5E !important;
+    border: none !important;
+    color: #ffffff !important;
     font-size: 13.5px !important;
     font-weight: 700 !important;
     border-radius: 14px !important;
@@ -10393,39 +10435,40 @@ html.dark .auth-avatar-upload {
     justify-content: flex-start !important;
     padding: 0 24px !important;
     gap: 12px !important;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.02) !important;
+    box-shadow: 0 4px 12px rgba(48, 138, 94, 0.2) !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
 }
 .btn-consent-option:hover {
-    background-color: rgba(48, 138, 94, 0.05) !important;
+    background-color: #256d4a !important;
 }
 .btn-consent-option:active {
     transform: scale(0.98) !important;
 }
 .btn-consent-option.selected {
-    background-color: #308A5E !important;
-    color: #ffffff !important;
-    border-color: #308A5E !important;
-    box-shadow: 0 4px 12px rgba(48, 138, 94, 0.25) !important;
+    background-color: #1a5135 !important;
+    box-shadow: 0 4px 14px rgba(26, 81, 53, 0.3) !important;
 }
-.btn-consent-option .material-symbols-outlined {
-    font-size: 18px !important;
-    color: inherit !important;
+#consent-btn-approximate .material-symbols-outlined {
+    font-size: 20px !important;
+    color: #ffffff !important; /* White Proximity Icon */
+}
+#consent-btn-precise .material-symbols-outlined {
+    font-size: 20px !important;
+    color: #ffffff !important; /* White Precise Icon */
 }
 
 /* Dark Mode */
 html.dark .btn-consent-option {
-    background-color: #1a231d !important;
-    border-color: rgba(130, 185, 149, 0.2) !important;
-    color: #82b995 !important;
+    background-color: #308A5E !important;
+    border: none !important;
+    color: #ffffff !important;
 }
 html.dark .btn-consent-option:hover {
-    background-color: rgba(130, 185, 149, 0.08) !important;
+    background-color: #256d4a !important;
 }
 html.dark .btn-consent-option.selected {
-    background-color: #308A5E !important;
-    color: #ffffff !important;
+    background-color: #1a5135 !important;
     border-color: #308A5E !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
 }
