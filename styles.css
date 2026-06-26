@@ -5315,12 +5315,29 @@ html.dark #view-help_improve :not(button):not(button *):not(.material-symbols-ou
 }
 
 .onboarding-mode #offer-photo-hero {
-    padding-top: 16px !important;
-    padding-bottom: 16px !important;
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
     margin-top: 0px !important;
     height: auto !important;
     border-top-left-radius: 14px !important;
     border-top-right-radius: 14px !important;
+}
+
+/* Ensure all three uploader/icon slots in onboarding mode are the same size and box style */
+.onboarding-mode #offer-photo-hero .relative {
+    width: 80px !important;
+    height: 80px !important;
+    min-width: 80px !important;
+    min-height: 80px !important;
+    background-color: #ffffff !important;
+    border: 1.5px dashed rgba(0, 0, 0, 0.2) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+}
+
+.dark .onboarding-mode #offer-photo-hero .relative {
+    background-color: #1b261f !important;
+    border: 1.5px dashed rgba(255, 255, 255, 0.25) !important;
 }
 
 
@@ -5816,11 +5833,11 @@ button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
     color: #308A5E !important;
 }
 
-#view-profile_step_custom_listing .material-symbols-outlined,
+#view-profile_step_custom_listing .material-symbols-outlined:not(.quick-create-icon-circle *):not(.offer-category-btn *):not(#offer-photo-hero *),
 #view-create_account_credentials .material-symbols-outlined {
     color: #000000 !important;
 }
-html.dark #view-profile_step_custom_listing .material-symbols-outlined,
+html.dark #view-profile_step_custom_listing .material-symbols-outlined:not(.quick-create-icon-circle *):not(.offer-category-btn *):not(#offer-photo-hero *),
 html.dark #view-create_account_credentials .material-symbols-outlined {
     color: #ffffff !important;
 }
@@ -8564,7 +8581,6 @@ html.dark .list-card-text-wrapper {
     border-radius: 24px !important;
 }
 
-/* Quick Create Button & Dropdown Styles */
 #btn-integrated-quick-create,
 #btn-list-quick-create,
 #btn-needs-quick-create,
@@ -8575,8 +8591,11 @@ html.dark .list-card-text-wrapper {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    background-color: #308A5E !important;
+    background-color: #468a67 !important;
     color: #ffffff !important;
+    pointer-events: auto !important;
+    z-index: 100 !important;
+    cursor: pointer !important;
     transition: all 0.2s ease-in-out !important;
 }
 
@@ -8584,7 +8603,7 @@ html.dark #btn-integrated-quick-create,
 html.dark #btn-list-quick-create,
 html.dark #btn-needs-quick-create,
 html.dark #btn-events-quick-create {
-    background-color: #308A5E !important;
+    background-color: #468a67 !important;
     color: #ffffff !important;
 }
 
@@ -10481,4 +10500,29 @@ html.dark .btn-consent-option.selected {
 .native-app-env #map-detail-back-btn,
 .native-app-env #map-event-detail-back-btn {
     top: calc(12px + var(--safe-area-top, 20px)) !important;
+}
+
+/* Accordion dropdown text style unification */
+[id^="accordion-content-"] :not(button):not(button *):not(input):not(textarea):not(select):not(.material-symbols-outlined):not(.profile-avatar-ring):not(.profile-avatar-ring *) {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15.5px !important;
+    color: #000000 !important;
+    line-height: 1.5 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    opacity: 1 !important;
+}
+[id^="accordion-content-"] strong,
+[id^="accordion-content-"] strong * {
+    font-weight: 700 !important;
+}
+[id^="accordion-content-"] h3,
+[id^="accordion-content-"] h3 *,
+[id^="accordion-content-"] h4,
+[id^="accordion-content-"] h4 * {
+    font-weight: 700 !important;
+}
+
+html.dark [id^="accordion-content-"] :not(button):not(button *):not(input):not(textarea):not(select):not(.material-symbols-outlined):not(.profile-avatar-ring):not(.profile-avatar-ring *) {
+    color: #ffffff !important;
 }

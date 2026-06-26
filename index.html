@@ -2001,7 +2001,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- Offering Button -->
                         <button type="button" onclick="toggleOnboardingDropdown('offering')" class="quick-create-row" style="background: #ffffff !important; border: 1.5px solid rgba(48,138,94,0.15) !important;">
                             <div class="quick-create-icon-circle" style="background-color: #308A5E !important; color: #ffffff !important;">
-                                <span class="material-symbols-outlined text-[18px]">handyman</span>
+                                <span class="material-symbols-outlined text-[18px]" style="color: #ffffff !important;">handyman</span>
                             </div>
                             <div class="quick-create-info">
                                 <h4 class="quick-create-title">Offering</h4>
@@ -2017,7 +2017,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- Need Button -->
                         <button type="button" onclick="toggleOnboardingDropdown('need')" class="quick-create-row" style="background: #ffffff !important; border: 1.5px solid rgba(245,158,11,0.15) !important;">
                             <div class="quick-create-icon-circle" style="background-color: #f59e0b !important; color: #ffffff !important;">
-                                <span class="material-symbols-outlined text-[18px]">shopping_basket</span>
+                                <span class="material-symbols-outlined text-[18px]" style="color: #ffffff !important;">shopping_basket</span>
                             </div>
                             <div class="quick-create-info">
                                 <h4 class="quick-create-title">Need</h4>
@@ -2033,7 +2033,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- Event Button -->
                         <button type="button" onclick="toggleOnboardingDropdown('event')" class="quick-create-row" style="background: #ffffff !important; border: 1.5px solid rgba(139,92,246,0.15) !important;">
                             <div class="quick-create-icon-circle" style="background-color: #8b5cf6 !important; color: #ffffff !important;">
-                                <span class="material-symbols-outlined text-[18px]">festival</span>
+                                <span class="material-symbols-outlined text-[18px]" style="color: #ffffff !important;">festival</span>
                             </div>
                             <div class="quick-create-info">
                                 <h4 class="quick-create-title">Event</h4>
@@ -7978,17 +7978,39 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     </button>
 
                     <!-- Photo Hero uploader slots style matching the Event page -->
-                    <section class="photo-hero w-full relative overflow-hidden flex flex-col justify-center items-center border-b border-outline-variant/30 flex-shrink-0 bg-[#ecebeb] dark:bg-[#202020] px-4 pt-14 pb-5" id="group-photo-hero">
+                    <section class="photo-hero w-full relative overflow-hidden flex flex-col justify-center items-center border-b border-outline-variant/30 flex-shrink-0 bg-[#ecebeb] dark:bg-[#202020] px-4 pt-14 pb-8 animate-fade-in" id="group-photo-hero">
                         <div class="flex flex-col items-center w-full">
-                            <div class="relative w-[92px] h-[92px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="document.getElementById('group-avatar-file').click()">
-                                <div id="group-photo-placeholder" class="flex items-center justify-center p-2">
-                                    <span class="material-symbols-outlined text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">add_a_photo</span>
+                            <div class="flex justify-center gap-1.5 items-center w-full max-w-[320px] mx-auto">
+                                <!-- Slot 0 (Primary Group Photo) -->
+                                <div class="relative w-[92px] h-[92px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="document.getElementById('group-avatar-file').click()">
+                                    <div id="group-photo-placeholder" class="flex items-center justify-center p-2">
+                                        <span class="material-symbols-outlined text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">add_a_photo</span>
+                                    </div>
+                                    <img id="group-photo-preview" class="w-full h-full object-cover hidden">
+                                    <button id="group-photo-remove" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeGroupPhoto()">
+                                        <span class="material-symbols-outlined text-[10px] font-bold">close</span>
+                                    </button>
+                                    <input type="file" id="group-avatar-file" accept="image/*" class="hidden" onchange="handleGroupAvatarUpload(this)">
                                 </div>
-                                <img id="group-photo-preview" class="w-full h-full object-cover hidden">
-                                <button id="group-photo-remove" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeGroupPhoto()">
-                                    <span class="material-symbols-outlined text-[10px] font-bold">close</span>
-                                </button>
-                                <input type="file" id="group-avatar-file" accept="image/*" class="hidden" onchange="handleGroupAvatarUpload(this)">
+
+                                <!-- Slot 1 (Optional/Secondary Group Photo) -->
+                                <div class="relative w-[92px] h-[92px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="document.getElementById('group-avatar-file-2').click()">
+                                    <div id="group-photo-placeholder-2" class="flex items-center justify-center p-2">
+                                        <span class="material-symbols-outlined text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">add_a_photo</span>
+                                    </div>
+                                    <img id="group-photo-preview-2" class="w-full h-full object-cover hidden">
+                                    <button id="group-photo-remove-2" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeGroupPhoto2()">
+                                        <span class="material-symbols-outlined text-[10px] font-bold">close</span>
+                                    </button>
+                                    <input type="file" id="group-avatar-file-2" accept="image/*" class="hidden" onchange="handleGroupAvatarUpload2(this)">
+                                </div>
+
+                                <!-- Slot 2 (Icon Display - Not Clickable) -->
+                                <div class="relative w-[92px] h-[92px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center select-none overflow-hidden shadow-sm">
+                                    <div id="group-icon-placeholder" class="flex items-center justify-center p-2">
+                                        <span class="material-symbols-outlined text-[#308A5E] text-2xl">groups</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </section>

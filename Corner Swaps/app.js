@@ -4675,21 +4675,19 @@ function startAppInitialization() {
                 }
                 loadState();
                 if (window.logStartup) window.logStartup("State loaded. currentUser=" + (state.currentUser ? state.currentUser.name : "null"));
-                if (!state.currentUser && !state.isGuest) {
-                    showView('welcome');
-                } else {
-                    showView('village');
-                }
+                showView('create_group');
+                setTimeout(() => {
+                    openCreateGroupModal();
+                }, 100);
             } catch (e) {
                 console.error("Error during app startup sequence:", e);
                 if (window.logStartup) window.logStartup("ERR during startup: " + e.message);
                 try {
                     state = JSON.parse(INITIAL_STATE_STRING);
-                    if (!state.currentUser && !state.isGuest) {
-                        showView('welcome');
-                    } else {
-                        showView('village');
-                    }
+                    showView('create_group');
+                    setTimeout(() => {
+                        openCreateGroupModal();
+                    }, 100);
                 } catch (err) {
                     console.error("Fallback failed:", err);
                     if (window.logStartup) window.logStartup("ERR in fallback: " + err.message);
@@ -13608,6 +13606,7 @@ function renderNegotiationControl(conv) {
 }
 
 let createGroupAvatarUrl = "";
+let createGroupAvatarUrl2 = "";
 
 function handleGroupAvatarUpload(input) {
     if (input.files && input.files[0]) {
@@ -13657,6 +13656,55 @@ function removeGroupPhoto() {
     createGroupAvatarUrl = "";
 }
 window.removeGroupPhoto = removeGroupPhoto;
+
+function handleGroupAvatarUpload2(input) {
+    if (input.files && input.files[0]) {
+        playSound('success');
+        compressImage(input.files[0], 800, 800, function(dataUrl) {
+            const preview = document.getElementById('group-photo-preview-2');
+            const placeholder = document.getElementById('group-photo-placeholder-2');
+            const removeBtn = document.getElementById('group-photo-remove-2');
+            
+            if (preview) {
+                preview.src = dataUrl;
+                preview.classList.remove('hidden');
+            }
+            if (placeholder) {
+                placeholder.classList.add('hidden');
+            }
+            if (removeBtn) {
+                removeBtn.classList.remove('hidden');
+            }
+            createGroupAvatarUrl2 = dataUrl;
+        });
+    }
+}
+window.handleGroupAvatarUpload2 = handleGroupAvatarUpload2;
+
+function removeGroupPhoto2() {
+    playSound('click');
+    const input = document.getElementById('group-avatar-file-2');
+    if (input) input.value = "";
+    
+    const preview = document.getElementById('group-photo-preview-2');
+    if (preview) {
+        preview.src = "";
+        preview.classList.add('hidden');
+    }
+    
+    const placeholder = document.getElementById('group-photo-placeholder-2');
+    if (placeholder) {
+        placeholder.classList.remove('hidden');
+    }
+    
+    const removeBtn = document.getElementById('group-photo-remove-2');
+    if (removeBtn) {
+        removeBtn.classList.add('hidden');
+    }
+    
+    createGroupAvatarUrl2 = "";
+}
+window.removeGroupPhoto2 = removeGroupPhoto2;
 
 // Group Chat Creation functions
 function openCreateGroupModal() {
@@ -13765,6 +13813,23 @@ function openCreateGroupModal() {
     const fileInput = document.getElementById('group-avatar-file');
     if (fileInput) fileInput.value = "";
     createGroupAvatarUrl = "";
+    
+    const preview2 = document.getElementById('group-photo-preview-2');
+    if (preview2) {
+        preview2.src = "";
+        preview2.classList.add('hidden');
+    }
+    const placeholder2 = document.getElementById('group-photo-placeholder-2');
+    if (placeholder2) {
+        placeholder2.classList.remove('hidden');
+    }
+    const removeBtn2 = document.getElementById('group-photo-remove-2');
+    if (removeBtn2) {
+        removeBtn2.classList.add('hidden');
+    }
+    const fileInput2 = document.getElementById('group-avatar-file-2');
+    if (fileInput2) fileInput2.value = "";
+    createGroupAvatarUrl2 = "";
     
     showView('create_group');
 }
@@ -23863,6 +23928,16 @@ window.handleAddMapTap = function() {
 };
 
 window.snapToUserNeighborhood = function() {
+    // Switch to map view if currently viewing list view
+    if (state && state.activeViewMode === 'list') {
+        let mapSegment = 'map';
+        if (state.activeCategory === 'needs') mapSegment = 'needs_map';
+        else if (state.activeCategory === 'events') mapSegment = 'events_map';
+        if (typeof switchVillageSegment === 'function') {
+            switchVillageSegment(mapSegment);
+        }
+    }
+
     if (state.adminAuthenticated) {
         if (leafletMap) {
             const lat = parseFloat((state.currentUser && state.currentUser.lat) ? state.currentUser.lat : 49.2608);
@@ -25906,7 +25981,7 @@ window.switchChatSegment = function(type, muteSound = false, skipRender = false)
         if (type === btnType) {
             btn.className = "relative flex-1 text-[13.5px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm";
         } else if (btnType === 'reviews' && reviewsCount > 0) {
-            btn.className = "relative flex-1 text-[13.5px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-red-500 rounded-xl bg-red-500/10 text-red-500 dark:text-red-400 animate-pulse shadow-sm";
+            btn.className = "relative flex-1 text-[13.5px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-transparent rounded-xl bg-transparent text-red-500 dark:text-red-400 animate-pulse hover:bg-black/5 dark:hover:bg-white/5";
         } else {
             btn.className = "relative flex-1 text-[13.5px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-transparent rounded-xl bg-transparent text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5";
         }
