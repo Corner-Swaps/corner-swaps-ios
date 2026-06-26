@@ -4674,20 +4674,15 @@ function startAppInitialization() {
                     safeLocalStorage.setItem('reinstated_onboarding_v2', 'true');
                 }
                 loadState();
-                if (window.logStartup) window.logStartup("State loaded. currentUser=" + (state.currentUser ? state.currentUser.name : "null"));
-                showView('create_group');
-                setTimeout(() => {
-                    openCreateGroupModal();
-                }, 100);
+                state.currentUser = null;
+                showView('welcome');
             } catch (e) {
                 console.error("Error during app startup sequence:", e);
                 if (window.logStartup) window.logStartup("ERR during startup: " + e.message);
                 try {
                     state = JSON.parse(INITIAL_STATE_STRING);
-                    showView('create_group');
-                    setTimeout(() => {
-                        openCreateGroupModal();
-                    }, 100);
+                    state.currentUser = null;
+                    showView('welcome');
                 } catch (err) {
                     console.error("Fallback failed:", err);
                     if (window.logStartup) window.logStartup("ERR in fallback: " + err.message);
