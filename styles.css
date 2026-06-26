@@ -5310,17 +5310,31 @@ html.dark #view-help_improve :not(button):not(button *):not(.material-symbols-ou
 }
 
 /* Onboarding mode custom styles for the dynamically embedded post offering form */
+#offer-form-wrapper.onboarding-mode {
+    height: auto !important;
+}
+
 .onboarding-mode #offer-form-scroll-container {
-    padding-bottom: 16px !important;
+    padding-bottom: 8px !important;
 }
 
 .onboarding-mode #offer-photo-hero {
-    padding-top: 24px !important;
-    padding-bottom: 24px !important;
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
     margin-top: 0px !important;
     height: auto !important;
-    border-top-left-radius: 14px !important;
-    border-top-right-radius: 14px !important;
+    border-top-left-radius: 16px !important;
+    border-top-right-radius: 16px !important;
+}
+
+/* Force selected category button text and icons to be white in onboarding/wizard screens */
+.auth-custom-screen button.bg-forest-green,
+.auth-custom-screen button.bg-forest-green *,
+.auth-custom-screen button.bg-amber-500,
+.auth-custom-screen button.bg-amber-500 *,
+.auth-custom-screen button.bg-purple-600,
+.auth-custom-screen button.bg-purple-600 * {
+    color: #ffffff !important;
 }
 
 /* Ensure all three uploader/icon slots in onboarding mode are the same size and box style */
@@ -8591,8 +8605,8 @@ html.dark .list-card-text-wrapper {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    background-color: #468a67 !important;
-    color: #ffffff !important;
+    background-color: #e5f5ed !important;
+    color: #308A5E !important;
     pointer-events: auto !important;
     z-index: 100 !important;
     cursor: pointer !important;
@@ -8603,8 +8617,8 @@ html.dark #btn-integrated-quick-create,
 html.dark #btn-list-quick-create,
 html.dark #btn-needs-quick-create,
 html.dark #btn-events-quick-create {
-    background-color: #468a67 !important;
-    color: #ffffff !important;
+    background-color: #1e362a !important;
+    color: #49c488 !important;
 }
 
 #btn-integrated-quick-create:active,
@@ -10503,26 +10517,20 @@ html.dark .btn-consent-option.selected {
 }
 
 /* Accordion dropdown text style unification */
-[id^="accordion-content-"] :not(button):not(button *):not(input):not(textarea):not(select):not(.material-symbols-outlined):not(.profile-avatar-ring):not(.profile-avatar-ring *) {
+[id^="accordion-content-"] *:not(.material-symbols-outlined) {
     font-family: 'Outfit', sans-serif !important;
     font-size: 15.5px !important;
-    color: #000000 !important;
+    font-weight: 400 !important;
     line-height: 1.5 !important;
     text-transform: none !important;
     letter-spacing: normal !important;
     opacity: 1 !important;
 }
-[id^="accordion-content-"] strong,
-[id^="accordion-content-"] strong * {
-    font-weight: 700 !important;
-}
-[id^="accordion-content-"] h3,
-[id^="accordion-content-"] h3 *,
-[id^="accordion-content-"] h4,
-[id^="accordion-content-"] h4 * {
-    font-weight: 700 !important;
+
+html:not(.dark) [id^="accordion-content-"] *:not(.material-symbols-outlined) {
+    color: #000000 !important;
 }
 
-html.dark [id^="accordion-content-"] :not(button):not(button *):not(input):not(textarea):not(select):not(.material-symbols-outlined):not(.profile-avatar-ring):not(.profile-avatar-ring *) {
+html.dark [id^="accordion-content-"] *:not(.material-symbols-outlined) {
     color: #ffffff !important;
 }

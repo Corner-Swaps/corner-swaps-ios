@@ -1718,8 +1718,31 @@ const MOCK_CONVERSATIONS = [
     }
 ];
 
+// State Controller implementation
+window.StateController = {
+    createProxy: function(targetState) {
+        const handler = {
+            set: function(obj, prop, value) {
+                // Perform validation on specific keys
+                if (prop === 'currentUser' && value !== null && typeof value !== 'object') {
+                    console.error("State Validation Error: currentUser must be an object or null");
+                    return false;
+                }
+                if (prop === 'stats' && value && (typeof value.trustScore === 'number' && (value.trustScore < 0 || value.trustScore > 100))) {
+                    console.error("State Validation Error: trustScore must be between 0 and 100");
+                    return false;
+                }
+                
+                obj[prop] = value;
+                return true;
+            }
+        };
+        return new Proxy(targetState, handler);
+    }
+};
+
 // Global Application State
-let state = {
+let state = window.StateController.createProxy({
     fictitiousReviews: [
         {
             id: 'rev-fake-1',
@@ -1886,7 +1909,7 @@ let state = {
             likes: 8
         }
     ]
-};
+});
 
 const INITIAL_STATE_STRING = JSON.stringify(state);
 
@@ -2771,6 +2794,7 @@ function loadState() {
     if (needsSave) {
         saveState();
     }
+    state = window.StateController.createProxy(state);
 }
 
 function checkSystemBanner() {
@@ -4674,15 +4698,25 @@ function startAppInitialization() {
                     safeLocalStorage.setItem('reinstated_onboarding_v2', 'true');
                 }
                 loadState();
-                state.currentUser = null;
-                showView('welcome');
+                if (state.currentUser) {
+                    showView(state.currentView || 'village');
+                } else if (typeof handleDevAutoLogin === 'function') {
+                    handleDevAutoLogin();
+                } else {
+                    showView('welcome');
+                }
             } catch (e) {
                 console.error("Error during app startup sequence:", e);
                 if (window.logStartup) window.logStartup("ERR during startup: " + e.message);
                 try {
                     state = JSON.parse(INITIAL_STATE_STRING);
-                    state.currentUser = null;
-                    showView('welcome');
+                    if (state.currentUser) {
+                        showView(state.currentView || 'village');
+                    } else if (typeof handleDevAutoLogin === 'function') {
+                        handleDevAutoLogin();
+                    } else {
+                        showView('welcome');
+                    }
                 } catch (err) {
                     console.error("Fallback failed:", err);
                     if (window.logStartup) window.logStartup("ERR in fallback: " + err.message);
@@ -5609,70 +5643,76 @@ window.handleDevAutoLogin = function() {
     state.loggedOut = false;
     state.activeViewMode = 'map';
     state.activeCategory = 'offerings';
+    state.locationConsent = true;
+    if (!state.currentUser) state.currentUser = {};
+    state.currentUser.locationAccuracy = 'approximate';
+    state.currentUser.lat = 49.2608;
+    state.currentUser.lng = -123.1368;
     saveState();
     playSound('click');
-    showView('village');
-
-    // Refresh header avatar/name on home
-    const headerAvatar = document.getElementById('home-user-avatar');
-    if (headerAvatar) headerAvatar.src = state.currentUser.avatar;
-    const headerText = document.querySelector('#view-home h2');
-    if (headerText) headerText.innerText = `Welcome back, ${state.currentUser.firstName}!`;
-
-    if (window.syncUserNavbarInfo) window.syncUserNavbarInfo();
+    showView('profile_settings');
     setTimeout(() => {
-        console.log("LOG: [DEV TEST] Automatically switching to map view");
-        if (typeof switchVillageSegment === 'function') {
-            switchVillageSegment('map');
+        if (typeof toggleProfileAccordion === 'function') {
+            toggleProfileAccordion('definitions-guidance');
+            toggleProfileAccordion('friends-list');
         }
-        setTimeout(() => {
-            console.log("LOG: [DEV TEST] Running DOM diagnostics...");
-            const views = document.querySelectorAll('.screen-view');
-            views.forEach(v => {
-                console.log(`LOG: [DEV TEST] View ID: ${v.id}, active: ${v.classList.contains('active')}, display: ${v.style.display}, offsetHeight: ${v.offsetHeight}, opacity: ${window.getComputedStyle(v).opacity}`);
-            });
-            const listContainer = document.getElementById('village-list-container');
-            if (listContainer) {
-                console.log(`LOG: [DEV TEST] listContainer display: ${listContainer.style.display}, classList: ${listContainer.className}, offsetHeight: ${listContainer.offsetHeight}, opacity: ${window.getComputedStyle(listContainer).opacity}`);
-                
-                const searchCapsule = listContainer.querySelector('.fused-search-capsule');
-                if (searchCapsule) {
-                    console.log(`LOG: [DEV TEST] searchCapsule offsetHeight: ${searchCapsule.offsetHeight}, display: ${window.getComputedStyle(searchCapsule).display}, opacity: ${window.getComputedStyle(searchCapsule).opacity}, visibility: ${window.getComputedStyle(searchCapsule).visibility}`);
-                }
-                const segmentedControl = listContainer.querySelector('#village-list-segmented-control');
-                if (segmentedControl) {
-                    console.log(`LOG: [DEV TEST] segmentedControl offsetHeight: ${segmentedControl.offsetHeight}, display: ${window.getComputedStyle(segmentedControl).display}`);
-                }
-                const items = listContainer.querySelector('#village-list-items');
-                if (items) {
-                    const itemsStyle = window.getComputedStyle(items);
-                    console.log(`LOG: [DEV TEST] village-list-items child count: ${items.children.length}, display: ${itemsStyle.display}, height: ${items.offsetHeight}, opacity: ${itemsStyle.opacity}`);
-                    if (items.children.length > 0) {
-                        const firstChild = items.children[0];
-                        const childStyle = window.getComputedStyle(firstChild);
-                        console.log(`LOG: [DEV TEST] First child tag: ${firstChild.tagName}, class: ${firstChild.className}, display: ${childStyle.display}, height: ${firstChild.offsetHeight}, opacity: ${childStyle.opacity}, visibility: ${childStyle.visibility}, text: ${firstChild.textContent.trim().substring(0, 50)}`);
-                    }
-                }
-            }
-            const wrapper = document.getElementById('village-subviews-wrapper');
-            if (wrapper) {
-                console.log(`LOG: [DEV TEST] wrapper display: ${window.getComputedStyle(wrapper).display}, offsetHeight: ${wrapper.offsetHeight}`);
-            }
+        const scrollContainer = document.getElementById('profile-settings-scroll-container');
+        if (scrollContainer) {
+            scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        }
+    }, 500);
+    setTimeout(() => {
+        console.log("LOG: [DEV TEST] Running DOM diagnostics...");
+        const scrollContainer = document.getElementById('profile-settings-scroll-container');
+        if (scrollContainer) {
+            scrollContainer.scrollTop = scrollContainer.scrollHeight + 1000;
+            console.log(`LOG: [DEV TEST] Scrolled container. scrollTop: ${scrollContainer.scrollTop}, scrollHeight: ${scrollContainer.scrollHeight}`);
+        }
+        const views = document.querySelectorAll('.screen-view');
+        views.forEach(v => {
+            console.log(`LOG: [DEV TEST] View ID: ${v.id}, active: ${v.classList.contains('active')}, display: ${v.style.display}, offsetHeight: ${v.offsetHeight}, opacity: ${window.getComputedStyle(v).opacity}`);
+        });
+        const listContainer = document.getElementById('village-list-container');
+        if (listContainer) {
+            console.log(`LOG: [DEV TEST] listContainer display: ${listContainer.style.display}, classList: ${listContainer.className}, offsetHeight: ${listContainer.offsetHeight}, opacity: ${window.getComputedStyle(listContainer).opacity}`);
             
-            const allElements = document.querySelectorAll('*');
-            allElements.forEach(el => {
-                const style = window.getComputedStyle(el);
-                if ((style.position === 'absolute' || style.position === 'fixed') && 
-                    el.offsetHeight > 500 && el.offsetWidth > 300 && 
-                    style.display !== 'none' && style.visibility !== 'hidden' && parseFloat(style.opacity) > 0) {
-                    const parent = el.parentElement;
-                    const parentId = parent ? parent.id : 'none';
-                    const parentClass = parent ? parent.className : 'none';
-                    const parentDisplay = parent ? window.getComputedStyle(parent).display : 'none';
-                    console.log(`LOG: [DEV TEST] Covering Element: tag=${el.tagName}, id=${el.id}, class=${el.className}, z-index=${style.zIndex}, bg=${style.backgroundColor}, parentId=${parentId}, parentClass=${parentClass}, parentDisplay=${parentDisplay}`);
+            const searchCapsule = listContainer.querySelector('.fused-search-capsule');
+            if (searchCapsule) {
+                console.log(`LOG: [DEV TEST] searchCapsule offsetHeight: ${searchCapsule.offsetHeight}, display: ${window.getComputedStyle(searchCapsule).display}, opacity: ${window.getComputedStyle(searchCapsule).opacity}, visibility: ${window.getComputedStyle(searchCapsule).visibility}`);
+            }
+            const segmentedControl = listContainer.querySelector('#village-list-segmented-control');
+            if (segmentedControl) {
+                console.log(`LOG: [DEV TEST] segmentedControl offsetHeight: ${segmentedControl.offsetHeight}, display: ${window.getComputedStyle(segmentedControl).display}`);
+            }
+            const items = listContainer.querySelector('#village-list-items');
+            if (items) {
+                const itemsStyle = window.getComputedStyle(items);
+                console.log(`LOG: [DEV TEST] village-list-items child count: ${items.children.length}, display: ${itemsStyle.display}, height: ${items.offsetHeight}, opacity: ${itemsStyle.opacity}`);
+                if (items.children.length > 0) {
+                    const firstChild = items.children[0];
+                    const childStyle = window.getComputedStyle(firstChild);
+                    console.log(`LOG: [DEV TEST] First child tag: ${firstChild.tagName}, class: ${firstChild.className}, display: ${childStyle.display}, height: ${firstChild.offsetHeight}, opacity: ${childStyle.opacity}, visibility: ${childStyle.visibility}, text: ${firstChild.textContent.trim().substring(0, 50)}`);
                 }
-            });
-        }, 1000);
+            }
+        }
+        const wrapper = document.getElementById('village-subviews-wrapper');
+        if (wrapper) {
+            console.log(`LOG: [DEV TEST] wrapper display: ${window.getComputedStyle(wrapper).display}, offsetHeight: ${wrapper.offsetHeight}`);
+        }
+        
+        const allElements = document.querySelectorAll('*');
+        allElements.forEach(el => {
+            const style = window.getComputedStyle(el);
+            if ((style.position === 'absolute' || style.position === 'fixed') && 
+                el.offsetHeight > 500 && el.offsetWidth > 300 && 
+                style.display !== 'none' && style.visibility !== 'hidden' && parseFloat(style.opacity) > 0) {
+                const parent = el.parentElement;
+                const parentId = parent ? parent.id : 'none';
+                const parentClass = parent ? parent.className : 'none';
+                const parentDisplay = parent ? window.getComputedStyle(parent).display : 'none';
+                console.log(`LOG: [DEV TEST] Covering Element: tag=${el.tagName}, id=${el.id}, class=${el.className}, z-index=${style.zIndex}, bg=${style.backgroundColor}, parentId=${parentId}, parentClass=${parentClass}, parentDisplay=${parentDisplay}`);
+            }
+        });
     }, 1500);
 };
 
@@ -7539,8 +7579,8 @@ function getCategoryColor(category) {
 function getCategoryIcon(category) {
     if (!category) return 'handshake';
     const cat = category.toLowerCase();
-    if (cat.includes('karma')) return 'favorite';
-    if (cat.includes('donation')) return 'favorite';
+    if (cat.includes('karma')) return 'volunteer_activism';
+    if (cat.includes('donation')) return 'volunteer_activism';
     if (cat.includes('food') || cat.includes('drink')) return 'restaurant';
     if (cat.includes('home') || cat.includes('living')) return 'home';
     if (cat.includes('garden') || cat.includes('outdoor')) return 'yard';
@@ -8429,7 +8469,7 @@ function openMapItemDetail(idOrName) {
         } else {
             const neighbor = state.neighbors ? state.neighbors[idOrName] : null;
             if (neighbor && neighbor.isKarma) {
-                chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs text-red-500" style="font-variation-settings: 'FILL' 1;">favorite</span> free karma request`;
+                chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs text-[#308A5E]" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span> free karma request`;
             } else {
                 chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs">handshake</span> lets swap`;
             }
@@ -9937,7 +9977,7 @@ function toggleCategoryTray() {
 }
 
 const MAP_FILTER_CATEGORIES = [
-    { name: "Karma Swap", displayName: "Gifts", icon: "favorite", color: "#ef4444", rgb: "239,68,68" },
+    { name: "Karma Swap", displayName: "Gifts", icon: "volunteer_activism", color: "#ef4444", rgb: "239,68,68" },
     { name: "Event or Meetup", displayName: "Events", icon: "groups", color: "#10b981", rgb: "16,185,129" },
     { name: "Food & Drink", displayName: "Food", icon: "restaurant", color: "#f97316", rgb: "249,115,22" },
     { name: "Home and Living", displayName: "Home", icon: "home", color: "#3b82f6", rgb: "59,130,246" },
@@ -9950,7 +9990,7 @@ const MAP_FILTER_CATEGORIES = [
     { name: "Books, Games, Entertainment", displayName: "Books", icon: "sports_esports", color: "#6366f1", rgb: "99,102,241" },
     { name: "Kids and Maternity", displayName: "Kids", icon: "stroller", color: "#a855f7", rgb: "168,85,247" },
     { name: "Language or Info Exchange", displayName: "Language", icon: "translate", color: "#2563eb", rgb: "37,99,235" },
-    { name: "Donation", displayName: "Donation", icon: "favorite", color: "#ec4899", rgb: "236,72,153" },
+    { name: "Donation", displayName: "Donation", icon: "volunteer_activism", color: "#ec4899", rgb: "236,72,153" },
     { name: "Clear Filter", displayName: "Clear", icon: "filter_alt_off", color: "#6b7280", rgb: "107,114,128" }
 ];
 
@@ -12970,8 +13010,8 @@ function renderChatDetail(conv) {
                         bubbleInnerContent += `
                         <div class="flex flex-col gap-2 w-full max-w-[240px] text-left">
                             <div class="flex items-center gap-1.5 border-b border-white/10 pb-1.5">
-                                <span class="material-symbols-outlined text-xs font-bold text-red-300" style="font-variation-settings: 'FILL' 1;">favorite</span>
-                                <span class="text-[9px] uppercase tracking-wider font-extrabold text-red-300">Karma Swap Request</span>
+                                <span class="material-symbols-outlined text-xs font-bold text-emerald-300" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+                                <span class="text-[9px] uppercase tracking-wider font-extrabold text-emerald-300">Karma Swap Request</span>
                             </div>
                             <p class="text-xs leading-relaxed font-semibold text-warm-cream">
                                 "Hey! I'm really interested in your <strong class="underline">${escapeHTML(msg.requestedItem)}</strong>. I don't have anything to trade right now, but would you be open to a Karma Swap? You'd receive +50 Karma Points for helping a neighbor, and it would mean the world to me! ❤️"
@@ -13062,8 +13102,8 @@ function renderChatDetail(conv) {
                         bubbleInnerContent += `
                         <div class="flex flex-col gap-2 w-full max-w-[240px] text-left">
                             <div class="flex items-center gap-1.5 border-b border-outline-variant/15 pb-1.5">
-                                <span class="material-symbols-outlined text-xs font-bold text-red-500 dark:text-red-400" style="font-variation-settings: 'FILL' 1;">favorite</span>
-                                <span class="text-[9px] uppercase tracking-wider font-extrabold text-red-500 dark:text-red-400">Karma Swap Request</span>
+                                <span class="material-symbols-outlined text-xs font-bold text-[#308A5E] dark:text-emerald-400" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+                                <span class="text-[9px] uppercase tracking-wider font-extrabold text-[#308A5E] dark:text-emerald-400">Karma Swap Request</span>
                             </div>
                             <p class="text-xs leading-relaxed font-semibold text-on-surface dark:text-warm-cream">
                                 "Hey! I'm really interested in your <strong class="underline">${escapeHTML(msg.requestedItem)}</strong>. I don't have anything to trade right now, but would you be open to a Karma Swap? You'd receive +50 Karma Points for helping a neighbor, and it would mean the world to me! ❤️"
@@ -13346,8 +13386,8 @@ function renderChatTradeDrawer(conv) {
                     <!-- Left Item Card -->
                     <div class="flex-grow flex-1 flex flex-col items-center p-2 bg-forest-green/[0.03] dark:bg-white/[0.02] border border-outline-variant/10 rounded-xl min-w-0">
                         ${isKarma 
-                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-red-500/20 bg-red-50 dark:bg-red-950/20 flex items-center justify-center text-red-500 dark:text-red-400 mb-1.5">
-                                   <span class="material-symbols-outlined text-xl font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-[#308A5E]/20 bg-[#308A5E]/5 dark:bg-[#308A5E]/10 flex items-center justify-center text-[#308A5E] dark:text-[#A8E6CF] mb-1.5">
+                                   <span class="material-symbols-outlined text-xl font-bold" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
                                </div>
                                <span class="text-[9px] text-outline dark:text-warm-cream font-bold truncate w-full text-center mb-0.5">Karma Points</span>`
                             : `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-outline-variant/20 dark:border-white/10 mb-1.5 relative">
@@ -13394,8 +13434,8 @@ function renderChatTradeDrawer(conv) {
                     <!-- Left Item Card -->
                     <div class="flex-grow flex-1 flex flex-col items-center p-2 bg-forest-green/[0.03] dark:bg-white/[0.02] border border-outline-variant/10 rounded-xl min-w-0">
                         ${isKarma 
-                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-red-500/20 bg-red-50 dark:bg-red-950/20 flex items-center justify-center text-red-500 dark:text-red-400 mb-1.5">
-                                   <span class="material-symbols-outlined text-xl font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-[#308A5E]/20 bg-[#308A5E]/5 dark:bg-[#308A5E]/10 flex items-center justify-center text-[#308A5E] dark:text-[#A8E6CF] mb-1.5">
+                                   <span class="material-symbols-outlined text-xl font-bold" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
                                </div>
                                <span class="text-[9px] text-outline dark:text-warm-cream font-bold truncate w-full text-center mb-0.5">Karma Points</span>`
                             : `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-outline-variant/20 dark:border-white/10 mb-1.5 relative">
@@ -13484,8 +13524,8 @@ function renderChatTradeDrawer(conv) {
                     <!-- Left Item Card -->
                     <div class="flex-grow flex-1 flex flex-col items-center p-2 bg-forest-green/[0.03] dark:bg-white/[0.02] border border-outline-variant/10 rounded-xl min-w-0">
                         ${isKarma 
-                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-red-500/20 bg-red-50 dark:bg-red-950/20 flex items-center justify-center text-red-500 dark:text-red-400 mb-1.5">
-                                   <span class="material-symbols-outlined text-xl font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-[#308A5E]/20 bg-[#308A5E]/5 dark:bg-[#308A5E]/10 flex items-center justify-center text-[#308A5E] dark:text-[#A8E6CF] mb-1.5">
+                                   <span class="material-symbols-outlined text-xl font-bold" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
                                </div>
                                <span class="text-[9px] text-outline dark:text-warm-cream font-bold truncate w-full text-center mb-0.5">Karma Points</span>`
                             : `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-outline-variant/20 dark:border-white/10 mb-1.5 relative">
@@ -14387,12 +14427,12 @@ function openBarterProposalModal() {
     const karmaLabel = document.createElement('label');
     karmaLabel.className = "flex items-center p-3 bg-white rounded-xl border border-outline-variant/30 hover:border-forest-green cursor-pointer transition-all active:scale-[0.98] w-full";
     karmaLabel.innerHTML = `
-        <div class="w-10 h-10 rounded-lg bg-red-500/10 text-red-500 flex items-center justify-center mr-4 flex-shrink-0">
-            <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">favorite</span>
+        <div class="w-10 h-10 rounded-lg bg-forest-green/10 text-forest-green flex items-center justify-center mr-4 flex-shrink-0">
+            <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
         </div>
         <div class="flex-grow min-w-0 pr-2">
-            <p class="font-semibold text-on-surface text-sm">Offer for karma points</p>
-            <p class="text-[10px] text-outline">Gift this item and earn +10 Karma Points</p>
+            <p class="font-semibold text-on-surface text-sm">Offer for free (Get Karma points)</p>
+            <p class="text-[10px] text-outline">Gift this item and get +10 Karma Points</p>
         </div>
         <input class="w-4 h-4 text-forest-green border-outline-variant focus:ring-forest-green rounded-full flex-shrink-0" name="proposal_offer" type="radio" value="Karma Points" ${state.userOfferings.length === 0 ? 'checked' : ''}/>
     `;
@@ -16610,6 +16650,7 @@ function switchVillageSegment(type) {
     const btnNeeds = document.getElementById('btn-segment-needs');
     const btnNeedsMap = document.getElementById('btn-segment-needs-map');
     const btnEvents = document.getElementById('btn-segment-events');
+    const btnEventsMap = document.getElementById('btn-segment-events-map');
     const btnBulletins = document.getElementById('btn-segment-bulletins');
     const btnGifts = document.getElementById('btn-segment-gifts');
 
@@ -16618,19 +16659,22 @@ function switchVillageSegment(type) {
     const baseBtnClass = "menu-sub-button w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 border active:scale-90 cursor-pointer";
 
     if (btnMap) {
-        btnMap.className = `${baseBtnClass} bg-blue-600 border-blue-600 text-white dark:bg-blue-500 dark:border-blue-500 dark:text-[#18201a] pulse-blue-light ${type === 'map' ? 'scale-110 ring-4 ring-blue-500/30 dark:ring-blue-800/50 z-20' : ''}`;
+        btnMap.className = `${baseBtnClass} bg-[#308A5E] border-[#308A5E] text-white pulse-green-light ${type === 'map' ? 'scale-110 ring-4 ring-[#308A5E]/30 z-20' : ''}`;
     }
     if (btnList) {
-        btnList.className = `${baseBtnClass} bg-violet-600 border-violet-600 text-white pulse-violet-light ${type === 'list' ? 'scale-110 ring-4 ring-violet-300 dark:ring-violet-800 z-20' : ''}`;
+        btnList.className = `${baseBtnClass} bg-[#308A5E] border-[#308A5E] text-white pulse-green-light ${type === 'list' ? 'scale-110 ring-4 ring-[#308A5E]/30 z-20' : ''}`;
     }
     if (btnNeeds) {
-        btnNeeds.className = `${baseBtnClass} bg-sky-600 border-sky-600 text-white pulse-sky-light ${type === 'needs' ? 'scale-110 ring-4 ring-sky-300 dark:ring-sky-800 z-20' : ''}`;
+        btnNeeds.className = `${baseBtnClass} bg-amber-500 border-amber-500 text-white pulse-amber-light ${type === 'needs' ? 'scale-110 ring-4 ring-amber-300 dark:ring-amber-800 z-20' : ''}`;
     }
     if (btnNeedsMap) {
-        btnNeedsMap.className = `${baseBtnClass} bg-orange-600 border-orange-600 text-white pulse-amber-light ${type === 'needs_map' ? 'scale-110 ring-4 ring-orange-300 dark:ring-orange-800 z-20' : ''}`;
+        btnNeedsMap.className = `${baseBtnClass} bg-amber-500 border-amber-500 text-white pulse-amber-light ${type === 'needs_map' ? 'scale-110 ring-4 ring-amber-300 dark:ring-amber-800 z-20' : ''}`;
     }
     if (btnEvents) {
-        btnEvents.className = `${baseBtnClass} bg-teal-600 border-teal-600 text-white pulse-teal-light ${type === 'events' ? 'scale-110 ring-4 ring-teal-300 dark:ring-teal-800 z-20' : ''}`;
+        btnEvents.className = `${baseBtnClass} bg-purple-600 border-purple-600 text-white pulse-indigo-light ${type === 'events' ? 'scale-110 ring-4 ring-purple-300 dark:ring-purple-800 z-20' : ''}`;
+    }
+    if (btnEventsMap) {
+        btnEventsMap.className = `${baseBtnClass} bg-purple-600 border-purple-600 text-white pulse-indigo-light ${type === 'events_map' ? 'scale-110 ring-4 ring-purple-300 dark:ring-purple-800 z-20' : ''}`;
     }
     if (btnBulletins) {
         btnBulletins.className = `${baseBtnClass} bg-orange-600 border-orange-600 text-white pulse-amber-light ${type === 'bulletins' ? 'scale-110 ring-4 ring-orange-300 dark:ring-orange-800 z-20' : ''}`;
@@ -17006,6 +17050,7 @@ function renderVillageListView() {
         return;
     }
 
+    const fragment = document.createDocumentFragment();
     filteredListings.forEach(item => {
         const isCurrentlyExpanded = window.activeExpandedCardId === item.id;
         const card = document.createElement('div');
@@ -17070,7 +17115,7 @@ function renderVillageListView() {
                         <!-- Actions Row -->
                         <div class="flex flex-col gap-2 pt-1.5 bg-white dark:bg-[#18201a] rounded-b-2xl">
                             <button class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase" onclick="event.stopPropagation(); startChatConversation('${item.name}');">
-                                <span class="material-symbols-outlined text-xs ${neighbor && neighbor.isKarma ? 'text-red-500' : ''}" style="${neighbor && neighbor.isKarma ? "font-variation-settings: 'FILL' 1;" : ""}">${neighbor && neighbor.isKarma ? 'favorite' : 'handshake'}</span>
+                                <span class="material-symbols-outlined text-xs ${neighbor && neighbor.isKarma ? 'text-[#308A5E]' : ''}" style="${neighbor && neighbor.isKarma ? "font-variation-settings: 'FILL' 1;" : ""}">${neighbor && neighbor.isKarma ? 'volunteer_activism' : 'handshake'}</span>
                                 ${neighbor && neighbor.isKarma ? 'free karma request' : "let's swap"}
                             </button>
                             
@@ -17142,8 +17187,9 @@ function renderVillageListView() {
                 </div>
             `;
         }
-        listInner.appendChild(card);
+        fragment.appendChild(card);
     });
+    listInner.appendChild(fragment);
 }
 
 // Needs Board Rendering
@@ -17270,6 +17316,7 @@ function renderNeedsBoardView() {
         return;
     }
 
+    const fragment = document.createDocumentFragment();
     filteredNeeds.forEach(need => {
         const isCurrentlyExpanded = window.activeExpandedCardId === 'need_' + need.id;
         const card = document.createElement('div');
@@ -17286,41 +17333,37 @@ function renderNeedsBoardView() {
         
         const currentUser = state.currentUser || {};
         const displayName = currentUser.displayName || `${currentUser.firstName || 'Lily'} ${currentUser.lastName || 'Kaufmann'}`;
-        const isUserNeed = need.neighborName === displayName;
 
-        const needImages = need.image ? need.image.split('|||').filter(Boolean) : [];
-        const presetImg = getCategoryPresetImage(need.category || 'garden');
-        const img1 = needImages[0] || presetImg;
+        const isUserNeed = need.neighborName === displayName || 
+                           need.neighborName === 'Lily Kaufmann' || 
+                           need.isUserGenerated;
+
+        const neighborObj = state.neighbors[need.neighborName] || {};
+        const isKarma = neighborObj.isKarma || false;
 
         const rawCategory = need.category || 'Need';
         const formattedCategory = rawCategory.replace(/\b\w/g, c => c.toUpperCase());
-        const isFree = (need.category && need.category.toLowerCase() === 'gifts');
 
         if (isUserNeed) {
             card.innerHTML = `
-                <!-- Top Image Portion -->
-                <div class="list-card-image-wrapper w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
-                    <img src="${img1}" class="w-full h-full object-cover">
-                    ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
-                </div>
-                <!-- Bottom Details Portion -->
+                <!-- Bottom Details Portion (No images for needs) -->
                 <div class="list-card-text-wrapper p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
                                 ${getCategoryIconHtml(need.category)}
                                 <h4 class="list-card-title truncate leading-tight">
-                                    ${need.needTitle} 
+                                    ${need.title}
                                     <span class="text-[9px] text-[#D99036] dark:text-[#FBBF24] font-bold bg-[#D99036]/10 dark:bg-[#FBBF24]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
                                 </h4>
                             </div>
                         </div>
-                        <p class="list-card-description">${need.needDesc}</p>
+                        <p class="list-card-description">${need.desc}</p>
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
-                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0" onclick="event.stopPropagation(); showView('profile_settings');"><img src="${need.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
-                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate" onclick="event.stopPropagation(); showView('profile_settings');">${need.neighborName}</span>
+                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0" onclick="event.stopPropagation(); showView('profile_settings');"><img src="${state.currentUser ? state.currentUser.avatar : 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop'}" class="w-full h-full object-cover rounded-full"></div>
+                            <span class="text-[10.5px] text-black dark:text-white font-semibold truncate" onclick="event.stopPropagation(); showView('profile_settings');">${displayName}</span>
                         </div>
                         <span class="text-[10.5px] text-black dark:text-white font-medium flex-shrink-0">Village Trusted · 0 km</span>
                     </div>
@@ -17334,7 +17377,8 @@ function renderNeedsBoardView() {
                                 <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg mt-0.5">location_on</span>
                                 <div>
                                     <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Neighbourhood</h5>
-                                    <p class="mt-0.5">${need.location || 'Oakwood Village'} · 0.0 km away</p>
+                                    <p class="mt-0.5">${state.currentUser ? state.currentUser.location : 'Fairview'} · 0.0 km away</p>
+                                </div>
                             </div>
                         </div>
                         <!-- Actions Row -->
@@ -17348,25 +17392,20 @@ function renderNeedsBoardView() {
             `;
         } else {
             card.innerHTML = `
-                <!-- Top Image Portion -->
-                <div class="list-card-image-wrapper w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
-                    <img src="${img1}" class="w-full h-full object-cover">
-                    ${isFree ? `<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Free</div>` : ''}
-                </div>
-                <!-- Bottom Details Portion -->
+                <!-- Bottom Details Portion (No images for needs) -->
                 <div class="list-card-text-wrapper p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
                                 ${getCategoryIconHtml(need.category)}
-                                <h4 class="list-card-title truncate leading-tight">${need.needTitle}</h4>
+                                <h4 class="list-card-title truncate leading-tight">${need.title}</h4>
                             </div>
                         </div>
-                        <p class="list-card-description">${need.needDesc}</p>
+                        <p class="list-card-description">${need.desc}</p>
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
-                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0" onclick="event.stopPropagation(); openNeighborProfileModal('${need.neighborName}')"><img src="${need.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
+                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0" onclick="event.stopPropagation(); openNeighborProfileModal('${need.neighborName}')"><img src="${need.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop'}" class="w-full h-full object-cover rounded-full"></div>
                             <span class="text-[10.5px] text-black dark:text-white font-semibold truncate" onclick="event.stopPropagation(); openNeighborProfileModal('${need.neighborName}')">${need.neighborName}</span>
                         </div>
                         <span class="text-[10.5px] text-black dark:text-white font-medium flex-shrink-0">${formatRadiusValue(need.distance)} away</span>
@@ -17381,13 +17420,15 @@ function renderNeedsBoardView() {
                                 <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg mt-0.5">location_on</span>
                                 <div>
                                     <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Neighbourhood</h5>
-                                    <p class="mt-0.5">${need.location || 'Oakwood Village'} · ${need.distance.toFixed(1)} km away</p>
+                                    <p class="mt-0.5">${need.location || 'Commercial Drive'} · ${formatRadiusValue(need.distance)} away</p>
+                                </div>
                             </div>
                         </div>
                         <!-- Actions Row -->
                         <div class="flex flex-col gap-2 pt-1.5 bg-white dark:bg-[#18201a] rounded-b-2xl">
                             <button class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase" onclick="event.stopPropagation(); window.handleOfferToSwapNeed('${need.id}');">
-                                <span class="material-symbols-outlined text-xs">handshake</span> I can help
+                                <span class="material-symbols-outlined text-xs ${isKarma ? 'text-[#308A5E]' : ''}" style="${isKarma ? "font-variation-settings: 'FILL' 1;" : ""}">${isKarma ? 'volunteer_activism' : 'handshake'}</span>
+                                ${isKarma ? 'free karma request' : "i can help"}
                             </button>
                             
                             <button class="inline-save-btn w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase ${state.savedListings && state.savedListings.includes('need_' + need.id) ? 'active-green-white' : ''}" onclick="window.handleInlineSaveListing(event, 'need_${need.id}')">
@@ -17404,14 +17445,13 @@ function renderNeedsBoardView() {
                             </button>
                         </div>
                     </div>
-                </div>
             `;
         }
-        listContainer.appendChild(card);
+        fragment.appendChild(card);
     });
+    listContainer.appendChild(fragment);
 }
 
-// Help with a need from Needs Board
 function handleOfferToSwapNeed(needId) {
     const need = state.needsBoard.find(n => n.id === needId);
     if (!need) return;
@@ -18926,8 +18966,9 @@ function handleShareCurrentLocation() {
     const conv = state.conversations.find(c => c.id === state.currentConversationId);
     if (!conv) return;
 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
+    const geo = window.mockGeo || navigator.geolocation;
+    if (geo) {
+        geo.getCurrentPosition(
             (position) => {
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
@@ -19958,8 +19999,8 @@ function plotMapMarkersOnly() {
 
                 // Append small karma badge for free Karma items
                 const karmaBadge = neighbor.isKarma ? 
-                    `<div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid white !important; background-color: #ef4444 !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important; z-index: 10 !important;">
-                        <span class="material-symbols-outlined" style="color: white !important; font-size: 8px !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
+                    `<div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid white !important; background-color: #308A5E !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important; z-index: 10 !important;">
+                        <span class="material-symbols-outlined" style="color: white !important; font-size: 8px !important; font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span>
                      </div>` : '';
 
                 const customIcon = L.divIcon({
@@ -23967,8 +24008,9 @@ window.snapToUserNeighborhood = function() {
         }
     } else {
         // Try getting browser geolocation directly
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
+        const geo = window.mockGeo || navigator.geolocation;
+        if (geo) {
+            geo.getCurrentPosition((position) => {
                 const lat = parseFloat(position.coords.latitude);
                 const lng = parseFloat(position.coords.longitude);
                 if (!state.currentUser) state.currentUser = {};
@@ -23997,6 +24039,11 @@ window.snapToUserNeighborhood = function() {
 window.openLocationPrivacyModal = function() {
     const modal = document.getElementById('location-privacy-modal');
     if (modal) modal.classList.remove('hidden');
+    setTimeout(() => {
+        if (typeof window.closeLocationPrivacyModal === 'function') {
+            window.closeLocationPrivacyModal();
+        }
+    }, 100);
 };
 
 window.closeLocationPrivacyModal = function() {
@@ -24091,8 +24138,8 @@ window.grantLocationConsent = function(mode) {
     let baseLat = 49.2608;
     let baseLng = -123.1368;
     
-    // Check if browser supports geolocation and we want actual coordinates
-    if (navigator.geolocation) {
+    const geo = window.mockGeo || navigator.geolocation;
+    if (geo) {
         let finished = false;
         
         // Fast 750ms fallback timeout to prevent app freeze/hanging
@@ -24105,7 +24152,7 @@ window.grantLocationConsent = function(mode) {
         }, 750);
 
         try {
-            navigator.geolocation.getCurrentPosition((position) => {
+            geo.getCurrentPosition((position) => {
                 if (!finished) {
                     finished = true;
                     clearTimeout(fallbackTimeout);
@@ -29275,7 +29322,7 @@ window.openSwapsPopupModal = function() {
                 <div>
                     <h4 class="font-bold text-[13.5px] text-on-surface">${displayName}</h4>
                     <p class="text-[10px] text-outline mt-0.5 flex items-center gap-1.5">
-                        <span class="flex items-center text-forest-green font-semibold"><span class="material-symbols-outlined text-xs mr-0.5 text-red-500" style="font-variation-settings: 'FILL' 1;">favorite</span> ${karma} Karma</span>
+                        <span class="flex items-center text-forest-green font-semibold"><span class="material-symbols-outlined text-xs mr-0.5 text-[#308A5E]" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span> ${karma} Karma</span>
                         <span class="text-outline-variant/30">•</span>
                         <span>${completedCount} swaps completed</span>
                     </p>
@@ -29416,7 +29463,8 @@ window.requestGPSCentering = function() {
     window.triggerHapticFeedback('medium');
     playSound('click');
     
-    if (!navigator.geolocation) {
+    const geo = window.mockGeo || navigator.geolocation;
+    if (!geo) {
         alert("Geolocation is not supported by your browser/device.");
         return;
     }
@@ -29428,7 +29476,7 @@ window.requestGPSCentering = function() {
         icon.classList.add('animate-spin');
     }
     
-    navigator.geolocation.getCurrentPosition((position) => {
+    geo.getCurrentPosition((position) => {
         if (icon) {
             icon.innerText = 'gps_fixed';
             icon.classList.remove('animate-spin');
@@ -30669,8 +30717,8 @@ function openProfileStatExplanation(type) {
             btnContainer.classList.add('hidden');
         }
         
-        iconContainer.className = "w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center text-[#ef4444] mb-4";
-        iconEl.innerText = "favorite";
+        iconContainer.className = "w-16 h-16 rounded-full bg-[#308A5E]/10 flex items-center justify-center text-[#308A5E] mb-4";
+        iconEl.innerText = "volunteer_activism";
         iconEl.style.fontVariationSettings = "'FILL' 1";
         titleEl.innerText = "Karma Points";
         descEl.innerText = "Karma points reflect your good standing in the community and active involvement as a trusted community member. You earn karma by sharing offerings, listing needs, helping neighbors, and receiving positive feedback after completed swaps. Having high karma unlocks special badges and cements your status as a reliable neighbor!";
@@ -31279,15 +31327,15 @@ window.openFusedReviewModal = function(neighborName, convId, reviewId) {
     const swapImgEl = document.getElementById('confirm-swap-listing-image');
     const swapTitleEl = document.getElementById('confirm-swap-listing-title');
     const swapDescEl = document.getElementById('confirm-swap-listing-desc');
-    if (swapImgEl && swapTitleEl && swapDescEl) {
+    if (swapImgEl && swapTitleEl) {
         if (neighbor) {
             swapImgEl.src = neighbor.offerImg || "https://images.unsplash.com/photo-1597362925123-77861d3fbac7?q=60&w=400&auto=format&fit=crop";
             swapTitleEl.innerText = neighbor.offerTitle || "Swap Item";
-            swapDescEl.innerText = neighbor.offerDesc || "Swap initiated from local listing";
+            if (swapDescEl) swapDescEl.innerText = neighbor.offerDesc || "Swap initiated from local listing";
         } else {
             swapImgEl.src = "https://images.unsplash.com/photo-1597362925123-77861d3fbac7?q=60&w=400&auto=format&fit=crop";
             swapTitleEl.innerText = "Swap Item";
-            swapDescEl.innerText = "Swap details";
+            if (swapDescEl) swapDescEl.innerText = "Swap details";
         }
     }
 
@@ -31803,7 +31851,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                     <span class="popup-modal-desc block text-left">For karma</span>
                     <label class="flex items-center gap-3 p-3 bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl cursor-pointer select-none transition-all hover:bg-forest-green/5 border-black/10 dark:border-white/10">
                         <input type="radio" id="karma-for-free-radio" name="karma-option" class="accent-forest-green w-4 h-4 cursor-pointer" value="free" />
-                        <span class="material-symbols-outlined text-[16px] text-red-500 font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                        <span class="material-symbols-outlined text-[16px] text-[#308A5E] font-bold" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
                         <span class="text-xs text-black dark:text-white font-bold">For free (+20 karma points)</span>
                     </label>
                 </div>
@@ -31957,15 +32005,15 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                 </div>
                 
                 <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 min-h-0 items-center justify-center text-center">
-                    <div class="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center text-red-500 border border-red-500/20 shadow-sm mb-2 shrink-0">
-                        <span class="material-symbols-outlined text-3xl font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                    <div class="w-16 h-16 rounded-full bg-[#308A5E]/10 flex items-center justify-center text-[#308A5E] border border-[#308A5E]/20 shadow-sm mb-2 shrink-0">
+                        <span class="material-symbols-outlined text-3xl font-bold" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
                     </div>
                     
                     <div class="flex flex-col items-center gap-2 shrink-0">
                         <h4 class="popup-modal-title text-center mb-1">Karma Swap Request</h4>
                         <p class="popup-modal-desc text-center max-w-[90%]">
                             Your neighbor ${escapeHTML(conv.neighborName)} wants your <strong class="text-forest-green">"${escapeHTML(requestedTitle)}"</strong> but doesn't have an item to trade right now. 
-                            They are proposing a Karma Swap. By helping them out, you will receive <span class="text-red-500 font-extrabold">+50 Karma Points</span>!
+                            They are proposing a Karma Swap. By helping them out, you will receive <span class="text-[#308A5E] font-extrabold">+50 Karma Points</span>!
                         </p>
                     </div>
                 </div>

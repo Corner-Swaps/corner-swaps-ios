@@ -46,7 +46,5 @@
 	<string>Corner Swaps needs photo library access so you can upload photos of items to swap.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Corner Swaps needs photo library access to save photos.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Corner Swaps uses your location to show nearby neighbors, local swaps, and meetups in your area.</string>
 </dict>
 </plist>

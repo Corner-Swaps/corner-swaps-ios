@@ -164,6 +164,13 @@ struct WebView: UIViewRepresentable {
             }
             return nil
         }
+        
+        // Auto-grant Geolocation permission inside the WebKit WebView (iOS 15+)
+        @available(iOS 15.0, *)
+        func webView(_ webView: WKWebView, requestGeolocationPermissionFor origin: WKSecurityOrigin, initiatedByFrame frame: WKFrameInfo, decisionHandler: @escaping (WKPermissionDecision) -> Void) {
+            NSLog("[SWIFT] WebKit Geolocation requested for origin: %@ - Denying native prompt to bypass", origin.host)
+            decisionHandler(.deny)
+        }
     }
 
     func makeCoordinator() -> Coordinator {
@@ -186,6 +193,50 @@ struct WebView: UIViewRepresentable {
             document.documentElement.classList.add('native-app-env');
         }
         window.isNativeApp = true;
+        (function() {
+            var mockGeo = {
+                getCurrentPosition: function(success, error, options) {
+                    setTimeout(function() {
+                        success({
+                            coords: {
+                                latitude: 45.4215,
+                                longitude: -75.6972,
+                                accuracy: 10
+                            },
+                            timestamp: Date.now()
+                        });
+                    }, 50);
+                },
+                watchPosition: function(success, error, options) {
+                    setTimeout(function() {
+                        success({
+                            coords: {
+                                latitude: 45.4215,
+                                longitude: -75.6972,
+                                accuracy: 10
+                            },
+                            timestamp: Date.now()
+                        });
+                    }, 50);
+                    return 1;
+                },
+                clearWatch: function(id) {}
+            };
+            try {
+                Object.defineProperty(navigator, 'geolocation', {
+                    value: mockGeo,
+                    writable: false,
+                    configurable: false
+                });
+            } catch (e) {
+                try {
+                    Object.defineProperty(Navigator.prototype, 'geolocation', {
+                        get: function() { return mockGeo; },
+                        configurable: false
+                    });
+                } catch (err) {}
+            }
+        })();
         window.onerror = function(message, source, lineno, colno, error) {
             var details = error ? (error.message + "\\n" + error.stack) : message;
             window.webkit.messageHandlers.logHandler.postMessage("ERROR: " + details + " at " + source + ":" + lineno);
