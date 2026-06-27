@@ -31387,7 +31387,7 @@ window.openFusedReviewModal = function(neighborName, convId, reviewId) {
 
     // Reset tag buttons styling
     document.querySelectorAll('.fused-tag-btn').forEach(btn => {
-        btn.className = "fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]";
+        btn.className = "fused-tag-btn w-full py-4.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[15px] font-extrabold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]";
     });
 
     // Update UI buttons and negative menu visibility
@@ -31445,10 +31445,10 @@ window.toggleFusedTag = function(btn, tag) {
     const index = fusedReviewTags.indexOf(tag);
     if (index !== -1) {
         fusedReviewTags.splice(index, 1);
-        btn.className = "fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]";
+        btn.className = "fused-tag-btn w-full py-4.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[15px] font-extrabold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]";
     } else {
         fusedReviewTags.push(tag);
-        btn.className = "fused-tag-btn w-full py-3 bg-red-500/10 dark:bg-red-500/20 border border-red-500 text-red-500 font-bold rounded-xl text-[12px] cursor-pointer transition-all active:scale-[0.98]";
+        btn.className = "fused-tag-btn w-full py-4.5 bg-red-500/10 dark:bg-red-500/20 border border-red-500 text-red-500 font-extrabold rounded-xl text-[15px] cursor-pointer transition-all active:scale-[0.98]";
     }
 };
 
