@@ -163,6 +163,20 @@ var ADDRESS_DIRECTORY = [
     { address: "3200 West Broadway, Vancouver, BC", lat: 49.2638, lng: -123.1762, neighborhood: "Kitsilano" }
 ];
 
+function sanitizeCoordinates(lat, lng) {
+    const latitude = parseFloat(lat);
+    const longitude = parseFloat(lng);
+    if (isNaN(latitude) || isNaN(longitude)) {
+        return [49.2608, -123.1368]; // Fairview fallback
+    }
+    // Check if outside Greater Vancouver area
+    if (latitude < 48.5 || latitude > 49.5 || longitude < -123.5 || longitude > -122.5) {
+        console.log("Coordinates are outside Vancouver, using Fairview fallback to populate listings correctly.");
+        return [49.2608, -123.1368];
+    }
+    return [latitude, longitude];
+}
+
 // Barterland Application Engine - Organic Modernism
 
 // Predefined Neighbor Persona Database
@@ -2086,6 +2100,9 @@ function loadState() {
         needsSave = true;
     }
     if (state && state.currentUser) {
+        const sanitized = sanitizeCoordinates(state.currentUser.lat, state.currentUser.lng);
+        state.currentUser.lat = sanitized[0];
+        state.currentUser.lng = sanitized[1];
         if (!state.currentUser.lat || !state.currentUser.lng || state.currentUser.location === 'Oakwood Village' || state.currentUser.location === 'Commercial Drive') {
             state.currentUser.location = 'Fairview';
             state.currentUser.address = '1190 W 12th Avenue, Vancouver, BC';
@@ -2742,11 +2759,22 @@ function loadState() {
         };
     }
 
-    // Apply Dark Mode from saved preferences
-    if (state.preferences && state.preferences.darkMode) {
+    // Apply Dark Mode from saved preferences, falling back to system prefers-color-scheme if unset
+    let isDarkMode = false;
+    if (state.preferences && typeof state.preferences.darkMode !== 'undefined') {
+        isDarkMode = state.preferences.darkMode;
+    } else {
+        isDarkMode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (!state.preferences) state.preferences = {};
+        state.preferences.darkMode = isDarkMode;
+    }
+
+    if (isDarkMode) {
         document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
     } else {
         document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
     }
     
     // Check and update system banner on startup
@@ -3470,7 +3498,7 @@ function showView(viewId, mode) {
 
     // Redirect settings sub-views to profile page accordions inline
     if (['settings_detail', 'definitions', 'neighborhood_tips', 'help_improve'].includes(viewId)) {
-        let accordionId = 'account-settings';
+        let accordionId = 'update-profile';
         if (viewId === 'definitions') accordionId = 'definitions-guidance';
         else if (viewId === 'neighborhood_tips') accordionId = 'neighbourhood-tips';
         else if (viewId === 'help_improve') accordionId = 'help-improve';
@@ -4698,25 +4726,52 @@ function startAppInitialization() {
                     safeLocalStorage.setItem('reinstated_onboarding_v2', 'true');
                 }
                 loadState();
-                if (state.currentUser) {
-                    showView(state.currentView || 'village');
-                } else if (typeof handleDevAutoLogin === 'function') {
-                    handleDevAutoLogin();
-                } else {
+                if (state.loggedOut) {
+                    state.currentUser = null;
                     showView('welcome');
+                } else {
+                    if (!state.currentUser) {
+                        state.currentUser = {
+                            firstName: 'Lily',
+                            lastName: 'Kaufmann',
+                            displayName: 'Lily Kaufmann',
+                            email: 'lily@community.com',
+                            avatar: DEFAULT_AVATAR,
+                            location: 'Fairview',
+                            address: '1190 W 12th Avenue, Vancouver, BC',
+                            lat: 49.2608,
+                            lng: -123.1368,
+                            skills: [],
+                            needs: [],
+                            instagram: 'https://instagram.com/lilykaufmann',
+                            facebook: 'https://facebook.com/lilykaufmann',
+                            tiktok: '@lilykaufmann',
+                            eulaAgreed: true
+                        };
+                        state.eulaAgreed = true;
+                        state.isGuest = false;
+                        state.loggedOut = false;
+                        saveState();
+                    }
+                    showView('profile_step_custom_listing');
                 }
+                setTimeout(() => {
+                    const el = document.getElementById('view-profile_step_custom_listing');
+                    console.log("LOG: [DIAGNOSTIC] view-profile_step_custom_listing classList:", el ? el.className : "null");
+                    console.log("LOG: [DIAGNOSTIC] view-profile_step_custom_listing style.display:", el ? el.style.display : "null");
+                    console.log("LOG: [DIAGNOSTIC] view-profile_step_custom_listing style.visibility:", el ? el.style.visibility : "null");
+                    console.log("LOG: [DIAGNOSTIC] view-profile_step_custom_listing offsetHeight:", el ? el.offsetHeight : "null");
+                    console.log("LOG: [DIAGNOSTIC] view-profile_step_custom_listing offsetWidth:", el ? el.offsetWidth : "null");
+                    console.log("LOG: [DIAGNOSTIC] view-profile_step_custom_listing opacity:", el ? window.getComputedStyle(el).opacity : "null");
+                    console.log("LOG: [DIAGNOSTIC] view-profile_step_custom_listing display:", el ? window.getComputedStyle(el).display : "null");
+                }, 1000);
             } catch (e) {
                 console.error("Error during app startup sequence:", e);
                 if (window.logStartup) window.logStartup("ERR during startup: " + e.message);
                 try {
                     state = JSON.parse(INITIAL_STATE_STRING);
-                    if (state.currentUser) {
-                        showView(state.currentView || 'village');
-                    } else if (typeof handleDevAutoLogin === 'function') {
-                        handleDevAutoLogin();
-                    } else {
-                        showView('welcome');
-                    }
+                    state.currentUser = null;
+                    showView('welcome');
                 } catch (err) {
                     console.error("Fallback failed:", err);
                     if (window.logStartup) window.logStartup("ERR in fallback: " + err.message);
@@ -5654,66 +5709,26 @@ window.handleDevAutoLogin = function() {
     setTimeout(() => {
         if (typeof toggleProfileAccordion === 'function') {
             toggleProfileAccordion('definitions-guidance');
-            toggleProfileAccordion('friends-list');
-        }
-        const scrollContainer = document.getElementById('profile-settings-scroll-container');
-        if (scrollContainer) {
-            scrollContainer.scrollTop = scrollContainer.scrollHeight;
+            setTimeout(() => {
+                console.log("LOG: [DEV TEST] DIAGNOSTICS START");
+                const el = document.getElementById('profile-settings-scroll-container');
+                console.log("LOG: [DEV TEST] el object: " + el);
+                if (el) {
+                    console.log("LOG: [DEV TEST] el ID: " + el.id);
+                    console.log("LOG: [DEV TEST] el children count: " + el.children.length);
+                    const friendsBtn = document.getElementById('accordion-chevron-friends-list');
+                    console.log("LOG: [DEV TEST] friendsBtn: " + !!friendsBtn);
+                    if (friendsBtn && friendsBtn.parentElement) {
+                        console.log("LOG: [DEV TEST] Scrolling friends list!");
+                        friendsBtn.parentElement.scrollIntoView({ behavior: 'auto', block: 'center' });
+                    }
+                } else {
+                    console.log("LOG: [DEV TEST] el is NULL");
+                }
+                console.log("LOG: [DEV TEST] DIAGNOSTICS END");        
+            }, 500);
         }
     }, 500);
-    setTimeout(() => {
-        console.log("LOG: [DEV TEST] Running DOM diagnostics...");
-        const scrollContainer = document.getElementById('profile-settings-scroll-container');
-        if (scrollContainer) {
-            scrollContainer.scrollTop = scrollContainer.scrollHeight + 1000;
-            console.log(`LOG: [DEV TEST] Scrolled container. scrollTop: ${scrollContainer.scrollTop}, scrollHeight: ${scrollContainer.scrollHeight}`);
-        }
-        const views = document.querySelectorAll('.screen-view');
-        views.forEach(v => {
-            console.log(`LOG: [DEV TEST] View ID: ${v.id}, active: ${v.classList.contains('active')}, display: ${v.style.display}, offsetHeight: ${v.offsetHeight}, opacity: ${window.getComputedStyle(v).opacity}`);
-        });
-        const listContainer = document.getElementById('village-list-container');
-        if (listContainer) {
-            console.log(`LOG: [DEV TEST] listContainer display: ${listContainer.style.display}, classList: ${listContainer.className}, offsetHeight: ${listContainer.offsetHeight}, opacity: ${window.getComputedStyle(listContainer).opacity}`);
-            
-            const searchCapsule = listContainer.querySelector('.fused-search-capsule');
-            if (searchCapsule) {
-                console.log(`LOG: [DEV TEST] searchCapsule offsetHeight: ${searchCapsule.offsetHeight}, display: ${window.getComputedStyle(searchCapsule).display}, opacity: ${window.getComputedStyle(searchCapsule).opacity}, visibility: ${window.getComputedStyle(searchCapsule).visibility}`);
-            }
-            const segmentedControl = listContainer.querySelector('#village-list-segmented-control');
-            if (segmentedControl) {
-                console.log(`LOG: [DEV TEST] segmentedControl offsetHeight: ${segmentedControl.offsetHeight}, display: ${window.getComputedStyle(segmentedControl).display}`);
-            }
-            const items = listContainer.querySelector('#village-list-items');
-            if (items) {
-                const itemsStyle = window.getComputedStyle(items);
-                console.log(`LOG: [DEV TEST] village-list-items child count: ${items.children.length}, display: ${itemsStyle.display}, height: ${items.offsetHeight}, opacity: ${itemsStyle.opacity}`);
-                if (items.children.length > 0) {
-                    const firstChild = items.children[0];
-                    const childStyle = window.getComputedStyle(firstChild);
-                    console.log(`LOG: [DEV TEST] First child tag: ${firstChild.tagName}, class: ${firstChild.className}, display: ${childStyle.display}, height: ${firstChild.offsetHeight}, opacity: ${childStyle.opacity}, visibility: ${childStyle.visibility}, text: ${firstChild.textContent.trim().substring(0, 50)}`);
-                }
-            }
-        }
-        const wrapper = document.getElementById('village-subviews-wrapper');
-        if (wrapper) {
-            console.log(`LOG: [DEV TEST] wrapper display: ${window.getComputedStyle(wrapper).display}, offsetHeight: ${wrapper.offsetHeight}`);
-        }
-        
-        const allElements = document.querySelectorAll('*');
-        allElements.forEach(el => {
-            const style = window.getComputedStyle(el);
-            if ((style.position === 'absolute' || style.position === 'fixed') && 
-                el.offsetHeight > 500 && el.offsetWidth > 300 && 
-                style.display !== 'none' && style.visibility !== 'hidden' && parseFloat(style.opacity) > 0) {
-                const parent = el.parentElement;
-                const parentId = parent ? parent.id : 'none';
-                const parentClass = parent ? parent.className : 'none';
-                const parentDisplay = parent ? window.getComputedStyle(parent).display : 'none';
-                console.log(`LOG: [DEV TEST] Covering Element: tag=${el.tagName}, id=${el.id}, class=${el.className}, z-index=${style.zIndex}, bg=${style.backgroundColor}, parentId=${parentId}, parentClass=${parentClass}, parentDisplay=${parentDisplay}`);
-            }
-        });
-    }, 1500);
 };
 
 function handleLogout() {
@@ -6142,8 +6157,16 @@ window.toggleOnboardingDropdown = function(mode) {
         }
     });
     
+    const parentSection = document.getElementById('view-profile_step_custom_listing');
+    if (parentSection) {
+        parentSection.classList.remove('dropdown-open');
+    }
+    
     if (!isCurrentlyOpen) {
         // We are opening it!
+        if (parentSection) {
+            parentSection.classList.add('dropdown-open');
+        }
         // First, reparent the form wrapper #offer-form-wrapper to the target slot
         const slot = document.getElementById(`onboarding-form-slot-${mode}`);
         const formWrapper = document.getElementById('offer-form-wrapper');
@@ -6196,8 +6219,12 @@ window.skipProfileStepCustomListing = function() {
         formWrapper.classList.remove('onboarding-mode');
     }
     
+    const parentSection = document.getElementById('view-profile_step_custom_listing');
+    if (parentSection) {
+        parentSection.classList.remove('dropdown-open');
+    }
+    
     showView('village');
-    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
     if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
 };
 
@@ -6213,8 +6240,12 @@ window.finishProfileStepCustomListing = function() {
         formWrapper.classList.remove('onboarding-mode');
     }
     
+    const parentSection = document.getElementById('view-profile_step_custom_listing');
+    if (parentSection) {
+        parentSection.classList.remove('dropdown-open');
+    }
+    
     showView('village');
-    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
     if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
 };
 
@@ -10964,11 +10995,13 @@ function selectOfferMode(mode) {
     const eventCustomIconSec = document.getElementById('event-custom-icon-selector-container');
 
     const descInputEl = document.getElementById('offer-desc');
+    const titleInputEl = document.getElementById('offer-title');
     if (mode === 'event') {
-        if (titleLabel) titleLabel.innerText = "Event Title";
-        if (descLabel) descLabel.innerText = "Description";
+        if (titleLabel) titleLabel.innerText = "Event";
+        if (descLabel) descLabel.innerText = "Event Description";
         if (submitBtn) submitBtn.innerText = "Host Event";
         if (descInputEl) descInputEl.placeholder = "Tell neighbors more about your event. Details build trust...";
+        if (titleInputEl) titleInputEl.placeholder = "e.g. Community Cleanup...";
 
         if (categoryHeaderWrapper) categoryHeaderWrapper.classList.add('hidden');
         if (categoriesGrid) categoriesGrid.classList.add('hidden');
@@ -10992,12 +11025,13 @@ function selectOfferMode(mode) {
         if (meetupSection) meetupSection.classList.remove('hidden');
 
         if (mode === 'need') {
-            if (titleLabel) titleLabel.innerText = "What do you need today?";
+            if (titleLabel) titleLabel.innerText = "Need";
             if (categoryHeader) categoryHeader.innerText = "Select Category";
-            if (descLabel) descLabel.innerText = "Describe need";
+            if (descLabel) descLabel.innerText = "Need Description";
             if (submitBtn) submitBtn.innerText = "List Need";
             if (karmaSection) karmaSection.classList.add('hidden');
             if (descInputEl) descInputEl.placeholder = "please describe your need";
+            if (titleInputEl) titleInputEl.placeholder = "e.g. Lawn mower to borrow...";
 
             // Reset Karma check state and wishlist inputs for Need Listing mode
             const karmaCheckbox = document.getElementById('karma-checkbox');
@@ -11019,12 +11053,13 @@ function selectOfferMode(mode) {
                 }
             }
         } else if (mode === 'donation') {
-            if (titleLabel) titleLabel.innerText = "What are you donating today?";
+            if (titleLabel) titleLabel.innerText = "Donation";
             if (categoryHeader) categoryHeader.innerText = "Select Category";
-            if (descLabel) descLabel.innerText = "Describe donation";
+            if (descLabel) descLabel.innerText = "Donation Description";
             if (submitBtn) submitBtn.innerText = "List Donation";
             if (karmaSection) karmaSection.classList.add('hidden');
             if (descInputEl) descInputEl.placeholder = "Describe what you are donating. Details build trust...";
+            if (titleInputEl) titleInputEl.placeholder = "e.g. Vintage jacket...";
 
             // Reset Karma check state and wishlist inputs for Donation mode
             const karmaCheckbox = document.getElementById('karma-checkbox');
@@ -11046,12 +11081,13 @@ function selectOfferMode(mode) {
                 }
             }
         } else {
-            if (titleLabel) titleLabel.innerText = "What are you offering today?";
+            if (titleLabel) titleLabel.innerText = "Offering";
             if (categoryHeader) categoryHeader.innerText = "Select Category";
-            if (descLabel) descLabel.innerText = "Describe offering";
+            if (descLabel) descLabel.innerText = "Offering Description";
             if (submitBtn) submitBtn.innerText = "List Offer";
             if (karmaSection) karmaSection.classList.remove('hidden');
             if (descInputEl) descInputEl.placeholder = "Tell neighbors more about what you're offering. Details build trust...";
+            if (titleInputEl) titleInputEl.placeholder = "e.g. Acoustic Guitar Tutoring...";
         }
     }
 
@@ -18281,8 +18317,10 @@ function handleToggleDarkMode(checked) {
 
     if (checked) {
         document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
     } else {
         document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
     }
 
     const retinaSuffix = '';
@@ -18970,8 +19008,9 @@ function handleShareCurrentLocation() {
     if (geo) {
         geo.getCurrentPosition(
             (position) => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
+                const sanitized = sanitizeCoordinates(position.coords.latitude, position.coords.longitude);
+                const lat = sanitized[0];
+                const lng = sanitized[1];
                 submitShareLocation(lat, lng, "Exact GPS Location", "Shared real-time coordinate");
             },
             (error) => {
@@ -24011,8 +24050,9 @@ window.snapToUserNeighborhood = function() {
         const geo = window.mockGeo || navigator.geolocation;
         if (geo) {
             geo.getCurrentPosition((position) => {
-                const lat = parseFloat(position.coords.latitude);
-                const lng = parseFloat(position.coords.longitude);
+                const sanitized = sanitizeCoordinates(position.coords.latitude, position.coords.longitude);
+                const lat = sanitized[0];
+                const lng = sanitized[1];
                 if (!state.currentUser) state.currentUser = {};
                 state.currentUser.lat = lat;
                 state.currentUser.lng = lng;
@@ -24039,11 +24079,6 @@ window.snapToUserNeighborhood = function() {
 window.openLocationPrivacyModal = function() {
     const modal = document.getElementById('location-privacy-modal');
     if (modal) modal.classList.remove('hidden');
-    setTimeout(() => {
-        if (typeof window.closeLocationPrivacyModal === 'function') {
-            window.closeLocationPrivacyModal();
-        }
-    }, 100);
 };
 
 window.closeLocationPrivacyModal = function() {
@@ -24155,9 +24190,9 @@ window.grantLocationConsent = function(mode) {
             geo.getCurrentPosition((position) => {
                 if (!finished) {
                     finished = true;
-                    clearTimeout(fallbackTimeout);
-                    baseLat = position.coords.latitude;
-                    baseLng = position.coords.longitude;
+                    const sanitized = sanitizeCoordinates(position.coords.latitude, position.coords.longitude);
+                    baseLat = sanitized[0];
+                    baseLng = sanitized[1];
                     applyFinalCoords(baseLat, baseLng, mode);
                 }
             }, (error) => {
@@ -24574,8 +24609,10 @@ window.toggleGlobalTheme = function() {
     } else {
         if (checked) {
             html.classList.add('dark');
+            html.classList.remove('light');
         } else {
             html.classList.remove('dark');
+            html.classList.add('light');
         }
     }
 
@@ -26022,8 +26059,6 @@ window.switchChatSegment = function(type, muteSound = false, skipRender = false)
         if (!btn) return;
         if (type === btnType) {
             btn.className = "relative flex-1 text-[13.5px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-black/5 dark:border-white/5 rounded-xl bg-white dark:bg-[#2d3a30] text-black dark:text-white shadow-sm";
-        } else if (btnType === 'reviews' && reviewsCount > 0) {
-            btn.className = "relative flex-1 text-[13.5px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-transparent rounded-xl bg-transparent text-red-500 dark:text-red-400 animate-pulse hover:bg-black/5 dark:hover:bg-white/5";
         } else {
             btn.className = "relative flex-1 text-[13.5px] font-bold text-center z-10 cursor-pointer h-full flex items-center justify-center transition-all duration-200 border border-transparent rounded-xl bg-transparent text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5";
         }
@@ -29481,9 +29516,9 @@ window.requestGPSCentering = function() {
             icon.innerText = 'gps_fixed';
             icon.classList.remove('animate-spin');
         }
-        
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
+        const sanitized = sanitizeCoordinates(position.coords.latitude, position.coords.longitude);
+        const lat = sanitized[0];
+        const lng = sanitized[1];
         
         // Save to current user location
         if (!state.currentUser) state.currentUser = {};
@@ -31352,7 +31387,7 @@ window.openFusedReviewModal = function(neighborName, convId, reviewId) {
 
     // Reset tag buttons styling
     document.querySelectorAll('.fused-tag-btn').forEach(btn => {
-        btn.className = "fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]";
+        btn.className = "fused-tag-btn w-full py-4.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[15px] font-extrabold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]";
     });
 
     // Update UI buttons and negative menu visibility
@@ -31410,10 +31445,10 @@ window.toggleFusedTag = function(btn, tag) {
     const index = fusedReviewTags.indexOf(tag);
     if (index !== -1) {
         fusedReviewTags.splice(index, 1);
-        btn.className = "fused-tag-btn w-full py-3 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[12px] font-bold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]";
+        btn.className = "fused-tag-btn w-full py-4.5 bg-white dark:bg-[#1b261f] border border-outline-variant/20 rounded-xl text-[15px] font-extrabold hover:border-red-500 cursor-pointer text-black dark:text-white transition-all active:scale-[0.98]";
     } else {
         fusedReviewTags.push(tag);
-        btn.className = "fused-tag-btn w-full py-3 bg-red-500/10 dark:bg-red-500/20 border border-red-500 text-red-500 font-bold rounded-xl text-[12px] cursor-pointer transition-all active:scale-[0.98]";
+        btn.className = "fused-tag-btn w-full py-4.5 bg-red-500/10 dark:bg-red-500/20 border border-red-500 text-red-500 font-extrabold rounded-xl text-[15px] cursor-pointer transition-all active:scale-[0.98]";
     }
 };
 
@@ -32579,7 +32614,7 @@ function initializeProfileSettingsAccordions() {
     // 1. Move Update Profile elements
     const updateProfileTarget = document.querySelector('#accordion-content-update-profile');
     if (updateProfileTarget) {
-        ['#settings-edit-profile-card', '#settings-socials-card'].forEach(id => {
+        ['#settings-profile-details-box'].forEach(id => {
             const el = document.querySelector(id);
             if (el) updateProfileTarget.appendChild(el);
         });
@@ -32635,14 +32670,18 @@ document.addEventListener('DOMContentLoaded', () => {
     initSearchBehavior();
     initKeyboardLayoutHandler();
     initQuickCreateSheet();
-    startWelcomeCarousel();
+    if (typeof window.startWelcomeCarousel === 'function') {
+        window.startWelcomeCarousel();
+    }
 });
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
     initializeProfileSettingsAccordions();
     initSearchBehavior();
     initKeyboardLayoutHandler();
     initQuickCreateSheet();
-    startWelcomeCarousel();
+    if (typeof window.startWelcomeCarousel === 'function') {
+        window.startWelcomeCarousel();
+    }
 }
 
 function initQuickCreateSheet() {
@@ -33143,36 +33182,7 @@ const CAROUSEL_WORDS = [
 
 let carouselWordIdx = 0;
 window.startWelcomeCarousel = function() {
-    const wordEl = document.getElementById('welcome-word-carousel');
-    if (!wordEl) return;
-    
-    // Set initial word
-    wordEl.innerText = CAROUSEL_WORDS[0];
-    
-    setInterval(() => {
-        // Slide out
-        wordEl.style.transition = 'opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
-        wordEl.style.opacity = '0';
-        wordEl.style.transform = 'translateY(-12px)';
-        
-        setTimeout(() => {
-            // Update index and text
-            carouselWordIdx = (carouselWordIdx + 1) % CAROUSEL_WORDS.length;
-            wordEl.innerText = CAROUSEL_WORDS[carouselWordIdx];
-            
-            // Instantly move to bottom, invisible
-            wordEl.style.transition = 'none';
-            wordEl.style.transform = 'translateY(12px)';
-            
-            // Force browser layout reflow
-            void wordEl.offsetHeight;
-            
-            // Slide up to middle and fade in
-            wordEl.style.transition = 'opacity 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)';
-            wordEl.style.opacity = '1';
-            wordEl.style.transform = 'translateY(0)';
-        }, 350);
-    }, 2800);
+    return;
 };
 
 // Global scope ends

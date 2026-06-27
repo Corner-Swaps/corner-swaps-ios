@@ -1233,7 +1233,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 //# sourceMappingURL=/sm/6de00f2697a1683b235e589897df757a94e6809643432a9e3ad259420752442d.map</script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=1.0.2">
     <!-- Tailwind Configuration (removed - runtime replaced with pre-compiled CSS) -->
     <script>
         // Synchronously detect if we are running inside native app wrapper (iOS/WKWebView)
@@ -1562,12 +1562,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </div>
                             <h1 id="welcome-app-name">CORNER SWAPS</h1>
                         </div>
-                        <p id="welcome-tagline"><span>Bring back the barter. A return to</span> <span id="welcome-word-carousel" class="welcome-carousel-word">Community</span></p>
+                        <p id="welcome-tagline"><span>Bring back the barter. Sign in or make an account today.</span></p>
                     </div>
 
                     <!-- === Bottom frosted card panel === -->
                     <div id="welcome-bottom-panel">
-                        <p id="welcome-panel-sub">Sign in or make an account today.</p>
+                        <p id="welcome-panel-sub" style="display: none !important;"></p>
 
                         <div id="welcome-cta-stack">
                             <!-- PRIMARY: Sign In -->
@@ -2068,7 +2068,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <span class="material-symbols-outlined text-[20px] text-forest-green" id="onboarding-chevron-offering" style="transition: transform 0.2s;">expand_more</span>
                         </button>
                         <!-- Offering Slot -->
-                        <div id="onboarding-dropdown-offering" class="hidden border border-outline-variant/30 rounded-2xl bg-white/40 dark:bg-black/20 p-0 overflow-y-auto" style="max-height: 480px; transition: all 0.3s ease;">
+                        <div id="onboarding-dropdown-offering" class="hidden border border-outline-variant/30 rounded-2xl bg-white/40 dark:bg-black/20 p-0" style="transition: all 0.3s ease;">
                             <div id="onboarding-form-slot-offering"></div>
                         </div>
 
@@ -2084,7 +2084,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <span class="material-symbols-outlined text-[20px] text-amber-500" id="onboarding-chevron-need" style="transition: transform 0.2s;">expand_more</span>
                         </button>
                         <!-- Need Slot -->
-                        <div id="onboarding-dropdown-need" class="hidden border border-outline-variant/30 rounded-2xl bg-white/40 dark:bg-black/20 p-0 overflow-y-auto" style="max-height: 480px; transition: all 0.3s ease;">
+                        <div id="onboarding-dropdown-need" class="hidden border border-outline-variant/30 rounded-2xl bg-white/40 dark:bg-black/20 p-0" style="transition: all 0.3s ease;">
                             <div id="onboarding-form-slot-need"></div>
                         </div>
 
@@ -2100,7 +2100,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <span class="material-symbols-outlined text-[20px] text-purple-500" id="onboarding-chevron-event" style="transition: transform 0.2s;">expand_more</span>
                         </button>
                         <!-- Event Slot -->
-                        <div id="onboarding-dropdown-event" class="hidden border border-outline-variant/30 rounded-2xl bg-white/40 dark:bg-black/20 p-0 overflow-y-auto" style="max-height: 480px; transition: all 0.3s ease;">
+                        <div id="onboarding-dropdown-event" class="hidden border border-outline-variant/30 rounded-2xl bg-white/40 dark:bg-black/20 p-0" style="transition: all 0.3s ease;">
                             <div id="onboarding-form-slot-event"></div>
                         </div>
 
@@ -2203,7 +2203,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             
                             <!-- Custom Tag Builder -->
                             <div class="mt-6 flex gap-2 max-w-[280px] mx-auto">
-                                <input class="flex-grow h-10 px-3 bg-white border border-outline-variant/40 rounded-none text-[11px] placeholder:text-[11px] font-semibold text-forest-green focus:border-forest-green focus:ring-0 outline-none" id="custom-skill-tag-input" placeholder="Add custom offering..." type="text">
+                                <input class="flex-grow h-10 px-3 bg-white border border-outline-variant/40 rounded-none text-[11px] placeholder:text-[11px] font-semibold text-black dark:text-white focus:border-forest-green focus:ring-0 outline-none" id="custom-skill-tag-input" placeholder="Add custom offering..." type="text">
                                 <button class="bg-forest-green text-warm-cream px-4 rounded-none text-xs font-bold active:scale-90 transition-transform" onclick="addCustomSetupTag('skills')">
                                     + Add
                                 </button>
@@ -2213,7 +2213,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- Other/Custom Explanation Box -->
                         <div class="space-y-2 text-left mt-6 max-w-sm mx-auto">
                             <label class="text-[10px] font-bold uppercase tracking-wider text-forest-green/80 block" for="wizard-skills-other-desc">Other Offerings / Explain Custom Details</label>
-                            <textarea class="w-full h-36 p-3 bg-white border border-outline-variant rounded-xl focus:border-forest-green focus:ring-0 outline-none text-[11px] placeholder:text-[11px] font-semibold text-forest-green" id="wizard-skills-other-desc" placeholder="Describe any specific details, other items, or custom skills you can share..."></textarea>
+                            <textarea class="w-full h-36 p-3 bg-white border border-outline-variant rounded-xl focus:border-forest-green focus:ring-0 outline-none text-[11px] placeholder:text-[11px] font-semibold text-black dark:text-white" id="wizard-skills-other-desc" placeholder="Describe any specific details, other items, or custom skills you can share..."></textarea>
                         </div>
                     </div>
                     
@@ -2298,7 +2298,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <div class="mt-4 space-y-2 max-w-sm mx-auto text-left">
                             <label class="text-[10px] font-bold uppercase tracking-wider text-forest-green/80 block">Add Custom Need</label>
                             <div class="relative w-full">
-                                <input class="w-full h-14 pl-4 pr-16 bg-white border border-outline-variant rounded-xl text-[11px] placeholder:text-[11px] focus:border-forest-green focus:ring-0 outline-none font-semibold text-forest-green" id="custom-need-tag-input" placeholder="e.g. Lawn mower, Language practice..." type="text">
+                                <input class="w-full h-14 pl-4 pr-16 bg-white border border-outline-variant rounded-xl text-[11px] placeholder:text-[11px] focus:border-forest-green focus:ring-0 outline-none font-semibold text-black dark:text-white" id="custom-need-tag-input" placeholder="e.g. Lawn mower, Language practice..." type="text">
                                 <button class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-forest-green text-warm-cream rounded-lg flex items-center justify-center active:scale-95 transition-all" onclick="addCustomSetupTag('needs')" type="button">
                                     <span class="material-symbols-outlined text-xl font-bold">add</span>
                                 </button>
@@ -2822,7 +2822,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <!-- Karma category -->
                                 <div class="bento-card bg-white dark:bg-[#1b261f] p-2 py-3.5 rounded-2xl border border-outline-variant/10 flex flex-col items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition-all hover:bg-forest-green/5 dark:hover:bg-forest-green/10 shadow-sm relative overflow-hidden group text-center w-full" data-category="Karma Swap" onclick="openCategoryView('Karma Swap')">
                                     <div class="icon-box w-11 h-11 rounded-full bg-red-50 text-red-600 dark:bg-red-950/20 dark:text-red-400 flex items-center justify-center group-hover:scale-105 transition-transform">
-                                        <span class="material-symbols-outlined text-xl">volunteer_activism</span>
+                                        <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1 !important;">favorite</span>
                                     </div>
                                     <span class="category-title text-[11.5px] font-bold text-black dark:text-warm-cream leading-tight mt-1.5 tracking-wide">Karma</span>
                                 </div>
@@ -3142,7 +3142,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <!-- Synced Search Bar inside Bulletins View -->
                             <div class="relative flex-grow flex items-center">
                                 <span class="material-symbols-outlined text-forest-green absolute left-3.5 text-base">search</span>
-                                <input type="text" id="village-bulletins-search-input" placeholder="Search Items, Needs, or Gifts, Events" class="w-full h-10 pl-9 pr-10 bg-white border border-outline-variant/25 rounded-xl text-xs focus:border-outline-variant/25 focus:ring-0 outline-none placeholder:text-forest-green/75 dark:placeholder:text-warm-cream/60" oninput="syncVillageSearch(this.value);">
+                                <input type="text" id="village-bulletins-search-input" placeholder="Search Items, Needs, or Gifts, Events" class="w-full h-10 pl-9 pr-10 bg-white border border-outline-variant/25 rounded-xl text-xs focus:border-outline-variant/25 focus:ring-0 outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500" oninput="syncVillageSearch(this.value);">
                                 <button id="btn-bulletins-search-clear" onclick="clearSearchInput('village-bulletins-search-input')" class="hidden absolute right-3 w-6 h-6 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 active:scale-90 transition-all text-black dark:text-white border-0 flex-shrink-0 shadow-sm" title="Clear Search">
                                     <span class="material-symbols-outlined text-[13px]">close</span>
                                 </button>
@@ -3188,7 +3188,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 </div>
                             </div>
                             <!-- Content Container -->
-                            <div class="px-6 pt-3 pb-28 space-y-3.5 text-left flex-grow">
+                            <div class="px-6 pt-3 pb-6 space-y-3.5 text-left flex-grow">
                                 <div class="flex flex-col w-full">
                                     <!-- Category and Status Badge -->
                                     <div class="flex items-center justify-between">
@@ -3295,7 +3295,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                  </div>
                              </div>
                             <!-- Content Container -->
-                            <div class="px-6 pt-3 pb-28 space-y-3.5 text-left flex-grow">
+                            <div class="px-6 pt-3 pb-6 space-y-3.5 text-left flex-grow">
                                 <div class="flex flex-col w-full">
                                     <!-- Category and Date Badge -->
                                     <div class="flex items-center justify-between">
@@ -3880,7 +3880,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
                     </div>
 
-                    <div class="px-6 pt-3 pb-28 space-y-3.5 text-left flex-grow">
+                    <div class="px-6 pt-3 pb-6 space-y-3.5 text-left flex-grow">
                         <div class="flex flex-col w-full">
                             <!-- Date and Category Badge -->
                             <div class="flex items-center justify-between">
@@ -3981,7 +3981,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                 <!-- ==================================================== -->
                 <!-- 11. OFFER VIEW (ACCORDION & VICINITY & WISH LIST) -->
                 <!-- ==================================================== -->
-                <section id="view-offer" class="screen-view flex-grow pb-24 overflow-hidden relative flex flex-col justify-start pt-0">
+                <section id="view-offer" class="screen-view flex-grow pb-4 overflow-hidden relative flex flex-col justify-start pt-0">
                     <!-- A. Listing Mode Selector Screen -->
                     <div id="offer-type-selector-screen" class="px-6 flex flex-col items-center justify-start gap-3.5 max-w-sm mx-auto text-center w-full pt-14 pb-4">
                         <div class="w-16 h-16 rounded-2xl bg-forest-green/10 dark:bg-emerald-500/10 flex items-center justify-center text-forest-green dark:text-emerald-400 mb-1 shadow-sm">
@@ -4080,7 +4080,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- 2. Stylized Title input -->
                         <div class="text-left w-full mb-2">
                             <label id="offer-title-label" class="block text-[9px] font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E] mb-2.5 text-left" for="offer-title">
-                                What are you offering today?
+                                Offering
                             </label>
                             <div class="relative w-full flex items-center">
                                 <input class="w-full text-left bg-white dark:bg-[#101612] border border-outline-variant/30 rounded-xl focus:border-forest-green focus:ring-1 focus:ring-forest-green text-xs font-body py-3 pr-11 pl-4 transition-all placeholder:text-outline/40 shadow-sm" id="offer-title" placeholder="e.g. Acoustic Guitar Tutoring..." type="text">
@@ -4253,8 +4253,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <!-- 4. Contribution Details -->
                         <div>
-                            <label id="offer-desc-label" class="text-[9px] font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E] block mb-2.5 text-left">Describe offering</label>
-                            <textarea id="offer-desc" class="w-full p-4 bg-white border border-outline-variant/30 rounded-xl text-xs focus:border-forest-green focus:ring-0 outline-none min-h-[100px] placeholder:text-outline/40 leading-relaxed" placeholder="Tell neighbors more about what you're offering. Details build trust..."></textarea>
+                            <label id="offer-desc-label" class="text-[9px] font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E] block mb-2.5 text-left">Offering Description</label>
+                            <textarea id="offer-desc" class="w-full p-4 bg-white border border-outline-variant/30 rounded-xl text-xs focus:border-forest-green focus:ring-0 outline-none min-h-[160px] placeholder:text-outline/40 leading-relaxed" placeholder="Tell neighbors more about what you're offering. Details build trust..."></textarea>
                             <p id="offer-desc-error" class="hidden text-error font-bold text-[10px] text-left mt-1">Your listing contains prohibited language and violates our community guidelines.</p>
                         </div>
 
@@ -4274,8 +4274,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                     <input type="checkbox" id="karma-checkbox" class="w-4 h-4 rounded border-outline-variant text-forest-green focus:ring-forest-green cursor-pointer" onchange="handleKarmaCheckboxChange(this)" onclick="event.stopPropagation();">
                                     <label for="karma-checkbox" class="text-xs font-bold text-on-surface cursor-pointer flex-grow flex items-center justify-between" onclick="event.stopPropagation();">
                                         <span id="karma-checkbox-text" class="text-on-surface dark:text-warm-cream">Offer for free (Get Karma points)</span>
-                                        <div class="flex items-center justify-center bg-forest-green/5 dark:bg-black/20 rounded-lg px-2 py-0.5 border border-outline-variant/35 shrink-0 select-none">
-                                            <span class="material-symbols-outlined text-xs mr-0.5" style="color: #308A5E !important; font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span>
+                                        <div class="flex items-center justify-center bg-red-500/5 dark:bg-black/20 rounded-lg px-2 py-0.5 border border-outline-variant/35 shrink-0 select-none">
+                                            <span class="material-symbols-outlined text-xs mr-0.5" style="color: #ef4444 !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
                                             <span id="karma-score-display" class="text-[10px] font-black text-on-surface dark:text-warm-cream">+50 XP</span>
                                         </div>
                                     </label>
@@ -4383,14 +4383,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                             <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
                                 <!-- Self Karma Points Badge -->
-                                <div id="settings-profile-karma-container" class="flex items-center gap-1.5 text-xs text-forest-green dark:text-emerald-400 font-bold bg-forest-green/5 dark:bg-emerald-950/20 px-3 py-1 rounded-full border border-forest-green/10 cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('karma')">
-                                    <span class="material-symbols-outlined text-base" style="color: #308A5E !important; font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span>
+                                <div id="settings-profile-karma-container" class="flex items-center gap-1.5 text-xs text-red-700 dark:text-red-400 font-bold bg-red-50 dark:bg-red-950/20 px-3 py-1 rounded-full border border-red-100 dark:border-red-900/30 cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('karma')">
+                                    <span class="material-symbols-outlined text-base" style="color: #ef4444 !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
                                     <span id="settings-profile-karma">0 Karma</span>
                                 </div>
                                 <!-- Self Swaps Completed Badge -->
-                                <div id="settings-profile-swaps-container" class="flex items-center gap-1.5 text-xs text-forest-green dark:text-emerald-400 font-bold bg-forest-green/5 dark:bg-emerald-950/20 px-3 py-1 rounded-full border border-forest-green/10 cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('swaps')">
-                                    <span class="material-symbols-outlined text-base" style="color: #22c55e !important; font-variation-settings: 'FILL' 1 !important;">handshake</span>
-                                    <span id="settings-profile-swaps" class="bg-white text-forest-green dark:bg-white dark:text-forest-green px-2 py-0.5 rounded-full text-[10px] font-extrabold">0 Swaps</span>
+                                <div id="settings-profile-swaps-container" class="flex items-center gap-1.5 text-xs text-blue-700 dark:text-blue-400 font-bold bg-blue-50 dark:bg-blue-950/20 px-3 py-1 rounded-full border border-blue-100 dark:border-blue-900/30 cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('swaps')">
+                                    <span class="material-symbols-outlined text-base" style="color: #2563eb !important; font-variation-settings: 'FILL' 1 !important;">handshake</span>
+                                    <span id="settings-profile-swaps">0 Swaps</span>
                                 </div>
                             </div>
                         </div>
@@ -5005,8 +5005,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <h3 class="font-headline font-extrabold text-black dark:text-white text-lg mt-1 cursor-pointer hover:underline" id="confirm-swap-neighbor-name" style="font-weight: 800 !important; margin-bottom: 0 !important;" onclick="event.stopPropagation(); openNeighborProfileModal(document.getElementById('confirm-swap-neighbor-name').innerText.trim())">Neighbor Name</h3>
                             
                             <!-- Karma Points -->
-                            <div class="flex items-center gap-1.5 mt-0.5 text-xs font-bold text-amber-500 dark:text-amber-400 select-none">
-                                <span class="material-symbols-outlined text-sm font-bold" style="font-variation-settings: 'FILL' 1; color: #f59e0b !important;">volunteer_activism</span>
+                            <div class="flex items-center gap-1.5 mt-0.5 text-xs font-bold text-red-600 dark:text-red-400 select-none">
+                                <span class="material-symbols-outlined text-sm font-bold" style="font-variation-settings: 'FILL' 1; color: #ef4444 !important;">favorite</span>
                                 <span id="confirm-swap-karma-points">50</span> Karma Points
                             </div>
                         </div>
@@ -5164,10 +5164,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
                         
                         <!-- Karma Points Display Card -->
-                        <div class="bg-forest-green/5 dark:bg-white/5 rounded-xl p-3 border border-outline-variant/10 text-center">
+                        <div class="bg-red-500/5 dark:bg-white/5 rounded-xl p-3 border border-outline-variant/10 text-center">
                             <p class="text-[9px] font-bold text-outline dark:text-warm-cream/75 uppercase tracking-wider mb-1">Karma Points Awarded</p>
-                            <p class="text-base font-extrabold text-[#308A5E] leading-normal flex items-center justify-center gap-1">
-                                <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1; color: #308A5E !important;">volunteer_activism</span> +50 Karma Points
+                            <p class="text-base font-extrabold text-[#ef4444] leading-normal flex items-center justify-center gap-1">
+                                <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1; color: #ef4444 !important;">favorite</span> +50 Karma Points
                             </p>
                         </div>
 
@@ -5347,9 +5347,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <p class="font-headline text-base text-forest-green font-bold mt-0.5">+1</p>
                             </div>
                             <div class="bg-white p-4 rounded-xl shadow-sm border border-outline-variant/25 flex flex-col items-center justify-center transition-transform duration-300 w-28">
-                                <span class="material-symbols-outlined text-[#308A5E] text-lg mb-1" style="font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span>
+                                <span class="material-symbols-outlined text-[#ef4444] text-lg mb-1" style="font-variation-settings: 'FILL' 1 !important;">favorite</span>
                                 <span class="text-[9px] text-on-surface-variant font-bold">Karma Pts</span>
-                                <p class="font-headline text-base text-[#308A5E] font-bold mt-0.5" id="celebration-karma-pts">+50</p>
+                                <p class="font-headline text-base text-[#ef4444] font-bold mt-0.5" id="celebration-karma-pts">+50</p>
                             </div>
                         </div>
 
@@ -5631,8 +5631,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <div class="flex-grow overflow-y-auto custom-scrollbar px-6 py-6 space-y-4">
                         <!-- What is Karma? -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-[#308A5E] dark:text-[#308A5E]" style="font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span> Karma
+                            <h3 class="text-xs font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
+                                <span class="material-symbols-outlined text-sm text-rose-600 dark:text-rose-400" style="font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span> Karma
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed mb-2">
                                 Karma points reflect your active contributions, reliability, and good standing in the community. You earn karma and XP by completing neighborhood actions. Higher karma highlights you as a trusted neighbor and unlocks special badges!
@@ -5651,8 +5651,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <!-- What are Swaps? -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-amber-600 dark:text-amber-400">handshake</span> Swaps
+                            <h3 class="text-xs font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
+                                <span class="material-symbols-outlined text-sm text-blue-600 dark:text-blue-400">handshake</span> Swaps
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
                                 Completed Swaps track the total number of items or services you have successfully swapped with other neighbors.
@@ -5661,8 +5661,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <!-- What are Gifts? -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-[#308A5E]">volunteer_activism</span> Gifts
+                            <h3 class="text-xs font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
+                                <span class="material-symbols-outlined text-sm text-rose-600 dark:text-rose-400">volunteer_activism</span> Gifts
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
                                 Gift listings are offered for free out of neighborly kindness. Giving or sharing for free earns you extra karma points, highlighting you as a trusted neighbor!
@@ -5671,7 +5671,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <!-- What are Groups? -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
+                            <h3 class="text-xs font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-indigo-600 dark:text-indigo-400">groups</span> Groups
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
@@ -5681,7 +5681,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <!-- Time Sensitive -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
+                            <h3 class="text-xs font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-amber-600 dark:text-amber-400">schedule</span> Time sensitive
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
@@ -5691,7 +5691,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <!-- Chats -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
+                            <h3 class="text-xs font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-blue-600 dark:text-blue-400">chat</span> Chats
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
@@ -5701,7 +5701,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <!-- Cashless -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
+                            <h3 class="text-xs font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-red-600 dark:text-red-400">money_off</span> Cashless
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
@@ -5711,7 +5711,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <!-- Skill Shares and Expertise -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
+                            <h3 class="text-xs font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-neutral-600 dark:text-neutral-400">school</span> Skill shares and expertise
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
@@ -5740,8 +5740,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     <div class="flex-grow overflow-y-auto custom-scrollbar px-6 py-6 space-y-4" id="widget-home-tips">
                         <!-- Lead by Giving -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-[#308A5E]">volunteer_activism</span> Lead by Giving
+                            <h3 class="text-xs font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
+                                <span class="material-symbols-outlined text-sm text-rose-600 dark:text-rose-400">volunteer_activism</span> Lead by Giving
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
                                 Every listing you share builds your public neighborhood trust rating and inspires others to trade. Start by putting out what you can share!
@@ -5750,7 +5750,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <!-- Ideas on What to Offer -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
+                            <h3 class="text-xs font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-yellow-500">lightbulb</span> Ideas on What to Offer
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
@@ -5760,8 +5760,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <!-- Karma -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-[#308A5E]">volunteer_activism</span> Karma
+                            <h3 class="text-xs font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
+                                <span class="material-symbols-outlined text-sm text-rose-600 dark:text-rose-400">volunteer_activism</span> Karma
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
                                 Karma listings are items that are given away for free. Giving to your neighbors is a great way to support the community and earns you extra Karma points!
@@ -5770,7 +5770,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <!-- Tips for safe meet ups -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
+                            <h3 class="text-xs font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-blue-500">security</span> Tips for safe meet ups
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
@@ -5780,7 +5780,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <!-- Safety and Security -->
                         <div class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-4 space-y-2">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
+                            <h3 class="text-xs font-bold text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5 select-none">
                                 <span class="text-base">🛡️</span> Safety and Security
                             </h3>
                             <div class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
@@ -7875,14 +7875,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <div class="flex items-center justify-center gap-3 mt-3 flex-wrap" id="neighbor-profile-stats-row">
                                     <div id="neighbor-profile-rating-display" class="hidden items-center gap-1 text-[10px] text-amber-500 font-bold"></div>
                                     <!-- Neighbor Karma Points Badge -->
-                                    <div id="neighbor-profile-karma-container" class="flex items-center gap-1.5 text-xs text-forest-green dark:text-emerald-400 font-bold bg-forest-green/5 dark:bg-emerald-950/20 px-3 py-1 rounded-full border border-forest-green/10 cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('karma')">
-                                        <span class="material-symbols-outlined text-base" style="color: #308A5E !important; font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span>
+                                    <div id="neighbor-profile-karma-container" class="flex items-center gap-1.5 text-xs text-red-700 dark:text-red-400 font-bold bg-red-50 dark:bg-red-950/20 px-3 py-1 rounded-full border border-red-100 dark:border-red-900/30 cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('karma')">
+                                        <span class="material-symbols-outlined text-base" style="color: #ef4444 !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
                                         <span id="neighbor-profile-karma">0 Karma</span>
                                     </div>
                                     <!-- Neighbor Swaps Completed Badge -->
-                                    <div id="neighbor-profile-swaps-container" class="flex items-center gap-1.5 text-xs text-forest-green dark:text-emerald-400 font-bold bg-forest-green/5 dark:bg-emerald-950/20 px-3 py-1 rounded-full border border-forest-green/10 cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('swaps')">
-                                        <span class="material-symbols-outlined text-base" style="color: #22c55e !important; font-variation-settings: 'FILL' 1 !important;">handshake</span>
-                                        <span class="bg-white text-forest-green dark:bg-white dark:text-forest-green px-2 py-0.5 rounded-full text-[10px] font-extrabold" id="neighbor-profile-swaps">0</span>
+                                    <div id="neighbor-profile-swaps-container" class="flex items-center gap-1.5 text-xs text-blue-700 dark:text-blue-400 font-bold bg-blue-50 dark:bg-blue-950/20 px-3 py-1 rounded-full border border-blue-100 dark:border-blue-900/30 cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('swaps')">
+                                        <span class="material-symbols-outlined text-base" style="color: #2563eb !important; font-variation-settings: 'FILL' 1 !important;">handshake</span>
+                                        <span id="neighbor-profile-swaps">0 Swaps</span>
                                     </div>
 
                                 </div>
@@ -9042,6 +9042,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 //# sourceMappingURL=leaflet.js.map</script>
     
     <!-- Application Logic Javascript -->
-    <script src="app.js" defer></script>
+    <script src="app.js?v=1.0.2" defer></script>
 </body>
 </html>

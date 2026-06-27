@@ -1663,13 +1663,13 @@ select::-ms-expand {
 }
 
 #offer-form-scroll-container {
-    padding-bottom: 100px !important;
+    padding-bottom: 80px !important;
 }
 
 .native-app-env #offer-form-scroll-container {
     overflow-y: auto !important;
     height: 100% !important;
-    padding-bottom: calc(100px + var(--safe-area-bottom)) !important;
+    padding-bottom: calc(80px + var(--safe-area-bottom)) !important;
     box-sizing: border-box !important;
 }
 
@@ -3838,9 +3838,12 @@ html.dark .badge-theme-cyan.premium-badge-unlocked {
 #neighbor-profile-modal section h3,
 #view-settings_detail h3,
 #view-definitions h3,
-#view-help_improve h3 {
+#view-help_improve h3,
+#view-neighborhood_tips h3,
+#view-profile_settings h3,
+[id^="accordion-content-"] h3 {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 14px !important;
+    font-size: 12px !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.1em !important;
@@ -4470,6 +4473,10 @@ html.dark #offer-type-selector-screen button .rounded-full .material-symbols-out
 /* Premium styled uploader slots (boxes with dashed borders and hover animations) */
 #view-offer #offer-photo-hero .relative,
 #group-photo-hero .relative {
+    width: 92px !important;
+    height: 92px !important;
+    min-width: 92px !important;
+    min-height: 92px !important;
     background-color: #ffffff !important;
     border: 1.5px dashed rgba(0, 0, 0, 0.2) !important;
     border-radius: 16px !important;
@@ -4693,7 +4700,11 @@ html:not(.dark) #chat-threads-container .text-\[\#EF4444\] * {
 #self-profile-socials-container a,
 #self-profile-socials-container a *,
 #self-profile-socials-container svg,
-#self-profile-socials-container span {
+#self-profile-socials-container span,
+#settings-socials-icons-container a,
+#settings-socials-icons-container a *,
+#settings-socials-icons-container svg,
+#settings-socials-icons-container span {
     color: #ffffff !important;
 }
 
@@ -5312,19 +5323,42 @@ html.dark #view-help_improve :not(button):not(button *):not(.material-symbols-ou
 /* Onboarding mode custom styles for the dynamically embedded post offering form */
 #offer-form-wrapper.onboarding-mode {
     height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
 }
 
 .onboarding-mode #offer-form-scroll-container {
     padding-bottom: 8px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    overflow: visible !important;
+    overflow-y: visible !important;
+    height: auto !important;
 }
 
 .onboarding-mode #offer-photo-hero {
-    padding-top: 16px !important;
-    padding-bottom: 16px !important;
-    margin-top: 0px !important;
+    padding-top: 36px !important;
+    padding-bottom: 36px !important;
+    margin: 0 !important;
+    width: 100% !important;
     height: auto !important;
-    border-top-left-radius: 16px !important;
-    border-top-right-radius: 16px !important;
+    border-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.onboarding-mode #offer-form-wrapper div.px-6 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
 }
 
 /* Force selected category button text and icons to be white in onboarding/wizard screens */
@@ -5339,19 +5373,29 @@ html.dark #view-help_improve :not(button):not(button *):not(.material-symbols-ou
 
 /* Ensure all three uploader/icon slots in onboarding mode are the same size and box style */
 .onboarding-mode #offer-photo-hero .relative {
-    width: 80px !important;
-    height: 80px !important;
-    min-width: 80px !important;
-    min-height: 80px !important;
+    width: 88px !important;
+    height: 88px !important;
+    min-width: 88px !important;
+    min-height: 88px !important;
     background-color: #ffffff !important;
     border: 1.5px dashed rgba(0, 0, 0, 0.2) !important;
     border-radius: 14px !important;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
 }
 
+.onboarding-mode #offer-photo-hero .relative .material-symbols-outlined {
+    font-size: 22px !important;
+}
+
 .dark .onboarding-mode #offer-photo-hero .relative {
     background-color: #1b261f !important;
     border: 1.5px dashed rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Force dropdown parent containers to clip contents perfectly to top-right/top-left edges */
+[id^="onboarding-dropdown-"] {
+    overflow: hidden !important;
+    padding: 0 !important;
 }
 
 
@@ -5719,7 +5763,11 @@ button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
 #view-profile_settings #self-profile-socials-container a,
 #view-profile_settings #self-profile-socials-container a *,
 #view-profile_settings #self-profile-socials-container svg,
-#view-profile_settings #self-profile-socials-container span {
+#view-profile_settings #self-profile-socials-container span,
+#view-settings_detail #settings-socials-icons-container a,
+#view-settings_detail #settings-socials-icons-container a *,
+#view-settings_detail #settings-socials-icons-container svg,
+#view-settings_detail #settings-socials-icons-container span {
     color: #ffffff !important;
 }
 
@@ -9437,6 +9485,7 @@ html.dark #view-welcome {
     flex-direction: column !important;
     align-items: center !important;
     margin-top: 16px !important;
+    margin-bottom: 36px !important;
     z-index: 2 !important;
     animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) both !important;
     opacity: 1 !important;
@@ -9452,25 +9501,29 @@ html.dark #view-welcome {
 #welcome-wordmark-icon {
     width: 90px !important;
     height: 90px !important;
-    background-color: rgba(48, 138, 94, 0.08) !important;
+    background-color: #308A5E !important;
     border-radius: 24px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     transition: all 0.3s ease !important;
-    box-shadow: 0 8px 24px -6px rgba(48, 138, 94, 0.15) !important;
+    box-shadow: 0 8px 24px -6px rgba(48, 138, 94, 0.25) !important;
 }
 html.dark #welcome-wordmark-icon {
-    background-color: rgba(48, 138, 94, 0.2) !important;
-    box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.3) !important;
+    background-color: #308A5E !important;
+    box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4) !important;
+}
+#welcome-wordmark-icon img {
+    opacity: 1 !important;
+    filter: none !important;
 }
 
 #welcome-wordmark-icon span {
     font-size: 32px !important;
-    color: #308A5E !important;
+    color: #ffffff !important;
 }
 html.dark #welcome-wordmark-icon span {
-    color: #82b995 !important;
+    color: #ffffff !important;
 }
 
 #welcome-app-name {
@@ -9717,16 +9770,16 @@ html.dark .btn-welcome-signin .material-symbols-outlined {
 }
 
 html.dark .btn-welcome-register {
-    background-color: #308A5E !important;
-    color: #ffffff !important;
-    border: none !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+    background-color: transparent !important;
+    color: #82b995 !important;
+    border: 2px solid #82b995 !important;
+    box-shadow: none !important;
 }
 html.dark .btn-welcome-register:hover {
-    background-color: #389e6c !important;
+    background-color: rgba(130, 185, 149, 0.08) !important;
 }
 html.dark .btn-welcome-register .material-symbols-outlined {
-    color: #ffffff !important;
+    color: #82b995 !important;
 }
 
 html.dark .btn-welcome-admin {
@@ -9987,6 +10040,16 @@ h5.uppercase.tracking-wider {
 #view-create_account_social.active,
 #view-profile_consent.active {
     padding-bottom: calc(env(safe-area-inset-bottom, 34px) + 70px) !important;
+}
+
+#view-profile_step_custom_listing.active {
+    justify-content: center !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+#view-profile_step_custom_listing.active.dropdown-open {
+    justify-content: flex-start !important;
 }
 
 html.dark .auth-custom-screen.active,
@@ -10519,18 +10582,131 @@ html.dark .btn-consent-option.selected {
 /* Accordion dropdown text style unification */
 [id^="accordion-content-"] *:not(.material-symbols-outlined) {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 15.5px !important;
-    font-weight: 400 !important;
+    font-size: 12px !important;
     line-height: 1.5 !important;
-    text-transform: none !important;
     letter-spacing: normal !important;
+    text-transform: none !important;
     opacity: 1 !important;
 }
 
-html:not(.dark) [id^="accordion-content-"] *:not(.material-symbols-outlined) {
-    color: #000000 !important;
+/* Set title style: bold, 12px */
+[id^="accordion-content-"] h1,
+[id^="accordion-content-"] h1 *,
+[id^="accordion-content-"] h2,
+[id^="accordion-content-"] h2 *,
+[id^="accordion-content-"] h3,
+[id^="accordion-content-"] h3 *,
+[id^="accordion-content-"] h4,
+[id^="accordion-content-"] h4 *,
+[id^="accordion-content-"] h5,
+[id^="accordion-content-"] h5 *,
+[id^="accordion-content-"] h6,
+[id^="accordion-content-"] h6 *,
+[id^="accordion-content-"] .font-bold,
+[id^="accordion-content-"] .font-semibold,
+[id^="accordion-content-"] strong,
+[id^="accordion-content-"] b {
+    font-size: 12px !important;
+    font-weight: 700 !important;
 }
 
-html.dark [id^="accordion-content-"] *:not(.material-symbols-outlined) {
+/* Set body and form control style: medium, 12px */
+[id^="accordion-content-"] p,
+[id^="accordion-content-"] p *,
+[id^="accordion-content-"] span:not(.material-symbols-outlined),
+[id^="accordion-content-"] label,
+[id^="accordion-content-"] input,
+[id^="accordion-content-"] textarea,
+[id^="accordion-content-"] select,
+[id^="accordion-content-"] option,
+[id^="accordion-content-"] li,
+[id^="accordion-content-"] div:not(.border-outline-variant):not([class*="border"]):not(.profile-avatar-ring) {
+    font-size: 12px !important;
+    font-weight: 500 !important;
+}
+
+/* Ensure proper dark/light mode colors */
+html:not(.dark) [id^="accordion-content-"] *:not(.material-symbols-outlined):not(button):not(input):not(textarea):not(select) {
+    color: #000000 !important;
+}
+html:not(.dark) [id^="accordion-content-"] .text-outline,
+html:not(.dark) [id^="accordion-content-"] .text-on-surface-variant {
+    color: rgba(0, 0, 0, 0.6) !important;
+}
+
+html.dark [id^="accordion-content-"] *:not(.material-symbols-outlined):not(button):not(input):not(textarea):not(select) {
     color: #ffffff !important;
+}
+html.dark [id^="accordion-content-"] .text-outline,
+html.dark [id^="accordion-content-"] .text-on-surface-variant {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Global neutral input typing and placeholder overrides */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+textarea,
+select {
+    color: #000000 !important;
+}
+html.dark input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+html.dark textarea,
+html.dark select {
+    color: #ffffff !important;
+}
+input::placeholder,
+textarea::placeholder {
+    color: #9ca3af !important; /* Neutral gray */
+    opacity: 0.85 !important;
+}
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+    color: #6b7280 !important; /* Dark mode neutral gray */
+    opacity: 0.85 !important;
+}
+
+/* Flatten profile settings accordions */
+[id^="accordion-content-"] > div,
+[id^="accordion-content-"] > form,
+[id^="accordion-content-"] > form > div,
+[id^="accordion-content-"] [id$="-box"] {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-bottom: 1.25rem !important;
+}
+[id^="accordion-content-"] > div:last-child,
+[id^="accordion-content-"] > form:last-child,
+[id^="accordion-content-"] [id$="-box"]:last-child {
+    margin-bottom: 0 !important;
+}
+
+#offer-desc {
+    min-height: 160px !important;
+}
+
+/* Explicit overrides to force uploader slots centering and vertical spacing in onboarding mode */
+#offer-form-wrapper.onboarding-mode #offer-photo-hero,
+.onboarding-mode #offer-photo-hero,
+.iphone16-mode #offer-form-wrapper.onboarding-mode #offer-photo-hero,
+.native-app-env #offer-form-wrapper.onboarding-mode #offer-photo-hero {
+    height: auto !important;
+    min-height: 180px !important;
+    padding-top: 48px !important;
+    padding-bottom: 48px !important;
+    margin: 0 !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    background-color: #ecebeb !important;
+}
+
+.dark #offer-form-wrapper.onboarding-mode #offer-photo-hero,
+.dark .onboarding-mode #offer-photo-hero,
+.dark.iphone16-mode #offer-form-wrapper.onboarding-mode #offer-photo-hero,
+.dark.native-app-env #offer-form-wrapper.onboarding-mode #offer-photo-hero {
+    background-color: #202020 !important;
 }
