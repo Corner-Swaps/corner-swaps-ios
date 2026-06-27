@@ -4726,34 +4726,37 @@ function startAppInitialization() {
                     safeLocalStorage.setItem('reinstated_onboarding_v2', 'true');
                 }
                 loadState();
+                
+                // Force loggedIn on initial startup for both web and native to bypass welcome screen
+                state.loggedOut = false;
+                if (!state.currentUser) {
+                    state.currentUser = {
+                        firstName: 'Lily',
+                        lastName: 'Kaufmann',
+                        displayName: 'Lily Kaufmann',
+                        email: 'lily@community.com',
+                        avatar: DEFAULT_AVATAR,
+                        location: 'Fairview',
+                        address: '1190 W 12th Avenue, Vancouver, BC',
+                        lat: 49.2608,
+                        lng: -123.1368,
+                        skills: [],
+                        needs: [],
+                        instagram: 'https://instagram.com/lilykaufmann',
+                        facebook: 'https://facebook.com/lilykaufmann',
+                        tiktok: '@lilykaufmann',
+                        eulaAgreed: true
+                    };
+                    state.eulaAgreed = true;
+                    state.isGuest = false;
+                    saveState();
+                }
+
                 if (state.loggedOut) {
                     state.currentUser = null;
                     showView('welcome');
                 } else {
-                    if (!state.currentUser) {
-                        state.currentUser = {
-                            firstName: 'Lily',
-                            lastName: 'Kaufmann',
-                            displayName: 'Lily Kaufmann',
-                            email: 'lily@community.com',
-                            avatar: DEFAULT_AVATAR,
-                            location: 'Fairview',
-                            address: '1190 W 12th Avenue, Vancouver, BC',
-                            lat: 49.2608,
-                            lng: -123.1368,
-                            skills: [],
-                            needs: [],
-                            instagram: 'https://instagram.com/lilykaufmann',
-                            facebook: 'https://facebook.com/lilykaufmann',
-                            tiktok: '@lilykaufmann',
-                            eulaAgreed: true
-                        };
-                        state.eulaAgreed = true;
-                        state.isGuest = false;
-                        state.loggedOut = false;
-                        saveState();
-                    }
-                    showView('profile_step_custom_listing');
+                    showView('village');
                 }
                 setTimeout(() => {
                     const el = document.getElementById('view-profile_step_custom_listing');
@@ -7610,8 +7613,8 @@ function getCategoryColor(category) {
 function getCategoryIcon(category) {
     if (!category) return 'handshake';
     const cat = category.toLowerCase();
-    if (cat.includes('karma')) return 'volunteer_activism';
-    if (cat.includes('donation')) return 'volunteer_activism';
+    if (cat.includes('karma')) return 'favorite';
+    if (cat.includes('donation')) return 'favorite';
     if (cat.includes('food') || cat.includes('drink')) return 'restaurant';
     if (cat.includes('home') || cat.includes('living')) return 'home';
     if (cat.includes('garden') || cat.includes('outdoor')) return 'yard';
@@ -8500,7 +8503,7 @@ function openMapItemDetail(idOrName) {
         } else {
             const neighbor = state.neighbors ? state.neighbors[idOrName] : null;
             if (neighbor && neighbor.isKarma) {
-                chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs text-[#308A5E]" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span> free karma request`;
+                chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs text-[#308A5E]" style="font-variation-settings: 'FILL' 1;">favorite</span> free karma request`;
             } else {
                 chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs">handshake</span> lets swap`;
             }
@@ -10008,7 +10011,7 @@ function toggleCategoryTray() {
 }
 
 const MAP_FILTER_CATEGORIES = [
-    { name: "Karma Swap", displayName: "Gifts", icon: "volunteer_activism", color: "#ef4444", rgb: "239,68,68" },
+    { name: "Karma Swap", displayName: "Gifts", icon: "favorite", color: "#ef4444", rgb: "239,68,68" },
     { name: "Event or Meetup", displayName: "Events", icon: "groups", color: "#10b981", rgb: "16,185,129" },
     { name: "Food & Drink", displayName: "Food", icon: "restaurant", color: "#f97316", rgb: "249,115,22" },
     { name: "Home and Living", displayName: "Home", icon: "home", color: "#3b82f6", rgb: "59,130,246" },
@@ -10021,7 +10024,7 @@ const MAP_FILTER_CATEGORIES = [
     { name: "Books, Games, Entertainment", displayName: "Books", icon: "sports_esports", color: "#6366f1", rgb: "99,102,241" },
     { name: "Kids and Maternity", displayName: "Kids", icon: "stroller", color: "#a855f7", rgb: "168,85,247" },
     { name: "Language or Info Exchange", displayName: "Language", icon: "translate", color: "#2563eb", rgb: "37,99,235" },
-    { name: "Donation", displayName: "Donation", icon: "volunteer_activism", color: "#ec4899", rgb: "236,72,153" },
+    { name: "Donation", displayName: "Donation", icon: "favorite", color: "#ec4899", rgb: "236,72,153" },
     { name: "Clear Filter", displayName: "Clear", icon: "filter_alt_off", color: "#6b7280", rgb: "107,114,128" }
 ];
 
@@ -13800,15 +13803,7 @@ function openCreateGroupModal() {
     
     const friends = state.friends || [];
     if (friends.length === 0) {
-        listContainer.innerHTML = `
-            <div class="col-span-2 flex flex-col items-center justify-center p-6 bg-white dark:bg-[#101612] border border-dashed border-outline-variant/30 rounded-2xl text-center w-full">
-                <span class="material-symbols-outlined text-3xl text-outline-variant mb-2">person_add</span>
-                <p class="text-xs text-outline italic mb-3">No friends available to add yet.</p>
-                <button type="button" class="px-3.5 py-1.5 bg-forest-green/10 border border-forest-green text-forest-green dark:text-[#308A5E] hover:bg-forest-green/20 dark:hover:bg-[#308A5E]/20 font-bold text-[10px] rounded-lg active:scale-95 transition-transform cursor-pointer border-solid" onclick="handleInviteFriend()">
-                    Invite Friends
-                </button>
-            </div>
-        `;
+        listContainer.innerHTML = "";
     } else {
         friends.forEach(friend => {
             const name = friend.name;
@@ -14275,7 +14270,7 @@ window.openAddMemberSubModal = function() {
     const eligibleFriends = (state.friends || []).filter(f => !groupMembersSet.has(f.name));
     
     if (eligibleFriends.length === 0) {
-        friendsListContainer.innerHTML = `<p class="text-[10px] text-center text-outline/60 dark:text-warm-cream/50 py-4 font-semibold">No available friends to add.</p>`;
+        friendsListContainer.innerHTML = "";
     } else {
         eligibleFriends.forEach(friend => {
             const name = friend.name;
@@ -15434,7 +15429,7 @@ function renderProfileSettings() {
         
         const friends = state.friends || [];
         if (friends.length === 0) {
-            friendsContainer.innerHTML = `<p class="text-xs text-outline italic py-2">Your friends list is empty.</p>`;
+            friendsContainer.innerHTML = "";
         } else {
             friends.forEach(f => {
                 const div = document.createElement('div');
@@ -29357,7 +29352,7 @@ window.openSwapsPopupModal = function() {
                 <div>
                     <h4 class="font-bold text-[13.5px] text-on-surface">${displayName}</h4>
                     <p class="text-[10px] text-outline mt-0.5 flex items-center gap-1.5">
-                        <span class="flex items-center text-forest-green font-semibold"><span class="material-symbols-outlined text-xs mr-0.5 text-[#308A5E]" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span> ${karma} Karma</span>
+                        <span class="flex items-center text-forest-green font-semibold"><span class="material-symbols-outlined text-xs mr-0.5 text-[#308A5E]" style="font-variation-settings: 'FILL' 1;">favorite</span> ${karma} Karma</span>
                         <span class="text-outline-variant/30">•</span>
                         <span>${completedCount} swaps completed</span>
                     </p>
@@ -29892,7 +29887,7 @@ function renderBadgesList(containerId, targetName) {
             id: 'super_giver',
             title: 'Super Giver',
             desc: 'Offered 5 or more items as gifts.',
-            icon: 'volunteer_activism',
+            icon: 'favorite',
             color: '#a855f7',
             textColor: 'text-purple-600 dark:text-purple-400',
             bgGradient: 'from-purple-500/25 to-fuchsia-500/25',
@@ -30753,7 +30748,7 @@ function openProfileStatExplanation(type) {
         }
         
         iconContainer.className = "w-16 h-16 rounded-full bg-[#308A5E]/10 flex items-center justify-center text-[#308A5E] mb-4";
-        iconEl.innerText = "volunteer_activism";
+        iconEl.innerText = "favorite";
         iconEl.style.fontVariationSettings = "'FILL' 1";
         titleEl.innerText = "Karma Points";
         descEl.innerText = "Karma points reflect your good standing in the community and active involvement as a trusted community member. You earn karma by sharing offerings, listing needs, helping neighbors, and receiving positive feedback after completed swaps. Having high karma unlocks special badges and cements your status as a reliable neighbor!";
@@ -31886,7 +31881,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                     <span class="popup-modal-desc block text-left">For karma</span>
                     <label class="flex items-center gap-3 p-3 bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl cursor-pointer select-none transition-all hover:bg-forest-green/5 border-black/10 dark:border-white/10">
                         <input type="radio" id="karma-for-free-radio" name="karma-option" class="accent-forest-green w-4 h-4 cursor-pointer" value="free" />
-                        <span class="material-symbols-outlined text-[16px] text-[#308A5E] font-bold" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+                        <span class="material-symbols-outlined text-[16px] text-[#308A5E] font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
                         <span class="text-xs text-black dark:text-white font-bold">For free (+20 karma points)</span>
                     </label>
                 </div>
@@ -32041,7 +32036,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                 
                 <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 min-h-0 items-center justify-center text-center">
                     <div class="w-16 h-16 rounded-full bg-[#308A5E]/10 flex items-center justify-center text-[#308A5E] border border-[#308A5E]/20 shadow-sm mb-2 shrink-0">
-                        <span class="material-symbols-outlined text-3xl font-bold" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+                        <span class="material-symbols-outlined text-3xl font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
                     </div>
                     
                     <div class="flex flex-col items-center gap-2 shrink-0">
@@ -32657,7 +32652,7 @@ function initializeProfileSettingsAccordions() {
         const tgt = document.querySelector(m.target);
         if (src && tgt) {
             src.classList.remove('overflow-y-auto', 'h-full', 'pb-12', 'pb-8', 'px-6', 'py-6');
-            src.classList.add('px-1', 'py-2'); // nested padding adjustments
+            src.classList.add('px-1', 'pt-2', 'pb-0'); // reduced nested padding
             while (src.firstChild) {
                 tgt.appendChild(src.firstChild);
             }

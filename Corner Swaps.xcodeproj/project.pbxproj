@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C00000022C12345600000099 /* tailwind-compiled.css in Resources */ = {isa = PBXBuildFile; fileRef = C00000022C12345600000098 /* tailwind-compiled.css */; };
 		C00000042C12345600000004 /* final_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C00000042C12345600000001 /* final_logo.png */; };
 		C00000042C12345600000005 /* lily_avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C00000042C12345600000002 /* lily_avatar.jpg */; };
 		C00000042C12345600000006 /* safe_spot.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C00000042C12345600000003 /* safe_spot.jpg */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C00000022C12345600000098 /* tailwind-compiled.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = "tailwind-compiled.css"; sourceTree = "<group>"; };
 		C00000042C12345600000001 /* final_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = final_logo.png; sourceTree = "<group>"; };
 		C00000042C12345600000002 /* lily_avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lily_avatar.jpg; sourceTree = "<group>"; };
 		C00000042C12345600000003 /* safe_spot.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = safe_spot.jpg; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 		C00000012C12345600000009 /* Corner Swaps */ = {
 			isa = PBXGroup;
 			children = (
+				C00000022C12345600000098 /* tailwind-compiled.css */,
 				C00000042C12345600000001 /* final_logo.png */,
 				C00000042C12345600000002 /* lily_avatar.jpg */,
 				C00000042C12345600000003 /* safe_spot.jpg */,
@@ -151,6 +154,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C00000022C12345600000099 /* tailwind-compiled.css in Resources */,
 				C00000042C12345600000004 /* final_logo.png in Resources */,
 				C00000042C12345600000005 /* lily_avatar.jpg in Resources */,
 				C00000042C12345600000006 /* safe_spot.jpg in Resources */,

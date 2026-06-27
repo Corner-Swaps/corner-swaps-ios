@@ -30,6 +30,9 @@ def sync_assets():
     print("Copying styles.css to Corner Swaps...")
     shutil.copy2(styles_css_path, os.path.join(dest_dir, "styles.css"))
 
+    print("Copying tailwind-compiled.css to Corner Swaps...")
+    shutil.copy2(os.path.join(root_dir, "tailwind-compiled.css"), os.path.join(dest_dir, "tailwind-compiled.css"))
+
     print("Copying index.html to Corner Swaps...")
     shutil.copy2(index_html_path, os.path.join(dest_dir, "index.html"))
 
