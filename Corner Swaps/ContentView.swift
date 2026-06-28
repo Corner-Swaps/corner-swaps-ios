@@ -59,8 +59,25 @@ struct WebView: UIViewRepresentable {
         let logHandler = LogMessageHandler()
         let hapticHandler = HapticMessageHandler()
         
+        var isKeyboardVisible = false
+        
         init(_ parent: WebView) {
             self.parent = parent
+            super.init()
+            NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        }
+        
+        deinit {
+            NotificationCenter.default.removeObserver(self)
+        }
+        
+        @objc func keyboardWillShow() {
+            isKeyboardVisible = true
+        }
+        
+        @objc func keyboardWillHide() {
+            isKeyboardVisible = false
         }
         
         func viewForZooming(in scrollView: UIScrollView) -> UIView? {

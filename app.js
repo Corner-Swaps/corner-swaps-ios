@@ -1801,7 +1801,7 @@ let state = window.StateController.createProxy({
     ],
     fictitiousReviewsInitializedVersion: 3,
     currentUser: null,
-    loggedOut: true,
+    loggedOut: false,
     eulaAgreed: true,
     gofundmeSupporter: false,
     blockedUsers: [],
@@ -2021,6 +2021,7 @@ function ensureFriendsList() {
 window.ensureFriendsList = ensureFriendsList;
 
 function loadState() {
+    safeLocalStorage.setItem('corner_swaps_map_confetti_shown', 'true');
     if ((navigator.webdriver || window.location.search.includes('test') || window.location.search.includes('headless')) && !safeSessionStorage.getItem('test_cleared')) {
         safeLocalStorage.removeItem('barterland_state');
         safeLocalStorage.removeItem('barterland_state_sig');
@@ -2097,6 +2098,7 @@ function loadState() {
             eulaAgreed: true
         };
         state.eulaAgreed = true;
+        state.locationConsent = true;
         needsSave = true;
     }
     if (state && state.currentUser) {
@@ -2211,161 +2213,95 @@ function loadState() {
             { neighborName: 'Chloe', offeredItem: 'Custom Canvas Tote', requestedItem: 'Beginner Guitar Lesson', date: '1 month ago' }
         ];
     }
-    if (!state.events || state.events.length < 14) {
+    if (!state.events || state.events.length !== 8) {
         state.events = [
             {
                 id: 'evt-1',
-                title: 'Weekend Puzzles & Book Swap',
-                type: 'Book Swap',
-                datetime: '2026-05-30T10:00',
-                location: 'Yaletown Community Centre',
-                desc: 'Bring your read books and completed board puzzles to swap with neighbors!',
-                lat: 49.276,
-                lng: -123.120,
-                host: 'Sarah Chen'
-            },
-            {
-                id: 'evt-2',
                 title: 'Intro to Watercolor Workshop',
-                type: 'Workshop',
-                datetime: '2026-05-31T14:00',
+                type: 'Watercolor Workshop',
+                datetime: '2026-06-30T14:00',
                 location: 'Kitsilano Beach Park',
                 desc: 'Learn basic watercolor painting techniques on the beach. Bring your own easel if possible!',
-                lat: 49.273,
-                lng: -123.150,
+                lat: 49.2730,
+                lng: -123.1500,
                 host: 'David Kim'
             },
             {
-                id: 'evt-3',
-                title: 'Garden Tool & Seed Swap Meetup',
-                type: 'Meetup',
-                datetime: '2026-06-03T11:00',
-                location: 'West End Community Garden',
-                desc: 'Bring extra garden tools, plant pots, organic fertilizer, and heirloom seeds to swap with neighborhood gardeners!',
-                lat: 49.285,
-                lng: -123.130,
-                host: 'Zoe'
-            },
-            {
-                id: 'evt-4',
-                title: 'Sourdough Baking Basics Class',
-                type: 'Workshop',
-                datetime: '2026-06-06T13:00',
-                location: 'Mount Pleasant Kitchen Hub',
-                desc: 'Learn how to feed your starter, mix, fold, shape, and bake artisan sourdough bread at home.',
-                lat: 49.263,
-                lng: -123.102,
-                host: 'Ethan'
-            },
-            {
-                id: 'evt-5',
-                title: 'Family Board Games & Playdate',
-                type: 'Playdate',
-                datetime: '2026-06-07T15:00',
-                location: 'Downtown Library Playroom',
-                desc: 'Bring your kids and your favorite family board games for a fun afternoon of social gaming!',
-                lat: 49.270,
-                lng: -123.115,
-                host: 'Ava'
-            },
-            {
-                id: 'evt-6',
-                title: 'Community Sourdough Share',
-                type: 'Food & Drink Swap',
-                datetime: '2026-06-12T10:00',
-                location: 'Grandview Park (Commercial Drive)',
-                desc: 'Bring your fresh home-baked sourdough, jams, pickles, or kombucha to share and swap recipes.',
-                lat: 49.2562,
-                lng: -123.0694,
-                host: 'Sarah Chen'
-            },
-            {
-                id: 'evt-7',
-                title: 'Preserves & Jam Workshop',
-                type: 'Baking & Cooking Class',
-                datetime: '2026-06-14T13:00',
-                location: 'Kitsilano Community Kitchen',
-                desc: 'Learn the fundamentals of safe home canning and preserve making. We will make strawberry-basil jam.',
-                lat: 49.2741,
-                lng: -123.1605,
-                host: 'Aunt Brenda'
-            },
-            {
-                id: 'evt-8',
-                title: 'Balcony Herb Garden Meetup',
-                type: 'Food Garden Exchange',
-                datetime: '2026-06-18T11:00',
-                location: 'Mount Pleasant Community Garden',
-                desc: 'Swap extra mint, basil, cilantro starters and discuss urban container herb growing tips.',
-                lat: 49.2612,
-                lng: -123.1042,
-                host: 'Chef Pierre'
-            },
-            {
-                id: 'evt-9',
-                title: 'Neighborhood Repair Cafe',
-                type: 'Repair Workshop',
-                datetime: '2026-06-20T10:00',
-                location: 'Yaletown Roundhouse Exhibition Hall',
-                desc: 'Bring your broken lamps, toys, or small appliances and learn how to fix them with volunteer repair experts.',
+                id: 'evt-2',
+                title: 'Block-Wide Garage Sale',
+                type: 'Garage Sale',
+                datetime: '2026-06-20T09:00',
+                location: 'Yaletown Community Lane',
+                desc: 'Huge neighborhood block sale! Expect tools, books, clothing, and household items.',
                 lat: 49.2751,
                 lng: -123.1234,
                 host: 'Bob Builder'
             },
             {
-                id: 'evt-10',
-                title: 'Bike Tuning & Maintenance Clinic',
-                type: 'Bicycle Service Meetup',
-                datetime: '2026-06-22T14:00',
-                location: 'West End Community Plaza',
-                desc: 'A free drop-in clinic to adjust brakes, clean chains, and patch flat tires. Learn basic commuter bike upkeep.',
-                lat: 49.2841,
-                lng: -123.1362,
-                host: 'Emma Watson'
+                id: 'evt-3',
+                title: 'Summer Clothing Swap Exchange',
+                type: 'Clothing Exchange Swap',
+                datetime: '2026-06-25T11:00',
+                location: 'Mount Pleasant Community Centre',
+                desc: 'Refresh your wardrobe! Bring gently used clothes and swap them for fresh styles.',
+                lat: 49.2630,
+                lng: -123.1020,
+                host: 'Emily'
             },
             {
-                id: 'evt-11',
-                title: 'Tech Help Desk & Router Config',
-                type: 'Tech Support Meetup',
-                datetime: '2026-06-25T15:00',
+                id: 'evt-4',
+                title: 'Spanish-English Language Cafe',
+                type: 'Language Exchange Cafe',
+                datetime: '2026-06-22T18:00',
                 location: 'Gastown Creative Space',
-                desc: 'Struggling with slow Wi-Fi or router setups? Bring your questions or device and get help from neighborhood volunteers.',
+                desc: 'Practice speaking Spanish and English with native speakers. Conversational and friendly!',
                 lat: 49.2872,
                 lng: -123.1105,
                 host: 'Mac Tech'
             },
             {
-                id: 'evt-12',
-                title: 'Outdoor Charcoal Sketching Session',
-                type: 'Art & Drawing Workshop',
-                datetime: '2026-06-28T14:00',
-                location: 'Stanley Park Rose Garden',
-                desc: 'Bring your drawing pads and charcoals. We will sketch the gorgeous summer roses and surrounding nature.',
+                id: 'evt-5',
+                title: 'Co-Op Family Board Games',
+                type: 'Family Board Games',
+                datetime: '2026-06-21T15:00',
+                location: 'Downtown Library Playroom',
+                desc: 'Bring your kids and your favorite board games for a fun afternoon of cooperative play.',
+                lat: 49.2700,
+                lng: -123.1150,
+                host: 'Ava'
+            },
+            {
+                id: 'evt-6',
+                title: 'Co-Ed Beach Volleyball Match',
+                type: 'Beach Volleyball Sports',
+                datetime: '2026-06-28T13:00',
+                location: 'Stanley Park Sand Courts',
+                desc: 'Join us for a friendly match of beach volleyball. All skill levels welcome!',
                 lat: 49.2941,
                 lng: -123.1382,
                 host: 'Leo DaVinci'
             },
             {
-                id: 'evt-13',
-                title: 'Macrame Plant Hanger Session',
-                type: 'Creative Macrame Class',
-                datetime: '2026-06-30T16:00',
-                location: 'Kitsilano Beach Picnic Tables',
-                desc: 'Learn the 4 essential macrame knots and make your very first hanging plant holder. Rope provided.',
-                lat: 49.2762,
-                lng: -123.1512,
-                host: 'Frida Kahlo'
+                id: 'evt-7',
+                title: 'Neighborhood Coffee Meet-up',
+                type: 'Community Social Meet-up',
+                datetime: '2026-06-18T10:00',
+                location: 'West End Community Plaza',
+                desc: 'Grab a cup of coffee and say hello to your neighbors! We discuss community projects.',
+                lat: 49.2841,
+                lng: -123.1362,
+                host: 'Emma Watson'
             },
             {
-                id: 'evt-14',
-                title: 'Clay Modeling & Craft Exchange',
-                type: 'Clay Handbuilding Workshop',
-                datetime: '2026-07-02T11:00',
-                location: 'Mount Pleasant Art Hub',
-                desc: 'Create simple hand-built clay dishes and jewelry trays. Clay will be supplied, firing resources discussed.',
-                lat: 49.2642,
-                lng: -123.0975,
-                host: 'Clay Potter'
+                id: 'evt-8',
+                title: 'Balcony Herb Garden Swap',
+                type: 'Other Event (Plant Swap)',
+                datetime: '2026-06-19T11:00',
+                location: 'Grandview Community Park',
+                desc: 'Swap heirloom seeds and starter herb plants to grow your own balcony garden!',
+                lat: 49.2562,
+                lng: -123.0694,
+                host: 'Sarah Chen'
             }
         ];
     }
@@ -2819,6 +2755,7 @@ function loadState() {
         });
     }
 
+    state.locationConsent = true;
     if (needsSave) {
         saveState();
     }
@@ -3988,7 +3925,7 @@ function showView(viewId, mode) {
     const headerBar = document.getElementById('phone-header-bar');
     const desktopNavBar = document.getElementById('desktop-navbar');
 
-    if (['home', 'village', 'chat_hub', 'chat_detail', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage', 'review_rating'].includes(viewId) && !(viewId === 'village' && state.meetupMapMode)) {
+    if ((['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage', 'review_rating'].includes(viewId) || viewId.startsWith('chat_detail')) && !(viewId === 'village' && state.meetupMapMode)) {
         if (navBar) {
             navBar.classList.remove('hidden');
         }
@@ -5221,31 +5158,39 @@ window.renderOfferIconDisplay = renderOfferIconDisplay;
 
 function getEventIconDetails(type) {
     const t = (type || '').toLowerCase();
+    
     if (t.includes('workshop')) {
-        return { icon: 'school', color: '#3b82f6', bgColor: '#eff6ff', darkColor: '#60a5fa', darkBgColor: '#172554' };
+        const cat = EVENT_CATEGORIES.find(c => c.name === 'workshop') || EVENT_CATEGORIES[0];
+        return { icon: cat.icon, color: cat.color, bgColor: `rgba(${cat.rgb}, 0.1)`, darkColor: cat.color, darkBgColor: `rgba(${cat.rgb}, 0.2)` };
     }
-    if (t.includes('meetup')) {
-        return { icon: 'groups', color: '#f97316', bgColor: '#fff7ed', darkColor: '#fb923c', darkBgColor: '#7c2d12' };
+    if (t.includes('garage sale')) {
+        const cat = EVENT_CATEGORIES.find(c => c.name === 'garage sale') || EVENT_CATEGORIES[1];
+        return { icon: cat.icon, color: cat.color, bgColor: `rgba(${cat.rgb}, 0.1)`, darkColor: cat.color, darkBgColor: `rgba(${cat.rgb}, 0.2)` };
     }
-    if (t.includes('clean')) {
-        return { icon: 'cleaning_services', color: '#10b981', bgColor: '#ecfdf5', darkColor: '#34d399', darkBgColor: '#064e3b' };
+    if (t.includes('clothing exchange') || t.includes('clothing') || t.includes('apparel')) {
+        const cat = EVENT_CATEGORIES.find(c => c.name === 'clothing exchange') || EVENT_CATEGORIES[2];
+        return { icon: cat.icon, color: cat.color, bgColor: `rgba(${cat.rgb}, 0.1)`, darkColor: cat.color, darkBgColor: `rgba(${cat.rgb}, 0.2)` };
     }
-    if (t.includes('swap') || t.includes('book')) {
-        return { icon: 'menu_book', color: '#f59e0b', bgColor: '#fffbeb', darkColor: '#fbbf24', darkBgColor: '#78350f' };
+    if (t.includes('language exchange') || t.includes('language') || t.includes('translate')) {
+        const cat = EVENT_CATEGORIES.find(c => c.name === 'language exchange') || EVENT_CATEGORIES[3];
+        return { icon: cat.icon, color: cat.color, bgColor: `rgba(${cat.rgb}, 0.1)`, darkColor: cat.color, darkBgColor: `rgba(${cat.rgb}, 0.2)` };
     }
-    if (t.includes('playdate')) {
-        return { icon: 'child_care', color: '#ec4899', bgColor: '#fdf2f8', darkColor: '#f472b6', darkBgColor: '#831843' };
+    if (t.includes('games') || t.includes('playdate')) {
+        const cat = EVENT_CATEGORIES.find(c => c.name === 'games') || EVENT_CATEGORIES[4];
+        return { icon: cat.icon, color: cat.color, bgColor: `rgba(${cat.rgb}, 0.1)`, darkColor: cat.color, darkBgColor: `rgba(${cat.rgb}, 0.2)` };
     }
-    if (t.includes('garden')) {
-        return { icon: 'yard', color: '#84cc16', bgColor: '#f7fee7', darkColor: '#a3e635', darkBgColor: '#365314' };
+    if (t.includes('sports') || t.includes('clean') || t.includes('garden') || t.includes('yard')) {
+        const cat = EVENT_CATEGORIES.find(c => c.name === 'sports') || EVENT_CATEGORIES[5];
+        return { icon: cat.icon, color: cat.color, bgColor: `rgba(${cat.rgb}, 0.1)`, darkColor: cat.color, darkBgColor: `rgba(${cat.rgb}, 0.2)` };
     }
-    if (t.includes('repair') || t.includes('tool')) {
-        return { icon: 'handyman', color: '#6366f1', bgColor: '#eef2ff', darkColor: '#818cf8', darkBgColor: '#1e1b4b' };
+    if (t.includes('meet-up') || t.includes('meetup') || t.includes('social') || t.includes('gathering')) {
+        const cat = EVENT_CATEGORIES.find(c => c.name === 'social meet-up') || EVENT_CATEGORIES[6];
+        return { icon: cat.icon, color: cat.color, bgColor: `rgba(${cat.rgb}, 0.1)`, darkColor: cat.color, darkBgColor: `rgba(${cat.rgb}, 0.2)` };
     }
-    if (t.includes('clothing') || t.includes('apparel')) {
-        return { icon: 'checkroom', color: '#a855f7', bgColor: '#faf5ff', darkColor: '#c084fc', darkBgColor: '#581c87' };
-    }
-    return { icon: 'campaign', color: '#3b82f6', bgColor: '#eff6ff', darkColor: '#60a5fa', darkBgColor: '#172554' };
+    
+    // Default to Other Event
+    const cat = EVENT_CATEGORIES.find(c => c.name === 'other event') || EVENT_CATEGORIES[EVENT_CATEGORIES.length - 1];
+    return { icon: cat.icon, color: cat.color, bgColor: `rgba(${cat.rgb}, 0.1)`, darkColor: cat.color, darkBgColor: `rgba(${cat.rgb}, 0.2)` };
 }
 window.getEventIconDetails = getEventIconDetails;
 
@@ -5254,28 +5199,25 @@ function getEventIconClasses(type) {
     if (t.includes('workshop')) {
         return 'bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400';
     }
-    if (t.includes('meetup')) {
+    if (t.includes('garage sale')) {
         return 'bg-orange-50 text-orange-600 dark:bg-orange-950/40 dark:text-orange-400';
     }
-    if (t.includes('clean')) {
-        return 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400';
-    }
-    if (t.includes('swap') || t.includes('book')) {
+    if (t.includes('clothing exchange') || t.includes('clothing') || t.includes('apparel')) {
         return 'bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400';
     }
-    if (t.includes('playdate')) {
-        return 'bg-pink-50 text-pink-600 dark:bg-pink-950/40 dark:text-pink-400';
-    }
-    if (t.includes('garden')) {
-        return 'bg-lime-50 text-lime-600 dark:bg-lime-950/40 dark:text-lime-400';
-    }
-    if (t.includes('repair') || t.includes('tool')) {
+    if (t.includes('language exchange') || t.includes('language') || t.includes('translate')) {
         return 'bg-indigo-50 text-indigo-600 dark:bg-indigo-950/40 dark:text-indigo-400';
     }
-    if (t.includes('clothing') || t.includes('apparel')) {
-        return 'bg-purple-50 text-purple-600 dark:bg-purple-950/40 dark:text-purple-400';
+    if (t.includes('games') || t.includes('playdate')) {
+        return 'bg-violet-50 text-violet-600 dark:bg-violet-950/40 dark:text-violet-400';
     }
-    return 'bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400';
+    if (t.includes('sports') || t.includes('clean') || t.includes('garden') || t.includes('yard')) {
+        return 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400';
+    }
+    if (t.includes('meet-up') || t.includes('meetup') || t.includes('social') || t.includes('gathering')) {
+        return 'bg-stone-50 text-stone-600 dark:bg-stone-950/40 dark:text-stone-400';
+    }
+    return 'bg-slate-50 text-slate-600 dark:bg-slate-950/40 dark:text-slate-400';
 }
 window.getEventIconClasses = getEventIconClasses;
 
@@ -6945,10 +6887,11 @@ function createEventAndSave(title, type, datetime, endDatetime, location, desc) 
 
     // Dynamically add marker on Leaflet map for the new event!
     if (leafletMap) {
-        const color = getCategoryColor('Event or Meetup');
+        const details = getEventIconDetails(newEvent.type);
+        const color = details.color || '#3b82f6';
         const imgUrl = getEventPresetImage(newEvent.type);
 
-        const iconName = getEventIcon(newEvent.type);
+        const iconName = newEvent.icon || details.icon || 'campaign';
         const avatarUrl = (state.currentUser && state.currentUser.avatar) ? state.currentUser.avatar : DEFAULT_AVATAR;
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
@@ -7823,17 +7766,7 @@ function getCategoryFallbackImage(category) {
 }
 
 function getEventIcon(type) {
-    if (!type) return 'campaign';
-    const t = type.toLowerCase();
-    if (t.includes('workshop')) return 'school';
-    if (t.includes('meetup')) return 'groups';
-    if (t.includes('clean')) return 'cleaning_services';
-    if (t.includes('swap') || t.includes('book')) return 'menu_book';
-    if (t.includes('playdate')) return 'child_care';
-    if (t.includes('garden')) return 'yard';
-    if (t.includes('repair') || t.includes('tool')) return 'handyman';
-    if (t.includes('clothing') || t.includes('apparel')) return 'checkroom';
-    return 'campaign';
+    return getEventIconDetails(type).icon;
 }
 
 function getBarterItemStatus(idOrName) {
@@ -8503,7 +8436,7 @@ function openMapItemDetail(idOrName) {
         } else {
             const neighbor = state.neighbors ? state.neighbors[idOrName] : null;
             if (neighbor && neighbor.isKarma) {
-                chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs text-[#308A5E]" style="font-variation-settings: 'FILL' 1;">favorite</span> free karma request`;
+                chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs text-[#ef4444]" style="font-variation-settings: 'FILL' 1;">favorite</span> free karma request`;
             } else {
                 chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs">handshake</span> lets swap`;
             }
@@ -10011,7 +9944,7 @@ function toggleCategoryTray() {
 }
 
 const MAP_FILTER_CATEGORIES = [
-    { name: "Karma Swap", displayName: "Gifts", icon: "favorite", color: "#ef4444", rgb: "239,68,68" },
+    { name: "Karma Swap", displayName: "Karma", icon: "favorite", color: "#ef4444", rgb: "239,68,68" },
     { name: "Event or Meetup", displayName: "Events", icon: "groups", color: "#10b981", rgb: "16,185,129" },
     { name: "Food & Drink", displayName: "Food", icon: "restaurant", color: "#f97316", rgb: "249,115,22" },
     { name: "Home and Living", displayName: "Home", icon: "home", color: "#3b82f6", rgb: "59,130,246" },
@@ -11415,8 +11348,9 @@ function submitCreateEventFromOfferFlow(e) {
 
     // Dynamically add marker on Leaflet map for the new event!
     if (leafletMap) {
-        const color = getCategoryColor('Event or Meetup');
-        const iconName = newEvent.icon || getEventIcon(newEvent.type);
+        const details = getEventIconDetails(newEvent.type);
+        const color = details.color || '#3b82f6';
+        const iconName = newEvent.icon || details.icon || 'campaign';
         const avatarUrl = (state.currentUser && state.currentUser.avatar) ? state.currentUser.avatar : DEFAULT_AVATAR;
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
@@ -13049,11 +12983,10 @@ function renderChatDetail(conv) {
                         bubbleInnerContent += `
                         <div class="flex flex-col gap-2 w-full max-w-[240px] text-left">
                             <div class="flex items-center gap-1.5 border-b border-white/10 pb-1.5">
-                                <span class="material-symbols-outlined text-xs font-bold text-emerald-300" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
                                 <span class="text-[9px] uppercase tracking-wider font-extrabold text-emerald-300">Karma Swap Request</span>
                             </div>
                             <p class="text-xs leading-relaxed font-semibold text-warm-cream">
-                                "Hey! I'm really interested in your <strong class="underline">${escapeHTML(msg.requestedItem)}</strong>. I don't have anything to trade right now, but would you be open to a Karma Swap? You'd receive +50 Karma Points for helping a neighbor, and it would mean the world to me! ❤️"
+                                I'd love a Karma Swap for your ${escapeHTML(msg.requestedItem)}.
                             </p>
                         </div>`;
                     } else {
@@ -13117,7 +13050,7 @@ function renderChatDetail(conv) {
                                 </div>
                             </div>
                             
-                            <span class="text-[9px] text-on-surface-variant/65 mt-1.5 font-semibold ml-1 select-none"><span class="cursor-pointer hover:underline text-forest-green dark:text-emerald-400 font-bold" onclick="event.stopPropagation(); openNeighborProfileModal('${escapeHTML(senderProfileName)}')">${escapeHTML(msg.sender)}</span> • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
+                            <span class="text-[9px] text-on-surface-variant/65 mt-1.5 font-semibold ml-1 select-none"><span class="cursor-pointer hover:underline text-forest-green/60 dark:text-[#308A5E]/60 font-bold" onclick="event.stopPropagation(); openNeighborProfileModal('${escapeHTML(senderProfileName)}')">${escapeHTML(msg.sender)}</span> • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
                         </div>
                     `;
                 } else {
@@ -13141,11 +13074,10 @@ function renderChatDetail(conv) {
                         bubbleInnerContent += `
                         <div class="flex flex-col gap-2 w-full max-w-[240px] text-left">
                             <div class="flex items-center gap-1.5 border-b border-outline-variant/15 pb-1.5">
-                                <span class="material-symbols-outlined text-xs font-bold text-[#308A5E] dark:text-emerald-400" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
                                 <span class="text-[9px] uppercase tracking-wider font-extrabold text-[#308A5E] dark:text-emerald-400">Karma Swap Request</span>
                             </div>
                             <p class="text-xs leading-relaxed font-semibold text-on-surface dark:text-warm-cream">
-                                "Hey! I'm really interested in your <strong class="underline">${escapeHTML(msg.requestedItem)}</strong>. I don't have anything to trade right now, but would you be open to a Karma Swap? You'd receive +50 Karma Points for helping a neighbor, and it would mean the world to me! ❤️"
+                                I'd love a Karma Swap for your ${escapeHTML(msg.requestedItem)}.
                             </p>
                         </div>`;
                     } else {
@@ -13159,7 +13091,7 @@ function renderChatDetail(conv) {
                             <div id="msg-bubble-${index}" class="chat-bubble-other chat-bubble-hover py-2 px-3.5 rounded-3xl rounded-tl-none shadow-sm border border-outline-variant/15 dark:border-[#308A5E1f] cursor-pointer select-none transition-all duration-200" onclick="${msg.isKarmaSwapRequest ? `window.openSwapLifecycleModal('receiver', '${conv.id}'); event.stopPropagation();` : `handleMessageClick(event, ${index})`}">
                                 ${bubbleInnerContent}
                             </div>
-                            <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none"><span class="cursor-pointer hover:underline text-forest-green dark:text-emerald-400 font-bold" onclick="event.stopPropagation(); openNeighborProfileModal('${escapeHTML(senderProfileName)}')">${escapeHTML(msg.sender)}</span> • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
+                            <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none"><span class="cursor-pointer hover:underline text-forest-green/60 dark:text-[#308A5E]/60 font-bold" onclick="event.stopPropagation(); openNeighborProfileModal('${escapeHTML(senderProfileName)}')">${escapeHTML(msg.sender)}</span> • ${formatMessageTime(msg.time)}${msg.edited ? ' • Edited' : ''}</span>
                         </div>
                     `;
                 }
@@ -13283,7 +13215,12 @@ function renderChatTradeDrawer(conv) {
                         <input class="flex-grow bg-transparent border-0 h-full py-0 px-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
                         <div class="flex items-center gap-1.5 flex-shrink-0">
                             ${isKarmaGift ? '' : `
-                            ${status === 'accepted' || status === 'completed' ? '' : `
+                            ${status === 'accepted' || status === 'completed' ? '' : 
+                              (status === 'pending' || status === 'received') ? `
+                            <button id="chat-offer-swap-pill-btn" class="w-[38px] h-[38px] bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 rounded-full flex items-center justify-center flex-shrink-0 cursor-not-allowed opacity-60" title="A swap proposal is already active" disabled>
+                                <span class="material-symbols-outlined text-[17px]">handshake</span>
+                            </button>
+                            ` : `
                             <button id="chat-offer-swap-pill-btn" class="w-[38px] h-[38px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onclick="window.openSwapLifecycleModal('initiator', '${conv.id}')" title="${conv.isRequest ? 'Propose Different Swap' : 'Offer a Swap'}">
                                 <span class="material-symbols-outlined text-[17px]">handshake</span>
                             </button>
@@ -13523,14 +13460,14 @@ function renderChatTradeDrawer(conv) {
             `;
         } else {
             detailsHtml = `
-                <div class="text-left space-y-3 p-3.5 bg-forest-green/5 rounded-xl border border-forest-green/10 flex flex-col gap-1">
-                    <h5 class="text-[11px] font-extrabold text-forest-green uppercase tracking-wide">Phase 3: Meet Up Arranged</h5>
+                <div class="text-left space-y-3 p-3.5 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/10 dark:border-white/10 flex flex-col gap-1">
+                    <h5 class="text-[11px] font-extrabold text-black dark:text-white uppercase tracking-wide">Phase 3: Meet Up Arranged</h5>
                     <div class="bg-white dark:bg-[#141c16] p-2.5 rounded-xl border border-outline-variant/20 flex flex-col gap-1 text-[10.5px]">
-                        <p class="font-semibold text-forest-green flex items-center gap-1">
+                        <p class="font-semibold text-black dark:text-white flex items-center gap-1">
                             <span class="material-symbols-outlined text-sm">place</span> Meetup Spot:
                         </p>
                         <p class="text-on-surface ml-5">${escapeHTML(conv.negotiation.meetupLocation)}</p>
-                        <p class="font-semibold text-forest-green flex items-center gap-1 mt-1">
+                        <p class="font-semibold text-black dark:text-white flex items-center gap-1 mt-1">
                             <span class="material-symbols-outlined text-sm">schedule</span> Meetup Time:
                         </p>
                         <p class="text-on-surface ml-5">${escapeHTML(conv.negotiation.meetupTime)}</p>
@@ -13552,12 +13489,12 @@ function renderChatTradeDrawer(conv) {
         const requested = conv.negotiation.requestedItem || 'Swap Item';
         
         detailsHtml = `
-            <div class="text-left space-y-1.5 p-3.5 bg-forest-green/5 rounded-xl border border-forest-green/10">
-                <h5 class="text-[11px] font-extrabold text-forest-green uppercase tracking-wide">Swap Details</h5>
-                <p class="text-[10.5px] text-on-surface-variant mb-2.5">
+            <div class="text-left space-y-1.5 p-3.5 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/10 dark:border-white/10">
+                <h5 class="text-[11px] font-extrabold text-black dark:text-white uppercase tracking-wide">Swap Details</h5>
+                <p class="text-[11px] text-black dark:text-white/80 font-medium leading-relaxed mb-2.5">
                     ${isKarma 
-                        ? `Swap completed! You received their <span class="font-bold text-forest-green">${escapeHTML(requested)}</span> for free in exchange for Karma Points.` 
-                        : `Swap completed! You swapped your <span class="font-bold text-forest-green">${escapeHTML(offered)}</span> for their <span class="font-bold text-forest-green">${escapeHTML(requested)}</span>.`}
+                        ? `Swap completed! You received their <span class="font-bold text-black dark:text-white">${escapeHTML(requested)}</span> for free in exchange for Karma Points.` 
+                        : `Swap completed! You swapped your <span class="font-bold text-black dark:text-white">${escapeHTML(offered)}</span> for their <span class="font-bold text-black dark:text-white">${escapeHTML(requested)}</span>.`}
                 </p>
                 <div class="relative flex items-center justify-between gap-3 p-1 rounded-xl bg-white dark:bg-white/5 border border-outline-variant/15 w-full">
                     <!-- Left Item Card -->
@@ -17006,6 +16943,7 @@ function renderVillageListView() {
         if (state.blockedUsers && state.blockedUsers.includes(name)) return;
         if (state.suspendedUsers && state.suspendedUsers.includes(name)) return;
         if (neighbor.suspended || neighbor.shadowBanned) return;
+        if (neighbor.category === 'Event or Meetup') return; // Skip events in offerings list
 
         const currentUser = state.currentUser || {};
         const displayName = currentUser.displayName || `${currentUser.firstName || 'Lily'} ${currentUser.lastName || 'Kaufmann'}`;
@@ -17384,12 +17322,12 @@ function renderNeedsBoardView() {
                             <div class="flex items-center min-w-0 flex-grow">
                                 ${getCategoryIconHtml(need.category)}
                                 <h4 class="list-card-title truncate leading-tight">
-                                    ${need.title}
+                                    ${need.needTitle || need.title}
                                     <span class="text-[9px] text-[#D99036] dark:text-[#FBBF24] font-bold bg-[#D99036]/10 dark:bg-[#FBBF24]/10 px-1.5 py-0.5 rounded ml-1 uppercase tracking-wide">You</span>
                                 </h4>
                             </div>
                         </div>
-                        <p class="list-card-description">${need.desc}</p>
+                        <p class="list-card-description">${need.needDesc || need.desc}</p>
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
@@ -17422,17 +17360,24 @@ function renderNeedsBoardView() {
                 </div>
             `;
         } else {
+            const needPresetImg = getCategoryPresetImage(need.category || 'Other');
+            const needCatColor = getCategoryColor(need.category);
             card.innerHTML = `
-                <!-- Bottom Details Portion (No images for needs) -->
+                <!-- Top Image Portion (matching Offerings layout) -->
+                <div class="list-card-image-wrapper w-full relative overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 border-b border-outline-variant/30 dark:border-outline-variant/15">
+                    <img src="${needPresetImg}" class="w-full h-full object-cover">
+                    <div class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded border border-white bg-black/40 text-white text-[9px] font-bold uppercase tracking-wider">Needed</div>
+                </div>
+                <!-- Bottom Details Portion -->
                 <div class="list-card-text-wrapper p-4 flex-grow flex flex-col justify-between self-stretch min-w-0 w-full">
                     <div>
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center min-w-0 flex-grow">
                                 ${getCategoryIconHtml(need.category)}
-                                <h4 class="list-card-title truncate leading-tight">${need.title}</h4>
+                                <h4 class="list-card-title truncate leading-tight">${need.needTitle || need.title}</h4>
                             </div>
                         </div>
-                        <p class="list-card-description">${need.desc}</p>
+                        <p class="list-card-description">${need.needDesc || need.desc}</p>
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
@@ -17446,6 +17391,14 @@ function renderNeedsBoardView() {
                 <div class="list-card-expandable ${isCurrentlyExpanded ? 'expanded' : ''}">
                     <div class="list-card-expandable-content bg-white dark:bg-[#18201a] px-4 pb-6 space-y-4 border-t border-outline-variant/10 text-xs text-black dark:text-white pt-3">
                         <div class="space-y-3">
+                            <!-- Category & Icon -->
+                            <div class="flex items-start gap-2.5">
+                                <span class="material-symbols-outlined text-lg mt-0.5" style="color: ${needCatColor};">${getCategoryIcon(need.category) || 'interests'}</span>
+                                <div>
+                                    <h5 class="text-[10px] font-bold uppercase tracking-wider text-outline/80">Category</h5>
+                                    <p class="mt-0.5">${need.category || 'Other'}</p>
+                                </div>
+                            </div>
                             <!-- Neighbourhood -->
                             <div class="flex items-start gap-2.5">
                                 <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg mt-0.5">location_on</span>
@@ -18291,17 +18244,6 @@ function submitSaveSettingsDetails(inputFirst, inputLast, location, isSilent = f
 
     saveState();
     refreshAllLayouts();
-    if (!isSilent) {
-        // Show checkmark next to "Profile Details" heading and auto-hide after 3 seconds
-        const checkmark = document.getElementById('profile-saved-checkmark');
-        if (checkmark) {
-            checkmark.classList.remove('hidden');
-            clearTimeout(window._profileSavedTimer);
-            window._profileSavedTimer = setTimeout(() => {
-                checkmark.classList.add('hidden');
-            }, 3000);
-        }
-    }
 }
 
 function handleToggleDarkMode(checked) {
@@ -19968,12 +19910,11 @@ function plotMapMarkersOnly() {
         
         if (hasUserCoords) {
             const avatarUrl = (state.currentUser && state.currentUser.avatar) ? state.currentUser.avatar : DEFAULT_AVATAR;
-            const borderClass = 'border-blue-600';
             
             const userLocIcon = L.divIcon({
                 className: 'user-location-marker',
-                html: `<div class="relative flex items-center justify-center w-[54px] h-[54px] rounded-full" style="width: 54px !important; height: 54px !important; border-radius: 50% !important; aspect-ratio: 1/1 !important;">
-                         <img src="${avatarUrl}" class="w-[50px] h-[50px] rounded-full border-[3.5px] ${borderClass} object-cover shadow-md z-10" style="width: 50px !important; height: 50px !important; border-radius: 50% !important; object-fit: cover !important; aspect-ratio: 1/1 !important;" />
+                html: `<div class="relative flex items-center justify-center w-[54px] h-[54px] rounded-full" style="border: 2.5px solid #308A5E !important; background-color: white !important; width: 54px !important; height: 54px !important; border-radius: 50% !important; aspect-ratio: 1/1 !important; box-shadow: 0 3px 10px rgba(0,0,0,0.2) !important;">
+                         <img src="${avatarUrl}" class="w-[44px] h-[44px] rounded-full object-cover z-10" style="width: 44px !important; height: 44px !important; border-radius: 50% !important; object-fit: cover !important; aspect-ratio: 1/1 !important;" />
                        </div>`,
                 iconSize: [54, 54],
                 iconAnchor: [27, 27],
@@ -20017,6 +19958,9 @@ function plotMapMarkersOnly() {
                 // If we are on gifts map, only plot neighbor if it's a karma/free swap!
                 if (currentVillageSegment === 'gifts_map' && !neighbor.isKarma) return;
 
+                // Do not plot event neighbors in offerings map layer
+                if (neighbor.category === 'Event or Meetup') return;
+
                 const coords = validateCoords(neighbor.lat, neighbor.lng);
                 if (!coords) return;
                 const lat = coords.lat;
@@ -20033,8 +19977,8 @@ function plotMapMarkersOnly() {
 
                 // Append small karma badge for free Karma items
                 const karmaBadge = neighbor.isKarma ? 
-                    `<div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid white !important; background-color: #308A5E !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important; z-index: 10 !important;">
-                        <span class="material-symbols-outlined" style="color: white !important; font-size: 8px !important; font-variation-settings: 'FILL' 1 !important;">volunteer_activism</span>
+                    `<div style="position: absolute !important; bottom: -2px !important; right: -2px !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; border: 1.5px solid white !important; background-color: white !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important; z-index: 10 !important;">
+                        <span class="material-symbols-outlined" style="color: #ef4444 !important; font-size: 8px !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
                      </div>` : '';
 
                 const customIcon = L.divIcon({
@@ -20089,8 +20033,8 @@ function plotMapMarkersOnly() {
             });
         }
 
-        // Plot events on standard offerings map segment or events map segment
-        if (state.events && (currentVillageSegment === 'map' || currentVillageSegment === 'events_map')) {
+        // Plot events on events map segment
+        if (state.events && currentVillageSegment === 'events_map') {
             state.events.forEach(evt => {
                 const coords = validateCoords(evt.lat, evt.lng);
                 if (!coords) return;
@@ -20102,8 +20046,28 @@ function plotMapMarkersOnly() {
                 const hostNeighbor = state.neighbors[evt.host];
                 if (hostNeighbor && hostNeighbor.suspended) return;
 
-                const color = getCategoryColor('Event or Meetup');
-                const iconName = evt.icon || getEventIcon(evt.type);
+                // Distance filter check
+                let radiusVal = (state.stats && state.stats.radius !== undefined) ? state.stats.radius : 5;
+                if (radiusVal > 5) radiusVal = 5;
+                if (radiusVal < 0.5) radiusVal = 0.5;
+                let userLat = 49.2827;
+                let userLng = -123.1207;
+                if (state.currentUser && state.currentUser.lat && state.currentUser.lng) {
+                    userLat = state.currentUser.lat;
+                    userLng = state.currentUser.lng;
+                }
+                const distance = (evt.host === 'me' || evt.host === 'Lily Kaufmann' || (state.currentUser && evt.host === (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`))) ? 0.0 : getDistance(userLat, userLng, lat, lng);
+                if (distance > radiusVal) return;
+
+                // Category filter check
+                if (state.activeMapFilters && state.activeMapFilters.length > 0) {
+                    const matchesCategory = state.activeMapFilters.some(filter => isCategoryMatchHelper(evt.type, filter) || isCategoryMatchHelper(evt.category, filter));
+                    if (!matchesCategory) return;
+                }
+
+                const details = getEventIconDetails(evt.type);
+                const color = details.color || '#3b82f6';
+                const iconName = evt.icon || details.icon || 'campaign';
 
                 const pinImgUrl = getEventPresetImage(evt.type);
 
@@ -20229,12 +20193,11 @@ function plotMapMarkersOnly() {
             const isPrecise = (state.currentUser.locationAccuracy === 'precise');
             const pulseRingHtml = isPrecise ? `<div class="animate-precise-pulse-ring"></div>` : '';
             
-            const borderClass = 'border-blue-600';
             const userLocIcon = L.divIcon({
                 className: 'user-location-marker',
-                html: `<div class="relative flex items-center justify-center w-[54px] h-[54px] rounded-full" style="width: 54px !important; height: 54px !important; border-radius: 50% !important; aspect-ratio: 1/1 !important;">
+                html: `<div class="relative flex items-center justify-center w-[54px] h-[54px] rounded-full" style="border: 2.5px solid #308A5E !important; background-color: white !important; width: 54px !important; height: 54px !important; border-radius: 50% !important; aspect-ratio: 1/1 !important; box-shadow: 0 3px 10px rgba(0,0,0,0.2) !important;">
                          ${pulseRingHtml}
-                         <img src="${avatarUrl}" class="w-[50px] h-[50px] rounded-full border-[3.5px] ${borderClass} object-cover shadow-md z-10" style="width: 50px !important; height: 50px !important; border-radius: 50% !important; object-fit: cover !important; aspect-ratio: 1/1 !important;" />
+                         <img src="${avatarUrl}" class="w-[44px] h-[44px] rounded-full object-cover z-10" style="width: 44px !important; height: 44px !important; border-radius: 50% !important; object-fit: cover !important; aspect-ratio: 1/1 !important;" />
                        </div>`,
                 iconSize: [54, 54],
                 iconAnchor: [27, 27]
@@ -29352,7 +29315,7 @@ window.openSwapsPopupModal = function() {
                 <div>
                     <h4 class="font-bold text-[13.5px] text-on-surface">${displayName}</h4>
                     <p class="text-[10px] text-outline mt-0.5 flex items-center gap-1.5">
-                        <span class="flex items-center text-forest-green font-semibold"><span class="material-symbols-outlined text-xs mr-0.5 text-[#308A5E]" style="font-variation-settings: 'FILL' 1;">favorite</span> ${karma} Karma</span>
+                        <span class="flex items-center text-forest-green font-semibold"><span class="material-symbols-outlined text-xs mr-0.5 text-[#ef4444]" style="font-variation-settings: 'FILL' 1;">favorite</span> ${karma} Karma</span>
                         <span class="text-outline-variant/30">•</span>
                         <span>${completedCount} swaps completed</span>
                     </p>
@@ -29907,8 +29870,8 @@ function renderBadgesList(containerId, targetName) {
         }
     ];
 
-    // Show all badges on both self and neighbor profiles
-    const filteredBadges = badges;
+    // Show only the first three badges: Early Adopter, GoFundMe Backer, Super Trader
+    const filteredBadges = badges.slice(0, 3);
 
     filteredBadges.forEach(b => {
         const item = document.createElement('div');
@@ -30029,83 +29992,9 @@ function openSwapProposalPage() {
         openGuestPromptModal();
         return;
     }
-    
-    // Clear custom text
-    const customText = document.getElementById('offer-swap-custom-text');
-    if (customText) {
-        customText.value = "";
-        customText.oninput = () => {
-            state.selectedSwapListingId = null;
-            const grid = document.getElementById('offer-swap-boxes-grid');
-            if (grid) {
-                grid.querySelectorAll('.swap-listing-box').forEach(btn => {
-                    btn.classList.remove('active-swap-box');
-                });
-            }
-            removeOfferSwapHighlights();
-        };
+    if (state.currentConversationId) {
+        window.openSwapLifecycleModal('initiator', state.currentConversationId);
     }
-    
-    state.selectedSwapListingId = null;
-    removeOfferSwapHighlights();
-    
-    const grid = document.getElementById('offer-swap-boxes-grid');
-    if (grid) {
-        grid.innerHTML = '';
-        if (state.userOfferings && state.userOfferings.length > 0) {
-            state.userOfferings.forEach(off => {
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = 'swap-listing-box w-full p-3 flex items-center gap-3.5 border border-black/10 dark:border-white/10 rounded-2xl cursor-pointer text-left active:scale-[0.99] transition-all bg-white dark:bg-[#101612] text-black dark:text-white mb-0';
-                btn.setAttribute('data-id', off.id);
-                
-                const iconName = off.icon || getCategoryIcon(off.category) || 'local_offer';
-                const iconColor = getCategoryColor(off.category) || '#308A5E';
-                const imgUrl = off.image || getCategoryPresetImage(off.category) || PLACEHOLDER_IMAGE;
-                
-                btn.innerHTML = `
-                    <!-- Left Image -->
-                    <div class="w-12 h-12 rounded-xl overflow-hidden relative bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 flex-shrink-0">
-                        <img src="${imgUrl}" class="w-full h-full object-cover">
-                    </div>
-                    
-                    <!-- Center Details -->
-                    <div class="flex-grow min-w-0 pr-1 flex flex-col justify-center">
-                        <div class="text-[12px] font-bold text-black dark:text-warm-cream truncate leading-tight">${escapeHTML(off.title)}</div>
-                        <div class="text-[10px] text-on-surface-variant dark:text-warm-cream/60 truncate mt-1 leading-normal">${escapeHTML(off.desc || 'No description provided')}</div>
-                        <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
-                            <span class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[8px] font-bold bg-black/5 dark:bg-white/10 text-black dark:text-white">
-                                <span class="material-symbols-outlined text-[10px]">${iconName}</span>
-                                ${escapeHTML(off.category)}
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <!-- Right Check Indicator -->
-                    <div class="swap-listing-check-indicator w-5 h-5 rounded-full border border-black/20 dark:border-white/20 flex items-center justify-center flex-shrink-0 ml-auto transition-all bg-transparent">
-                        <span class="material-symbols-outlined text-[12px] text-white opacity-0 select-none font-bold">check</span>
-                    </div>
-                `;
-                btn.onclick = () => selectSwapListingBox(off.id);
-                grid.appendChild(btn);
-            });
-        } else {
-            const emptyMsg = document.createElement('p');
-            emptyMsg.className = 'text-[10px] text-outline col-span-2 italic mb-1 text-left';
-            emptyMsg.innerText = "No active listings on your profile.";
-            grid.appendChild(emptyMsg);
-        }
-    }
-    
-    const modal = document.getElementById('offer-swap-modal');
-    const inner = document.getElementById('offer-swap-container');
-    if (modal && inner) {
-        modal.classList.remove('opacity-0', 'pointer-events-none');
-        modal.classList.add('opacity-100');
-        inner.classList.remove('translate-y-full');
-        inner.classList.add('translate-y-0');
-    }
-    if (typeof playSound === 'function') playSound('click');
 }
 
 function selectSwapListingBox(id) {
@@ -30208,7 +30097,7 @@ function submitOfferSwapProposal(isKarma) {
 
     if (isKarma) {
         const req = conv.negotiation.requestedItem || "item";
-        msgText = `Hey! I'm really interested in your "${req}". I don't have anything to trade right now, but would you be open to a Karma Swap? You'd receive +50 Karma Points for helping a neighbor, and it would mean the world to me! ❤️✨`;
+        msgText = `I'd love a Karma Swap for your ${req}.`;
         conv.negotiation.isKarmaSwap = true;
     } else {
         const req = conv.negotiation.requestedItem || "item";
@@ -31301,7 +31190,7 @@ window.openFusedReviewModal = function(neighborName, convId, reviewId) {
         avatarEl.src = neighbor ? neighbor.avatar : "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop";
     }
 
-    // Karma points & Badge
+    // Karma points & Badge & Swaps Count
     const nKarma = neighbor ? (neighbor.karmaPoints !== undefined ? neighbor.karmaPoints : ((neighbor.vouches || 0) * 12 + 30)) : 50;
     const karmaEl = document.getElementById('confirm-swap-karma-points');
     if (karmaEl) {
@@ -31311,6 +31200,13 @@ window.openFusedReviewModal = function(neighborName, convId, reviewId) {
     if (badgeEl) {
         badgeEl.innerText = getUserBadgeText(nKarma);
     }
+    const swapsCountEl = document.getElementById('confirm-swap-swaps-count');
+    if (swapsCountEl) {
+        swapsCountEl.innerText = neighbor ? (neighbor.vouches || 0) : 0;
+    }
+
+    // Social icons — same as neighbor profile modal
+    populateSocialsUI('confirm-swap-socials-container', neighbor);
 
     // Details of items being swapped
     const detailsEl = document.getElementById('confirm-swap-items-details');
@@ -31377,7 +31273,7 @@ window.openFusedReviewModal = function(neighborName, convId, reviewId) {
     const feedbackTextarea = document.getElementById('confirm-swap-written-feedback');
     if (feedbackTextarea) {
         feedbackTextarea.value = "";
-        feedbackTextarea.placeholder = `Tell us more details about your swap with ${neighborName} (optional)...`;
+        feedbackTextarea.placeholder = "Details (optional)...";
     }
 
     // Reset tag buttons styling
@@ -31849,12 +31745,9 @@ window.openSwapLifecycleModal = function(role, conversationId) {
     state.selectedSwapListingId = null;
     
     if (role === 'initiator') {
-        const initiatedBy = window.getConversationInitiatedBy(conv);
-        const isOfferingVersion = (initiatedBy === 'need');
-        
-        const listHeading = isOfferingVersion ? "My Items to Offer" : "My Needs";
-        const itemsList = isOfferingVersion ? (state.userOfferings || []) : (state.userNeeds || []);
-        const noItemsText = isOfferingVersion ? "No active listings on your profile." : "No active needs on your profile.";
+        const listHeading = "My Items to Offer";
+        const itemsList = state.userOfferings || [];
+        const noItemsText = "No active listings on your profile.";
 
         container.innerHTML = `
             <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
@@ -31876,24 +31769,41 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                     <input type="text" id="lifecycle-custom-text" class="w-full bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl p-3 text-xs outline-none focus:ring-1 focus:ring-forest-green text-on-surface" placeholder="Type an item name..."/>
                 </div>
 
-                <!-- For karma -->
+                <!-- For Karma -->
                 <div class="flex flex-col gap-1.5 shrink-0">
-                    <span class="popup-modal-desc block text-left">For karma</span>
+                    <span class="popup-modal-desc block text-left">For Karma</span>
                     <label class="flex items-center gap-3 p-3 bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl cursor-pointer select-none transition-all hover:bg-forest-green/5 border-black/10 dark:border-white/10">
                         <input type="radio" id="karma-for-free-radio" name="karma-option" class="accent-forest-green w-4 h-4 cursor-pointer" value="free" />
-                        <span class="material-symbols-outlined text-[16px] text-[#308A5E] font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                        <span class="material-symbols-outlined text-[16px] text-[#ef4444] font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
                         <span class="text-xs text-black dark:text-white font-bold">For free (+20 karma points)</span>
                     </label>
                 </div>
             </div>
             
             <!-- Action buttons -->
-            <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-[calc(16px + env(safe-area-inset-bottom, 20px))]">
-                <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.submitLifecycleSwap(false)">Propose Swap</button>
+            <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-4">
+                <button id="lifecycle-submit-btn" disabled class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0 opacity-50 pointer-events-none" onclick="window.submitLifecycleSwap(false)">Propose Swap</button>
                 <button class="w-full bg-[#8e8e93] hover:bg-[#787880]/90 text-white py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0 mt-2" onclick="window.closeSwapLifecycleModal()">Never mind</button>
             </div>
         `;
         
+        function updateLifecycleSubmitBtnState() {
+            const btn = document.getElementById('lifecycle-submit-btn');
+            if (!btn) return;
+            const selectedListingId = state.selectedSwapListingId;
+            const customText = document.getElementById('lifecycle-custom-text')?.value.trim() || "";
+            const karmaRadio = document.getElementById('karma-for-free-radio')?.checked;
+            
+            const isValid = selectedListingId || customText || karmaRadio;
+            if (isValid) {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'pointer-events-none');
+            } else {
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'pointer-events-none');
+            }
+        }
+
         // Populate items in scroller
         const scroller = document.getElementById('lifecycle-offerings-scroller');
         if (scroller) {
@@ -31950,6 +31860,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                                 if (indicatorCheck) indicatorCheck.classList.add('opacity-0');
                             }
                         });
+                        updateLifecycleSubmitBtnState();
                     };
                     scroller.appendChild(card);
                 });
@@ -31980,6 +31891,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                         if (indicatorCheck) indicatorCheck.classList.add('opacity-0');
                     });
                 }
+                updateLifecycleSubmitBtnState();
             };
         }
 
@@ -32001,8 +31913,12 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                         if (indicatorCheck) indicatorCheck.classList.add('opacity-0');
                     });
                 }
+                updateLifecycleSubmitBtnState();
             };
         }
+        
+        // Initial button state check
+        updateLifecycleSubmitBtnState();
         
     } else if (role === 'receiver') {
         // Render Receiver View (Review swap proposal or karma request)
@@ -32049,7 +31965,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                 </div>
                 
                 <!-- Action buttons -->
-                <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-[calc(16px + env(safe-area-inset-bottom, 20px))]">
+                <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-4">
                     <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.acceptLifecycleProposedSwap('${conv.id}')">Accept Karma Swap</button>
                     <button class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="window.declineLifecycleProposedSwap('${conv.id}')">Decline Request</button>
                 </div>
@@ -32089,7 +32005,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                 </div>
                 
                 <!-- Action buttons -->
-                <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-[calc(16px + env(safe-area-inset-bottom, 20px))]">
+                <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-4">
                     <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.acceptLifecycleProposedSwap('${conv.id}')">Accept Swap</button>
                     <button class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="window.declineLifecycleProposedSwap('${conv.id}')">Decline Swap</button>
                 </div>
@@ -32154,10 +32070,7 @@ window.submitLifecycleSwap = function(isKarma) {
         const customText = document.getElementById('lifecycle-custom-text')?.value.trim() || "";
         const selectedListingId = state.selectedSwapListingId;
         if (selectedListingId) {
-            const initiatedBy = window.getConversationInitiatedBy(conv);
-            const isOfferingVersion = (initiatedBy === 'need');
-            const itemsList = isOfferingVersion ? (state.userOfferings || []) : (state.userNeeds || []);
-            const off = itemsList.find(o => o.id === selectedListingId);
+            const off = (state.userOfferings || []).find(o => o.id === selectedListingId) || (state.userNeeds || []).find(o => o.id === selectedListingId);
             if (off) {
                 offeredText = off.needTitle || off.title;
             }
@@ -32200,7 +32113,7 @@ window.submitLifecycleSwap = function(isKarma) {
     
     if (isKarma) {
         const req = conv.negotiation?.requestedItem || "item";
-        msgText = `Hey! I'm really interested in your "${req}". I don't have anything to trade right now, but would you be open to a Karma Swap? You'd receive +50 Karma Points for helping a neighbor, and it would mean the world to me! ❤️✨`;
+        msgText = `I'd love a Karma Swap for your ${req}.`;
         if (!conv.negotiation) conv.negotiation = {};
         conv.negotiation.isKarmaSwap = true;
     } else {
@@ -32634,9 +32547,18 @@ function initializeProfileSettingsAccordions() {
     // 4. Move Account Security elements
     const securityTarget = document.querySelector('#accordion-content-account-security');
     if (securityTarget) {
-        ['#settings-account-security-box', '#settings-admin-box', '#settings-session-box'].forEach(id => {
+        ['#settings-account-security-box'].forEach(id => {
             const el = document.querySelector(id);
             if (el) securityTarget.appendChild(el);
+        });
+    }
+
+    // Move Admin & Session elements
+    const adminSessionTarget = document.querySelector('#accordion-content-admin-session');
+    if (adminSessionTarget) {
+        ['#settings-admin-box', '#settings-session-box'].forEach(id => {
+            const el = document.querySelector(id);
+            if (el) adminSessionTarget.appendChild(el);
         });
     }
 
@@ -32660,7 +32582,35 @@ function initializeProfileSettingsAccordions() {
     });
 }
 
+function lockAppViewportScroll() {
+    const lock = () => {
+        if (window.scrollY !== 0 || window.scrollX !== 0) {
+            window.scrollTo(0, 0);
+        }
+        if (document.documentElement.scrollTop !== 0 || document.documentElement.scrollLeft !== 0) {
+            document.documentElement.scrollTo(0, 0);
+        }
+        if (document.body.scrollTop !== 0 || document.body.scrollLeft !== 0) {
+            document.body.scrollTo(0, 0);
+        }
+    };
+    
+    window.addEventListener('scroll', lock, { passive: true });
+    document.addEventListener('scroll', lock, { passive: true });
+    
+    document.addEventListener('focusin', (e) => {
+        if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+            requestAnimationFrame(lock);
+            setTimeout(lock, 20);
+            setTimeout(lock, 50);
+            setTimeout(lock, 100);
+            setTimeout(lock, 200);
+        }
+    }, true);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    lockAppViewportScroll();
     initializeProfileSettingsAccordions();
     initSearchBehavior();
     initKeyboardLayoutHandler();
@@ -32670,6 +32620,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    lockAppViewportScroll();
     initializeProfileSettingsAccordions();
     initSearchBehavior();
     initKeyboardLayoutHandler();

@@ -1354,7 +1354,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                 </div>
 
                 <!-- SYSTEM ALERT BANNER -->
-                <div id="system-maintenance-banner" class="hidden w-full bg-amber-500 text-white text-[10px] font-bold py-1.5 px-3 flex items-center justify-between z-[90] relative shrink-0">
+                <div id="system-maintenance-banner" class="hidden w-full bg-red-600 text-white text-[10px] font-bold py-1.5 px-3 flex items-center justify-between z-[90] relative shrink-0">
                     <span id="system-maintenance-text" class="flex items-center gap-1.5">
                         <span class="material-symbols-outlined text-sm font-semibold">warning</span>
                         <span>Maintenance scheduled tonight at 11 PM PST</span>
@@ -3141,7 +3141,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <!-- Synced Search Bar inside Bulletins View -->
                             <div class="relative flex-grow flex items-center">
                                 <span class="material-symbols-outlined text-forest-green absolute left-3.5 text-base">search</span>
-                                <input type="text" id="village-bulletins-search-input" placeholder="Search Items, Needs, or Gifts, Events" class="w-full h-10 pl-9 pr-10 bg-white border border-outline-variant/25 rounded-xl text-xs focus:border-outline-variant/25 focus:ring-0 outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500" oninput="syncVillageSearch(this.value);">
+                                <input type="text" id="village-bulletins-search-input" placeholder="Search Items, Needs, or Karma, Events" class="w-full h-10 pl-9 pr-10 bg-white border border-outline-variant/25 rounded-xl text-xs focus:border-outline-variant/25 focus:ring-0 outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500" oninput="syncVillageSearch(this.value);">
                                 <button id="btn-bulletins-search-clear" onclick="clearSearchInput('village-bulletins-search-input')" class="hidden absolute right-3 w-6 h-6 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 active:scale-90 transition-all text-black dark:text-white border-0 flex-shrink-0 shadow-sm" title="Clear Search">
                                     <span class="material-symbols-outlined text-[13px]">close</span>
                                 </button>
@@ -3189,22 +3189,25 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <!-- Content Container -->
                             <div class="px-6 pt-3 pb-6 space-y-3.5 text-left flex-grow">
                                 <div class="flex flex-col w-full">
-                                    <!-- Category and Status Badge -->
-                                    <div class="flex items-center justify-between">
-                                        <span id="map-detail-badge" class="text-black dark:text-white text-[12px] font-bold uppercase tracking-widest">Skills & Education</span>
+                                    <!-- Status Badge only (category name removed) -->
+                                    <div class="flex items-center justify-end">
+                                        <span id="map-detail-badge" class="hidden"></span>
                                         <div class="flex items-center gap-1.5 ml-2 flex-shrink-0" id="map-detail-status-container">
                                             <span class="text-[12px] font-extrabold text-black dark:text-white uppercase tracking-wider" id="map-detail-status-text">Available</span>
                                         </div>
                                     </div>
 
-                                    <!-- Title -->
-                                    <h1 id="map-detail-title" class="font-headline text-2xl font-bold text-forest-green dark:text-[#308A5E] leading-tight mt-2 mb-3">Produce</h1>
+                                    <!-- Title — left-aligned -->
+                                    <h1 id="map-detail-title" class="font-headline text-2xl font-bold text-forest-green dark:text-[#308A5E] leading-tight mt-2 mb-3 text-left">Produce</h1>
 
-                                    <!-- Author info -->
+                                    <!-- Green line above the author info -->
+                                    <hr class="border-forest-green/40 my-3" />
+
+                                    <!-- Author info (with "Offered by" label) -->
                                     <div class="text-[12px] text-black dark:text-white flex items-center gap-2 cursor-pointer font-bold tracking-widest" onclick="handleMapDetailAuthorClick()">
                                         <div class="profile-avatar-no-ring w-8 h-8 flex-shrink-0" style="margin: 0 !important;"><img id="map-detail-author-avatar" alt="Profile" class="w-full h-full object-cover rounded-full" src=""></div>
                                         <span class="flex items-center">Offered by&nbsp;<span id="map-detail-author-name" class="font-bold">Mia</span></span>
-                                        <!-- Removed verified badge -->
+                                        <!-- Removed verified badge and "Offered by" label -->
                                     </div>
                                 </div>
 
@@ -3296,16 +3299,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <!-- Content Container -->
                             <div class="px-6 pt-3 pb-6 space-y-3.5 text-left flex-grow">
                                 <div class="flex flex-col w-full">
-                                    <!-- Category and Date Badge -->
-                                    <div class="flex items-center justify-between">
-                                        <span id="map-event-detail-badge" class="text-black dark:text-white text-[12px] font-bold uppercase tracking-widest">Community Event</span>
-                                        <div class="text-right">
-                                            <span id="map-event-detail-date-badge" class="text-xs font-bold text-black dark:text-white">Sat, May 30</span>
-                                        </div>
-                                    </div>
-
                                     <!-- Title -->
                                     <h1 id="map-event-detail-title" class="font-headline text-2xl font-bold text-forest-green dark:text-[#308A5E] leading-tight mt-2.5 mb-5">Event Title</h1>
+
+                                    <!-- Green line above the host info -->
+                                    <hr class="border-forest-green/40 my-3" />
 
                                     <!-- Host info -->
                                     <div class="text-[12px] text-black dark:text-white flex items-center gap-2 cursor-pointer font-bold tracking-widest" onclick="handleMapEventDetailHostClick()">
@@ -3557,8 +3555,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <div id="chat-header-expiry-container" class="hidden flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 font-bold px-1.5 py-0.5 rounded-lg text-[9px] select-none cursor-pointer active:scale-95 transition-transform" onclick="simulateChatExpiration()" title="Tap to simulate 24h expiration">
                                 <span id="chat-header-expiry-val">24h left</span>
                             </div>
-                            <!-- Complete Swap Checkmark Button -->
-                            <button id="chat-header-complete-btn" onclick="window.openConfirmSwapRatingModal(state.currentConversationId)" class="w-10 h-10 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-[#2a352d] flex-shrink-0 shadow-sm hidden" title="Complete Swap">
+                            <!-- Complete Swap Checkmark Button (Hidden per user request) -->
+                            <button id="chat-header-complete-btn" style="display: none !important;" onclick="window.openConfirmSwapRatingModal(state.currentConversationId)" class="w-10 h-10 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-[#2a352d] flex-shrink-0 shadow-sm hidden" title="Complete Swap">
                                 <span class="material-symbols-outlined text-[20px] font-black text-forest-green dark:text-emerald-400">check_circle</span>
                             </button>
                         </div>
@@ -3892,6 +3890,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <!-- Title -->
                             <h1 id="event-detail-title" class="font-headline text-2xl font-bold text-forest-green dark:text-[#308A5E] leading-tight mt-2.5 mb-5">Event Title</h1>
 
+                            <!-- Green line above the host info -->
+                            <hr class="border-forest-green/40 my-3" />
+
                             <!-- Host info -->
                             <div class="text-[12px] text-black dark:text-white flex items-center gap-2 cursor-pointer font-bold tracking-widest" onclick="handleEventDetailHostClick()">
                                 <div class="profile-avatar-no-ring w-8 h-8 flex-shrink-0" style="margin: 0 !important;"><img id="event-detail-host-avatar" alt="Profile" class="w-full h-full object-cover rounded-full" src=""></div>
@@ -3983,6 +3984,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
                 <section id="view-offer" class="screen-view flex-grow pb-4 overflow-hidden relative flex flex-col justify-start pt-0">
                     <!-- A. Listing Mode Selector Screen -->
                     <div id="offer-type-selector-screen" class="px-6 flex flex-col items-center justify-start gap-3.5 max-w-sm mx-auto text-center w-full pt-14 pb-4">
+                        <!-- X Close Button -->
+                        <button type="button" onclick="showView('village'); if(typeof playSound==='function') playSound('click');" class="absolute top-4 left-4 w-9 h-9 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center active:scale-90 transition-transform hover:bg-black/10 dark:hover:bg-white/20 z-10" title="Close">
+                            <span class="material-symbols-outlined text-[18px] text-black dark:text-white font-bold">close</span>
+                        </button>
                         <div class="w-16 h-16 rounded-2xl bg-forest-green/10 dark:bg-emerald-500/10 flex items-center justify-center text-forest-green dark:text-emerald-400 mb-1 shadow-sm">
                             <span class="material-symbols-outlined text-3xl text-forest-green dark:text-emerald-400">post_add</span>
                         </div>
@@ -4272,10 +4277,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <div class="flex items-center gap-2.5">
                                     <input type="checkbox" id="karma-checkbox" class="w-4 h-4 rounded border-outline-variant text-forest-green focus:ring-forest-green cursor-pointer" onchange="handleKarmaCheckboxChange(this)" onclick="event.stopPropagation();">
                                     <label for="karma-checkbox" class="text-xs font-bold text-on-surface cursor-pointer flex-grow flex items-center justify-between" onclick="event.stopPropagation();">
-                                        <span id="karma-checkbox-text" class="text-on-surface dark:text-warm-cream">Offer for free (Get Karma points)</span>
+                                        <span id="karma-checkbox-text" class="text-on-surface dark:text-warm-cream">Offer for free</span>
                                         <div class="flex items-center justify-center bg-red-500/5 dark:bg-black/20 rounded-lg px-2 py-0.5 border border-outline-variant/35 shrink-0 select-none">
-                                            <span class="material-symbols-outlined text-xs mr-0.5" style="color: #ef4444 !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
-                                            <span id="karma-score-display" class="text-[10px] font-black text-on-surface dark:text-warm-cream">+50 XP</span>
+                                            <span class="material-symbols-outlined text-sm mr-0.5" style="color: #ef4444 !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
+                                            <span id="karma-score-display" class="text-[10px] font-black text-on-surface dark:text-warm-cream">+50 pts</span>
                                         </div>
                                     </label>
                                 </div>
@@ -4294,7 +4299,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                                     <div class="flex justify-between items-center text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">
                                         <span id="karma-anim-level-label" class="text-on-surface-variant">Level 2: Active Neighbor</span>
-                                        <span id="karma-anim-gained-label" class="text-emerald-600 dark:text-emerald-400 font-bold animate-bounce">+50 XP Gained!</span>
+                                        <span id="karma-anim-gained-label" class="text-emerald-600 dark:text-emerald-400 font-bold animate-bounce">+50 Karma!</span>
                                     </div>
                                 </div>
                             </div>
@@ -4382,13 +4387,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                             <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
                                 <!-- Self Karma Points Badge -->
-                                <div id="settings-profile-karma-container" class="flex items-center gap-1.5 text-xs text-red-700 dark:text-red-400 font-bold cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('karma')">
+                                <div id="settings-profile-karma-container" class="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 font-bold cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('karma')">
                                     <span class="material-symbols-outlined text-base" style="color: #ef4444 !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
                                     <span id="settings-profile-karma">0 Karma</span>
                                 </div>
                                 <!-- Self Swaps Completed Badge -->
-                                <div id="settings-profile-swaps-container" class="flex items-center gap-1.5 text-xs text-blue-700 dark:text-blue-400 font-bold cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('swaps')">
-                                    <span class="material-symbols-outlined text-base" style="color: #2563eb !important; font-variation-settings: 'FILL' 1 !important;">handshake</span>
+                                <div id="settings-profile-swaps-container" class="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 font-bold cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('swaps')">
+                                    <span class="material-symbols-outlined text-base" style="color: #308A5E !important; font-variation-settings: 'FILL' 1 !important;">handshake</span>
                                     <span id="settings-profile-swaps">0 Swaps</span>
                                 </div>
                             </div>
@@ -4603,11 +4608,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </div>
                         </div>
 
-                        <!-- Account Security Accordion -->
+                        <!-- Account Accordion -->
                         <div class="space-y-2 w-full">
                             <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="toggleProfileAccordion('account-security')">
                                 <span class="flex items-center gap-2 text-black dark:text-white">
-                                    <span class="material-symbols-outlined text-base text-blue-600 dark:text-blue-400">security</span> Account Security, Admin & Session
+                                    <span class="material-symbols-outlined text-base text-blue-600 dark:text-blue-400">security</span> Account
                                 </span>
                                 <span id="accordion-chevron-account-security" class="material-symbols-outlined text-outline dark:text-neutral-400 transition-transform duration-200">chevron_right</span>
                             </button>
@@ -4616,11 +4621,24 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </div>
                         </div>
 
+                        <!-- Admin Accordion -->
+                        <div class="space-y-2 w-full">
+                            <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="toggleProfileAccordion('admin-session')">
+                                <span class="flex items-center gap-2 text-black dark:text-white">
+                                    <span class="material-symbols-outlined text-base text-neutral-600 dark:text-neutral-400">admin_panel_settings</span> Admin
+                                </span>
+                                <span id="accordion-chevron-admin-session" class="material-symbols-outlined text-outline dark:text-neutral-400 transition-transform duration-200">chevron_right</span>
+                            </button>
+                            <div id="accordion-content-admin-session" class="hidden mt-2 p-4 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl shadow-inner text-left overflow-hidden">
+                                <!-- Loaded dynamically on initialize -->
+                            </div>
+                        </div>
+
                         <!-- Definitions & Guidance Accordion -->
                         <div class="space-y-2 w-full">
                             <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="toggleProfileAccordion('definitions-guidance')">
                                 <span class="flex items-center gap-2 text-black dark:text-white">
-                                    <span class="material-symbols-outlined text-base text-violet-600 dark:text-violet-400">menu_book</span> Definitions & guidance
+                                    <span class="material-symbols-outlined text-base text-violet-600 dark:text-violet-400">menu_book</span> Definitions & Guidance
                                 </span>
                                 <span id="accordion-chevron-definitions-guidance" class="material-symbols-outlined text-outline dark:text-neutral-400 transition-transform duration-200">chevron_right</span>
                             </button>
@@ -4652,6 +4670,24 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </button>
                             <div id="accordion-content-help-improve" class="hidden mt-2 p-4 pb-2 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl shadow-inner text-left overflow-hidden">
                                 <!-- Loaded dynamically on initialize -->
+                            </div>
+                        </div>
+
+                        <!-- Support Accordion -->
+                        <div class="space-y-2 w-full">
+                            <button class="w-full flex items-center justify-between p-4 bg-gray-100 dark:bg-[#18201a] hover:bg-neutral-50 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl active:scale-[0.99] transition-transform text-xs cursor-pointer font-bold" onclick="toggleProfileAccordion('support')">
+                                <span class="flex items-center gap-2 text-black dark:text-white">
+                                    <span class="material-symbols-outlined text-base text-emerald-600 dark:text-emerald-400">mail</span> Email Support
+                                </span>
+                                <span id="accordion-chevron-support" class="material-symbols-outlined text-outline dark:text-neutral-400 transition-transform duration-200">chevron_right</span>
+                            </button>
+                            <div id="accordion-content-support" class="hidden mt-2 p-4 bg-white dark:bg-[#101612] border border-black/10 dark:border-white/10 rounded-xl shadow-inner text-left overflow-hidden">
+                                <p class="text-xs text-on-surface-variant dark:text-warm-cream/80 leading-relaxed mb-3">
+                                    Need help with your account, have a dispute, or have questions about using Corner Swaps? Our support team is here to assist you.
+                                </p>
+                                <div class="text-sm border-t border-black/5 dark:border-white/5 pt-2.5">
+                                    <a href="mailto:cornerswaps@gmail.com" class="text-forest-green dark:text-[#308A5E] font-bold hover:underline">cornerswaps@gmail.com</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -4979,9 +5015,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                     <!-- ==================================================== -->
                 <!-- 11. REVIEW RATING FULL SCREEN VIEW -->
                 <!-- ==================================================== -->
-                <section id="view-review_rating" class="screen-view flex-grow flex flex-col h-full overflow-hidden bg-warm-cream dark:bg-[#18201a] pt-4 select-none hidden">
+                <section id="view-review_rating" class="screen-view flex-grow flex flex-col h-full overflow-hidden bg-white dark:bg-[#101612] pt-0 select-none hidden">
                     <!-- Glassmorphic Header -->
-                    <div class="px-6 bg-warm-cream dark:bg-[#18201a] flex items-center justify-between z-10 shrink-0 select-none gap-3" style="height: 64px !important; border-bottom: none !important;">
+                    <div id="confirm-swap-header" class="absolute top-0 left-0 right-0 px-6 bg-transparent flex items-center justify-between z-30 select-none gap-3" style="height: 64px !important; border-bottom: none !important;">
                         <!-- Back Button -->
                         <button onclick="closeConfirmSwapRatingModal()" class="w-10 h-10 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-[#2a352d] flex-shrink-0 shadow-sm">
                             <span class="material-symbols-outlined text-[20px] font-black">arrow_back_ios_new</span>
@@ -4991,38 +5027,42 @@ svg.leaflet-image-layer.leaflet-interactive path {
                     </div>
 
                     <!-- Scrollable Container -->
-                    <div class="overflow-y-auto custom-scrollbar flex-grow p-6 flex flex-col justify-start gap-4 pb-20">
-                        <!-- Top Header Section (No container card, same profile layout style) -->
-                        <div class="flex flex-col items-center gap-2 w-full" style="background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin-top: 5px !important;">
-                            <!-- Badge -->
-                            <span id="confirm-swap-badge" class="px-2.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-forest-green/10 text-forest-green dark:bg-emerald-600/20 dark:text-emerald-400 mt-1 select-none">Community Member</span>
-                            
-                            <!-- Avatar and Name -->
-                            <div class="profile-avatar-ring w-24 h-24 flex-shrink-0 relative mt-1 cursor-pointer active:scale-95 transition-transform" onclick="event.stopPropagation(); openNeighborProfileModal(document.getElementById('confirm-swap-neighbor-name').innerText.trim())">
+                    <div id="confirm-swap-scroll-container" class="flex-grow overflow-y-auto px-6 pt-16 pb-20 custom-scrollbar" style="-webkit-overflow-scrolling: touch;">
+
+                        <!-- Profile Header — same layout as own profile golden standard -->
+                        <section class="flex flex-col items-center mb-16 select-none" style="margin-top: 70px !important;">
+                            <!-- Avatar -->
+                            <div id="confirm-swap-avatar-container" class="profile-avatar-ring w-28 h-28 flex-shrink-0 relative active:scale-[0.98] transition-transform duration-150" onclick="event.stopPropagation(); openNeighborProfileModal(document.getElementById('confirm-swap-neighbor-name').innerText.trim())">
                                 <img id="confirm-swap-avatar" src="" class="w-full h-full object-cover rounded-full animate-fade-in" alt="Neighbor Avatar">
                             </div>
-                            <h3 class="font-headline font-extrabold text-black dark:text-white text-lg mt-1 cursor-pointer hover:underline" id="confirm-swap-neighbor-name" style="font-weight: 800 !important; margin-bottom: 0 !important;" onclick="event.stopPropagation(); openNeighborProfileModal(document.getElementById('confirm-swap-neighbor-name').innerText.trim())">Neighbor Name</h3>
-                            
-                            <!-- Karma Points -->
-                            <div class="flex items-center gap-1.5 mt-0.5 text-xs font-bold text-red-600 dark:text-red-400 select-none">
-                                <span class="material-symbols-outlined text-sm font-bold" style="font-variation-settings: 'FILL' 1; color: #ef4444 !important;">favorite</span>
-                                <span id="confirm-swap-karma-points">50</span> Karma Points
-                            </div>
-                        </div>
 
-                        <!-- Swap Section -->
-                        <div class="text-left bg-black/[0.02] dark:bg-white/[0.02] border border-black/10 dark:border-white/10 p-4 rounded-xl space-y-2">
-                            <h4 class="text-[10px] font-bold text-black/60 dark:text-white/60 uppercase tracking-widest">swap</h4>
-                            <div class="flex flex-col gap-2">
-                                <img id="confirm-swap-listing-image" src="" class="w-full h-32 object-cover rounded-xl" alt="Swap Listing Image" />
-                                <h5 id="confirm-swap-listing-title" class="text-xs font-bold text-black dark:text-white"></h5>
+                            <!-- Name + Badge -->
+                            <div class="mt-6 text-center">
+                                <h2 class="text-2xl text-black dark:text-warm-cream font-headline font-bold cursor-pointer hover:underline" id="confirm-swap-neighbor-name" style="font-weight: 800 !important; margin-bottom: 0 !important;" onclick="event.stopPropagation(); openNeighborProfileModal(document.getElementById('confirm-swap-neighbor-name').innerText.trim())">Neighbor Name</h2>
+                                <div class="flex items-center justify-center gap-1.5 mt-1.5 mb-1">
+                                    <span class="material-symbols-outlined text-xs text-forest-green dark:text-emerald-400 opacity-90">location_on</span>
+                                    <span id="confirm-swap-badge" class="text-[8px] font-bold uppercase tracking-widest text-black dark:text-warm-cream/70">Community Member</span>
+                                </div>
                             </div>
-                        </div>
+
+                            <!-- Social Media Icons — same as own profile -->
+                            <div id="confirm-swap-socials-container" class="flex items-center justify-center gap-4 mt-4 mb-2 hidden"></div>
+
+                            <!-- Karma & Swaps -->
+                            <div class="flex items-center justify-center gap-3 mt-2 flex-wrap">
+                                <div class="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 font-bold select-none">
+                                    <span class="material-symbols-outlined text-base" style="color: #ef4444 !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
+                                    <span id="confirm-swap-karma-points">50</span> Karma
+                                </div>
+                                <div class="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 font-bold select-none">
+                                    <span class="material-symbols-outlined text-base" style="color: #308A5E !important; font-variation-settings: 'FILL' 1 !important;">handshake</span>
+                                    <span id="confirm-swap-swaps-count">0</span> Swaps
+                                </div>
+                            </div>
+                        </section>
 
                         <!-- Review Section -->
                         <div class="text-left space-y-3">
-                            <h4 class="text-[10px] font-bold text-black/60 dark:text-white/60 uppercase tracking-widest">review</h4>
-                            
                             <!-- Thumbs up & Thumbs down left-to-right -->
                             <div class="grid grid-cols-2 gap-3">
                                 <!-- Thumbs Up -->
@@ -5060,14 +5100,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </div>
                         </div>
 
-                        <!-- Optional Written Review -->
-                        <div class="text-left space-y-1.5">
-                            <label id="confirm-swap-written-feedback-label" class="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider block">Write a public review for Neighbor Name:</label>
-                            <textarea id="confirm-swap-written-feedback" class="w-full bg-white dark:bg-[#1b261f] border border-outline-variant/30 dark:border-outline-variant/20 rounded-xl p-3 text-xs focus:border-forest-green focus:ring-0 outline-none text-black dark:text-white placeholder:text-outline/40 dark:placeholder:text-warm-cream/35 leading-relaxed" rows="3" placeholder="Tell us more details about your swap (optional)..."></textarea>
-                        </div>
-
                         <!-- Bottom Primary Actions Stack -->
                         <div class="flex flex-col gap-3 pt-3">
+                            <!-- Swap Not Complete Button -->
+                            <button id="fused-cancel-btn" class="w-full h-12 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-black dark:text-white rounded-xl text-xs font-bold active:scale-[0.98] transition-transform shadow-sm cursor-pointer flex items-center justify-center gap-1.5" onclick="notCompletedFusedReview()">
+                                Swap Not Complete
+                            </button>
+
                             <!-- Submit Button -->
                             <button id="fused-submit-btn" class="w-full h-12 bg-forest-green hover:bg-forest-green/90 text-warm-cream rounded-xl text-xs font-bold active:scale-[0.98] transition-transform shadow cursor-pointer border-0 flex items-center justify-center gap-1.5" onclick="submitFusedReview()">
                                 <span class="material-symbols-outlined text-sm font-bold">check_circle</span> Submit
@@ -5077,14 +5116,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <button id="fused-skip-btn" class="w-full h-12 bg-white dark:bg-[#1b261f] border border-outline-variant/30 text-on-surface dark:text-white rounded-xl text-xs font-bold active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm" onclick="skipFusedReview()">
                                 Skip
                             </button>
-
-                            <!-- Red Button on the Bottom -->
-                            <button id="fused-cancel-btn" class="w-full h-12 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold active:scale-[0.98] transition-transform shadow cursor-pointer border-0 flex items-center justify-center gap-1.5" onclick="notCompletedFusedReview()">
-                                Swap Not Complete
-                            </button>
                         </div>
                     </div>
                 </section>
+
 
                   <!-- CONGRATS EVENT MODAL -->
                   <div id="congrats-event-modal" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-6 select-none animate-fade-in">
@@ -5145,7 +5180,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                 <!-- OFFER SWAP MODAL -->
                 <div class="fixed inset-0 z-[60] flex items-end justify-center transition-all duration-300 opacity-0 pointer-events-none" id="offer-swap-modal">
                     <div class="absolute inset-0 bg-forest-green/20 backdrop-blur-sm" onclick="closeOfferSwapModal()"></div>
-                    <div class="relative bg-white dark:bg-[#18201a] w-full max-w-[600px] rounded-t-3xl shadow-2xl px-6 pt-6 pb-10 transform transition-transform duration-300 translate-y-full" id="offer-swap-container">
+                    <div class="relative bg-white dark:bg-[#18201a] w-full max-w-[600px] rounded-t-3xl shadow-2xl px-6 pt-6 transform transition-transform duration-300 translate-y-full flex flex-col max-h-[90vh]" id="offer-swap-container" style="padding-bottom: max(2.5rem, env(safe-area-inset-bottom, 1rem) + 1.5rem);">
                         <div class="w-16 h-1.5 bg-outline-variant/50 rounded-full mx-auto mb-6 cursor-pointer hover:bg-outline-variant/70 active:scale-95 transition-all" onclick="closeOfferSwapModal()" title="Dismiss"></div>
                         <div id="offer-swap-modal-body">
                             <!-- Dynamic Content Rendered in app.js -->
@@ -5805,25 +5840,21 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                     <div class="flex-grow overflow-y-auto custom-scrollbar px-6 py-6 space-y-4">
                         <!-- Lead-in text -->
-                        <p class="text-xs text-on-surface-variant dark:text-warm-cream/80 leading-relaxed mb-4 text-left">
-                            Have feedback, found an issue, or have ideas for new features? Let us know below! Your suggestions go directly to our product and design teams.
+                        <p class="text-[11px] text-on-surface-variant dark:text-warm-cream/70 leading-relaxed mb-4 text-left">
+                            Have feedback, found an issue, or have ideas for new features? Let us know below — your suggestions go directly to our product team.
                         </p>
 
                         <!-- Feedback Guidelines & Contact Card -->
                         <div class="bg-cyan-500/5 dark:bg-cyan-500/10 p-5 rounded-2xl border border-cyan-500/20 shadow-sm flex flex-col gap-3 text-left">
                             <h3 class="text-xs font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-base">info</span> How we use your feedback
+                                <span class="material-symbols-outlined text-base">info</span> Help Us Improve
                             </h3>
                             <p class="text-xs text-on-surface-variant dark:text-warm-cream/80 leading-relaxed">
                                 Corner Swaps is built for the neighborhood, by the neighborhood. We read every single submission and use them to shape future updates.
                             </p>
-                            <p class="text-xs text-on-surface-variant dark:text-on-surface-variant/80 leading-relaxed">
-                                Share suggestions to help us refine the user experience, layout, colors, and overall application flow. Report bugs by describing what you were doing, what went wrong, and what device you are currently on. Pitch features by explaining how your idea helps the neighborhood connect or swap items.
+                            <p class="text-[11px] text-on-surface-variant dark:text-warm-cream/70 leading-relaxed">
+                                Share suggestions to help us refine the user experience, layout, colors, and flow. Report bugs by describing what happened and what device you are on. Pitch features by explaining how your idea helps neighbors connect and swap.
                             </p>
-                            <div class="border-t border-cyan-500/10 pt-3 mt-1 flex items-center justify-between text-[11px]">
-                                <span class="font-semibold text-cyan-700 dark:text-cyan-400">Need urgent support?</span>
-                                <a href="mailto:support@cornerswaps.com" class="text-forest-green dark:text-[#308A5E] font-bold hover:underline">support@cornerswaps.com</a>
-                            </div>
                         </div>
 
                         <!-- Option 1: Suggestions / Feedback -->
@@ -5919,7 +5950,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- Profile Info Edit Box -->
                         <div id="settings-profile-details-box" class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-4">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-blue-600 dark:text-blue-400">person</span> Profile Details<span id="profile-saved-checkmark" class="hidden material-symbols-outlined text-sm text-emerald-500" style="transition: opacity 0.3s;">check_circle</span>
+                                <span class="material-symbols-outlined text-sm text-blue-600 dark:text-blue-400">person</span> Profile Details
                             </h3>
                             <div class="space-y-3">
                                 <div class="grid grid-cols-2 gap-2">
@@ -6262,7 +6293,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- Account Security Box -->
                         <div id="settings-account-security-box" class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-2 space-y-4">
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-blue-600 dark:text-blue-400">security</span> Account Security
+                                <span class="material-symbols-outlined text-sm text-blue-600 dark:text-blue-400">security</span> Account
                             </h3>
                             <button class="w-full h-12 bg-black/[0.02] dark:bg-white/[0.02] border border-black/10 dark:border-white/10 text-black dark:text-white font-bold text-xs rounded-xl active:scale-[0.98] transition-all text-left px-4 flex items-center justify-between cursor-pointer" onclick="openChangePasswordModal()">
                                 Change Password
@@ -6276,6 +6307,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 Delete Account
                                 <span class="material-symbols-outlined text-sm">delete</span>
                             </button>
+                            <button class="w-full h-12 bg-black/[0.02] dark:bg-white/[0.02] border border-black/10 dark:border-white/10 text-rose-600 dark:text-rose-400 font-bold text-xs rounded-xl active:scale-[0.98] transition-all text-left px-4 flex items-center justify-between cursor-pointer hover:bg-rose-500/5" onclick="handleLogout()">
+                                Log Out
+                                <span class="material-symbols-outlined text-sm">logout</span>
+                            </button>
                         </div>
 
                         <!-- Administration & Moderation Locks Box -->
@@ -6283,24 +6318,16 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
                                 <span class="material-symbols-outlined text-sm text-neutral-600 dark:text-neutral-400">terminal</span> Admin
                             </h3>
-                            <!-- Admin Moderation Logs Panel CTA -->
+                            <!-- Admin Login CTA only -->
                             <button class="w-full h-12 bg-black/[0.02] dark:bg-white/[0.02] border border-black/10 dark:border-white/10 text-black dark:text-white font-bold text-xs rounded-xl active:scale-[0.98] transition-all text-left px-4 flex items-center justify-between hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer" onclick="showView('admin_panel')">
-                                Admin Moderation Logs
+                                Admin Login
                                 <span class="material-symbols-outlined text-sm">terminal</span>
                             </button>
                         </div>
 
 
-                        <!-- Exit / Logout Box -->
-                        <div id="settings-session-box" class="bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex-shrink-0 mb-6 space-y-2">
-                            <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-1.5 flex items-center gap-1.5 select-none">
-                                <span class="material-symbols-outlined text-sm text-red-600 dark:text-red-400">logout</span> Session
-                            </h3>
-                            <button class="w-full h-12 bg-black/[0.02] dark:bg-white/[0.02] border border-error/30 text-error font-bold text-xs rounded-xl active:scale-[0.98] transition-all text-left px-4 flex items-center justify-between hover:bg-error/5 cursor-pointer" onclick="handleLogout()">
-                                Logout
-                                <span class="material-symbols-outlined text-sm">logout</span>
-                            </button>
-                        </div>
+                        <!-- Session Box (hidden, kept for JS reference) -->
+                        <div id="settings-session-box" class="hidden"></div>
                         <!-- Spacer to prevent bottom cutoff on iOS WebKit -->
                         <div class="h-4 flex-shrink-0"></div>
                     </div>
@@ -7685,6 +7712,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         
                         <!-- Header -->
                         <div class="relative flex flex-col items-center justify-center mb-4 border-b border-black/10 dark:border-white/10 pb-3 shrink-0">
+                            <!-- Close button "X" in top-left -->
+                            <button class="absolute top-0 left-0 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm z-10" onclick="closeSuggestMeetingSpotModal()">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
+                            </button>
                             <h3 id="meetup-safety-title" class="popup-modal-title text-center mb-1">Exchange Safety Guidelines</h3>
                             <p id="meetup-safety-subtitle" class="popup-modal-desc text-center text-xs mt-0.5">Community guidelines for arranging a meetup!</p>
                         </div>
@@ -7692,7 +7723,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- Scrollable Content -->
                         <div class="flex-grow overflow-y-auto space-y-4 pr-1 no-scrollbar mb-4 min-h-0">
                             <!-- Map area (Enlarged) -->
-                            <div class="w-full h-[260px] rounded-2xl border border-outline-variant/30 overflow-hidden relative shrink-0">
+                            <div class="w-full h-[200px] rounded-2xl border border-outline-variant/30 overflow-hidden relative shrink-0">
                                 <div id="meeting-spot-map" class="w-full h-full"></div>
                                 <!-- Tap hint animation -->
                                 <div id="map-tap-indicator" class="hidden pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[1000] flex flex-col items-center justify-center">
@@ -7727,7 +7758,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
 
                         <!-- Confirm Meeting Location Button (Forest Green) -->
-                        <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-[calc(16px + env(safe-area-inset-bottom, 20px))]">
+                        <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-4">
                             <button id="btn-confirm-meeting-spot" class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer border-0 disabled:opacity-50 disabled:pointer-events-none" onclick="confirmMeetingSpotSuggestion()" disabled>
                                 <span class="material-symbols-outlined text-sm">check_circle</span> Confirm Meeting Location
                             </button>
@@ -7830,8 +7861,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </div>
                             
                             <!-- Details underneath that box separate -->
-                            <div class="mt-6 text-center">
-                                <div class="flex items-center justify-center gap-1.5 mb-1.5" id="neighbor-profile-badge-row">
+                            <div class="mt-4 text-center">
+                                <div class="flex items-center justify-center gap-1.5 mb-1.5 hidden" id="neighbor-profile-badge-row">
                                     <span class="material-symbols-outlined text-xs text-black dark:text-warm-cream opacity-90" id="neighbor-profile-badge-icon">verified_user</span>
                                     <span class="text-[8px] font-bold uppercase tracking-widest text-black dark:text-warm-cream/70" id="neighbor-profile-badge-text">Community Member</span>
                                 </div>
@@ -7843,13 +7874,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                 <div class="flex items-center justify-center gap-3 mt-3 flex-wrap" id="neighbor-profile-stats-row">
                                     <div id="neighbor-profile-rating-display" class="hidden items-center gap-1 text-[10px] text-amber-500 font-bold"></div>
                                     <!-- Neighbor Karma Points Badge -->
-                                    <div id="neighbor-profile-karma-container" class="flex items-center gap-1.5 text-xs text-red-700 dark:text-red-400 font-bold cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('karma')">
+                                    <div id="neighbor-profile-karma-container" class="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 font-bold cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('karma')">
                                         <span class="material-symbols-outlined text-base" style="color: #ef4444 !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
                                         <span id="neighbor-profile-karma">0 Karma</span>
                                     </div>
                                     <!-- Neighbor Swaps Completed Badge -->
-                                    <div id="neighbor-profile-swaps-container" class="flex items-center gap-1.5 text-xs text-blue-700 dark:text-blue-400 font-bold cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('swaps')">
-                                        <span class="material-symbols-outlined text-base" style="color: #2563eb !important; font-variation-settings: 'FILL' 1 !important;">handshake</span>
+                                    <div id="neighbor-profile-swaps-container" class="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 font-bold cursor-pointer active:scale-95 transition-all select-none" onclick="openProfileStatExplanation('swaps')">
+                                        <span class="material-symbols-outlined text-base" style="color: #308A5E !important; font-variation-settings: 'FILL' 1 !important;">handshake</span>
                                         <span id="neighbor-profile-swaps">0 Swaps</span>
                                     </div>
                                 </div>
@@ -7878,7 +7909,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </div>
                             
                             <!-- Unified Badges Section for Neighbor -->
-                            <section id="neighbor-widget-badges-section" class="relative mb-6 bg-white dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
+                            <section id="neighbor-widget-badges-section" class="relative mb-3 bg-white dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
                                 <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
                                     <span class="material-symbols-outlined text-sm">military_tech</span> Badges
                                 </h3>
@@ -7888,7 +7919,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </section>
 
                             <!-- Upcoming Events List for Neighbor -->
-                            <section id="neighbor-widget-upcoming-events" class="relative mb-6 hidden bg-white dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
+                            <section id="neighbor-widget-upcoming-events" class="relative mb-3 hidden bg-white dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
                                 <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
                                     <span class="material-symbols-outlined text-sm">event</span> Upcoming Events
                                 </h3>
@@ -7898,7 +7929,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </section>
 
                             <!-- Offerings List -->
-                            <section id="neighbor-widget-my-offerings" class="relative mb-6 bg-white dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
+                            <section id="neighbor-widget-my-offerings" class="relative mb-3 bg-white dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
                                 <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
                                     <span class="material-symbols-outlined text-sm">handyman</span> Offerings
                                 </h3>
@@ -7908,7 +7939,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </section>
 
                             <!-- Needs List -->
-                            <section id="neighbor-widget-my-needs" class="relative mb-6 bg-white dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
+                            <section id="neighbor-widget-my-needs" class="relative mb-3 bg-white dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
                                 <h3 class="text-[10px] font-bold text-black dark:text-white uppercase tracking-widest mb-3 flex items-center gap-1.5 select-none">
                                     <span class="material-symbols-outlined text-sm">shopping_basket</span> Needs
                                 </h3>
@@ -8015,25 +8046,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
                                         <span class="material-symbols-outlined text-[10px] font-bold">close</span>
                                     </button>
                                     <input type="file" id="group-avatar-file" accept="image/*" class="hidden" onchange="handleGroupAvatarUpload(this)">
-                                </div>
-
-                                <!-- Slot 1 (Optional/Secondary Group Photo) -->
-                                <div class="relative w-[92px] h-[92px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden hover:bg-forest-green/5 active:scale-95 transition-all shadow-sm group" onclick="document.getElementById('group-avatar-file-2').click()">
-                                    <div id="group-photo-placeholder-2" class="flex items-center justify-center p-2">
-                                        <span class="material-symbols-outlined text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">add_a_photo</span>
-                                    </div>
-                                    <img id="group-photo-preview-2" class="w-full h-full object-cover hidden">
-                                    <button id="group-photo-remove-2" type="button" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center cursor-pointer border-none hover:bg-black/85 transition-all hidden" onclick="event.stopPropagation(); removeGroupPhoto2()">
-                                        <span class="material-symbols-outlined text-[10px] font-bold">close</span>
-                                    </button>
-                                    <input type="file" id="group-avatar-file-2" accept="image/*" class="hidden" onchange="handleGroupAvatarUpload2(this)">
-                                </div>
-
-                                <!-- Slot 2 (Icon Display - Not Clickable) -->
-                                <div class="relative w-[92px] h-[92px] rounded-xl bg-white dark:bg-[#18201a] border border-outline-variant/40 flex flex-col items-center justify-center select-none overflow-hidden shadow-sm">
-                                    <div id="group-icon-placeholder" class="flex items-center justify-center p-2">
-                                        <span class="material-symbols-outlined text-[#308A5E] text-2xl">groups</span>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -8947,6 +8959,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         
                         <!-- Header -->
                         <div class="relative flex flex-col items-center justify-center mb-4 border-b border-black/10 dark:border-white/10 pb-3 shrink-0">
+                            <!-- Close button "X" in top-left -->
+                            <button class="absolute top-0 left-0 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm z-10" onclick="closeMeetupLocationPicker(false)">
+                                <span class="material-symbols-outlined text-[17px]">close</span>
+                            </button>
                             <h3 class="popup-modal-title text-center mb-1">Choose Meetup</h3>
                             <p class="popup-modal-desc text-center text-xs mt-0.5">Tap or click on the map to set your meetup vicinity. For safety, we only display this approximate area to neighbors.</p>
                         </div>
@@ -8954,7 +8970,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- Scrollable Content -->
                         <div class="flex-grow overflow-y-auto space-y-4 pr-1 no-scrollbar mb-4 min-h-0">
                             <!-- Map area (Enlarged) -->
-                            <div class="w-full h-[260px] rounded-2xl border border-outline-variant/30 overflow-hidden relative shrink-0">
+                            <div class="w-full h-[200px] rounded-2xl border border-outline-variant/30 overflow-hidden relative shrink-0">
                                 <div id="meetup-picker-map" class="w-full h-full"></div>
                                 <div id="map-picker-instruction" class="absolute bottom-2 left-2 right-2 bg-forest-green/80 dark:bg-[#308A5E] text-warm-cream dark:text-[#101612] text-[9px] font-bold px-2 py-1 rounded-lg text-center backdrop-blur-sm pointer-events-none shadow-sm z-[999] transition-all">
                                     Tap map to set meetup point
@@ -8985,7 +9001,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
 
                         <!-- Footer Buttons -->
-                        <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-[calc(16px + env(safe-area-inset-bottom, 20px))]">
+                        <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-4">
                             <button id="meetup-confirm-btn" class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer border-0 disabled:opacity-50 disabled:pointer-events-none" onclick="confirmMeetupLocation()" disabled>
                                 <span class="material-symbols-outlined text-sm">check_circle</span> Confirm Location
                             </button>
