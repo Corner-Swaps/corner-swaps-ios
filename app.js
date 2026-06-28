@@ -6970,7 +6970,14 @@ function renderEventsList() {
         }
 
         const sortedEvents = [...state.events].sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
-        const eventsWithDistance = sortedEvents.map(evt => {
+        const seenEvents = new Set();
+        const uniqueEvents = sortedEvents.filter(evt => {
+            if (!evt || !evt.id) return false;
+            if (seenEvents.has(evt.id)) return false;
+            seenEvents.add(evt.id);
+            return true;
+        });
+        const eventsWithDistance = uniqueEvents.map(evt => {
             let coords = [evt.lat, evt.lng];
             if (!evt.lat || !evt.lng) {
                 const hostObj = state.neighbors[evt.host];
@@ -17195,8 +17202,12 @@ function renderNeedsBoardView() {
     let maxRadius = radiusVal;
 
     let needsPool = [];
+    const seenNeeds = new Set();
 
     (state.needsBoard || []).forEach(need => {
+        if (!need || !need.id) return;
+        if (seenNeeds.has(need.id)) return;
+        seenNeeds.add(need.id);
         if (state.blockedUsers && state.blockedUsers.includes(need.neighborName)) return;
         if (state.suspendedUsers && state.suspendedUsers.includes(need.neighborName)) return;
         const neighborObj = state.neighbors[need.neighborName];
@@ -19850,6 +19861,14 @@ function validateCoords(lat, lng) {
 function plotMapMarkersOnly() {
     if (!leafletMap) return;
     
+    // Clear existing markers and circles from the map first to prevent duplicates
+    leafletMap.eachLayer(layer => {
+        if (layer instanceof L.Marker || layer instanceof L.Circle) {
+            leafletMap.removeLayer(layer);
+        }
+    });
+    mapMarkers = [];
+    
     const user = state.currentUser || {};
     const displayName = user.displayName || `${user.firstName || 'Lily'} ${user.lastName || 'Kaufmann'}`;
     
@@ -20035,7 +20054,11 @@ function plotMapMarkersOnly() {
 
         // Plot events on events map segment
         if (state.events && currentVillageSegment === 'events_map') {
+            const seenMapEvents = new Set();
             state.events.forEach(evt => {
+                if (!evt || !evt.id) return;
+                if (seenMapEvents.has(evt.id)) return;
+                seenMapEvents.add(evt.id);
                 const coords = validateCoords(evt.lat, evt.lng);
                 if (!coords) return;
                 const lat = coords.lat;
@@ -20099,7 +20122,11 @@ function plotMapMarkersOnly() {
     // 2. Plot Neighborhood Needs on the map if we are on 'needs_map' segment (Needs Map)
     if (currentVillageSegment === 'needs_map') {
         if (state.needsBoard) {
+            const seenMapNeeds = new Set();
             state.needsBoard.forEach(need => {
+                if (!need || !need.id) return;
+                if (seenMapNeeds.has(need.id)) return;
+                seenMapNeeds.add(need.id);
                 if (state.blockedUsers && state.blockedUsers.includes(need.neighborName)) return;
                 if (state.suspendedUsers && state.suspendedUsers.includes(need.neighborName)) return;
                 const neighborObj = state.neighbors[need.neighborName];
@@ -31783,7 +31810,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
             <!-- Action buttons -->
             <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-4">
                 <button id="lifecycle-submit-btn" disabled class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0 opacity-50 pointer-events-none" onclick="window.submitLifecycleSwap(false)">Propose Swap</button>
-                <button class="w-full bg-[#8e8e93] hover:bg-[#787880]/90 text-white py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0 mt-2" onclick="window.closeSwapLifecycleModal()">Never mind</button>
+                <button id="lifecycle-cancel-btn" class="w-full bg-[#8e8e93] hover:bg-[#787880]/90 text-white py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0 mt-2" onclick="window.closeSwapLifecycleModal()">Never mind</button>
             </div>
         `;
         

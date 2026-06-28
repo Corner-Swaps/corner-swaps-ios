@@ -10751,3 +10751,11 @@ html.dark textarea::placeholder {
     color: #ffffff !important;
     opacity: 0.5 !important;
 }
+
+#lifecycle-cancel-btn {
+    background-color: #8e8e93 !important;
+    color: #ffffff !important;
+}
+#lifecycle-cancel-btn:hover {
+    background-color: #787880 !important;
+}
