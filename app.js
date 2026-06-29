@@ -1,4 +1,104 @@
 window.isAppStartup = true;
+
+// Custom beautifully styled in-app confirmations & alerts
+function showCustomConfirm(title, message, onConfirm, onCancel) {
+    const modalDiv = document.createElement('div');
+    modalDiv.id = 'custom-confirm-modal';
+    modalDiv.className = 'fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm transition-all duration-300 opacity-0';
+    
+    modalDiv.innerHTML = `
+        <div class="bg-white dark:bg-[#1a231d] rounded-2xl p-6 max-w-sm w-[90%] border border-black/10 dark:border-white/10 shadow-2xl scale-95 transition-all duration-300 text-center">
+            <h3 class="text-xs font-bold text-black dark:text-warm-cream uppercase tracking-wider mb-2 flex items-center justify-center gap-2 select-none">
+                <span class="material-symbols-outlined text-amber-500 text-base">warning</span>
+                ${title || 'Are you sure?'}
+            </h3>
+            <p class="text-[11px] text-gray-500 dark:text-gray-400 mb-6 leading-relaxed select-none">
+                ${message}
+            </p>
+            <div class="flex items-center gap-3">
+                <button type="button" id="confirm-cancel-btn" class="flex-grow py-3 bg-gray-100 hover:bg-gray-200 dark:bg-[#111913] dark:hover:bg-neutral-800 text-gray-600 dark:text-gray-400 rounded-xl font-semibold text-[11px] active:scale-[0.98] transition-all border-0 cursor-pointer">
+                    Cancel
+                </button>
+                <button type="button" id="confirm-ok-btn" class="flex-grow py-3 bg-forest-green text-warm-cream rounded-xl font-semibold text-[11px] active:scale-[0.98] transition-all border-0 cursor-pointer">
+                    Confirm
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modalDiv);
+    
+    setTimeout(() => {
+        modalDiv.classList.remove('opacity-0');
+        modalDiv.querySelector('div').classList.remove('scale-95');
+    }, 10);
+    
+    const closeModal = (callback) => {
+        modalDiv.classList.add('opacity-0');
+        modalDiv.querySelector('div').classList.add('scale-95');
+        setTimeout(() => {
+            modalDiv.remove();
+            if (callback) callback();
+        }, 300);
+    };
+    
+    modalDiv.querySelector('#confirm-cancel-btn').onclick = () => {
+        if (typeof playSound === 'function') playSound('click');
+        closeModal(onCancel);
+    };
+    
+    modalDiv.querySelector('#confirm-ok-btn').onclick = () => {
+        if (typeof playSound === 'function') playSound('click');
+        closeModal(onConfirm);
+    };
+}
+window.showCustomConfirm = showCustomConfirm;
+
+function showCustomAlert(title, message, onClose) {
+    const modalDiv = document.createElement('div');
+    modalDiv.id = 'custom-alert-modal';
+    modalDiv.className = 'fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm transition-all duration-300 opacity-0';
+    
+    modalDiv.innerHTML = `
+        <div class="bg-white dark:bg-[#1a231d] rounded-2xl p-6 max-w-sm w-[90%] border border-black/10 dark:border-white/10 shadow-2xl scale-95 transition-all duration-300 text-center">
+            <h3 class="text-xs font-bold text-black dark:text-warm-cream uppercase tracking-wider mb-2 flex items-center justify-center gap-2 select-none">
+                <span class="material-symbols-outlined text-forest-green text-base">info</span>
+                ${title || 'Notification'}
+            </h3>
+            <p class="text-[11px] text-gray-500 dark:text-gray-400 mb-6 leading-relaxed select-none">
+                ${message}
+            </p>
+            <div class="flex items-center justify-center">
+                <button type="button" id="alert-close-btn" class="w-full py-3 bg-forest-green text-warm-cream rounded-xl font-semibold text-[11px] active:scale-[0.98] transition-all border-0 cursor-pointer">
+                    OK
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modalDiv);
+    
+    setTimeout(() => {
+        modalDiv.classList.remove('opacity-0');
+        modalDiv.querySelector('div').classList.remove('scale-95');
+    }, 10);
+    
+    const closeModal = () => {
+        modalDiv.classList.add('opacity-0');
+        modalDiv.querySelector('div').classList.add('scale-95');
+        setTimeout(() => {
+            modalDiv.remove();
+            if (onClose) onClose();
+        }, 300);
+    };
+    
+    modalDiv.querySelector('#alert-close-btn').onclick = () => {
+        if (typeof playSound === 'function') playSound('click');
+        closeModal();
+    };
+}
+window.showCustomAlert = showCustomAlert;
+
 // Safe safeLocalStorage wrapper to prevent SecurityErrors under file:// protocol on iOS WKWebView
 const safeLocalStorage = (function() {
     const memoryStore = {};
@@ -1877,63 +1977,183 @@ let state = window.StateController.createProxy({
     events: [
         {
             id: 'evt-1',
-            title: 'Weekend Puzzles & Book Swap',
-            type: 'Book Swap',
-            datetime: '2026-05-30T10:00',
-            endDatetime: '2026-05-30T12:00',
-            location: 'Yaletown Community Centre',
-            desc: 'Bring your read books and completed board puzzles to swap with neighbors!',
-            lat: 49.276,
-            lng: -123.120,
-            host: 'Sarah Chen'
-        },
-        {
-            id: 'evt-2',
-            title: 'Intro to Watercolor Workshop',
+            title: 'Sourdough Baking Basics',
             type: 'Workshop',
-            datetime: '2026-05-31T14:00',
-            endDatetime: '2026-05-31T16:00',
-            location: 'Kitsilano Beach Park',
-            desc: 'Learn basic watercolor painting techniques on the beach. Bring your own easel if possible!',
-            lat: 49.273,
-            lng: -123.150,
-            host: 'David Kim'
-        },
-        {
-            id: 'evt-3',
-            title: 'Garden Tool & Seed Swap Meetup',
-            type: 'Meetup',
-            datetime: '2026-06-03T11:00',
-            endDatetime: '2026-06-03T13:00',
-            location: 'West End Community Garden',
-            desc: 'Bring extra garden tools, plant pots, organic fertilizer, and heirloom seeds to swap with neighborhood gardeners!',
-            lat: 49.285,
-            lng: -123.130,
-            host: 'Zoe'
-        },
-        {
-            id: 'evt-4',
-            title: 'Sourdough Baking Basics Class',
-            type: 'Workshop',
-            datetime: '2026-06-06T13:00',
-            endDatetime: '2026-06-06T15:30',
+            datetime: '2026-07-04T10:00',
+            endDatetime: '2026-07-04T12:30',
             location: 'Mount Pleasant Kitchen Hub',
-            desc: 'Learn how to feed your starter, mix, fold, shape, and bake artisan sourdough bread at home.',
+            desc: 'Learn how to feed your starter, mix, fold, shape, and bake sourdough bread at home.',
             lat: 49.263,
             lng: -123.102,
             host: 'Ethan'
         },
         {
+            id: 'evt-2',
+            title: 'Multi-Family Backyard Garage Sale',
+            type: 'Garage Sale',
+            datetime: '2026-07-05T09:00',
+            endDatetime: '2026-07-05T15:00',
+            location: '1235 Maple Street Garden',
+            desc: 'Vintage clothes, toys, kitchenware, furniture, and books looking for a new home.',
+            lat: 49.267,
+            lng: -123.142,
+            host: 'Marcus'
+        },
+        {
+            id: 'evt-3',
+            title: 'Spring Wardrobe Clothing Exchange',
+            type: 'Clothing Exchange',
+            datetime: '2026-07-06T11:00',
+            endDatetime: '2026-07-06T14:00',
+            location: 'Kitsilano Community Centre',
+            desc: 'Bring clean, gently used apparel and swap them for fresh styles.',
+            lat: 49.273,
+            lng: -123.150,
+            host: 'Amelia'
+        },
+        {
+            id: 'evt-4',
+            title: 'French & English Conversational Exchange',
+            type: 'Language Exchange',
+            datetime: '2026-07-07T18:30',
+            endDatetime: '2026-07-07T20:00',
+            location: 'West End Cafe Lounge',
+            desc: 'Practice French and English with native speakers. All levels welcome!',
+            lat: 49.285,
+            lng: -123.130,
+            host: 'Pierre'
+        },
+        {
             id: 'evt-5',
             title: 'Family Board Games & Playdate',
-            type: 'Playdate',
-            datetime: '2026-06-07T15:00',
-            endDatetime: '2026-06-07T17:00',
+            type: 'Board Games Playdate',
+            datetime: '2026-07-08T15:00',
+            endDatetime: '2026-07-08T17:00',
             location: 'Downtown Library Playroom',
-            desc: 'Bring your kids and your favorite family board games for a fun afternoon of social gaming!',
+            desc: 'Bring your kids and your favorite family board games for a fun afternoon.',
             lat: 49.270,
             lng: -123.115,
             host: 'Ava'
+        },
+        {
+            id: 'evt-6',
+            title: 'Morning Yoga & Volleyball Session',
+            type: 'Outdoor Sports Session',
+            datetime: '2026-07-09T09:30',
+            endDatetime: '2026-07-09T11:30',
+            location: 'David Lam Park Grass',
+            desc: 'Enjoy a relaxing outdoor yoga stretch followed by friendly volleyball.',
+            lat: 49.272,
+            lng: -123.123,
+            host: 'Chloe'
+        },
+        {
+            id: 'evt-7',
+            title: 'Community Garden Social Meet-up',
+            type: 'Social Meetup',
+            datetime: '2026-07-10T12:00',
+            endDatetime: '2026-07-10T14:00',
+            location: 'Strathcona Community Garden',
+            desc: 'Connect with local gardeners, share tips, and enjoy outdoor snacks.',
+            lat: 49.268,
+            lng: -123.110,
+            host: 'Zoe'
+        },
+        {
+            id: 'evt-8',
+            title: 'Neighborhood Trash Cleanup Day',
+            type: 'Community Cleanup Event',
+            datetime: '2026-07-11T09:00',
+            endDatetime: '2026-07-11T11:30',
+            location: 'Nelson Park Green',
+            desc: 'Lend a hand picking up litter and keeping our park beautiful.',
+            lat: 49.282,
+            lng: -123.132,
+            host: 'Liam'
+        },
+        {
+            id: 'evt-9',
+            title: 'Woodworking & Joinery 101',
+            type: 'Woodworking Workshop',
+            datetime: '2026-07-12T14:00',
+            endDatetime: '2026-07-12T17:00',
+            location: 'Maker Space Warehouse',
+            desc: 'Learn the fundamentals of measuring, cutting, and basic joint making for DIY projects.',
+            lat: 49.271,
+            lng: -123.109,
+            host: 'Marcus'
+        },
+        {
+            id: 'evt-10',
+            title: 'Mega Street Yard Sale',
+            type: 'Garage Sale',
+            datetime: '2026-07-13T08:00',
+            endDatetime: '2026-07-13T14:00',
+            location: 'Commercial Drive Sidewalks',
+            desc: 'Dozens of neighbors setting up sales along the sidewalk. Great deals!',
+            lat: 49.264,
+            lng: -123.108,
+            host: 'Sarah Chen'
+        },
+        {
+            id: 'evt-11',
+            title: 'Kids & Baby Clothes Swap',
+            type: 'Clothing Exchange',
+            datetime: '2026-07-14T10:00',
+            endDatetime: '2026-07-14T12:00',
+            location: 'Fairview Family Center',
+            desc: 'Bring outgrown children\'s clothes and swap them for larger sizes.',
+            lat: 49.258,
+            lng: -123.131,
+            host: 'Ava'
+        },
+        {
+            id: 'evt-12',
+            title: 'Spanish & English Practice Cafe',
+            type: 'Language Exchange',
+            datetime: '2026-07-15T19:00',
+            endDatetime: '2026-07-15T20:30',
+            location: 'Taco Nazo Patio',
+            desc: 'Casual conversation circle to practice Spanish and English. All levels!',
+            lat: 49.265,
+            lng: -123.125,
+            host: 'Daniel'
+        },
+        {
+            id: 'evt-13',
+            title: 'Trivia Night & Social Mixer',
+            type: 'Trivia Games',
+            datetime: '2026-07-16T19:30',
+            endDatetime: '2026-07-16T22:00',
+            location: 'The Local Pub & Grill',
+            desc: 'Team up with neighbors for general knowledge trivia. Winners get gift cards!',
+            lat: 49.274,
+            lng: -123.102,
+            host: 'Ethan'
+        },
+        {
+            id: 'evt-14',
+            title: 'Morning Jog & Coast Run',
+            type: 'Sports Running',
+            datetime: '2026-07-17T07:00',
+            endDatetime: '2026-07-17T08:15',
+            location: 'False Creek Seawall Start',
+            desc: 'A scenic 5k jog along the seawall at a conversational pace. Coffee after!',
+            lat: 49.271,
+            lng: -123.118,
+            host: 'Liam'
+        },
+        {
+            id: 'evt-15',
+            title: 'Dog Owner Meetup & Play',
+            type: 'Social Meetup',
+            datetime: '2026-07-18T16:00',
+            endDatetime: '2026-07-18T17:30',
+            location: 'Nelson Park Off-Leash Area',
+            desc: 'Bring your furry friends to socialize while we chat and share training tips.',
+            lat: 49.282,
+            lng: -123.133,
+            host: 'Lily Kaufmann'
         }
     ],
     bulletins: [
@@ -2316,6 +2536,192 @@ function loadState() {
     if (!state.savedEvents) {
         state.savedEvents = [];
     }
+    if (!state.eventsInitializedVersion || state.eventsInitializedVersion < 3 || !state.events || state.events.length < 15) {
+        state.events = [
+            {
+                id: 'evt-1',
+                title: 'Sourdough Baking Basics',
+                type: 'Workshop',
+                datetime: '2026-07-04T10:00',
+                endDatetime: '2026-07-04T12:30',
+                location: 'Mount Pleasant Kitchen Hub',
+                desc: 'Learn how to feed your starter, mix, fold, shape, and bake sourdough bread at home.',
+                lat: 49.263,
+                lng: -123.102,
+                host: 'Ethan'
+            },
+            {
+                id: 'evt-2',
+                title: 'Multi-Family Backyard Garage Sale',
+                type: 'Garage Sale',
+                datetime: '2026-07-05T09:00',
+                endDatetime: '2026-07-05T15:00',
+                location: '1235 Maple Street Garden',
+                desc: 'Vintage clothes, toys, kitchenware, furniture, and books looking for a new home.',
+                lat: 49.267,
+                lng: -123.142,
+                host: 'Marcus'
+            },
+            {
+                id: 'evt-3',
+                title: 'Spring Wardrobe Clothing Exchange',
+                type: 'Clothing Exchange',
+                datetime: '2026-07-06T11:00',
+                endDatetime: '2026-07-06T14:00',
+                location: 'Kitsilano Community Centre',
+                desc: 'Bring clean, gently used apparel and swap them for fresh styles.',
+                lat: 49.273,
+                lng: -123.150,
+                host: 'Amelia'
+            },
+            {
+                id: 'evt-4',
+                title: 'French & English Conversational Exchange',
+                type: 'Language Exchange',
+                datetime: '2026-07-07T18:30',
+                endDatetime: '2026-07-07T20:00',
+                location: 'West End Cafe Lounge',
+                desc: 'Practice French and English with native speakers. All levels welcome!',
+                lat: 49.285,
+                lng: -123.130,
+                host: 'Pierre'
+            },
+            {
+                id: 'evt-5',
+                title: 'Family Board Games & Playdate',
+                type: 'Board Games Playdate',
+                datetime: '2026-07-08T15:00',
+                endDatetime: '2026-07-08T17:00',
+                location: 'Downtown Library Playroom',
+                desc: 'Bring your kids and your favorite family board games for a fun afternoon.',
+                lat: 49.270,
+                lng: -123.115,
+                host: 'Ava'
+            },
+            {
+                id: 'evt-6',
+                title: 'Morning Yoga & Volleyball Session',
+                type: 'Outdoor Sports Session',
+                datetime: '2026-07-09T09:30',
+                endDatetime: '2026-07-09T11:30',
+                location: 'David Lam Park Grass',
+                desc: 'Enjoy a relaxing outdoor yoga stretch followed by friendly volleyball.',
+                lat: 49.272,
+                lng: -123.123,
+                host: 'Chloe'
+            },
+            {
+                id: 'evt-7',
+                title: 'Community Garden Social Meet-up',
+                type: 'Social Meetup',
+                datetime: '2026-07-10T12:00',
+                endDatetime: '2026-07-10T14:00',
+                location: 'Strathcona Community Garden',
+                desc: 'Connect with local gardeners, share tips, and enjoy outdoor snacks.',
+                lat: 49.268,
+                lng: -123.110,
+                host: 'Zoe'
+            },
+            {
+                id: 'evt-8',
+                title: 'Neighborhood Trash Cleanup Day',
+                type: 'Community Cleanup Event',
+                datetime: '2026-07-11T09:00',
+                endDatetime: '2026-07-11T11:30',
+                location: 'Nelson Park Green',
+                desc: 'Lend a hand picking up litter and keeping our park beautiful.',
+                lat: 49.282,
+                lng: -123.132,
+                host: 'Liam'
+            },
+            {
+                id: 'evt-9',
+                title: 'Woodworking & Joinery 101',
+                type: 'Woodworking Workshop',
+                datetime: '2026-07-12T14:00',
+                endDatetime: '2026-07-12T17:00',
+                location: 'Maker Space Warehouse',
+                desc: 'Learn the fundamentals of measuring, cutting, and basic joint making for DIY projects.',
+                lat: 49.271,
+                lng: -123.109,
+                host: 'Marcus'
+            },
+            {
+                id: 'evt-10',
+                title: 'Mega Street Yard Sale',
+                type: 'Garage Sale',
+                datetime: '2026-07-13T08:00',
+                endDatetime: '2026-07-13T14:00',
+                location: 'Commercial Drive Sidewalks',
+                desc: 'Dozens of neighbors setting up sales along the sidewalk. Great deals!',
+                lat: 49.264,
+                lng: -123.108,
+                host: 'Sarah Chen'
+            },
+            {
+                id: 'evt-11',
+                title: 'Kids & Baby Clothes Swap',
+                type: 'Clothing Exchange',
+                datetime: '2026-07-14T10:00',
+                endDatetime: '2026-07-14T12:00',
+                location: 'Fairview Family Center',
+                desc: 'Bring outgrown children\'s clothes and swap them for larger sizes.',
+                lat: 49.258,
+                lng: -123.131,
+                host: 'Ava'
+            },
+            {
+                id: 'evt-12',
+                title: 'Spanish & English Practice Cafe',
+                type: 'Language Exchange',
+                datetime: '2026-07-15T19:00',
+                endDatetime: '2026-07-15T20:30',
+                location: 'Taco Nazo Patio',
+                desc: 'Casual conversation circle to practice Spanish and English. All levels!',
+                lat: 49.265,
+                lng: -123.125,
+                host: 'Daniel'
+            },
+            {
+                id: 'evt-13',
+                title: 'Trivia Night & Social Mixer',
+                type: 'Trivia Games',
+                datetime: '2026-07-16T19:30',
+                endDatetime: '2026-07-16T22:00',
+                location: 'The Local Pub & Grill',
+                desc: 'Team up with neighbors for general knowledge trivia. Winners get gift cards!',
+                lat: 49.274,
+                lng: -123.102,
+                host: 'Ethan'
+            },
+            {
+                id: 'evt-14',
+                title: 'Morning Jog & Coast Run',
+                type: 'Sports Running',
+                datetime: '2026-07-17T07:00',
+                endDatetime: '2026-07-17T08:15',
+                location: 'False Creek Seawall Start',
+                desc: 'A scenic 5k jog along the seawall at a conversational pace. Coffee after!',
+                lat: 49.271,
+                lng: -123.118,
+                host: 'Liam'
+            },
+            {
+                id: 'evt-15',
+                title: 'Dog Owner Meetup & Play',
+                type: 'Social Meetup',
+                datetime: '2026-07-18T16:00',
+                endDatetime: '2026-07-18T17:30',
+                location: 'Nelson Park Off-Leash Area',
+                desc: 'Bring your furry friends to socialize while we chat and share training tips.',
+                lat: 49.282,
+                lng: -123.133,
+                host: 'Lily Kaufmann'
+            }
+        ];
+        state.eventsInitializedVersion = 3;
+        needsSave = true;
+    }
     if (!state.swapHistory || state.swapHistory.length === 0) {
         state.swapHistory = [
             { neighborName: 'Zoe', offeredItem: 'Yoga & Mindfulness', requestedItem: 'Ferments & Cultures', date: '3 days ago' },
@@ -2323,98 +2729,6 @@ function loadState() {
             { neighborName: 'Emily', offeredItem: 'Kitchen Mixer Loan', requestedItem: 'Artisan Sourdough Bread', date: '2 weeks ago' },
             { neighborName: 'Nora Miller', offeredItem: 'Children\'s Books Swap', requestedItem: 'Balcony Tomatoes', date: '3 weeks ago' },
             { neighborName: 'Chloe', offeredItem: 'Custom Canvas Tote', requestedItem: 'Beginner Guitar Lesson', date: '1 month ago' }
-        ];
-    }
-    if (!state.events || state.events.length !== 8) {
-        state.events = [
-            {
-                id: 'evt-1',
-                title: 'Intro to Watercolor Workshop',
-                type: 'Watercolor Workshop',
-                datetime: '2026-06-30T14:00',
-                location: 'Kitsilano Beach Park',
-                desc: 'Learn basic watercolor painting techniques on the beach. Bring your own easel if possible!',
-                lat: 49.2730,
-                lng: -123.1500,
-                host: 'David Kim'
-            },
-            {
-                id: 'evt-2',
-                title: 'Block-Wide Garage Sale',
-                type: 'Garage Sale',
-                datetime: '2026-06-20T09:00',
-                location: 'Yaletown Community Lane',
-                desc: 'Huge neighborhood block sale! Expect tools, books, clothing, and household items.',
-                lat: 49.2751,
-                lng: -123.1234,
-                host: 'Bob Builder'
-            },
-            {
-                id: 'evt-3',
-                title: 'Summer Clothing Swap Exchange',
-                type: 'Clothing Exchange Swap',
-                datetime: '2026-06-25T11:00',
-                location: 'Mount Pleasant Community Centre',
-                desc: 'Refresh your wardrobe! Bring gently used clothes and swap them for fresh styles.',
-                lat: 49.2630,
-                lng: -123.1020,
-                host: 'Emily'
-            },
-            {
-                id: 'evt-4',
-                title: 'Spanish-English Language Cafe',
-                type: 'Language Exchange Cafe',
-                datetime: '2026-06-22T18:00',
-                location: 'Gastown Creative Space',
-                desc: 'Practice speaking Spanish and English with native speakers. Conversational and friendly!',
-                lat: 49.2872,
-                lng: -123.1105,
-                host: 'Mac Tech'
-            },
-            {
-                id: 'evt-5',
-                title: 'Co-Op Family Board Games',
-                type: 'Family Board Games',
-                datetime: '2026-06-21T15:00',
-                location: 'Downtown Library Playroom',
-                desc: 'Bring your kids and your favorite board games for a fun afternoon of cooperative play.',
-                lat: 49.2700,
-                lng: -123.1150,
-                host: 'Ava'
-            },
-            {
-                id: 'evt-6',
-                title: 'Co-Ed Beach Volleyball Match',
-                type: 'Beach Volleyball Sports',
-                datetime: '2026-06-28T13:00',
-                location: 'Stanley Park Sand Courts',
-                desc: 'Join us for a friendly match of beach volleyball. All skill levels welcome!',
-                lat: 49.2941,
-                lng: -123.1382,
-                host: 'Leo DaVinci'
-            },
-            {
-                id: 'evt-7',
-                title: 'Neighborhood Coffee Meet-up',
-                type: 'Community Social Meet-up',
-                datetime: '2026-06-18T10:00',
-                location: 'West End Community Plaza',
-                desc: 'Grab a cup of coffee and say hello to your neighbors! We discuss community projects.',
-                lat: 49.2841,
-                lng: -123.1362,
-                host: 'Emma Watson'
-            },
-            {
-                id: 'evt-8',
-                title: 'Balcony Herb Garden Swap',
-                type: 'Other Event (Plant Swap)',
-                datetime: '2026-06-19T11:00',
-                location: 'Grandview Community Park',
-                desc: 'Swap heirloom seeds and starter herb plants to grow your own balcony garden!',
-                lat: 49.2562,
-                lng: -123.0694,
-                host: 'Sarah Chen'
-            }
         ];
     }
     // Merge INITIAL_NEIGHBORS to preserve stateful modifications like vouches, but guarantee coordinates/fields
@@ -7609,15 +7923,30 @@ function executeCreateEvent(title, type, datetime, endDatetime, location, desc) 
     }
     createEventAndSave(title, type, datetime, endDatetime, location, desc);
 
-    // Trigger Success Confetti & sound
-    if (typeof triggerSuccessConfetti === 'function') {
-        triggerSuccessConfetti();
-    } else {
-        playSound('success');
-    }
+    // Clear event form fields
+    const titleInput = document.getElementById('event-title-input');
+    const typeSelect = document.getElementById('event-type-select');
+    const datetimeInput = document.getElementById('event-datetime-input');
+    const endDatetimeInput = document.getElementById('event-end-datetime-input');
+    const locationInput = document.getElementById('event-location-input');
+    const descInput = document.getElementById('event-desc-input');
+    if (titleInput) titleInput.value = '';
+    if (typeSelect) typeSelect.value = '';
+    if (datetimeInput) datetimeInput.value = '';
+    if (endDatetimeInput) endDatetimeInput.value = '';
+    if (locationInput) locationInput.value = '';
+    if (descInput) descInput.value = '';
 
-    // Show congratulations modal
-    showCongratsEventModal(title);
+    resetOfferFormToSelector();
+
+    const newEvent = window.lastCreatedEvent || state.lastCreatedEvent;
+    if (newEvent) {
+        centerMapOnPost({ id: 'evt_' + newEvent.id, lat: newEvent.lat, lng: newEvent.lng, type: 'event' });
+        window.lastCreatedEvent = null;
+        if (state) state.lastCreatedEvent = null;
+    } else {
+        exitCreateEvent();
+    }
 }
 
 function showCongratsEventModal(eventTitle) {
@@ -7667,8 +7996,23 @@ window.closeCongratsEventModal = closeCongratsEventModal;
 // 4. Immersive Discovery Map (Leaflet)
 // ----------------------------------------------------
 function getCategoryColor(category) {
-    if (!category) return '#6b7280'; // Default gray for other
+    if (!category) return '#308A5E'; // Green per handshake icon rule
     const catLower = category.toLowerCase();
+    
+    // Explicit event type mappings first
+    if (catLower.includes('workshop')) return '#42A5F5';
+    if (catLower.includes('meetup')) return '#8D6E63';
+    if (catLower.includes('clean') || catLower.includes('cleanup')) return '#66BB6A';
+    if (catLower.includes('book swap')) return '#AB47BC';
+    if (catLower.includes('playdate') || catLower.includes('board games')) return '#F06292';
+    if (catLower.includes('garden swap')) return '#EF5350';
+    if (catLower.includes('repair cafe')) return '#FF7043';
+    if (catLower.includes('clothing swap') || catLower.includes('clothing exchange')) return '#FFB300';
+    if (catLower.includes('garage sale')) return '#EC4899';
+    if (catLower.includes('language exchange')) return '#2563eb';
+    if (catLower.includes('sports') || catLower.includes('volleyball')) return '#319795';
+
+    if (catLower.includes('other') || catLower.includes('general help') || catLower.includes('help session') || catLower.includes('swap')) return '#308A5E'; // Green per handshake icon rule
     if (catLower.includes('karma')) return '#f59e0b';
     if (catLower.includes('donation')) return '#ec4899';
     
@@ -7702,12 +8046,28 @@ function getCategoryColor(category) {
     if (catLower.includes('event') || catLower.includes('meetup')) return '#10b981';
     if (catLower.includes('language') || catLower.includes('info') || catLower.includes('exchange')) return '#2563eb';
     
-    return '#6b7280'; // Gray for Other
+    return '#308A5E'; // Green for Other / Fallback
 }
 
 function getCategoryIcon(category) {
     if (!category) return 'handshake';
     const cat = category.toLowerCase();
+
+    // Explicit event type mappings first
+    if (cat.includes('workshop')) return 'school';
+    if (cat.includes('garage sale')) return 'store';
+    if (cat.includes('clothing exchange') || cat.includes('clothing swap')) return 'checkroom';
+    if (cat.includes('language exchange')) return 'translate';
+    if (cat.includes('playdate')) return 'child_care';
+    if (cat.includes('board games') || cat.includes('trivia') || cat.includes('games')) return 'sports_esports';
+    if (cat.includes('sports') || cat.includes('volleyball') || cat.includes('jog') || cat.includes('run')) return 'sports_volleyball';
+    if (cat.includes('clean') || cat.includes('cleanup')) return 'cleaning_services';
+    if (cat.includes('book swap')) return 'menu_book';
+    if (cat.includes('garden swap')) return 'yard';
+    if (cat.includes('repair cafe')) return 'handyman';
+    if (cat.includes('meetup') || cat.includes('social meetup')) return 'groups';
+
+    if (cat === 'other' || cat.includes('general help') || cat.includes('help session') || cat.includes('swap')) return 'handshake';
     if (cat.includes('karma')) return 'favorite';
     if (cat.includes('donation')) return 'favorite';
     if (cat.includes('food') || cat.includes('drink')) return 'restaurant';
@@ -7720,12 +8080,12 @@ function getCategoryIcon(category) {
     if (cat.includes('clothing') || cat.includes('apparel')) return 'checkroom';
     if (cat.includes('books') || cat.includes('games') || cat.includes('entertainment')) return 'sports_esports';
     if (cat.includes('kids') || cat.includes('maternity')) return 'stroller';
-    if (cat.includes('event') || cat.includes('meetup')) return 'groups';
+    if (cat.includes('event')) return 'groups';
     if (cat.includes('language') || cat.includes('info') || cat.includes('exchange')) return 'translate';
     if (cat.includes('sex') || cat.includes('escort')) return 'warning';
     if (cat.includes('money') || cat.includes('cash')) return 'attach_money';
     if (cat.includes('drugs') || cat.includes('substances')) return 'medication';
-    return 'apps';
+    return 'handshake'; // Handshake as default icon
 }
 
 // Global variable for Karma gift state
@@ -8235,7 +8595,7 @@ function openMapItemDetail(idOrName) {
         offerImg = getCategoryPresetImage(need.category);
         icon = getCategoryIcon(need.category) || 'help_outline';
         category = need.category;
-    } else if (idOrName.startsWith('off_') || idOrName === '1' || idOrName === '2') {
+    } else if (state.userOfferings && state.userOfferings.some(o => o.id === idOrName)) {
         const offer = state.userOfferings.find(o => o.id === idOrName);
         if (!offer) return;
         isUserOffer = true;
@@ -8549,6 +8909,39 @@ function openMapItemDetail(idOrName) {
             }
             handleReportUserFromDetail();
         };
+    }
+
+    const deleteBtn = document.getElementById('map-detail-delete-btn');
+    if (deleteBtn) {
+        if (isUserOffer || isUserNeed) {
+            deleteBtn.classList.remove('hidden');
+            deleteBtn.onclick = (e) => {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                const tab = isUserOffer ? 'offerings' : 'needs';
+                const rawId = isUserOffer ? idOrName : idOrName.replace('need_', '');
+                window.deleteMyCornerItem(tab, rawId);
+                closeMapItemDetail();
+            };
+            
+            // Hide other buttons
+            if (chatBtn) chatBtn.classList.add('hidden');
+            if (saveBtn) saveBtn.classList.add('hidden');
+            if (profileBtn) profileBtn.classList.add('hidden');
+            if (blockBtn) blockBtn.classList.add('hidden');
+            if (reportBtn) reportBtn.classList.add('hidden');
+        } else {
+            deleteBtn.classList.add('hidden');
+            
+            // Show other buttons
+            if (chatBtn) chatBtn.classList.remove('hidden');
+            if (saveBtn) saveBtn.classList.remove('hidden');
+            if (profileBtn) profileBtn.classList.remove('hidden');
+            if (blockBtn) blockBtn.classList.remove('hidden');
+            if (reportBtn) reportBtn.classList.remove('hidden');
+        }
     }
 
     const scrollContainer = document.getElementById('map-detail-scroll-container');
@@ -8984,6 +9377,43 @@ function openMapEventDetail(eventId) {
             handleReportMapEventFromDetail();
         };
         reportBtn.onclick = handleReportClick;
+    }
+
+    const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
+    const isHost = event.host === currentUser;
+    const deleteBtn = document.getElementById('map-event-detail-delete-btn');
+    if (deleteBtn) {
+        if (isHost) {
+            deleteBtn.classList.remove('hidden');
+            deleteBtn.onclick = (e) => {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                window.deleteMyCornerItem('events', event.id);
+                closeMapItemDetail();
+            };
+            
+            // Hide other buttons
+            if (rsvpBtn) rsvpBtn.classList.add('hidden');
+            if (saveBtn) saveBtn.classList.add('hidden');
+            if (hostProfileBtn) hostProfileBtn.classList.add('hidden');
+            if (reportBtn) {
+                reportBtn.classList.add('hidden');
+                reportBtn.style.display = 'none';
+            }
+        } else {
+            deleteBtn.classList.add('hidden');
+            
+            // Show other buttons
+            if (rsvpBtn) rsvpBtn.classList.remove('hidden');
+            if (saveBtn) saveBtn.classList.remove('hidden');
+            if (hostProfileBtn) hostProfileBtn.classList.remove('hidden');
+            if (reportBtn) {
+                reportBtn.classList.remove('hidden');
+                reportBtn.style.display = 'flex';
+            }
+        }
     }
     
     playSound('click');
@@ -9739,7 +10169,12 @@ function openNeighborProfileModal(neighborName) {
 
     switchProfileTab('info');
     disableMapGestures();
-    document.getElementById('neighbor-profile-modal').classList.remove('hidden');
+    
+    const profileModal = document.getElementById('neighbor-profile-modal');
+    if (profileModal) {
+        profileModal.classList.remove('translate-y-full');
+        profileModal.classList.add('translate-y-0');
+    }
 
     const scrollContainer = document.getElementById('neighbor-profile-scroll-container');
     if (scrollContainer) {
@@ -9760,7 +10195,11 @@ function closeNeighborProfileModal() {
         }
     }, 350);
 
-    document.getElementById('neighbor-profile-modal').classList.add('hidden');
+    const profileModal = document.getElementById('neighbor-profile-modal');
+    if (profileModal) {
+        profileModal.classList.remove('translate-y-0');
+        profileModal.classList.add('translate-y-full');
+    }
 
     const floatingContainer = document.getElementById('village-segment-floating-buttons');
     if (floatingContainer) {
@@ -11436,17 +11875,8 @@ function submitCreateEventFromOfferFlow(e) {
 
     resetOfferFormToSelector();
 
-    // Trigger Success Confetti & sound
-    if (typeof triggerSuccessConfetti === 'function') {
-        triggerSuccessConfetti();
-    } else {
-        playSound('success');
-    }
-
-    // Show congratulations modal and redirect to event hub view
-    showCongratsEventModal(title);
     renderEventsList();
-    showView('events_hub');
+    centerMapOnPost({ id: 'evt_' + newEvent.id, lat: newEvent.lat, lng: newEvent.lng, type: 'event' });
 }
 window.submitCreateEventFromOfferFlow = submitCreateEventFromOfferFlow;
 
@@ -11699,12 +12129,7 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
             successMsg = "New offering successfully listed on the village map! 🌿";
         }
     }
-    runTagMatchingAlgorithm(newOffer, true);
-    if (typeof openListingSuccessModal === 'function') {
-        openListingSuccessModal(successMsg);
-    } else {
-        showView('profile_settings');
-    }
+    centerMapOnPost(newOffer);
 }
 
 // ----------------------------------------------------
@@ -12807,8 +13232,8 @@ function renderChatDetail(conv) {
                     <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm rounded-xl font-medium admin-message-bubble flex flex-col gap-2">
                         <p class="text-xs leading-relaxed font-bold">${escapeHTML(msg.text)}</p>
                         <div class="flex gap-2 mt-1">
-                            <button class="bg-forest-green hover:bg-forest-green/90 text-warm-cream px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center gap-0.5 border-0" onclick="window.handleAcceptCounterOffer()">Accept Counter</button>
-                            <button class="bg-white border border-outline-variant/35 text-forest-green hover:bg-forest-green/5 px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center gap-0.5 border-0" onclick="window.handleCounterOfferSwapProposal()">Counter Offer</button>
+                            <button class="text-white px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center gap-0.5 border-0" style="background-color: #6b7280 !important; color: white !important;" onclick="window.handleAcceptCounterOffer()">Accept</button>
+                            <button class="text-white px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center gap-0.5 border-0" style="background-color: #9ca3af !important; color: white !important;" onclick="window.handleCounterOfferSwapProposal()">Counter</button>
                         </div>
                     </div>
                     <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}</span>
@@ -12828,8 +13253,8 @@ function renderChatDetail(conv) {
                     <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm rounded-xl font-medium admin-message-bubble flex flex-col gap-2">
                         <p class="text-xs leading-relaxed font-bold">${escapeHTML(msg.text)}</p>
                         <div class="flex gap-2 mt-1">
-                            <button class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center gap-0.5 border-0" onclick="window.handleAcceptCounterLocation()">Accept</button>
-                            <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 dark:bg-white/10 dark:hover:bg-white/20 dark:text-white px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center gap-0.5 border-0" onclick="openSuggestMeetingSpotModal()">Counter</button>
+                            <button class="text-white px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center gap-0.5 border-0" style="background-color: #6b7280 !important; color: white !important;" onclick="window.handleAcceptCounterLocation()">Accept</button>
+                            <button class="text-white px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center gap-0.5 border-0" style="background-color: #9ca3af !important; color: white !important;" onclick="openSuggestMeetingSpotModal()">Counter</button>
                         </div>
                     </div>
                     <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}</span>
@@ -13020,9 +13445,9 @@ function renderChatDetail(conv) {
                                         <div class="popup-modal-desc font-bold text-center mt-1.5">GIVE</div>
                                     </div>
                                     
-                                    <!-- Center Plus Sign -->
-                                    <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm font-bold text-base" style="font-family: 'Outfit', sans-serif;">
-                                        +
+                                    <!-- Center Swap Icon -->
+                                    <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm" style="font-family: 'Outfit', sans-serif;">
+                                        <span class="material-symbols-outlined text-sm font-bold">swap_horiz</span>
                                     </div>
                                     
                                     <!-- Right: Get -->
@@ -13038,7 +13463,7 @@ function renderChatDetail(conv) {
                                     <div class="px-3 py-1.5 rounded-full text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none popup-modal-desc font-bold">
                                         ${(conv.negotiation && (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'))
                                             ? 'Agreement Confirmed!'
-                                            : `${escapeHTML(conv.neighborName)} to agree?`}
+                                            : `Awaiting ${escapeHTML(conv.neighborName)}`}
                                     </div>
                                 </div>
                             </div>
@@ -13112,9 +13537,9 @@ function renderChatDetail(conv) {
                                         <div class="popup-modal-desc font-bold text-center mt-1.5">GET</div>
                                     </div>
                                     
-                                    <!-- Center Plus Sign -->
-                                    <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm font-bold text-base" style="font-family: 'Outfit', sans-serif;">
-                                        +
+                                    <!-- Center Swap Icon -->
+                                    <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm" style="font-family: 'Outfit', sans-serif;">
+                                        <span class="material-symbols-outlined text-sm font-bold">swap_horiz</span>
                                     </div>
                                     
                                     <!-- Right: Give (what I give) -->
@@ -13130,7 +13555,7 @@ function renderChatDetail(conv) {
                                     <div class="px-3 py-1.5 rounded-full text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none popup-modal-desc font-bold">
                                         ${(conv.negotiation && (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'))
                                             ? 'Agreement Confirmed!'
-                                            : (conv.negotiation && conv.negotiation.status === 'countered' ? 'Counter Proposed!' : 'You to agree?')}
+                                            : (conv.negotiation && conv.negotiation.status === 'countered' ? 'Counter Proposed!' : 'Awaiting Your Response')}
                                     </div>
                                 </div>
                             </div>
@@ -13422,7 +13847,6 @@ function renderChatTradeDrawer(conv) {
     if (status === 'none') {
         detailsHtml = `
             <div class="text-left space-y-1.5 p-3.5 bg-forest-green/5 rounded-xl border border-forest-green/10">
-                <h5 class="text-[11px] font-extrabold text-forest-green uppercase tracking-wide">Phase 1: Chatting & Connecting</h5>
                 <p class="text-[10px] leading-relaxed text-on-surface-variant font-medium">
                     Get to know your neighbor! Discuss meetup availability or barter options. When you have agreed on a trade, propose a swap using the button below.
                 </p>
@@ -13435,7 +13859,6 @@ function renderChatTradeDrawer(conv) {
         const isKarma = conv.negotiation.isKarmaSwap;
         detailsHtml = `
             <div class="text-left space-y-1.5 p-3.5 bg-forest-green/5 rounded-xl border border-forest-green/10">
-                <h5 class="text-[11px] font-extrabold text-forest-green uppercase tracking-wide">Phase 2: Swap Proposed (Sent)</h5>
                 <p class="text-[10.5px] text-on-surface-variant mb-2.5">
                     ${isKarma 
                         ? `You requested their <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.requestedItem)}</span> for free in exchange for Karma Points.` 
@@ -13483,7 +13906,6 @@ function renderChatTradeDrawer(conv) {
         const isKarma = conv.negotiation.isKarmaSwap;
         detailsHtml = `
             <div class="text-left space-y-1.5 p-3.5 bg-forest-green/5 rounded-xl border border-forest-green/10">
-                <h5 class="text-[11px] font-extrabold text-forest-green uppercase tracking-wide">Phase 2: Swap Proposed (Received)</h5>
                 <p class="text-[10.5px] text-on-surface-variant mb-2.5">
                     ${isKarma 
                         ? `${escapeHTML(conv.neighborName)} requested your <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.requestedItem)}</span> for free in exchange for Karma Points.` 
@@ -13533,7 +13955,6 @@ function renderChatTradeDrawer(conv) {
     } else if (status === 'countered') {
         detailsHtml = `
             <div class="text-left space-y-1.5 p-3.5 bg-forest-green/5 rounded-xl border border-forest-green/10">
-                <h5 class="text-[11px] font-extrabold text-[#D99036] uppercase tracking-wide">Phase 2: Swap Proposed (Countered)</h5>
                 <p class="text-[10.5px] text-on-surface-variant mb-2.5">
                     ${escapeHTML(conv.neighborName)} proposed a counter-offer: trade their <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.offeredItem)}</span> for your <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.requestedItem)}</span>.
                 </p>
@@ -13566,11 +13987,11 @@ function renderChatTradeDrawer(conv) {
             </div>
             <div class="flex flex-col gap-2 w-full">
                 <div class="flex gap-2 w-full">
-                    <button class="flex-grow bg-forest-green hover:bg-forest-green/95 text-warm-cream py-2.5 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 shadow border-0" onclick="window.handleAcceptCounterOffer()">
-                        <span class="material-symbols-outlined text-xs">check</span> Accept Counter
+                    <button class="flex-grow text-white py-2.5 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 shadow border-0" style="background-color: #6b7280 !important; color: white !important;" onclick="window.handleAcceptCounterOffer()">
+                        <span class="material-symbols-outlined text-xs" style="color: white !important;">check</span> Accept
                     </button>
-                    <button class="flex-grow bg-white border border-outline-variant/35 text-forest-green hover:bg-forest-green/5 py-2.5 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 shadow-sm" onclick="window.handleCounterOfferSwapProposal()">
-                        <span class="material-symbols-outlined text-xs">edit_square</span> Counter Offer
+                    <button class="flex-grow text-white py-2.5 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 shadow-sm border-0" style="background-color: #9ca3af !important; color: white !important;" onclick="window.handleCounterOfferSwapProposal()">
+                        <span class="material-symbols-outlined text-xs" style="color: white !important;">edit_square</span> Counter
                     </button>
                 </div>
                 <button class="w-full bg-white border border-[#ef4444]/20 hover:bg-[#ef4444]/5 text-[#ef4444] py-2 rounded-xl text-xs font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 shadow-sm border-0" onclick="window.handleDeclineCounterOffer()">
@@ -13583,7 +14004,6 @@ function renderChatTradeDrawer(conv) {
         if (conv.negotiation.locationNeedsUserConfirmation) {
             detailsHtml = `
                 <div class="text-left space-y-3 p-3.5 bg-forest-green/5 rounded-xl border border-forest-green/10 flex flex-col gap-1">
-                    <h5 class="text-[11px] font-extrabold text-[#D99036] uppercase tracking-wide">Phase 3: Coordinate Meet Up (Countered)</h5>
                     <p class="text-[10px] leading-relaxed text-on-surface-variant font-medium">
                         ${escapeHTML(conv.neighborName)} proposed a counter-location:
                     </p>
@@ -13599,18 +14019,17 @@ function renderChatTradeDrawer(conv) {
                     </div>
                 </div>
                 <div class="flex gap-2 w-full">
-                    <button class="flex-grow bg-forest-green hover:bg-forest-green/95 text-warm-cream py-2.5 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 shadow border-0" onclick="window.handleAcceptCounterLocation()">
-                        <span class="material-symbols-outlined text-xs">check</span> Accept Spot
+                    <button class="flex-grow text-white py-2.5 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 shadow border-0" style="background-color: #6b7280 !important; color: white !important;" onclick="window.handleAcceptCounterLocation()">
+                        <span class="material-symbols-outlined text-xs" style="color: white !important;">check</span> Accept
                     </button>
-                    <button class="flex-grow bg-white border border-outline-variant/35 text-forest-green hover:bg-forest-green/5 py-2.5 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 shadow-sm border-0" onclick="openSuggestMeetingSpotModal()">
-                        <span class="material-symbols-outlined text-xs">edit_location</span> Counter Spot
+                    <button class="flex-grow text-white py-2.5 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 shadow-sm border-0" style="background-color: #9ca3af !important; color: white !important;" onclick="openSuggestMeetingSpotModal()">
+                        <span class="material-symbols-outlined text-xs" style="color: white !important;">edit_location</span> Counter
                     </button>
                 </div>
             `;
         } else if (!hasMeetup) {
             detailsHtml = `
                 <div class="text-left space-y-3 p-3.5 bg-forest-green/5 rounded-xl border border-forest-green/10 flex flex-col gap-1">
-                    <h5 class="text-[11px] font-extrabold text-[#D99036] uppercase tracking-wide">Phase 3: Coordinate Meet Up</h5>
                     <p class="text-[10px] leading-relaxed text-on-surface-variant font-medium">
                         You and ${escapeHTML(conv.neighborName)} agreed to swap! You must arrange a safe public spot and time to meet up before you can finalize this swap.
                     </p>
@@ -13619,7 +14038,6 @@ function renderChatTradeDrawer(conv) {
         } else {
             detailsHtml = `
                 <div class="text-left space-y-3 p-3.5 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/10 dark:border-white/10 flex flex-col gap-1">
-                    <h5 class="text-[11px] font-extrabold text-black dark:text-white uppercase tracking-wide">Phase 3: Meet Up Arranged</h5>
                     <div class="bg-white dark:bg-[#141c16] p-2.5 rounded-xl border border-outline-variant/20 flex flex-col gap-1 text-[10.5px]">
                         <p class="font-semibold text-black dark:text-white flex items-center gap-1">
                             <span class="material-symbols-outlined text-sm">place</span> Meetup Spot:
@@ -13648,7 +14066,6 @@ function renderChatTradeDrawer(conv) {
         
         detailsHtml = `
             <div class="text-left space-y-1.5 p-3.5 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/10 dark:border-white/10">
-                <h5 class="text-[11px] font-extrabold text-black dark:text-white uppercase tracking-wide">Swap Details</h5>
                 <p class="text-[11px] text-black dark:text-white/80 font-medium leading-relaxed mb-2.5">
                     ${isKarma 
                         ? `Swap completed! You received their <span class="font-bold text-black dark:text-white">${escapeHTML(requested)}</span> for free in exchange for Karma Points.` 
@@ -13786,8 +14203,7 @@ function renderNegotiationControl(conv) {
     if (status === 'pending') {
         html = `
             <div class="bg-forest-green/5 dark:bg-white/[0.02] border border-forest-green/10 rounded-2xl p-3.5 flex flex-col gap-2">
-                <div class="flex justify-between items-center w-full">
-                    <span class="text-[10px] font-extrabold text-forest-green uppercase tracking-wider">Phase 2: Swap Proposed (Sent)</span>
+                <div class="flex justify-end items-center w-full">
                     <button class="text-[9px] font-bold text-[#ef4444] hover:underline bg-transparent border-0 cursor-pointer p-0" onclick="cancelProposedBarter()">Cancel Proposal</button>
                 </div>
                 <div class="text-[10px] text-on-surface-variant font-medium text-left">
@@ -13800,7 +14216,6 @@ function renderNegotiationControl(conv) {
     } else if (status === 'received') {
         html = `
             <div class="bg-forest-green/5 dark:bg-white/[0.02] border border-forest-green/10 rounded-2xl p-3.5 flex flex-col gap-3">
-                <span class="text-[10px] font-extrabold text-forest-green text-left uppercase tracking-wider">Phase 2: Swap Proposed (Received)</span>
                 <div class="text-[10px] text-on-surface-variant font-medium text-left">
                     ${isKarma 
                         ? `${escapeHTML(conv.neighborName)} requested your <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.requestedItem)}</span> for free in exchange for Karma Points.` 
@@ -13819,17 +14234,16 @@ function renderNegotiationControl(conv) {
     } else if (status === 'countered') {
         html = `
             <div class="bg-forest-green/5 dark:bg-white/[0.02] border border-forest-green/10 rounded-2xl p-3.5 flex flex-col gap-3">
-                <span class="text-[10px] font-extrabold text-[#D99036] text-left uppercase tracking-wider">Phase 2: Swap Proposed (Countered)</span>
                 <div class="text-[10px] text-on-surface-variant font-medium text-left">
                     ${escapeHTML(conv.neighborName)} proposed a counter-offer: trade their <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.offeredItem)}</span> for your <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.requestedItem)}</span>.
                 </div>
                 <div class="flex flex-col gap-2 w-full">
                     <div class="flex gap-2.5 w-full">
-                        <button class="flex-grow bg-forest-green hover:bg-forest-green/95 text-warm-cream py-2 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 border-0" onclick="window.handleAcceptCounterOffer()">
-                            <span class="material-symbols-outlined text-xs">check</span> Accept Counter
+                        <button class="flex-grow text-white py-2 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 border-0" style="background-color: #6b7280 !important; color: white !important;" onclick="window.handleAcceptCounterOffer()">
+                            <span class="material-symbols-outlined text-xs" style="color: white !important;">check</span> Accept
                         </button>
-                        <button class="flex-grow bg-white border border-outline-variant/35 text-forest-green hover:bg-forest-green/5 py-2 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1" onclick="window.handleCounterOfferSwapProposal()">
-                            <span class="material-symbols-outlined text-xs">edit_square</span> Counter Offer
+                        <button class="flex-grow text-white py-2 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 border-0" style="background-color: #9ca3af !important; color: white !important;" onclick="window.handleCounterOfferSwapProposal()">
+                            <span class="material-symbols-outlined text-xs" style="color: white !important;">edit_square</span> Counter
                         </button>
                     </div>
                     <button class="w-full bg-white border border-[#ef4444]/20 hover:bg-[#ef4444]/5 text-[#ef4444] py-1.5 rounded-xl text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 border-0" onclick="window.handleDeclineCounterOffer()">
@@ -13843,7 +14257,6 @@ function renderNegotiationControl(conv) {
         if (conv.negotiation.locationNeedsUserConfirmation) {
             html = `
                 <div class="bg-forest-green/5 dark:bg-white/[0.02] border border-forest-green/10 rounded-2xl p-3.5 flex flex-col gap-3">
-                    <span class="text-[10px] font-extrabold text-[#D99036] text-left uppercase tracking-wider">Phase 3: Coordinate Meet Up (Countered)</span>
                     <div class="text-[10px] text-on-surface-variant font-medium text-left">
                         ${escapeHTML(conv.neighborName)} proposed a counter-location:
                         <div class="bg-white dark:bg-[#141c16] p-2.5 rounded-xl border border-outline-variant/15 flex flex-col gap-1 mt-1.5 text-[10px]">
@@ -13852,11 +14265,11 @@ function renderNegotiationControl(conv) {
                         </div>
                     </div>
                     <div class="flex gap-2.5 w-full">
-                        <button class="flex-grow bg-forest-green hover:bg-forest-green/95 text-warm-cream py-2 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 border-0" onclick="window.handleAcceptCounterLocation()">
-                            <span class="material-symbols-outlined text-xs">check</span> Accept Spot
+                        <button class="flex-grow text-white py-2 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 border-0" style="background-color: #6b7280 !important; color: white !important;" onclick="window.handleAcceptCounterLocation()">
+                            <span class="material-symbols-outlined text-xs" style="color: white !important;">check</span> Accept
                         </button>
-                        <button class="flex-grow bg-white border border-outline-variant/35 text-forest-green hover:bg-forest-green/5 py-2 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1" onclick="openSuggestMeetingSpotModal()">
-                            <span class="material-symbols-outlined text-xs">edit_location</span> Counter Spot
+                        <button class="flex-grow text-white py-2 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 border-0" style="background-color: #9ca3af !important; color: white !important;" onclick="openSuggestMeetingSpotModal()">
+                            <span class="material-symbols-outlined text-xs" style="color: white !important;">edit_location</span> Counter
                         </button>
                     </div>
                 </div>
@@ -13864,7 +14277,6 @@ function renderNegotiationControl(conv) {
         } else if (!hasMeetup) {
             html = `
                 <div class="bg-forest-green/5 dark:bg-white/[0.02] border border-forest-green/10 rounded-2xl p-3.5 flex flex-col gap-2.5">
-                    <span class="text-[10px] font-extrabold text-[#D99036] text-left uppercase tracking-wider">Phase 3: Coordinate Meet Up</span>
                     <p class="text-[10px] leading-relaxed text-on-surface-variant font-medium text-left">
                         You and ${escapeHTML(conv.neighborName)} agreed to swap! You must arrange a safe public spot and time to meet up before you can finalize this swap.
                     </p>
@@ -13876,7 +14288,6 @@ function renderNegotiationControl(conv) {
         } else {
             html = `
                 <div class="bg-forest-green/5 dark:bg-white/[0.02] border border-forest-green/10 rounded-2xl p-3.5 flex flex-col gap-2.5">
-                    <span class="text-[10px] font-extrabold text-black dark:text-white text-left uppercase tracking-wider">Phase 3: Meet Up Arranged</span>
                     <div class="bg-white dark:bg-[#141c16] p-2.5 rounded-xl border border-outline-variant/15 flex flex-col gap-1 text-[10px] text-left">
                         <p class="font-semibold text-black dark:text-white flex items-center gap-1"><span class="material-symbols-outlined text-xs">place</span> Meetup Spot: ${escapeHTML(conv.negotiation.meetupLocation)}</p>
                         <p class="font-semibold text-black dark:text-white flex items-center gap-1"><span class="material-symbols-outlined text-xs">schedule</span> Meetup Time: ${escapeHTML(conv.negotiation.meetupTime)}</p>
@@ -13896,7 +14307,7 @@ function renderNegotiationControl(conv) {
     
     if (html) {
         container.innerHTML = html;
-        wrapper.style.display = "block";
+        wrapper.style.display = "none";
     }
 }
 
@@ -14555,7 +14966,7 @@ window.handleExitGroupClick = function() {
     const conv = state.conversations.find(c => c.id === state.currentConversationId);
     if (!conv) return;
     
-    if (confirm(`Are you sure you want to exit the group "${conv.neighborName}"?`)) {
+    showCustomConfirm("Exit Group?", `Are you sure you want to exit the group "${conv.neighborName}"?`, () => {
         const currentUserDisplayName = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
         
         if (conv.groupAdmins) {
@@ -14576,7 +14987,7 @@ window.handleExitGroupClick = function() {
         closeGroupSettingsModal();
         showView('chat_hub');
         renderConversationsList();
-    }
+    });
 };
 
 function handleCreateGroup() {
@@ -14905,10 +15316,6 @@ function handleAcceptProposal() {
         queueTradeCheckIn(conv.id);
     }
     
-    if (typeof showToast === 'function') {
-        showToast("Swap request accepted!");
-    }
-    
     renderChatDetail(conv);
     triggerSuccessConfetti();
 }
@@ -14935,10 +15342,6 @@ function handleAcceptCounterOffer() {
     
     if (typeof queueTradeCheckIn === 'function') {
         queueTradeCheckIn(conv.id);
-    }
-    
-    if (typeof showToast === 'function') {
-        showToast("Counter-offer accepted!");
     }
     
     renderChatDetail(conv);
@@ -15751,18 +16154,18 @@ function renderProfileSettings() {
 
     // Render Friends List
     const friendsContainer = document.getElementById('my-friends-container');
+    const profileFriendsContainer = document.getElementById('profile-friends-container');
+    
+    // Seed default friends list if empty or less than 10
+    if (ensureFriendsList()) {
+        saveState();
+    }
+    
+    const friends = state.friends || [];
+    
     if (friendsContainer) {
         friendsContainer.innerHTML = "";
-        
-        // Seed default friends list if empty or less than 10
-        if (ensureFriendsList()) {
-            saveState();
-        }
-        
-        const friends = state.friends || [];
-        if (friends.length === 0) {
-            friendsContainer.innerHTML = "";
-        } else {
+        if (friends.length > 0) {
             friends.forEach(f => {
                 const div = document.createElement('div');
                 div.className = "flex items-center justify-between p-2 hover:bg-forest-green/5 rounded-xl transition-colors";
@@ -15771,11 +16174,40 @@ function renderProfileSettings() {
                         <div class="profile-avatar-ring w-7 h-7 flex-shrink-0"><img src="${f.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
                         <span class="text-on-surface">${f.name}</span>
                     </div>
-                    <button class="text-error hover:opacity-80 p-1" onclick="handleRemoveFriend('${f.name}')">
+                    <button class="text-error hover:opacity-80 p-1 bg-transparent border-0 cursor-pointer" onclick="handleRemoveFriend('${escapeHTML(f.name)}')">
                         <span class="material-symbols-outlined text-base">person_remove</span>
                     </button>
                 `;
                 friendsContainer.appendChild(div);
+            });
+        }
+    }
+
+    if (profileFriendsContainer) {
+        profileFriendsContainer.innerHTML = "";
+        if (friends.length === 0) {
+            profileFriendsContainer.innerHTML = `<div class="text-center py-6 text-[11px] text-gray-500 dark:text-gray-400 select-none">No friends in your list.</div>`;
+        } else {
+            friends.forEach(f => {
+                const neighbor = state.neighbors[f.name];
+                const locationAndCat = neighbor ? `${neighbor.location} • ${neighbor.category || 'Swapper'}` : 'Oakwood Village';
+                const div = document.createElement('div');
+                div.className = "flex items-center justify-between p-2.5 rounded-xl border border-black/5 dark:border-white/5 bg-white dark:bg-[#1b261f]";
+                div.innerHTML = `
+                    <div class="flex items-center gap-3 cursor-pointer" onclick="openNeighborProfileModal('${escapeHTML(f.name)}')">
+                        <div class="profile-avatar-ring w-9 h-9 flex-shrink-0">
+                            <img src="${f.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full" alt="${escapeHTML(f.name)}">
+                        </div>
+                        <div class="text-left">
+                            <div class="text-xs font-bold text-black dark:text-white">${escapeHTML(f.name)}</div>
+                            <div class="text-[10px] text-on-surface-variant dark:text-warm-cream/60">${escapeHTML(locationAndCat)}</div>
+                        </div>
+                    </div>
+                    <button class="text-gray-400 hover:text-red-500 active:scale-90 transition-all border-0 cursor-pointer bg-transparent p-1 flex items-center justify-center" onclick="handleRemoveFriend('${escapeHTML(f.name)}')">
+                        <span class="material-symbols-outlined text-[18px]">delete</span>
+                    </button>
+                `;
+                profileFriendsContainer.appendChild(div);
             });
         }
     }
@@ -16226,18 +16658,16 @@ window.renderMyCornerItems = function() {
             const row = document.createElement('div');
             row.className = "flex items-center justify-between p-3.5 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
             row.onclick = (e) => {
-                if (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                }
                 window.detailOverlayCameFromProfile = true;
                 showView('village');
                 openMapItemDetail(item.id);
             };
             
+            const catColor = getCategoryColor(item.category) || '#308A5E';
+            const catIcon = getCategoryIcon(item.category) || 'handshake';
             const imgHtml = item.image ? `<img src="${item.image}" class="w-12 h-12 rounded-lg object-cover flex-shrink-0" />` : `
-                <div class="w-12 h-12 rounded-lg bg-forest-green/10 flex items-center justify-center text-forest-green flex-shrink-0">
-                    <span class="material-symbols-outlined text-[22px]">${item.icon || 'handshake'}</span>
+                <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style="background-color: ${catColor}15; color: ${catColor};">
+                    <span class="material-symbols-outlined text-[22px] font-bold" style="color: ${catColor};">${catIcon}</span>
                 </div>
             `;
             
@@ -16249,7 +16679,12 @@ window.renderMyCornerItems = function() {
                         <p class="text-[11px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${item.category}</p>
                     </div>
                 </div>
-                <span class="material-symbols-outlined text-gray-400 text-[18px]">chevron_right</span>
+                <div class="flex items-center gap-2 flex-shrink-0">
+                    <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent" onclick="deleteMyCornerItem('offerings', '${item.id}', event)">
+                        <span class="material-symbols-outlined text-[18px]">delete</span>
+                    </button>
+                    <span class="material-symbols-outlined text-gray-400 text-[18px]">chevron_right</span>
+                </div>
             `;
             listEl.appendChild(row);
         });
@@ -16265,18 +16700,16 @@ window.renderMyCornerItems = function() {
             const row = document.createElement('div');
             row.className = "flex items-center justify-between p-3.5 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
             row.onclick = (e) => {
-                if (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                }
                 window.detailOverlayCameFromProfile = true;
                 showView('village');
                 openMapItemDetail('need_' + item.id);
             };
             
+            const catColor = getCategoryColor(item.category) || '#eab308';
+            const catIcon = getCategoryIcon(item.category) || 'shopping_basket';
             const imgHtml = item.image ? `<img src="${item.image}" class="w-12 h-12 rounded-lg object-cover flex-shrink-0" />` : `
-                <div class="w-12 h-12 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500 flex-shrink-0">
-                    <span class="material-symbols-outlined text-[22px]">${item.icon || 'shopping_basket'}</span>
+                <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style="background-color: ${catColor}15; color: ${catColor};">
+                    <span class="material-symbols-outlined text-[22px] font-bold" style="color: ${catColor};">${catIcon}</span>
                 </div>
             `;
             
@@ -16288,7 +16721,12 @@ window.renderMyCornerItems = function() {
                         <p class="text-[11px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${item.category}</p>
                     </div>
                 </div>
-                <span class="material-symbols-outlined text-gray-400 text-[18px]">chevron_right</span>
+                <div class="flex items-center gap-2 flex-shrink-0">
+                    <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent" onclick="deleteMyCornerItem('needs', '${item.id}', event)">
+                        <span class="material-symbols-outlined text-[18px]">delete</span>
+                    </button>
+                    <span class="material-symbols-outlined text-gray-400 text-[18px]">chevron_right</span>
+                </div>
             `;
             listEl.appendChild(row);
         });
@@ -16309,10 +16747,6 @@ window.renderMyCornerItems = function() {
             const row = document.createElement('div');
             row.className = "flex items-center justify-between p-3.5 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
             row.onclick = (e) => {
-                if (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                }
                 window.detailOverlayCameFromProfile = true;
                 showView('village');
                 openMapItemDetail('evt_' + item.id);
@@ -16322,11 +16756,16 @@ window.renderMyCornerItems = function() {
             const dateObj = new Date(item.datetime);
             const dateStr = dateObj.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' at ' + dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             
+            const presetImg = getEventPresetImage(item.type);
+            const imgHtml = presetImg ? `<img src="${presetImg}" class="w-12 h-12 rounded-lg object-cover flex-shrink-0" />` : `
+                <div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 flex-shrink-0">
+                    <span class="material-symbols-outlined text-[22px] font-bold" style="color: #3b82f6;">festival</span>
+                </div>
+            `;
+            
             row.innerHTML = `
                 <div class="flex items-center gap-3 min-w-0 flex-grow text-left">
-                    <div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 flex-shrink-0">
-                        <span class="material-symbols-outlined text-[22px]">festival</span>
-                    </div>
+                    ${imgHtml}
                     <div class="min-w-0 flex-1">
                         <div class="flex items-center gap-1.5 min-w-0">
                             <h4 class="text-[11px] font-bold text-black dark:text-warm-cream truncate">${item.title}</h4>
@@ -16335,12 +16774,53 @@ window.renderMyCornerItems = function() {
                         <p class="text-[11px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${dateStr}</p>
                     </div>
                 </div>
-                <span class="material-symbols-outlined text-gray-400 text-[18px]">chevron_right</span>
+                <div class="flex items-center gap-2 flex-shrink-0">
+                    <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent" onclick="deleteMyCornerItem('events', '${item.id}', event)">
+                        <span class="material-symbols-outlined text-[18px]">delete</span>
+                    </button>
+                    <span class="material-symbols-outlined text-gray-400 text-[18px]">chevron_right</span>
+                </div>
             `;
             listEl.appendChild(row);
         });
     }
 };
+
+window.deleteMyCornerItem = function(tab, id, event) {
+    if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+    if (typeof playSound === 'function') playSound('click');
+    
+    const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
+    
+    if (tab === 'offerings') {
+        state.userOfferings = (state.userOfferings || []).filter(item => item.id !== id);
+    } else if (tab === 'needs') {
+        state.userNeeds = (state.userNeeds || []).filter(item => item.id !== id);
+    } else if (tab === 'events') {
+        state.events = (state.events || []).map(evt => {
+            if (evt.id === id) {
+                if (evt.host === currentUser) {
+                    return null; // remove
+                } else {
+                    evt.rsvps = (evt.rsvps || []).filter(r => r !== currentUser);
+                    return evt;
+                }
+            }
+            return evt;
+        }).filter(Boolean);
+    }
+    
+    saveState();
+    
+    if (typeof updateMyCornerSection === 'function') {
+        updateMyCornerSection();
+    }
+    renderMyCornerItems();
+};
+
 
 window.updateMyCornerSection = function() {
     const offeringsCount = (state.userOfferings || []).length;
@@ -16887,17 +17367,32 @@ function switchVillageSegment(type) {
             }
         });
 
+    let prevCategory = 'offerings';
+    if (currentVillageSegment === 'needs_map' || currentVillageSegment === 'needs') {
+        prevCategory = 'needs';
+    } else if (currentVillageSegment === 'events_map' || currentVillageSegment === 'events') {
+        prevCategory = 'events';
+    }
+
+    let newCategory = 'offerings';
     if (type === 'map' || type === 'needs_map' || type === 'gifts_map' || type === 'events_map') {
         state.activeViewMode = 'map';
-        if (type === 'map') state.activeCategory = 'offerings';
-        else if (type === 'needs_map') state.activeCategory = 'needs';
-        else if (type === 'events_map') state.activeCategory = 'events';
+        if (type === 'map') newCategory = 'offerings';
+        else if (type === 'needs_map') newCategory = 'needs';
+        else if (type === 'events_map') newCategory = 'events';
     } else {
         state.activeViewMode = 'list';
-        if (type === 'list') state.activeCategory = 'offerings';
-        else if (type === 'needs') state.activeCategory = 'needs';
-        else if (type === 'events') state.activeCategory = 'events';
+        if (type === 'list') newCategory = 'offerings';
+        else if (type === 'needs') newCategory = 'needs';
+        else if (type === 'events') newCategory = 'events';
     }
+
+    if (prevCategory !== newCategory) {
+        activeCategoryFilter = null;
+        state.activeMapFilters = [];
+    }
+
+    state.activeCategory = newCategory;
     saveState();
     if (typeof updateTopSegmentedControlUI === 'function') {
         updateTopSegmentedControlUI(state.activeCategory);
@@ -20322,7 +20817,7 @@ function plotMapMarkersOnly() {
         // Purple-blue map pin icon with vibrating purple-blue ring
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
-            html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid white !important; background-color: #5f69f8 !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
+            html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid white !important; background-color: #8B5CF6 !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
                     <div class="meetup-blue-pulse"></div>
                     <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">location_on</span>
                    </div>`,
@@ -20337,8 +20832,8 @@ function plotMapMarkersOnly() {
         const radius = state.meetupMapRadius || 100;
         const vicinityCircle = L.circle([lat, lng], {
             radius: radius,
-            color: '#5f69f8',
-            fillColor: '#5f69f8',
+            color: '#8B5CF6',
+            fillColor: '#8B5CF6',
             fillOpacity: 0.12,
             weight: 1.5,
             dashArray: null,
@@ -20374,7 +20869,7 @@ function plotMapMarkersOnly() {
             
             const userLocIcon = L.divIcon({
                 className: 'user-location-marker',
-                html: `<div class="relative flex items-center justify-center w-[54px] h-[54px] rounded-full" style="border: 2.5px solid #308A5E !important; background-color: white !important; width: 54px !important; height: 54px !important; border-radius: 50% !important; aspect-ratio: 1/1 !important; box-shadow: 0 3px 10px rgba(0,0,0,0.2) !important;">
+                html: `<div class="relative flex items-center justify-center w-[54px] h-[54px] rounded-full" style="border: 2.5px solid #8B5CF6 !important; background-color: white !important; width: 54px !important; height: 54px !important; border-radius: 50% !important; aspect-ratio: 1/1 !important; box-shadow: 0 3px 10px rgba(0,0,0,0.2) !important;">
                          <img src="${avatarUrl}" class="w-[44px] h-[44px] rounded-full object-cover z-10" style="width: 44px !important; height: 44px !important; border-radius: 50% !important; object-fit: cover !important; aspect-ratio: 1/1 !important;" />
                        </div>`,
                 iconSize: [54, 54],
@@ -20489,7 +20984,7 @@ function plotMapMarkersOnly() {
 
                 const customIcon = L.divIcon({
                     className: 'custom-div-icon',
-                    html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid #5f69f8 !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
+                    html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid #8B5CF6 !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
                             <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">${iconName}</span>
                            </div>`,
                     iconSize: [38, 38],
@@ -20654,7 +21149,7 @@ function plotMapMarkersOnly() {
                 }
 
                 const isMe = (need.neighborName === displayName);
-                const borderStyle = isMe ? 'border: 2px solid #5f69f8 !important;' : 'border: 2px solid white !important;';
+                const borderStyle = isMe ? 'border: 2px solid #8B5CF6 !important;' : 'border: 2px solid white !important;';
                 const avatarBadgeHtml = '';
 
                 const customIcon = L.divIcon({
@@ -20690,7 +21185,7 @@ function plotMapMarkersOnly() {
             
             const userLocIcon = L.divIcon({
                 className: 'user-location-marker',
-                html: `<div class="relative flex items-center justify-center w-[54px] h-[54px] rounded-full" style="border: 2.5px solid #5f69f8 !important; background-color: white !important; width: 54px !important; height: 54px !important; border-radius: 50% !important; aspect-ratio: 1/1 !important; box-shadow: 0 3px 10px rgba(0,0,0,0.2) !important;">
+                html: `<div class="relative flex items-center justify-center w-[54px] h-[54px] rounded-full" style="border: 2.5px solid #8B5CF6 !important; background-color: white !important; width: 54px !important; height: 54px !important; border-radius: 50% !important; aspect-ratio: 1/1 !important; box-shadow: 0 3px 10px rgba(0,0,0,0.2) !important;">
                          ${pulseRingHtml}
                          <img src="${avatarUrl}" class="w-[44px] h-[44px] rounded-full object-cover z-10" style="width: 44px !important; height: 44px !important; border-radius: 50% !important; object-fit: cover !important; aspect-ratio: 1/1 !important;" />
                        </div>`,
@@ -22260,8 +22755,7 @@ function handleAddNeedSubmit() {
         plotMapMarkersOnly();
     }
 
-    runTagMatchingAlgorithm(needObj, false);
-    alert("Your need has been successfully added to your profile and the Village Needs List!");
+    centerMapOnPost(needObj);
 }
 
 function handleDeleteNeed(id) {
@@ -22341,14 +22835,12 @@ function handleAddFriendSubmit() {
 }
 
 function handleRemoveFriend(name) {
-    if (confirm(`Remove ${name} from your friends list?`)) {
-        if (state.friends) {
-            state.friends = state.friends.filter(f => f.name !== name);
-        }
-        saveState();
-        playSound('click');
-        renderProfileSettings();
+    if (state.friends) {
+        state.friends = state.friends.filter(f => f.name !== name);
     }
+    saveState();
+    playSound('click');
+    renderProfileSettings();
 }
 
 function handleInviteFriendFromProfile() {
@@ -27355,15 +27847,15 @@ function plotMeetingSpotMarkers(spots) {
         } else if (spot.type === 'park') {
             color = '#38a169'; // green
         } else if (spot.type === 'custom') {
-            color = '#5f69f8'; // purple-blue
+            color = '#8B5CF6'; // purple
         }
         
         let customIcon;
         if (spot.type === 'custom') {
             customIcon = L.divIcon({
                 className: 'custom-div-icon',
-                html: `<div class="gps-blue-dot relative flex items-center justify-center rounded-full" style="background-color: #5f69f8 !important; border: 2px solid white !important; width: 20px; height: 20px; border-radius: 50% !important; box-shadow: 0 2px 6px rgba(95, 105, 248, 0.4) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
-                         <div class="gps-pulse-ring" style="position: absolute; width: 34px; height: 34px; border-radius: 50%; background-color: rgba(95, 105, 248, 0.2); border: 1.5px solid rgba(95, 105, 248, 0.45); animation: radiating-blue-dot-pulse 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite; pointer-events: none; z-index: -1;"></div>
+                html: `<div class="gps-blue-dot relative flex items-center justify-center rounded-full" style="background-color: #8B5CF6 !important; border: 2px solid white !important; width: 20px; height: 20px; border-radius: 50% !important; box-shadow: 0 2px 6px rgba(139, 92, 246, 0.4) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
+                         <div class="gps-pulse-ring" style="position: absolute; width: 34px; height: 34px; border-radius: 50%; background-color: rgba(139, 92, 246, 0.2); border: 1.5px solid rgba(139, 92, 246, 0.45); animation: radiating-blue-dot-pulse 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite; pointer-events: none; z-index: -1;"></div>
                        </div>`,
                 iconSize: [20, 20],
                 iconAnchor: [10, 10]
@@ -29729,7 +30221,7 @@ function openMeetupLocationPicker() {
 function plotMeetupPickerMarker(lat, lng, radius) {
     if (!meetupPickerMap) return;
 
-    const color = '#5f69f8'; // Purple-blue
+    const color = '#8B5CF6'; // Purple
     
     // Create/update marker
     if (meetupPickerMarker) {
@@ -29737,8 +30229,8 @@ function plotMeetupPickerMarker(lat, lng, radius) {
     } else {
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
-            html: `<div class="gps-blue-dot relative flex items-center justify-center rounded-full" style="background-color: #5f69f8 !important; border: 2.5px solid white !important; width: 22px; height: 22px; border-radius: 50% !important; box-shadow: 0 2px 8px rgba(95, 105, 248, 0.4) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
-                     <div class="gps-pulse-ring" style="position: absolute; width: 38px; height: 38px; border-radius: 50%; background-color: rgba(95, 105, 248, 0.25); border: 1.5px solid rgba(95, 105, 248, 0.5); animation: radiating-blue-dot-pulse 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite; pointer-events: none; z-index: -1;"></div>
+            html: `<div class="gps-blue-dot relative flex items-center justify-center rounded-full" style="background-color: #8B5CF6 !important; border: 2.5px solid white !important; width: 22px; height: 22px; border-radius: 50% !important; box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
+                     <div class="gps-pulse-ring" style="position: absolute; width: 38px; height: 38px; border-radius: 50%; background-color: rgba(139, 92, 246, 0.25); border: 1.5px solid rgba(139, 92, 246, 0.5); animation: radiating-blue-dot-pulse 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite; pointer-events: none; z-index: -1;"></div>
                    </div>`,
             iconSize: [22, 22],
             iconAnchor: [11, 11]
@@ -29911,7 +30403,7 @@ window.openSwapsPopupModal = function() {
     if (completedPartners.size === 0) {
         list.innerHTML = `
             <div class="text-center py-12 text-outline space-y-3">
-                <span class="material-symbols-outlined text-5xl text-outline-variant">handshake</span>
+                <span class="material-symbols-outlined text-5xl text-forest-green/40 dark:text-[#308A5E]/40">handshake</span>
                 <p class="text-sm font-semibold text-on-surface-variant">No Completed Swaps Yet</p>
                 <p class="text-xs text-outline max-w-[240px] mx-auto leading-relaxed">Completed swaps with your neighbors will show up here as trusted connections.</p>
             </div>
@@ -33785,4 +34277,250 @@ window.startWelcomeCarousel = function() {
     return;
 };
 
+/* --- Start: Custom Date/Time Picker Modal Logic --- */
+let currentPickerTargetInputId = null;
+let customPickerSelectedDate = new Date();
+
+window.openCustomDateTimePicker = function(inputId) {
+    currentPickerTargetInputId = inputId;
+    
+    // Read initial value if existing
+    const input = document.getElementById(inputId);
+    let initialDate = new Date();
+    if (input && input.value) {
+        const parsed = new Date(input.value);
+        if (!isNaN(parsed.getTime())) {
+            initialDate = parsed;
+        }
+    }
+    
+    customPickerSelectedDate = initialDate;
+    
+    // Set time inputs
+    let hours = initialDate.getHours();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    if (hours === 0) hours = 12;
+    const minutes = initialDate.getMinutes();
+    
+    // Populate dropdown options
+    populateTimeDropdowns();
+    
+    document.getElementById('custom-picker-hour').value = String(hours).padStart(2, '0');
+    document.getElementById('custom-picker-minute').value = String(minutes).padStart(2, '0');
+    document.getElementById('custom-picker-ampm').value = ampm;
+    
+    // Render calendar
+    renderCustomCalendar();
+    
+    // Show modal
+    const modal = document.getElementById('custom-datetime-picker-modal');
+    const container = document.getElementById('custom-datetime-picker-container');
+    if (modal && container) {
+        modal.classList.remove('hidden');
+        void modal.offsetWidth; // force reflow
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100');
+        container.classList.remove('translate-y-full');
+    }
+};
+
+window.closeCustomDateTimePicker = function() {
+    const modal = document.getElementById('custom-datetime-picker-modal');
+    const container = document.getElementById('custom-datetime-picker-container');
+    if (modal && container) {
+        modal.classList.remove('opacity-100');
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        container.classList.add('translate-y-full');
+        setTimeout(() => {
+            if (modal.classList.contains('pointer-events-none')) {
+                modal.classList.add('hidden');
+            }
+        }, 300);
+    }
+};
+
+function populateTimeDropdowns() {
+    const hrSelect = document.getElementById('custom-picker-hour');
+    const minSelect = document.getElementById('custom-picker-minute');
+    if (!hrSelect || !minSelect || hrSelect.children.length > 0) return;
+    
+    // Populate hours
+    for (let h = 1; h <= 12; h++) {
+        const val = String(h).padStart(2, '0');
+        const opt = document.createElement('option');
+        opt.value = val;
+        opt.innerText = val;
+        hrSelect.appendChild(opt);
+    }
+    
+    // Populate minutes
+    for (let m = 0; m < 60; m++) {
+        const val = String(m).padStart(2, '0');
+        const opt = document.createElement('option');
+        opt.value = val;
+        opt.innerText = val;
+        minSelect.appendChild(opt);
+    }
+}
+
+window.changeCustomPickerMonth = function(offset) {
+    const newDate = new Date(customPickerSelectedDate.getFullYear(), customPickerSelectedDate.getMonth() + offset, 1);
+    const maxDays = new Date(newDate.getFullYear(), newDate.getMonth() + 1, 0).getDate();
+    customPickerSelectedDate = new Date(newDate.getFullYear(), newDate.getMonth(), Math.min(customPickerSelectedDate.getDate(), maxDays));
+    renderCustomCalendar();
+};
+
+function renderCustomCalendar() {
+    const year = customPickerSelectedDate.getFullYear();
+    const month = customPickerSelectedDate.getMonth();
+    
+    const monthLabel = document.getElementById('custom-picker-month-year');
+    if (monthLabel) {
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        monthLabel.innerText = `${monthNames[month]} ${year}`;
+    }
+    
+    const grid = document.getElementById('custom-picker-day-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    
+    const firstDayIndex = new Date(year, month, 1).getDay();
+    const totalDays = new Date(year, month + 1, 0).getDate();
+    const prevMonthDays = new Date(year, month, 0).getDate();
+    
+    // Prev month overflow days
+    for (let i = firstDayIndex - 1; i >= 0; i--) {
+        const day = prevMonthDays - i;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.disabled = true;
+        btn.className = 'py-2 text-black/10 dark:text-white/5 bg-transparent border-0 cursor-default select-none pointer-events-none text-center font-bold text-xs h-8 w-8 mx-auto flex items-center justify-center';
+        btn.innerText = day;
+        grid.appendChild(btn);
+    }
+    
+    // Current month days
+    for (let day = 1; day <= totalDays; day++) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        
+        const isSelected = day === customPickerSelectedDate.getDate();
+        
+        btn.className = `py-2 rounded-lg transition-all border-0 cursor-pointer select-none font-bold text-xs text-center flex items-center justify-center h-8 w-8 mx-auto ${
+            isSelected 
+            ? 'bg-forest-green text-warm-cream dark:bg-[#308A5E] dark:text-[#101612] shadow-sm' 
+            : 'text-on-surface dark:text-warm-cream bg-transparent hover:bg-black/5 dark:hover:bg-white/5'
+        }`;
+        btn.innerText = day;
+        btn.onclick = () => {
+            customPickerSelectedDate.setDate(day);
+            renderCustomCalendar();
+        };
+        grid.appendChild(btn);
+    }
+}
+
+window.confirmCustomDateTime = function() {
+    const hr = parseInt(document.getElementById('custom-picker-hour').value);
+    const min = parseInt(document.getElementById('custom-picker-minute').value);
+    const ampm = document.getElementById('custom-picker-ampm').value;
+    
+    let militaryHour = hr;
+    if (ampm === 'PM' && hr < 12) militaryHour += 12;
+    if (ampm === 'AM' && hr === 12) militaryHour = 0;
+    
+    const finalDate = new Date(
+        customPickerSelectedDate.getFullYear(),
+        customPickerSelectedDate.getMonth(),
+        customPickerSelectedDate.getDate(),
+        militaryHour,
+        min
+    );
+    
+    // Format to ISO-like local datetime: YYYY-MM-DDTHH:MM
+    const yearStr = finalDate.getFullYear();
+    const monthStr = String(finalDate.getMonth() + 1).padStart(2, '0');
+    const dayStr = String(finalDate.getDate()).padStart(2, '0');
+    const hourStr = String(finalDate.getHours()).padStart(2, '0');
+    const minStr = String(finalDate.getMinutes()).padStart(2, '0');
+    const formattedVal = `${yearStr}-${monthStr}-${dayStr}T${hourStr}:${minStr}`;
+    
+    const input = document.getElementById(currentPickerTargetInputId);
+    if (input) {
+        input.value = formattedVal;
+        
+        // Dispatch inputs and change events so the form validity checker functions update correctly
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        
+        // Also call the validity checker function directly if needed
+        if (typeof checkOfferFormValidity === 'function') {
+            checkOfferFormValidity();
+        }
+    }
+    
+    closeCustomDateTimePicker();
+};
+/* --- End: Custom Date/Time Picker Modal Logic --- */
+
+/* --- Start: Custom Internal Alert Modal Logic --- */
+let customAlertCallback = null;
+window._originalAlert = window.alert;
+
+window.alert = function(message, callback = null) {
+    console.log("[Custom Alert] Triggered with message:", message);
+    if (typeof playSound === 'function') playSound('click');
+    
+    const modal = document.getElementById('custom-alert-modal');
+    const msgEl = document.getElementById('custom-alert-message');
+    const container = modal ? modal.querySelector('.relative') : null;
+    const backdrop = modal ? modal.querySelector('.absolute') : null;
+    
+    if (modal && msgEl && container && backdrop) {
+        msgEl.innerText = message;
+        customAlertCallback = callback;
+        
+        modal.classList.remove('hidden');
+        void modal.offsetWidth; // force reflow
+        
+        backdrop.classList.remove('opacity-0', 'pointer-events-none');
+        backdrop.classList.add('opacity-100');
+        
+        container.classList.remove('scale-95', 'opacity-0');
+        container.classList.add('scale-100', 'opacity-100');
+    } else {
+        console.warn("[Custom Alert] Modal elements missing, falling back to original alert:", message);
+        if (window._originalAlert) {
+            window._originalAlert(message);
+        }
+        if (callback) callback();
+    }
+};
+
+window.closeCustomAlert = function() {
+    const modal = document.getElementById('custom-alert-modal');
+    const container = modal ? modal.querySelector('.relative') : null;
+    const backdrop = modal ? modal.querySelector('.absolute') : null;
+    
+    if (modal && container && backdrop) {
+        backdrop.classList.remove('opacity-100');
+        backdrop.classList.add('opacity-0');
+        
+        container.classList.remove('scale-100', 'opacity-100');
+        container.classList.add('scale-95', 'opacity-0');
+        
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            if (customAlertCallback) {
+                const cb = customAlertCallback;
+                customAlertCallback = null;
+                cb();
+            }
+        }, 300);
+    }
+};
+/* --- End: Custom Internal Alert Modal Logic --- */
+
 // Global scope ends
+

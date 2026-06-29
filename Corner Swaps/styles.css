@@ -5784,8 +5784,8 @@ button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background-color: rgba(95, 105, 248, 0.25);
-    border: 1.5px solid rgba(95, 105, 248, 0.5);
+    background-color: rgba(139, 92, 246, 0.25);
+    border: 1.5px solid rgba(139, 92, 246, 0.5);
     animation: radiating-blue-dot-pulse 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite !important;
     pointer-events: none;
     z-index: 1;
