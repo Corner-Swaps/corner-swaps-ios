@@ -1284,9 +1284,11 @@ html.dark #phone-header-bar .material-symbols-outlined {
     padding-bottom: 0 !important;
 }
 .native-app-env #profile-settings-scroll-container,
-.native-app-env #confirm-swap-scroll-container {
+body.show-simulator #profile-settings-scroll-container,
+.native-app-env #confirm-swap-scroll-container,
+body.show-simulator #confirm-swap-scroll-container {
     padding-top: calc(var(--safe-area-top) + 16px) !important;
-    padding-bottom: calc(56px + var(--safe-area-bottom)) !important;
+    padding-bottom: calc(90px + var(--safe-area-bottom)) !important;
 }
 .native-app-env #profile-settings-scroll-container.has-header {
     padding-top: calc(var(--safe-area-top) + 16px) !important;
@@ -1331,21 +1333,36 @@ html.dark #neighbor-profile-modal {
     background-color: var(--dark-bg) !important;
 }
 
-/* Safe area padding for the full-screen neighbor profile modal in iOS native view */
-.native-app-env #neighbor-profile-modal {
+/* Safe area padding for the full-screen neighbor profile modal in iOS native view and simulator modes */
+.native-app-env #neighbor-profile-modal,
+body.show-simulator #neighbor-profile-modal,
+.native-app-env #swaps-popup-modal,
+body.show-simulator #swaps-popup-modal {
+    top: 0 !important;
+    height: 100% !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+    background-color: #ffffff !important;
+}
+
+html.dark .native-app-env #neighbor-profile-modal,
+html.dark body.show-simulator #neighbor-profile-modal,
+html.dark .native-app-env #swaps-popup-modal,
+html.dark body.show-simulator #swaps-popup-modal {
+    background-color: #101612 !important;
 }
 
 .native-app-env #profile-settings-header,
 .native-app-env #neighbor-profile-header,
+body.show-simulator #neighbor-profile-header,
 .native-app-env #confirm-swap-header {
     padding-top: var(--safe-area-top) !important;
 }
 
-.native-app-env #neighbor-profile-scroll-container {
+.native-app-env #neighbor-profile-scroll-container,
+body.show-simulator #neighbor-profile-scroll-container {
     padding-top: calc(var(--safe-area-top) + 16px) !important;
-    padding-bottom: calc(56px + var(--safe-area-bottom)) !important;
+    padding-bottom: calc(90px + var(--safe-area-bottom)) !important;
 }
 
 /* Ensure the modals are layered on top of all other elements, including the floating global navbar */
@@ -6367,6 +6384,36 @@ body:has(#view-village.active) #iphone16-status-bar {
     border-bottom: none !important;
 }
 
+/* Solid background for status bar when full-screen modals are open to prevent the map showing through at the top */
+body:has(#neighbor-profile-modal:not(.hidden)) #iphone16-status-bar,
+body:has(#swaps-popup-modal:not(.hidden)) #iphone16-status-bar {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.05) !important;
+    color: #000000 !important;
+    fill: #000000 !important;
+}
+html.dark body:has(#neighbor-profile-modal:not(.hidden)) #iphone16-status-bar,
+html.dark body:has(#swaps-popup-modal:not(.hidden)) #iphone16-status-bar {
+    background: #101612 !important;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.05) !important;
+    color: #ffffff !important;
+    fill: #ffffff !important;
+}
+
+/* Force full-screen modals to occupy top: 0 and height: 100% in iPhone 16 mode to prevent gaps */
+.iphone16-mode #neighbor-profile-modal,
+.iphone16-mode #swaps-popup-modal {
+    top: 0 !important;
+    height: 100% !important;
+    background-color: #ffffff !important;
+}
+html.dark .iphone16-mode #neighbor-profile-modal,
+html.dark .iphone16-mode #swaps-popup-modal {
+    background-color: #101612 !important;
+}
+
 /* Use white icons on the loading screen */
 body:has(#loading-screen:not(.hidden)) #iphone16-status-bar {
     color: #ffffff;
@@ -6645,11 +6692,7 @@ body.show-simulator #phone-header-bar:not(.hidden) {
     box-sizing: border-box !important;
 }
 
-/* Align neighbor profile modal below the static header bar in standard simulator mode */
-body.show-simulator:not(.iphone16-mode) #neighbor-profile-modal {
-    top: 48px !important;
-    height: calc(100% - 48px) !important;
-}
+
 
 body.show-simulator #neighbor-profile-modal,
 body.show-simulator #view-offer,
@@ -10758,4 +10801,78 @@ html.dark textarea::placeholder {
 }
 #lifecycle-cancel-btn:hover {
     background-color: #787880 !important;
+}
+
+#map-detail-status-text {
+    display: none !important;
+}
+
+/* ==================================================== */
+/* GROUP DETAILS MODAL BLACK TEXT RESTYLING */
+/* ==================================================== */
+
+/* Subtitle (Member Count) */
+#group-settings-member-count {
+    color: #4b5563 !important; /* Neutral dark gray */
+}
+html.dark #group-settings-member-count {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Invite Friends Button */
+#group-settings-modal button[onclick="handleInviteFriend()"] {
+    color: #101612 !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+}
+#group-settings-modal button[onclick="handleInviteFriend()"] span.material-symbols-outlined {
+    color: #101612 !important;
+}
+html.dark #group-settings-modal button[onclick="handleInviteFriend()"] {
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+html.dark #group-settings-modal button[onclick="handleInviteFriend()"] span.material-symbols-outlined {
+    color: #ffffff !important;
+}
+
+/* Group Members Heading */
+#group-settings-modal h3 {
+    color: #4b5563 !important;
+}
+html.dark #group-settings-modal h3 {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Member Name */
+.group-member-name {
+    color: #101612 !important;
+}
+html.dark .group-member-name {
+    color: #ffffff !important;
+}
+
+/* Admin Badge */
+.group-member-admin {
+    color: #4b5563 !important;
+}
+html.dark .group-member-admin {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Make Admin Button */
+.group-make-admin-btn {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    color: #101612 !important;
+}
+.group-make-admin-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+html.dark .group-make-admin-btn {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+}
+html.dark .group-make-admin-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important;
 }

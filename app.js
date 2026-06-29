@@ -1797,9 +1797,49 @@ let state = window.StateController.createProxy({
             offeredItem: 'English Ivy cutting',
             requestedItem: 'Handmade Crochet Hat',
             createdAt: Date.now() - 40 * 60 * 60 * 1000
+        },
+        {
+            id: 'rev-fake-6',
+            neighborName: "Liam O'Connor",
+            avatar: 'https://images.unsplash.com/photo-1500048993953-d23a436266cf?q=60&w=80&auto=format&fit=crop',
+            offeredItem: 'Homebrewed Kombucha (1 Gallon)',
+            requestedItem: 'Fresh Backyard Eggs',
+            createdAt: Date.now() - 48 * 60 * 60 * 1000
+        },
+        {
+            id: 'rev-fake-7',
+            neighborName: 'Chloe Mitchell',
+            avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=80&auto=format&fit=crop',
+            offeredItem: 'Hand-knitted Wool Socks',
+            requestedItem: 'Meyer Lemons (5 lbs)',
+            createdAt: Date.now() - 54 * 60 * 60 * 1000
+        },
+        {
+            id: 'rev-fake-8',
+            neighborName: 'Daniel Martinez',
+            avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=60&w=80&auto=format&fit=crop',
+            offeredItem: 'French Press & Coffee beans',
+            requestedItem: 'Aloe Vera Plant',
+            createdAt: Date.now() - 60 * 60 * 60 * 1000
+        },
+        {
+            id: 'rev-fake-9',
+            neighborName: 'Sophia Sterling',
+            avatar: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=60&w=80&auto=format&fit=crop',
+            offeredItem: 'Homemade Garlic Pesto Jar',
+            requestedItem: 'Gluten-Free Muffin Batch',
+            createdAt: Date.now() - 72 * 60 * 60 * 1000
+        },
+        {
+            id: 'rev-fake-10',
+            neighborName: 'Oliver Bennett',
+            avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=80&auto=format&fit=crop',
+            offeredItem: 'Drip Irrigation Fittings',
+            requestedItem: 'Seedling Starter Tray',
+            createdAt: Date.now() - 96 * 60 * 60 * 1000
         }
     ],
-    fictitiousReviewsInitializedVersion: 3,
+    fictitiousReviewsInitializedVersion: 4,
     currentUser: null,
     loggedOut: false,
     eulaAgreed: true,
@@ -2146,10 +2186,36 @@ function loadState() {
             });
         });
     }
+    if (state.conversations) {
+        state.conversations = state.conversations.filter(conv => conv.neighborName !== 'Bob Builder' && conv.id !== 'bob-builder');
+        
+        const freshBobConv = {
+            id: 'bob-builder',
+            neighborName: 'Bob Builder',
+            unread: false,
+            timeLeft: '29 hours left',
+            messages: [
+                { 
+                    sender: 'me', 
+                    text: 'Hi Bob Builder! I saw your request on the Needs List: "Electric Drywall Sander". I\'d love to help out with that. Let\'s trade!', 
+                    time: '06:53 AM',
+                    timestamp: parseFriendlyTimeToTimestamp('06:53 AM')
+                }
+            ],
+            negotiation: {
+                status: 'none',
+                offeredItem: null,
+                requestedItem: 'Electric Drywall Sander'
+            },
+            initiatedBy: 'need'
+        };
+        state.conversations.unshift(freshBobConv);
+        needsSave = true;
+    }
     if (state.userVouches === undefined) {
         state.userVouches = 75;
     }
-    if (!state.fictitiousReviewsInitializedVersion || state.fictitiousReviewsInitializedVersion !== 3 || !state.fictitiousReviews) {
+    if (!state.fictitiousReviewsInitializedVersion || state.fictitiousReviewsInitializedVersion !== 4 || !state.fictitiousReviews) {
         state.fictitiousReviews = [
             {
                 id: 'rev-fake-1',
@@ -2190,9 +2256,49 @@ function loadState() {
                 offeredItem: 'English Ivy cutting',
                 requestedItem: 'Handmade Crochet Hat',
                 createdAt: Date.now() - 40 * 60 * 60 * 1000
+            },
+            {
+                id: 'rev-fake-6',
+                neighborName: "Liam O'Connor",
+                avatar: 'https://images.unsplash.com/photo-1500048993953-d23a436266cf?q=60&w=80&auto=format&fit=crop',
+                offeredItem: 'Homebrewed Kombucha (1 Gallon)',
+                requestedItem: 'Fresh Backyard Eggs',
+                createdAt: Date.now() - 48 * 60 * 60 * 1000
+            },
+            {
+                id: 'rev-fake-7',
+                neighborName: 'Chloe Mitchell',
+                avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=80&auto=format&fit=crop',
+                offeredItem: 'Hand-knitted Wool Socks',
+                requestedItem: 'Meyer Lemons (5 lbs)',
+                createdAt: Date.now() - 54 * 60 * 60 * 1000
+            },
+            {
+                id: 'rev-fake-8',
+                neighborName: 'Daniel Martinez',
+                avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=60&w=80&auto=format&fit=crop',
+                offeredItem: 'French Press & Coffee beans',
+                requestedItem: 'Aloe Vera Plant',
+                createdAt: Date.now() - 60 * 60 * 60 * 1000
+            },
+            {
+                id: 'rev-fake-9',
+                neighborName: 'Sophia Sterling',
+                avatar: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=60&w=80&auto=format&fit=crop',
+                offeredItem: 'Homemade Garlic Pesto Jar',
+                requestedItem: 'Gluten-Free Muffin Batch',
+                createdAt: Date.now() - 72 * 60 * 60 * 1000
+            },
+            {
+                id: 'rev-fake-10',
+                neighborName: 'Oliver Bennett',
+                avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=80&auto=format&fit=crop',
+                offeredItem: 'Drip Irrigation Fittings',
+                requestedItem: 'Seedling Starter Tray',
+                createdAt: Date.now() - 96 * 60 * 60 * 1000
             }
         ];
-        state.fictitiousReviewsInitializedVersion = 3;
+        state.fictitiousReviewsInitializedVersion = 4;
         needsSave = true;
     }
     if (!state.userOfferings) {
@@ -4003,6 +4109,11 @@ function showView(viewId, mode) {
         setWelcomeSlide(1);
     }
     if (viewId === 'chat_hub') {
+        const preserveSegment = (state.currentChatSegment === 'reviews' && oldViewId === 'review_rating') ||
+                                (state.currentChatSegment === 'groups' && oldViewId === 'chat_detail');
+        if (!preserveSegment) {
+            state.currentChatSegment = 'active';
+        }
         const activeSeg = state.currentChatSegment || 'active';
         if (window.switchChatSegment) window.switchChatSegment(activeSeg, true, true); // mute sound, skip render
         const activeFilter = state.chatFilter || 'all';
@@ -4665,28 +4776,29 @@ function startAppInitialization() {
                 loadState();
                 
                 // Force loggedIn on initial startup for both web and native to bypass welcome screen
-                state.loggedOut = false;
-                if (!state.currentUser) {
-                    state.currentUser = {
-                        firstName: 'Lily',
-                        lastName: 'Kaufmann',
-                        displayName: 'Lily Kaufmann',
-                        email: 'lily@community.com',
-                        avatar: DEFAULT_AVATAR,
-                        location: 'Fairview',
-                        address: '1190 W 12th Avenue, Vancouver, BC',
-                        lat: 49.2608,
-                        lng: -123.1368,
-                        skills: [],
-                        needs: [],
-                        instagram: 'https://instagram.com/lilykaufmann',
-                        facebook: 'https://facebook.com/lilykaufmann',
-                        tiktok: '@lilykaufmann',
-                        eulaAgreed: true
-                    };
-                    state.eulaAgreed = true;
-                    state.isGuest = false;
-                    saveState();
+                if (!state.loggedOut) {
+                    if (!state.currentUser) {
+                        state.currentUser = {
+                            firstName: 'Lily',
+                            lastName: 'Kaufmann',
+                            displayName: 'Lily Kaufmann',
+                            email: 'lily@community.com',
+                            avatar: DEFAULT_AVATAR,
+                            location: 'Fairview',
+                            address: '1190 W 12th Avenue, Vancouver, BC',
+                            lat: 49.2608,
+                            lng: -123.1368,
+                            skills: [],
+                            needs: [],
+                            instagram: 'https://instagram.com/lilykaufmann',
+                            facebook: 'https://facebook.com/lilykaufmann',
+                            tiktok: '@lilykaufmann',
+                            eulaAgreed: true
+                        };
+                        state.eulaAgreed = true;
+                        state.isGuest = false;
+                        saveState();
+                    }
                 }
 
                 if (state.loggedOut) {
@@ -5681,7 +5793,24 @@ function handleLogout() {
     state.loggedOut = true;
     saveState();
     safeLocalStorage.removeItem('corner_swaps_map_confetti_shown');
-    window.location.reload();
+    
+    // Clear inputs in sign in and sign up forms
+    const fields = [
+        'si-email', 'si-password',
+        'su-first-name', 'su-last-name', 'su-display-name', 'su-email', 'su-password'
+    ];
+    fields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+    
+    // Close profile dropdown if open
+    if (typeof closeProfileDropdown === 'function') {
+        closeProfileDropdown();
+    }
+    
+    // Navigate directly to the welcome screen instead of reloading the page
+    showView('welcome');
 }
 
 window.restartOnboarding = function() {
@@ -7789,14 +7918,14 @@ function getBarterItemStatus(idOrName) {
         const conv = state.conversations && state.conversations.find(c => c.negotiation && c.negotiation.offeredItem === title);
         if (conv && conv.negotiation) {
             if (conv.negotiation.status === 'completed') return 'Traded';
-            if (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'pending' || conv.negotiation.status === 'received') return 'Negotiating';
+            if (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'pending' || conv.negotiation.status === 'received' || conv.negotiation.status === 'countered') return 'Negotiating';
         }
         return 'Available';
     }
     const conv = state.conversations && state.conversations.find(c => c.neighborName === neighborName);
     if (conv && conv.negotiation) {
         if (conv.negotiation.status === 'completed') return 'Traded';
-        if (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'pending' || conv.negotiation.status === 'received') return 'Negotiating';
+        if (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'pending' || conv.negotiation.status === 'received' || conv.negotiation.status === 'countered') return 'Negotiating';
     }
     return 'Available';
 }
@@ -8221,7 +8350,7 @@ function openMapItemDetail(idOrName) {
         offerImg = neighbor.offerImg;
         avatar = neighbor.avatar;
         authorName = neighbor.name;
-        rating = neighbor.isKarma ? `Karma Free Swap · ${neighbor.vouches || 0} ❤️` : `Appreciated · ${neighbor.vouches || 0} ❤️`;
+        rating = neighbor.isKarma ? `Free Offering · ${neighbor.vouches || 0} ❤️` : `Appreciated · ${neighbor.vouches || 0} ❤️`;
         icon = neighbor.icon;
         duration = neighbor.duration || "";
         locationPref = neighbor.locationPref || "";
@@ -8260,11 +8389,7 @@ function openMapItemDetail(idOrName) {
     updateStatusDots('map-detail-status-dots', detailStatus);
     const detailStatusText = document.getElementById('map-detail-status-text');
     if (detailStatusText) {
-        if (detailStatus === 'Available') {
-            detailStatusText.innerText = '';
-        } else {
-            detailStatusText.innerText = detailStatus;
-        }
+        detailStatusText.innerText = '';
     }
 
     // Compute distance
@@ -8429,7 +8554,7 @@ function openMapItemDetail(idOrName) {
     if (chatBtn) {
         chatBtn.classList.remove('hidden');
         if (idOrName.startsWith('need_')) {
-            chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs">handshake</span> I can help`;
+            chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs text-[#308A5E]" style="font-variation-settings: 'FILL' 1;">handshake</span> I can help`;
             const needId = idOrName.replace('need_', '');
             chatBtn.onclick = (e) => {
                 if (e) {
@@ -8443,9 +8568,9 @@ function openMapItemDetail(idOrName) {
         } else {
             const neighbor = state.neighbors ? state.neighbors[idOrName] : null;
             if (neighbor && neighbor.isKarma) {
-                chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs text-[#ef4444]" style="font-variation-settings: 'FILL' 1;">favorite</span> free karma request`;
+                chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs text-[#ef4444]" style="font-variation-settings: 'FILL' 1;">favorite</span> claim free offering`;
             } else {
-                chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs">handshake</span> lets swap`;
+                chatBtn.innerHTML = `<span class="material-symbols-outlined text-xs text-[#308A5E]" style="font-variation-settings: 'FILL' 1;">handshake</span> lets swap`;
             }
             chatBtn.onclick = (e) => {
                 if (e) {
@@ -9103,7 +9228,7 @@ function handleMapEventRSVPToggle() {
         
         conv.messages.push({
             sender: event.host,
-            text: `Hey neighbor! Thanks for RSVPing to my event: "${event.title}"!\n\n📅 Date: ${formattedDate}\n⏰ Time: ${formattedTime}\n📍 Location: ${event.location}\n\nLooking forward to seeing you there! 🌿`,
+            text: `Hey neighbor! Thanks for RSVPing to my event: "${event.title}"!\n\nDate: ${formattedDate}\n⏰ Time: ${formattedTime}\n📍 Location: ${event.location}\n\nLooking forward to seeing you there! 🌿`,
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
         conv.unread = true;
@@ -12447,7 +12572,7 @@ function startChatConversation(convIdOrNeighborName) {
             
             let initialText = `Hello! I noticed you were looking at my "${neighbor ? neighbor.offerTitle : ''}". Are you open to a trade?`;
             if (isKarma) {
-                initialText = `Hello! I noticed you were looking at my "${neighbor.offerTitle}". Would you like to have it as a free karma swap?`;
+                initialText = `Hello! I noticed you were interested in my "${neighbor.offerTitle}". Since it's a free offering, you are welcome to claim it! I'd be happy to share it with you.`;
             }
             
             conv = {
@@ -12472,7 +12597,7 @@ function startChatConversation(convIdOrNeighborName) {
             if (neighbor && neighbor.isKarma) {
                 if (conv.messages && conv.messages.length > 0 && conv.messages[0].sender === conv.neighborName) {
                     if (conv.messages[0].text.includes("Are you open to a trade?")) {
-                        conv.messages[0].text = `Hello! I noticed you were looking at my "${neighbor.offerTitle}". Would you like to have it as a free karma swap?`;
+                        conv.messages[0].text = `Hello! I noticed you were interested in my "${neighbor.offerTitle}". Since it's a free offering, you are welcome to claim it! I'd be happy to share it with you.`;
                         saveState();
                     }
                 }
@@ -12761,6 +12886,27 @@ function renderChatDetail(conv) {
             return;
         }
 
+        if (msg.isCounterLocationPrompt) {
+            msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full ${animClass} my-1.5 self-start justify-start`;
+            msgDiv.innerHTML = `
+                <div class="w-7 h-7 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 select-none shadow-sm border border-amber-500/25">
+                    <span class="material-symbols-outlined text-[15px]">settings</span>
+                </div>
+                <div class="flex flex-col items-start max-w-[85%]">
+                    <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm rounded-xl font-medium admin-message-bubble flex flex-col gap-2">
+                        <p class="text-xs leading-relaxed font-bold">${escapeHTML(msg.text)}</p>
+                        <div class="flex gap-2 mt-1">
+                            <button class="bg-forest-green hover:bg-forest-green/90 text-warm-cream px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center gap-0.5 border-0" onclick="window.handleAcceptCounterLocation()">Accept</button>
+                            <button class="bg-white border border-outline-variant/35 text-forest-green hover:bg-forest-green/5 px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center gap-0.5 border-0" onclick="openSuggestMeetingSpotModal()">Counter</button>
+                        </div>
+                    </div>
+                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}</span>
+                </div>
+            `;
+            feed.appendChild(msgDiv);
+            return;
+        }
+
         if (msg.isMeetupWaiting) {
             msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full ${animClass} my-1.5 self-start justify-start`;
             msgDiv.innerHTML = `
@@ -12993,7 +13139,7 @@ function renderChatDetail(conv) {
                                 <span class="text-[9px] uppercase tracking-wider font-extrabold text-emerald-300">Karma Swap Request</span>
                             </div>
                             <p class="text-xs leading-relaxed font-semibold text-warm-cream">
-                                I'd love a Karma Swap for your ${escapeHTML(msg.requestedItem)}.
+                                ${escapeHTML(msg.text || `I'd love a Karma Swap for your ${msg.requestedItem}.`)}
                             </p>
                         </div>`;
                     } else {
@@ -13023,7 +13169,7 @@ function renderChatDetail(conv) {
                             <!-- Bubble: Side-by-Side Swap Proposal -->
                             <div id="msg-bubble-${index}" class="chat-bubble-hover py-3 px-3.5 rounded-3xl rounded-tr-none shadow-md cursor-pointer select-none transition-all duration-200 w-[280px] text-left flex flex-col gap-2.5 bg-white dark:bg-[#18201a] border border-black/10 dark:border-white/10" onclick="window.openSwapLifecycleModal('receiver', '${conv.id}'); event.stopPropagation();">
                                 <div class="flex items-center gap-1.5 border-b border-black/10 dark:border-white/10 pb-1.5">
-                                    <span class="popup-modal-title">Proposed Swap</span>
+                                    <span class="popup-modal-title">${conv.negotiation && conv.negotiation.status === 'countered' ? 'Counter Swap Proposal' : 'Proposed Swap'}</span>
                                 </div>
                                 <div class="flex items-center justify-between gap-2.5">
                                     <!-- Left: Get (what I get) -->
@@ -13052,7 +13198,7 @@ function renderChatDetail(conv) {
                                     <div class="px-3 py-1.5 rounded-full text-center bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm w-full select-none popup-modal-desc font-bold">
                                         ${(conv.negotiation && (conv.negotiation.status === 'accepted' || conv.negotiation.status === 'completed'))
                                             ? 'Agreement Confirmed!'
-                                            : 'You to agree?'}
+                                            : (conv.negotiation && conv.negotiation.status === 'countered' ? 'Counter Proposed!' : 'You to agree?')}
                                     </div>
                                 </div>
                             </div>
@@ -13084,7 +13230,7 @@ function renderChatDetail(conv) {
                                 <span class="text-[9px] uppercase tracking-wider font-extrabold text-[#308A5E] dark:text-emerald-400">Karma Swap Request</span>
                             </div>
                             <p class="text-xs leading-relaxed font-semibold text-on-surface dark:text-warm-cream">
-                                I'd love a Karma Swap for your ${escapeHTML(msg.requestedItem)}.
+                                ${escapeHTML(msg.text || `I'd love a Karma Swap for your ${msg.requestedItem}.`)}
                             </p>
                         </div>`;
                     } else {
@@ -13222,12 +13368,7 @@ function renderChatTradeDrawer(conv) {
                         <input class="flex-grow bg-transparent border-0 h-full py-0 px-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
                         <div class="flex items-center gap-1.5 flex-shrink-0">
                             ${isKarmaGift ? '' : `
-                            ${status === 'accepted' || status === 'completed' ? '' : 
-                              (status === 'pending' || status === 'received') ? `
-                            <button id="chat-offer-swap-pill-btn" class="w-[38px] h-[38px] bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 rounded-full flex items-center justify-center flex-shrink-0 cursor-not-allowed opacity-60" title="A swap proposal is already active" disabled>
-                                <span class="material-symbols-outlined text-[17px]">handshake</span>
-                            </button>
-                            ` : `
+                            ${status === 'accepted' || status === 'completed' || status === 'pending' || status === 'received' ? '' : `
                             <button id="chat-offer-swap-pill-btn" class="w-[38px] h-[38px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer flex-shrink-0" onclick="window.openSwapLifecycleModal('initiator', '${conv.id}')" title="${conv.isRequest ? 'Propose Different Swap' : 'Offer a Swap'}">
                                 <span class="material-symbols-outlined text-[17px]">handshake</span>
                             </button>
@@ -13264,6 +13405,9 @@ function renderChatTradeDrawer(conv) {
     } else if (status === 'received') {
         dotClass = 'glow-dot-amber';
         statusText = 'Received';
+    } else if (status === 'countered') {
+        dotClass = 'glow-dot-amber';
+        statusText = 'Countered';
     }
 
     if (dot) {
@@ -13332,7 +13476,7 @@ function renderChatTradeDrawer(conv) {
         if (nodeAccepted) nodeAccepted.className = "w-8 h-8 rounded-full bg-forest-green text-warm-cream flex items-center justify-center text-xs font-bold border border-white transition-all glow-step-node";
         if (labelProposed) labelProposed.className = "text-[8px] font-bold text-forest-green transition-colors duration-300";
         if (labelAccepted) labelAccepted.className = "text-[8px] font-bold text-forest-green transition-colors duration-300";
-    } else if (status === 'pending' || status === 'received') {
+    } else if (status === 'pending' || status === 'received' || status === 'countered') {
         if (line) line.style.width = "33.3%";
         if (nodeProposed) nodeProposed.className = "w-8 h-8 rounded-full bg-forest-green text-warm-cream flex items-center justify-center text-xs font-bold border border-white transition-all glow-step-node";
         if (labelProposed) labelProposed.className = "text-[8px] font-bold text-forest-green transition-colors duration-300";
@@ -13369,8 +13513,8 @@ function renderChatTradeDrawer(conv) {
                     <!-- Left Item Card -->
                     <div class="flex-grow flex-1 flex flex-col items-center p-2 bg-forest-green/[0.03] dark:bg-white/[0.02] border border-outline-variant/10 rounded-xl min-w-0">
                         ${isKarma 
-                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-[#308A5E]/20 bg-[#308A5E]/5 dark:bg-[#308A5E]/10 flex items-center justify-center text-[#308A5E] dark:text-[#A8E6CF] mb-1.5">
-                                   <span class="material-symbols-outlined text-xl font-bold" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-[#ef4444]/20 bg-[#ef4444]/5 dark:bg-[#ef4444]/10 flex items-center justify-center text-[#ef4444] mb-1.5">
+                                   <span class="material-symbols-outlined text-xl font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
                                </div>
                                <span class="text-[9px] text-outline dark:text-warm-cream font-bold truncate w-full text-center mb-0.5">Karma Points</span>`
                             : `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-outline-variant/20 dark:border-white/10 mb-1.5 relative">
@@ -13417,8 +13561,8 @@ function renderChatTradeDrawer(conv) {
                     <!-- Left Item Card -->
                     <div class="flex-grow flex-1 flex flex-col items-center p-2 bg-forest-green/[0.03] dark:bg-white/[0.02] border border-outline-variant/10 rounded-xl min-w-0">
                         ${isKarma 
-                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-[#308A5E]/20 bg-[#308A5E]/5 dark:bg-[#308A5E]/10 flex items-center justify-center text-[#308A5E] dark:text-[#A8E6CF] mb-1.5">
-                                   <span class="material-symbols-outlined text-xl font-bold" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-[#ef4444]/20 bg-[#ef4444]/5 dark:bg-[#ef4444]/10 flex items-center justify-center text-[#ef4444] mb-1.5">
+                                   <span class="material-symbols-outlined text-xl font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
                                </div>
                                <span class="text-[9px] text-outline dark:text-warm-cream font-bold truncate w-full text-center mb-0.5">Karma Points</span>`
                             : `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-outline-variant/20 dark:border-white/10 mb-1.5 relative">
@@ -13454,9 +13598,84 @@ function renderChatTradeDrawer(conv) {
                 </button>
             </div>
         `;
+    } else if (status === 'countered') {
+        detailsHtml = `
+            <div class="text-left space-y-1.5 p-3.5 bg-forest-green/5 rounded-xl border border-forest-green/10">
+                <h5 class="text-[11px] font-extrabold text-[#D99036] uppercase tracking-wide">Phase 2: Swap Proposed (Countered)</h5>
+                <p class="text-[10.5px] text-on-surface-variant mb-2.5">
+                    ${escapeHTML(conv.neighborName)} proposed a counter-offer: trade their <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.offeredItem)}</span> for your <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.requestedItem)}</span>.
+                </p>
+                <div class="relative flex items-center justify-between gap-3 p-1 rounded-xl bg-white dark:bg-white/5 border border-outline-variant/15 w-full">
+                    <!-- Left Item Card -->
+                    <div class="flex-grow flex-1 flex flex-col items-center p-2 bg-forest-green/[0.03] dark:bg-white/[0.02] border border-outline-variant/10 rounded-xl min-w-0">
+                        <div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-outline-variant/20 dark:border-white/10 mb-1.5 relative">
+                            <img src="${getItemImageByTitle(conv.negotiation.offeredItem)}" class="w-full h-full object-cover">
+                            <div class="absolute top-1 left-1 bg-[#D99036] px-1.5 py-0.5 rounded text-[6px] font-bold text-white uppercase tracking-wider">GET</div>
+                        </div>
+                        <span class="text-[9px] text-outline dark:text-warm-cream font-bold truncate w-full text-center mb-0.5">${escapeHTML(conv.negotiation.offeredItem)}</span>
+                        <span class="text-[7px] text-outline/70 font-semibold uppercase">You Get</span>
+                    </div>
+                    
+                    <!-- Center Swap Badge -->
+                    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-7 h-7 rounded-full bg-forest-green dark:bg-[#308A5E] border-2 border-white dark:border-outline-variant text-warm-cream dark:text-emerald-300 shadow-md z-10 animate-pulse">
+                        <span class="material-symbols-outlined text-xs font-bold animate-spin-slow">swap_horiz</span>
+                    </div>
+                    
+                    <!-- Right Item Card -->
+                    <div class="flex-grow flex-1 flex flex-col items-center p-2 bg-forest-green/[0.03] dark:bg-white/[0.02] border border-outline-variant/10 rounded-xl min-w-0">
+                        <div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-outline-variant/20 dark:border-white/10 mb-1.5 relative">
+                            <img src="${getItemImageByTitle(conv.negotiation.requestedItem)}" class="w-full h-full object-cover">
+                            <div class="absolute top-1 left-1 bg-forest-green px-1.5 py-0.5 rounded text-[6px] font-bold text-white uppercase tracking-wider">GIVE</div>
+                        </div>
+                        <span class="text-[9px] text-outline dark:text-warm-cream font-bold truncate w-full text-center mb-0.5">${escapeHTML(conv.negotiation.requestedItem)}</span>
+                        <span class="text-[7px] text-outline/70 font-semibold uppercase">You Give</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col gap-2 w-full">
+                <div class="flex gap-2 w-full">
+                    <button class="flex-grow bg-forest-green hover:bg-forest-green/95 text-warm-cream py-2.5 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 shadow border-0" onclick="window.handleAcceptCounterOffer()">
+                        <span class="material-symbols-outlined text-xs">check</span> Accept Counter
+                    </button>
+                    <button class="flex-grow bg-white border border-outline-variant/35 text-forest-green hover:bg-forest-green/5 py-2.5 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 shadow-sm" onclick="window.handleCounterOfferSwapProposal()">
+                        <span class="material-symbols-outlined text-xs">edit_square</span> Counter Offer
+                    </button>
+                </div>
+                <button class="w-full bg-white border border-[#ef4444]/20 hover:bg-[#ef4444]/5 text-[#ef4444] py-2 rounded-xl text-xs font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 shadow-sm border-0" onclick="window.handleDeclineCounterOffer()">
+                    <span class="material-symbols-outlined text-xs">close</span> Decline
+                </button>
+            </div>
+        `;
     } else if (status === 'accepted') {
         const hasMeetup = conv.negotiation.meetupLocation && conv.negotiation.meetupTime;
-        if (!hasMeetup) {
+        if (conv.negotiation.locationNeedsUserConfirmation) {
+            detailsHtml = `
+                <div class="text-left space-y-3 p-3.5 bg-forest-green/5 rounded-xl border border-forest-green/10 flex flex-col gap-1">
+                    <h5 class="text-[11px] font-extrabold text-[#D99036] uppercase tracking-wide">Phase 3: Coordinate Meet Up (Countered)</h5>
+                    <p class="text-[10px] leading-relaxed text-on-surface-variant font-medium">
+                        ${escapeHTML(conv.neighborName)} proposed a counter-location:
+                    </p>
+                    <div class="bg-white dark:bg-[#141c16] p-2.5 rounded-xl border border-outline-variant/20 flex flex-col gap-1 text-[10.5px]">
+                        <p class="font-semibold text-black dark:text-white flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">place</span> Meetup Spot:
+                        </p>
+                        <p class="text-on-surface ml-5">${escapeHTML(conv.negotiation.meetupLocation)}</p>
+                        <p class="font-semibold text-black dark:text-white flex items-center gap-1 mt-1">
+                            <span class="material-symbols-outlined text-sm">schedule</span> Time:
+                        </p>
+                        <p class="text-on-surface ml-5">${escapeHTML(conv.negotiation.meetupTime)}</p>
+                    </div>
+                </div>
+                <div class="flex gap-2 w-full">
+                    <button class="flex-grow bg-forest-green hover:bg-forest-green/95 text-warm-cream py-2.5 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 shadow border-0" onclick="window.handleAcceptCounterLocation()">
+                        <span class="material-symbols-outlined text-xs">check</span> Accept Spot
+                    </button>
+                    <button class="flex-grow bg-white border border-outline-variant/35 text-forest-green hover:bg-forest-green/5 py-2.5 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 shadow-sm border-0" onclick="openSuggestMeetingSpotModal()">
+                        <span class="material-symbols-outlined text-xs">edit_location</span> Counter Spot
+                    </button>
+                </div>
+            `;
+        } else if (!hasMeetup) {
             detailsHtml = `
                 <div class="text-left space-y-3 p-3.5 bg-forest-green/5 rounded-xl border border-forest-green/10 flex flex-col gap-1">
                     <h5 class="text-[11px] font-extrabold text-[#D99036] uppercase tracking-wide">Phase 3: Coordinate Meet Up</h5>
@@ -13507,8 +13726,8 @@ function renderChatTradeDrawer(conv) {
                     <!-- Left Item Card -->
                     <div class="flex-grow flex-1 flex flex-col items-center p-2 bg-forest-green/[0.03] dark:bg-white/[0.02] border border-outline-variant/10 rounded-xl min-w-0">
                         ${isKarma 
-                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-[#308A5E]/20 bg-[#308A5E]/5 dark:bg-[#308A5E]/10 flex items-center justify-center text-[#308A5E] dark:text-[#A8E6CF] mb-1.5">
-                                   <span class="material-symbols-outlined text-xl font-bold" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+                            ? `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-[#ef4444]/20 bg-[#ef4444]/5 dark:bg-[#ef4444]/10 flex items-center justify-center text-[#ef4444] mb-1.5">
+                                   <span class="material-symbols-outlined text-xl font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
                                </div>
                                <span class="text-[9px] text-outline dark:text-warm-cream font-bold truncate w-full text-center mb-0.5">Karma Points</span>`
                             : `<div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-outline-variant/20 dark:border-white/10 mb-1.5 relative">
@@ -14125,7 +14344,7 @@ function renderGroupMembersList(conv, isCurrentUserAdmin, currentUserDisplayName
             actionBtnsHTML = `
                 <div class="flex items-center gap-1.5">
                     ${!memberIsAdmin ? `
-                        <button class="px-2 py-1 bg-forest-green/10 border border-forest-green/20 text-forest-green hover:bg-forest-green/20 font-bold text-[9px] rounded-lg active:scale-95 transition-transform border-solid cursor-pointer" onclick="promoteToAdmin('${conv.id}', '${name.replace(/'/g, "\\'")}')">
+                        <button class="px-2 py-1 bg-black/5 dark:bg-white/10 border border-black/10 dark:border-white/10 text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/20 font-bold text-[9px] rounded-lg active:scale-95 transition-transform border-solid cursor-pointer group-make-admin-btn" onclick="promoteToAdmin('${conv.id}', '${name.replace(/'/g, "\\'")}')">
                             Make Admin
                         </button>
                     ` : ''}
@@ -14140,8 +14359,8 @@ function renderGroupMembersList(conv, isCurrentUserAdmin, currentUserDisplayName
             <div class="flex items-center gap-2.5 cursor-pointer" onclick="${isSelf ? `showView('profile_settings')` : `openNeighborProfileModal('${escapeHTML(name)}')`}">
                 <div class="profile-avatar-ring w-8 h-8 flex-shrink-0"><img src="${avatar}" class="w-full h-full object-cover rounded-full"></div>
                 <div class="flex flex-col text-left">
-                    <span class="text-xs font-bold text-on-surface dark:text-[#FDFBF7]">${escapeHTML(name)}${isSelf ? ' (You)' : ''}</span>
-                    ${memberIsAdmin ? '<span class="text-[8px] font-extrabold uppercase tracking-wide text-forest-green dark:text-[#308A5E]">Admin</span>' : ''}
+                    <span class="text-xs font-bold text-black dark:text-[#FDFBF7] group-member-name">${escapeHTML(name)}${isSelf ? ' (You)' : ''}</span>
+                    ${memberIsAdmin ? '<span class="text-[8px] font-extrabold uppercase tracking-wide text-black/60 dark:text-white/60 group-member-admin">Admin</span>' : ''}
                 </div>
             </div>
             ${actionBtnsHTML}
@@ -14402,8 +14621,8 @@ function openBarterProposalModal() {
     const karmaLabel = document.createElement('label');
     karmaLabel.className = "flex items-center p-3 bg-white rounded-xl border border-outline-variant/30 hover:border-forest-green cursor-pointer transition-all active:scale-[0.98] w-full";
     karmaLabel.innerHTML = `
-        <div class="w-10 h-10 rounded-lg bg-forest-green/10 text-forest-green flex items-center justify-center mr-4 flex-shrink-0">
-            <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+        <div class="w-10 h-10 rounded-lg bg-red-50 dark:bg-red-950/20 text-[#ef4444] flex items-center justify-center mr-4 flex-shrink-0">
+            <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">favorite</span>
         </div>
         <div class="flex-grow min-w-0 pr-2">
             <p class="font-semibold text-on-surface text-sm">Offer for free (Get Karma points)</p>
@@ -14506,15 +14725,48 @@ function triggerMockAccept(conv) {
 window.simulatePartnerAccept = function(convId) {
     const active = state.conversations.find(c => c.id === convId);
     if (active && active.negotiation.status === 'pending') {
-        active.negotiation.status = 'accepted';
-        
         const isKarma = active.negotiation.isKarmaSwap || 
                         active.negotiation.offeredItem === "Karma Points" || 
                         active.negotiation.offeredItem === "Karma" ||
                         (active.negotiation.offeredItem && active.negotiation.offeredItem.toLowerCase().includes("karma"));
         
+        if (active.neighborName === 'Bob Builder' && !isKarma && !active.negotiation.hasBeenCounteredByBob) {
+            active.negotiation.status = 'countered';
+            active.negotiation.hasBeenCounteredByBob = true;
+            
+            const originalOffered = active.negotiation.offeredItem;
+            active.negotiation.offeredItem = "Electric Drywall Sander";
+            active.negotiation.requestedItem = "Garden Weeding & Help";
+            
+            active.messages.push({
+                sender: active.neighborName,
+                text: `Hmm, I actually don't need "${originalOffered}" right now. Could we trade for your "Garden Weeding & Help" instead?`,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            });
+            
+            active.messages.push({
+                sender: 'App admin',
+                text: `Bob proposed a counter-offer: trade their Electric Drywall Sander for your Garden Weeding & Help. Click 'Review Counter' to respond.`,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            });
+            
+            if (active.mockAcceptTimer) {
+                clearTimeout(active.mockAcceptTimer);
+                delete active.mockAcceptTimer;
+            }
+            
+            saveState();
+            if (state.currentConversationId === active.id) {
+                playSound('message');
+                renderChatDetail(active);
+            }
+            return;
+        }
+
+        active.negotiation.status = 'accepted';
+        
         const acceptMsg = isKarma 
-            ? `I'd love to help you out! Earning Karma points is a great way to improve my standing here. Let's arrange a time to meet and location.`
+            ? `Hi there! I'd be absolutely happy to share this with you! Earning Karma points is a wonderful way to help our neighborhood and build my standing here. Let's find a convenient time and a safe spot to coordinate the handoff.`
             : `Sounds great. Let's arrange a time to meet and location.`;
             
         active.messages.push({
@@ -14526,14 +14778,14 @@ window.simulatePartnerAccept = function(convId) {
         if (isKarma) {
             active.messages.push({
                 sender: 'App admin',
-                text: `Reward: ${active.neighborName} will gain +50 Karma points for good standing in the community upon completion.`,
+                text: `Awesome! ${active.neighborName} accepted the request. Upon a successful handoff, they will receive +50 Karma points. Next step: Tap below to select a safe meeting spot and coordinate the time!`,
                 time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             });
         }
 
         active.messages.push({
             sender: 'App admin',
-            text: 'Click this message to set up a meeting location',
+            text: 'Tap here to choose a safe meeting location and schedule the handoff!',
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             isMeetupPrompt: true,
             isAdminMeetupClick: true
@@ -14601,6 +14853,83 @@ function handleAcceptProposal() {
     renderChatDetail(conv);
     triggerSuccessConfetti();
 }
+
+function handleAcceptCounterOffer() {
+    const conv = state.conversations.find(c => c.id === state.currentConversationId);
+    if (!conv) return;
+
+    conv.isRequest = false; // Move to active!
+    conv.negotiation.status = 'accepted';
+    conv.messages.push({
+        sender: 'me',
+        text: 'Counter-offer accepted! Sounds great.',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    });
+    conv.messages.push({
+        sender: 'App admin',
+        text: 'Click this message to set up a meeting location',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        isMeetupPrompt: true,
+        isAdminMeetupClick: true
+    });
+    saveState();
+    
+    if (typeof queueTradeCheckIn === 'function') {
+        queueTradeCheckIn(conv.id);
+    }
+    
+    if (typeof showToast === 'function') {
+        showToast("Counter-offer accepted!");
+    }
+    
+    renderChatDetail(conv);
+    triggerSuccessConfetti();
+}
+window.handleAcceptCounterOffer = handleAcceptCounterOffer;
+
+function handleDeclineCounterOffer() {
+    const conv = state.conversations.find(c => c.id === state.currentConversationId);
+    if (!conv) return;
+    
+    conv.negotiation.status = 'declined';
+    conv.messages.push({
+        sender: 'me',
+        text: 'Declined the counter-offer.',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    });
+    saveState();
+    renderChatDetail(conv);
+}
+window.handleDeclineCounterOffer = handleDeclineCounterOffer;
+
+function handleCounterOfferSwapProposal() {
+    const conv = state.conversations.find(c => c.id === state.currentConversationId);
+    if (!conv) return;
+    window.openSwapLifecycleModal('initiator', conv.id);
+}
+window.handleCounterOfferSwapProposal = handleCounterOfferSwapProposal;
+
+function handleAcceptCounterLocation() {
+    const conv = state.conversations.find(c => c.id === state.currentConversationId);
+    if (!conv) return;
+    
+    conv.negotiation.locationNeedsUserConfirmation = false;
+    conv.locationChosenAt = Date.now();
+    conv.messages.push({
+        sender: 'me',
+        text: "Sounds perfect! Let's meet there.",
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    });
+    conv.messages.push({
+        sender: 'App admin',
+        text: 'View map for your swap location',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        isMapViewLink: true
+    });
+    saveState();
+    renderChatDetail(conv);
+}
+window.handleAcceptCounterLocation = handleAcceptCounterLocation;
 
 function handleCompleteTrade() {
     const conv = state.conversations.find(c => c.id === state.currentConversationId);
@@ -17091,8 +17420,8 @@ function renderVillageListView() {
                         <!-- Actions Row -->
                         <div class="flex flex-col gap-2 pt-1.5 bg-white dark:bg-[#18201a] rounded-b-2xl">
                             <button class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase" onclick="event.stopPropagation(); startChatConversation('${item.name}');">
-                                <span class="material-symbols-outlined text-xs ${neighbor && neighbor.isKarma ? 'text-[#308A5E]' : ''}" style="${neighbor && neighbor.isKarma ? "font-variation-settings: 'FILL' 1;" : ""}">${neighbor && neighbor.isKarma ? 'volunteer_activism' : 'handshake'}</span>
-                                ${neighbor && neighbor.isKarma ? 'free karma request' : "let's swap"}
+                                <span class="material-symbols-outlined text-xs ${neighbor && neighbor.isKarma ? 'text-[#ef4444]' : 'text-[#308A5E]'}" style="font-variation-settings: 'FILL' 1;">${neighbor && neighbor.isKarma ? 'favorite' : 'handshake'}</span>
+                                ${neighbor && neighbor.isKarma ? 'claim free offering' : "let's swap"}
                             </button>
                             
                             <button class="inline-save-btn w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase ${state.savedListings && state.savedListings.includes(item.id) ? 'active-green-white' : ''}" onclick="window.handleInlineSaveListing(event, '${item.id}')">
@@ -17422,8 +17751,8 @@ function renderNeedsBoardView() {
                         <!-- Actions Row -->
                         <div class="flex flex-col gap-2 pt-1.5 bg-white dark:bg-[#18201a] rounded-b-2xl">
                             <button class="w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase" onclick="event.stopPropagation(); window.handleOfferToSwapNeed('${need.id}');">
-                                <span class="material-symbols-outlined text-xs ${isKarma ? 'text-[#308A5E]' : ''}" style="${isKarma ? "font-variation-settings: 'FILL' 1;" : ""}">${isKarma ? 'volunteer_activism' : 'handshake'}</span>
-                                ${isKarma ? 'free karma request' : "i can help"}
+                                <span class="material-symbols-outlined text-xs ${isKarma ? 'text-[#ef4444]' : 'text-[#308A5E]'}" style="font-variation-settings: 'FILL' 1;">${isKarma ? 'favorite' : 'handshake'}</span>
+                                ${isKarma ? 'claim free offering' : "i can help"}
                             </button>
                             
                             <button class="inline-save-btn w-full bg-white dark:bg-[#18201a] border border-black/20 dark:border-white/20 text-black dark:text-white py-1.5 rounded-lg font-bold text-[10px] tracking-wide active:scale-[0.98] transition-transform flex items-center justify-center gap-1.5 hover:bg-black/5 dark:hover:bg-white/5 lowercase ${state.savedListings && state.savedListings.includes('need_' + need.id) ? 'active-green-white' : ''}" onclick="window.handleInlineSaveListing(event, 'need_${need.id}')">
@@ -19847,6 +20176,59 @@ function getCategoryPresetImage(category) {
     return 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=60&w=400&auto=format&fit=crop';
 }
 
+function isOnWater(lat, lng) {
+    // 1. Burrard Inlet / North of Downtown shore
+    if (lat > 49.292) {
+        return true;
+    }
+    
+    // 2. English Bay (West of Kitsilano / West End)
+    if (lng < -123.145 && lat > 49.268) {
+        return true;
+    }
+    
+    // 3. False Creek (between Downtown and Fairview)
+    // Diagonal inlet:
+    // Lng from -123.142 (Burrard Bridge) to -123.100 (Science World)
+    // Lat from 49.2685 to 49.2745
+    if (lng > -123.142 && lng < -123.100 && lat > 49.2685 && lat < 49.2745) {
+        return true;
+    }
+    
+    return false;
+}
+
+function getDisplacedCoords(id, baseLat, baseLng, type) {
+    let lat = parseFloat(baseLat);
+    let lng = parseFloat(baseLng);
+    if (isNaN(lat) || isNaN(lng)) return { lat: 49.2608, lng: -123.1368 };
+    
+    // We try up to 20 different hashes to find a location that is NOT on the water
+    for (let attempt = 0; attempt < 20; attempt++) {
+        let hash = 0;
+        const seedStr = `${id}-${type}-${attempt}`;
+        for (let i = 0; i < seedStr.length; i++) {
+            hash = (hash * 31 + seedStr.charCodeAt(i)) | 0;
+        }
+        
+        const val1 = Math.abs(hash % 10000) / 10000;
+        const val2 = Math.abs(((hash >> 8) * 31) % 10000) / 10000;
+        
+        const angle = val1 * 2 * Math.PI;
+        // Larger scatter radius (e.g. 0.002 to 0.006, approx 220m to 660m)
+        const radius = 0.002 + val2 * 0.004;
+        
+        const testLat = lat + radius * Math.sin(angle);
+        const testLng = lng + radius * Math.cos(angle);
+        
+        if (!isOnWater(testLat, testLng)) {
+            return { lat: testLat, lng: testLng };
+        }
+    }
+    
+    return { lat, lng };
+}
+
 function validateCoords(lat, lng) {
     const latVal = parseFloat(lat);
     const lngVal = parseFloat(lng);
@@ -19868,6 +20250,7 @@ function plotMapMarkersOnly() {
         }
     });
     mapMarkers = [];
+    const plottedCoords = new Set();
     
     const user = state.currentUser || {};
     const displayName = user.displayName || `${user.firstName || 'Lily'} ${user.lastName || 'Kaufmann'}`;
@@ -19982,8 +20365,14 @@ function plotMapMarkersOnly() {
 
                 const coords = validateCoords(neighbor.lat, neighbor.lng);
                 if (!coords) return;
-                const lat = coords.lat;
-                const lng = coords.lng;
+                const displaced = getDisplacedCoords(name, coords.lat, coords.lng, 'offering');
+                const lat = displaced.lat;
+                const lng = displaced.lng;
+                
+                const coordKey = `${lat.toFixed(5)},${lng.toFixed(5)}`;
+                if (plottedCoords.has(coordKey)) return;
+                plottedCoords.add(coordKey);
+                
                 if (getBarterItemStatus(name) === 'Traded') return; // Filter out traded listings
                 if (state.blockedUsers && state.blockedUsers.includes(name)) return;
                 if (state.suspendedUsers && state.suspendedUsers.includes(name)) return;
@@ -20027,8 +20416,13 @@ function plotMapMarkersOnly() {
                 
                 const coords = validateCoords(offer.lat, offer.lng);
                 if (!coords) return;
-                const lat = coords.lat;
-                const lng = coords.lng;
+                const displaced = getDisplacedCoords(offer.id, coords.lat, coords.lng, 'offering');
+                const lat = displaced.lat;
+                const lng = displaced.lng;
+                
+                const coordKey = `${lat.toFixed(5)},${lng.toFixed(5)}`;
+                if (plottedCoords.has(coordKey)) return;
+                plottedCoords.add(coordKey);
                 
                 const color = getCategoryColor(offer.category);
                 const iconName = offer.icon || getCategoryIcon(offer.category);
@@ -20063,6 +20457,10 @@ function plotMapMarkersOnly() {
                 if (!coords) return;
                 const lat = coords.lat;
                 const lng = coords.lng;
+                
+                const coordKey = `${lat.toFixed(5)},${lng.toFixed(5)}`;
+                if (plottedCoords.has(coordKey)) return;
+                plottedCoords.add(coordKey);
                 if (state.blockedUsers && state.blockedUsers.includes(evt.host)) return;
                 if (state.suspendedUsers && state.suspendedUsers.includes(evt.host)) return;
                 
@@ -20169,6 +20567,17 @@ function plotMapMarkersOnly() {
                     lat = coords[0];
                     lng = coords[1];
                 }
+                
+                // Scatter needs in brand new locations (stable offset based on need.id)
+                if (lat !== null && lng !== null) {
+                    const displaced = getDisplacedCoords(need.id, lat, lng, 'need');
+                    lat = displaced.lat;
+                    lng = displaced.lng;
+                }
+                
+                const coordKey = `${lat.toFixed(5)},${lng.toFixed(5)}`;
+                if (plottedCoords.has(coordKey)) return;
+                plottedCoords.add(coordKey);
                 
                 const color = getCategoryColor(need.category);
                 const iconName = getCategoryIcon(need.category) || 'help_outline';
@@ -23156,7 +23565,7 @@ function handleEventRSVPToggle() {
         
         conv.messages.push({
             sender: event.host,
-            text: `Hey neighbor! Thanks for RSVPing to my event: "${event.title}"!\n\n📅 Date: ${formattedDate}\n⏰ Time: ${formattedTime}\n📍 Location: ${event.location}\n\nLooking forward to seeing you there! 🌿`,
+            text: `Hey neighbor! Thanks for RSVPing to my event: "${event.title}"!\n\nDate: ${formattedDate}\n⏰ Time: ${formattedTime}\n📍 Location: ${event.location}\n\nLooking forward to seeing you there! 🌿`,
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
         conv.unread = true;
@@ -23216,7 +23625,7 @@ window.handleEventRSVPToggleFromList = function(eventId, eventObj) {
         
         conv.messages.push({
             sender: event.host,
-            text: `Hey neighbor! Thanks for RSVPing to my event: "${event.title}"!\n\n📅 Date: ${formattedDate}\n⏰ Time: ${formattedTime}\n📍 Location: ${event.location}\n\nLooking forward to seeing you there! 🌿`,
+            text: `Hey neighbor! Thanks for RSVPing to my event: "${event.title}"!\n\nDate: ${formattedDate}\n⏰ Time: ${formattedTime}\n📍 Location: ${event.location}\n\nLooking forward to seeing you there! 🌿`,
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
         conv.unread = true;
@@ -23399,7 +23808,9 @@ window.openConfirmSwapRatingModal = function(convId) {
 
 window.closeConfirmSwapRatingModal = function() {
     if (typeof playSound === 'function') playSound('click');
-    if (state.currentConversationId && state.conversations.find(c => c.id === state.currentConversationId)) {
+    if (state.currentChatSegment === 'reviews') {
+        showView('chat_hub');
+    } else if (state.currentConversationId && state.conversations.find(c => c.id === state.currentConversationId)) {
         showView('chat_detail');
     } else {
         showView('chat_hub');
@@ -25964,8 +26375,8 @@ function updateChatNotificationBadge() {
             }
         });
     }
-    
-    const totalUnread = activeUnread + groupsUnread + oldUnread;
+    const pendingReviewsCount = getPendingReviews().length;
+    const totalUnread = activeUnread + groupsUnread + oldUnread + pendingReviewsCount;
     
     // Update global bottom navbar badge
     const globalBadge = document.getElementById('chat-notification-badge');
@@ -27059,6 +27470,36 @@ function confirmMeetingSpotSuggestion() {
     conv.mockMeetupTimer = setTimeout(() => {
         const active = state.conversations.find(c => c.id === conv.id);
         if (active) {
+            if (active.neighborName === 'Bob Builder' && !active.negotiation.locationNeedsUserConfirmation && !active.negotiation.locationHasBeenCountered) {
+                // Bob counters the location!
+                active.negotiation.locationHasBeenCountered = true;
+                active.negotiation.locationNeedsUserConfirmation = true;
+                
+                active.negotiation.meetupLocation = "Builder Yard Hub";
+                active.negotiation.meetupLat = 37.7735;
+                active.negotiation.meetupLng = -122.4200;
+                
+                active.messages.push({
+                    sender: active.neighborName,
+                    text: "Actually, Builder Yard Hub is much closer to me and has plenty of room. Could we meet there instead?",
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                });
+                
+                active.messages.push({
+                    sender: 'App admin',
+                    text: `Bob proposed a counter-location: Builder Yard Hub. Click Accept to confirm or Counter to propose another spot.`,
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    isCounterLocationPrompt: true
+                });
+                
+                saveState();
+                if (state.currentConversationId === active.id) {
+                    playSound('message');
+                    renderChatDetail(active);
+                }
+                return;
+            }
+
             // Confirm the meetup
             active.negotiation.status = 'accepted';
             active.locationChosenAt = Date.now(); // Ensure location chosen timestamp is updated on accept
@@ -30124,7 +30565,7 @@ function submitOfferSwapProposal(isKarma) {
 
     if (isKarma) {
         const req = conv.negotiation.requestedItem || "item";
-        msgText = `I'd love a Karma Swap for your ${req}.`;
+        msgText = `Hi! I'd love to request your "${req}" as a free offering. Since you are offering it, I would be very grateful to receive it, and I'll gladly gift you a red heart (Karma points) to show my appreciation! Let me know if we can coordinate the details!`;
         conv.negotiation.isKarmaSwap = true;
     } else {
         const req = conv.negotiation.requestedItem || "item";
@@ -30663,7 +31104,7 @@ function openProfileStatExplanation(type) {
             btnContainer.classList.add('hidden');
         }
         
-        iconContainer.className = "w-16 h-16 rounded-full bg-[#308A5E]/10 flex items-center justify-center text-[#308A5E] mb-4";
+        iconContainer.className = "w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center text-[#ef4444] mb-4";
         iconEl.innerText = "favorite";
         iconEl.style.fontVariationSettings = "'FILL' 1";
         titleEl.innerText = "Karma Points";
@@ -30679,7 +31120,7 @@ function openProfileStatExplanation(type) {
             btnContainer.classList.add('hidden');
         }
         
-        iconContainer.className = "w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center text-[#22c55e] mb-4";
+        iconContainer.className = "w-16 h-16 rounded-full bg-[#308A5E]/10 flex items-center justify-center text-[#308A5E] mb-4";
         iconEl.innerText = "handshake";
         iconEl.style.fontVariationSettings = "'FILL' 1";
         titleEl.innerText = "Completed Swaps";
@@ -30893,6 +31334,10 @@ function handleChatBackButton() {
         state.chatBackReferrer = null; // Clear it to avoid loop
         openMapItemDetail(referrerId);
     } else {
+        const conv = state.conversations.find(c => c.id === state.currentConversationId);
+        if (conv && conv.isGroup) {
+            switchChatSegment('groups', true);
+        }
         showView('chat_hub');
     }
 }
@@ -31561,8 +32006,8 @@ window.submitFusedReview = function() {
 
     showToast("Review submitted successfully!");
 
-    // Open Listing Cleanup modal if it was a real conversation
-    if (showListingCleanup && cleanupConvId) {
+    // Open Listing Cleanup modal if it was a real conversation and we are not in the reviews tab
+    if (showListingCleanup && cleanupConvId && state.currentChatSegment !== 'reviews') {
         setTimeout(() => {
             window.openCleanupListingsModal(cleanupConvId);
         }, 300);
@@ -31978,22 +32423,22 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                 </div>
                 
                 <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 min-h-0 items-center justify-center text-center">
-                    <div class="w-16 h-16 rounded-full bg-[#308A5E]/10 flex items-center justify-center text-[#308A5E] border border-[#308A5E]/20 shadow-sm mb-2 shrink-0">
+                    <div class="w-16 h-16 rounded-full bg-red-50 dark:bg-red-950/20 flex items-center justify-center text-[#ef4444] border border-red-200/20 shadow-sm mb-2 shrink-0">
                         <span class="material-symbols-outlined text-3xl font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
                     </div>
                     
                     <div class="flex flex-col items-center gap-2 shrink-0">
-                        <h4 class="popup-modal-title text-center mb-1">Karma Swap Request</h4>
+                        <h4 class="popup-modal-title text-center mb-1">Review Free Request</h4>
                         <p class="popup-modal-desc text-center max-w-[90%]">
-                            Your neighbor ${escapeHTML(conv.neighborName)} wants your <strong class="text-forest-green">"${escapeHTML(requestedTitle)}"</strong> but doesn't have an item to trade right now. 
-                            They are proposing a Karma Swap. By helping them out, you will receive <span class="text-[#308A5E] font-extrabold">+50 Karma Points</span>!
+                            Your neighbor ${escapeHTML(conv.neighborName)} is requesting your <strong class="text-forest-green">"${escapeHTML(requestedTitle)}"</strong> as a free offering. 
+                            By helping them out, you will receive <span class="text-[#ef4444] font-extrabold">+50 Karma Points</span>!
                         </p>
                     </div>
                 </div>
                 
                 <!-- Action buttons -->
                 <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-4">
-                    <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.acceptLifecycleProposedSwap('${conv.id}')">Accept Karma Swap</button>
+                    <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.acceptLifecycleProposedSwap('${conv.id}')">Accept Request</button>
                     <button class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="window.declineLifecycleProposedSwap('${conv.id}')">Decline Request</button>
                 </div>
             `;
@@ -32140,7 +32585,7 @@ window.submitLifecycleSwap = function(isKarma) {
     
     if (isKarma) {
         const req = conv.negotiation?.requestedItem || "item";
-        msgText = `I'd love a Karma Swap for your ${req}.`;
+        msgText = `Hi! I'd love to request your "${req}" as a free offering. Since you are offering it, I would be very grateful to receive it, and I'll gladly gift you a red heart (Karma points) to show my appreciation! Let me know if we can coordinate the details!`;
         if (!conv.negotiation) conv.negotiation = {};
         conv.negotiation.isKarmaSwap = true;
     } else {
@@ -32185,11 +32630,19 @@ window.submitLifecycleSwap = function(isKarma) {
     conv.messages.push(newMsg);
     
     // Add admin confirmation
-    conv.messages.push({
-        sender: 'App admin',
-        text: "Swap proposed! Our team has sent the request to your neighbor. We'll let you know as soon as they respond.",
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    });
+    if (isKarma) {
+        conv.messages.push({
+            sender: 'App admin',
+            text: `Karma request sent successfully! We've notified ${conv.neighborName} about your request. Once they accept, you both can schedule a convenient time and safe location to meet up. After the handoff is complete, you'll be able to confirm and award them Karma points!`,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        });
+    } else {
+        conv.messages.push({
+            sender: 'App admin',
+            text: "Swap proposed! Our team has sent the request to your neighbor. We'll let you know as soon as they respond.",
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        });
+    }
     
     conv.negotiation.status = 'pending';
     conv.negotiation.offeredItem = offeredText;
