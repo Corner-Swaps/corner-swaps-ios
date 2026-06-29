@@ -20269,10 +20269,10 @@ function plotMapMarkersOnly() {
         const lat = state.meetupMapCoords.lat;
         const lng = state.meetupMapCoords.lng;
         
-        // Green map pin icon with vibrating blue ring
+        // Purple-blue map pin icon with vibrating purple-blue ring
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
-            html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid white !important; background-color: #308A5E !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
+            html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid white !important; background-color: #5f69f8 !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
                     <div class="meetup-blue-pulse"></div>
                     <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">location_on</span>
                    </div>`,
@@ -20287,11 +20287,11 @@ function plotMapMarkersOnly() {
         const radius = state.meetupMapRadius || 100;
         const vicinityCircle = L.circle([lat, lng], {
             radius: radius,
-            color: '#2563eb',
-            fillColor: '#2563eb',
-            fillOpacity: 0.15,
+            color: '#5f69f8',
+            fillColor: '#5f69f8',
+            fillOpacity: 0.12,
             weight: 1.5,
-            dashArray: '4, 4',
+            dashArray: null,
             className: 'pulsing-circle'
         }).addTo(leafletMap);
         mapMarkers.push({ marker: vicinityCircle, name: 'meetup_vicinity_circle' });
