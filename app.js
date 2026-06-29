@@ -2262,7 +2262,7 @@ function ensureFriendsList() {
         state.friends = [];
         return false;
     }
-    if (!state.friends || state.friends.length < 10) {
+    if (!state.friends) {
         state.friends = [
             { name: 'Sarah Chen', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop', phone: '+1 (604) 555-0144' },
             { name: 'Zoe', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop', phone: '+1 (604) 555-0188' },
@@ -12416,10 +12416,10 @@ function renderConversationsList() {
 
             const category = neighbor ? (neighbor.category || "General") : (conv.isGroup ? "Group" : "General");
 
-            let avatarHtml = `<div class="profile-avatar-ring w-14 h-14 flex-shrink-0 cursor-pointer" onclick="event.stopPropagation(); ${conv.isGroup ? `openGroupSettingsModal('${conv.id}')` : `openNeighborProfileModal('${escapeHTML(conv.neighborName)}')`}"><img alt="${escapeHTML(displayName)}" class="w-full h-full object-cover rounded-full" src="${avatarUrl}"/></div>`;
+            let avatarHtml = `<div class="profile-avatar-ring w-14 h-14 flex-shrink-0 cursor-pointer" onclick="event.stopPropagation(); ${conv.isGroup ? `openGroupSettingsModal('${conv.id}')` : `openNeighborProfileModal('${conv.neighborName.replace(/'/g, "\\'")}')`}"><img alt="${escapeHTML(displayName)}" class="w-full h-full object-cover rounded-full" src="${avatarUrl}"/></div>`;
             if (conv.neighborName === 'App admin') {
                 avatarHtml = `
-                    <div class="w-14 h-14 rounded-full bg-error/10 text-error flex items-center justify-center border border-error/20 shadow-sm select-none cursor-pointer" onclick="event.stopPropagation(); openNeighborProfileModal('${escapeHTML(conv.neighborName)}')">
+                    <div class="w-14 h-14 rounded-full bg-error/10 text-error flex items-center justify-center border border-error/20 shadow-sm select-none cursor-pointer" onclick="event.stopPropagation(); openNeighborProfileModal('${conv.neighborName.replace(/'/g, "\\'")}')">
                         <span class="material-symbols-outlined text-[24px]">admin_panel_settings</span>
                     </div>
                 `;
@@ -16170,11 +16170,11 @@ function renderProfileSettings() {
                 const div = document.createElement('div');
                 div.className = "flex items-center justify-between p-2 hover:bg-forest-green/5 rounded-xl transition-colors";
                 div.innerHTML = `
-                    <div class="flex items-center gap-2 cursor-pointer" onclick="openNeighborProfileModal('${escapeHTML(f.name)}')">
+                    <div class="flex items-center gap-2 cursor-pointer" onclick="openNeighborProfileModal('${f.name.replace(/'/g, "\\'")}')">
                         <div class="profile-avatar-ring w-7 h-7 flex-shrink-0"><img src="${f.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full"></div>
-                        <span class="text-on-surface">${f.name}</span>
+                        <span class="text-on-surface">${escapeHTML(f.name)}</span>
                     </div>
-                    <button class="text-error hover:opacity-80 p-1 bg-transparent border-0 cursor-pointer" onclick="handleRemoveFriend('${escapeHTML(f.name)}')">
+                    <button class="text-error hover:opacity-80 p-1 bg-transparent border-0 cursor-pointer" onclick="handleRemoveFriend('${f.name.replace(/'/g, "\\'")}')">
                         <span class="material-symbols-outlined text-base">person_remove</span>
                     </button>
                 `;
@@ -16194,7 +16194,7 @@ function renderProfileSettings() {
                 const div = document.createElement('div');
                 div.className = "flex items-center justify-between p-2.5 rounded-xl border border-black/5 dark:border-white/5 bg-white dark:bg-[#1b261f]";
                 div.innerHTML = `
-                    <div class="flex items-center gap-3 cursor-pointer" onclick="openNeighborProfileModal('${escapeHTML(f.name)}')">
+                    <div class="flex items-center gap-3 cursor-pointer" onclick="openNeighborProfileModal('${f.name.replace(/'/g, "\\'")}')">
                         <div class="profile-avatar-ring w-9 h-9 flex-shrink-0">
                             <img src="${f.avatar || DEFAULT_AVATAR}" class="w-full h-full object-cover rounded-full" alt="${escapeHTML(f.name)}">
                         </div>
@@ -16203,7 +16203,7 @@ function renderProfileSettings() {
                             <div class="text-[10px] text-on-surface-variant dark:text-warm-cream/60">${escapeHTML(locationAndCat)}</div>
                         </div>
                     </div>
-                    <button class="text-gray-400 hover:text-red-500 active:scale-90 transition-all border-0 cursor-pointer bg-transparent p-1 flex items-center justify-center" onclick="handleRemoveFriend('${escapeHTML(f.name)}')">
+                    <button class="text-gray-400 hover:text-red-500 active:scale-90 transition-all border-0 cursor-pointer bg-transparent p-1 flex items-center justify-center" onclick="handleRemoveFriend('${f.name.replace(/'/g, "\\'")}')">
                         <span class="material-symbols-outlined text-[18px]">delete</span>
                     </button>
                 `;
