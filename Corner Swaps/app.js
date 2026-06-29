@@ -12797,6 +12797,27 @@ function renderChatDetail(conv) {
             return;
         }
 
+        if (msg.isCounterOfferPrompt) {
+            msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full ${animClass} my-1.5 self-start justify-start`;
+            msgDiv.innerHTML = `
+                <div class="w-7 h-7 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 select-none shadow-sm border border-amber-500/25">
+                    <span class="material-symbols-outlined text-[15px]">settings</span>
+                </div>
+                <div class="flex flex-col items-start max-w-[85%]">
+                    <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm rounded-xl font-medium admin-message-bubble flex flex-col gap-2">
+                        <p class="text-xs leading-relaxed font-bold">${escapeHTML(msg.text)}</p>
+                        <div class="flex gap-2 mt-1">
+                            <button class="bg-forest-green hover:bg-forest-green/90 text-warm-cream px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center gap-0.5 border-0" onclick="window.handleAcceptCounterOffer()">Accept Counter</button>
+                            <button class="bg-white border border-outline-variant/35 text-forest-green hover:bg-forest-green/5 px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center gap-0.5 border-0" onclick="window.handleCounterOfferSwapProposal()">Counter Offer</button>
+                        </div>
+                    </div>
+                    <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}</span>
+                </div>
+            `;
+            feed.appendChild(msgDiv);
+            return;
+        }
+
         if (msg.isCounterLocationPrompt) {
             msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full ${animClass} my-1.5 self-start justify-start`;
             msgDiv.innerHTML = `
@@ -12807,8 +12828,8 @@ function renderChatDetail(conv) {
                     <div class="py-2.5 px-4 bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 shadow-sm rounded-xl font-medium admin-message-bubble flex flex-col gap-2">
                         <p class="text-xs leading-relaxed font-bold">${escapeHTML(msg.text)}</p>
                         <div class="flex gap-2 mt-1">
-                            <button class="bg-forest-green hover:bg-forest-green/90 text-warm-cream px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center gap-0.5 border-0" onclick="window.handleAcceptCounterLocation()">Accept</button>
-                            <button class="bg-white border border-outline-variant/35 text-forest-green hover:bg-forest-green/5 px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center gap-0.5 border-0" onclick="openSuggestMeetingSpotModal()">Counter</button>
+                            <button class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center gap-0.5 border-0" onclick="window.handleAcceptCounterLocation()">Accept</button>
+                            <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 dark:bg-white/10 dark:hover:bg-white/20 dark:text-white px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center gap-0.5 border-0" onclick="openSuggestMeetingSpotModal()">Counter</button>
                         </div>
                     </div>
                     <span class="text-[9px] text-on-surface-variant/65 mt-1 font-semibold ml-1 select-none">${escapeHTML(msg.sender)} • ${formatMessageTime(msg.time)}</span>
@@ -13748,9 +13769,135 @@ function renderNegotiationControl(conv) {
     const wrapper = document.getElementById('chat-negotiation-wrapper');
     const confirmationsBar = document.getElementById('chat-confirmations-bar-container');
     
-    if (container) container.innerHTML = "";
-    if (wrapper) wrapper.style.display = "none";
+    if (!container || !wrapper) return;
+    
+    container.innerHTML = "";
+    wrapper.style.display = "none";
     if (confirmationsBar) confirmationsBar.classList.add('hidden');
+    
+    const neighbor = conv.isGroup ? null : (state.neighbors ? state.neighbors[conv.neighborName] : null);
+    const isKarmaGift = neighbor && neighbor.isKarma;
+    const status = conv.negotiation ? conv.negotiation.status : 'none';
+    if (status === 'none') return;
+    
+    let html = '';
+    const isKarma = conv.negotiation.isKarmaSwap;
+    
+    if (status === 'pending') {
+        html = `
+            <div class="bg-forest-green/5 dark:bg-white/[0.02] border border-forest-green/10 rounded-2xl p-3.5 flex flex-col gap-2">
+                <div class="flex justify-between items-center w-full">
+                    <span class="text-[10px] font-extrabold text-forest-green uppercase tracking-wider">Phase 2: Swap Proposed (Sent)</span>
+                    <button class="text-[9px] font-bold text-[#ef4444] hover:underline bg-transparent border-0 cursor-pointer p-0" onclick="cancelProposedBarter()">Cancel Proposal</button>
+                </div>
+                <div class="text-[10px] text-on-surface-variant font-medium text-left">
+                    ${isKarma 
+                        ? `You requested their <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.requestedItem)}</span> for free in exchange for Karma Points.` 
+                        : `You offered your <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.offeredItem)}</span> for their <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.requestedItem)}</span>.`}
+                </div>
+            </div>
+        `;
+    } else if (status === 'received') {
+        html = `
+            <div class="bg-forest-green/5 dark:bg-white/[0.02] border border-forest-green/10 rounded-2xl p-3.5 flex flex-col gap-3">
+                <span class="text-[10px] font-extrabold text-forest-green text-left uppercase tracking-wider">Phase 2: Swap Proposed (Received)</span>
+                <div class="text-[10px] text-on-surface-variant font-medium text-left">
+                    ${isKarma 
+                        ? `${escapeHTML(conv.neighborName)} requested your <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.requestedItem)}</span> for free in exchange for Karma Points.` 
+                        : `${escapeHTML(conv.neighborName)} wants to trade their <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.offeredItem)}</span> for your <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.requestedItem)}</span>.`}
+                </div>
+                <div class="flex gap-2.5 w-full">
+                    <button class="flex-grow bg-forest-green hover:bg-forest-green/95 text-warm-cream py-2 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 border-0" onclick="handleAcceptProposal()">
+                        <span class="material-symbols-outlined text-xs">check</span> Accept
+                    </button>
+                    <button class="flex-grow bg-white border border-outline-variant/35 text-forest-green hover:bg-forest-green/5 py-2 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1" onclick="openDeclineFeedbackModal()">
+                        <span class="material-symbols-outlined text-xs">close</span> Decline
+                    </button>
+                </div>
+            </div>
+        `;
+    } else if (status === 'countered') {
+        html = `
+            <div class="bg-forest-green/5 dark:bg-white/[0.02] border border-forest-green/10 rounded-2xl p-3.5 flex flex-col gap-3">
+                <span class="text-[10px] font-extrabold text-[#D99036] text-left uppercase tracking-wider">Phase 2: Swap Proposed (Countered)</span>
+                <div class="text-[10px] text-on-surface-variant font-medium text-left">
+                    ${escapeHTML(conv.neighborName)} proposed a counter-offer: trade their <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.offeredItem)}</span> for your <span class="font-bold text-forest-green">${escapeHTML(conv.negotiation.requestedItem)}</span>.
+                </div>
+                <div class="flex flex-col gap-2 w-full">
+                    <div class="flex gap-2.5 w-full">
+                        <button class="flex-grow bg-forest-green hover:bg-forest-green/95 text-warm-cream py-2 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 border-0" onclick="window.handleAcceptCounterOffer()">
+                            <span class="material-symbols-outlined text-xs">check</span> Accept Counter
+                        </button>
+                        <button class="flex-grow bg-white border border-outline-variant/35 text-forest-green hover:bg-forest-green/5 py-2 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1" onclick="window.handleCounterOfferSwapProposal()">
+                            <span class="material-symbols-outlined text-xs">edit_square</span> Counter Offer
+                        </button>
+                    </div>
+                    <button class="w-full bg-white border border-[#ef4444]/20 hover:bg-[#ef4444]/5 text-[#ef4444] py-1.5 rounded-xl text-[10px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 border-0" onclick="window.handleDeclineCounterOffer()">
+                        <span class="material-symbols-outlined text-xs">close</span> Decline
+                    </button>
+                </div>
+            </div>
+        `;
+    } else if (status === 'accepted') {
+        const hasMeetup = conv.negotiation.meetupLocation && conv.negotiation.meetupTime;
+        if (conv.negotiation.locationNeedsUserConfirmation) {
+            html = `
+                <div class="bg-forest-green/5 dark:bg-white/[0.02] border border-forest-green/10 rounded-2xl p-3.5 flex flex-col gap-3">
+                    <span class="text-[10px] font-extrabold text-[#D99036] text-left uppercase tracking-wider">Phase 3: Coordinate Meet Up (Countered)</span>
+                    <div class="text-[10px] text-on-surface-variant font-medium text-left">
+                        ${escapeHTML(conv.neighborName)} proposed a counter-location:
+                        <div class="bg-white dark:bg-[#141c16] p-2.5 rounded-xl border border-outline-variant/15 flex flex-col gap-1 mt-1.5 text-[10px]">
+                            <p class="font-semibold text-black dark:text-white flex items-center gap-1"><span class="material-symbols-outlined text-xs">place</span> Meetup Spot: ${escapeHTML(conv.negotiation.meetupLocation)}</p>
+                            <p class="font-semibold text-black dark:text-white flex items-center gap-1"><span class="material-symbols-outlined text-xs">schedule</span> Time: ${escapeHTML(conv.negotiation.meetupTime)}</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2.5 w-full">
+                        <button class="flex-grow bg-forest-green hover:bg-forest-green/95 text-warm-cream py-2 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1 border-0" onclick="window.handleAcceptCounterLocation()">
+                            <span class="material-symbols-outlined text-xs">check</span> Accept Spot
+                        </button>
+                        <button class="flex-grow bg-white border border-outline-variant/35 text-forest-green hover:bg-forest-green/5 py-2 rounded-xl text-[11px] font-bold active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1" onclick="openSuggestMeetingSpotModal()">
+                            <span class="material-symbols-outlined text-xs">edit_location</span> Counter Spot
+                        </button>
+                    </div>
+                </div>
+            `;
+        } else if (!hasMeetup) {
+            html = `
+                <div class="bg-forest-green/5 dark:bg-white/[0.02] border border-forest-green/10 rounded-2xl p-3.5 flex flex-col gap-2.5">
+                    <span class="text-[10px] font-extrabold text-[#D99036] text-left uppercase tracking-wider">Phase 3: Coordinate Meet Up</span>
+                    <p class="text-[10px] leading-relaxed text-on-surface-variant font-medium text-left">
+                        You and ${escapeHTML(conv.neighborName)} agreed to swap! You must arrange a safe public spot and time to meet up before you can finalize this swap.
+                    </p>
+                    <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-2 rounded-xl text-xs font-bold active:scale-95 transition-all shadow flex items-center justify-center gap-1.5 cursor-pointer border-0" onclick="openSuggestMeetingSpotModal()">
+                        <span class="material-symbols-outlined text-sm">edit_location</span> Coordinate Meetup Spot
+                    </button>
+                </div>
+            `;
+        } else {
+            html = `
+                <div class="bg-forest-green/5 dark:bg-white/[0.02] border border-forest-green/10 rounded-2xl p-3.5 flex flex-col gap-2.5">
+                    <span class="text-[10px] font-extrabold text-black dark:text-white text-left uppercase tracking-wider">Phase 3: Meet Up Arranged</span>
+                    <div class="bg-white dark:bg-[#141c16] p-2.5 rounded-xl border border-outline-variant/15 flex flex-col gap-1 text-[10px] text-left">
+                        <p class="font-semibold text-black dark:text-white flex items-center gap-1"><span class="material-symbols-outlined text-xs">place</span> Meetup Spot: ${escapeHTML(conv.negotiation.meetupLocation)}</p>
+                        <p class="font-semibold text-black dark:text-white flex items-center gap-1"><span class="material-symbols-outlined text-xs">schedule</span> Meetup Time: ${escapeHTML(conv.negotiation.meetupTime)}</p>
+                    </div>
+                    <div class="flex flex-col gap-2 w-full pt-1">
+                        <button class="w-full bg-forest-green/10 hover:bg-forest-green/20 text-forest-green dark:text-warm-cream text-xs font-bold py-2 rounded-xl border border-outline-variant/20 flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer" onclick="openSuggestMeetingSpotModal()">
+                            <span class="material-symbols-outlined text-sm">edit</span> Edit Meetup Details
+                        </button>
+                        <button class="w-full bg-forest-green hover:bg-forest-green/90 text-warm-cream py-2.5 rounded-xl font-bold text-xs active:scale-[0.98] transition-all shadow flex items-center justify-center gap-1.5 cursor-pointer border-0" onclick="openConfirmSwapRatingModal('${conv.id}')">
+                            <span class="material-symbols-outlined text-sm font-bold">check_circle</span> Confirm Swap
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+    }
+    
+    if (html) {
+        container.innerHTML = html;
+        wrapper.style.display = "block";
+    }
 }
 
 let createGroupAvatarUrl = "";
@@ -14657,8 +14804,9 @@ window.simulatePartnerAccept = function(convId) {
             
             active.messages.push({
                 sender: 'App admin',
-                text: `Bob proposed a counter-offer: trade their Electric Drywall Sander for your Garden Weeding & Help. Click 'Review Counter' to respond.`,
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                text: `Bob proposed a counter-offer: trade their Electric Drywall Sander for your Garden Weeding & Help. Respond using the buttons below.`,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                isCounterOfferPrompt: true
             });
             
             if (active.mockAcceptTimer) {
@@ -27165,6 +27313,18 @@ function initMeetingSpotMap() {
 
     staggeredInvalidateSize(meetingSpotMap);
 
+    try {
+        const resizeObserver = new ResizeObserver(() => {
+            if (meetingSpotMap) {
+                meetingSpotMap.invalidateSize();
+            }
+        });
+        const mapEl = document.getElementById('meeting-spot-map');
+        if (mapEl) resizeObserver.observe(mapEl);
+    } catch (e) {
+        console.error("ResizeObserver failed for meeting-spot-map:", e);
+    }
+
     // Click listener to drop custom pin and select meeting spot
     meetingSpotMap.on('click', function(e) {
         const lat = e.latlng.lat;
@@ -29488,6 +29648,18 @@ function openMeetupLocationPicker() {
 
         // Click handler to select coordinates
         meetupPickerMap.on('click', onMeetupMapClick);
+
+        try {
+            const resizeObserver = new ResizeObserver(() => {
+                if (meetupPickerMap) {
+                    meetupPickerMap.invalidateSize();
+                }
+            });
+            const mapEl = document.getElementById('meetup-picker-map');
+            if (mapEl) resizeObserver.observe(mapEl);
+        } catch (e) {
+            console.error("ResizeObserver failed for meetup-picker-map:", e);
+        }
     }
 
     // Determine initial center

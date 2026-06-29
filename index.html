@@ -2560,13 +2560,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <div id="village-map-container" class="absolute inset-0 z-0">
                             <div id="map" class="w-full h-full"></div>
 
-                            <!-- Bottom Back to Chat Button for Meetup Map Mode -->
-                            <div id="meetup-map-footer" class="hidden absolute bottom-12 right-6 z-[3000] flex flex-col-reverse items-end transition-all duration-300">
-                                <button onclick="window.exitMeetupMapMode()" class="bg-forest-green hover:bg-forest-green/90 text-white px-4 py-2.5 rounded-xl text-xs font-bold active:scale-95 transition-all shadow-lg flex items-center gap-1 border-0 cursor-pointer">
-                                    <span class="material-symbols-outlined text-sm">arrow_back</span>
-                                    <span>Back to Chat</span>
-                                </button>
-                            </div>
+                            <!-- Close/Back Button for Meetup Map Mode (Top Left) -->
+                            <button id="meetup-close-btn" onclick="window.exitMeetupMapMode()" class="hidden absolute z-[3000] w-10 h-10 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-[#2a352d] flex-shrink-0 shadow-sm" title="Close Map">
+                                <span class="material-symbols-outlined text-xl">close</span>
+                            </button>
+
+                            <!-- Bottom Back to Chat Button for Meetup Map Mode (Empty / Hidden) -->
+                            <div id="meetup-map-footer" class="hidden absolute bottom-12 right-6 z-[3000] flex flex-col-reverse items-end transition-all duration-300"></div>
 
                             <!-- Yellow Change Location Bar Button -->
                             <div id="meetup-change-location-container" class="hidden absolute bottom-24 left-1/2 -translate-x-1/2 z-[3000] w-full max-w-[280px] px-4">
