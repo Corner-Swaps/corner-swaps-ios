@@ -1361,7 +1361,7 @@ body.show-simulator #neighbor-profile-header,
 
 .native-app-env #neighbor-profile-scroll-container,
 body.show-simulator #neighbor-profile-scroll-container {
-    padding-top: calc(var(--safe-area-top) + 16px) !important;
+    padding-top: calc(var(--safe-area-top) + 64px) !important;
     padding-bottom: calc(90px + var(--safe-area-bottom)) !important;
 }
 
@@ -6542,7 +6542,7 @@ body.show-simulator:not(.iphone16-mode) #view-village #meetup-close-btn {
 .iphone16-mode #neighbor-profile-scroll-container,
 .iphone16-mode #profile-settings-scroll-container,
 .iphone16-mode #confirm-swap-scroll-container {
-    padding-top: calc(var(--safe-area-top) + 16px) !important;
+    padding-top: calc(var(--safe-area-top) + 64px) !important;
 }
 
 /* Custom premium checkboxes for EULA */

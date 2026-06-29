@@ -1233,7 +1233,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 //# sourceMappingURL=/sm/6de00f2697a1683b235e589897df757a94e6809643432a9e3ad259420752442d.map</script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=1.0.2">
     <!-- Tailwind Configuration (removed - runtime replaced with pre-compiled CSS) -->
     <script>
         // Synchronously detect if we are running inside native app wrapper (iOS/WKWebView)
@@ -2062,7 +2062,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </div>
                             <div class="quick-create-info">
                                 <h4 class="quick-create-title">Offering</h4>
-                                <p class="quick-create-desc">Share tools, skills, or food</p>
+                                <p class="quick-create-desc" style="color: #6b7280 !important;">Share tools, skills, or food</p>
                             </div>
                             <span class="material-symbols-outlined text-[20px] text-forest-green" id="onboarding-chevron-offering" style="transition: transform 0.2s;">expand_more</span>
                         </button>
@@ -2078,7 +2078,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </div>
                             <div class="quick-create-info">
                                 <h4 class="quick-create-title">Need</h4>
-                                <p class="quick-create-desc">Ask neighbors for items or help</p>
+                                <p class="quick-create-desc" style="color: #6b7280 !important;">Ask neighbors for items or help</p>
                             </div>
                             <span class="material-symbols-outlined text-[20px] text-amber-500" id="onboarding-chevron-need" style="transition: transform 0.2s;">expand_more</span>
                         </button>
@@ -2094,7 +2094,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             </div>
                             <div class="quick-create-info">
                                 <h4 class="quick-create-title">Event</h4>
-                                <p class="quick-create-desc">Organize a gathering or swap meet</p>
+                                <p class="quick-create-desc" style="color: #6b7280 !important;">Organize a gathering or swap meet</p>
                             </div>
                             <span class="material-symbols-outlined text-[20px] text-purple-500" id="onboarding-chevron-event" style="transition: transform 0.2s;">expand_more</span>
                         </button>
@@ -4400,14 +4400,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
                     </section>
 
-                    <!-- Self Reliability Warning Banner -->
-                    <div id="self-profile-reliability-warning-banner" class="hidden mb-6 p-4 bg-red-500/10 dark:bg-red-500/20 border border-red-500/20 text-red-600 dark:text-red-400 rounded-2xl flex items-start gap-2.5 select-none animate-pulse-slow">
-                        <span class="material-symbols-outlined text-lg shrink-0 mt-0.5" style="font-variation-settings: 'FILL' 1;">gpp_maybe</span>
-                        <div class="text-left">
-                            <h5 class="text-[10px] font-bold uppercase tracking-wider mb-0.5" id="self-profile-warning-title">Account Advisory</h5>
-                            <p class="text-xs leading-relaxed font-semibold" id="self-profile-reliability-warning-text">Your profile is currently shadow-banned from the platform due to multiple verified No-Show strikes.</p>
-                        </div>
-                    </div>
+                    <!-- Self Reliability Warning Banner Removed -->
+                    <div id="self-profile-reliability-warning-banner" class="hidden"></div>
+                    <div id="self-profile-warning-title" class="hidden"></div>
+                    <div id="self-profile-reliability-warning-text" class="hidden"></div>
                                 <!-- Hidden legacy circle stats to preserve JavaScript reference logic -->
                     <div id="widget-swaps-counter" class="hidden">
                         <div id="btn-vouch-stats"></div>
@@ -7846,11 +7842,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                 <div id="neighbor-profile-modal" class="hidden absolute inset-0 z-[4000] flex flex-col bg-white dark:bg-[#101612] select-none animate-fade-in pt-0">
                     <!-- Sticky Header Bar -->
-                    <div id="neighbor-profile-header" class="absolute top-0 left-0 right-0 px-6 bg-transparent flex items-center justify-end z-30 select-none" style="height: 64px !important;">
-                        <button id="neighbor-profile-close-btn" class="hidden w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="handleNeighborProfileBackButton()" title="Close">
-                            <span class="material-symbols-outlined text-[17px]">close</span>
-                        </button>
-                    </div>
+                    <!-- Sticky Header Bar Deleted as per user request -->
 
                     <div id="neighbor-profile-scroll-container" class="relative flex-grow overflow-y-auto min-h-0 px-6 pt-16 pb-20 custom-scrollbar" style="-webkit-overflow-scrolling: touch; overscroll-behavior: contain;">
                         <!-- Neighbor Profile Header Summary -->
@@ -7888,7 +7880,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </section>
 
                         <!-- Pill-style Segmented Tab Selector -->
-                        <div class="flex flex-row justify-center gap-8 flex-shrink-0 mb-4 mx-6" id="neighbor-profile-tabs">
+                        <div class="hidden flex flex-row justify-center gap-8 flex-shrink-0 mb-4 mx-6" id="neighbor-profile-tabs">
                             <button id="btn-profile-tab-info" onclick="switchProfileTab('info')" class="flex-grow flex items-center justify-center gap-1 py-2 px-1 text-[11px] font-bold transition-all duration-200 text-forest-green dark:text-[#308A5E] border-b-2 border-forest-green dark:border-[#308A5E] bg-transparent cursor-pointer">
                                 Info
                             </button>
@@ -7899,14 +7891,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
                         <!-- Subview 1: Profile Info Tab Content -->
                         <div id="profile-tab-content-info" class="space-y-4 animate-fade-in">
-                            <!-- Reliability Warning Banner -->
-                            <div id="neighbor-profile-reliability-warning-banner" class="hidden p-3 bg-red-500/10 dark:bg-red-500/20 border border-red-500/20 text-red-600 dark:text-red-400 rounded-xl flex items-start gap-2.5 select-none animate-pulse-slow">
-                                <span class="material-symbols-outlined text-lg shrink-0 mt-0.5" style="font-variation-settings: 'FILL' 1;">gpp_maybe</span>
-                                <div class="text-left">
-                                    <h5 class="text-[10px] font-bold uppercase tracking-wider mb-0.5">Reliability Advisory</h5>
-                                    <p class="text-[9.5px] leading-relaxed font-semibold" id="neighbor-profile-reliability-warning-text"></p>
-                                </div>
-                            </div>
+                            <!-- Reliability Warning Banner Removed -->
+                            <div id="neighbor-profile-reliability-warning-banner" class="hidden"></div>
+                            <div id="neighbor-profile-reliability-warning-text" class="hidden"></div>
                             
                             <!-- Unified Badges Section for Neighbor -->
                             <section id="neighbor-widget-badges-section" class="relative mb-3 bg-white dark:bg-[#18201a] p-4 rounded-xl border border-black dark:border-white shadow-sm flex-shrink-0">
@@ -8695,17 +8682,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
                 <!-- GROUP SETTINGS MODAL -->
                 <div id="group-settings-modal" class="hidden absolute inset-0 z-[100] flex flex-col bg-warm-cream dark:bg-[#18201a] select-none animate-fade-in">
                     <!-- Top Sticky Header -->
-                    <div class="sticky top-0 bg-warm-cream/95 dark:bg-[#18201a]/95 backdrop-blur-md z-20 flex-shrink-0 flex flex-col border-b border-outline-variant/15 px-6 pt-12 pb-3 gap-2.5">
+                    <div class="sticky top-0 bg-warm-cream/95 dark:bg-[#18201a]/95 backdrop-blur-md z-20 flex-shrink-0 flex flex-col px-6 pt-12 pb-3 gap-2.5">
                         <div class="flex items-center justify-between w-full relative">
                             <!-- Back Button -->
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 active:scale-90 transition-transform cursor-pointer text-black dark:text-warm-cream border-0 bg-transparent flex-shrink-0" onclick="closeGroupSettingsModal()" title="Back">
-                                <span class="material-symbols-outlined text-lg">arrow_back</span>
-                            </button>
-                            <h2 id="group-settings-title" class="font-headline text-lg font-bold text-forest-green dark:text-warm-cream flex items-center gap-1.5">
-                                <span class="material-symbols-outlined text-xl">groups</span> Group Details
-                            </h2>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm" onclick="closeGroupSettingsModal()">
-                                <span class="material-symbols-outlined text-[17px]">close</span>
+                            <button onclick="closeGroupSettingsModal()" class="w-10 h-10 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-[#2a352d] flex-shrink-0 shadow-sm" title="Back">
+                                <span class="material-symbols-outlined text-[20px] font-black">arrow_back_ios_new</span>
                             </button>
                         </div>
                     </div>
@@ -8739,7 +8720,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         </div>
 
                         <!-- General Actions -->
-                        <div class="pt-4 border-t border-outline-variant/20 flex flex-col gap-2">
+                        <div class="pt-4 border-t border-outline-variant/20 flex flex-col gap-2 mb-16">
                             <button class="w-full bg-[#ef4444]/10 hover:bg-[#ef4444]/15 text-[#ef4444] py-3.5 rounded-xl font-bold flex items-center justify-center gap-1.5 active:scale-[0.98] transition-transform text-xs border border-[#ef4444]/20 cursor-pointer" onclick="handleExitGroupClick()">
                                 <span class="material-symbols-outlined text-base">logout</span> Exit Group
                             </button>
@@ -9025,6 +9006,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 //# sourceMappingURL=leaflet.js.map</script>
     
     <!-- Application Logic Javascript -->
-    <script src="app.js" defer></script>
+    <script src="app.js?v=1.0.2" defer></script>
 </body>
 </html>

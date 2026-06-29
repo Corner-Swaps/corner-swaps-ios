@@ -1856,7 +1856,9 @@ let state = window.StateController.createProxy({
     neighbors: { ...INITIAL_NEIGHBORS },
             userOfferings: [
         { id: '1', title: 'Acoustic Guitar Tutoring', category: 'Skills & Education', desc: "Learn basic acoustic guitar chords, fingerpicking patterns, and tune your guitar correctly in a fun, step-by-step 1-hour beginner friendly coaching session.\n\nPerfect for those picking up a guitar for the first time!", icon: 'school', image: OFFER_IMAGES[6], lat: 49.284, lng: -123.123 },
-        { id: '2', title: 'Garden Weeding & Help', category: 'Garden & Outdoors', desc: "Physical garden maintenance help for your backyard beds, front lawns, or balcony green spaces.\n\nWilling to assist with garden weeding, soil tilling, potting plants, or sweeping up leaves for a solid afternoon session.", icon: 'yard', image: OFFER_IMAGES[3], lat: 49.279, lng: -123.127 }
+        { id: '2', title: 'Garden Weeding & Help', category: 'Garden & Outdoors', desc: "Physical garden maintenance help for your backyard beds, front lawns, or balcony green spaces.\n\nWilling to assist with garden weeding, soil tilling, potting plants, or sweeping up leaves for a solid afternoon session.", icon: 'yard', image: OFFER_IMAGES[3], lat: 49.279, lng: -123.127 },
+        { id: '3', title: 'Baking Fresh Sourdough Bread', category: 'Food & Drink', desc: "Fresh organic sourdough loaves, baked early in the morning. Made with organic wheat flour, water, salt, and wild yeast starter.", icon: 'bakery_dining', image: OFFER_IMAGES[0], lat: 49.281, lng: -123.125 },
+        { id: '4', title: 'Yoga & Mindfulness Session', category: 'Health & Wellness', desc: "One-on-one yoga or guided meditation session to relax, stretch, and focus on breathing techniques.", icon: 'self_improvement', image: OFFER_IMAGES[4], lat: 49.283, lng: -123.121 }
     ],
     conversations: MOCK_CONVERSATIONS,
     swapHistory: [],
@@ -2301,8 +2303,12 @@ function loadState() {
         state.fictitiousReviewsInitializedVersion = 4;
         needsSave = true;
     }
-    if (!state.userOfferings) {
-        state.userOfferings = [];
+    if (!state.userOfferings || state.userOfferings.length < 2) {
+        state.userOfferings = [
+            { id: '1', title: 'Acoustic Guitar Tutoring', category: 'Skills & Education', desc: "Learn basic acoustic guitar chords, fingerpicking patterns, and tune your guitar correctly in a fun, step-by-step 1-hour beginner friendly coaching session.", icon: 'school', image: OFFER_IMAGES[6], lat: 49.2608, lng: -123.1368 },
+            { id: '2', title: 'Garden Weeding & Help', category: 'Garden & Outdoors', desc: "Physical garden maintenance help for your backyard beds, front lawns, or balcony green spaces.", icon: 'yard', image: OFFER_IMAGES[3], lat: 49.2608, lng: -123.1368 }
+        ];
+        needsSave = true;
     }
     if (!state.savedListings) {
         state.savedListings = [];
@@ -5635,7 +5641,10 @@ function handleSignUpStep3(e) {
     state.isGuest = false;
     state.loggedOut = false;
     state.isNewAccount = true;
-    state.userOfferings = [];
+    state.userOfferings = [
+        { id: '1', title: 'Acoustic Guitar Tutoring', category: 'Skills & Education', desc: "Learn basic acoustic guitar chords, fingerpicking patterns, and tune your guitar correctly in a fun, step-by-step 1-hour beginner friendly coaching session.", icon: 'school', image: OFFER_IMAGES[6], lat: 49.2608, lng: -123.1368 },
+        { id: '2', title: 'Garden Weeding & Help', category: 'Garden & Outdoors', desc: "Physical garden maintenance help for your backyard beds, front lawns, or balcony green spaces.", icon: 'yard', image: OFFER_IMAGES[3], lat: 49.2608, lng: -123.1368 }
+    ];
     state.userNeeds = [];
     state.friends = [];
     state.userVouches = 100;
@@ -27476,8 +27485,8 @@ function confirmMeetingSpotSuggestion() {
                 active.negotiation.locationNeedsUserConfirmation = true;
                 
                 active.negotiation.meetupLocation = "Builder Yard Hub";
-                active.negotiation.meetupLat = 37.7735;
-                active.negotiation.meetupLng = -122.4200;
+                active.negotiation.meetupLat = 49.2625;
+                active.negotiation.meetupLng = -123.0995;
                 
                 active.messages.push({
                     sender: active.neighborName,
@@ -32246,8 +32255,8 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                     <span class="popup-modal-desc block text-left">For Karma</span>
                     <label class="flex items-center gap-3 p-3 bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl cursor-pointer select-none transition-all hover:bg-forest-green/5 border-black/10 dark:border-white/10">
                         <input type="radio" id="karma-for-free-radio" name="karma-option" class="accent-forest-green w-4 h-4 cursor-pointer" value="free" />
-                        <span class="material-symbols-outlined text-[16px] text-[#ef4444] font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
-                        <span class="text-xs text-black dark:text-white font-bold">For free (+20 karma points)</span>
+                        <span class="material-symbols-outlined text-[18px] text-[#ef4444]" style="font-variation-settings: 'FILL' 1 !important; color: #ef4444 !important; line-height: 1; display: inline-flex; align-items: center; justify-content: center;">favorite</span>
+                        <span class="text-xs text-black dark:text-white font-bold">For free (+20 Karma Points)</span>
                     </label>
                 </div>
             </div>
