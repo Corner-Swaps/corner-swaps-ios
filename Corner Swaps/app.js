@@ -32255,7 +32255,7 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                     <span class="popup-modal-desc block text-left">For Karma</span>
                     <label class="flex items-center gap-3 p-3 bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl cursor-pointer select-none transition-all hover:bg-forest-green/5 border-black/10 dark:border-white/10">
                         <input type="radio" id="karma-for-free-radio" name="karma-option" class="accent-forest-green w-4 h-4 cursor-pointer" value="free" />
-                        <span class="material-symbols-outlined text-[18px] text-[#ef4444]" style="font-variation-settings: 'FILL' 1 !important; color: #ef4444 !important; line-height: 1; display: inline-flex; align-items: center; justify-content: center;">favorite</span>
+                        <span class="material-symbols-outlined text-[22px] text-[#ef4444]" style="font-variation-settings: 'FILL' 1 !important; color: #ef4444 !important; line-height: 1; display: inline-flex; align-items: center; justify-content: center;">favorite</span>
                         <span class="text-xs text-black dark:text-white font-bold">For free (+20 Karma Points)</span>
                     </label>
                 </div>

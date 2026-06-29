@@ -7708,10 +7708,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         
                         <!-- Header -->
                         <div class="relative flex flex-col items-center justify-center mb-4 border-b border-black/10 dark:border-white/10 pb-3 shrink-0">
-                            <!-- Close button "X" in top-left -->
-                            <button class="absolute top-0 left-0 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm z-10" onclick="closeSuggestMeetingSpotModal()">
-                                <span class="material-symbols-outlined text-[17px]">close</span>
-                            </button>
                             <h3 id="meetup-safety-title" class="popup-modal-title text-center mb-1">Exchange Safety Guidelines</h3>
                             <p id="meetup-safety-subtitle" class="popup-modal-desc text-center text-xs mt-0.5">Community guidelines for arranging a meetup!</p>
                         </div>
@@ -7719,8 +7715,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- Scrollable Content -->
                         <div class="flex-grow overflow-y-auto space-y-4 pr-1 no-scrollbar mb-4 min-h-0">
                             <!-- Map area (Enlarged) -->
-                            <div class="w-full h-[200px] rounded-2xl border border-outline-variant/30 overflow-hidden relative shrink-0">
-                                <div id="meeting-spot-map" class="w-full h-full"></div>
+                            <div class="w-full rounded-2xl border border-outline-variant/30 overflow-hidden relative shrink-0" style="height: 200px !important;">
+                                <div id="meeting-spot-map" class="w-full h-full" style="height: 100% !important;"></div>
                                 <!-- Tap hint animation -->
                                 <div id="map-tap-indicator" class="hidden pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[1000] flex flex-col items-center justify-center">
                                     <!-- Hand click icon -->
@@ -8951,8 +8947,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <!-- Scrollable Content -->
                         <div class="flex-grow overflow-y-auto space-y-4 pr-1 no-scrollbar mb-4 min-h-0">
                             <!-- Map area (Enlarged) -->
-                            <div class="w-full h-[200px] rounded-2xl border border-outline-variant/30 overflow-hidden relative shrink-0">
-                                <div id="meetup-picker-map" class="w-full h-full"></div>
+                            <div class="w-full rounded-2xl border border-outline-variant/30 overflow-hidden relative shrink-0" style="height: 200px !important;">
+                                <div id="meetup-picker-map" class="w-full h-full" style="height: 100% !important;"></div>
                                 <div id="map-picker-instruction" class="absolute bottom-2 left-2 right-2 bg-forest-green/80 dark:bg-[#308A5E] text-warm-cream dark:text-[#101612] text-[9px] font-bold px-2 py-1 rounded-lg text-center backdrop-blur-sm pointer-events-none shadow-sm z-[999] transition-all">
                                     Tap map to set meetup point
                                 </div>

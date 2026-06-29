@@ -8464,8 +8464,8 @@ html.dark #chat-qr-handshake-modal h3 {
 #did-you-swap-modal :not(button):not(button *):not(.material-symbols-outlined),
 #confirm-swap-modal :not(button):not(button *):not(.material-symbols-outlined),
 #decline-modal :not(button):not(button *):not(.material-symbols-outlined),
-#meeting-spot-modal :not(button):not(button *):not(.material-symbols-outlined),
-#meetup-picker-modal :not(button):not(button *):not(.material-symbols-outlined),
+#meeting-spot-modal :not(button):not(button *):not(.material-symbols-outlined):not(.leaflet-container):not(.leaflet-container *),
+#meetup-picker-modal :not(button):not(button *):not(.material-symbols-outlined):not(.leaflet-container):not(.leaflet-container *),
 #barter-modal :not(button):not(button *):not(.material-symbols-outlined),
 #neighbor-review-modal :not(button):not(button *):not(.material-symbols-outlined),
 #chat-qr-handshake-modal :not(button):not(button *):not(.material-symbols-outlined) {
@@ -8480,8 +8480,8 @@ html.dark #offer-swap-modal :not(button):not(button *):not(.material-symbols-out
 html.dark #did-you-swap-modal :not(button):not(button *):not(.material-symbols-outlined),
 html.dark #confirm-swap-modal :not(button):not(button *):not(.material-symbols-outlined),
 html.dark #decline-modal :not(button):not(button *):not(.material-symbols-outlined),
-html.dark #meeting-spot-modal :not(button):not(button *):not(.material-symbols-outlined),
-html.dark #meetup-picker-modal :not(button):not(button *):not(.material-symbols-outlined),
+html.dark #meeting-spot-modal :not(button):not(button *):not(.material-symbols-outlined):not(.leaflet-container):not(.leaflet-container *),
+html.dark #meetup-picker-modal :not(button):not(button *):not(.material-symbols-outlined):not(.leaflet-container):not(.leaflet-container *),
 html.dark #barter-modal :not(button):not(button *):not(.material-symbols-outlined),
 html.dark #neighbor-review-modal :not(button):not(button *):not(.material-symbols-outlined),
 html.dark #chat-qr-handshake-modal :not(button):not(button *):not(.material-symbols-outlined) {
