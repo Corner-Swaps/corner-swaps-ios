@@ -2592,7 +2592,7 @@ html.dark .chat-bubble-other {
     width: 54px;
     height: 54px;
     border-radius: 50%;
-    border: 2.5px solid #3b82f6; /* Matching the blue avatar border */
+    border: 2.5px solid #5f69f8; /* Matching the purple-blue avatar border */
     animation: precise-pulse-up 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
     pointer-events: none;
     z-index: 1;
@@ -5784,8 +5784,8 @@ button[data-category="Other"]:not(.bg-forest-green) .material-symbols-outlined {
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background-color: rgba(59, 130, 246, 0.25);
-    border: 1.5px solid rgba(59, 130, 246, 0.5);
+    background-color: rgba(95, 105, 248, 0.25);
+    border: 1.5px solid rgba(95, 105, 248, 0.5);
     animation: radiating-blue-dot-pulse 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite !important;
     pointer-events: none;
     z-index: 1;
@@ -10875,4 +10875,60 @@ html.dark .group-make-admin-btn {
 }
 html.dark .group-make-admin-btn:hover {
     background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Custom circular green toggle switch for Karma */
+.cs-toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 24px;
+}
+
+.cs-toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.cs-toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #d1d5db; /* gray-300 */
+    transition: .3s;
+    border-radius: 24px;
+}
+
+.cs-toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+html.dark .cs-toggle-slider {
+    background-color: #4b5563; /* gray-600 */
+}
+
+input:checked + .cs-toggle-slider {
+    background-color: #308A5E !important; /* forest green */
+}
+
+input:checked + .cs-toggle-slider:before {
+    transform: translateX(16px);
+}
+
+/* Hide Karma Animation and Score sections */
+#karma-animation-sub-panel {
+    display: none !important;
 }

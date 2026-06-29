@@ -2560,13 +2560,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         <div id="village-map-container" class="absolute inset-0 z-0">
                             <div id="map" class="w-full h-full"></div>
 
-                            <!-- Close/Back Button for Meetup Map Mode (Top Left) -->
-                            <button id="meetup-close-btn" onclick="window.exitMeetupMapMode()" class="hidden absolute z-[3000] w-10 h-10 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-[#2a352d] flex-shrink-0 shadow-sm" title="Close Map">
-                                <span class="material-symbols-outlined text-xl">close</span>
-                            </button>
-
-                            <!-- Bottom Back to Chat Button for Meetup Map Mode (Empty / Hidden) -->
-                            <div id="meetup-map-footer" class="hidden absolute bottom-12 right-6 z-[3000] flex flex-col-reverse items-end transition-all duration-300"></div>
+                            <!-- Bottom Back to Chat Button for Meetup Map Mode -->
+                            <div id="meetup-map-footer" class="hidden absolute bottom-12 right-6 z-[3000] flex flex-col-reverse items-end transition-all duration-300">
+                                <button onclick="window.exitMeetupMapMode()" class="bg-forest-green hover:bg-forest-green/90 text-white px-4 py-2.5 rounded-xl text-xs font-bold active:scale-95 transition-all shadow-lg flex items-center gap-1 border-0 cursor-pointer">
+                                    <span class="material-symbols-outlined text-sm">arrow_back</span>
+                                    <span>Back to Chat</span>
+                                </button>
+                            </div>
 
                             <!-- Yellow Change Location Bar Button -->
                             <div id="meetup-change-location-container" class="hidden absolute bottom-24 left-1/2 -translate-x-1/2 z-[3000] w-full max-w-[280px] px-4">
@@ -4273,33 +4273,39 @@ svg.leaflet-image-layer.leaflet-interactive path {
                             <label id="offer-karma-label" class="text-[9px] font-bold uppercase tracking-wider text-forest-green/80 dark:text-[#308A5E] block mb-2.5 text-left">Karma & Goodwill</label>
                             
                             <!-- Unified Karma Options Card Box -->
-                            <div id="karma-unified-card" class="bg-white dark:bg-[#18201a] py-[9px] px-3.5 rounded-xl border border-outline-variant/30 transition-all select-none overflow-hidden cursor-pointer" onclick="handleKarmaCardClick(event)">
-                                <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" id="karma-checkbox" class="w-4 h-4 rounded border-outline-variant text-forest-green focus:ring-forest-green cursor-pointer" onchange="handleKarmaCheckboxChange(this)" onclick="event.stopPropagation();">
-                                    <label for="karma-checkbox" class="text-xs font-bold text-on-surface cursor-pointer flex-grow flex items-center justify-between" onclick="event.stopPropagation();">
-                                        <span id="karma-checkbox-text" class="text-on-surface dark:text-warm-cream">Offer for free</span>
-                                        <div class="flex items-center justify-center bg-red-500/5 dark:bg-black/20 rounded-lg px-2 py-0.5 border border-outline-variant/35 shrink-0 select-none">
-                                            <span class="material-symbols-outlined text-sm mr-0.5" style="color: #ef4444 !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
-                                            <span id="karma-score-display" class="text-[10px] font-black text-on-surface dark:text-warm-cream">+50 pts</span>
-                                        </div>
+                            <div id="karma-unified-card" class="bg-white dark:bg-[#18201a] p-4 rounded-2xl border border-outline-variant/30 transition-all select-none overflow-hidden cursor-pointer shadow-sm" onclick="handleKarmaCardClick(event)">
+                                <div class="flex items-center justify-between gap-3 w-full">
+                                    <div class="flex items-center gap-1.5 text-on-surface dark:text-warm-cream">
+                                        <span class="material-symbols-outlined text-[15px]" style="color: #ef4444 !important; font-variation-settings: 'FILL' 1 !important;">favorite</span>
+                                        <span id="karma-checkbox-text" class="text-xs font-bold">Offer For Free</span>
+                                    </div>
+                                    
+                                    <!-- Custom Toggle Switch -->
+                                    <label class="cs-toggle-switch flex-shrink-0" onclick="event.stopPropagation();">
+                                        <input type="checkbox" id="karma-checkbox" onchange="handleKarmaCheckboxChange(this)" onclick="event.stopPropagation();">
+                                        <span class="cs-toggle-slider"></span>
                                     </label>
                                 </div>
 
-                                <!-- Expandable Sub-panel for Animation and Tracker -->
-                                <div id="karma-animation-sub-panel" class="hidden mt-3 pt-3 border-t border-outline-variant/20 flex flex-col gap-2.5 transition-all duration-500 ease-out text-left">
-                                    <div class="flex justify-between items-center text-xs">
-                                        <span class="font-medium text-on-surface-variant">Current Score:</span>
-                                        <span id="karma-anim-prev-score" class="font-bold text-forest-green dark:text-emerald-400">150 Karma</span>
-                                    </div>
-                                    
-                                    <!-- Animated Progress Bar -->
-                                    <div class="w-full h-2.5 bg-forest-green/10 dark:bg-white/10 rounded-full overflow-hidden border border-outline-variant/15 relative">
-                                        <div id="karma-anim-progress-bar" class="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-forest-green to-emerald-500 rounded-full transition-all duration-1000 ease-out" style="width: 0%;"></div>
-                                    </div>
+                                <!-- Expandable Sub-panel for Animation and Tracker (Hidden permanently in style rules) -->
+                                <div id="karma-animation-sub-panel" class="hidden mt-3.5 pt-3.5 border-t border-outline-variant/20 flex flex-col gap-3 transition-all duration-500 ease-out text-left" style="display: none !important;">
+                                    <div class="bg-gray-50/50 dark:bg-black/15 p-3 rounded-xl border border-outline-variant/10 flex flex-col gap-2.5">
+                                        <div class="flex justify-between items-center text-xs font-semibold text-on-surface/90">
+                                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[15px] text-amber-500" style="font-variation-settings: 'FILL' 1;">workspace_premium</span> Current Score:</span>
+                                            <span id="karma-anim-prev-score" class="font-extrabold text-forest-green dark:text-emerald-400">150 Karma</span>
+                                        </div>
+                                        
+                                        <!-- Animated Progress Bar -->
+                                        <div class="w-full h-3 bg-gray-200/60 dark:bg-white/10 rounded-full overflow-hidden border border-outline-variant/10 relative">
+                                            <div id="karma-anim-progress-bar" class="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-forest-green via-[#457A56] to-emerald-400 rounded-full transition-all duration-1000 ease-out" style="width: 0%;">
+                                                <div class="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.15),transparent)] rounded-full"></div>
+                                            </div>
+                                        </div>
 
-                                    <div class="flex justify-between items-center text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">
-                                        <span id="karma-anim-level-label" class="text-on-surface-variant">Level 2: Active Neighbor</span>
-                                        <span id="karma-anim-gained-label" class="text-emerald-600 dark:text-emerald-400 font-bold animate-bounce">+50 Karma!</span>
+                                        <div class="flex justify-between items-center text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">
+                                            <span id="karma-anim-level-label" class="text-on-surface-variant/80">Level 2: Active Neighbor</span>
+                                            <span id="karma-anim-gained-label" class="text-emerald-600 dark:text-emerald-400 font-extrabold animate-bounce flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">celebration</span> +50 Karma!</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -8936,10 +8942,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
                         
                         <!-- Header -->
                         <div class="relative flex flex-col items-center justify-center mb-4 border-b border-black/10 dark:border-white/10 pb-3 shrink-0">
-                            <!-- Close button "X" in top-left -->
-                            <button class="absolute top-0 left-0 w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-90 transition-all cursor-pointer text-black dark:text-warm-cream border border-black/10 dark:border-white/10 flex-shrink-0 shadow-sm z-10" onclick="closeMeetupLocationPicker(false)">
-                                <span class="material-symbols-outlined text-[17px]">close</span>
-                            </button>
                             <h3 class="popup-modal-title text-center mb-1">Choose Meetup</h3>
                             <p class="popup-modal-desc text-center text-xs mt-0.5">Tap or click on the map to set your meetup vicinity. For safety, we only display this approximate area to neighbors.</p>
                         </div>

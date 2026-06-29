@@ -7021,6 +7021,8 @@ function createEventAndSave(title, type, datetime, endDatetime, location, desc) 
     if (!state.events) state.events = [];
     state.events.push(newEvent);
     addKarmaXP(10);
+    window.lastCreatedEvent = newEvent;
+    state.lastCreatedEvent = newEvent;
     saveState();
 
     // Dynamically add marker on Leaflet map for the new event!
@@ -7651,8 +7653,13 @@ function closeCongratsEventModal() {
     if (locationInput) locationInput.value = '';
     if (descInput) descInput.value = '';
 
-    // Only redirect to page after closing the congrats popup
-    exitCreateEvent();
+    if (window.lastCreatedEvent) {
+        centerMapOnPost({ id: 'evt_' + window.lastCreatedEvent.id, lat: window.lastCreatedEvent.lat, lng: window.lastCreatedEvent.lng, type: 'event' });
+        window.lastCreatedEvent = null;
+        if (state) state.lastCreatedEvent = null;
+    } else {
+        exitCreateEvent();
+    }
 }
 window.closeCongratsEventModal = closeCongratsEventModal;
 
@@ -7782,114 +7789,7 @@ window.handleKarmaCardClick = function(event) {
 };
 
 window.triggerKarmaBoostAnimation = function(event) {
-    if (typeof playSound === 'function') {
-        playSound('success');
-    }
-
-    const subPanel = document.getElementById('karma-animation-sub-panel');
-    if (!subPanel) return;
-
-    // Remove hidden class to expand panel
-    subPanel.classList.remove('hidden');
-
-    // Read current stats before adding XP
-    const startLevel = state.level || 1;
-    const startXp = state.xp === undefined ? 50 : state.xp;
-    const prevScore = (startLevel - 1) * 100 + startXp;
-
-    // Initialize UI state
-    const prevScoreEl = document.getElementById('karma-anim-prev-score');
-    const progressBar = document.getElementById('karma-anim-progress-bar');
-    const levelLabel = document.getElementById('karma-anim-level-label');
-
-    if (prevScoreEl) prevScoreEl.innerText = `${prevScore} Karma`;
-    if (progressBar) {
-        progressBar.style.transition = 'none';
-        progressBar.style.width = `${startXp}%`;
-        // Force reflow
-        progressBar.offsetHeight;
-        progressBar.style.transition = 'all 1000ms ease-out';
-    }
-    if (levelLabel) {
-        levelLabel.innerText = `Level ${startLevel}: ${typeof getLevelTitle === 'function' ? getLevelTitle(startLevel) : 'Resident'}`;
-    }
-
-    // No XP awarded here per new karma points rules
-
-    const endLevel = state.level || 1;
-    const endXp = state.xp === undefined ? 50 : state.xp;
-    const newScore = (endLevel - 1) * 100 + endXp;
-
-    // Animate progress bar width
-    if (progressBar) {
-        if (endLevel > startLevel) {
-            // Level Up scenario
-            progressBar.style.width = '100%';
-            setTimeout(() => {
-                progressBar.style.transition = 'none';
-                progressBar.style.width = '0%';
-                progressBar.offsetHeight; // reflow
-                progressBar.style.transition = 'all 1000ms ease-out';
-                progressBar.style.width = `${endXp}%`;
-                if (levelLabel) {
-                    levelLabel.innerText = `Level ${endLevel}: ${typeof getLevelTitle === 'function' ? getLevelTitle(endLevel) : 'Resident'}`;
-                }
-            }, 600);
-        } else {
-            // Normal increment
-            progressBar.style.width = `${endXp}%`;
-        }
-    }
-
-    // Animate numeric score count up
-    if (prevScoreEl) {
-        let startScore = prevScore;
-        let endScore = newScore;
-        let animDuration = 1000;
-        let startTime = null;
-        function step(timestamp) {
-            if (!startTime) startTime = timestamp;
-            let progress = Math.min((timestamp - startTime) / animDuration, 1);
-            let currentVal = Math.floor(startScore + progress * (endScore - startScore));
-            prevScoreEl.innerText = `${currentVal} Karma`;
-            if (progress < 1) {
-                window.requestAnimationFrame(step);
-            } else {
-                prevScoreEl.innerText = `${endScore} Karma`;
-            }
-        }
-        window.requestAnimationFrame(step);
-    }
-
-    // Create floating score boost bubble animation
-    const container = document.getElementById('view-offer');
-    if (container) {
-        const bubble = document.createElement('div');
-        bubble.className = 'karma-boost-bubble';
-        bubble.innerText = '+50 Karma Points Added';
-        
-        const rect = container.getBoundingClientRect();
-        const card = document.getElementById('karma-unified-card');
-        let x = rect.width / 2;
-        let y = rect.height / 2;
-        
-        if (event && event.clientX && event.clientY) {
-            x = event.clientX - rect.left;
-            y = event.clientY - rect.top;
-        } else if (card) {
-            const cardRect = card.getBoundingClientRect();
-            x = (cardRect.left + cardRect.width / 2) - rect.left;
-            y = (cardRect.top + cardRect.height / 2) - rect.top - 20;
-        }
-        
-        bubble.style.left = `${x}px`;
-        bubble.style.top = `${y}px`;
-        
-        container.appendChild(bubble);
-        setTimeout(() => {
-            bubble.remove();
-        }, 1200);
-    }
+    // Disabled per user request to prevent the success sound and green floating bubble popup.
 };
 
 function getCategoryFallbackImage(category) {
@@ -11783,6 +11683,8 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
     state.selectedOfferIcon = "";
     if (typeof renderOfferIconDisplay === 'function') renderOfferIconDisplay();
 
+    window.lastCreatedPost = newOffer;
+    state.lastCreatedPost = newOffer;
     saveState();
     playSound('success');
     let successMsg = "";
@@ -20439,7 +20341,7 @@ function plotMapMarkersOnly() {
 
                 const customIcon = L.divIcon({
                     className: 'custom-div-icon',
-                    html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid #2563eb !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
+                    html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid #5f69f8 !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
                             <span class="material-symbols-outlined text-[20px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 600;">${iconName}</span>
                            </div>`,
                     iconSize: [38, 38],
@@ -20502,7 +20404,7 @@ function plotMapMarkersOnly() {
                 const pinImgUrl = getEventPresetImage(evt.type);
 
                 const isMe = (evt.host === displayName || evt.host === 'Lily Kaufmann');
-                const borderStyle = isMe ? 'border: 2px solid #2563eb !important;' : 'border: 2px solid white !important;';
+                const borderStyle = isMe ? 'border: 2px solid #5f69f8 !important;' : 'border: 2px solid white !important;';
                 const avatarUrl = (state.currentUser && state.currentUser.avatar) ? state.currentUser.avatar : DEFAULT_AVATAR;
                 const avatarBadgeHtml = '';
 
@@ -20604,7 +20506,7 @@ function plotMapMarkersOnly() {
                 }
 
                 const isMe = (need.neighborName === displayName);
-                const borderStyle = isMe ? 'border: 2px solid #2563eb !important;' : 'border: 2px solid white !important;';
+                const borderStyle = isMe ? 'border: 2px solid #5f69f8 !important;' : 'border: 2px solid white !important;';
                 const avatarBadgeHtml = '';
 
                 const customIcon = L.divIcon({
@@ -20640,7 +20542,7 @@ function plotMapMarkersOnly() {
             
             const userLocIcon = L.divIcon({
                 className: 'user-location-marker',
-                html: `<div class="relative flex items-center justify-center w-[54px] h-[54px] rounded-full" style="border: 2.5px solid #308A5E !important; background-color: white !important; width: 54px !important; height: 54px !important; border-radius: 50% !important; aspect-ratio: 1/1 !important; box-shadow: 0 3px 10px rgba(0,0,0,0.2) !important;">
+                html: `<div class="relative flex items-center justify-center w-[54px] h-[54px] rounded-full" style="border: 2.5px solid #5f69f8 !important; background-color: white !important; width: 54px !important; height: 54px !important; border-radius: 50% !important; aspect-ratio: 1/1 !important; box-shadow: 0 3px 10px rgba(0,0,0,0.2) !important;">
                          ${pulseRingHtml}
                          <img src="${avatarUrl}" class="w-[44px] h-[44px] rounded-full object-cover z-10" style="width: 44px !important; height: 44px !important; border-radius: 50% !important; object-fit: cover !important; aspect-ratio: 1/1 !important;" />
                        </div>`,
@@ -20649,7 +20551,7 @@ function plotMapMarkersOnly() {
             });
 
             const userMarker = L.marker([uLat, uLng], { icon: userLocIcon }).addTo(leafletMap);
-            userMarker.bindPopup(`<div class="text-center p-2 text-xs font-semibold text-forest-green" style="font-family: 'Work Sans', sans-serif; color: var(--forest-green, #308A5E) !important;">Your Location</div>`, { autoPan: false, closeButton: false });
+            userMarker.bindPopup(`<div class="text-center p-2 text-xs font-semibold text-[#5f69f8]" style="font-family: 'Work Sans', sans-serif; color: #5f69f8 !important;">Your Location</div>`, { autoPan: false, closeButton: false });
             
             mapMarkers.push({ marker: userMarker, name: 'user_location' });
 
@@ -22186,7 +22088,8 @@ function handleAddNeedSubmit() {
         category: category
     };
     state.needsBoard.unshift(needObj);
-
+    window.lastCreatedPost = needObj;
+    state.lastCreatedPost = needObj;
     saveState();
     playSound('success');
 
@@ -27292,18 +27195,18 @@ function plotMeetingSpotMarkers(spots) {
         } else if (spot.type === 'park') {
             color = '#38a169'; // green
         } else if (spot.type === 'custom') {
-            color = '#2563eb'; // blue
+            color = '#5f69f8'; // purple-blue
         }
         
         let customIcon;
         if (spot.type === 'custom') {
             customIcon = L.divIcon({
                 className: 'custom-div-icon',
-                html: `<div class="pin-icon overflow-hidden flex items-center justify-center rounded-full" style="border: 1.5px solid white !important; background-color: ${color} !important; width: 28px; height: 28px; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important; border-radius: 50% !important;">
-                        <span class="material-symbols-outlined text-[15px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 500;">location_on</span>
+                html: `<div class="gps-blue-dot relative flex items-center justify-center rounded-full" style="background-color: #5f69f8 !important; border: 2px solid white !important; width: 20px; height: 20px; border-radius: 50% !important; box-shadow: 0 2px 6px rgba(95, 105, 248, 0.4) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
+                         <div class="gps-pulse-ring" style="position: absolute; width: 34px; height: 34px; border-radius: 50%; background-color: rgba(95, 105, 248, 0.2); border: 1.5px solid rgba(95, 105, 248, 0.45); animation: radiating-blue-dot-pulse 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite; pointer-events: none; z-index: -1;"></div>
                        </div>`,
-                iconSize: [28, 28],
-                iconAnchor: [14, 14]
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
             });
         } else {
             customIcon = L.divIcon({
@@ -27387,11 +27290,11 @@ function selectMeetingSpot(spot) {
             
             chatMeetingPickerCircle = L.circle([lat, lng], {
                 radius: chatMeetingRadius,
-                color: '#2563eb', // Blue to match picker map
-                fillColor: '#2563eb',
-                fillOpacity: 0.15,
+                color: '#5f69f8',
+                fillColor: '#5f69f8',
+                fillOpacity: 0.12,
                 weight: 1.5,
-                dashArray: '4, 4',
+                dashArray: null,
                 className: 'pulsing-circle'
             }).addTo(meetingSpotMap);
             
@@ -27699,6 +27602,56 @@ function queueTradeCheckIn(convId) {
     // Check-in confirmation prompt removed for a better system
 }
 
+function centerMapOnPost(post) {
+    if (!post) return;
+    
+    let id = post.id;
+    let lat = post.lat;
+    let lng = post.lng;
+    let type = post.type || 'offering';
+    
+    if (id.startsWith('need-')) {
+        type = 'need';
+    }
+    if (id.startsWith('evt_') || type === 'event') {
+        type = 'event';
+    }
+    
+    if (!lat || !lng) {
+        const user = state.currentUser || {};
+        let userLat = parseFloat(user.lat) || 49.2827;
+        let userLng = parseFloat(user.lng) || -123.1207;
+        const displaced = getDisplacedCoords(id, userLat, userLng, 'need');
+        lat = displaced.lat;
+        lng = displaced.lng;
+    }
+    
+    showView('village');
+    if (type === 'need') {
+        switchVillageSegment('needs_map');
+    } else if (type === 'event') {
+        switchVillageSegment('events_map');
+    } else {
+        switchVillageSegment('map');
+    }
+    
+    if (leafletMap && lat && lng) {
+        leafletMap.setView([lat, lng], 15, { animate: true });
+    }
+    
+    let mapDetailId = id;
+    if (type === 'need' && !id.startsWith('need_')) {
+        mapDetailId = 'need_' + id;
+    } else if (type === 'event' && !id.startsWith('evt_')) {
+        mapDetailId = 'evt_' + id;
+    }
+    
+    setTimeout(() => {
+        openMapItemDetail(mapDetailId);
+    }, 300);
+}
+window.centerMapOnPost = centerMapOnPost;
+
 function openListingSuccessModal(message) {
     const modal = document.getElementById('listing-success-modal');
     if (modal) modal.classList.add('hidden');
@@ -27719,10 +27672,22 @@ function openListingSuccessModal(message) {
         
         setTimeout(() => {
             banner.classList.add('hidden');
-            showView('profile_settings');
+            if (window.lastCreatedPost) {
+                centerMapOnPost(window.lastCreatedPost);
+                window.lastCreatedPost = null;
+                if (state) state.lastCreatedPost = null;
+            } else {
+                showView('profile_settings');
+            }
         }, 1500);
     } else {
-        showView('profile_settings');
+        if (window.lastCreatedPost) {
+            centerMapOnPost(window.lastCreatedPost);
+            window.lastCreatedPost = null;
+            if (state) state.lastCreatedPost = null;
+        } else {
+            showView('profile_settings');
+        }
     }
 }
 
@@ -27733,7 +27698,13 @@ function closeListingSuccessModal() {
     
     const banner = document.getElementById('listing-success-banner');
     if (banner) banner.classList.add('hidden');
-    showView('profile_settings');
+    if (window.lastCreatedPost) {
+        centerMapOnPost(window.lastCreatedPost);
+        window.lastCreatedPost = null;
+        if (state) state.lastCreatedPost = null;
+    } else {
+        showView('profile_settings');
+    }
 }
 
 function updateChatMeetingPickerRadius(val) {
@@ -29250,10 +29221,22 @@ window.openListingSuccessModal = function(message) {
         
         setTimeout(() => {
             banner.classList.add('hidden');
-            showView('profile_settings');
+            if (window.lastCreatedPost) {
+                centerMapOnPost(window.lastCreatedPost);
+                window.lastCreatedPost = null;
+                if (state) state.lastCreatedPost = null;
+            } else {
+                showView('profile_settings');
+            }
         }, 1500);
     } else {
-        showView('profile_settings');
+        if (window.lastCreatedPost) {
+            centerMapOnPost(window.lastCreatedPost);
+            window.lastCreatedPost = null;
+            if (state) state.lastCreatedPost = null;
+        } else {
+            showView('profile_settings');
+        }
     }
 };
 
@@ -29263,7 +29246,13 @@ window.closeListingSuccessModal = function() {
     
     const banner = document.getElementById('listing-success-banner');
     if (banner) banner.classList.add('hidden');
-    showView('profile_settings');
+    if (window.lastCreatedPost) {
+        centerMapOnPost(window.lastCreatedPost);
+        window.lastCreatedPost = null;
+        if (state) state.lastCreatedPost = null;
+    } else {
+        showView('profile_settings');
+    }
 };
 
 window.handleGuestPromptRegister = function() {
@@ -29568,7 +29557,7 @@ function openMeetupLocationPicker() {
 function plotMeetupPickerMarker(lat, lng, radius) {
     if (!meetupPickerMap) return;
 
-    const color = '#2563eb'; // Blue
+    const color = '#5f69f8'; // Purple-blue
     
     // Create/update marker
     if (meetupPickerMarker) {
@@ -29576,11 +29565,11 @@ function plotMeetupPickerMarker(lat, lng, radius) {
     } else {
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
-            html: `<div class="pin-icon overflow-hidden flex items-center justify-center rounded-full" style="border: 1.5px solid white !important; background-color: ${color} !important; width: 28px; height: 28px; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important; border-radius: 50% !important;">
-                    <span class="material-symbols-outlined text-[15px]" style="color: white !important; font-variation-settings: 'FILL' 1, 'wght' 500;">location_on</span>
+            html: `<div class="gps-blue-dot relative flex items-center justify-center rounded-full" style="background-color: #5f69f8 !important; border: 2.5px solid white !important; width: 22px; height: 22px; border-radius: 50% !important; box-shadow: 0 2px 8px rgba(95, 105, 248, 0.4) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
+                     <div class="gps-pulse-ring" style="position: absolute; width: 38px; height: 38px; border-radius: 50%; background-color: rgba(95, 105, 248, 0.25); border: 1.5px solid rgba(95, 105, 248, 0.5); animation: radiating-blue-dot-pulse 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite; pointer-events: none; z-index: -1;"></div>
                    </div>`,
-            iconSize: [28, 28],
-            iconAnchor: [14, 14]
+            iconSize: [22, 22],
+            iconAnchor: [11, 11]
         });
         meetupPickerMarker = L.marker([lat, lng], { icon: customIcon }).addTo(meetupPickerMap);
     }
@@ -29594,9 +29583,9 @@ function plotMeetupPickerMarker(lat, lng, radius) {
             radius: radius,
             color: color,
             fillColor: color,
-            fillOpacity: 0.15,
+            fillOpacity: 0.12,
             weight: 1.5,
-            dashArray: '4, 4',
+            dashArray: null,
             className: 'pulsing-circle'
         }).addTo(meetupPickerMap);
     }
@@ -30919,6 +30908,10 @@ window.viewMeetupLocationOnMap = function(convId) {
 
     showView('village');
     switchVillageSegment('map');
+    
+    if (leafletMap) {
+        staggeredInvalidateSize(leafletMap);
+    }
 };
 
 window.exitMeetupMapMode = function() {
