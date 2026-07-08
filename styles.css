@@ -11215,7 +11215,7 @@ html.dark #view-chat_hub {
 #view-settings_section_improve,
 #view-settings_section_support,
 #view-offer {
-    padding-top: calc(104px + var(--safe-area-top)) !important;
+    padding-top: calc(44px + var(--safe-area-top)) !important;
     background: linear-gradient(to bottom, #f1f5f9 0%, #f1f5f9 240px, #ffffff 240px, #ffffff 100%) !important;
 }
 
