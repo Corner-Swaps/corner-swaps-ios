@@ -1316,7 +1316,7 @@ html.dark #map-event-detail-back-btn {
 .native-app-env #view-settings_section_improve,
 .native-app-env #view-settings_section_support,
 .native-app-env #view-offer {
-    padding-top: calc(0.6rem + var(--safe-area-top)) !important;
+    padding-top: var(--safe-area-top) !important;
 }
 
 .native-app-env #view-chat_hub,
