@@ -450,3 +450,26 @@ window.handlePhoneMockupClick = function(event) {
     }
 };
 
+// --- Scroll to Top Logic ---
+window.scrollToTop = function() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    const scrollTopBtn = document.getElementById('scroll-to-top');
+    if (scrollTopBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                scrollTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+                scrollTopBtn.classList.add('opacity-100', 'pointer-events-auto');
+            } else {
+                scrollTopBtn.classList.remove('opacity-100', 'pointer-events-auto');
+                scrollTopBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+        });
+    }
+});
+

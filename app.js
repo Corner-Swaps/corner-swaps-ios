@@ -12,14 +12,14 @@ function showCustomConfirm(title, message, onConfirm, onCancel) {
                 <span class="material-symbols-outlined text-amber-500 text-base">warning</span>
                 ${title || 'Are you sure?'}
             </h3>
-            <p class="text-[11px] text-gray-500 dark:text-gray-400 mb-6 leading-relaxed select-none">
+            <p class="popup-modal-desc text-gray-500 dark:text-gray-400 mb-6 leading-relaxed select-none">
                 ${message}
             </p>
             <div class="flex items-center gap-3">
-                <button type="button" id="confirm-cancel-btn" class="flex-grow py-3 bg-gray-100 hover:bg-gray-200 dark:bg-[#111913] dark:hover:bg-neutral-800 text-gray-600 dark:text-gray-400 rounded-xl font-semibold text-[11px] active:scale-[0.98] transition-all border-0 cursor-pointer">
+                <button type="button" id="confirm-cancel-btn" class="flex-grow py-3 bg-gray-100 hover:bg-gray-200 dark:bg-[#111913] dark:hover:bg-neutral-800 text-gray-600 dark:text-gray-400 rounded-xl font-bold text-xs active:scale-[0.98] transition-all border-0 cursor-pointer">
                     Cancel
                 </button>
-                <button type="button" id="confirm-ok-btn" class="flex-grow py-3 bg-forest-green text-warm-cream rounded-xl font-semibold text-[11px] active:scale-[0.98] transition-all border-0 cursor-pointer">
+                <button type="button" id="confirm-ok-btn" class="flex-grow py-3 bg-forest-green text-warm-cream rounded-xl font-bold text-xs active:scale-[0.98] transition-all border-0 cursor-pointer">
                     Confirm
                 </button>
             </div>
@@ -65,11 +65,11 @@ function showCustomAlert(title, message, onClose) {
                 <span class="material-symbols-outlined text-forest-green text-base">info</span>
                 ${title || 'Notification'}
             </h3>
-            <p class="text-[11px] text-gray-500 dark:text-gray-400 mb-6 leading-relaxed select-none">
+            <p class="popup-modal-desc text-gray-500 dark:text-gray-400 mb-6 leading-relaxed select-none">
                 ${message}
             </p>
             <div class="flex items-center justify-center">
-                <button type="button" id="alert-close-btn" class="w-full py-3 bg-forest-green text-warm-cream rounded-xl font-semibold text-[11px] active:scale-[0.98] transition-all border-0 cursor-pointer">
+                <button type="button" id="alert-close-btn" class="w-full py-3 bg-forest-green text-warm-cream rounded-xl font-bold text-xs active:scale-[0.98] transition-all border-0 cursor-pointer">
                     OK
                 </button>
             </div>
@@ -229,20 +229,20 @@ const LILY_AVATAR_BASE64 = "lily_avatar.jpg";
 // Hoisted state variables to avoid TDZ errors
 let currentVillageSegment = 'map';
 const RSVP_AVATARS = {
-    'Sarah Chen': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop',
-    'David Kim': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=80&auto=format&fit=crop',
-    'Lily Kaufmann': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop',
-    'Mia': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop',
-    'Community Member': 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80&auto=format&fit=crop',
-    'Chef Pierre': 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80&auto=format&fit=crop',
-    'Aunt Brenda': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop',
-    'Oliver Twist': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=80&auto=format&fit=crop',
-    'Bob Builder': 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=60&w=80&auto=format&fit=crop',
-    'Mac Tech': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=80&auto=format&fit=crop',
-    'Sparky Joe': 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=60&w=80&auto=format&fit=crop',
-    'Leo DaVinci': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=80&auto=format&fit=crop',
-    'Frida Kahlo': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop',
-    'Clay Potter': 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=60&w=80&auto=format&fit=crop'
+    'Sarah Chen': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop',
+    'David Kim': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=300&auto=format&fit=crop',
+    'Lily Kaufmann': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=300&auto=format&fit=crop',
+    'Mia': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=300&auto=format&fit=crop',
+    'Community Member': 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=300&auto=format&fit=crop',
+    'Chef Pierre': 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=300&auto=format&fit=crop',
+    'Aunt Brenda': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop',
+    'Oliver Twist': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=300&auto=format&fit=crop',
+    'Bob Builder': 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=60&w=300&auto=format&fit=crop',
+    'Mac Tech': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=300&auto=format&fit=crop',
+    'Sparky Joe': 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=60&w=300&auto=format&fit=crop',
+    'Leo DaVinci': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=300&auto=format&fit=crop',
+    'Frida Kahlo': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=300&auto=format&fit=crop',
+    'Clay Potter': 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=60&w=300&auto=format&fit=crop'
 };
 
 var currentReportType = '';
@@ -283,7 +283,7 @@ function sanitizeCoordinates(lat, lng) {
 const INITIAL_NEIGHBORS = {
     'Sarah Chen': {
         name: 'Sarah Chen',
-        avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop',
         vouches: 18,
         verified: true,
         gofundmeSupporter: true,
@@ -298,7 +298,7 @@ const INITIAL_NEIGHBORS = {
     },
     'David Kim': {
         name: 'David Kim',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=300&auto=format&fit=crop',
         vouches: 15,
         verified: true,
         gofundmeSupporter: true,
@@ -313,7 +313,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Zoe': {
         name: 'Zoe',
-        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=300&auto=format&fit=crop',
         vouches: 12,
         verified: true,
         location: 'West End',
@@ -328,7 +328,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Ethan': {
         name: 'Ethan',
-        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=300&auto=format&fit=crop',
         vouches: 22,
         location: 'Coal Harbour',
         offerTitle: 'Home Maintenance',
@@ -341,7 +341,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Noah': {
         name: 'Noah',
-        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=300&auto=format&fit=crop',
         vouches: 9,
         location: 'False Creek',
         offerTitle: 'Tech & Digital Help',
@@ -355,7 +355,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Ava': {
         name: 'Ava',
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=300&auto=format&fit=crop',
         vouches: 14,
         location: 'Gastown',
         offerTitle: 'Cycling & Urban Transit',
@@ -368,7 +368,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Elena': {
         name: 'Elena',
-        avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=60&w=300&auto=format&fit=crop',
         vouches: 20,
         location: 'Kitsilano',
         offerTitle: 'Yoga & Mindfulness',
@@ -382,7 +382,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Liam': {
         name: 'Liam',
-        avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=60&w=300&auto=format&fit=crop',
         vouches: 11,
         location: 'Commercial Drive',
         offerTitle: 'Heirloom Tomato Seedlings',
@@ -396,7 +396,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Chloe': {
         name: 'Chloe',
-        avatar: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?q=60&w=300&auto=format&fit=crop',
         vouches: 16,
         location: 'Mount Pleasant',
         offerTitle: 'Custom Canvas Tote Painting',
@@ -410,7 +410,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Sophia': {
         name: 'Sophia',
-        avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=60&w=300&auto=format&fit=crop',
         vouches: 19,
         location: 'Kitsilano',
         offerTitle: 'Aromatherapy Oil Blending',
@@ -423,7 +423,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Marcus': {
         name: 'Marcus',
-        avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=300&auto=format&fit=crop',
         vouches: 8,
         location: 'Commercial Drive',
         offerTitle: 'Sewing Alterations & Hemming',
@@ -437,7 +437,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Nora Miller': {
         name: 'Nora Miller',
-        avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=60&w=300&auto=format&fit=crop',
         vouches: 14,
         location: 'Kitsilano',
         offerTitle: "Children's Books & Jigsaw Puzzles",
@@ -450,7 +450,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Emily': {
         name: 'Emily',
-        avatar: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=60&w=300&auto=format&fit=crop',
         vouches: 7,
         location: 'Yaletown',
         offerTitle: 'Slow Cooker & Kitchenware',
@@ -463,7 +463,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Lucas': {
         name: 'Lucas',
-        avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=60&w=300&auto=format&fit=crop',
         vouches: 10,
         location: 'Downtown',
         offerTitle: 'Air Mattress & Camping Tent',
@@ -476,7 +476,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Mia': {
         name: 'Mia',
-        avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=300&auto=format&fit=crop',
         vouches: 13,
         location: 'West End',
         offerTitle: 'Organic Composting Starter',
@@ -490,7 +490,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Jacob': {
         name: 'Jacob',
-        avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=60&w=300&auto=format&fit=crop',
         vouches: 6,
         location: 'Gastown',
         offerTitle: 'Pruning Shears & Garden Tools',
@@ -503,7 +503,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Oliver': {
         name: 'Oliver',
-        avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=60&w=300&auto=format&fit=crop',
         vouches: 17,
         location: 'Gastown',
         offerTitle: 'Spanish Language Practice',
@@ -516,7 +516,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Amelia': {
         name: 'Amelia',
-        avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=60&w=300&auto=format&fit=crop',
         vouches: 12,
         location: 'False Creek',
         offerTitle: 'Intro to Python Coding',
@@ -529,7 +529,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Daniel': {
         name: 'Daniel',
-        avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=60&w=300&auto=format&fit=crop',
         vouches: 15,
         location: 'Yaletown',
         offerTitle: 'Bicycle Flat Tire & Chain Repair',
@@ -542,7 +542,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Harper': {
         name: 'Harper',
-        avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=60&w=300&auto=format&fit=crop',
         vouches: 11,
         location: 'Coal Harbour',
         offerTitle: 'Watercolour Portrait Sketching',
@@ -555,7 +555,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Evelyn': {
         name: 'Evelyn',
-        avatar: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?q=60&w=300&auto=format&fit=crop',
         vouches: 8,
         location: 'Kitsilano',
         offerTitle: 'Handmade Ceramic Mugs',
@@ -568,7 +568,7 @@ const INITIAL_NEIGHBORS = {
     },
     'James': {
         name: 'James',
-        avatar: 'https://images.unsplash.com/photo-1500048993953-d23a436266cf?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1500048993953-d23a436266cf?q=60&w=300&auto=format&fit=crop',
         vouches: 9,
         location: 'Downtown',
         offerTitle: 'Guided Nature Forest Walks',
@@ -581,7 +581,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Charlotte': {
         name: 'Charlotte',
-        avatar: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=60&w=300&auto=format&fit=crop',
         vouches: 14,
         location: 'West End',
         offerTitle: 'Stress Management Coaching',
@@ -594,7 +594,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Benjamin': {
         name: 'Benjamin',
-        avatar: 'https://images.unsplash.com/photo-1506919258185-6078bba55d2a?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1506919258185-6078bba55d2a?q=60&w=300&auto=format&fit=crop',
         vouches: 5,
         location: 'Mount Pleasant',
         offerTitle: 'Leather Boot Cleaning & Polishing',
@@ -608,7 +608,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Isabella': {
         name: 'Isabella',
-        avatar: 'https://images.unsplash.com/photo-1548142813-c348350df52b?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1548142813-c348350df52b?q=60&w=300&auto=format&fit=crop',
         vouches: 16,
         location: 'Kitsilano',
         offerTitle: 'Knit Beanie Hats',
@@ -621,7 +621,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Alexander': {
         name: 'Alexander',
-        avatar: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?q=60&w=300&auto=format&fit=crop',
         vouches: 18,
         location: 'Mount Pleasant',
         offerTitle: 'Sci-Fi Novel Exchange',
@@ -634,7 +634,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Abigail': {
         name: 'Abigail',
-        avatar: 'https://images.unsplash.com/photo-1594744803329-e58b31de215f?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1594744803329-e58b31de215f?q=60&w=300&auto=format&fit=crop',
         vouches: 10,
         location: 'West End',
         offerTitle: 'Board Games Borrowing Tray',
@@ -647,7 +647,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Lina Rossi': {
         name: 'Lina Rossi',
-        avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop',
         vouches: 18,
         location: 'Commercial Drive',
         offerTitle: 'Homemade Lasagna Tray',
@@ -660,7 +660,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Tomas Gomez': {
         name: 'Tomas Gomez',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=300&auto=format&fit=crop',
         vouches: 15,
         location: 'Commercial Drive',
         offerTitle: 'Mexican Street Tacos Kit',
@@ -673,7 +673,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Rachel Green': {
         name: 'Rachel Green',
-        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=300&auto=format&fit=crop',
         vouches: 12,
         location: 'Commercial Drive',
         offerTitle: 'Slow Cooker & Blender Loan',
@@ -687,7 +687,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Ross Geller': {
         name: 'Ross Geller',
-        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=300&auto=format&fit=crop',
         vouches: 10,
         location: 'Commercial Drive',
         offerTitle: 'Queen Air Mattress',
@@ -700,7 +700,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Monica Geller': {
         name: 'Monica Geller',
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=300&auto=format&fit=crop',
         vouches: 14,
         location: 'Commercial Drive',
         offerTitle: 'Organic Compost Tea',
@@ -713,7 +713,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Chandler Bing': {
         name: 'Chandler Bing',
-        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=300&auto=format&fit=crop',
         vouches: 9,
         location: 'Commercial Drive',
         offerTitle: 'Mint & Basil Starts',
@@ -726,7 +726,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Joey Tribbiani': {
         name: 'Joey Tribbiani',
-        avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=60&w=300&auto=format&fit=crop',
         vouches: 11,
         location: 'Commercial Drive',
         offerTitle: 'Acting & Public Speaking Tips',
@@ -739,7 +739,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Phoebe Buffay': {
         name: 'Phoebe Buffay',
-        avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=60&w=300&auto=format&fit=crop',
         vouches: 15,
         location: 'Commercial Drive',
         offerTitle: 'Beginner Guitar Lessons',
@@ -752,7 +752,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Leo Vance': {
         name: 'Leo Vance',
-        avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=300&auto=format&fit=crop',
         vouches: 8,
         location: 'Commercial Drive',
         offerTitle: 'Picture & Mirror Hanging',
@@ -765,7 +765,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Emma Watson': {
         name: 'Emma Watson',
-        avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=60&w=300&auto=format&fit=crop',
         vouches: 11,
         location: 'Commercial Drive',
         offerTitle: 'Bicycle Brake Adjustments',
@@ -778,7 +778,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Sophia Loren': {
         name: 'Sophia Loren',
-        avatar: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?q=60&w=300&auto=format&fit=crop',
         vouches: 16,
         location: 'Commercial Drive',
         offerTitle: 'Hand-painted Plant Pots',
@@ -791,7 +791,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Pablo Ruiz': {
         name: 'Pablo Ruiz',
-        avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=60&w=300&auto=format&fit=crop',
         vouches: 13,
         location: 'Commercial Drive',
         offerTitle: 'Custom Digital Portrait',
@@ -804,7 +804,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Clara Barton': {
         name: 'Clara Barton',
-        avatar: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?q=60&w=300&auto=format&fit=crop',
         vouches: 19,
         location: 'Commercial Drive',
         offerTitle: 'Herbal Tea Blend',
@@ -818,7 +818,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Deepak Chopra': {
         name: 'Deepak Chopra',
-        avatar: 'https://images.unsplash.com/photo-1500048993953-d23a436266cf?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1500048993953-d23a436266cf?q=60&w=300&auto=format&fit=crop',
         vouches: 17,
         location: 'Commercial Drive',
         offerTitle: 'Guided Meditation Class',
@@ -831,7 +831,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Coco Chanel': {
         name: 'Coco Chanel',
-        avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=60&w=300&auto=format&fit=crop',
         vouches: 14,
         location: 'Commercial Drive',
         offerTitle: 'Button & Patch Sewing',
@@ -844,7 +844,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Giorgio Armani': {
         name: 'Giorgio Armani',
-        avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=60&w=300&auto=format&fit=crop',
         vouches: 11,
         location: 'Commercial Drive',
         offerTitle: 'Jeans Hemming Alteration',
@@ -857,7 +857,7 @@ const INITIAL_NEIGHBORS = {
     },
     'George Orwell': {
         name: 'George Orwell',
-        avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=300&auto=format&fit=crop',
         vouches: 12,
         location: 'Commercial Drive',
         offerTitle: 'Science Fiction Novels Swap',
@@ -870,7 +870,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Jane Austen': {
         name: 'Jane Austen',
-        avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=300&auto=format&fit=crop',
         vouches: 13,
         location: 'Commercial Drive',
         offerTitle: 'Catan Board Game Loan',
@@ -884,7 +884,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Mary Poppins': {
         name: 'Mary Poppins',
-        avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=60&w=300&auto=format&fit=crop',
         vouches: 14,
         location: 'Commercial Drive',
         offerTitle: 'Wooden Baby Toys Loan',
@@ -897,7 +897,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Peter Pan': {
         name: 'Peter Pan',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=300&auto=format&fit=crop',
         vouches: 10,
         location: 'Commercial Drive',
         offerTitle: 'Kids Comic Books Swap',
@@ -910,7 +910,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Gail Shea': {
         name: 'Gail Shea',
-        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=300&auto=format&fit=crop',
         vouches: 15,
         location: 'Commercial Drive',
         offerTitle: 'Local Park Seed Swap',
@@ -923,7 +923,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Henry David': {
         name: 'Henry David',
-        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=300&auto=format&fit=crop',
         vouches: 12,
         location: 'Commercial Drive',
         offerTitle: 'Balcony Garden Show & Tell',
@@ -936,7 +936,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Maria Montessori': {
         name: 'Maria Montessori',
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=300&auto=format&fit=crop',
         vouches: 17,
         location: 'Commercial Drive',
         offerTitle: 'Italian Conversation Practice',
@@ -949,7 +949,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Confucius': {
         name: 'Confucius',
-        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=300&auto=format&fit=crop',
         vouches: 20,
         location: 'Commercial Drive',
         offerTitle: 'Mandarin Conversation & Tutoring',
@@ -962,7 +962,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Kloe Vance': {
         name: 'Kloe Vance',
-        avatar: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?q=60&w=300&auto=format&fit=crop',
         vouches: 14,
         location: 'Kitsilano',
         offerTitle: 'Handmade Scented Candles',
@@ -975,7 +975,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Ryan Chen': {
         name: 'Ryan Chen',
-        avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=60&w=300&auto=format&fit=crop',
         vouches: 11,
         location: 'Mount Pleasant',
         offerTitle: 'Math & Physics Coaching',
@@ -988,7 +988,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Zoe Brooks': {
         name: 'Zoe Brooks',
-        avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=60&w=300&auto=format&fit=crop',
         vouches: 16,
         location: 'Yaletown',
         offerTitle: 'Cold Brew Coffee Concentrate',
@@ -1001,7 +1001,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Chef Pierre': {
         name: 'Chef Pierre',
-        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=300&auto=format&fit=crop',
         vouches: 19,
         verified: true,
         location: 'Kitsilano',
@@ -1015,7 +1015,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Aunt Brenda': {
         name: 'Aunt Brenda',
-        avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop',
         vouches: 12,
         verified: true,
         location: 'Commercial Drive',
@@ -1029,7 +1029,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Oliver Twist': {
         name: 'Oliver Twist',
-        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=300&auto=format&fit=crop',
         vouches: 8,
         verified: false,
         location: 'Downtown',
@@ -1043,7 +1043,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Bob Builder': {
         name: 'Bob Builder',
-        avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=60&w=300&auto=format&fit=crop',
         vouches: 21,
         verified: true,
         location: 'Mount Pleasant',
@@ -1057,7 +1057,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Mac Tech': {
         name: 'Mac Tech',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=300&auto=format&fit=crop',
         vouches: 14,
         verified: true,
         location: 'Yaletown',
@@ -1071,7 +1071,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Sparky Joe': {
         name: 'Sparky Joe',
-        avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=60&w=300&auto=format&fit=crop',
         vouches: 17,
         verified: true,
         location: 'West End',
@@ -1085,7 +1085,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Leo DaVinci': {
         name: 'Leo DaVinci',
-        avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=300&auto=format&fit=crop',
         vouches: 25,
         verified: true,
         location: 'Gastown',
@@ -1099,7 +1099,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Frida Kahlo': {
         name: 'Frida Kahlo',
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=300&auto=format&fit=crop',
         vouches: 16,
         verified: false,
         location: 'Kitsilano',
@@ -1113,7 +1113,7 @@ const INITIAL_NEIGHBORS = {
     },
     'Clay Potter': {
         name: 'Clay Potter',
-        avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=60&w=300&auto=format&fit=crop',
         vouches: 11,
         verified: true,
         location: 'Mount Pleasant',
@@ -1380,7 +1380,7 @@ const OFFER_IMAGES = [
 
 const PLACEHOLDER_IMAGE = "https://images.unsplash.com/photo-1544640808-32ca72ac7f37?q=60&w=600&auto=format&fit=crop";
 
-const DEFAULT_AVATAR = typeof LILY_AVATAR_BASE64 !== 'undefined' ? LILY_AVATAR_BASE64 : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop';
+const DEFAULT_AVATAR = typeof LILY_AVATAR_BASE64 !== 'undefined' ? LILY_AVATAR_BASE64 : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=300&auto=format&fit=crop';
 
 function escapeHTML(str) {
     if (typeof str !== 'string') return str;
@@ -1391,6 +1391,35 @@ function escapeHTML(str) {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
 }
+
+function resetViewportScroll() {
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+}
+window.resetViewportScroll = resetViewportScroll;
+
+function safeScrollIntoView(element, alignToTop) {
+    if (!element) return;
+    
+    const offerScrollContainer = document.getElementById('offer-form-scroll-container');
+    if (offerScrollContainer && offerScrollContainer.contains(element)) {
+        const containerRect = offerScrollContainer.getBoundingClientRect();
+        const elementRect = element.getBoundingClientRect();
+        const targetTop = offerScrollContainer.scrollTop + (elementRect.top - containerRect.top) - 20;
+        offerScrollContainer.scrollTo({
+            top: targetTop,
+            behavior: 'smooth'
+        });
+        setTimeout(resetViewportScroll, 100);
+        return;
+    }
+    
+    element.scrollIntoView(alignToTop !== false ? { behavior: 'smooth', block: 'start' } : { behavior: 'smooth', block: 'center' });
+    setTimeout(resetViewportScroll, 100);
+    setTimeout(resetViewportScroll, 300);
+}
+window.safeScrollIntoView = safeScrollIntoView;
 
 function isContentReported(targetId) {
     if (!state || !state.reportedAccounts) return false;
@@ -1749,7 +1778,7 @@ const MOCK_CONVERSATIONS = [
         isGroup: true,
         unread: true,
         unreadCount: 3,
-        avatar: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=60&w=300&auto=format&fit=crop',
         messages: [
             { sender: 'Sarah Chen', text: 'Who wants to swap some books this weekend?', time: '9:30 AM' },
             { sender: 'David Kim', text: 'I\'ll bring some sourdough loaves!', time: '9:35 AM' },
@@ -1766,7 +1795,7 @@ const MOCK_CONVERSATIONS = [
         neighborName: 'Commercial Drive Tool Library',
         isGroup: true,
         unread: false,
-        avatar: 'https://images.unsplash.com/photo-1530124560676-1055177a339b?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1530124560676-1055177a339b?q=60&w=300&auto=format&fit=crop',
         messages: [
             { sender: 'Marcus', text: 'We just added a lawnmower to the inventory.', time: 'Yesterday' },
             { sender: 'me', text: 'Awesome, can I reserve it for Saturday?', time: 'Yesterday' },
@@ -1783,7 +1812,7 @@ const MOCK_CONVERSATIONS = [
         neighborName: 'Garden Exchange Vancouver',
         isGroup: true,
         unread: false,
-        avatar: 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=60&w=300&auto=format&fit=crop',
         messages: [
             { sender: 'Liam', text: 'My tomato plants are growing crazy fast!', time: '2 days ago' },
             { sender: 'Zoe', text: 'Any extra kale seeds to spare?', time: 'Yesterday' },
@@ -1800,7 +1829,7 @@ const MOCK_CONVERSATIONS = [
         neighborName: 'Kitsilano Beach Yoga Group',
         isGroup: true,
         unread: false,
-        avatar: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=60&w=300&auto=format&fit=crop',
         messages: [
             { sender: 'Elena', text: 'Hey everyone, are we still on for yoga tomorrow?', time: '3 days ago' },
             { sender: 'me', text: 'Yes, I\'m definitely coming!', time: '3 days ago' },
@@ -1818,7 +1847,7 @@ const MOCK_CONVERSATIONS = [
         isGroup: true,
         unread: true,
         unreadCount: 1,
-        avatar: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=60&w=80&auto=format&fit=crop',
+        avatar: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=60&w=300&auto=format&fit=crop',
         messages: [
             { sender: 'Elena', text: 'My sourdough starter is finally active!', time: 'Yesterday' },
             { sender: 'me', text: 'Congrats Elena! Sourdough baking is so rewarding.', time: 'Yesterday' },
@@ -1861,7 +1890,7 @@ let state = window.StateController.createProxy({
         {
             id: 'rev-fake-1',
             neighborName: 'Maya Peterson',
-            avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop',
+            avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop',
             offeredItem: 'Fresh Sourdough Loaf',
             requestedItem: 'Handmade Ceramic Mug',
             createdAt: Date.now() - 4 * 60 * 60 * 1000
@@ -1869,7 +1898,7 @@ let state = window.StateController.createProxy({
         {
             id: 'rev-fake-2',
             neighborName: 'Noah Vance',
-            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=80&auto=format&fit=crop',
+            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300&auto=format&fit=crop',
             offeredItem: 'Organic Heirloom Tomatoes',
             requestedItem: 'Bicycle Tune-Up Help',
             createdAt: Date.now() - 10 * 60 * 60 * 1000
@@ -1877,7 +1906,7 @@ let state = window.StateController.createProxy({
         {
             id: 'rev-fake-3',
             neighborName: 'Ava Sinclair',
-            avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop',
+            avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=300&auto=format&fit=crop',
             offeredItem: 'Beginner Acoustic Lesson',
             requestedItem: 'Variegated Monstera Cuttings',
             createdAt: Date.now() - 20 * 60 * 60 * 1000
@@ -1885,7 +1914,7 @@ let state = window.StateController.createProxy({
         {
             id: 'rev-fake-4',
             neighborName: 'Marcus Brody',
-            avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=80&auto=format&fit=crop',
+            avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=300&auto=format&fit=crop',
             offeredItem: 'Freshly Baked Chocolate Chip Cookies',
             requestedItem: 'Used Biology Textbook',
             createdAt: Date.now() - 32 * 60 * 60 * 1000
@@ -1893,7 +1922,7 @@ let state = window.StateController.createProxy({
         {
             id: 'rev-fake-5',
             neighborName: 'Elena Rostova',
-            avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop',
+            avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=300&auto=format&fit=crop',
             offeredItem: 'English Ivy cutting',
             requestedItem: 'Handmade Crochet Hat',
             createdAt: Date.now() - 40 * 60 * 60 * 1000
@@ -1901,7 +1930,7 @@ let state = window.StateController.createProxy({
         {
             id: 'rev-fake-6',
             neighborName: "Liam O'Connor",
-            avatar: 'https://images.unsplash.com/photo-1500048993953-d23a436266cf?q=60&w=80&auto=format&fit=crop',
+            avatar: 'https://images.unsplash.com/photo-1500048993953-d23a436266cf?q=60&w=300&auto=format&fit=crop',
             offeredItem: 'Homebrewed Kombucha (1 Gallon)',
             requestedItem: 'Fresh Backyard Eggs',
             createdAt: Date.now() - 48 * 60 * 60 * 1000
@@ -1909,7 +1938,7 @@ let state = window.StateController.createProxy({
         {
             id: 'rev-fake-7',
             neighborName: 'Chloe Mitchell',
-            avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=80&auto=format&fit=crop',
+            avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=300&auto=format&fit=crop',
             offeredItem: 'Hand-knitted Wool Socks',
             requestedItem: 'Meyer Lemons (5 lbs)',
             createdAt: Date.now() - 54 * 60 * 60 * 1000
@@ -1917,7 +1946,7 @@ let state = window.StateController.createProxy({
         {
             id: 'rev-fake-8',
             neighborName: 'Daniel Martinez',
-            avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=60&w=80&auto=format&fit=crop',
+            avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=60&w=300&auto=format&fit=crop',
             offeredItem: 'French Press & Coffee beans',
             requestedItem: 'Aloe Vera Plant',
             createdAt: Date.now() - 60 * 60 * 60 * 1000
@@ -1925,7 +1954,7 @@ let state = window.StateController.createProxy({
         {
             id: 'rev-fake-9',
             neighborName: 'Sophia Sterling',
-            avatar: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=60&w=80&auto=format&fit=crop',
+            avatar: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=60&w=300&auto=format&fit=crop',
             offeredItem: 'Homemade Garlic Pesto Jar',
             requestedItem: 'Gluten-Free Muffin Batch',
             createdAt: Date.now() - 72 * 60 * 60 * 1000
@@ -1933,7 +1962,7 @@ let state = window.StateController.createProxy({
         {
             id: 'rev-fake-10',
             neighborName: 'Oliver Bennett',
-            avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=80&auto=format&fit=crop',
+            avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=300&auto=format&fit=crop',
             offeredItem: 'Drip Irrigation Fittings',
             requestedItem: 'Seedling Starter Tray',
             createdAt: Date.now() - 96 * 60 * 60 * 1000
@@ -2264,16 +2293,16 @@ function ensureFriendsList() {
     }
     if (!state.friends) {
         state.friends = [
-            { name: 'Sarah Chen', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop', phone: '+1 (604) 555-0144' },
-            { name: 'Zoe', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop', phone: '+1 (604) 555-0188' },
-            { name: 'David Kim', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=80&auto=format&fit=crop', phone: '+1 (604) 555-0199' },
-            { name: 'Ethan', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=80&auto=format&fit=crop', phone: '+1 (604) 555-0200' },
-            { name: 'Noah', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=80&auto=format&fit=crop', phone: '+1 (604) 555-0211' },
-            { name: 'Ava', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop', phone: '+1 (604) 555-0222' },
-            { name: 'Elena', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=60&w=80&auto=format&fit=crop', phone: '+1 (604) 555-0233' },
-            { name: 'Liam', avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=60&w=80&auto=format&fit=crop', phone: '+1 (604) 555-0244' },
-            { name: 'Chloe', avatar: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?q=60&w=80&auto=format&fit=crop', phone: '+1 (604) 555-0255' },
-            { name: 'Sophia', avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=60&w=80&auto=format&fit=crop', phone: '+1 (604) 555-0266' }
+            { name: 'Sarah Chen', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop', phone: '+1 (604) 555-0144' },
+            { name: 'Zoe', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=300&auto=format&fit=crop', phone: '+1 (604) 555-0188' },
+            { name: 'David Kim', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=300&auto=format&fit=crop', phone: '+1 (604) 555-0199' },
+            { name: 'Ethan', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=300&auto=format&fit=crop', phone: '+1 (604) 555-0200' },
+            { name: 'Noah', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=300&auto=format&fit=crop', phone: '+1 (604) 555-0211' },
+            { name: 'Ava', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=300&auto=format&fit=crop', phone: '+1 (604) 555-0222' },
+            { name: 'Elena', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=60&w=300&auto=format&fit=crop', phone: '+1 (604) 555-0233' },
+            { name: 'Liam', avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=60&w=300&auto=format&fit=crop', phone: '+1 (604) 555-0244' },
+            { name: 'Chloe', avatar: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?q=60&w=300&auto=format&fit=crop', phone: '+1 (604) 555-0255' },
+            { name: 'Sophia', avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=60&w=300&auto=format&fit=crop', phone: '+1 (604) 555-0266' }
         ];
         return true;
     }
@@ -2347,7 +2376,7 @@ function loadState() {
             lastName: 'Kaufmann',
             displayName: 'Lily Kaufmann',
             email: 'lily@cornerswaps.org',
-            avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop',
+            avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=300&auto=format&fit=crop',
             location: 'Fairview',
             address: '1190 W 12th Avenue, Vancouver, BC',
             lat: 49.2608,
@@ -2442,7 +2471,7 @@ function loadState() {
             {
                 id: 'rev-fake-1',
                 neighborName: 'Maya Peterson',
-                avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop',
                 offeredItem: 'Fresh Sourdough Loaf',
                 requestedItem: 'Handmade Ceramic Mug',
                 createdAt: Date.now() - 4 * 60 * 60 * 1000
@@ -2450,7 +2479,7 @@ function loadState() {
             {
                 id: 'rev-fake-2',
                 neighborName: 'Noah Vance',
-                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300&auto=format&fit=crop',
                 offeredItem: 'Organic Heirloom Tomatoes',
                 requestedItem: 'Bicycle Tune-Up Help',
                 createdAt: Date.now() - 10 * 60 * 60 * 1000
@@ -2458,7 +2487,7 @@ function loadState() {
             {
                 id: 'rev-fake-3',
                 neighborName: 'Ava Sinclair',
-                avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=300&auto=format&fit=crop',
                 offeredItem: 'Beginner Acoustic Lesson',
                 requestedItem: 'Variegated Monstera Cuttings',
                 createdAt: Date.now() - 20 * 60 * 60 * 1000
@@ -2466,7 +2495,7 @@ function loadState() {
             {
                 id: 'rev-fake-4',
                 neighborName: 'Marcus Brody',
-                avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=300&auto=format&fit=crop',
                 offeredItem: 'Freshly Baked Chocolate Chip Cookies',
                 requestedItem: 'Used Biology Textbook',
                 createdAt: Date.now() - 32 * 60 * 60 * 1000
@@ -2474,7 +2503,7 @@ function loadState() {
             {
                 id: 'rev-fake-5',
                 neighborName: 'Elena Rostova',
-                avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=300&auto=format&fit=crop',
                 offeredItem: 'English Ivy cutting',
                 requestedItem: 'Handmade Crochet Hat',
                 createdAt: Date.now() - 40 * 60 * 60 * 1000
@@ -2482,7 +2511,7 @@ function loadState() {
             {
                 id: 'rev-fake-6',
                 neighborName: "Liam O'Connor",
-                avatar: 'https://images.unsplash.com/photo-1500048993953-d23a436266cf?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1500048993953-d23a436266cf?q=60&w=300&auto=format&fit=crop',
                 offeredItem: 'Homebrewed Kombucha (1 Gallon)',
                 requestedItem: 'Fresh Backyard Eggs',
                 createdAt: Date.now() - 48 * 60 * 60 * 1000
@@ -2490,7 +2519,7 @@ function loadState() {
             {
                 id: 'rev-fake-7',
                 neighborName: 'Chloe Mitchell',
-                avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=300&auto=format&fit=crop',
                 offeredItem: 'Hand-knitted Wool Socks',
                 requestedItem: 'Meyer Lemons (5 lbs)',
                 createdAt: Date.now() - 54 * 60 * 60 * 1000
@@ -2498,7 +2527,7 @@ function loadState() {
             {
                 id: 'rev-fake-8',
                 neighborName: 'Daniel Martinez',
-                avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=60&w=300&auto=format&fit=crop',
                 offeredItem: 'French Press & Coffee beans',
                 requestedItem: 'Aloe Vera Plant',
                 createdAt: Date.now() - 60 * 60 * 60 * 1000
@@ -2506,7 +2535,7 @@ function loadState() {
             {
                 id: 'rev-fake-9',
                 neighborName: 'Sophia Sterling',
-                avatar: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=60&w=300&auto=format&fit=crop',
                 offeredItem: 'Homemade Garlic Pesto Jar',
                 requestedItem: 'Gluten-Free Muffin Batch',
                 createdAt: Date.now() - 72 * 60 * 60 * 1000
@@ -2514,7 +2543,7 @@ function loadState() {
             {
                 id: 'rev-fake-10',
                 neighborName: 'Oliver Bennett',
-                avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=300&auto=format&fit=crop',
                 offeredItem: 'Drip Irrigation Fittings',
                 requestedItem: 'Seedling Starter Tray',
                 createdAt: Date.now() - 96 * 60 * 60 * 1000
@@ -2821,7 +2850,7 @@ function loadState() {
                 neighborName: 'Sarah Chen',
                 needTitle: 'Balcony Gardening Tools',
                 needDesc: 'Looking to borrow garden shears and a small trowel for my balcony tomato project.',
-                avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop',
                 location: 'Yaletown',
                 category: 'Food & Drink',
                 time: '1h ago'
@@ -2831,7 +2860,7 @@ function loadState() {
                 neighborName: 'David Kim',
                 needTitle: 'Guitar Beginner Lessons',
                 needDesc: 'Looking for a basic acoustic guitar to learn chords. Willing to trade fresh sourdough loaves!',
-                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=300&auto=format&fit=crop',
                 location: 'Downtown',
                 category: 'Skills & Education',
                 time: '3h ago'
@@ -2841,7 +2870,7 @@ function loadState() {
                 neighborName: 'Zoe',
                 needTitle: 'Screwdriver / Drill Set',
                 needDesc: 'Need a drill to hang heavy wooden shelves in my living room.',
-                avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=300&auto=format&fit=crop',
                 location: 'West End',
                 category: 'Home, Living & Gear',
                 time: 'Yesterday'
@@ -2851,7 +2880,7 @@ function loadState() {
                 neighborName: 'Ethan',
                 needTitle: 'Sewing Machine Guidance',
                 needDesc: 'Need help hemming some heavy canvas pants and learning how to properly thread my sewing machine.',
-                avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=300&auto=format&fit=crop',
                 location: 'Kitsilano',
                 category: 'Clothing & Apparel',
                 time: '2h ago'
@@ -2861,7 +2890,7 @@ function loadState() {
                 neighborName: 'Liam',
                 needTitle: 'Fresh Balcony Herbs',
                 needDesc: 'Looking for fresh organic basil, mint, or thyme for a cooking night with friends.',
-                avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=300&auto=format&fit=crop',
                 location: 'Yaletown',
                 category: 'Food & Drink',
                 time: '4h ago'
@@ -2871,7 +2900,7 @@ function loadState() {
                 neighborName: 'Emma',
                 needTitle: 'Cargo Bike Trailer Loan',
                 needDesc: 'Looking to borrow a cargo bike or a bike trailer to move some donation boxes this Saturday morning.',
-                avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=300&auto=format&fit=crop',
                 location: 'Mount Pleasant',
                 category: 'Home, Living & Gear',
                 time: '5h ago'
@@ -2881,7 +2910,7 @@ function loadState() {
                 neighborName: 'Sophia',
                 needTitle: 'French Conversation Practice',
                 needDesc: 'Looking to practice basic French conversation with a native speaker over coffee.',
-                avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop',
                 location: 'Kitsilano',
                 category: 'Skills & Education',
                 time: '6h ago'
@@ -2891,7 +2920,7 @@ function loadState() {
                 neighborName: 'Olivia',
                 needTitle: 'Paint Brushes & Canvas board',
                 needDesc: 'Need some basic acrylic paints and canvas boards for an outdoor painting meetup.',
-                avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=300&auto=format&fit=crop',
                 location: 'West End',
                 category: 'Creative & Art',
                 time: '1d ago'
@@ -2901,7 +2930,7 @@ function loadState() {
                 neighborName: 'Noah',
                 needTitle: 'Spare Yoga Mat',
                 needDesc: 'Looking for a spare yoga mat for an upcoming outdoor session. Happy to trade for homemade granola.',
-                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=300&auto=format&fit=crop',
                 location: 'Downtown',
                 category: 'Health',
                 time: '1d ago'
@@ -2911,7 +2940,7 @@ function loadState() {
                 neighborName: 'Ava',
                 needTitle: 'Children story books',
                 needDesc: 'Looking for kids books suitable for ages 4-7 to read with my nephew when he visits.',
-                avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=300&auto=format&fit=crop',
                 location: 'Mount Pleasant',
                 category: 'Kids, Puzzles & Books',
                 time: '2d ago'
@@ -2921,7 +2950,7 @@ function loadState() {
                 neighborName: 'Isabella',
                 needTitle: 'Terracotta Plant Pots',
                 needDesc: 'Looking for terracotta or ceramic pots of various sizes for my growing indoor plant collection.',
-                avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop',
                 location: 'Kitsilano',
                 category: 'Garden & Outdoors',
                 time: '2d ago'
@@ -2931,7 +2960,7 @@ function loadState() {
                 neighborName: 'Chef Pierre',
                 needTitle: 'Organic Sourdough Flour',
                 needDesc: 'Looking to swap for unbleached organic rye or bread flour for my weekly baking batches.',
-                avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=300&auto=format&fit=crop',
                 location: 'Kitsilano',
                 category: 'Food & Drink',
                 time: '2h ago'
@@ -2941,7 +2970,7 @@ function loadState() {
                 neighborName: 'Aunt Brenda',
                 needTitle: 'Glass Jam Jars (Clean)',
                 needDesc: 'Need standard size clean mason or jam jars with lids for summer preserve canning.',
-                avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop',
                 location: 'Commercial Drive',
                 category: 'Food & Drink',
                 time: '4h ago'
@@ -2951,7 +2980,7 @@ function loadState() {
                 neighborName: 'Oliver Twist',
                 needTitle: 'Cold Brew Glass Dispenser',
                 needDesc: 'Looking to borrow a 3-5 liter glass drink dispenser with spigot for a weekend garden brunch.',
-                avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=300&auto=format&fit=crop',
                 location: 'Downtown',
                 category: 'Food & Drink',
                 time: '5h ago'
@@ -2961,7 +2990,7 @@ function loadState() {
                 neighborName: 'Bob Builder',
                 needTitle: 'Electric Drywall Sander',
                 needDesc: 'Need to borrow a drywall sander for a small basement ceiling repair project this Sunday.',
-                avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=60&w=300&auto=format&fit=crop',
                 location: 'Mount Pleasant',
                 category: 'Handyman & Services',
                 time: '1d ago'
@@ -2971,7 +3000,7 @@ function loadState() {
                 neighborName: 'Mac Tech',
                 needTitle: 'Precision Screwdriver Kit',
                 needDesc: 'Looking to borrow a precision torx screwdriver set to repair a loose hinge on my laptop.',
-                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=300&auto=format&fit=crop',
                 location: 'Yaletown',
                 category: 'Handyman & Services',
                 time: '2d ago'
@@ -2981,7 +3010,7 @@ function loadState() {
                 neighborName: 'Sparky Joe',
                 needTitle: 'Heat Shrink Tubing Set',
                 needDesc: 'Looking for a small variety pack of electrical heat shrink tubing. Happy to trade for cookies.',
-                avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=60&w=300&auto=format&fit=crop',
                 location: 'West End',
                 category: 'Handyman & Services',
                 time: '3d ago'
@@ -2991,7 +3020,7 @@ function loadState() {
                 neighborName: 'Leo DaVinci',
                 needTitle: 'A3 Charcoal Drawing Pad',
                 needDesc: 'Looking for a spare drawing pad with heavy textured paper suitable for outdoor charcoal sketching.',
-                avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=300&auto=format&fit=crop',
                 location: 'Gastown',
                 category: 'Creative & Art',
                 time: '1d ago'
@@ -3001,7 +3030,7 @@ function loadState() {
                 neighborName: 'Frida Kahlo',
                 needTitle: '3mm Macrame Cotton Cord',
                 needDesc: 'Need spool of natural off-white macrame rope for beach workshop plant hanger projects.',
-                avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=300&auto=format&fit=crop',
                 location: 'Kitsilano',
                 category: 'Creative & Art',
                 time: '2d ago'
@@ -3011,7 +3040,7 @@ function loadState() {
                 neighborName: 'Clay Potter',
                 needTitle: 'Clay Underglaze Paint Kit',
                 needDesc: 'Looking to borrow ceramic underglazes in blue, green, and yellow for a hand-building project.',
-                avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=60&w=80&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=60&w=300&auto=format&fit=crop',
                 location: 'Mount Pleasant',
                 category: 'Creative & Art',
                 time: '3d ago'
@@ -3679,6 +3708,13 @@ window.updateTriggerIconState = updateTriggerIconState;
 function handleNavbarTap(viewId) {
     console.log("[NavbarTap] Clicked navbar item:", viewId);
     try {
+        if (viewId === 'profile_settings') {
+            window.savedProfileScrollTop = 0;
+            const scrollContainer = document.getElementById('profile-settings-scroll-container');
+            if (scrollContainer) {
+                scrollContainer.scrollTop = 0;
+            }
+        }
         if (!state) {
             try {
                 state = JSON.parse(INITIAL_STATE_STRING) || {};
@@ -4021,7 +4057,7 @@ function showView(viewId, mode) {
 
     // Intercept Guest Mode views
     if (state.isGuest) {
-        const restrictedGuestViews = ['offer', 'create_event', 'create_bulletin', 'create_group', 'profile_settings', 'settings_detail', 'adjust_homepage', 'blocked_users'];
+        const restrictedGuestViews = ['offer', 'create_event', 'create_bulletin', 'create_group', 'profile_settings', 'settings_detail', 'adjust_homepage', 'blocked_users', 'account_settings', 'my_listings_full', 'my_events_full', 'saved_items_full', 'swap_ledger_full', 'settings_hub_full', 'settings_section_badges', 'settings_section_history', 'settings_section_impact', 'settings_section_invite', 'settings_section_blocked', 'settings_section_definitions', 'settings_section_tips', 'settings_section_improve', 'settings_section_support'];
         if (restrictedGuestViews.includes(viewId) || viewId.startsWith('chat_detail')) {
             openGuestPromptModal();
             return;
@@ -4029,7 +4065,7 @@ function showView(viewId, mode) {
     }
 
     // EULA Enforcement: Block access to app hubs unless EULA is agreed
-    const mainAppViews = ['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'settings_detail', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'help_improve', 'create_bulletin', 'create_group', 'blocked_users'];
+    const mainAppViews = ['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'settings_detail', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'help_improve', 'create_bulletin', 'create_group', 'blocked_users', 'account_settings', 'my_listings_full', 'my_events_full', 'saved_items_full', 'swap_ledger_full', 'settings_hub_full', 'settings_section_badges', 'settings_section_history', 'settings_section_impact', 'settings_section_invite', 'settings_section_blocked', 'settings_section_definitions', 'settings_section_tips', 'settings_section_improve', 'settings_section_support'];
     if (mainAppViews.includes(viewId) || viewId.startsWith('chat_detail')) {
         if (!state.currentUser && !state.isGuest) {
             viewId = 'welcome';
@@ -4104,8 +4140,7 @@ function showView(viewId, mode) {
     // Check if transitioning between chat list and active chat detail on mobile/simulator viewport (non-split screen)
     const isPushTransition = (viewId === 'chat_detail' && oldViewId && oldViewId !== 'chat_detail');
     const isPopTransition = (oldViewId === 'chat_detail' && viewId && viewId !== 'chat_detail');
-    const isSplitScreen = !isNative && !document.body.classList.contains('show-simulator');
-    const shouldUseSlideTransition = (isPushTransition || isPopTransition) && !isSplitScreen;
+    const shouldUseSlideTransition = false;
 
     if (!shouldUseSlideTransition) {
         // Hide all views instantly for normal non-slide navigation transitions
@@ -4294,6 +4329,12 @@ function showView(viewId, mode) {
             toggleConsentButton();
         }
         
+        if (viewId === 'profile_step_custom_listing') {
+            if (typeof openListingEnforcerModal === 'function') {
+                openListingEnforcerModal();
+            }
+        }
+        
         // Toggle profile settings close header visibility
         if (viewId === 'profile_settings') {
             const profileHeader = document.getElementById('profile-settings-header');
@@ -4351,7 +4392,7 @@ function showView(viewId, mode) {
     const headerBar = document.getElementById('phone-header-bar');
     const desktopNavBar = document.getElementById('desktop-navbar');
 
-    if ((['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage', 'review_rating'].includes(viewId) || viewId.startsWith('chat_detail')) && !(viewId === 'village' && state.meetupMapMode)) {
+    if ((['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'events_hub', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'settings_detail', 'create_event', 'create_bulletin', 'create_group', 'adjust_homepage', 'review_rating', 'account_settings', 'my_listings_full', 'my_events_full', 'saved_items_full', 'swap_ledger_full', 'settings_hub_full', 'settings_section_badges', 'settings_section_history', 'settings_section_impact', 'settings_section_invite', 'settings_section_blocked', 'settings_section_definitions', 'settings_section_tips', 'settings_section_improve', 'settings_section_support'].includes(viewId) || viewId.startsWith('chat_detail')) && !(viewId === 'village' && state.meetupMapMode)) {
         if (navBar) {
             navBar.classList.remove('hidden');
         }
@@ -4369,7 +4410,7 @@ function showView(viewId, mode) {
         }
     }
 
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'events_hub', 'create_event', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'help_improve', 'create_bulletin', 'create_group', 'review_rating'].includes(viewId) || viewId.startsWith('chat_detail')) {
+    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'events_hub', 'create_event', 'adjust_homepage', 'admin_panel', 'definitions', 'neighborhood_tips', 'help_improve', 'create_bulletin', 'create_group', 'review_rating', 'account_settings', 'my_listings_full', 'my_events_full', 'saved_items_full', 'swap_ledger_full', 'settings_hub_full', 'settings_section_badges', 'settings_section_history', 'settings_section_impact', 'settings_section_invite', 'settings_section_blocked', 'settings_section_definitions', 'settings_section_tips', 'settings_section_improve', 'settings_section_support'].includes(viewId) || viewId.startsWith('chat_detail')) {
         if (desktopNavBar) {
             desktopNavBar.classList.remove('hidden');
             if (window.syncUserNavbarInfo) window.syncUserNavbarInfo();
@@ -4388,7 +4429,7 @@ function showView(viewId, mode) {
     }
 
     // Play button click chime
-    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'adjust_homepage', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve'].includes(viewId)) {
+    if (['home', 'village', 'chat_hub', 'offer', 'profile_settings', 'settings_detail', 'adjust_homepage', 'event_detail', 'definitions', 'neighborhood_tips', 'help_improve', 'account_settings', 'my_listings_full', 'my_events_full', 'saved_items_full', 'swap_ledger_full', 'settings_hub_full', 'settings_section_badges', 'settings_section_history', 'settings_section_impact', 'settings_section_invite', 'settings_section_blocked', 'settings_section_definitions', 'settings_section_tips', 'settings_section_improve', 'settings_section_support'].includes(viewId)) {
         playSound('click');
     }
 
@@ -4996,7 +5037,7 @@ function updateNavBarIcons(activeViewId) {
         highlightViewId = (state.activeViewMode === 'list') ? 'village_list' : 'village_map';
     } else if (activeViewId === 'village') {
         highlightViewId = (state.activeViewMode === 'list') ? 'village_list' : 'village_map';
-    } else if (['settings_detail', 'adjust_homepage', 'definitions', 'neighborhood_tips', 'help_improve'].includes(activeViewId)) {
+    } else if (['settings_detail', 'adjust_homepage', 'definitions', 'neighborhood_tips', 'help_improve', 'account_settings'].includes(activeViewId)) {
         highlightViewId = 'profile_settings';
     } else if (activeViewId === 'chat_detail' || activeViewId.startsWith('chat_detail')) {
         highlightViewId = 'chat_hub';
@@ -5955,16 +5996,13 @@ function handleSignUpStep3(e) {
     state.isGuest = false;
     state.loggedOut = false;
     state.isNewAccount = true;
-    state.userOfferings = [
-        { id: '1', title: 'Acoustic Guitar Tutoring', category: 'Skills & Education', desc: "Learn basic acoustic guitar chords, fingerpicking patterns, and tune your guitar correctly in a fun, step-by-step 1-hour beginner friendly coaching session.", icon: 'school', image: OFFER_IMAGES[6], lat: 49.2608, lng: -123.1368 },
-        { id: '2', title: 'Garden Weeding & Help', category: 'Garden & Outdoors', desc: "Physical garden maintenance help for your backyard beds, front lawns, or balcony green spaces.", icon: 'yard', image: OFFER_IMAGES[3], lat: 49.2608, lng: -123.1368 }
-    ];
+    state.userOfferings = [];
     state.userNeeds = [];
     state.friends = [];
-    state.userVouches = 100;
+    state.userVouches = 0;
     state.stats = {
         tradesMade: 0,
-        trustScore: 100,
+        trustScore: 0,
         radius: 10
     };
     state.level = 1;
@@ -6535,6 +6573,18 @@ function submitProfileStep1(location) {
     showView('profile_step_custom_listing');
 }
 
+window.openListingEnforcerModal = function() {
+    if (typeof playSound === 'function') playSound('click');
+    const modal = document.getElementById('listing-enforcer-modal');
+    if (modal) modal.classList.remove('hidden');
+};
+
+window.closeListingEnforcerModal = function() {
+    if (typeof playSound === 'function') playSound('click');
+    const modal = document.getElementById('listing-enforcer-modal');
+    if (modal) modal.classList.add('hidden');
+};
+
 window.toggleOnboardingDropdown = function(mode) {
     if (typeof playSound === 'function') playSound('click');
     const dropdownIds = ['offering', 'need', 'event'];
@@ -6564,23 +6614,6 @@ window.toggleOnboardingDropdown = function(mode) {
         if (parentSection) {
             parentSection.classList.add('dropdown-open');
         }
-        // First, reparent the form wrapper #offer-form-wrapper to the target slot
-        const slot = document.getElementById(`onboarding-form-slot-${mode}`);
-        const formWrapper = document.getElementById('offer-form-wrapper');
-        if (slot && formWrapper) {
-            slot.appendChild(formWrapper);
-            formWrapper.classList.remove('hidden');
-            // Hide the default selector screen and bento actions that are inside #view-offer
-            const selectorScreen = document.getElementById('offer-type-selector-screen');
-            if (selectorScreen) selectorScreen.classList.add('hidden');
-            
-            // Add onboarding mode class to adjust styles if needed
-            formWrapper.classList.add('onboarding-mode');
-            
-            // Set the listing mode!
-            selectOfferMode(mode);
-        }
-        
         // Show target dropdown
         if (targetDropdown) targetDropdown.classList.remove('hidden');
         const targetChevron = document.getElementById(`onboarding-chevron-${mode}`);
@@ -6588,33 +6621,11 @@ window.toggleOnboardingDropdown = function(mode) {
             targetChevron.innerText = 'expand_less';
             targetChevron.style.transform = 'rotate(180deg)';
         }
-        
-        // Ensure success banner is hidden on fresh open
-        const successBanner = document.getElementById('listing-success-banner');
-        if (successBanner) successBanner.classList.add('hidden');
-    } else {
-        // We are closing it! Restore the form to the default view-offer section
-        const defaultContainer = document.getElementById('view-offer');
-        const formWrapper = document.getElementById('offer-form-wrapper');
-        if (defaultContainer && formWrapper) {
-            defaultContainer.appendChild(formWrapper);
-            formWrapper.classList.add('hidden');
-            formWrapper.classList.remove('onboarding-mode');
-        }
     }
 };
 
 window.skipProfileStepCustomListing = function() {
     if (typeof playSound === 'function') playSound('click');
-    
-    // Ensure EULA/form is restored to default parent
-    const defaultContainer = document.getElementById('view-offer');
-    const formWrapper = document.getElementById('offer-form-wrapper');
-    if (defaultContainer && formWrapper && formWrapper.parentElement !== defaultContainer) {
-        defaultContainer.appendChild(formWrapper);
-        formWrapper.classList.add('hidden');
-        formWrapper.classList.remove('onboarding-mode');
-    }
     
     const parentSection = document.getElementById('view-profile_step_custom_listing');
     if (parentSection) {
@@ -6628,15 +6639,6 @@ window.skipProfileStepCustomListing = function() {
 window.finishProfileStepCustomListing = function() {
     if (typeof playSound === 'function') playSound('click');
     
-    // Ensure EULA/form is restored to default parent
-    const defaultContainer = document.getElementById('view-offer');
-    const formWrapper = document.getElementById('offer-form-wrapper');
-    if (defaultContainer && formWrapper && formWrapper.parentElement !== defaultContainer) {
-        defaultContainer.appendChild(formWrapper);
-        formWrapper.classList.add('hidden');
-        formWrapper.classList.remove('onboarding-mode');
-    }
-    
     const parentSection = document.getElementById('view-profile_step_custom_listing');
     if (parentSection) {
         parentSection.classList.remove('dropdown-open');
@@ -6644,6 +6646,209 @@ window.finishProfileStepCustomListing = function() {
     
     showView('village');
     if (typeof refreshAllLayouts === 'function') refreshAllLayouts();
+    if (typeof triggerSuccessConfetti === 'function') triggerSuccessConfetti();
+};
+
+window.submitOnboardingOffering = function() {
+    const titleEl = document.getElementById('onboarding-offering-title');
+    const catEl = document.getElementById('onboarding-offering-category');
+    const descEl = document.getElementById('onboarding-offering-desc');
+    const successEl = document.getElementById('onboarding-offering-success');
+    if (!titleEl || !catEl || !descEl) return;
+    
+    const title = titleEl.value.trim();
+    const category = catEl.value;
+    const desc = descEl.value.trim();
+    
+    if (!title) {
+        alert("Please enter a title for your offering.");
+        return;
+    }
+    if (!category) {
+        alert("Please select a category.");
+        return;
+    }
+    if (!desc) {
+        alert("Please enter a description.");
+        return;
+    }
+    
+    const iconMap = {
+        'Food & Drink': 'restaurant',
+        'Home, Living & Gear': 'home',
+        'Garden & Outdoors': 'yard',
+        'Skills & Education': 'school',
+        'Handyman & Services': 'handyman',
+        'Creative & Art': 'palette',
+        'Health': 'health_and_safety',
+        'Clothing & Apparel': 'apparel',
+        'Kids, Puzzles & Books': 'child_care',
+        'Other': 'info'
+    };
+    const icon = iconMap[category] || 'info';
+    
+    if (!state.userOfferings) state.userOfferings = [];
+    state.userOfferings.push({
+        id: 'off_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+        title: title,
+        category: category,
+        subCategory: category,
+        desc: desc,
+        icon: icon,
+        image: "",
+        lat: (state.currentUser && state.currentUser.lat) || 49.2608,
+        lng: (state.currentUser && state.currentUser.lng) || -123.1368,
+        radius: 5,
+        type: 'offering'
+    });
+    
+    saveState();
+    if (typeof playSound === 'function') playSound('click');
+    
+    // Clear inputs
+    titleEl.value = '';
+    catEl.value = '';
+    descEl.value = '';
+    
+    // Show success message briefly
+    if (successEl) {
+        successEl.classList.remove('hidden');
+        setTimeout(() => successEl.classList.add('hidden'), 4000);
+    }
+};
+
+window.submitOnboardingNeed = function() {
+    const titleEl = document.getElementById('onboarding-need-title');
+    const catEl = document.getElementById('onboarding-need-category');
+    const descEl = document.getElementById('onboarding-need-desc');
+    const successEl = document.getElementById('onboarding-need-success');
+    if (!titleEl || !catEl || !descEl) return;
+    
+    const title = titleEl.value.trim();
+    const category = catEl.value;
+    const desc = descEl.value.trim();
+    
+    if (!title) {
+        alert("Please enter a title for your need.");
+        return;
+    }
+    if (!category) {
+        alert("Please select a category.");
+        return;
+    }
+    if (!desc) {
+        alert("Please enter a description.");
+        return;
+    }
+    
+    const iconMap = {
+        'Food & Drink': 'restaurant',
+        'Home, Living & Gear': 'home',
+        'Garden & Outdoors': 'yard',
+        'Skills & Education': 'school',
+        'Handyman & Services': 'handyman',
+        'Creative & Art': 'palette',
+        'Health': 'health_and_safety',
+        'Clothing & Apparel': 'apparel',
+        'Kids, Puzzles & Books': 'child_care',
+        'Other': 'info'
+    };
+    const icon = iconMap[category] || 'info';
+    
+    if (!state.userNeeds) state.userNeeds = [];
+    state.userNeeds.push({
+        id: 'need_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+        title: title,
+        category: category,
+        desc: desc,
+        icon: icon,
+        lat: (state.currentUser && state.currentUser.lat) || 49.2608,
+        lng: (state.currentUser && state.currentUser.lng) || -123.1368,
+        type: 'need'
+    });
+    
+    saveState();
+    if (typeof playSound === 'function') playSound('click');
+    
+    // Clear inputs
+    titleEl.value = '';
+    catEl.value = '';
+    descEl.value = '';
+    
+    // Show success message briefly
+    if (successEl) {
+        successEl.classList.remove('hidden');
+        setTimeout(() => successEl.classList.add('hidden'), 4000);
+    }
+};
+
+window.submitOnboardingEvent = function() {
+    const titleEl = document.getElementById('onboarding-event-title');
+    const typeEl = document.getElementById('onboarding-event-type');
+    const dateEl = document.getElementById('onboarding-event-datetime');
+    const endDateEl = document.getElementById('onboarding-event-end-datetime');
+    const descEl = document.getElementById('onboarding-event-desc');
+    const successEl = document.getElementById('onboarding-event-success');
+    if (!titleEl || !typeEl || !dateEl || !endDateEl || !descEl) return;
+    
+    const title = titleEl.value.trim();
+    const eventType = typeEl.value;
+    const datetime = dateEl.value;
+    const endDatetime = endDateEl.value;
+    const desc = descEl.value.trim();
+    
+    if (!title) {
+        alert("Please enter a title for your event.");
+        return;
+    }
+    if (!eventType) {
+        alert("Please select an event type.");
+        return;
+    }
+    if (!datetime) {
+        alert("Please select a start date and time.");
+        return;
+    }
+    if (!endDatetime) {
+        alert("Please select an end date and time.");
+        return;
+    }
+    if (!desc) {
+        alert("Please enter a description.");
+        return;
+    }
+    
+    if (!state.events) state.events = [];
+    state.events.push({
+        id: 'evt_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+        title: title,
+        type: eventType,
+        datetime: datetime,
+        endDatetime: endDatetime,
+        desc: desc,
+        lat: (state.currentUser && state.currentUser.lat) || 49.2608,
+        lng: (state.currentUser && state.currentUser.lng) || -123.1368,
+        host: state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Me',
+        location: (state.currentUser && state.currentUser.location) || 'Fairview',
+        attendees: [],
+        interested: []
+    });
+    
+    saveState();
+    if (typeof playSound === 'function') playSound('click');
+    
+    // Clear inputs
+    titleEl.value = '';
+    typeEl.value = '';
+    dateEl.value = '';
+    endDateEl.value = '';
+    descEl.value = '';
+    
+    // Show success message briefly
+    if (successEl) {
+        successEl.classList.remove('hidden');
+        setTimeout(() => successEl.classList.add('hidden'), 4000);
+    }
 };
 
 // Onboarding Drafts
@@ -7467,8 +7672,8 @@ function renderEventsList() {
             if (evt.distance > maxRadius) return false;
 
             // Category filter check
-            if (state.activeMapFilters && state.activeMapFilters.length > 0) {
-                const matchesCategory = state.activeMapFilters.some(filter => isCategoryMatchHelper(evt.type, filter) || isCategoryMatchHelper(evt.category, filter));
+            if (state.activeEventsFilters && state.activeEventsFilters.length > 0) {
+                const matchesCategory = state.activeEventsFilters.some(filter => isCategoryMatchHelper(evt.type, filter) || isCategoryMatchHelper(evt.category, filter));
                 if (!matchesCategory) return false;
             }
 
@@ -7494,13 +7699,12 @@ function renderEventsList() {
             const times = formatEventTimes(evt.datetime, evt.endDatetime);
 
             const hostNeighbor = state.neighbors[evt.host];
-            const hostAvatar = hostNeighbor ? hostNeighbor.avatar : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80';
+            const hostAvatar = hostNeighbor ? hostNeighbor.avatar : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=300';
             
             const isCurrentlyExpanded = window.activeExpandedCardId === 'evt_' + evt.id;
             const card = document.createElement('div');
             card.setAttribute('data-id', evt.id);
             card.className = "list-card-container bg-white dark:bg-[#18201a] rounded-2xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm flex flex-col cursor-pointer active:scale-[0.99] hover:border-forest-green/60 hover:shadow-md transition-all relative overflow-hidden" + (isCurrentlyExpanded ? " expanded" : "");
-            
             card.onclick = (e) => {
                 if (e.target.closest('button') || e.target.closest('a') || e.target.closest('.profile-avatar-ring') || e.target.closest('.profile-avatar-no-ring') || e.target.closest('.inline-save-btn')) {
                     return;
@@ -7528,7 +7732,7 @@ function renderEventsList() {
 
             let rsvpAvatarsHtml = '';
             evt.rsvps.forEach(name => {
-                let avatarUrl = RSVP_AVATARS[name] || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80&auto=format&fit=crop';
+                let avatarUrl = RSVP_AVATARS[name] || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=300&auto=format&fit=crop';
                 if (state.currentUser && (name === currentUser || name === state.currentUser.displayName || name === (state.currentUser.firstName + ' ' + state.currentUser.lastName).trim())) {
                     if (state.currentUser.avatar) {
                         avatarUrl = state.currentUser.avatar;
@@ -7762,7 +7966,7 @@ window.openBulletinDetailModal = function(id) {
     if (authorNameEl) authorNameEl.textContent = authorName;
     const neighbor = state.neighbors[authorName];
     if (authorAvatarEl) {
-        authorAvatarEl.src = neighbor && neighbor.avatar ? neighbor.avatar : "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop";
+        authorAvatarEl.src = neighbor && neighbor.avatar ? neighbor.avatar : "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop";
     }
     
     if (likesCountEl) likesCountEl.textContent = bulletin.likes || 0;
@@ -8251,7 +8455,10 @@ function initLeafletMap() {
     let centerCoords = [49.2608, -123.1368]; // Default to Fairview
     let zoomLevel = 15; // Zoom in to your area!
     if (state.currentUser && state.currentUser.lat && state.currentUser.lng) {
-        centerCoords = [state.currentUser.lat, state.currentUser.lng];
+        const validated = validateCoords(state.currentUser.lat, state.currentUser.lng);
+        if (validated) {
+            centerCoords = [validated.lat, validated.lng];
+        }
     }
 
     leafletMap = L.map('map', {
@@ -8536,6 +8743,18 @@ function getSubcategoryForListing(title, category) {
 }
 
 function openMapItemDetail(idOrName) {
+    // Prevent accidental popup opening due to WKWebView touch-through / click-bleed when search is active on map view
+    if (state && state.currentView === 'village' && state.activeViewMode === 'map') {
+        const searchInput = document.getElementById('village-search-input');
+        const suggestions = document.getElementById('village-search-suggestions');
+        const isSearchActive = (searchInput && document.activeElement === searchInput) || 
+                               (suggestions && !suggestions.classList.contains('hidden'));
+        if (isSearchActive) {
+            console.log("[openMapItemDetail] Blocked map detail popup because search is active");
+            return;
+        }
+    }
+
     if (typeof idOrName !== 'string') {
         console.warn("Invalid idOrName passed to openMapItemDetail:", idOrName);
         return;
@@ -8559,7 +8778,7 @@ function openMapItemDetail(idOrName) {
         desc = event.desc;
         location = event.location;
         offerImg = getEventPresetImage(event.type);
-        avatar = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80&auto=format&fit=crop';
+        avatar = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=300&auto=format&fit=crop';
         authorName = event.host || 'Community Member';
         rating = `Community Event · ${event.type}`;
         icon = 'event';
@@ -9496,7 +9715,7 @@ function renderMapEventRSVPs(event) {
     rsvpCountEl.innerText = `${count} ${count === 1 ? 'neighbor is' : 'neighbors are'} going`;
 
     event.rsvps.forEach(name => {
-        let avatarUrl = RSVP_AVATARS[name] || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80&auto=format&fit=crop';
+        let avatarUrl = RSVP_AVATARS[name] || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=300&auto=format&fit=crop';
         if (state.currentUser && (name === currentUser || name === state.currentUser.displayName || name === (state.currentUser.firstName + ' ' + state.currentUser.lastName).trim())) {
             if (state.currentUser.avatar) {
                 avatarUrl = state.currentUser.avatar;
@@ -9661,33 +9880,33 @@ function getNeighborReviews(name) {
             average: 4.9,
             count: 3,
             list: [
-                { reviewerName: 'Liam', reviewerAvatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=60&w=80', rating: 5, comment: 'Elena led a wonderful sunrise mindfulness yoga session. So peaceful!', date: 'May 20, 2026' },
-                { reviewerName: 'Zoe', reviewerAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80', rating: 5, comment: 'Very welcoming to beginners. Loved the flow transition guidelines.', date: 'May 12, 2026' },
-                { reviewerName: 'Marcus', reviewerAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=80', rating: 5, comment: 'Really helped with my breathing technique.', date: 'Apr 28, 2026' }
+                { reviewerName: 'Liam', reviewerAvatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=60&w=300', rating: 5, comment: 'Elena led a wonderful sunrise mindfulness yoga session. So peaceful!', date: 'May 20, 2026' },
+                { reviewerName: 'Zoe', reviewerAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=300', rating: 5, comment: 'Very welcoming to beginners. Loved the flow transition guidelines.', date: 'May 12, 2026' },
+                { reviewerName: 'Marcus', reviewerAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=300', rating: 5, comment: 'Really helped with my breathing technique.', date: 'Apr 28, 2026' }
             ]
         },
         'Liam': {
             average: 4.8,
             count: 2,
             list: [
-                { reviewerName: 'Elena', reviewerAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=60&w=80', rating: 5, comment: 'His heirloom tomato seedlings are incredibly healthy and growing fast!', date: 'May 22, 2026' },
-                { reviewerName: 'Chloe', reviewerAvatar: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?q=60&w=80', rating: 5, comment: 'Super friendly swap and gave great planting tips.', date: 'May 18, 2026' }
+                { reviewerName: 'Elena', reviewerAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=60&w=300', rating: 5, comment: 'His heirloom tomato seedlings are incredibly healthy and growing fast!', date: 'May 22, 2026' },
+                { reviewerName: 'Chloe', reviewerAvatar: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?q=60&w=300', rating: 5, comment: 'Super friendly swap and gave great planting tips.', date: 'May 18, 2026' }
             ]
         },
         'Chloe': {
             average: 5.0,
             count: 2,
             list: [
-                { reviewerName: 'Marcus', reviewerAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=80', rating: 5, comment: 'Beautiful botanical illustrations on the canvas tote! Highly recommend.', date: 'May 15, 2026' },
-                { reviewerName: 'Ava', reviewerAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=80', rating: 5, comment: 'A true local artist. The tote is super durable.', date: 'May 04, 2026' }
+                { reviewerName: 'Marcus', reviewerAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=300', rating: 5, comment: 'Beautiful botanical illustrations on the canvas tote! Highly recommend.', date: 'May 15, 2026' },
+                { reviewerName: 'Ava', reviewerAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=300', rating: 5, comment: 'A true local artist. The tote is super durable.', date: 'May 04, 2026' }
             ]
         },
         'Sophia': {
             average: 4.8,
             count: 2,
             list: [
-                { reviewerName: 'Nora Miller', reviewerAvatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=60&w=80', rating: 5, comment: 'The stress relief roll-on oil works wonders. Smells incredible.', date: 'May 21, 2026' },
-                { reviewerName: 'David Kim', reviewerAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=80', rating: 4.6, comment: 'Very customized blend. Sophia is extremely knowledgeable.', date: 'May 10, 2026' }
+                { reviewerName: 'Nora Miller', reviewerAvatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=60&w=300', rating: 5, comment: 'The stress relief roll-on oil works wonders. Smells incredible.', date: 'May 21, 2026' },
+                { reviewerName: 'David Kim', reviewerAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=300', rating: 4.6, comment: 'Very customized blend. Sophia is extremely knowledgeable.', date: 'May 10, 2026' }
             ]
         }
     };
@@ -9696,7 +9915,7 @@ function getNeighborReviews(name) {
         average: 4.7,
         count: 1,
         list: [
-            { reviewerName: 'Sarah Chen', reviewerAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80', rating: 5, comment: 'Excellent communication and a very pleasant trade process!', date: 'May 14, 2026' }
+            { reviewerName: 'Sarah Chen', reviewerAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=300', rating: 5, comment: 'Excellent communication and a very pleasant trade process!', date: 'May 14, 2026' }
         ]
     };
 
@@ -10028,7 +10247,7 @@ function openNeighborProfileModal(neighborName) {
                     <div class="bg-white dark:bg-[#18201a] p-3 rounded-xl border border-outline-variant/30 dark:border-outline-variant/15 flex flex-col gap-1.5">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-1.5 cursor-pointer" onclick="event.stopPropagation(); ${r.reviewerName === (state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann') ? `showView('profile_settings')` : `openNeighborProfileModal('${escapeHTML(r.reviewerName)}')`}">
-                                <div class="profile-avatar-ring w-5 h-5 flex-shrink-0"><img src="${r.reviewerAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80'}" class="w-full h-full object-cover rounded-full"></div>
+                                <div class="profile-avatar-ring w-5 h-5 flex-shrink-0"><img src="${r.reviewerAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=300'}" class="w-full h-full object-cover rounded-full"></div>
                                 <span class="text-xs font-bold text-black dark:text-white">${escapeHTML(r.reviewerName)}</span>
                             </div>
                             <span class="text-[9px] text-gray-500">${escapeHTML(r.date)}</span>
@@ -10424,7 +10643,7 @@ function toggleCategoryTray() {
 }
 
 const MAP_FILTER_CATEGORIES = [
-    { name: "Karma Swap", displayName: "Karma", icon: "favorite", color: "#ef4444", rgb: "239,68,68" },
+    { name: "Gifts Swap", displayName: "Gifts", icon: "favorite", color: "#ef4444", rgb: "239,68,68" },
     { name: "Event or Meetup", displayName: "Events", icon: "groups", color: "#10b981", rgb: "16,185,129" },
     { name: "Food & Drink", displayName: "Food", icon: "restaurant", color: "#f97316", rgb: "249,115,22" },
     { name: "Home and Living", displayName: "Home", icon: "home", color: "#3b82f6", rgb: "59,130,246" },
@@ -10437,7 +10656,7 @@ const MAP_FILTER_CATEGORIES = [
     { name: "Books, Games, Entertainment", displayName: "Books", icon: "sports_esports", color: "#6366f1", rgb: "99,102,241" },
     { name: "Kids and Maternity", displayName: "Kids", icon: "stroller", color: "#a855f7", rgb: "168,85,247" },
     { name: "Language or Info Exchange", displayName: "Language", icon: "translate", color: "#2563eb", rgb: "37,99,235" },
-    { name: "Donation", displayName: "Donation", icon: "favorite", color: "#ec4899", rgb: "236,72,153" },
+    { name: "Other", displayName: "Other", icon: "more_horiz", color: "#9ca3af", rgb: "156,163,175" },
     { name: "Clear Filter", displayName: "Clear", icon: "filter_alt_off", color: "#6b7280", rgb: "107,114,128" }
 ];
 
@@ -10455,7 +10674,7 @@ const EVENT_CATEGORIES = [
 let mapInfoModeActive = false;
 
 const MAP_CATEGORY_DESCRIPTIONS = {
-    "Karma Swap": "Karma swaps are free items or services offered out of neighborly kindness. Swap to get good karma, clear out clutter, or lend a hand without expecting anything in return!",
+    "Gifts Swap": "Gifts are free items or services offered out of neighborly kindness. Swap to get good karma, clear out clutter, or lend a hand without expecting anything in return!",
     "Event or Meetup": "Community gatherings, street parties, volunteer cleanups, or casual meetups. Connect with neighbors in person and build local relationships.",
     "Food & Drink": "Share homegrown veggies, surplus bakes, or invite neighbors for a home-cooked meal or coffee swap.",
     "Home and Living": "Household items, furniture, tools to borrow, or home organization advice shared within the neighborhood.",
@@ -10468,7 +10687,7 @@ const MAP_CATEGORY_DESCRIPTIONS = {
     "Books, Games, Entertainment": "Share or borrow books, board games, video games, musical instruments, and media.",
     "Kids and Maternity": "Baby gear, toys, children's clothes, parenting advice, or local playdate coordination.",
     "Language or Info Exchange": "Language learning, local tips, neighborhood recommendations, and informational chats.",
-    "Donation": "Donate items, offer support, or support local causes and projects within the neighborhood.",
+    "Other": "Other neighborly offerings, skills, or requests that don't fit into standard categories.",
     "Clear Filter": "Reset all active category filters to see all nearby pins on the map."
 };
 
@@ -10674,7 +10893,7 @@ function renderListFilterCircles() {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         
-        const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
+        const isActive = state.activeListFilters && state.activeListFilters.includes(cat.name);
         
         return `
             <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-[0.98] transition-transform" 
@@ -10701,7 +10920,7 @@ function renderNeedsFilterCircles() {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         
-        const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
+        const isActive = state.activeNeedsFilters && state.activeNeedsFilters.includes(cat.name);
         
         return `
             <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-[0.98] transition-transform" 
@@ -10721,63 +10940,54 @@ window.renderNeedsFilterCircles = renderNeedsFilterCircles;
 window.selectListCategoryFilter = function(categoryName, element, event) {
     if (event) event.stopPropagation();
     playSound('click');
-    if (!state.activeMapFilters) {
-        state.activeMapFilters = [];
+    if (!state.activeListFilters) {
+        state.activeListFilters = [];
     }
-    const idx = state.activeMapFilters.indexOf(categoryName);
+    const idx = state.activeListFilters.indexOf(categoryName);
     if (idx > -1) {
-        state.activeMapFilters.splice(idx, 1);
+        state.activeListFilters.splice(idx, 1);
     } else {
-        state.activeMapFilters.push(categoryName);
+        state.activeListFilters.push(categoryName);
     }
-    activeCategoryFilter = state.activeMapFilters.length > 0 ? state.activeMapFilters[0] : null;
     saveState();
     
     renderListFilterCircles();
-    
-    if (typeof applyMapFiltering === 'function') applyMapFiltering();
     renderVillageListView();
 };
 
 window.selectNeedsCategoryFilter = function(categoryName, element, event) {
     if (event) event.stopPropagation();
     playSound('click');
-    if (!state.activeMapFilters) {
-        state.activeMapFilters = [];
+    if (!state.activeNeedsFilters) {
+        state.activeNeedsFilters = [];
     }
-    const idx = state.activeMapFilters.indexOf(categoryName);
+    const idx = state.activeNeedsFilters.indexOf(categoryName);
     if (idx > -1) {
-        state.activeMapFilters.splice(idx, 1);
+        state.activeNeedsFilters.splice(idx, 1);
     } else {
-        state.activeMapFilters.push(categoryName);
+        state.activeNeedsFilters.push(categoryName);
     }
-    activeCategoryFilter = state.activeMapFilters.length > 0 ? state.activeMapFilters[0] : null;
     saveState();
     
     renderNeedsFilterCircles();
-    
-    if (typeof applyMapFiltering === 'function') applyMapFiltering();
     renderNeedsBoardView();
 };
 
 window.selectEventsCategoryFilter = function(categoryName, element, event) {
     if (event) event.stopPropagation();
     playSound('click');
-    if (!state.activeMapFilters) {
-        state.activeMapFilters = [];
+    if (!state.activeEventsFilters) {
+        state.activeEventsFilters = [];
     }
-    const idx = state.activeMapFilters.indexOf(categoryName);
+    const idx = state.activeEventsFilters.indexOf(categoryName);
     if (idx > -1) {
-        state.activeMapFilters.splice(idx, 1);
+        state.activeEventsFilters.splice(idx, 1);
     } else {
-        state.activeMapFilters.push(categoryName);
+        state.activeEventsFilters.push(categoryName);
     }
-    activeCategoryFilter = state.activeMapFilters.length > 0 ? state.activeMapFilters[0] : null;
     saveState();
     
     renderEventsFilterCircles();
-    
-    if (typeof applyMapFiltering === 'function') applyMapFiltering();
     renderEventsList();
 };
 
@@ -10789,7 +10999,7 @@ function renderEventsFilterCircles() {
         const delay = idx * 0.02;
         const animStyle = `opacity: 0; -webkit-transform: translateY(-10px); transform: translateY(-10px); -webkit-animation: cascadeIn 0.25s ease-out forwards; animation: cascadeIn 0.25s ease-out forwards; -webkit-animation-delay: ${delay}s; animation-delay: ${delay}s;`;
         
-        const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
+        const isActive = state.activeEventsFilters && state.activeEventsFilters.includes(cat.name);
         
         return `
             <div class="category-filter-pill ${isActive ? 'active-pill' : ''} active:scale-[0.98] transition-transform" 
@@ -11382,6 +11592,14 @@ function resetOfferValidationState() {
             subPanel.classList.add('hidden');
         }
     }
+    
+    const meetupSection = document.getElementById('offer-meetup-spot-section');
+    if (meetupSection) {
+        const btn = meetupSection.querySelector('button');
+        if (btn) {
+            btn.classList.remove('border-red-500', 'ring-1', 'ring-red-500');
+        }
+    }
 }
 window.resetOfferValidationState = resetOfferValidationState;
 
@@ -11396,6 +11614,27 @@ function selectOfferMode(mode) {
 
     state.currentOfferMode = mode;
 
+    ['offering', 'need', 'event'].forEach(m => {
+        const btn = document.getElementById(`form-type-btn-${m}`);
+        if (btn) {
+            if (m === mode) {
+                btn.classList.add('bg-black/5', 'dark:bg-white/5');
+                const labelSpan = btn.querySelector('span:last-child');
+                if (labelSpan) {
+                    labelSpan.classList.remove('text-slate-500');
+                    labelSpan.classList.add('text-forest-green', 'dark:text-emerald-450');
+                }
+            } else {
+                btn.classList.remove('bg-black/5', 'dark:bg-white/5');
+                const labelSpan = btn.querySelector('span:last-child');
+                if (labelSpan) {
+                    labelSpan.classList.remove('text-forest-green', 'dark:text-emerald-455');
+                    labelSpan.classList.add('text-slate-500');
+                }
+            }
+        }
+    });
+
     const titleLabel = document.getElementById('offer-title-label');
     const categoryHeader = document.getElementById('offer-category-header-label');
     const categoryHeaderWrapper = document.getElementById('offer-category-header-wrapper');
@@ -11404,14 +11643,96 @@ function selectOfferMode(mode) {
     const submitBtn = document.getElementById('btn-list-offering');
     const karmaSection = document.getElementById('offer-karma-section');
     const meetupSection = document.getElementById('offer-meetup-spot-section');
+    const meetupLabel = document.getElementById('offer-meetup-spot-label');
 
     const eventTypeSec = document.getElementById('offer-event-type-section');
     const eventTimeSec = document.getElementById('offer-event-datetime-section');
-    const eventLocSec = document.getElementById('offer-event-location-section');
     const eventCustomIconSec = document.getElementById('event-custom-icon-selector-container');
 
     const descInputEl = document.getElementById('offer-desc');
     const titleInputEl = document.getElementById('offer-title');
+
+    // Blank out all fields upon loading the page
+    const wishlistInput = document.getElementById('offer-wishlist-input');
+    const categorySelect = document.getElementById('offer-category-select');
+    const eventTypeSelect = document.getElementById('offer-event-type-select');
+    const eventStartDate = document.getElementById('offer-event-start-date');
+    const eventStartTime = document.getElementById('offer-event-start-time');
+    const eventEndDate = document.getElementById('offer-event-end-date');
+    const eventEndTime = document.getElementById('offer-event-end-time');
+    const neighborhoodInput = document.getElementById('neighborhood-input');
+    const pickerNeighInput = document.getElementById('meetup-picker-neighborhood');
+    const karmaCheckbox = document.getElementById('karma-checkbox');
+    const radiusSlider = document.getElementById('offer-radius-slider');
+    const radiusVal = document.getElementById('offer-radius-value');
+
+    if (titleInputEl) titleInputEl.value = "";
+    if (descInputEl) descInputEl.value = "";
+    if (wishlistInput) wishlistInput.value = "";
+    if (categorySelect) categorySelect.value = "";
+    if (eventTypeSelect) eventTypeSelect.value = "";
+    if (eventStartDate) eventStartDate.value = "";
+    if (eventStartTime) eventStartTime.value = "";
+    if (eventEndDate) eventEndDate.value = "";
+    if (eventEndTime) eventEndTime.value = "";
+    if (neighborhoodInput) neighborhoodInput.value = "";
+    if (pickerNeighInput) pickerNeighInput.value = "";
+    if (karmaCheckbox) karmaCheckbox.checked = false;
+    
+    // Clear validation borders/red colors
+    [titleInputEl, descInputEl, wishlistInput, categorySelect, eventTypeSelect, eventStartDate, eventStartTime, eventEndDate, eventEndTime].forEach(el => {
+        if (el) {
+            el.classList.remove('border-red-500', 'ring-1', 'ring-red-500');
+        }
+    });
+    
+    ['offer-title-label', 'offer-category-header-label', 'offer-desc-label'].forEach(id => {
+        const label = document.getElementById(id);
+        if (label) {
+            label.classList.remove('text-red-500');
+            label.classList.add('text-forest-green');
+        }
+    });
+
+    if (categoriesGrid) {
+        categoriesGrid.classList.remove('border', 'border-red-500', 'ring-1', 'ring-red-500', 'rounded-xl');
+        categoriesGrid.querySelectorAll('button').forEach(btn => {
+            btn.classList.remove('bg-forest-green', 'text-warm-cream', 'border-forest-green');
+            btn.classList.add('bg-white', 'text-forest-green', 'border-outline-variant/30');
+        });
+    }
+
+    const eventGrid = document.getElementById('offer-event-type-grid');
+    if (eventGrid) {
+        eventGrid.querySelectorAll('button').forEach(btn => {
+            btn.classList.remove('bg-forest-green', 'text-warm-cream', 'border-forest-green');
+            btn.classList.add('bg-white', 'text-forest-green', 'border-outline-variant/30');
+        });
+    }
+    
+    // Reset location select state
+    state.selectedMeetupCoords = null;
+    state.selectedMeetupRadius = 100;
+    tempMeetupCoords = null;
+    
+    const mapStatus = document.getElementById('meetup-map-status');
+    if (mapStatus) mapStatus.classList.add('hidden');
+    
+    if (meetupSection) {
+        const btn = meetupSection.querySelector('button');
+        if (btn) {
+            btn.classList.remove('border-red-500', 'ring-1', 'ring-red-500');
+        }
+    }
+    
+    if (radiusSlider) {
+        radiusSlider.value = 5;
+        if (radiusVal) radiusVal.innerText = "5 km";
+    }
+
+    const liabilityContainer = document.getElementById('liability-release-container');
+    if (liabilityContainer) liabilityContainer.classList.add('hidden');
+
     if (mode === 'event') {
         if (titleLabel) titleLabel.innerText = "Event";
         if (descLabel) descLabel.innerText = "Event Description";
@@ -11422,22 +11743,25 @@ function selectOfferMode(mode) {
         if (categoryHeaderWrapper) categoryHeaderWrapper.classList.add('hidden');
         if (categoriesGrid) categoriesGrid.classList.add('hidden');
         if (karmaSection) karmaSection.classList.add('hidden');
-        if (meetupSection) meetupSection.classList.add('hidden');
+        
+        // Show map picker section for Event Mode too
+        if (meetupSection) meetupSection.classList.remove('hidden');
+        if (meetupLabel) meetupLabel.innerText = "Event Location";
 
         if (eventTypeSec) eventTypeSec.classList.remove('hidden');
         if (eventTimeSec) eventTimeSec.classList.remove('hidden');
-        if (eventLocSec) eventLocSec.classList.remove('hidden');
         if (eventCustomIconSec) {
             eventCustomIconSec.classList.remove('hidden');
         }
     } else {
         if (eventTypeSec) eventTypeSec.classList.add('hidden');
         if (eventTimeSec) eventTimeSec.classList.add('hidden');
-        if (eventLocSec) eventLocSec.classList.add('hidden');
         if (eventCustomIconSec) eventCustomIconSec.classList.add('hidden');
 
         if (categoryHeaderWrapper) categoryHeaderWrapper.classList.remove('hidden');
         if (categoriesGrid) categoriesGrid.classList.remove('hidden');
+        
+        // Show map picker section for needs and offerings
         if (meetupSection) meetupSection.classList.remove('hidden');
 
         if (mode === 'need') {
@@ -11448,11 +11772,12 @@ function selectOfferMode(mode) {
             if (karmaSection) karmaSection.classList.add('hidden');
             if (descInputEl) descInputEl.placeholder = "please describe your need";
             if (titleInputEl) titleInputEl.placeholder = "e.g. Lawn mower to borrow...";
+            if (meetupLabel) meetupLabel.innerText = "Need Location";
 
             // Reset Karma check state and wishlist inputs for Need Listing mode
-            const karmaCheckbox = document.getElementById('karma-checkbox');
-            if (karmaCheckbox) {
-                karmaCheckbox.checked = false;
+            const kCheckbox = document.getElementById('karma-checkbox');
+            if (kCheckbox) {
+                kCheckbox.checked = false;
                 giftKarmaActive = false;
                 const wishlistInput = document.getElementById('offer-wishlist-input');
                 const unifiedCard = document.getElementById('karma-unified-card');
@@ -11476,11 +11801,12 @@ function selectOfferMode(mode) {
             if (karmaSection) karmaSection.classList.add('hidden');
             if (descInputEl) descInputEl.placeholder = "Describe what you are donating. Details build trust...";
             if (titleInputEl) titleInputEl.placeholder = "e.g. Vintage jacket...";
+            if (meetupLabel) meetupLabel.innerText = "Safe Meetup Spot";
 
             // Reset Karma check state and wishlist inputs for Donation mode
-            const karmaCheckbox = document.getElementById('karma-checkbox');
-            if (karmaCheckbox) {
-                karmaCheckbox.checked = false;
+            const kCheckbox = document.getElementById('karma-checkbox');
+            if (kCheckbox) {
+                kCheckbox.checked = false;
                 giftKarmaActive = false;
                 const wishlistInput = document.getElementById('offer-wishlist-input');
                 const unifiedCard = document.getElementById('karma-unified-card');
@@ -11504,6 +11830,7 @@ function selectOfferMode(mode) {
             if (karmaSection) karmaSection.classList.remove('hidden');
             if (descInputEl) descInputEl.placeholder = "Tell neighbors more about what you're offering. Details build trust...";
             if (titleInputEl) titleInputEl.placeholder = "e.g. Acoustic Guitar Tutoring...";
+            if (meetupLabel) meetupLabel.innerText = "Safe Meetup Spot";
         }
     }
 
@@ -11729,17 +12056,23 @@ function submitCreateEventFromOfferFlow(e) {
 
     const titleInput = document.getElementById('offer-title');
     const typeSelect = document.getElementById('offer-event-type-select');
-    const datetimeInput = document.getElementById('offer-event-datetime-input');
-    const endDatetimeInput = document.getElementById('offer-event-end-datetime-input');
-    const locationInput = document.getElementById('offer-event-location-input');
+    const startDateInput = document.getElementById('offer-event-start-date');
+    const startTimeInput = document.getElementById('offer-event-start-time');
+    const endDateInput = document.getElementById('offer-event-end-date');
+    const endTimeInput = document.getElementById('offer-event-end-time');
     const descInput = document.getElementById('offer-desc');
 
     const title = titleInput ? titleInput.value.trim() : '';
     const type = typeSelect ? typeSelect.value : '';
-    const datetime = datetimeInput ? datetimeInput.value : '';
-    const endDatetime = endDatetimeInput ? endDatetimeInput.value : '';
-    const location = locationInput ? locationInput.value.trim() : '';
+    const startDateVal = startDateInput ? startDateInput.value : '';
+    const startTimeVal = startTimeInput ? startTimeInput.value.trim() : '';
+    const endDateVal = endDateInput ? endDateInput.value : '';
+    const endTimeVal = endTimeInput ? endTimeInput.value.trim() : '';
     const desc = descInput ? descInput.value.trim() : '';
+
+    const datetime = startDateVal ? `${startDateVal}${startTimeVal ? ' ' + startTimeVal : ''}` : '';
+    const endDatetime = endDateVal ? `${endDateVal}${endTimeVal ? ' ' + endTimeVal : ''}` : '';
+    const location = document.getElementById('neighborhood-input')?.value.trim() || 'Event Location';
 
     let hasErrors = false;
     let firstErrorEl = null;
@@ -11762,20 +12095,39 @@ function submitCreateEventFromOfferFlow(e) {
 
     if (!title) markInvalid(titleInput); else markValid(titleInput);
     if (!type) markInvalid(typeSelect); else markValid(typeSelect);
-    if (!datetime) markInvalid(datetimeInput); else markValid(datetimeInput);
-    if (!location) markInvalid(locationInput); else markValid(locationInput);
+    if (!startDateVal) markInvalid(startDateInput); else markValid(startDateInput);
+    if (!startTimeVal) markInvalid(startTimeInput); else markValid(startTimeInput);
 
-    if (datetime && endDatetime && new Date(endDatetime) <= new Date(datetime)) {
-        markInvalid(endDatetimeInput);
-        alert("End time must be after the start time.");
-    } else {
-        markValid(endDatetimeInput);
+    if (startDateVal && endDateVal) {
+        const startParsed = new Date(startDateVal + (startTimeVal ? ' ' + startTimeVal : ''));
+        const endParsed = new Date(endDateVal + (endTimeVal ? ' ' + endTimeVal : ''));
+        if (!isNaN(startParsed.getTime()) && !isNaN(endParsed.getTime()) && endParsed <= startParsed) {
+            markInvalid(endDateInput);
+            markInvalid(endTimeInput);
+            alert("End time must be after the start time.");
+        } else {
+            markValid(endDateInput);
+            markValid(endTimeInput);
+        }
+    }
+
+    // Enforce map location selection
+    if (!state.selectedMeetupCoords) {
+        const meetupSection = document.getElementById('offer-meetup-spot-section');
+        if (meetupSection) {
+            const btn = meetupSection.querySelector('button');
+            if (btn) {
+                btn.classList.add('border-red-500', 'ring-1', 'ring-red-500');
+            }
+            safeScrollIntoView(meetupSection, false);
+        }
+        return;
     }
 
     if (hasErrors) {
         if (firstErrorEl) {
             firstErrorEl.focus();
-            firstErrorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            safeScrollIntoView(firstErrorEl, false);
         }
         return;
     }
@@ -11803,8 +12155,8 @@ function submitCreateEventFromOfferFlow(e) {
     }
 
     // Save event
-    const lat = 49.2827 + (Math.random() - 0.5) * 0.015;
-    const lng = -123.1207 + (Math.random() - 0.5) * 0.015;
+    const lat = state.selectedMeetupCoords.lat;
+    const lng = state.selectedMeetupCoords.lng;
 
     const newEvent = {
         id: Date.now().toString(),
@@ -11831,7 +12183,6 @@ function submitCreateEventFromOfferFlow(e) {
         const details = getEventIconDetails(newEvent.type);
         const color = details.color || '#3b82f6';
         const iconName = newEvent.icon || details.icon || 'campaign';
-        const avatarUrl = (state.currentUser && state.currentUser.avatar) ? state.currentUser.avatar : DEFAULT_AVATAR;
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
             html: `<div class="pin-icon relative flex items-center justify-center rounded-full" style="border: 2px solid #2563eb !important; background-color: ${color} !important; width: 38px; height: 38px; border-radius: 50% !important; box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important;">
@@ -11853,9 +12204,10 @@ function submitCreateEventFromOfferFlow(e) {
     // Reset inputs
     if (titleInput) titleInput.value = "";
     if (typeSelect) typeSelect.value = "";
-    if (datetimeInput) datetimeInput.value = "";
-    if (endDatetimeInput) endDatetimeInput.value = "";
-    if (locationInput) locationInput.value = "";
+    if (startDateInput) startDateInput.value = "";
+    if (startTimeInput) startTimeInput.value = "";
+    if (endDateInput) endDateInput.value = "";
+    if (endTimeInput) endTimeInput.value = "";
     if (descInput) descInput.value = "";
 
     // Reset multi-slot previews
@@ -11972,7 +12324,19 @@ function handleAddOffering(e) {
     if (hasErrors) {
         if (firstErrorEl) {
             firstErrorEl.focus();
-            firstErrorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            safeScrollIntoView(firstErrorEl, false);
+        }
+        return;
+    }
+
+    if (!state.selectedMeetupCoords) {
+        const meetupSection = document.getElementById('offer-meetup-spot-section');
+        if (meetupSection) {
+            const btn = meetupSection.querySelector('button');
+            if (btn) {
+                btn.classList.add('border-red-500', 'ring-1', 'ring-red-500');
+            }
+            safeScrollIntoView(meetupSection, false);
         }
         return;
     }
@@ -12017,8 +12381,10 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
 
     const radiusVal = document.getElementById('offer-radius-slider') ? parseInt(document.getElementById('offer-radius-slider').value) : 5;
 
+    const isNeedMode = (state.currentOfferMode === 'need');
+    const newId = isNeedMode ? 'need-' + Date.now() : 'off_' + Date.now();
     const newOffer = {
-        id: 'off_' + Date.now(),
+        id: newId,
         title: title,
         category: categoryTitle,
         subCategory: subCategory,
@@ -12036,9 +12402,36 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
         type: state.currentOfferMode || 'offering'
     };
 
-    state.userOfferings.push(newOffer);
+    if (isNeedMode) {
+        if (!state.userNeeds) state.userNeeds = [];
+        state.userNeeds.push(newOffer);
+
+        // Also populate state.needsBoard so it shows up in the Village Needs Board
+        const user = state.currentUser || {};
+        const displayName = user.displayName || `${user.firstName || 'Lily'} ${user.lastName || 'Kaufmann'}`;
+        const avatar = user.avatar || DEFAULT_AVATAR;
+        if (!state.needsBoard) state.needsBoard = [];
+        const needObj = {
+            id: newId,
+            neighborName: displayName,
+            avatar: avatar,
+            time: 'Just now',
+            location: locationVal,
+            needTitle: title,
+            needDesc: desc,
+            category: categoryTitle,
+            lat: lat,
+            lng: lng
+        };
+        state.needsBoard.unshift(needObj);
+        window.lastCreatedPost = needObj;
+        state.lastCreatedPost = needObj;
+    } else {
+        if (!state.userOfferings) state.userOfferings = [];
+        state.userOfferings.push(newOffer);
+    }
     
-    // Add dynamic marker on Leaflet map for user's new offering!
+    // Add dynamic marker on Leaflet map for user's new listing!
     if (leafletMap) {
         const pinImgUrl = getCategoryPresetImage(newOffer.category);
         const customIcon = L.divIcon({
@@ -12053,9 +12446,16 @@ function submitAddOffering(title, desc, locationVal, wishlist, categorySelect, c
         const marker = L.marker([lat, lng], { icon: customIcon }).addTo(leafletMap);
         marker.on('click', () => {
             if (typeof playSound === 'function') playSound('click');
-            openMapItemDetail(newOffer.id);
+            openMapItemDetail(isNeedMode ? 'need_' + newOffer.id : newOffer.id);
         });
-        mapMarkers.push({ marker, name: newOffer.id });
+        mapMarkers.push({ marker, name: isNeedMode ? 'need_' + newOffer.id : newOffer.id });
+    }
+
+    if (typeof renderMyCornerItems === 'function') {
+        renderMyCornerItems();
+    }
+    if (typeof renderNeedsBoardView === 'function') {
+        renderNeedsBoardView();
     }
 
     // Reset inputs
@@ -12331,13 +12731,13 @@ function renderConversationsList() {
     // Helper to render a group section
     function renderGroupSection(title, items, icon, colorClass) {
         items.forEach(conv => {
-            let avatarUrl = "";
+            let displayImgUrl = "";
             let neighbor = null;
             if (conv.isGroup) {
-                avatarUrl = conv.avatar || "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=60&w=80&auto=format&fit=crop";
+                displayImgUrl = conv.avatar || "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=60&w=300&auto=format&fit=crop";
             } else {
                 neighbor = state.neighbors ? state.neighbors[conv.neighborName] : null;
-                avatarUrl = neighbor ? neighbor.avatar : "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop";
+                displayImgUrl = (neighbor && neighbor.offerImg) ? neighbor.offerImg : (neighbor ? neighbor.avatar : "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop");
             }
 
             let displayName = conv.neighborName;
@@ -12416,13 +12816,17 @@ function renderConversationsList() {
 
             const category = neighbor ? (neighbor.category || "General") : (conv.isGroup ? "Group" : "General");
 
-            let avatarHtml = `<div class="profile-avatar-ring w-14 h-14 flex-shrink-0 cursor-pointer" onclick="event.stopPropagation(); ${conv.isGroup ? `openGroupSettingsModal('${conv.id}')` : `openNeighborProfileModal('${conv.neighborName.replace(/'/g, "\\'")}')`}"><img alt="${escapeHTML(displayName)}" class="w-full h-full object-cover rounded-full" src="${avatarUrl}"/></div>`;
-            if (conv.neighborName === 'App admin') {
+            let avatarHtml = "";
+            if (conv.isGroup) {
+                avatarHtml = `<div class="w-14 h-14 flex-shrink-0 cursor-pointer" onclick="event.stopPropagation(); openGroupSettingsModal('${conv.id}')"><img alt="${escapeHTML(displayName)}" class="w-full h-full object-cover rounded-full" src="${displayImgUrl}"/></div>`;
+            } else if (conv.neighborName === 'App admin') {
                 avatarHtml = `
                     <div class="w-14 h-14 rounded-full bg-error/10 text-error flex items-center justify-center border border-error/20 shadow-sm select-none cursor-pointer" onclick="event.stopPropagation(); openNeighborProfileModal('${conv.neighborName.replace(/'/g, "\\'")}')">
                         <span class="material-symbols-outlined text-[24px]">admin_panel_settings</span>
                     </div>
                 `;
+            } else {
+                avatarHtml = `<div class="w-14 h-14 flex-shrink-0 cursor-pointer shadow-sm border border-outline-variant/15 rounded-full overflow-hidden" onclick="event.stopPropagation(); openNeighborProfileModal('${conv.neighborName.replace(/'/g, "\\'")}')"><img alt="${escapeHTML(displayName)}" class="w-full h-full object-cover" src="${displayImgUrl}"/></div>`;
             }
 
             const cardWrapper = document.createElement('div');
@@ -12438,7 +12842,7 @@ function renderConversationsList() {
             `;
 
             const card = document.createElement('div');
-            card.className = `chat-card-slider-content group flex items-start gap-4 py-3.5 px-6 ${bgClass} cursor-pointer transition-transform duration-200 relative z-10 bg-white dark:bg-[#18201a]`;
+            card.className = `chat-card-slider-content group flex items-start gap-4 py-5 px-6 ${bgClass} cursor-pointer transition-transform duration-200 relative z-10 bg-white dark:bg-[#18201a]`;
             card.style.transform = "translateX(0px)";
             card.onclick = (e) => {
                 let transformX = 0;
@@ -13004,7 +13408,11 @@ function renderChatDetail(conv) {
     // Toggle the auto-delete banner based on group status
     const banner = document.getElementById('chat-detail-auto-delete-banner');
     if (banner) {
-        banner.classList.add('hidden');
+        if (!conv.isGroup && !conv.isOld && !isComplete) {
+            banner.classList.remove('hidden');
+        } else {
+            banner.classList.add('hidden');
+        }
     }
 
     // Ensure all active chats/requests have timeLeft initialized to '48 hours left'
@@ -13018,12 +13426,12 @@ function renderChatDetail(conv) {
     let ratingText = "";
     
     if (conv.isGroup) {
-        avatarUrl = conv.avatar || "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=60&w=80&auto=format&fit=crop";
+        avatarUrl = conv.avatar || "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=60&w=300&auto=format&fit=crop";
         const membersCount = (conv.groupMembers ? conv.groupMembers.length : 0) + 1;
         ratingText = `Group Chat · ${membersCount} Members`;
     } else {
         const neighbor = state.neighbors ? state.neighbors[conv.neighborName] : null;
-        avatarUrl = neighbor ? neighbor.avatar : "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop";
+        avatarUrl = neighbor ? neighbor.avatar : "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop";
         ratingText = "";
     }
 
@@ -13033,6 +13441,12 @@ function renderChatDetail(conv) {
         if (!conv.isGroup) {
             const neighbor = state.neighbors ? state.neighbors[conv.neighborName] : null;
             if (neighbor) {
+                const firstName = conv.neighborName.split(' ')[0];
+                const offering = neighbor.offerTitle || "";
+                nameHTML = escapeHTML(firstName);
+                if (offering) {
+                    nameHTML += ` - ${escapeHTML(offering)}`;
+                }
                 const nCompleted = neighbor.completedSwaps !== undefined ? neighbor.completedSwaps : Math.floor((neighbor.vouches || 0) * 1.5);
                 const nStrikes = neighbor.strikes || 0;
                 const nCancelled = neighbor.cancelledTrades || 0;
@@ -13046,13 +13460,39 @@ function renderChatDetail(conv) {
         chatHeaderName.innerHTML = nameHTML;
     }
     const headerAvatar = document.getElementById('chat-header-avatar');
-    if (headerAvatar) {
-        headerAvatar.src = avatarUrl;
+    const headerOfferingImg = document.getElementById('chat-header-offering-img');
+    if (conv.isGroup) {
+        if (headerAvatar) {
+            headerAvatar.src = avatarUrl;
+            headerAvatar.classList.remove('hidden');
+        }
+        if (headerOfferingImg) {
+            headerOfferingImg.classList.add('hidden');
+        }
+    } else {
+        const neighbor = state.neighbors ? state.neighbors[conv.neighborName] : null;
+        if (neighbor && neighbor.offerImg && conv.neighborName !== 'App admin') {
+            if (headerOfferingImg) {
+                headerOfferingImg.src = neighbor.offerImg;
+                headerOfferingImg.classList.remove('hidden');
+            }
+            if (headerAvatar) {
+                headerAvatar.classList.add('hidden');
+            }
+        } else {
+            if (headerAvatar) {
+                headerAvatar.src = avatarUrl;
+                headerAvatar.classList.remove('hidden');
+            }
+            if (headerOfferingImg) {
+                headerOfferingImg.classList.add('hidden');
+            }
+        }
     }
     const ratingEl = document.getElementById('chat-header-rating');
     if (ratingEl) {
         ratingEl.innerText = ratingText;
-        if (ratingText) {
+        if (conv.isGroup && ratingText) {
             ratingEl.classList.remove('hidden');
         } else {
             ratingEl.classList.add('hidden');
@@ -13060,23 +13500,11 @@ function renderChatDetail(conv) {
     }
 
     const expiryContainer = document.getElementById('chat-header-expiry-container');
-    const expiryVal = document.getElementById('chat-header-expiry-val');
-    const completeBtn = document.getElementById('chat-header-complete-btn');
-
     if (expiryContainer) {
-        if (!conv.isGroup && !conv.isOld && conv.negotiation && conv.negotiation.meetupLocation && conv.locationChosenAt && conv.negotiation.status !== 'completed') {
-            expiryContainer.classList.remove('hidden');
-            if (expiryVal) {
-                const elapsed = Date.now() - conv.locationChosenAt;
-                const remainingMs = Math.max(0, 48 * 60 * 60 * 1000 - elapsed);
-                const remainingHours = Math.round(remainingMs / (60 * 60 * 1000));
-                expiryVal.innerText = `${remainingHours}h left`;
-            }
-        } else {
-            expiryContainer.classList.add('hidden');
-        }
+        expiryContainer.classList.add('hidden');
     }
 
+    const completeBtn = document.getElementById('chat-header-complete-btn');
     if (completeBtn) {
         if (!conv.isGroup && !conv.isOld && (!conv.negotiation || conv.negotiation.status !== 'completed')) {
             completeBtn.classList.remove('hidden');
@@ -13374,7 +13802,7 @@ function renderChatDetail(conv) {
                 </div>
             `;
         } else {
-            const myAvatarUrl = state.currentUser ? state.currentUser.avatar : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80";
+            const myAvatarUrl = state.currentUser ? state.currentUser.avatar : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=300";
             const myName = state.currentUser ? (state.currentUser.displayName || (state.currentUser.firstName && state.currentUser.lastName ? `${state.currentUser.firstName} ${state.currentUser.lastName}` : 'Lily Kaufmann')) : 'Lily Kaufmann';
             msgDiv.className = `flex gap-2.5 items-end max-w-[88%] w-full ${animClass} my-1.5 ${isMe ? 'self-end justify-end' : 'self-start justify-start'}`;
             const senderLabel = '';
@@ -13447,7 +13875,7 @@ function renderChatDetail(conv) {
                                     
                                     <!-- Center Swap Icon -->
                                     <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm" style="font-family: 'Outfit', sans-serif;">
-                                        <span class="material-symbols-outlined text-sm font-bold">swap_horiz</span>
+                                        <span class="material-symbols-outlined text-sm font-bold">handshake</span>
                                     </div>
                                     
                                     <!-- Right: Get -->
@@ -13539,7 +13967,7 @@ function renderChatDetail(conv) {
                                     
                                     <!-- Center Swap Icon -->
                                     <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/10 dark:border-white/10 shadow-sm" style="font-family: 'Outfit', sans-serif;">
-                                        <span class="material-symbols-outlined text-sm font-bold">swap_horiz</span>
+                                        <span class="material-symbols-outlined text-sm font-bold">handshake</span>
                                     </div>
                                     
                                     <!-- Right: Give (what I give) -->
@@ -13682,11 +14110,9 @@ function renderChatTradeDrawer(conv) {
                     <div class="chat-pill-input-wrapper flex items-center w-[calc(100%-32px)] max-w-[370px] h-[54px] rounded-full px-4 py-1" id="chat-input-wrapper-group" onclick="window.handleChatInputWrapperClick(event, this)">
                         <input class="flex-grow bg-transparent border-0 h-full py-0 px-2 text-sm font-normal outline-none focus:ring-0 text-on-surface" id="chat-text-input" placeholder="Type a message..." type="text" onkeydown="if(event.key === 'Enter') handleSendTextMessage()" />
                         <div class="flex items-center gap-1.5 flex-shrink-0">
-                            ${hasMapViewLink ? `
-                            <button class="w-[38px] h-[38px] bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer" onclick="window.viewMeetupLocationOnMap('${conv.id}')" title="View Swap Map">
+                            <button class="w-[38px] h-[38px] bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer" onclick="window.handleGroupChatMapClick('${conv.id}')" title="Select Group Swap Location">
                                 <span class="material-symbols-outlined text-[17px] text-white">map</span>
                             </button>
-                            ` : ''}
                             <button class="w-[38px] h-[38px] bg-forest-green text-warm-cream rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm cursor-pointer" onclick="handleSendTextMessage()" title="Send">
                                 <span class="material-symbols-outlined text-[17px]">send</span>
                             </button>
@@ -13882,7 +14308,7 @@ function renderChatTradeDrawer(conv) {
                     
                     <!-- Center Swap Badge -->
                     <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-7 h-7 rounded-full bg-forest-green dark:bg-[#308A5E] border-2 border-white dark:border-outline-variant text-warm-cream dark:text-emerald-300 shadow-md z-10 animate-pulse">
-                        <span class="material-symbols-outlined text-xs font-bold animate-spin-slow">swap_horiz</span>
+                        <span class="material-symbols-outlined text-xs font-bold animate-spin-slow">handshake</span>
                     </div>
                     
                     <!-- Right Item Card -->
@@ -13929,7 +14355,7 @@ function renderChatTradeDrawer(conv) {
                     
                     <!-- Center Swap Badge -->
                     <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-7 h-7 rounded-full bg-forest-green dark:bg-[#308A5E] border-2 border-white dark:border-outline-variant text-warm-cream dark:text-emerald-300 shadow-md z-10 animate-pulse">
-                        <span class="material-symbols-outlined text-xs font-bold animate-spin-slow">swap_horiz</span>
+                        <span class="material-symbols-outlined text-xs font-bold animate-spin-slow">handshake</span>
                     </div>
                     
                     <!-- Right Item Card -->
@@ -13971,7 +14397,7 @@ function renderChatTradeDrawer(conv) {
                     
                     <!-- Center Swap Badge -->
                     <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-7 h-7 rounded-full bg-forest-green dark:bg-[#308A5E] border-2 border-white dark:border-outline-variant text-warm-cream dark:text-emerald-300 shadow-md z-10 animate-pulse">
-                        <span class="material-symbols-outlined text-xs font-bold animate-spin-slow">swap_horiz</span>
+                        <span class="material-symbols-outlined text-xs font-bold animate-spin-slow">handshake</span>
                     </div>
                     
                     <!-- Right Item Card -->
@@ -14751,7 +15177,7 @@ window.openGroupSettingsModal = function(convId) {
     // Populate details
     const avatarEl = document.getElementById('group-settings-avatar');
     if (avatarEl) {
-        avatarEl.src = conv.avatar || "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=60&w=80&auto=format&fit=crop";
+        avatarEl.src = conv.avatar || "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=60&w=300&auto=format&fit=crop";
     }
     const nameEl = document.getElementById('group-settings-name');
     if (nameEl) {
@@ -14802,8 +15228,8 @@ function renderGroupMembersList(conv, isCurrentUserAdmin, currentUserDisplayName
         
         const neighbor = state.neighbors[name];
         const avatar = isSelf 
-            ? (state.currentUser ? state.currentUser.avatar : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80")
-            : (neighbor ? neighbor.avatar : "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop");
+            ? (state.currentUser ? state.currentUser.avatar : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=300")
+            : (neighbor ? neighbor.avatar : "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop");
             
         const memberRow = document.createElement('div');
         memberRow.className = "flex items-center justify-between p-2.5 bg-white dark:bg-[#101612] border border-outline-variant/15 rounded-xl shadow-sm";
@@ -14906,7 +15332,7 @@ window.openAddMemberSubModal = function() {
     } else {
         eligibleFriends.forEach(friend => {
             const name = friend.name;
-            const avatar = friend.avatar || "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop";
+            const avatar = friend.avatar || "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop";
             
             const friendRow = document.createElement('div');
             friendRow.className = "flex items-center justify-between p-2 bg-white dark:bg-[#101612] border border-outline-variant/10 rounded-xl";
@@ -15016,7 +15442,7 @@ function handleCreateGroup() {
     }
     
     const groupConvId = 'group_' + Date.now();
-    const groupAvatar = createGroupAvatarUrl || "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=60&w=80&auto=format&fit=crop";
+    const groupAvatar = createGroupAvatarUrl || "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=60&w=300&auto=format&fit=crop";
     
     const currentUserDisplayName = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
     
@@ -15767,11 +16193,11 @@ function populateSocialsUI(containerId, socialObj) {
             openSocialAppOrWeb('instagram', instagramVal);
         }
     };
-    instBtn.className = "w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600 text-white active:scale-95 transition-all shadow-sm cursor-pointer select-none hover:opacity-90 flex-shrink-0";
+    instBtn.className = "w-12 h-12 rounded-full flex items-center justify-center bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600 text-white active:scale-95 transition-all shadow-sm cursor-pointer select-none hover:opacity-90 flex-shrink-0";
     instBtn.style.textDecoration = 'none';
     instBtn.title = "Instagram";
     instBtn.innerHTML = `
-        <svg class="w-[22px] h-[22px] flex-shrink-0" style="width: 22px; height: 22px; min-width: 22px; min-height: 22px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="w-6 h-6 flex-shrink-0" style="width: 24px; height: 24px; min-width: 24px; min-height: 24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
             <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
@@ -15791,11 +16217,11 @@ function populateSocialsUI(containerId, socialObj) {
             openSocialAppOrWeb('facebook', facebookVal);
         }
     };
-    fbBtn.className = "w-10 h-10 rounded-full flex items-center justify-center bg-[#1877F2] text-white active:scale-95 transition-all shadow-sm cursor-pointer select-none hover:opacity-90 flex-shrink-0";
+    fbBtn.className = "w-12 h-12 rounded-full flex items-center justify-center bg-[#1877F2] text-white active:scale-95 transition-all shadow-sm cursor-pointer select-none hover:opacity-90 flex-shrink-0";
     fbBtn.style.textDecoration = 'none';
     fbBtn.title = "Facebook";
     fbBtn.innerHTML = `
-        <svg class="w-[22px] h-[22px] flex-shrink-0" style="width: 22px; height: 22px; min-width: 22px; min-height: 22px;" viewBox="0 0 24 24" fill="currentColor">
+        <svg class="w-6 h-6 flex-shrink-0" style="width: 24px; height: 24px; min-width: 24px; min-height: 24px;" viewBox="0 0 24 24" fill="currentColor">
             <path d="M9.1 23.7V15.7H6.6v-3.7h2.5V9.4c0-4.1 2.5-6.3 6.1-6.3 1.7 0 3.2.1 3.7.2v4.3h-2.5c-2 0-2.4 1-2.4 2.3v3.1h4.7l-.6 3.7h-4.1v8H9.1z"/>
         </svg>
     `;
@@ -15813,11 +16239,11 @@ function populateSocialsUI(containerId, socialObj) {
             openSocialAppOrWeb('tiktok', tiktokVal);
         }
     };
-    ttBtn.className = "w-10 h-10 rounded-full flex items-center justify-center bg-black text-white active:scale-95 transition-all shadow-sm cursor-pointer select-none hover:opacity-90 flex-shrink-0";
+    ttBtn.className = "w-12 h-12 rounded-full flex items-center justify-center bg-black text-white active:scale-95 transition-all shadow-sm cursor-pointer select-none hover:opacity-90 flex-shrink-0";
     ttBtn.style.textDecoration = 'none';
     ttBtn.title = "TikTok";
     ttBtn.innerHTML = `
-        <svg class="w-[22px] h-[22px] flex-shrink-0" style="width: 22px; height: 22px; min-width: 22px; min-height: 22px;" viewBox="0 0 24 24" fill="currentColor">
+        <svg class="w-6 h-6 flex-shrink-0" style="width: 24px; height: 24px; min-width: 24px; min-height: 24px;" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12.53.02C13.84 0 15.12.35 16.25 1.01A8.25 8.25 0 0 0 18 0h3.29a1 1 0 0 1 1 1.04c-.06 2.87-1.42 5.51-3.72 7.18A5.76 5.76 0 0 1 16.5 9V15.5c0 3.59-2.91 6.5-6.5 6.5S3.5 19.09 3.5 15.5s2.91-6.5 6.5-6.5c.34 0 .68.03 1 .08V12.7a3.5 3.5 0 1 0 2 3.3V0h-.475z"/>
         </svg>
     `;
@@ -15971,6 +16397,16 @@ function renderProfileSettings() {
     // Populate badges list
     if (typeof renderBadgesList === 'function') {
         renderBadgesList('user-badges-container', 'Lily Kaufmann');
+    }
+
+    // Expand My Corner section by default when profile loads
+    const myCornerContent = document.getElementById('accordion-content-my-listings');
+    if (myCornerContent && myCornerContent.classList.contains('hidden')) {
+        myCornerContent.classList.remove('hidden');
+        const chevron = document.getElementById('accordion-chevron-my-listings');
+        if (chevron) {
+            chevron.style.transform = 'rotate(90deg)';
+        }
     }
 
     // Render Upcoming Events
@@ -16215,10 +16651,17 @@ function renderProfileSettings() {
 
     // Render Swaps History
     const tradeLogContainer = document.getElementById('profile-trade-log-container');
-    if (tradeLogContainer) {
-        tradeLogContainer.innerHTML = "";
+    const fullLedgerContainer = document.getElementById('full-swap-ledger-container');
+    if (tradeLogContainer || fullLedgerContainer) {
+        if (tradeLogContainer) tradeLogContainer.innerHTML = "";
+        if (fullLedgerContainer) fullLedgerContainer.innerHTML = "";
+        
         let tradeConversations = state.conversations.filter(conv => conv.negotiation && conv.negotiation.status === 'completed');
         let hasTrades = tradeConversations.length > 0;
+        
+        // Update pill count
+        const ledgerPillCount = document.getElementById('pill-count-ledger');
+        if (ledgerPillCount) ledgerPillCount.innerText = `${tradeConversations.length} Swaps`;
 
         let limit = 1;
         let displayedTrades = tradeConversations;
@@ -16229,14 +16672,37 @@ function renderProfileSettings() {
             isTruncated = true;
         }
 
+        tradeConversations.forEach(conv => {
+            const neighbor = state.neighbors ? state.neighbors[conv.neighborName] : null;
+            if (!neighbor) return;
+
+            const card = document.createElement('div');
+            card.className = "bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex flex-col gap-3 mb-3";
+            card.innerHTML = `
+                <div class="flex gap-3 items-center">
+                    <div class="profile-avatar-ring w-8 h-8 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity" onclick="openNeighborProfileModal('${conv.neighborName}')" title="Click to view profile"><img src="${neighbor.avatar}" class="w-full h-full object-cover rounded-full"></div>
+                    <div class="flex-grow min-w-0 text-left">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-bold text-forest-green dark:text-white text-xs truncate cursor-pointer hover:underline" onclick="openNeighborProfileModal('${conv.neighborName}')" title="Click to view profile">
+                                ${conv.neighborName}
+                            </h4>
+                        </div>
+                        <p class="text-[10px] text-gray-500 truncate mt-1">
+                            Swap: <span class="font-semibold text-forest-green dark:text-white">${conv.negotiation.offeredItem || 'Tutoring'}</span> ⇆ <span class="font-semibold text-forest-green dark:text-white">${conv.negotiation.requestedItem}</span>
+                        </p>
+                    </div>
+                </div>
+            `;
+            if (fullLedgerContainer) fullLedgerContainer.appendChild(card.cloneNode(true));
+        });
+
+        // Populate legacy container
         displayedTrades.forEach(conv => {
             const neighbor = state.neighbors ? state.neighbors[conv.neighborName] : null;
             if (!neighbor) return;
 
             const card = document.createElement('div');
             card.className = "bg-black/[0.02] dark:bg-white/[0.02] p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-sm flex flex-col gap-3 mb-3";
-            const statusInfo = getConversationStatusInfo(conv);
-
             card.innerHTML = `
                 <div class="flex gap-3 items-center">
                     <div class="profile-avatar-ring w-8 h-8 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity" onclick="openNeighborProfileModal('${conv.neighborName}')" title="Click to view profile"><img src="${neighbor.avatar}" class="w-full h-full object-cover rounded-full"></div>
@@ -16252,301 +16718,662 @@ function renderProfileSettings() {
                     </div>
                 </div>
             `;
-            tradeLogContainer.appendChild(card);
+            if (tradeLogContainer) tradeLogContainer.appendChild(card);
         });
 
-        if (isTruncated) {
-            const moreBtn = document.createElement('button');
-            moreBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
-            moreBtn.innerText = "Show More Swaps";
-            moreBtn.onclick = function() {
-                state.showAllSwaps = true;
-                renderProfileSettings();
-            };
-            tradeLogContainer.appendChild(moreBtn);
-        } else if (state.showAllSwaps && tradeConversations.length > limit) {
-            const lessBtn = document.createElement('button');
-            lessBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
-            lessBtn.innerText = "Show Less";
-            lessBtn.onclick = function() {
-                state.showAllSwaps = false;
-                renderProfileSettings();
-            };
-            tradeLogContainer.appendChild(lessBtn);
-        }
+        if (tradeLogContainer) {
+            if (isTruncated) {
+                const moreBtn = document.createElement('button');
+                moreBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
+                moreBtn.innerText = "Show More Swaps";
+                moreBtn.onclick = function() {
+                    state.showAllSwaps = true;
+                    renderProfileSettings();
+                };
+                tradeLogContainer.appendChild(moreBtn);
+            } else if (state.showAllSwaps && tradeConversations.length > limit) {
+                const lessBtn = document.createElement('button');
+                lessBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
+                lessBtn.innerText = "Show Less";
+                lessBtn.onclick = function() {
+                    state.showAllSwaps = false;
+                    renderProfileSettings();
+                };
+                tradeLogContainer.appendChild(lessBtn);
+            }
 
-        if (!hasTrades) {
-            tradeLogContainer.innerHTML = `<div class="text-center py-4 text-[10px] text-on-surface-variant italic">No barter trades logged yet.</div>`;
+            if (!hasTrades) {
+                tradeLogContainer.innerHTML = `<div class="text-center py-4 text-[10px] text-on-surface-variant italic">No barter trades logged yet.</div>`;
+            }
+        }
+        
+        if (fullLedgerContainer && !hasTrades) {
+            fullLedgerContainer.innerHTML = `<div class="text-center py-8 text-[11px] text-gray-500 italic">No barter trades logged yet.</div>`;
         }
     }
 
     // Render My Listed Events
     const eventsContainer = document.getElementById('my-events-container');
-    if (eventsContainer) {
-        eventsContainer.innerHTML = "";
-        const myEvents = (state.events || []).filter(evt => evt.host === 'me' || evt.host === 'Lily Kaufmann');
-        if (myEvents.length === 0) {
-            eventsContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1">You haven't listed any events yet.</p>`;
-        } else {
-            let limit = 1;
-            let displayedEvents = myEvents;
-            let isTruncated = false;
-            if (!state.showAllMyEvents && myEvents.length > limit) {
-                displayedEvents = myEvents.slice(0, limit);
-                isTruncated = true;
+    const fullRsvpedEventsListEl = document.getElementById('full-my-events-rsvped-list');
+    const fullHostedEventsListEl = document.getElementById('full-my-events-hosted-list');
+    
+    if (eventsContainer || fullRsvpedEventsListEl || fullHostedEventsListEl) {
+        if (eventsContainer) eventsContainer.innerHTML = "";
+        if (fullRsvpedEventsListEl) fullRsvpedEventsListEl.innerHTML = "";
+        if (fullHostedEventsListEl) fullHostedEventsListEl.innerHTML = "";
+
+        const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
+        const myEvents = (state.events || []).filter(evt => {
+            const isRsvped = evt.rsvps && evt.rsvps.includes(currentUser);
+            const isHost = evt.host === currentUser || evt.host === 'me' || evt.host === 'Lily Kaufmann';
+            return isRsvped || isHost;
+        }).sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+
+        const rsvpedEvents = (state.events || []).filter(evt => {
+            const isRsvped = evt.rsvps && evt.rsvps.includes(currentUser);
+            const isHost = evt.host === currentUser || evt.host === 'me' || evt.host === 'Lily Kaufmann';
+            return isRsvped && !isHost;
+        }).sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+
+        const hostedEvents = (state.events || []).filter(evt => {
+            const isHost = evt.host === currentUser || evt.host === 'me' || evt.host === 'Lily Kaufmann';
+            return isHost;
+        }).sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+
+        // Update events pill count
+        const eventsPillCount = document.getElementById('pill-count-events');
+        if (eventsPillCount) eventsPillCount.innerText = `${myEvents.length} Events`;
+
+        // Render full page lists
+        if (fullRsvpedEventsListEl) {
+            if (rsvpedEvents.length === 0) {
+                fullRsvpedEventsListEl.innerHTML = `<p class="text-xs text-gray-500 italic py-6 text-center">No upcoming events scheduled yet.</p>`;
+            } else {
+                rsvpedEvents.forEach(evt => {
+                    const dateObj = new Date(evt.datetime);
+                    const dateStr = dateObj.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' at ' + dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    const presetImg = getEventPresetImage(evt.type);
+                    const imgHtml = presetImg ? `
+                        <div class="w-10 h-10 rounded-full overflow-hidden border border-black/10 dark:border-white/10 flex-shrink-0 bg-slate-50 dark:bg-[#18201a]">
+                            <img src="${presetImg}" class="w-full h-full object-cover" />
+                        </div>
+                    ` : `
+                        <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 flex-shrink-0 border border-black/10 dark:border-white/10 bg-slate-50 dark:bg-[#18201a]">
+                            <span class="material-symbols-outlined text-[20px] font-bold" style="color: #3b82f6;">festival</span>
+                        </div>
+                    `;
+
+                    const card = document.createElement('div');
+                    card.className = "flex items-center justify-between p-4 bg-white dark:bg-[#1f2922] rounded-2xl border border-black/10 dark:border-white/10 shadow-sm active:scale-[0.99] transition-all cursor-pointer hover:border-forest-green/30 hover:bg-forest-green/5 dark:hover:bg-forest-green/10 mb-3";
+                    card.onclick = (e) => {
+                        if (e.target.closest('.delete-evt-btn')) return;
+                        window.detailOverlayCameFromProfile = true;
+                        showView('village');
+                        openMapEventDetail(evt);
+                    };
+                    card.innerHTML = `
+                        <div class="flex items-center gap-3.5 min-w-0 flex-grow text-left">
+                            ${imgHtml}
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-1.5 min-w-0 flex-wrap">
+                                    <span class="inline-block text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 mb-1">Event</span>
+                                </div>
+                                <h4 class="text-[11.5px] font-bold text-black dark:text-warm-cream mt-1 leading-tight truncate">${evt.title}</h4>
+                                <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${dateStr}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-450 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent delete-evt-btn" onclick="deleteMyCornerItem('events', '${evt.id}', event)">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
+                            <span class="text-[8px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800 shrink-0">Confirmed</span>
+                        </div>
+                    `;
+                    fullRsvpedEventsListEl.appendChild(card);
+                });
             }
+        }
 
-            displayedEvents.forEach(evt => {
-                const evtIcon = 'event';
-                const catColor = '#eab308';
-                const bgStyle = `background-color: rgba(234, 179, 8, 0.15) !important; color: ${catColor} !important;`;
-                
-                const card = document.createElement('div');
-                card.className = "flex items-center p-3 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/10 dark:border-white/10 shadow-sm relative w-full mb-2.5 cursor-pointer hover:bg-forest-green/5 transition-colors";
-                card.onclick = (e) => {
-                    if (e.target.closest('.delete-evt-btn')) return;
-                    openEventDetail(evt.id);
-                };
-                card.innerHTML = `
-                    <div class="w-[38px] h-[38px] rounded-xl text-black dark:text-white flex items-center justify-center mr-3 flex-shrink-0" style="${bgStyle}">
-                        <span class="material-symbols-outlined text-[20px]">${evtIcon}</span>
-                    </div>
-                    <div class="flex-grow min-w-0 pr-3 text-left">
-                        <h4 class="text-forest-green dark:text-white truncate leading-tight font-medium text-sm">${evt.title}</h4>
-                        <p class="text-gray-500 truncate mt-0.5">${evt.desc || 'No description'} · <span class="text-gray-600">${evt.type || 'Community'}</span></p>
-                    </div>
-                    <button class="text-error hover:opacity-80 p-1 flex-shrink-0 delete-evt-btn" onclick="handleDeleteEvent('${evt.id}')">
-                        <span class="material-symbols-outlined text-[16px]">delete</span>
-                    </button>
-                `;
-                eventsContainer.appendChild(card);
-            });
+        if (fullHostedEventsListEl) {
+            if (hostedEvents.length === 0) {
+                fullHostedEventsListEl.innerHTML = `<p class="text-xs text-gray-500 italic py-6 text-center">You aren't hosting any events yet.</p>`;
+            } else {
+                hostedEvents.forEach(evt => {
+                    const dateObj = new Date(evt.datetime);
+                    const dateStr = dateObj.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' at ' + dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    const presetImg = getEventPresetImage(evt.type);
+                    const imgHtml = presetImg ? `
+                        <div class="w-10 h-10 rounded-full overflow-hidden border border-black/10 dark:border-white/10 flex-shrink-0 bg-slate-50 dark:bg-[#18201a]">
+                            <img src="${presetImg}" class="w-full h-full object-cover" />
+                        </div>
+                    ` : `
+                        <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 flex-shrink-0 border border-black/10 dark:border-white/10 bg-slate-50 dark:bg-[#18201a]">
+                            <span class="material-symbols-outlined text-[20px] font-bold" style="color: #3b82f6;">festival</span>
+                        </div>
+                    `;
 
-            if (isTruncated) {
-                const moreBtn = document.createElement('button');
-                moreBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
-                moreBtn.innerText = "See More";
-                moreBtn.onclick = function() {
-                    state.showAllMyEvents = true;
-                    renderProfileSettings();
-                };
-                eventsContainer.appendChild(moreBtn);
-            } else if (state.showAllMyEvents && myEvents.length > limit) {
-                const lessBtn = document.createElement('button');
-                lessBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
-                lessBtn.innerText = "See Less";
-                lessBtn.onclick = function() {
-                    state.showAllMyEvents = false;
-                    renderProfileSettings();
-                };
-                eventsContainer.appendChild(lessBtn);
+                    const card = document.createElement('div');
+                    card.className = "flex items-center justify-between p-4 bg-white dark:bg-[#1f2922] rounded-2xl border border-black/10 dark:border-white/10 shadow-sm active:scale-[0.99] transition-all cursor-pointer hover:border-forest-green/30 hover:bg-forest-green/5 dark:hover:bg-forest-green/10 mb-3";
+                    card.onclick = (e) => {
+                        if (e.target.closest('.delete-evt-btn')) return;
+                        window.detailOverlayCameFromProfile = true;
+                        showView('village');
+                        openMapEventDetail(evt);
+                    };
+                    card.innerHTML = `
+                        <div class="flex items-center gap-3.5 min-w-0 flex-grow text-left">
+                            ${imgHtml}
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-1.5 min-w-0 flex-wrap">
+                                    <span class="inline-block text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 mb-1">Event</span>
+                                    <span class="bg-blue-500 text-white text-[7px] px-1 py-0.2 rounded font-bold uppercase tracking-wider mb-1 inline-block">Host</span>
+                                </div>
+                                <h4 class="text-[11.5px] font-bold text-black dark:text-warm-cream mt-1 leading-tight truncate">${evt.title}</h4>
+                                <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${dateStr}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-450 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent delete-evt-btn" onclick="deleteMyCornerItem('events', '${evt.id}', event)">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
+                            <span class="text-[8px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800 shrink-0">Host</span>
+                        </div>
+                    `;
+                    fullHostedEventsListEl.appendChild(card);
+                });
+            }
+        }
+
+        // Render legacy accordion list (Only hosts)
+        if (eventsContainer) {
+            const hostEvents = myEvents.filter(evt => evt.host === 'me' || evt.host === 'Lily Kaufmann');
+            if (hostEvents.length === 0) {
+                eventsContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1">You haven't listed any events yet.</p>`;
+            } else {
+                let limit = 1;
+                let displayedEvents = hostEvents;
+                let isTruncated = false;
+                if (!state.showAllMyEvents && hostEvents.length > limit) {
+                    displayedEvents = hostEvents.slice(0, limit);
+                    isTruncated = true;
+                }
+
+                displayedEvents.forEach(evt => {
+                    const presetImg = getEventPresetImage(evt.type);
+                    const imgHtml = presetImg ? `
+                        <div class="w-10 h-10 rounded-full overflow-hidden border border-black/10 dark:border-white/10 flex-shrink-0 bg-slate-50 dark:bg-[#18201a]">
+                            <img src="${presetImg}" class="w-full h-full object-cover" />
+                        </div>
+                    ` : `
+                        <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 flex-shrink-0 border border-black/10 dark:border-white/10 bg-slate-50 dark:bg-[#18201a]">
+                            <span class="material-symbols-outlined text-[20px] font-bold" style="color: #3b82f6;">festival</span>
+                        </div>
+                    `;
+                    
+                    const card = document.createElement('div');
+                    card.className = "flex items-center justify-between p-4 bg-white dark:bg-[#1f2922] rounded-2xl border border-black/10 dark:border-white/10 shadow-sm active:scale-[0.99] transition-all cursor-pointer hover:border-forest-green/30 hover:bg-forest-green/5 dark:hover:bg-forest-green/10 mb-3";
+                    card.onclick = (e) => {
+                        if (e.target.closest('.delete-evt-btn')) return;
+                        window.detailOverlayCameFromProfile = true;
+                        showView('village');
+                        openMapEventDetail(evt);
+                    };
+                    card.innerHTML = `
+                        <div class="flex items-center gap-3.5 min-w-0 flex-grow text-left">
+                            ${imgHtml}
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-1.5 min-w-0 flex-wrap">
+                                    <span class="inline-block text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 mb-1">Event</span>
+                                    <span class="bg-blue-500 text-white text-[7px] px-1 py-0.2 rounded font-bold uppercase tracking-wider mb-1 inline-block">Host</span>
+                                </div>
+                                <h4 class="text-[11.5px] font-bold text-black dark:text-warm-cream mt-1 leading-tight truncate">${evt.title}</h4>
+                                <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${new Date(evt.datetime).toLocaleDateString([], { month: 'short', day: 'numeric' })}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-450 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent delete-evt-btn" onclick="deleteMyCornerItem('events', '${evt.id}', event)">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
+                            <span class="text-[8px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800 shrink-0">Host</span>
+                        </div>
+                    `;
+                    eventsContainer.appendChild(card);
+                });
+
+                if (isTruncated) {
+                    const moreBtn = document.createElement('button');
+                    moreBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
+                    moreBtn.innerText = "See More";
+                    moreBtn.onclick = function() {
+                        state.showAllMyEvents = true;
+                        renderProfileSettings();
+                    };
+                    eventsContainer.appendChild(moreBtn);
+                } else if (state.showAllMyEvents && hostEvents.length > limit) {
+                    const lessBtn = document.createElement('button');
+                    lessBtn.className = "w-full py-2 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 text-forest-green dark:text-[#308A5E] text-[11px] font-bold rounded-xl border border-black/10 dark:border-white/10 mt-1 cursor-pointer active:scale-95 transition-all text-center";
+                    lessBtn.innerText = "See Less";
+                    lessBtn.onclick = function() {
+                        state.showAllMyEvents = false;
+                        renderProfileSettings();
+                    };
+                    eventsContainer.appendChild(lessBtn);
+                }
             }
         }
     }
 
     // Render Consolidated Saved Section
     const savedContainer = document.getElementById('profile-saved-items-container');
+    const fullSavedListingsEl = document.getElementById('full-saved-listings-list');
+    const fullSavedEventsEl = document.getElementById('full-saved-events-list');
     const filterSelect = document.getElementById('saved-section-filter');
-    if (filterSelect) {
-        if (!state.profileSavedFilter) {
-            state.profileSavedFilter = 'needs';
-        }
-        filterSelect.value = state.profileSavedFilter;
-    }
+    const fullFilterSelect = document.getElementById('full-saved-section-filter');
     
-    if (savedContainer) {
-        savedContainer.innerHTML = "";
-        const activeFilter = state.profileSavedFilter || 'needs';
+    if (savedContainer || fullSavedListingsEl || fullSavedEventsEl) {
+        if (savedContainer) savedContainer.innerHTML = "";
+        if (fullSavedListingsEl) fullSavedListingsEl.innerHTML = "";
+        if (fullSavedEventsEl) fullSavedEventsEl.innerHTML = "";
         
-        if (activeFilter === 'needs') {
-            const savedNeeds = (state.savedListings || []).filter(id => id.startsWith('need_'));
+        const activeFilter = state.profileSavedFilter || 'needs';
+        if (filterSelect) filterSelect.value = activeFilter;
+        if (fullFilterSelect) fullFilterSelect.value = activeFilter;
+
+        const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
+
+        // Sync pill count for saved items
+        const savedNeedsCount = (state.savedListings || []).filter(id => id.startsWith('need_')).length;
+        const savedOfferingsCount = (state.savedListings || []).filter(id => !id.startsWith('need_') && !id.startsWith('evt_')).length;
+        const savedEventsCount = (state.savedEvents || []).length + (state.savedListings || []).filter(id => id.startsWith('evt_')).length;
+        const totalSaved = savedNeedsCount + savedOfferingsCount + savedEventsCount;
+        
+        const savedPillCount = document.getElementById('pill-count-saved');
+        if (savedPillCount) savedPillCount.innerText = `${totalSaved} Saved`;
+
+        const renderEmptyMini = (msg) => {
+            if (savedContainer) savedContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1">${msg}</p>`;
+        };
+
+        // Populate full screen elements (listings and events lists)
+        if (fullSavedListingsEl) {
+            let hasListings = false;
             
-            // Filter out non-existent needs automatically
-            const validNeeds = [];
+            // 1. Render saved needs
+            const savedNeeds = (state.savedListings || []).filter(id => id.startsWith('need_'));
             savedNeeds.forEach(id => {
                 const needId = id.replace('need_', '');
                 const need = state.needsBoard ? state.needsBoard.find(n => n.id === needId) : null;
                 if (need) {
-                    validNeeds.push(id);
-                }
-            });
-            
-            if (validNeeds.length === 0) {
-                savedContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1">No saved needs yet.</p>`;
-            } else {
-                validNeeds.forEach(id => {
-                    const needId = id.replace('need_', '');
-                    const need = state.needsBoard.find(n => n.id === needId);
-                    
+                    hasListings = true;
+                    const finalImg = getCategoryPresetImage(need.category) || PLACEHOLDER_IMAGE;
                     const card = document.createElement('div');
-                    card.className = "flex items-start p-3 bg-white dark:bg-[#18201a] rounded-xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm relative w-full mb-2.5 cursor-pointer hover:bg-forest-green/5 transition-colors";
+                    card.className = "flex items-center justify-between p-4 bg-white dark:bg-[#1f2922] rounded-2xl border border-black/10 dark:border-white/10 shadow-sm active:scale-[0.99] transition-all cursor-pointer hover:border-forest-green/30 hover:bg-forest-green/5 dark:hover:bg-forest-green/10 mb-3";
                     card.onclick = (e) => {
                         if (e.target.closest('.unsave-btn')) return;
+                        window.detailOverlayCameFromProfile = true;
                         showView('village');
                         openMapItemDetail(id);
                     };
-
-                    const finalImg = getCategoryPresetImage(need.category) || PLACEHOLDER_IMAGE;
-
-                    card.innerHTML = `
-                        <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden rounded-xl mr-3">
+                    
+                    const imgHtml = finalImg ? `
+                        <div class="w-10 h-10 rounded-full overflow-hidden border border-black/10 dark:border-white/10 flex-shrink-0 bg-slate-50 dark:bg-[#18201a]">
                             <img src="${finalImg}" class="w-full h-full object-cover">
                         </div>
-                        <div class="flex-grow min-w-0 pr-3 text-left">
-                            <h4 class="font-medium text-forest-green dark:text-white text-sm truncate leading-tight">${need.needTitle}</h4>
-                            <p class="text-xs text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">${need.needDesc}</p>
-                            <p class="text-[9px] text-gray-500 flex items-center flex-wrap gap-1 mt-2">
-                                By <span class="font-bold cursor-pointer hover:underline" onclick="event.stopPropagation(); ${need.neighborName === (state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann') ? `showView('profile_settings')` : `openNeighborProfileModal('${escapeHTML(need.neighborName)}')`}">${escapeHTML(need.neighborName)}</span> · <span class="font-semibold uppercase text-[7.5px] text-gray-600 tracking-wider">${need.category}</span>
-                            </p>
-                        </div>
-                        <div class="flex items-center gap-1 flex-shrink-0">
-                            <button class="text-error hover:opacity-80 p-1 unsave-btn cursor-pointer mr-1" onclick="handleUnsaveListing(event, '${id}')" title="Delete Saved Need">
-                                <span class="material-symbols-outlined text-error text-[16px]">delete</span>
-                            </button>
-                            <button class="text-black dark:text-white hover:opacity-80 p-1 unsave-btn cursor-pointer" onclick="handleUnsaveListing(event, '${id}')">
-                                <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">bookmark</span>
-                            </button>
+                    ` : `
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-black/10 dark:border-white/10 bg-slate-50 dark:bg-[#18201a]" style="color: #eab308;">
+                            <span class="material-symbols-outlined text-[20px] font-bold" style="color: #eab308;">shopping_basket</span>
                         </div>
                     `;
-                    savedContainer.appendChild(card);
-                });
-            }
-            
-        } else if (activeFilter === 'offerings') {
+
+                    card.innerHTML = `
+                        <div class="flex items-center gap-3.5 min-w-0 flex-grow text-left">
+                            ${imgHtml}
+                            <div class="min-w-0 flex-1">
+                                <span class="inline-block text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 mb-1">Need</span>
+                                <h4 class="font-bold text-black dark:text-warm-cream text-[11.5px] mt-1 leading-tight truncate">${need.needTitle}</h4>
+                                <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">By ${escapeHTML(need.neighborName)} · ${need.category}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-450 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent unsave-btn" onclick="handleUnsaveListing(event, '${id}')" title="Delete Saved Need">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
+                            <span class="text-[8px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800 shrink-0">Saved</span>
+                        </div>
+                    `;
+                    fullSavedListingsEl.appendChild(card);
+                }
+            });
+
+            // 2. Render saved offerings
             const savedOfferings = (state.savedListings || []).filter(id => !id.startsWith('need_') && !id.startsWith('evt_'));
-            
-            // Filter out non-existent offerings automatically
-            const validOfferings = [];
             savedOfferings.forEach(id => {
                 let item = state.userOfferings ? state.userOfferings.find(o => o.id === id) : null;
-                if (!item) {
-                    item = state.neighbors[id];
-                }
+                let itemTitle = '';
+                let itemDesc = '';
+                let itemCategory = '';
+                let itemAuthor = '';
+                let finalImg = '';
+ 
                 if (item) {
-                    validOfferings.push(id);
-                }
-            });
-            
-            if (validOfferings.length === 0) {
-                savedContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1">No saved offerings yet.</p>`;
-            } else {
-                validOfferings.forEach(id => {
-                    let item = state.userOfferings ? state.userOfferings.find(o => o.id === id) : null;
-                    let itemTitle = '';
-                    let itemDesc = '';
-                    let itemCategory = '';
-                    let itemAuthor = '';
-                    let finalImg = '';
-
-                    if (item) {
-                        itemTitle = item.title;
-                        itemDesc = item.desc;
-                        itemCategory = item.category;
-                        itemAuthor = state.currentUser ? (state.currentUser.displayName || 'Lily Kaufmann') : 'Lily Kaufmann';
-                        finalImg = item.image || getCategoryPresetImage(item.category) || PLACEHOLDER_IMAGE;
-                    } else {
-                        const neighbor = state.neighbors[id];
-                        if (neighbor) {
-                            item = neighbor;
-                            itemTitle = neighbor.offerTitle;
-                            itemDesc = neighbor.offerDesc;
-                            itemCategory = neighbor.category;
-                            itemAuthor = neighbor.name;
-                            finalImg = neighbor.offerImg || getCategoryPresetImage(neighbor.category) || PLACEHOLDER_IMAGE;
-                        }
+                    itemTitle = item.title;
+                    itemDesc = item.desc;
+                    itemCategory = item.category;
+                    itemAuthor = currentUser;
+                    finalImg = item.image || getCategoryPresetImage(item.category) || PLACEHOLDER_IMAGE;
+                } else {
+                    const neighbor = state.neighbors[id];
+                    if (neighbor) {
+                        item = neighbor;
+                        itemTitle = neighbor.offerTitle;
+                        itemDesc = neighbor.offerDesc;
+                        itemCategory = neighbor.category;
+                        itemAuthor = neighbor.name;
+                        finalImg = neighbor.offerImg || getCategoryPresetImage(neighbor.category) || PLACEHOLDER_IMAGE;
                     }
+                }
 
+                if (item) {
+                    hasListings = true;
                     const card = document.createElement('div');
-                    card.className = "flex items-start p-3 bg-white dark:bg-[#18201a] rounded-xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm relative w-full mb-2.5 cursor-pointer hover:bg-forest-green/5 transition-colors";
+                    card.className = "flex items-center justify-between p-4 bg-white dark:bg-[#1f2922] rounded-2xl border border-black/10 dark:border-white/10 shadow-sm active:scale-[0.99] transition-all cursor-pointer hover:border-forest-green/30 hover:bg-forest-green/5 dark:hover:bg-forest-green/10 mb-3";
                     card.onclick = (e) => {
                         if (e.target.closest('.unsave-btn')) return;
+                        window.detailOverlayCameFromProfile = true;
                         showView('village');
                         openMapItemDetail(id);
                     };
-
-                    card.innerHTML = `
-                        <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden rounded-xl mr-3">
+                    
+                    const imgHtml = finalImg ? `
+                        <div class="w-10 h-10 rounded-full overflow-hidden border border-black/10 dark:border-white/10 flex-shrink-0 bg-slate-50 dark:bg-[#18201a]">
                             <img src="${finalImg}" class="w-full h-full object-cover">
                         </div>
-                        <div class="flex-grow min-w-0 pr-3 text-left">
-                            <h4 class="font-medium text-forest-green dark:text-white text-sm truncate leading-tight">${itemTitle}</h4>
-                            <p class="text-xs text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">${itemDesc}</p>
-                            <p class="text-[9px] text-gray-500 flex items-center flex-wrap gap-1 mt-2">
-                                By <span class="font-bold cursor-pointer hover:underline" onclick="event.stopPropagation(); ${itemAuthor === (state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann') ? `showView('profile_settings')` : `openNeighborProfileModal('${escapeHTML(itemAuthor)}')`}">${escapeHTML(itemAuthor)}</span> · <span class="font-semibold uppercase text-[7.5px] text-gray-600 tracking-wider">${itemCategory}</span>
-                            </p>
-                        </div>
-                        <div class="flex items-center gap-1 flex-shrink-0">
-                            <button class="text-error hover:opacity-80 p-1 unsave-btn cursor-pointer mr-1" onclick="handleUnsaveListing(event, '${id}')" title="Delete Saved Offering">
-                                <span class="material-symbols-outlined text-error text-[16px]">delete</span>
-                            </button>
-                            <button class="text-black dark:text-white hover:opacity-80 p-1 unsave-btn cursor-pointer" onclick="handleUnsaveListing(event, '${id}')">
-                                <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">bookmark</span>
-                            </button>
+                    ` : `
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-black/10 dark:border-white/10 bg-slate-50 dark:bg-[#18201a]" style="color: #308A5E;">
+                            <span class="material-symbols-outlined text-[20px] font-bold" style="color: #308A5E;">handshake</span>
                         </div>
                     `;
-                    savedContainer.appendChild(card);
-                });
+
+                    card.innerHTML = `
+                        <div class="flex items-center gap-3.5 min-w-0 flex-grow text-left">
+                            ${imgHtml}
+                            <div class="min-w-0 flex-1">
+                                <span class="inline-block text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-purple-500/10 text-purple-650 dark:text-purple-400 border border-purple-500/20 mb-1">Offering</span>
+                                <h4 class="font-bold text-black dark:text-warm-cream text-[11.5px] mt-1 leading-tight truncate">${itemTitle}</h4>
+                                <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">By ${escapeHTML(itemAuthor)} · ${itemCategory}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-450 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent unsave-btn" onclick="handleUnsaveListing(event, '${id}')" title="Delete Saved Offering">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
+                            <span class="text-[8px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800 shrink-0">Saved</span>
+                        </div>
+                    `;
+                    fullSavedListingsEl.appendChild(card);
+                }
+            });
+
+            if (!hasListings) {
+                fullSavedListingsEl.innerHTML = `<p class="text-xs text-gray-500 italic py-6 text-center">No saved offerings or needs yet.</p>`;
             }
-            
-        } else if (activeFilter === 'events') {
-            // Find all saved events
+        }
+
+        if (fullSavedEventsEl) {
             const savedEvtIds = [...(state.savedEvents || [])];
             (state.savedListings || []).forEach(id => {
                 if (id.startsWith('evt_')) {
                     const rawId = id.replace('evt_', '');
-                    if (!savedEvtIds.includes(rawId)) {
-                        savedEvtIds.push(rawId);
-                    }
+                    if (!savedEvtIds.includes(rawId)) savedEvtIds.push(rawId);
                 }
             });
             
-            // Filter out non-existent events automatically
             const validEvents = [];
             savedEvtIds.forEach(id => {
                 const evt = state.events ? state.events.find(e => e.id === id) : null;
-                if (evt) {
-                    validEvents.push(evt);
-                }
+                if (evt) validEvents.push(evt);
             });
-            
+
             if (validEvents.length === 0) {
-                savedContainer.innerHTML = `<p class="text-xs text-outline italic py-2 px-1">No saved events yet.</p>`;
+                fullSavedEventsEl.innerHTML = `<p class="text-xs text-gray-500 italic py-6 text-center">No saved events yet.</p>`;
             } else {
                 validEvents.forEach(evt => {
+                    const presetImg = getEventPresetImage(evt.type);
+                    const imgHtml = presetImg ? `
+                        <div class="w-10 h-10 rounded-full overflow-hidden border border-black/10 dark:border-white/10 flex-shrink-0 bg-slate-50 dark:bg-[#18201a]">
+                            <img src="${presetImg}" class="w-full h-full object-cover">
+                        </div>
+                    ` : `
+                        <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 flex-shrink-0 border border-black/10 dark:border-white/10 bg-slate-50 dark:bg-[#18201a]">
+                            <span class="material-symbols-outlined text-[20px] font-bold" style="color: #3b82f6;">festival</span>
+                        </div>
+                    `;
+
                     const card = document.createElement('div');
-                    card.className = "flex items-start p-3 bg-white dark:bg-[#18201a] rounded-xl border border-outline-variant/30 dark:border-outline-variant/15 shadow-sm relative w-full mb-2.5 cursor-pointer hover:bg-forest-green/5 transition-colors";
+                    card.className = "flex items-center justify-between p-4 bg-white dark:bg-[#1f2922] rounded-2xl border border-black/10 dark:border-white/10 shadow-sm active:scale-[0.99] transition-all cursor-pointer hover:border-forest-green/30 hover:bg-forest-green/5 dark:hover:bg-forest-green/10 mb-3";
                     card.onclick = (e) => {
                         if (e.target.closest('.unsave-btn')) return;
+                        window.detailOverlayCameFromProfile = true;
                         showView('village');
                         openMapEventDetail(evt);
                     };
-
                     card.innerHTML = `
-                        <div class="w-32 h-24 flex-shrink-0 relative overflow-hidden rounded-xl mr-3">
-                            ${getEventCardThumbnailHTML(evt)}
+                        <div class="flex items-center gap-3.5 min-w-0 flex-grow text-left">
+                            ${imgHtml}
+                            <div class="min-w-0 flex-1">
+                                <span class="inline-block text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 mb-1">Event</span>
+                                <h4 class="font-bold text-black dark:text-warm-cream text-[11.5px] mt-1 leading-tight truncate">${evt.title}</h4>
+                                <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">Host: ${escapeHTML(evt.host)} · ${evt.type}</p>
+                            </div>
                         </div>
-                        <div class="flex-grow min-w-0 pr-3 text-left">
-                            <h4 class="font-medium text-forest-green dark:text-white text-sm truncate leading-tight">${evt.title}</h4>
-                            <p class="text-xs text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">${evt.desc || 'No description'}</p>
-                            <p class="text-[9px] text-gray-500 flex items-center flex-wrap gap-1 mt-2">
-                                By <span class="font-bold cursor-pointer hover:underline" onclick="event.stopPropagation(); ${evt.host === (state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann') ? `showView('profile_settings')` : `openNeighborProfileModal('${escapeHTML(evt.host || 'Community')}')`}">${escapeHTML(evt.host || 'Community')}</span> · <span class="font-semibold uppercase text-[7.5px] text-gray-600 tracking-wider">${evt.type}</span>
-                            </p>
-                        </div>
-                        <div class="flex items-center gap-1 flex-shrink-0">
-                            <button class="text-error hover:opacity-80 p-1 unsave-btn cursor-pointer mr-1" onclick="event.stopPropagation(); toggleSaveEvent('${evt.id}')" title="Delete Saved Event">
-                                <span class="material-symbols-outlined text-error text-[16px]">delete</span>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-450 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent unsave-btn" onclick="event.stopPropagation(); toggleSaveEvent('${evt.id}')" title="Delete Saved Event">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
                             </button>
-                            <button class="text-black dark:text-white hover:opacity-80 p-1 unsave-btn cursor-pointer" onclick="event.stopPropagation(); toggleSaveEvent('${evt.id}')">
-                                <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">bookmark</span>
-                            </button>
+                            <span class="text-[8px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800 shrink-0">Saved</span>
                         </div>
                     `;
-                    savedContainer.appendChild(card);
+                    fullSavedEventsEl.appendChild(card);
                 });
             }
         }
-    }
 
+        // Render mini widget filtered view
+        if (savedContainer) {
+            if (activeFilter === 'needs') {
+                const savedNeeds = (state.savedListings || []).filter(id => id.startsWith('need_'));
+                const validNeeds = [];
+                savedNeeds.forEach(id => {
+                    const needId = id.replace('need_', '');
+                    const need = state.needsBoard ? state.needsBoard.find(n => n.id === needId) : null;
+                    if (need) validNeeds.push(id);
+                });
+                
+                if (validNeeds.length === 0) {
+                    renderEmptyMini("No saved needs yet.");
+                } else {
+                    validNeeds.forEach(id => {
+                        const needId = id.replace('need_', '');
+                        const need = state.needsBoard.find(n => n.id === needId);
+                        const finalImg = getCategoryPresetImage(need.category) || PLACEHOLDER_IMAGE;
+                        
+                        const card = document.createElement('div');
+                        card.className = "flex items-center justify-between p-4 bg-white dark:bg-[#1f2922] rounded-2xl border border-black/10 dark:border-white/10 shadow-sm active:scale-[0.99] transition-all cursor-pointer hover:border-forest-green/30 hover:bg-forest-green/5 dark:hover:bg-forest-green/10 mb-3";
+                        card.onclick = (e) => {
+                            if (e.target.closest('.unsave-btn')) return;
+                            window.detailOverlayCameFromProfile = true;
+                            showView('village');
+                            openMapItemDetail(id);
+                        };
+                        
+                        const imgHtml = finalImg ? `
+                            <div class="w-10 h-10 rounded-full overflow-hidden border border-black/10 dark:border-white/10 flex-shrink-0 bg-slate-50 dark:bg-[#18201a]">
+                                <img src="${finalImg}" class="w-full h-full object-cover">
+                            </div>
+                        ` : `
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-black/10 dark:border-white/10 bg-slate-50 dark:bg-[#18201a]" style="color: #eab308;">
+                                <span class="material-symbols-outlined text-[20px] font-bold" style="color: #eab308;">shopping_basket</span>
+                            </div>
+                        `;
+
+                        card.innerHTML = `
+                            <div class="flex items-center gap-3.5 min-w-0 flex-grow text-left">
+                                ${imgHtml}
+                                <div class="min-w-0 flex-1">
+                                    <span class="inline-block text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 mb-1">Need</span>
+                                    <h4 class="font-bold text-black dark:text-warm-cream text-[11.5px] mt-1 leading-tight truncate">${need.needTitle}</h4>
+                                    <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">By ${escapeHTML(need.neighborName)} · ${need.category}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 flex-shrink-0">
+                                <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent unsave-btn" onclick="handleUnsaveListing(event, '${id}')" title="Delete Saved Need">
+                                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                                </button>
+                                <span class="text-[8px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800 shrink-0">Saved</span>
+                            </div>
+                        `;
+                        savedContainer.appendChild(card);
+                    });
+                }
+                
+            } else if (activeFilter === 'offerings') {
+                const savedOfferings = (state.savedListings || []).filter(id => !id.startsWith('need_') && !id.startsWith('evt_'));
+                const validOfferings = [];
+                savedOfferings.forEach(id => {
+                    let item = state.userOfferings ? state.userOfferings.find(o => o.id === id) : null;
+                    if (!item) item = state.neighbors[id];
+                    if (item) validOfferings.push(id);
+                });
+                
+                if (validOfferings.length === 0) {
+                    renderEmptyMini("No saved offerings yet.");
+                } else {
+                    validOfferings.forEach(id => {
+                        let item = state.userOfferings ? state.userOfferings.find(o => o.id === id) : null;
+                        let itemTitle = '';
+                        let itemDesc = '';
+                        let itemCategory = '';
+                        let itemAuthor = '';
+                        let finalImg = '';
+     
+                        if (item) {
+                            itemTitle = item.title;
+                            itemDesc = item.desc;
+                            itemCategory = item.category;
+                            itemAuthor = currentUser;
+                            finalImg = item.image || getCategoryPresetImage(item.category) || PLACEHOLDER_IMAGE;
+                        } else {
+                            const neighbor = state.neighbors[id];
+                            if (neighbor) {
+                                item = neighbor;
+                                itemTitle = neighbor.offerTitle;
+                                itemDesc = neighbor.offerDesc;
+                                itemCategory = neighbor.category;
+                                itemAuthor = neighbor.name;
+                                finalImg = neighbor.offerImg || getCategoryPresetImage(neighbor.category) || PLACEHOLDER_IMAGE;
+                            }
+                        }
+     
+                        const card = document.createElement('div');
+                        card.className = "flex items-center justify-between p-4 bg-white dark:bg-[#1f2922] rounded-2xl border border-black/10 dark:border-white/10 shadow-sm active:scale-[0.99] transition-all cursor-pointer hover:border-forest-green/30 hover:bg-forest-green/5 dark:hover:bg-forest-green/10 mb-3";
+                        card.onclick = (e) => {
+                            if (e.target.closest('.unsave-btn')) return;
+                            window.detailOverlayCameFromProfile = true;
+                            showView('village');
+                            openMapItemDetail(id);
+                        };
+                        
+                        const imgHtml = finalImg ? `
+                            <div class="w-10 h-10 rounded-full overflow-hidden border border-black/10 dark:border-white/10 flex-shrink-0 bg-slate-50 dark:bg-[#18201a]">
+                                <img src="${finalImg}" class="w-full h-full object-cover">
+                            </div>
+                        ` : `
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-black/10 dark:border-white/10 bg-slate-50 dark:bg-[#18201a]" style="color: #308A5E;">
+                                <span class="material-symbols-outlined text-[20px] font-bold" style="color: #308A5E;">handshake</span>
+                            </div>
+                        `;
+
+                        card.innerHTML = `
+                            <div class="flex items-center gap-3.5 min-w-0 flex-grow text-left">
+                                ${imgHtml}
+                                <div class="min-w-0 flex-1">
+                                    <span class="inline-block text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-purple-500/10 text-purple-650 dark:text-purple-400 border border-purple-500/20 mb-1">Offering</span>
+                                    <h4 class="font-bold text-black dark:text-warm-cream text-[11.5px] mt-1 leading-tight truncate">${itemTitle}</h4>
+                                    <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">By ${escapeHTML(itemAuthor)} · ${itemCategory}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 flex-shrink-0">
+                                <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-450 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent unsave-btn" onclick="handleUnsaveListing(event, '${id}')" title="Delete Saved Offering">
+                                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                                </button>
+                                <span class="text-[8px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800 shrink-0">Saved</span>
+                            </div>
+                        `;
+                        savedContainer.appendChild(card);
+                    });
+                }
+                
+            } else if (activeFilter === 'events') {
+                const savedEvtIds = [...(state.savedEvents || [])];
+                (state.savedListings || []).forEach(id => {
+                    if (id.startsWith('evt_')) {
+                        const rawId = id.replace('evt_', '');
+                        if (!savedEvtIds.includes(rawId)) savedEvtIds.push(rawId);
+                    }
+                });
+                
+                const validEvents = [];
+                savedEvtIds.forEach(id => {
+                    const evt = state.events ? state.events.find(e => e.id === id) : null;
+                    if (evt) validEvents.push(evt);
+                });
+                
+                if (validEvents.length === 0) {
+                    renderEmptyMini("No saved events yet.");
+                } else {
+                    validEvents.forEach(evt => {
+                        const presetImg = getEventPresetImage(evt.type);
+                        const imgHtml = presetImg ? `
+                            <div class="w-10 h-10 rounded-full overflow-hidden border border-black/10 dark:border-white/10 flex-shrink-0 bg-slate-50 dark:bg-[#18201a]">
+                                <img src="${presetImg}" class="w-full h-full object-cover">
+                            </div>
+                        ` : `
+                            <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 flex-shrink-0 border border-black/10 dark:border-white/10 bg-slate-50 dark:bg-[#18201a]">
+                                <span class="material-symbols-outlined text-[20px] font-bold" style="color: #3b82f6;">festival</span>
+                            </div>
+                        `;
+
+                        const card = document.createElement('div');
+                        card.className = "flex items-center justify-between p-4 bg-white dark:bg-[#1f2922] rounded-2xl border border-black/10 dark:border-white/10 shadow-sm active:scale-[0.99] transition-all cursor-pointer hover:border-forest-green/30 hover:bg-forest-green/5 dark:hover:bg-forest-green/10 mb-3";
+                        card.onclick = (e) => {
+                            if (e.target.closest('.unsave-btn')) return;
+                            window.detailOverlayCameFromProfile = true;
+                            showView('village');
+                            openMapEventDetail(evt);
+                        };
+                        card.innerHTML = `
+                            <div class="flex items-center gap-3.5 min-w-0 flex-grow text-left">
+                                ${imgHtml}
+                                <div class="min-w-0 flex-1">
+                                    <span class="inline-block text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 mb-1">Event</span>
+                                    <h4 class="font-bold text-black dark:text-warm-cream text-[11.5px] mt-1 leading-tight truncate">${evt.title}</h4>
+                                    <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">Host: ${escapeHTML(evt.host)} · ${evt.type}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 flex-shrink-0">
+                                <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-450 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent unsave-btn" onclick="event.stopPropagation(); toggleSaveEvent('${evt.id}')" title="Delete Saved Event">
+                                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                                </button>
+                                <span class="text-[8px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800 shrink-0">Saved</span>
+                            </div>
+                        `;
+                        savedContainer.appendChild(card);
+                    });
+                }
+            }
+        }
+    }
+    
     // Sync verification status widgets
     const settingsStatusLabel = document.getElementById('settings-verification-status-label');
     const settingsStatusDesc = document.getElementById('settings-verification-status-desc');
@@ -16601,12 +17428,17 @@ function renderProfileSettings() {
     }
 }
 
-window.handleAddMyCornerNew = function() {
+window.handleAddMyCornerNew = function(modeOverride) {
     if (typeof playSound === 'function') playSound('click');
-    const activeTab = state.myCornerActiveTab || 'offerings';
     let mode = 'offering';
-    if (activeTab === 'needs') mode = 'need';
-    else if (activeTab === 'events') mode = 'event';
+    if (modeOverride === 'needs') mode = 'need';
+    else if (modeOverride === 'events') mode = 'event';
+    else if (modeOverride === 'offerings') mode = 'offering';
+    else {
+        const activeTab = state.myCornerActiveTab || 'offerings';
+        if (activeTab === 'needs') mode = 'need';
+        else if (activeTab === 'events') mode = 'event';
+    }
     if (typeof window.triggerQuickCreate === 'function') {
         window.triggerQuickCreate(mode);
     }
@@ -16638,153 +17470,7 @@ window.switchMyCornerTab = function(tab) {
     renderMyCornerItems();
 };
 
-window.renderMyCornerItems = function() {
-    const listEl = document.getElementById('my-corner-items-list');
-    if (!listEl) return;
-    
-    const activeTab = state.myCornerActiveTab || 'offerings';
-    listEl.innerHTML = "";
-    
-    const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
-    
-    if (activeTab === 'offerings') {
-        const offerings = state.userOfferings || [];
-        if (offerings.length === 0) {
-            listEl.innerHTML = `<div class="text-center py-6 text-[11px] text-gray-500 dark:text-gray-400 select-none">You aren't offering anything yet.</div>`;
-            return;
-        }
-        
-        offerings.forEach(item => {
-            const row = document.createElement('div');
-            row.className = "flex items-center justify-between p-3.5 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
-            row.onclick = (e) => {
-                window.detailOverlayCameFromProfile = true;
-                showView('village');
-                openMapItemDetail(item.id);
-            };
-            
-            const catColor = getCategoryColor(item.category) || '#308A5E';
-            const catIcon = getCategoryIcon(item.category) || 'handshake';
-            const imgHtml = item.image ? `<img src="${item.image}" class="w-12 h-12 rounded-lg object-cover flex-shrink-0" />` : `
-                <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style="background-color: ${catColor}15; color: ${catColor};">
-                    <span class="material-symbols-outlined text-[22px] font-bold" style="color: ${catColor};">${catIcon}</span>
-                </div>
-            `;
-            
-            row.innerHTML = `
-                <div class="flex items-center gap-3 min-w-0 flex-grow text-left">
-                    ${imgHtml}
-                    <div class="min-w-0 flex-1">
-                        <h4 class="text-[11px] font-bold text-black dark:text-warm-cream truncate">${item.title}</h4>
-                        <p class="text-[11px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${item.category}</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2 flex-shrink-0">
-                    <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent" onclick="deleteMyCornerItem('offerings', '${item.id}', event)">
-                        <span class="material-symbols-outlined text-[18px]">delete</span>
-                    </button>
-                    <span class="material-symbols-outlined text-gray-400 text-[18px]">chevron_right</span>
-                </div>
-            `;
-            listEl.appendChild(row);
-        });
-        
-    } else if (activeTab === 'needs') {
-        const needs = state.userNeeds || [];
-        if (needs.length === 0) {
-            listEl.innerHTML = `<div class="text-center py-6 text-[11px] text-gray-500 dark:text-gray-400 select-none">You don't have any needs listed.</div>`;
-            return;
-        }
-        
-        needs.forEach(item => {
-            const row = document.createElement('div');
-            row.className = "flex items-center justify-between p-3.5 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
-            row.onclick = (e) => {
-                window.detailOverlayCameFromProfile = true;
-                showView('village');
-                openMapItemDetail('need_' + item.id);
-            };
-            
-            const catColor = getCategoryColor(item.category) || '#eab308';
-            const catIcon = getCategoryIcon(item.category) || 'shopping_basket';
-            const imgHtml = item.image ? `<img src="${item.image}" class="w-12 h-12 rounded-lg object-cover flex-shrink-0" />` : `
-                <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style="background-color: ${catColor}15; color: ${catColor};">
-                    <span class="material-symbols-outlined text-[22px] font-bold" style="color: ${catColor};">${catIcon}</span>
-                </div>
-            `;
-            
-            row.innerHTML = `
-                <div class="flex items-center gap-3 min-w-0 flex-grow text-left">
-                    ${imgHtml}
-                    <div class="min-w-0 flex-1">
-                        <h4 class="text-[11px] font-bold text-black dark:text-warm-cream truncate">${item.title}</h4>
-                        <p class="text-[11px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${item.category}</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2 flex-shrink-0">
-                    <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent" onclick="deleteMyCornerItem('needs', '${item.id}', event)">
-                        <span class="material-symbols-outlined text-[18px]">delete</span>
-                    </button>
-                    <span class="material-symbols-outlined text-gray-400 text-[18px]">chevron_right</span>
-                </div>
-            `;
-            listEl.appendChild(row);
-        });
-        
-    } else if (activeTab === 'events') {
-        const userEvents = (state.events || []).filter(evt => {
-            const isRsvped = evt.rsvps && evt.rsvps.includes(currentUser);
-            const isHost = evt.host === currentUser;
-            return isRsvped || isHost;
-        }).sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
-        
-        if (userEvents.length === 0) {
-            listEl.innerHTML = `<div class="text-center py-6 text-[11px] text-gray-500 dark:text-gray-400 select-none">No events RSVP'd or hosted.</div>`;
-            return;
-        }
-        
-        userEvents.forEach(item => {
-            const row = document.createElement('div');
-            row.className = "flex items-center justify-between p-3.5 bg-white dark:bg-[#1f2922] rounded-xl border border-black/5 dark:border-white/5 active:scale-[0.99] transition-transform cursor-pointer hover:bg-forest-green/5 dark:hover:bg-forest-green/10";
-            row.onclick = (e) => {
-                window.detailOverlayCameFromProfile = true;
-                showView('village');
-                openMapItemDetail('evt_' + item.id);
-            };
-            
-            const isHost = item.host === currentUser;
-            const dateObj = new Date(item.datetime);
-            const dateStr = dateObj.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' at ' + dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            const presetImg = getEventPresetImage(item.type);
-            const imgHtml = presetImg ? `<img src="${presetImg}" class="w-12 h-12 rounded-lg object-cover flex-shrink-0" />` : `
-                <div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 flex-shrink-0">
-                    <span class="material-symbols-outlined text-[22px] font-bold" style="color: #3b82f6;">festival</span>
-                </div>
-            `;
-            
-            row.innerHTML = `
-                <div class="flex items-center gap-3 min-w-0 flex-grow text-left">
-                    ${imgHtml}
-                    <div class="min-w-0 flex-1">
-                        <div class="flex items-center gap-1.5 min-w-0">
-                            <h4 class="text-[11px] font-bold text-black dark:text-warm-cream truncate">${item.title}</h4>
-                            ${isHost ? `<span class="bg-blue-500 text-white text-[7px] px-1 py-0.2 rounded font-bold uppercase tracking-wider flex-shrink-0">Host</span>` : ''}
-                        </div>
-                        <p class="text-[11px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${dateStr}</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2 flex-shrink-0">
-                    <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent" onclick="deleteMyCornerItem('events', '${item.id}', event)">
-                        <span class="material-symbols-outlined text-[18px]">delete</span>
-                    </button>
-                    <span class="material-symbols-outlined text-gray-400 text-[18px]">chevron_right</span>
-                </div>
-            `;
-            listEl.appendChild(row);
-        });
-    }
-};
+// Removed duplicate first renderMyCornerItems definition. Implementation is below.
 
 window.deleteMyCornerItem = function(tab, id, event) {
     if (event) {
@@ -16836,34 +17522,325 @@ window.updateMyCornerSection = function() {
     // Update badge sub-labels
     const offCountEl = document.getElementById('my-corner-count-offerings');
     if (offCountEl) offCountEl.innerText = `${offeringsCount}`;
+    const fullOffCountEl = document.getElementById('full-my-corner-count-offerings');
+    if (fullOffCountEl) fullOffCountEl.innerText = `${offeringsCount}`;
     
     const needsCountEl = document.getElementById('my-corner-count-needs');
     if (needsCountEl) needsCountEl.innerText = `${needsCount}`;
+    const fullNeedsCountEl = document.getElementById('full-my-corner-count-needs');
+    if (fullNeedsCountEl) fullNeedsCountEl.innerText = `${needsCount}`;
     
     const eventsCountEl = document.getElementById('my-corner-count-events');
     if (eventsCountEl) eventsCountEl.innerText = `${eventsCount}`;
+    const fullEventsCountEl = document.getElementById('full-my-corner-count-events');
+    if (fullEventsCountEl) fullEventsCountEl.innerText = `${eventsCount}`;
+    
+    // Update pill counters on profile settings screen
+    const listingsPillCount = document.getElementById('pill-count-listings');
+    if (listingsPillCount) listingsPillCount.innerText = `${offeringsCount + needsCount} Items`;
+    
+    const eventsPillCount = document.getElementById('pill-count-events');
+    if (eventsPillCount) eventsPillCount.innerText = `${eventsCount} Events`;
     
     // Set active tab if undefined
     if (!state.myCornerActiveTab) {
         state.myCornerActiveTab = 'offerings';
     }
     
-    // Make sure tab buttons styles are updated
+    // Make sure tab buttons styles are updated for both legacy and full-page layouts
     const tabs = ['offerings', 'needs', 'events'];
     tabs.forEach(t => {
+        const theme = t === 'offerings' ? 'badge-theme-green' : t === 'needs' ? 'badge-theme-yellow' : 'badge-theme-blue';
+        const borderCol = t === 'offerings' ? 'border-forest-green dark:border-[#308A5E]' : t === 'needs' ? 'border-amber-500' : 'border-blue-500';
+        
         const btn = document.getElementById(`my-corner-tab-${t}`);
         if (btn) {
-            const theme = t === 'offerings' ? 'badge-theme-green' : t === 'needs' ? 'badge-theme-yellow' : 'badge-theme-blue';
             if (t === state.myCornerActiveTab) {
-                let borderCol = t === 'offerings' ? 'border-forest-green dark:border-[#308A5E]' : t === 'needs' ? 'border-amber-500' : 'border-blue-500';
                 btn.className = `premium-badge-item premium-badge-unlocked ${theme} flex-grow flex-1 max-w-[95px] ${borderCol} border-[2.5px]`;
             } else {
                 btn.className = `premium-badge-item premium-badge-unlocked ${theme} flex-grow flex-1 max-w-[95px] opacity-60 saturate-50`;
             }
         }
+        
+        const fullBtn = document.getElementById(`full-my-corner-tab-${t}`);
+        if (fullBtn) {
+            if (t === state.myCornerActiveTab) {
+                fullBtn.className = `premium-badge-item premium-badge-unlocked ${theme} flex-grow flex-1 max-w-[95px] ${borderCol} border-[2.5px]`;
+            } else {
+                fullBtn.className = `premium-badge-item premium-badge-unlocked ${theme} flex-grow flex-1 max-w-[95px] opacity-60 saturate-50`;
+            }
+        }
     });
     
     renderMyCornerItems();
+};
+
+window.renderMyCornerItems = function() {
+    const listEl = document.getElementById('my-corner-items-list');
+    const fullOfferingsListEl = document.getElementById('full-my-corner-offerings-list');
+    const fullNeedsListEl = document.getElementById('full-my-corner-needs-list');
+    
+    if (!listEl && !fullOfferingsListEl && !fullNeedsListEl) return;
+    
+    const activeTab = state.myCornerActiveTab || 'offerings';
+    if (listEl) listEl.innerHTML = "";
+    if (fullOfferingsListEl) fullOfferingsListEl.innerHTML = "";
+    if (fullNeedsListEl) fullNeedsListEl.innerHTML = "";
+    
+    const currentUser = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : 'Lily Kaufmann';
+    
+    // 1. Populate the mini widget on the profile settings hub
+    if (listEl) {
+        const appendRow = (rowHtml, onClickFn) => {
+            const row = document.createElement('div');
+            row.className = "flex items-center justify-between p-4 bg-white dark:bg-[#1f2922] rounded-2xl border border-black/10 dark:border-white/10 shadow-sm active:scale-[0.99] transition-all cursor-pointer hover:border-forest-green/30 hover:bg-forest-green/5 dark:hover:bg-forest-green/10 mb-3";
+            row.onclick = onClickFn;
+            row.innerHTML = rowHtml;
+            listEl.appendChild(row);
+        };
+
+        const renderEmpty = (msg) => {
+            listEl.innerHTML = `<div class="text-center py-6 text-[11px] text-gray-500 dark:text-gray-400 select-none">${msg}</div>`;
+        };
+        
+        if (activeTab === 'offerings') {
+            const offerings = state.userOfferings || [];
+            if (offerings.length === 0) {
+                renderEmpty("You aren't offering anything yet.");
+            } else {
+                offerings.forEach(item => {
+                    const catColor = getCategoryColor(item.category) || '#308A5E';
+                    const catIcon = getCategoryIcon(item.category) || 'handshake';
+                    const imgHtml = item.image ? `
+                        <div class="w-10 h-10 rounded-full overflow-hidden border border-black/10 dark:border-white/10 flex-shrink-0 bg-slate-50 dark:bg-[#18201a]">
+                            <img src="${item.image}" class="w-full h-full object-cover" />
+                        </div>
+                    ` : `
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-black/10 dark:border-white/10 bg-slate-50 dark:bg-[#18201a]" style="color: ${catColor};">
+                            <span class="material-symbols-outlined text-[20px] font-bold" style="color: ${catColor};">${catIcon}</span>
+                        </div>
+                    `;
+                    
+                    const rowHtml = `
+                        <div class="flex items-center gap-3.5 min-w-0 flex-grow text-left">
+                            ${imgHtml}
+                            <div class="min-w-0 flex-1">
+                                <span class="inline-block text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-purple-500/10 text-purple-650 dark:text-purple-400 border border-purple-500/20 mb-1">Offering</span>
+                                <h4 class="text-[11.5px] font-bold text-black dark:text-warm-cream mt-1 leading-tight truncate">${item.title}</h4>
+                                <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${item.category}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent" onclick="deleteMyCornerItem('offerings', '${item.id}', event)">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
+                            <span class="text-[8px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800 shrink-0">Active</span>
+                        </div>
+                    `;
+                    
+                    appendRow(rowHtml, (e) => {
+                        if (e.target.closest('button')) return;
+                        window.detailOverlayCameFromProfile = true;
+                        showView('village');
+                        openMapItemDetail(item.id);
+                    });
+                });
+            }
+        } else if (activeTab === 'needs') {
+            const needs = state.userNeeds || [];
+            if (needs.length === 0) {
+                renderEmpty("You don't have any needs listed.");
+            } else {
+                needs.forEach(item => {
+                    const catColor = getCategoryColor(item.category) || '#eab308';
+                    const catIcon = getCategoryIcon(item.category) || 'shopping_basket';
+                    const imgHtml = item.image ? `
+                        <div class="w-10 h-10 rounded-full overflow-hidden border border-black/10 dark:border-white/10 flex-shrink-0 bg-slate-50 dark:bg-[#18201a]">
+                            <img src="${item.image}" class="w-full h-full object-cover" />
+                        </div>
+                    ` : `
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-black/10 dark:border-white/10 bg-slate-50 dark:bg-[#18201a]" style="color: ${catColor};">
+                            <span class="material-symbols-outlined text-[20px] font-bold" style="color: ${catColor};">${catIcon}</span>
+                        </div>
+                    `;
+                    
+                    const rowHtml = `
+                        <div class="flex items-center gap-3.5 min-w-0 flex-grow text-left">
+                            ${imgHtml}
+                            <div class="min-w-0 flex-1">
+                                <span class="inline-block text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 mb-1">Need</span>
+                                <h4 class="text-[11.5px] font-bold text-black dark:text-warm-cream mt-1 leading-tight truncate">${item.title}</h4>
+                                <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${item.category}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent" onclick="deleteMyCornerItem('needs', '${item.id}', event)">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
+                            <span class="text-[8px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800 shrink-0">Active</span>
+                        </div>
+                    `;
+                    
+                    appendRow(rowHtml, (e) => {
+                        if (e.target.closest('button')) return;
+                        window.detailOverlayCameFromProfile = true;
+                        showView('village');
+                        openMapItemDetail('need_' + item.id);
+                    });
+                });
+            }
+        } else if (activeTab === 'events') {
+            const userEvents = (state.events || []).filter(evt => {
+                const isRsvped = evt.rsvps && evt.rsvps.includes(currentUser);
+                const isHost = evt.host === currentUser;
+                return isRsvped || isHost;
+            }).sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+            
+            if (userEvents.length === 0) {
+                renderEmpty("No events RSVP'd or hosted.");
+            } else {
+                userEvents.forEach(item => {
+                    const isHost = item.host === currentUser;
+                    const dateObj = new Date(item.datetime);
+                    const dateStr = dateObj.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' at ' + dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    
+                    const presetImg = getEventPresetImage(item.type);
+                    const imgHtml = presetImg ? `
+                        <div class="w-10 h-10 rounded-full overflow-hidden border border-black/10 dark:border-white/10 flex-shrink-0 bg-slate-50 dark:bg-[#18201a]">
+                            <img src="${presetImg}" class="w-full h-full object-cover" />
+                        </div>
+                    ` : `
+                        <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 flex-shrink-0 border border-black/10 dark:border-white/10 bg-slate-50 dark:bg-[#18201a]">
+                            <span class="material-symbols-outlined text-[20px] font-bold" style="color: #3b82f6;">festival</span>
+                        </div>
+                    `;
+                    
+                    const rowHtml = `
+                        <div class="flex items-center gap-3.5 min-w-0 flex-grow text-left">
+                            ${imgHtml}
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-1.5 min-w-0 flex-wrap">
+                                    <span class="inline-block text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 mb-1">Event</span>
+                                    ${isHost ? `<span class="bg-blue-500 text-white text-[7px] px-1 py-0.2 rounded font-bold uppercase tracking-wider mb-1 inline-block">Host</span>` : ''}
+                                </div>
+                                <h4 class="text-[11.5px] font-bold text-black dark:text-warm-cream mt-1 leading-tight truncate">${item.title}</h4>
+                                <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${dateStr}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent" onclick="deleteMyCornerItem('events', '${item.id}', event)">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
+                            <span class="text-[8px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800 shrink-0">Confirmed</span>
+                        </div>
+                    `;
+                    
+                    appendRow(rowHtml, (e) => {
+                        if (e.target.closest('button')) return;
+                        window.detailOverlayCameFromProfile = true;
+                        showView('village');
+                        openMapItemDetail('evt_' + item.id);
+                    });
+                });
+            }
+        }
+    }
+
+    // 2. Populate the full screenings offerings list box
+    if (fullOfferingsListEl) {
+        const offerings = state.userOfferings || [];
+        if (offerings.length === 0) {
+            fullOfferingsListEl.innerHTML = `<div class="text-center py-6 text-[11px] text-gray-500 dark:text-gray-400 select-none">You aren't offering anything yet.</div>`;
+        } else {
+            offerings.forEach(item => {
+                const catColor = getCategoryColor(item.category) || '#308A5E';
+                const catIcon = getCategoryIcon(item.category) || 'handshake';
+                const imgHtml = item.image ? `
+                    <div class="w-10 h-10 rounded-full overflow-hidden border border-black/10 dark:border-white/10 flex-shrink-0 bg-slate-50 dark:bg-[#18201a]">
+                        <img src="${item.image}" class="w-full h-full object-cover" />
+                    </div>
+                ` : `
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-black/10 dark:border-white/10 bg-slate-50 dark:bg-[#18201a]" style="color: ${catColor};">
+                        <span class="material-symbols-outlined text-[20px] font-bold" style="color: ${catColor};">${catIcon}</span>
+                    </div>
+                `;
+                
+                const card = document.createElement('div');
+                card.className = "flex items-center justify-between p-4 bg-white dark:bg-[#1f2922] rounded-2xl border border-black/10 dark:border-white/10 shadow-sm active:scale-[0.99] transition-all cursor-pointer hover:border-forest-green/30 hover:bg-forest-green/5 dark:hover:bg-forest-green/10 mb-3";
+                card.onclick = (e) => {
+                    if (e.target.closest('button')) return;
+                    window.detailOverlayCameFromProfile = true;
+                    showView('village');
+                    openMapItemDetail(item.id);
+                };
+                card.innerHTML = `
+                    <div class="flex items-center gap-3.5 min-w-0 flex-grow text-left">
+                        ${imgHtml}
+                        <div class="min-w-0 flex-1">
+                            <span class="inline-block text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-purple-500/10 text-purple-650 dark:text-purple-400 border border-purple-500/20 mb-1">Offering</span>
+                            <h4 class="text-[11.5px] font-bold text-black dark:text-warm-cream mt-1 leading-tight truncate">${item.title}</h4>
+                            <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${item.category}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent" onclick="deleteMyCornerItem('offerings', '${item.id}', event)">
+                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                        </button>
+                        <span class="text-[8px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800 shrink-0">Active</span>
+                    </div>
+                `;
+                fullOfferingsListEl.appendChild(card);
+            });
+        }
+    }
+
+    // 3. Populate the full screenings needs list box
+    if (fullNeedsListEl) {
+        const needs = state.userNeeds || [];
+        if (needs.length === 0) {
+            fullNeedsListEl.innerHTML = `<div class="text-center py-6 text-[11px] text-gray-500 dark:text-gray-400 select-none">You don't have any needs listed.</div>`;
+        } else {
+            needs.forEach(item => {
+                const catColor = getCategoryColor(item.category) || '#eab308';
+                const catIcon = getCategoryIcon(item.category) || 'shopping_basket';
+                const imgHtml = item.image ? `
+                    <div class="w-10 h-10 rounded-full overflow-hidden border border-black/10 dark:border-white/10 flex-shrink-0 bg-slate-50 dark:bg-[#18201a]">
+                        <img src="${item.image}" class="w-full h-full object-cover" />
+                    </div>
+                ` : `
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-black/10 dark:border-white/10 bg-slate-50 dark:bg-[#18201a]" style="color: ${catColor};">
+                        <span class="material-symbols-outlined text-[20px] font-bold" style="color: ${catColor};">${catIcon}</span>
+                    </div>
+                `;
+                
+                const card = document.createElement('div');
+                card.className = "flex items-center justify-between p-4 bg-white dark:bg-[#1f2922] rounded-2xl border border-black/10 dark:border-white/10 shadow-sm active:scale-[0.99] transition-all cursor-pointer hover:border-forest-green/30 hover:bg-forest-green/5 dark:hover:bg-forest-green/10 mb-3";
+                card.onclick = (e) => {
+                    if (e.target.closest('button')) return;
+                    window.detailOverlayCameFromProfile = true;
+                    showView('village');
+                    openMapItemDetail('need_' + item.id);
+                };
+                card.innerHTML = `
+                    <div class="flex items-center gap-3.5 min-w-0 flex-grow text-left">
+                        ${imgHtml}
+                        <div class="min-w-0 flex-1">
+                            <span class="inline-block text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 mb-1">Need</span>
+                            <h4 class="text-[11.5px] font-bold text-black dark:text-warm-cream mt-1 leading-tight truncate">${item.title}</h4>
+                            <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${item.category}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-90 transition-all border-0 cursor-pointer bg-transparent" onclick="deleteMyCornerItem('needs', '${item.id}', event)">
+                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                        </button>
+                        <span class="text-[8px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800 shrink-0">Active</span>
+                    </div>
+                `;
+                fullNeedsListEl.appendChild(card);
+            });
+        }
+    }
 };
 
 window.toggleSaveListing = function(idOrName) {
@@ -17390,6 +18367,9 @@ function switchVillageSegment(type) {
     if (prevCategory !== newCategory) {
         activeCategoryFilter = null;
         state.activeMapFilters = [];
+        state.activeListFilters = [];
+        state.activeNeedsFilters = [];
+        state.activeEventsFilters = [];
     }
 
     state.activeCategory = newCategory;
@@ -17437,6 +18417,8 @@ function switchVillageSegment(type) {
         if (helpBtn) helpBtn.classList.add('hidden');
         const meetupCloseBtn = document.getElementById('meetup-close-btn');
         if (meetupCloseBtn) meetupCloseBtn.classList.remove('hidden');
+        const changeLocContainer = document.getElementById('meetup-change-location-container');
+        if (changeLocContainer) changeLocContainer.classList.remove('hidden');
     } else {
         const isMapSegment = type === 'map' || type === 'needs_map' || type === 'gifts_map' || type === 'events_map';
         if (searchBar) {
@@ -17453,6 +18435,8 @@ function switchVillageSegment(type) {
         }
         const meetupCloseBtn = document.getElementById('meetup-close-btn');
         if (meetupCloseBtn) meetupCloseBtn.classList.add('hidden');
+        const changeLocContainer = document.getElementById('meetup-change-location-container');
+        if (changeLocContainer) changeLocContainer.classList.add('hidden');
 
         const filterBtn = document.getElementById('btn-segment-filter');
         if (filterBtn) {
@@ -17602,12 +18586,16 @@ function switchVillageSegment(type) {
 
     if (targetView === 'map') {
         if (leafletMap) {
-            setTimeout(() => {
-                const mapEl = document.getElementById('map');
-                if (leafletMap && mapEl && mapEl.offsetParent !== null) {
-                    leafletMap.invalidateSize();
-                }
-            }, 100);
+            // Robust staggered invalidateSize calls to ensure the map renders correctly
+            // across different viewports and page transitions.
+            const forceInvalidate = () => {
+                if (leafletMap) leafletMap.invalidateSize();
+            };
+            setTimeout(forceInvalidate, 50);
+            setTimeout(forceInvalidate, 150);
+            setTimeout(forceInvalidate, 350);
+            setTimeout(forceInvalidate, 600);
+            setTimeout(forceInvalidate, 1000);
             
             // Clear existing markers and re-plot for map view
             leafletMap.eachLayer(layer => {
@@ -17867,16 +18855,16 @@ function renderVillageListView() {
         const matchesSearch = fuzzySearchMatch(query, item.name, item.title, item.desc, item.category);
                               
         let matchesCategory = false;
-        if (!state.activeMapFilters || state.activeMapFilters.length === 0) {
+        if (!state.activeListFilters || state.activeListFilters.length === 0) {
             matchesCategory = true;
         } else {
-            matchesCategory = state.activeMapFilters.some(filter => {
-                if (filter === 'Karma Swap') {
+            matchesCategory = state.activeListFilters.some(filter => {
+                if (filter === 'Gifts Swap' || filter === 'Karma Swap') {
                     if (item.type === 'neighbor') {
                         const neighbor = state.neighbors[item.id];
                         return !!(neighbor && neighbor.isKarma);
                     }
-                    return false;
+                    return (item.category && item.category.toLowerCase() === 'gifts');
                 }
                 return isCategoryMatchHelper(item.category, filter);
             });
@@ -18150,7 +19138,7 @@ function renderNeedsBoardView() {
     let filteredNeeds = needsPool.filter(need => {
         const matchesSearch = fuzzySearchMatch(query, need.neighborName, need.needTitle, need.needDesc, need.category);
                               
-        const matchesCategory = !state.activeMapFilters || state.activeMapFilters.length === 0 || state.activeMapFilters.some(filter => isCategoryMatchHelper(need.category, filter));
+        const matchesCategory = !state.activeNeedsFilters || state.activeNeedsFilters.length === 0 || state.activeNeedsFilters.some(filter => isCategoryMatchHelper(need.category, filter));
         
         const matchesRadius = need.distance <= maxRadius;
         
@@ -18225,7 +19213,7 @@ function renderNeedsBoardView() {
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
-                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0" onclick="event.stopPropagation(); showView('profile_settings');"><img src="${state.currentUser ? state.currentUser.avatar : 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop'}" class="w-full h-full object-cover rounded-full"></div>
+                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0" onclick="event.stopPropagation(); showView('profile_settings');"><img src="${state.currentUser ? state.currentUser.avatar : 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=300&auto=format&fit=crop'}" class="w-full h-full object-cover rounded-full"></div>
                             <span class="text-[10.5px] text-black dark:text-white font-semibold truncate" onclick="event.stopPropagation(); showView('profile_settings');">${displayName}</span>
                         </div>
                         <span class="text-[10.5px] text-black dark:text-white font-medium flex-shrink-0">Village Trusted · 0 km</span>
@@ -18275,7 +19263,7 @@ function renderNeedsBoardView() {
                     </div>
                     <div class="flex items-center justify-between gap-1.5 mt-2">
                         <div class="flex items-center gap-1.5 min-w-0">
-                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0" onclick="event.stopPropagation(); openNeighborProfileModal('${need.neighborName}')"><img src="${need.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop'}" class="w-full h-full object-cover rounded-full"></div>
+                            <div class="profile-avatar-ring w-4 h-4 flex-shrink-0" onclick="event.stopPropagation(); openNeighborProfileModal('${need.neighborName}')"><img src="${need.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=300&auto=format&fit=crop'}" class="w-full h-full object-cover rounded-full"></div>
                             <span class="text-[10.5px] text-black dark:text-white font-semibold truncate" onclick="event.stopPropagation(); openNeighborProfileModal('${need.neighborName}')">${need.neighborName}</span>
                         </div>
                         <span class="text-[10.5px] text-black dark:text-white font-medium flex-shrink-0">${formatRadiusValue(need.distance)} away</span>
@@ -18601,7 +19589,7 @@ function openAchievementDetails(type) {
         max = 10;
         reward = "Reward: +100 Karma Points";
     } else if (type === 'trade_master') {
-        icon = "swap_horiz";
+        icon = "handshake";
         title = "Trade Master";
         desc = "Complete 10 successful barter trades with your neighbors.";
         current = state.stats.tradesMade;
@@ -19406,7 +20394,7 @@ function setupOfferCategoryChangeListener() {
     select.addEventListener('change', () => {
         const category = select.value;
         if (category) {
-            openSubcategoryModal(category);
+            // openSubcategoryModal(category); // Disabled sub-category modal selection per requirements
         }
     });
 }
@@ -20182,9 +21170,9 @@ function applyMapFiltering() {
         // Apply category / type filters
         if (state && state.activeMapFilters && state.activeMapFilters.length > 0) {
             matchCategory = state.activeMapFilters.some(filter => {
-                if (filter === 'Karma Swap') {
+                if (filter === 'Gifts Swap' || filter === 'Karma Swap') {
                     if (m.name.startsWith('evt_') || m.name.startsWith('need_') || m.name.startsWith('off_') || m.name === '1' || m.name === '2') {
-                        return false;
+                        return (itemCategory && itemCategory.toLowerCase() === 'gifts');
                     }
                     const neighbor = state.neighbors[m.name];
                     return !!(neighbor && neighbor.isKarma);
@@ -20197,9 +21185,9 @@ function applyMapFiltering() {
         } else {
             if (!activeCategoryFilter) {
                 matchCategory = true;
-            } else if (activeCategoryFilter === 'Karma Swap') {
+            } else if (activeCategoryFilter === 'Gifts Swap' || activeCategoryFilter === 'Karma Swap') {
                 if (m.name.startsWith('evt_') || m.name.startsWith('need_') || m.name.startsWith('off_') || m.name === '1' || m.name === '2') {
-                    matchCategory = false;
+                    matchCategory = (itemCategory && itemCategory.toLowerCase() === 'gifts');
                 } else {
                     const neighbor = state.neighbors[m.name];
                     matchCategory = !!(neighbor && neighbor.isKarma);
@@ -20297,9 +21285,22 @@ function updateCategoryTrayUI() {
     const cards = document.querySelectorAll('#category-bento-grid .bento-card');
     cards.forEach(card => {
         const cat = card.getAttribute('data-category');
-        if (activeCategoryFilter && cat === activeCategoryFilter) {
+        if (!cat) return;
+        
+        // Bind programmatic multi-select onclick handler
+        if (cat === 'All') {
+            card.onclick = function() { window.toggleBentoCategoryFilter('All'); };
+        } else {
+            card.onclick = function() { window.toggleBentoCategoryFilter(cat); };
+        }
+        
+        // Highlight active filters
+        const isActive = (state.activeMapFilters && state.activeMapFilters.includes(cat)) || (activeCategoryFilter === cat);
+        const isAllActive = (!activeCategoryFilter && (!state.activeMapFilters || state.activeMapFilters.length === 0));
+        
+        if (isActive) {
             card.classList.add('active-filter');
-        } else if (!activeCategoryFilter && cat === 'All') {
+        } else if (cat === 'All' && isAllActive) {
             card.classList.add('active-filter');
         } else {
             card.classList.remove('active-filter');
@@ -20308,13 +21309,40 @@ function updateCategoryTrayUI() {
 
     const btnFilter = document.getElementById('btn-segment-filter');
     if (btnFilter) {
-        if (activeCategoryFilter) {
+        if ((state.activeMapFilters && state.activeMapFilters.length > 0) || activeCategoryFilter) {
             btnFilter.classList.add('has-active-filter');
         } else {
             btnFilter.classList.remove('has-active-filter');
         }
     }
 }
+
+window.toggleBentoCategoryFilter = function(categoryName) {
+    if (typeof playSound === 'function') playSound('click');
+    if (!state.activeMapFilters) {
+        state.activeMapFilters = [];
+    }
+    
+    if (categoryName === 'All') {
+        state.activeMapFilters = [];
+        activeCategoryFilter = null;
+        if (typeof toggleCategoryTray === 'function') toggleCategoryTray();
+    } else {
+        const idx = state.activeMapFilters.indexOf(categoryName);
+        if (idx > -1) {
+            state.activeMapFilters.splice(idx, 1);
+        } else {
+            state.activeMapFilters.push(categoryName);
+        }
+        // Sync activeCategoryFilter to the first active map filter (fallback for single-select interfaces)
+        activeCategoryFilter = state.activeMapFilters.length > 0 ? state.activeMapFilters[0] : null;
+    }
+    
+    saveState();
+    if (typeof applyMapFiltering === 'function') applyMapFiltering();
+    if (typeof updateCategoryTrayUI === 'function') updateCategoryTrayUI();
+    if (typeof renderMapFilterCircles === 'function') renderMapFilterCircles();
+};
 
 function getItemImageByTitle(title) {
     if (!title) return OFFER_IMAGES[0];
@@ -23175,7 +24203,7 @@ function runTagMatchingAlgorithm(newItem, isOffer) {
                 const title = "Corner Swaps Match! ⚡";
                 const body = `${match.name} (${match.location}) has an item matching yours: "${match.itemTitle}"! Tap to view.`;
                 
-                triggerPushNotification(title, body, "swap_horiz", null, () => {
+                triggerPushNotification(title, body, "handshake", null, () => {
                     openNeighborProfileModal(match.name);
                 });
                 
@@ -23187,7 +24215,7 @@ function runTagMatchingAlgorithm(newItem, isOffer) {
                 const title = "Corner Swaps Match! ⚡";
                 const body = `${uniqueMatches.length} neighbors have items matching yours! Tap to view.`;
                 
-                triggerPushNotification(title, body, "swap_horiz", null, () => {
+                triggerPushNotification(title, body, "handshake", null, () => {
                     openMatchingAccountsModal(uniqueMatches);
                 });
                 
@@ -23988,20 +25016,20 @@ function getAvatarByName(name) {
         return state.currentUser && state.currentUser.avatar ? state.currentUser.avatar : DEFAULT_AVATAR;
     }
     const fallbackAvatars = {
-        'Mia': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop',
-        'Lily Kaufmann': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop',
-        'Sarah Chen': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=80&auto=format&fit=crop',
-        'David Kim': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=80&auto=format&fit=crop',
-        'Chef Pierre': 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80&auto=format&fit=crop',
-        'Aunt Brenda': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop',
-        'Oliver Twist': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=80&auto=format&fit=crop',
-        'Bob Builder': 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=60&w=80&auto=format&fit=crop',
-        'Mac Tech': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=80&auto=format&fit=crop',
-        'Sparky Joe': 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=60&w=80&auto=format&fit=crop',
-        'Leo DaVinci': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=80&auto=format&fit=crop',
-        'Frida Kahlo': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=80&auto=format&fit=crop',
-        'Clay Potter': 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=60&w=80&auto=format&fit=crop',
-        'Community Member': 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80&auto=format&fit=crop'
+        'Mia': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=300&auto=format&fit=crop',
+        'Lily Kaufmann': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop',
+        'Sarah Chen': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=300&auto=format&fit=crop',
+        'David Kim': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=300&auto=format&fit=crop',
+        'Chef Pierre': 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=300&auto=format&fit=crop',
+        'Aunt Brenda': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop',
+        'Oliver Twist': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=300&auto=format&fit=crop',
+        'Bob Builder': 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=60&w=300&auto=format&fit=crop',
+        'Mac Tech': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=300&auto=format&fit=crop',
+        'Sparky Joe': 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=60&w=300&auto=format&fit=crop',
+        'Leo DaVinci': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=60&w=300&auto=format&fit=crop',
+        'Frida Kahlo': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=300&auto=format&fit=crop',
+        'Clay Potter': 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=60&w=300&auto=format&fit=crop',
+        'Community Member': 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=300&auto=format&fit=crop'
     };
     return fallbackAvatars[name] || fallbackAvatars['Community Member'];
 }
@@ -24048,7 +25076,7 @@ function renderEventRSVPs(event) {
     rsvpCountEl.innerText = `${count} ${count === 1 ? 'neighbor is' : 'neighbors are'} going`;
 
     event.rsvps.forEach(name => {
-        let avatarUrl = RSVP_AVATARS[name] || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80&auto=format&fit=crop';
+        let avatarUrl = RSVP_AVATARS[name] || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=300&auto=format&fit=crop';
         if (state.currentUser && (name === currentUser || name === state.currentUser.displayName || name === (state.currentUser.firstName + ' ' + state.currentUser.lastName).trim())) {
             if (state.currentUser.avatar) {
                 avatarUrl = state.currentUser.avatar;
@@ -24195,7 +25223,7 @@ window.handleEventRSVPToggleFromList = function(eventId, eventObj) {
     // Generate RSVP avatars HTML for the list card
     let rsvpAvatarsHtml = '';
     event.rsvps.forEach(name => {
-        let avatarUrl = RSVP_AVATARS[name] || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=80&auto=format&fit=crop';
+        let avatarUrl = RSVP_AVATARS[name] || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=60&w=300&auto=format&fit=crop';
         if (state.currentUser && (name === currentUser || name === state.currentUser.displayName || name === (state.currentUser.firstName + ' ' + state.currentUser.lastName).trim())) {
             if (state.currentUser.avatar) {
                 avatarUrl = state.currentUser.avatar;
@@ -24963,9 +25991,9 @@ window.snapToUserNeighborhood = function() {
 
     if (state.adminAuthenticated) {
         if (leafletMap) {
-            const lat = parseFloat((state.currentUser && state.currentUser.lat) ? state.currentUser.lat : 49.2608);
-            const lng = parseFloat((state.currentUser && state.currentUser.lng) ? state.currentUser.lng : -123.1368);
-            leafletMap.setView([lat, lng], 15, { animate: true });
+            const validated = validateCoords(state.currentUser && state.currentUser.lat, state.currentUser && state.currentUser.lng) || { lat: 49.2608, lng: -123.1368 };
+            leafletMap.invalidateSize();
+            leafletMap.setView([validated.lat, validated.lng], 15, { animate: true });
         }
         return;
     }
@@ -24989,9 +26017,9 @@ window.snapToUserNeighborhood = function() {
             btn.classList.add('bg-blue-600', 'border-blue-600', 'hover:bg-blue-700');
         }
         if (leafletMap) {
-            const lat = parseFloat(state.currentUser.lat);
-            const lng = parseFloat(state.currentUser.lng);
-            leafletMap.setView([lat, lng], 15, { animate: true });
+            const validated = validateCoords(state.currentUser.lat, state.currentUser.lng) || { lat: 49.2608, lng: -123.1368 };
+            leafletMap.invalidateSize();
+            leafletMap.setView([validated.lat, validated.lng], 15, { animate: true });
         }
     } else {
         // Try getting browser geolocation directly
@@ -25013,6 +26041,7 @@ window.snapToUserNeighborhood = function() {
                     btn.classList.add('bg-blue-600', 'border-blue-600', 'hover:bg-blue-700');
                 }
                 if (leafletMap) {
+                    leafletMap.invalidateSize();
                     leafletMap.setView([lat, lng], 15, { animate: true });
                 }
             }, (error) => {
@@ -25512,6 +26541,10 @@ window.syncUserNavbarInfo = function() {
         avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=60&w=60'
     };
 
+    const firstName = user.firstName || user.name || 'Guest';
+    const lastName = user.lastName || '';
+    const email = user.email || (user.firstName ? `${user.firstName.toLowerCase()}@cornerswaps.org` : 'guest@cornerswaps.org');
+
     const globalNavAvatar = document.getElementById('global-nav-avatar');
     if (globalNavAvatar) {
         globalNavAvatar.src = user.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=60&w=60';
@@ -25519,12 +26552,12 @@ window.syncUserNavbarInfo = function() {
 
     const globalNavUsername = document.getElementById('global-nav-username');
     if (globalNavUsername) {
-        globalNavUsername.textContent = `${user.firstName} ${user.lastName}`;
+        globalNavUsername.textContent = `${firstName} ${lastName}`.trim();
     }
 
     const dropdownEmail = document.getElementById('global-nav-dropdown-email');
     if (dropdownEmail) {
-        dropdownEmail.textContent = user.email || `${user.firstName.toLowerCase()}@cornerswaps.org`;
+        dropdownEmail.textContent = email;
     }
 };
 
@@ -25851,7 +26884,7 @@ function selectOfferCategory(categoryName) {
     }
 
     currentSubcategoryContext = 'offer';
-    openSubcategoryModal(categoryName);
+    // openSubcategoryModal(categoryName); // Bypassed subcategory popup selection per requirements
 }
 
 function selectOfferEventType(eventTypeVal) {
@@ -26508,17 +27541,10 @@ function handleSubcategorySave() {
 
 function renderOfferSelectedDetailsSummary() {
     const container = document.getElementById('offer-selected-details-container');
-    const list = document.getElementById('offer-selected-details-list');
-    if (!container || !list) return;
-
-    const category = document.getElementById('offer-category-select').value;
-    if (!category) {
+    if (container) {
         container.classList.add('hidden');
-        return;
     }
-
-    list.innerHTML = "";
-    container.classList.remove('hidden');
+    return;
 
     function makeDetailCard(label, val) {
         const categoryColors = {
@@ -26892,7 +27918,7 @@ function getPendingReviews() {
                             isRealConv: true,
                             convId: conv.id,
                             neighborName: conv.neighborName,
-                            avatar: state.neighbors[conv.neighborName]?.avatar || "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop",
+                            avatar: state.neighbors[conv.neighborName]?.avatar || "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop",
                             offeredItem: (conv.negotiation && conv.negotiation.offeredItem) || "Swap Item",
                             requestedItem: (conv.negotiation && conv.negotiation.requestedItem) || "Swap Item",
                             createdAt: conv.locationChosenAt ? (conv.locationChosenAt + timeShowReview) : (conv.createdAt || now)
@@ -27703,6 +28729,18 @@ function openSuggestMeetingSpotModal() {
     }, 200);
 }
 
+window.zoomToUserOnMeetingSpotMap = function() {
+    let lat = 49.2827;
+    let lng = -123.1207;
+    if (state.currentUser && state.currentUser.lat && state.currentUser.lng) {
+        lat = state.currentUser.lat;
+        lng = state.currentUser.lng;
+    }
+    if (window.meetingSpotMap) {
+        window.meetingSpotMap.setView([lat, lng], 15);
+    }
+};
+
 window.setMeetingTimeShortcut = function(shortcut) {
     const input = document.getElementById('meeting-spot-datetime');
     if (!input) return;
@@ -27760,6 +28798,7 @@ function closeSuggestMeetingSpotModal() {
 
 function initMeetingSpotMap() {
     if (meetingSpotMap) {
+        window.meetingSpotMap = meetingSpotMap;
         meetingSpotMap.setView([49.2608, -123.1368], 14);
         staggeredInvalidateSize(meetingSpotMap);
         plotMeetingSpotMarkers(VERIFIED_SPOTS);
@@ -27782,6 +28821,7 @@ function initMeetingSpotMap() {
         markerZoomAnimation: true,
         inertia: true
     }).setView([49.2608, -123.1368], 14);
+    window.meetingSpotMap = meetingSpotMap;
     
     const retinaSuffix = '';
     const isDark = state.preferences && state.preferences.darkMode;
@@ -28012,13 +29052,29 @@ function confirmMeetingSpotSuggestion() {
     conv.negotiation.meetupRadius = chatMeetingRadius;
     conv.locationChosenAt = Date.now(); // Set location chosen timestamp
     
-    // Push the admin waiting message instead of 'me' proposal message
+    // Send "location updated" message
     conv.messages.push({
-        sender: 'App admin',
-        text: `Waiting for confirmation from neighbor`,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        isMeetupWaiting: true
+        sender: 'System',
+        text: 'location updated',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     });
+    
+    if (conv.isGroup) {
+        // For groups, also post a message showing the selected location
+        conv.messages.push({
+            sender: 'App admin',
+            text: `Meetup location set to ${selectedMeetingSpot.name} at ${formattedDT}`,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        });
+    } else {
+        // Push the admin waiting message instead of 'me' proposal message
+        conv.messages.push({
+            sender: 'App admin',
+            text: `Waiting for confirmation from neighbor`,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            isMeetupWaiting: true
+        });
+    }
     
     saveState();
     closeSuggestMeetingSpotModal();
@@ -28027,21 +29083,22 @@ function confirmMeetingSpotSuggestion() {
     
     // (Confetti upon swap meetup location confirmation removed per user request)
 
-    // Simulate automatic partner response & admin map view link after 5 seconds
-    if (conv.mockMeetupTimer) {
-        clearTimeout(conv.mockMeetupTimer);
-    }
-    conv.mockMeetupTimer = setTimeout(() => {
-        const active = state.conversations.find(c => c.id === conv.id);
-        if (active) {
-            if (active.neighborName === 'Bob Builder' && !active.negotiation.locationNeedsUserConfirmation && !active.negotiation.locationHasBeenCountered) {
-                // Bob counters the location!
-                active.negotiation.locationHasBeenCountered = true;
-                active.negotiation.locationNeedsUserConfirmation = true;
-                
-                active.negotiation.meetupLocation = "Builder Yard Hub";
-                active.negotiation.meetupLat = 49.2625;
-                active.negotiation.meetupLng = -123.0995;
+    // Simulate automatic partner response & admin map view link after 5 seconds if not group
+    if (!conv.isGroup) {
+        if (conv.mockMeetupTimer) {
+            clearTimeout(conv.mockMeetupTimer);
+        }
+        conv.mockMeetupTimer = setTimeout(() => {
+            const active = state.conversations.find(c => c.id === conv.id);
+            if (active) {
+                if (active.neighborName === 'Bob Builder' && !active.negotiation.locationNeedsUserConfirmation && !active.negotiation.locationHasBeenCountered) {
+                    // Bob counters the location!
+                    active.negotiation.locationHasBeenCountered = true;
+                    active.negotiation.locationNeedsUserConfirmation = true;
+                    
+                    active.negotiation.meetupLocation = "Builder Yard Hub";
+                    active.negotiation.meetupLat = 49.2625;
+                    active.negotiation.meetupLng = -123.0995;
                 
                 active.messages.push({
                     sender: active.neighborName,
@@ -28090,6 +29147,7 @@ function confirmMeetingSpotSuggestion() {
             }
         }
     }, 4000);
+    }
 }
 
 function openConfirmNoShowModal() {
@@ -28273,9 +29331,19 @@ function centerMapOnPost(post) {
         const user = state.currentUser || {};
         let userLat = parseFloat(user.lat) || 49.2827;
         let userLng = parseFloat(user.lng) || -123.1207;
-        const displaced = getDisplacedCoords(id, userLat, userLng, 'need');
+        const displaced = getDisplacedCoords(id, userLat, userLng, type === 'need' ? 'need' : 'offering');
         lat = displaced.lat;
         lng = displaced.lng;
+    } else {
+        if (type === 'offering' || type === 'donation') {
+            const displaced = getDisplacedCoords(id, lat, lng, 'offering');
+            lat = displaced.lat;
+            lng = displaced.lng;
+        } else if (type === 'need') {
+            const displaced = getDisplacedCoords(id, lat, lng, 'need');
+            lat = displaced.lat;
+            lng = displaced.lng;
+        }
     }
     
     showView('village');
@@ -28288,19 +29356,13 @@ function centerMapOnPost(post) {
     }
     
     if (leafletMap && lat && lng) {
-        leafletMap.setView([lat, lng], 15, { animate: true });
+        setTimeout(() => {
+            if (leafletMap) {
+                leafletMap.invalidateSize();
+                leafletMap.setView([lat, lng], 17, { animate: true });
+            }
+        }, 400);
     }
-    
-    let mapDetailId = id;
-    if (type === 'need' && !id.startsWith('need_')) {
-        mapDetailId = 'need_' + id;
-    } else if (type === 'event' && !id.startsWith('evt_')) {
-        mapDetailId = 'evt_' + id;
-    }
-    
-    setTimeout(() => {
-        openMapItemDetail(mapDetailId);
-    }, 300);
 }
 window.centerMapOnPost = centerMapOnPost;
 
@@ -29009,14 +30071,9 @@ function selectSearchSuggestion(id, title, lat, lng) {
         renderEventsList();
         renderBulletinsList();
 
-        // Center map on location
+        // Center map on location and zoom in closely (level 18) without auto-opening popup
         if (leafletMap && lat !== null && lng !== null) {
-            leafletMap.setView([lat, lng], 15);
-        }
-
-        // Open detail card directly
-        if (id) {
-            openMapItemDetail(id);
+            leafletMap.setView([lat, lng], 18);
         }
     }
 }
@@ -30090,24 +31147,68 @@ function staggeredInvalidateSize(mapInstance) {
     setTimeout(() => { if (mapInstance) mapInstance.invalidateSize(); }, 800);
 }
 
+window.zoomToUserOnMeetupPickerMap = function() {
+    const geo = window.mockGeo || navigator.geolocation;
+    if (geo) {
+        geo.getCurrentPosition((position) => {
+            const sanitized = sanitizeCoordinates(position.coords.latitude, position.coords.longitude);
+            const lat = sanitized[0];
+            const lng = sanitized[1];
+            if (window.meetupPickerMap) {
+                window.meetupPickerMap.setView([lat, lng], 15);
+            }
+        }, (error) => {
+            zoomToSavedUserLocOnMeetupPickerMap();
+        });
+    } else {
+        zoomToSavedUserLocOnMeetupPickerMap();
+    }
+};
+
+function zoomToSavedUserLocOnMeetupPickerMap() {
+    let lat = 49.2608;
+    let lng = -123.1368;
+    if (state.currentUser && state.currentUser.lat && state.currentUser.lng) {
+        const validated = validateCoords(state.currentUser.lat, state.currentUser.lng);
+        if (validated) {
+            lat = validated.lat;
+            lng = validated.lng;
+        }
+    }
+    if (window.meetupPickerMap) {
+        window.meetupPickerMap.setView([lat, lng], 15);
+    }
+}
+
 // Meetup Location Picker Logic
 let tempMeetupCoords = null;
 let tempMeetupRadius = 100;
 
 function openMeetupLocationPicker() {
     const modal = document.getElementById('meetup-picker-modal');
-    const container = document.getElementById('meetup-picker-container');
     if (!modal) return;
+    
+    const meetupSection = document.getElementById('offer-meetup-spot-section');
+    if (meetupSection) {
+        const btn = meetupSection.querySelector('button');
+        if (btn) {
+            btn.classList.remove('border-red-500', 'ring-1', 'ring-red-500');
+        }
+    }
+    
+    const formWrapper = document.getElementById('offer-form-wrapper');
+    if (formWrapper) formWrapper.classList.add('hidden');
+    
+    const navbar = document.getElementById('global-navbar');
+    if (navbar) navbar.classList.add('hidden');
+    
     modal.classList.remove('hidden');
     setTimeout(() => {
         modal.classList.remove('opacity-0', 'pointer-events-none');
         modal.classList.add('opacity-100');
-        if (container) {
-            container.classList.remove('translate-y-full');
-            container.classList.add('translate-y-0');
-        }
     }, 10);
     playSound('click');
+    window.meetupPickerMap = meetupPickerMap;
 
     // Initialize map if it doesn't exist
     if (!meetupPickerMap) {
@@ -30123,6 +31224,7 @@ function openMeetupLocationPicker() {
             markerZoomAnimation: true,
             inertia: true
         });
+        window.meetupPickerMap = meetupPickerMap;
 
         const retinaSuffix = '';
         const isDark = state.preferences && state.preferences.darkMode;
@@ -30156,13 +31258,21 @@ function openMeetupLocationPicker() {
 
     // Determine initial center
     // If we have selected coordinates, center there. Otherwise, use state.currentUser location coords, or Vancouver default.
-    let centerCoords = [49.2827, -123.1207];
+    let centerCoords = [49.2608, -123.1368];
     if (state.selectedMeetupCoords) {
-        centerCoords = [state.selectedMeetupCoords.lat, state.selectedMeetupCoords.lng];
-        tempMeetupCoords = { lat: state.selectedMeetupCoords.lat, lng: state.selectedMeetupCoords.lng };
+        const validated = validateCoords(state.selectedMeetupCoords.lat, state.selectedMeetupCoords.lng);
+        if (validated) {
+            centerCoords = [validated.lat, validated.lng];
+            tempMeetupCoords = { lat: validated.lat, lng: validated.lng };
+        } else {
+            tempMeetupCoords = null;
+        }
         tempMeetupRadius = state.selectedMeetupRadius || 100;
     } else if (state.currentUser && state.currentUser.lat && state.currentUser.lng) {
-        centerCoords = [state.currentUser.lat, state.currentUser.lng];
+        const validated = validateCoords(state.currentUser.lat, state.currentUser.lng);
+        if (validated) {
+            centerCoords = [validated.lat, validated.lng];
+        }
         tempMeetupCoords = null; // Wait for user tap
         tempMeetupRadius = 100;
     } else {
@@ -30346,7 +31456,7 @@ function confirmMeetupLocation() {
     const mapStatus = document.getElementById('meetup-map-status');
     if (mapStatus) {
         mapStatus.classList.remove('hidden');
-        mapStatus.innerHTML = `<span class="material-symbols-outlined text-base">check_circle</span> <span>Meetup Location Selected (within ${tempMeetupRadius}m)</span>`;
+        mapStatus.innerHTML = `<span class="material-symbols-outlined text-base">check_circle</span> <span>Location successfully set on map!</span>`;
     }
 
     closeMeetupLocationPicker(true);
@@ -30354,17 +31464,17 @@ function confirmMeetupLocation() {
 
 function closeMeetupLocationPicker(confirm) {
     const modal = document.getElementById('meetup-picker-modal');
-    const container = document.getElementById('meetup-picker-container');
     if (!modal) return;
     
-    if (container) {
-        container.classList.remove('translate-y-0');
-        container.classList.add('translate-y-full');
-    }
     modal.classList.remove('opacity-100');
     modal.classList.add('opacity-0', 'pointer-events-none');
     setTimeout(() => {
         modal.classList.add('hidden');
+        const formWrapper = document.getElementById('offer-form-wrapper');
+        if (formWrapper) formWrapper.classList.remove('hidden');
+        
+        const navbar = document.getElementById('global-navbar');
+        if (navbar) navbar.classList.remove('hidden');
     }, 300);
     
     if (!confirm) {
@@ -30428,7 +31538,7 @@ window.openSwapsPopupModal = function() {
             displayName = 'Danny';
         }
 
-        const avatarUrl = neighbor.avatar || "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop";
+        const avatarUrl = neighbor.avatar || "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop";
         const completedCount = neighbor.completedSwaps !== undefined ? neighbor.completedSwaps : 0;
         const karma = neighbor.vouches !== undefined ? neighbor.vouches : 0;
 
@@ -30655,7 +31765,7 @@ window.createListingAtCoords = function(lat, lng) {
     const statusEl = document.getElementById('meetup-map-status');
     if (statusEl) {
         statusEl.classList.remove('hidden');
-        statusEl.innerHTML = `<span class="material-symbols-outlined text-base">check_circle</span> <span>Meetup Location Selected from Map Click</span>`;
+        statusEl.innerHTML = `<span class="material-symbols-outlined text-base">check_circle</span> <span>Location successfully set on map!</span>`;
     }
 };
 
@@ -30675,7 +31785,7 @@ window.createNeedAtCoords = function(lat, lng) {
     const newNeed = {
         id: 'need-' + Date.now(),
         neighborName: state.currentUser ? ((state.currentUser.firstName || 'Lily') + ' ' + (state.currentUser.lastName || 'Kaufmann')) : 'Lily Kaufmann',
-        avatar: state.currentUser ? state.currentUser.avatar : 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80',
+        avatar: state.currentUser ? state.currentUser.avatar : 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300',
         time: 'Just now',
         location: 'Custom location',
         needTitle: needTitle,
@@ -30912,9 +32022,16 @@ function renderBadgesList(containerId, targetName) {
     if (isSelf) {
         completedSwapsCount = Math.max(state.stats.tradesMade || 0, state.conversations ? state.conversations.filter(c => c.negotiation && c.negotiation.status === 'completed').length : 0);
         isGofundmeSupporter = state.gofundmeSupporter === true;
-        hostedEventsCount = (state.events || []).filter(evt => evt.host === 'me' || evt.host === 'Lily Kaufmann').length + 4;
-        karmaListingsCount = (state.listings || []).filter(item => (item.owner === 'Lily Kaufmann' || item.owner === 'Lily' || item.creator === 'self') && item.isKarma).length + 4;
-        friendsCount = (state.friends || []).length * 11;
+        
+        const hostName = state.currentUser ? (state.currentUser.displayName || `${state.currentUser.firstName} ${state.currentUser.lastName}`) : '';
+        hostedEventsCount = (state.events || []).filter(evt => evt.host === 'me' || evt.host === 'Lily Kaufmann' || (hostName && evt.host === hostName)).length;
+        if (!state.isNewAccount) hostedEventsCount += 4;
+        
+        karmaListingsCount = (state.listings || []).filter(item => (item.owner === 'Lily Kaufmann' || item.owner === 'Lily' || item.creator === 'self' || (state.currentUser && item.owner === state.currentUser.displayName)) && item.isKarma).length;
+        if (!state.isNewAccount) karmaListingsCount += 4;
+        
+        friendsCount = (state.friends || []).length;
+        if (!state.isNewAccount) friendsCount = friendsCount * 11;
     } else {
         const neighbor = state.neighbors ? state.neighbors[targetName] : null;
         if (neighbor) {
@@ -30936,10 +32053,10 @@ function renderBadgesList(containerId, targetName) {
             title: 'Early Adopter',
             desc: 'Unlocked for the first 100 users that make an account.',
             icon: 'rocket_launch',
-            color: '#3b82f6',
-            textColor: 'text-blue-600 dark:text-blue-400',
-            bgGradient: 'from-blue-500/25 to-indigo-500/25',
-            borderColor: 'border-blue-500/50',
+            color: '#6366f1',
+            textColor: 'text-indigo-600 dark:text-indigo-400',
+            bgGradient: 'from-indigo-500/25 to-violet-500/25',
+            borderColor: 'border-indigo-500/50',
             unlocked: !state.isNewAccount // Always unlocked for the community reference, except new user account
         },
         {
@@ -30947,10 +32064,10 @@ function renderBadgesList(containerId, targetName) {
             title: 'GoFundMe Backer',
             desc: 'Contributed to our GoFundMe.',
             icon: 'favorite',
-            color: '#ef4444',
-            textColor: 'text-red-600 dark:text-red-400',
-            bgGradient: 'from-red-500/25 to-rose-500/25',
-            borderColor: 'border-red-500/50',
+            color: '#f43f5e',
+            textColor: 'text-rose-600 dark:text-rose-400',
+            bgGradient: 'from-rose-500/25 to-pink-500/25',
+            borderColor: 'border-rose-500/50',
             unlocked: isGofundmeSupporter,
             linkUrl: "https://www.gofundme.com/en-ca/c/start?utm_source=google&utm_medium=cpc&utm_campaign=3Q_CA_EN_Brand&utm_content=Pure_Brand&utm_term=gofundme_b_c_&gad_source=1&gad_campaignid=17943476105&gbraid=0AAAAADj5gICGwnIjA4Ql90FNkDcAnD8_C&gclid=Cj0KCQjwof_QBhCgARIsADaMzOcNZBXjclBUC9_Uos7bWM4d9wjIGN1gSPJkRgLpLQJCcN_kYehHvNUaAs77EALw_wcB"
         },
@@ -30959,10 +32076,10 @@ function renderBadgesList(containerId, targetName) {
             title: 'Super Trader',
             desc: 'Successfully completed 5 or more neighbor trades.',
             icon: 'handshake',
-            color: '#22c55e',
-            textColor: 'text-green-600 dark:text-green-400',
-            bgGradient: 'from-green-500/25 to-emerald-500/25',
-            borderColor: 'border-green-500/50',
+            color: '#10b981',
+            textColor: 'text-emerald-600 dark:text-emerald-400',
+            bgGradient: 'from-emerald-500/25 to-teal-500/25',
+            borderColor: 'border-emerald-500/50',
             unlocked: completedSwapsCount >= 5
         },
         {
@@ -31573,6 +32690,11 @@ window.viewMeetupLocationOnMap = function(convId) {
     showView('village');
     switchVillageSegment('map');
     
+    const meetupCloseBtn = document.getElementById('meetup-close-btn');
+    if (meetupCloseBtn) meetupCloseBtn.classList.remove('hidden');
+    const changeLocContainer = document.getElementById('meetup-change-location-container');
+    if (changeLocContainer) changeLocContainer.classList.remove('hidden');
+
     if (leafletMap) {
         staggeredInvalidateSize(leafletMap);
     }
@@ -31586,6 +32708,9 @@ window.exitMeetupMapMode = function() {
     const meetupCloseBtn = document.getElementById('meetup-close-btn');
     if (meetupCloseBtn) meetupCloseBtn.classList.add('hidden');
     
+    const changeLocContainer = document.getElementById('meetup-change-location-container');
+    if (changeLocContainer) changeLocContainer.classList.add('hidden');
+
     const mapControls = document.getElementById('floating-map-controls');
     if (mapControls) mapControls.classList.remove('hidden');
     
@@ -31593,6 +32718,16 @@ window.exitMeetupMapMode = function() {
     if (navBar) navBar.classList.remove('hidden');
     
     showView('chat_detail');
+};
+
+window.handleMeetupChangeLocation = function() {
+    window.exitMeetupMapMode();
+    window.openSuggestMeetingSpotModal();
+};
+
+window.handleGroupChatMapClick = function(convId) {
+    state.currentConversationId = convId;
+    window.openSuggestMeetingSpotModal();
 };
 
 window.openLinkSocialsModal = function() {
@@ -32069,7 +33204,7 @@ function renderReviewsList() {
         `;
 
         const card = document.createElement('div');
-        card.className = "chat-card-slider-content group flex items-center gap-4 py-3.5 px-6 cursor-pointer transition-transform duration-200 relative z-10 bg-white dark:bg-[#18201a]";
+        card.className = "chat-card-slider-content group flex items-center gap-4 py-5 px-6 cursor-pointer transition-transform duration-200 relative z-10 bg-white dark:bg-[#18201a]";
         card.style.transform = "translateX(0px)";
         
         card.onclick = (e) => {
@@ -32089,7 +33224,21 @@ function renderReviewsList() {
             }
         };
 
-        const avatarHtml = `<div class="profile-avatar-ring w-14 h-14 flex-shrink-0"><img alt="${escapeHTML(rev.neighborName)}" class="w-full h-full object-cover rounded-full" src="${rev.avatar}"/></div>`;
+        let displayImgUrl = rev.avatar;
+        if (state.neighbors && state.neighbors[rev.neighborName] && state.neighbors[rev.neighborName].offerImg) {
+            displayImgUrl = state.neighbors[rev.neighborName].offerImg;
+        }
+
+        let avatarHtml = "";
+        if (rev.neighborName === 'App admin') {
+            avatarHtml = `
+                <div class="w-14 h-14 rounded-full bg-error/10 text-error flex items-center justify-center border border-error/20 shadow-sm select-none">
+                    <span class="material-symbols-outlined text-[24px]">admin_panel_settings</span>
+                </div>
+            `;
+        } else {
+            avatarHtml = `<div class="w-14 h-14 flex-shrink-0 shadow-sm border border-outline-variant/15 rounded-full overflow-hidden"><img alt="${escapeHTML(rev.neighborName)}" class="w-full h-full object-cover" src="${displayImgUrl}"/></div>`;
+        }
 
         card.innerHTML = `
             <div class="relative flex-shrink-0 select-none w-14 overflow-visible">
@@ -32325,7 +33474,7 @@ window.openFusedReviewModal = function(neighborName, convId, reviewId) {
     // Avatar
     const avatarEl = document.getElementById('confirm-swap-avatar');
     if (avatarEl) {
-        avatarEl.src = neighbor ? neighbor.avatar : "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop";
+        avatarEl.src = neighbor ? neighbor.avatar : "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop";
     }
 
     // Karma points & Badge & Swaps Count
@@ -32577,7 +33726,7 @@ window.submitFusedReview = function() {
             const neighbor = state.neighbors[neighborName];
             state.friends.push({
                 name: neighbor ? neighbor.name : neighborName,
-                avatar: neighbor ? neighbor.avatar : "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=80&auto=format&fit=crop",
+                avatar: neighbor ? neighbor.avatar : "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=60&w=300&auto=format&fit=crop",
                 phone: neighbor ? (neighbor.phone || '+1 (604) 555-0199') : '+1 (604) 555-0199'
             });
         }
@@ -32883,45 +34032,53 @@ window.openSwapLifecycleModal = function(role, conversationId) {
     state.selectedSwapListingId = null;
     
     if (role === 'initiator') {
-        const listHeading = "My Items to Offer";
-        const itemsList = state.userOfferings || [];
-        const noItemsText = "No active listings on your profile.";
+        const initiatedBy = window.getConversationInitiatedBy(conv);
+        let listHeading, itemsList, noItemsText;
+        if (initiatedBy === 'need') {
+            listHeading = "My offerings";
+            itemsList = state.userOfferings || [];
+            noItemsText = "No active offerings on your profile.";
+        } else {
+            listHeading = "My needs";
+            itemsList = state.userNeeds || [];
+            noItemsText = "No active needs on your profile.";
+        }
 
         container.innerHTML = `
-            <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
-                <h3 class="popup-modal-title text-center mb-1">Offer a Swap</h3>
+            <div class="relative flex flex-col items-center justify-center p-2 pb-1 border-b border-black/10 dark:border-white/10 shrink-0">
+                <h3 class="popup-modal-title text-center mb-0.5">Offer a Swap</h3>
             </div>
             
-            <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 min-h-0">
+            <div class="flex-grow overflow-y-auto px-3.5 py-1.5 flex flex-col gap-1.5 min-h-0">
                 <!-- List Section -->
-                <div class="flex flex-col gap-1.5 shrink-0">
+                <div class="flex flex-col gap-0.5 shrink-0">
                     <span class="popup-modal-desc block text-left" id="lifecycle-list-heading-title">${listHeading}</span>
-                    <div class="flex flex-col gap-2 py-1 select-none w-full" id="lifecycle-offerings-scroller">
+                    <div class="flex flex-col gap-1.5 py-0.5 select-none w-full" id="lifecycle-offerings-scroller">
                         <!-- Populated dynamically below -->
                     </div>
                 </div>
                 
                 <!-- Custom Input -->
-                <div class="flex flex-col gap-1.5 shrink-0">
+                <div class="flex flex-col gap-0.5 shrink-0">
                     <span class="popup-modal-desc block text-left">Custom</span>
-                    <input type="text" id="lifecycle-custom-text" class="w-full bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl p-3 text-xs outline-none focus:ring-1 focus:ring-forest-green text-on-surface" placeholder="Type an item name..."/>
+                    <input type="text" id="lifecycle-custom-text" class="w-full bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl p-2.5 text-xs outline-none focus:ring-1 focus:ring-forest-green text-on-surface" placeholder="Type an item name..."/>
                 </div>
 
                 <!-- For Karma -->
-                <div class="flex flex-col gap-1.5 shrink-0">
+                <div class="flex flex-col gap-0.5 shrink-0">
                     <span class="popup-modal-desc block text-left">For Karma</span>
-                    <label class="flex items-center gap-3 p-3 bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl cursor-pointer select-none transition-all hover:bg-forest-green/5 border-black/10 dark:border-white/10">
+                    <label class="flex items-center gap-2.5 p-2.5 bg-white dark:bg-[#101612] border border-outline-variant/35 rounded-2xl cursor-pointer select-none transition-all hover:bg-forest-green/5 border-black/10 dark:border-white/10">
                         <input type="radio" id="karma-for-free-radio" name="karma-option" class="accent-forest-green w-4 h-4 cursor-pointer" value="free" />
-                        <span class="material-symbols-outlined text-[22px] text-[#ef4444]" style="font-variation-settings: 'FILL' 1 !important; color: #ef4444 !important; line-height: 1; display: inline-flex; align-items: center; justify-content: center;">favorite</span>
+                        <span class="material-symbols-outlined text-[20px] text-[#ef4444]" style="font-variation-settings: 'FILL' 1 !important; color: #ef4444 !important; line-height: 1; display: inline-flex; align-items: center; justify-content: center;">favorite</span>
                         <span class="text-xs text-black dark:text-white font-bold">For free (+20 Karma Points)</span>
                     </label>
                 </div>
             </div>
             
             <!-- Action buttons -->
-            <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-4">
-                <button id="lifecycle-submit-btn" disabled class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0 opacity-50 pointer-events-none" onclick="window.submitLifecycleSwap(false)">Propose Swap</button>
-                <button id="lifecycle-cancel-btn" class="w-full bg-[#8e8e93] hover:bg-[#787880]/90 text-white py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0 mt-2" onclick="window.closeSwapLifecycleModal()">Never mind</button>
+            <div class="flex flex-col gap-1.5 p-2.5 pb-1 border-t border-black/10 dark:border-white/10 shrink-0">
+                <button id="lifecycle-submit-btn" disabled class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0 opacity-50 pointer-events-none" onclick="window.submitLifecycleSwap(false)">Propose Swap</button>
+                <button id="lifecycle-cancel-btn" class="w-full bg-[#8e8e93] hover:bg-[#787880]/90 text-white py-3 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0 mt-1" onclick="window.closeSwapLifecycleModal()">Never mind</button>
             </div>
         `;
         
@@ -33083,18 +34240,18 @@ window.openSwapLifecycleModal = function(role, conversationId) {
         
         if (isKarma) {
             container.innerHTML = `
-                <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
-                    <h3 class="popup-modal-title text-center mb-1">Review Karma Request</h3>
+                <div class="relative flex flex-col items-center justify-center p-2.5 pb-1 border-b border-black/10 dark:border-white/10 shrink-0">
+                    <h3 class="popup-modal-title text-center mb-0.5">Review Karma Request</h3>
                     <p class="popup-modal-desc text-center text-xs">Requested by ${escapeHTML(conv.neighborName)}</p>
                 </div>
                 
-                <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 min-h-0 items-center justify-center text-center">
-                    <div class="w-16 h-16 rounded-full bg-red-50 dark:bg-red-950/20 flex items-center justify-center text-[#ef4444] border border-red-200/20 shadow-sm mb-2 shrink-0">
-                        <span class="material-symbols-outlined text-3xl font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                <div class="flex-grow overflow-y-auto p-3 flex flex-col gap-2.5 min-h-0 items-center justify-center text-center">
+                    <div class="w-12 h-12 rounded-full bg-red-50 dark:bg-red-950/20 flex items-center justify-center text-[#ef4444] border border-red-200/20 shadow-sm mb-1.5 shrink-0">
+                        <span class="material-symbols-outlined text-2xl font-bold" style="font-variation-settings: 'FILL' 1;">favorite</span>
                     </div>
                     
-                    <div class="flex flex-col items-center gap-2 shrink-0">
-                        <h4 class="popup-modal-title text-center mb-1">Review Free Request</h4>
+                    <div class="flex flex-col items-center gap-1.5 shrink-0">
+                        <h4 class="popup-modal-title text-center mb-0.5">Review Free Request</h4>
                         <p class="popup-modal-desc text-center max-w-[90%]">
                             Your neighbor ${escapeHTML(conv.neighborName)} is requesting your <strong class="text-forest-green">"${escapeHTML(requestedTitle)}"</strong> as a free offering. 
                             By helping them out, you will receive <span class="text-[#ef4444] font-extrabold">+50 Karma Points</span>!
@@ -33103,49 +34260,49 @@ window.openSwapLifecycleModal = function(role, conversationId) {
                 </div>
                 
                 <!-- Action buttons -->
-                <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-4">
-                    <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.acceptLifecycleProposedSwap('${conv.id}')">Accept Request</button>
-                    <button class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="window.declineLifecycleProposedSwap('${conv.id}')">Decline Request</button>
+                <div class="flex flex-col gap-1.5 p-2.5 border-t border-black/10 dark:border-white/10 shrink-0 pb-1.5">
+                    <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.acceptLifecycleProposedSwap('${conv.id}')">Accept Request</button>
+                    <button class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0 mt-1" onclick="window.declineLifecycleProposedSwap('${conv.id}')">Decline Request</button>
                 </div>
             `;
         } else {
             container.innerHTML = `
-                <div class="relative flex flex-col items-center justify-center p-4 pb-2 border-b border-black/10 dark:border-white/10 shrink-0">
-                    <h3 class="popup-modal-title text-center mb-1">Review Swap Proposal</h3>
+                <div class="relative flex flex-col items-center justify-center p-2.5 pb-1 border-b border-black/10 dark:border-white/10 shrink-0">
+                    <h3 class="popup-modal-title text-center mb-0.5">Review Swap Proposal</h3>
                     <p class="popup-modal-desc text-center text-xs">Offered by ${escapeHTML(conv.neighborName)}</p>
                 </div>
                 
-                <div class="flex-grow overflow-y-auto p-4 flex flex-col gap-4 min-h-0 justify-center">
-                    <div class="flex items-center justify-between gap-4 shrink-0">
+                <div class="flex-grow overflow-y-auto p-3 flex flex-col gap-2.5 min-h-0 justify-center">
+                    <div class="flex items-center justify-between gap-3 shrink-0">
                         <!-- Offered Item (Left) -->
-                        <div class="flex-grow flex-1 flex flex-col items-center p-3.5 bg-black/[0.02] dark:bg-white/[0.02] border border-outline-variant/10 rounded-2xl min-w-0">
-                            <div class="w-20 h-20 rounded-xl overflow-hidden relative border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex-shrink-0">
+                        <div class="flex-grow flex-1 flex flex-col items-center p-2.5 bg-black/[0.02] dark:bg-white/[0.02] border border-outline-variant/10 rounded-2xl min-w-0">
+                            <div class="w-16 h-16 rounded-xl overflow-hidden relative border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex-shrink-0">
                                 <img src="${offeredImage}" class="w-full h-full object-cover">
                             </div>
-                            <div class="text-[9px] font-black text-black/50 dark:text-white/50 uppercase tracking-widest mt-2">THEY GIVE</div>
-                            <div class="text-xs font-extrabold text-black dark:text-warm-cream text-center truncate w-full mt-1">${escapeHTML(offeredTitle)}</div>
+                            <div class="text-[9px] font-black text-black/50 dark:text-white/50 uppercase tracking-widest mt-1.5">THEY GIVE</div>
+                            <div class="text-xs font-extrabold text-black dark:text-warm-cream text-center truncate w-full mt-0.5">${escapeHTML(offeredTitle)}</div>
                         </div>
                         
                         <!-- Center Swap Icon -->
-                        <div class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-forest-green/10 text-forest-green border border-forest-green/20 shadow-sm">
-                            <span class="material-symbols-outlined text-base font-bold animate-pulse">swap_horiz</span>
+                        <div class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-forest-green/10 text-forest-green border border-forest-green/20 shadow-sm">
+                            <span class="material-symbols-outlined text-sm font-bold animate-pulse">handshake</span>
                         </div>
                         
                         <!-- Requested Item (Right) -->
-                        <div class="flex-grow flex-1 flex flex-col items-center p-3.5 bg-black/[0.02] dark:bg-white/[0.02] border border-outline-variant/10 rounded-2xl min-w-0">
-                            <div class="w-20 h-20 rounded-xl overflow-hidden relative border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex-shrink-0">
+                        <div class="flex-grow flex-1 flex flex-col items-center p-2.5 bg-black/[0.02] dark:bg-white/[0.02] border border-outline-variant/10 rounded-2xl min-w-0">
+                            <div class="w-16 h-16 rounded-xl overflow-hidden relative border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex-shrink-0">
                                 <img src="${requestedImage}" class="w-full h-full object-cover">
                             </div>
-                            <div class="text-[9px] font-black text-black/50 dark:text-white/50 uppercase tracking-widest mt-2">YOU GIVE</div>
-                            <div class="text-xs font-extrabold text-black dark:text-warm-cream text-center truncate w-full mt-1">${escapeHTML(requestedTitle)}</div>
+                            <div class="text-[9px] font-black text-black/50 dark:text-white/50 uppercase tracking-widest mt-1.5">YOU GIVE</div>
+                            <div class="text-xs font-extrabold text-black dark:text-warm-cream text-center truncate w-full mt-0.5">${escapeHTML(requestedTitle)}</div>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Action buttons -->
-                <div class="flex flex-col gap-2 p-4 border-t border-black/10 dark:border-white/10 shrink-0 pb-4">
-                    <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.acceptLifecycleProposedSwap('${conv.id}')">Accept Swap</button>
-                    <button class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3.5 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0" onclick="window.declineLifecycleProposedSwap('${conv.id}')">Decline Swap</button>
+                <div class="flex flex-col gap-1.5 p-2.5 border-t border-black/10 dark:border-white/10 shrink-0 pb-1.5">
+                    <button class="w-full bg-forest-green hover:bg-forest-green/95 text-warm-cream py-3 rounded-2xl font-black text-xs active:scale-95 transition-all shadow-md cursor-pointer border-0" onclick="window.acceptLifecycleProposedSwap('${conv.id}')">Accept Swap</button>
+                    <button class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer border-0 mt-1" onclick="window.declineLifecycleProposedSwap('${conv.id}')">Decline Swap</button>
                 </div>
             `;
         }
@@ -33262,7 +34419,7 @@ window.submitLifecycleSwap = function(isKarma) {
         
         const selectedListingId = state.selectedSwapListingId;
         if (selectedListingId && selectedListingId !== 'custom') {
-            const off = state.userOfferings.find(o => o.id === selectedListingId);
+            const off = (state.userOfferings || []).find(o => o.id === selectedListingId) || (state.userNeeds || []).find(o => o.id === selectedListingId);
             if (off) {
                 offeredId = off.id;
                 offeredImage = off.image || PLACEHOLDER_IMAGE;
@@ -33318,6 +34475,13 @@ window.submitLifecycleSwap = function(isKarma) {
     window.closeSwapLifecycleModal();
     renderChatDetail(conv);
     if (typeof playSound === 'function') playSound('message');
+    
+    // Automatically trigger the location selection prompt modal (similar to listing flow)
+    setTimeout(() => {
+        if (typeof openSuggestMeetingSpotModal === 'function') {
+            openSuggestMeetingSpotModal();
+        }
+    }, 450);
     
     if (!isKarma && typeof triggerSuccessConfetti === 'function') {
         triggerSuccessConfetti();
@@ -33416,6 +34580,54 @@ window.updateTopSegmentedControlUI = updateTopSegmentedControlUI;
 
 // Search Behavior and Navbar Toggling on keyboard/search focus
 function initSearchBehavior() {
+    // Prevent touch-through / click-bleed to the map or listings underneath
+    const preventBleedThrough = (el) => {
+        if (!el) return;
+        const events = [
+            'touchstart', 'touchend', 'touchmove',
+            'mousedown', 'mouseup', 'click', 'dblclick',
+            'pointerdown', 'pointerup', 'pointermove', 'pointerover', 'pointerout',
+            'MSPointerDown', 'MSPointerUp', 'MSPointerMove'
+        ];
+        events.forEach(evtType => {
+            el.addEventListener(evtType, (e) => {
+                e.stopPropagation();
+            }, { passive: true });
+        });
+    };
+
+    const bleedThroughSelectors = [
+        '#village-search-input',
+        '#village-list-search-input',
+        '#village-needs-search-input',
+        '#village-events-search-input',
+        '#village-bulletins-search-input',
+        '#chat-search-input',
+        '#village-search-suggestions',
+        '#village-list-search-suggestions',
+        '#village-needs-search-suggestions',
+        '#village-events-search-suggestions',
+        '#village-search-bar-overlay',
+        '.fused-search-capsule',
+        '#village-quick-create-dropdown',
+        '#village-search-intel-pill',
+        '#btn-map-search-clear',
+        '#btn-list-search-clear',
+        '#btn-needs-search-clear',
+        '#btn-events-search-clear',
+        '#btn-bulletins-search-clear',
+        '#btn-clear-chat-search',
+        '#village-segment-floating-buttons',
+        '#snap-to-neighborhood-btn',
+        '#floating-map-controls',
+        '#map-category-dropdown',
+        '#active-filter-banner'
+    ];
+    
+    bleedThroughSelectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(preventBleedThrough);
+    });
+
     const searchInputs = [
         { inputId: 'village-search-input', clearBtnId: 'btn-map-search-clear' },
         { inputId: 'village-list-search-input', clearBtnId: 'btn-list-search-clear' },
@@ -34168,7 +35380,14 @@ window.renderListCategoryFilters = function(container, category) {
     container.innerHTML = "";
 
     categoriesList.forEach(cat => {
-        const isActive = state.activeMapFilters && state.activeMapFilters.includes(cat.name);
+        let isActive = false;
+        if (category === 'needs') {
+            isActive = state.activeNeedsFilters && state.activeNeedsFilters.includes(cat.name);
+        } else if (category === 'events') {
+            isActive = state.activeEventsFilters && state.activeEventsFilters.includes(cat.name);
+        } else {
+            isActive = state.activeListFilters && state.activeListFilters.includes(cat.name);
+        }
         
         const pill = document.createElement('div');
         pill.className = "list-filter-pill";
@@ -34206,20 +35425,29 @@ window.renderListCategoryFilters = function(container, category) {
 
 window.toggleListCategoryFilter = function(categoryName) {
     playSound('click');
-    if (!state.activeMapFilters) {
-        state.activeMapFilters = [];
+    const activeCategory = state.activeCategory || 'offerings';
+    
+    let filterArray;
+    if (activeCategory === 'needs') {
+        if (!state.activeNeedsFilters) state.activeNeedsFilters = [];
+        filterArray = state.activeNeedsFilters;
+    } else if (activeCategory === 'events') {
+        if (!state.activeEventsFilters) state.activeEventsFilters = [];
+        filterArray = state.activeEventsFilters;
+    } else {
+        if (!state.activeListFilters) state.activeListFilters = [];
+        filterArray = state.activeListFilters;
     }
     
-    const index = state.activeMapFilters.indexOf(categoryName);
+    const index = filterArray.indexOf(categoryName);
     if (index > -1) {
-        state.activeMapFilters.splice(index, 1);
+        filterArray.splice(index, 1);
     } else {
-        state.activeMapFilters.push(categoryName);
+        filterArray.push(categoryName);
     }
     
     saveState();
     
-    const activeCategory = state.activeCategory || 'offerings';
     let containerId = 'list-category-filters-container';
     if (activeCategory === 'needs') {
         containerId = 'needs-category-filters-container';
@@ -34232,16 +35460,16 @@ window.toggleListCategoryFilter = function(categoryName) {
         window.renderListCategoryFilters(container, activeCategory);
     }
     
-    if (activeCategory === 'offerings' || activeCategory === 'needs') {
+    if (activeCategory === 'offerings') {
         renderVillageListView();
+    } else if (activeCategory === 'needs') {
+        if (typeof renderNeedsBoardView === 'function') {
+            renderNeedsBoardView();
+        }
     } else if (activeCategory === 'events') {
         if (typeof renderEventsList === 'function') {
             renderEventsList();
         }
-    }
-    
-    if (typeof renderMapFilterCircles === 'function') {
-        renderMapFilterCircles();
     }
 };
 /* --- End: Horizontal Scrolling Category Filters for List Page --- */
@@ -34522,5 +35750,201 @@ window.closeCustomAlert = function() {
 };
 /* --- End: Custom Internal Alert Modal Logic --- */
 
+window.handlePlusTap = function(event) {
+    if (event) event.stopPropagation();
+    
+    // Close any open overlays or dropdowns
+    closeAllQuickCreateDropdowns();
+    if (typeof closeAllListDropdowns === 'function') closeAllListDropdowns();
+    if (typeof closeMapCategoryDropdown === 'function') closeMapCategoryDropdown();
+    if (typeof deactivateSearchMode === 'function') deactivateSearchMode();
+    
+    let mode = 'offering';
+    if (state.activeCategory === 'needs') mode = 'need';
+    else if (state.activeCategory === 'events') mode = 'event';
+    
+    triggerQuickCreate(mode);
+};
+
+/* --- Drawer Expand/Collapse Handlers --- */
+window.expandCategoryView = function() {
+    if (typeof playSound === 'function') playSound('click');
+    const overlay = document.getElementById('category-list-overlay');
+    if (overlay) {
+        overlay.classList.add('maximized');
+    }
+};
+
+window.collapseCategoryView = function() {
+    if (typeof playSound === 'function') playSound('click');
+    if (typeof closeCategoryView === 'function') {
+        closeCategoryView();
+    } else {
+        const overlay = document.getElementById('category-list-overlay');
+        if (overlay) overlay.classList.remove('active');
+    }
+    const overlay = document.getElementById('category-list-overlay');
+    if (overlay) {
+        overlay.classList.remove('maximized');
+    }
+};
+
+window.resetCategoryView = function() {
+    if (typeof playSound === 'function') playSound('click');
+    const overlay = document.getElementById('category-list-overlay');
+    if (overlay) {
+        overlay.classList.remove('maximized');
+    }
+};
+
+window.expandOfferSwapView = function() {
+    if (typeof playSound === 'function') playSound('click');
+    const container = document.getElementById('offer-swap-container');
+    if (container) {
+        container.classList.add('maximized');
+    }
+};
+
+window.collapseOfferSwapView = function() {
+    if (typeof playSound === 'function') playSound('click');
+    if (typeof closeOfferSwapModal === 'function') {
+        closeOfferSwapModal();
+    } else {
+        const modal = document.getElementById('offer-swap-modal');
+        if (modal) modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+    const container = document.getElementById('offer-swap-container');
+    if (container) {
+        container.classList.remove('maximized');
+    }
+};
+
+window.resetOfferSwapView = function() {
+    if (typeof playSound === 'function') playSound('click');
+    const container = document.getElementById('offer-swap-container');
+    if (container) {
+        container.classList.remove('maximized');
+    }
+};
+
+window.openChatListingDetailModal = function(neighborName) {
+    if (typeof playSound === 'function') playSound('click');
+    const neighbor = state.neighbors ? state.neighbors[neighborName] : null;
+    if (!neighbor) return;
+    
+    const imgEl = document.getElementById('chat-listing-detail-img');
+    const titleEl = document.getElementById('chat-listing-detail-title');
+    const descEl = document.getElementById('chat-listing-detail-desc');
+    const modal = document.getElementById('chat-listing-detail-modal');
+    
+    if (imgEl) imgEl.src = neighbor.offerImg || 'https://images.unsplash.com/photo-1597362925123-77861d3fbac7?q=60&w=400&auto=format&fit=crop';
+    if (titleEl) titleEl.innerText = neighbor.offerTitle || 'Swap Item';
+    if (descEl) descEl.innerText = neighbor.offerDesc || 'Swap initiated from local listing';
+    
+    if (modal) {
+        modal.classList.remove('translate-y-full');
+    }
+};
+
+window.closeChatListingDetailModal = function() {
+    if (typeof playSound === 'function') playSound('click');
+    const modal = document.getElementById('chat-listing-detail-modal');
+    if (modal) {
+        modal.classList.add('translate-y-full');
+    }
+};
+
 // Global scope ends
 
+
+
+// Redesigned profile sub-page navigation helpers
+window.showProfileSubPage = function(subPageId) {
+    if (typeof playSound === 'function') playSound('click');
+    showView(subPageId);
+};
+
+window.switchFullSavedFilter = function(val) {
+    state.profileSavedFilter = val;
+    saveState();
+    if (typeof playSound === 'function') playSound('click');
+    
+    // Sync accordion filter too if present
+    const filterSelect = document.getElementById('saved-section-filter');
+    if (filterSelect) filterSelect.value = val;
+
+    renderProfileSettings();
+};
+
+/* ─── Settings Section Views Population ─── */
+window.populateSettingsSectionViews = function() {
+    // Badges
+    const badgesSrc = document.getElementById('user-badges-container');
+    const badgesDst = document.getElementById('settings-section-badges-container');
+    if (badgesSrc && badgesDst) {
+        badgesDst.innerHTML = badgesSrc.innerHTML || '<p class="text-center text-xs text-gray-400 py-6">No badges earned yet. Keep swapping!</p>';
+    }
+
+    // History
+    const histSrc = document.getElementById('profile-trade-log-container');
+    const histDst = document.getElementById('settings-section-history-container');
+    if (histSrc && histDst) {
+        histDst.innerHTML = histSrc.innerHTML || '<p class="text-center text-xs text-gray-400 py-6">No swap history yet.</p>';
+    }
+
+    // Impact — sync karma + swaps values
+    const karmaEl = document.getElementById('settings-profile-karma');
+    const swapsEl = document.getElementById('settings-profile-swaps');
+    const impactKarma = document.getElementById('impact-karma-val');
+    const impactSwaps = document.getElementById('impact-swaps-val');
+    if (karmaEl && impactKarma) impactKarma.textContent = karmaEl.textContent;
+    if (swapsEl && impactSwaps) impactSwaps.textContent = swapsEl.textContent;
+
+    // Invite / Friends
+    const friendsSrc = document.getElementById('my-friends-container');
+    const friendsDst = document.getElementById('settings-section-friends-container');
+    if (friendsSrc && friendsDst && friendsSrc.innerHTML.trim()) {
+        friendsDst.innerHTML = friendsSrc.innerHTML;
+    }
+
+    // Blocked
+    const blockedSrc = document.getElementById('blocked-users-list');
+    const blockedDst = document.getElementById('settings-section-blocked-container');
+    if (blockedSrc && blockedDst) {
+        const content = blockedSrc.innerHTML;
+        if (content && content.trim()) {
+            blockedDst.innerHTML += content;
+        }
+    }
+
+    // Definitions
+    const defSrc = document.getElementById('accordion-content-definitions-guidance');
+    const defDst = document.getElementById('settings-section-definitions-content');
+    if (defSrc && defDst && defSrc.innerHTML.trim()) {
+        defDst.innerHTML = defSrc.innerHTML;
+    }
+
+    // Tips
+    const tipsSrc = document.getElementById('accordion-content-neighbourhood-tips');
+    const tipsDst = document.getElementById('settings-section-tips-content');
+    if (tipsSrc && tipsDst && tipsSrc.innerHTML.trim()) {
+        tipsDst.innerHTML = tipsSrc.innerHTML;
+    }
+
+    // Improve
+    const improveSrc = document.getElementById('accordion-content-help-improve');
+    const improveDst = document.getElementById('settings-section-improve-content');
+    if (improveSrc && improveDst && improveSrc.innerHTML.trim()) {
+        improveDst.innerHTML = improveSrc.innerHTML;
+    }
+};
+
+// Hook into showView to populate when entering any settings section
+const _origShowView = window.showView;
+window.showView = function(viewId, mode) {
+    _origShowView(viewId, mode);
+    if (viewId && viewId.startsWith('settings_section_')) {
+        window.populateSettingsSectionViews();
+    }
+};
+/* ─── End Settings Section Views Population ─── */
