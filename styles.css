@@ -1299,7 +1299,23 @@ html.dark #map-event-detail-back-btn {
 .native-app-env #view-definitions,
 .native-app-env #view-help_improve,
 .native-app-env #view-settings_detail,
-.native-app-env #view-blocked_users {
+.native-app-env #view-blocked_users,
+.native-app-env #view-account_settings,
+.native-app-env #view-my_listings_full,
+.native-app-env #view-my_events_full,
+.native-app-env #view-saved_items_full,
+.native-app-env #view-swap_ledger_full,
+.native-app-env #view-settings_hub_full,
+.native-app-env #view-settings_section_badges,
+.native-app-env #view-settings_section_history,
+.native-app-env #view-settings_section_impact,
+.native-app-env #view-settings_section_invite,
+.native-app-env #view-settings_section_blocked,
+.native-app-env #view-settings_section_definitions,
+.native-app-env #view-settings_section_tips,
+.native-app-env #view-settings_section_improve,
+.native-app-env #view-settings_section_support,
+.native-app-env #view-offer {
     padding-top: calc(0.6rem + var(--safe-area-top)) !important;
 }
 
